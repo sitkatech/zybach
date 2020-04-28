@@ -1,0 +1,9 @@
+.vs
+bin
+obj
+*.dbmdl
+*.jfm
+
+*.env
+*.user
+DroolTool.Web/wwwroot/

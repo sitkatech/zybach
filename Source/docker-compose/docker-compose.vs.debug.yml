@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+  drooltool.api:
+    image: sitkacontainers.azurecr.io/drooltool/api
+    labels:
+      - "com.microsoft.visualstudio.targetoperatingsystem=linux"
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    ports:
+      - "7890:80"
+      - "7889:443"

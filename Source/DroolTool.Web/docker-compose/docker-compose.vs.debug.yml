@@ -1,0 +1,11 @@
+version: '3.5'
+
+services:
+  drooltool.web:
+    build:
+      args:
+        source: ${DOCKER_BUILD_SOURCE}
+    image: sitkacontainers.azurecr.io/drooltool/web
+    ports:
+      - "7887:80"
+      - "7886:443"

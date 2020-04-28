@@ -1,0 +1,10 @@
+version: '3.5'
+
+services:
+  drooltool.web:
+    image: sitkacontainers.azurecr.io/drooltool/web
+    build:
+      args:
+        env: ${ENVIRONMENT}
+      context: ../..
+      dockerfile: DroolTool.Web/Dockerfile

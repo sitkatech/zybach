@@ -1,0 +1,96 @@
+.homeSection {
+    padding-top: 80px;
+    min-height: 680px;
+}
+
+h1 {
+    color:#ea842c;
+    margin-bottom:30px;
+}
+
+.neighborhood-button {
+    margin-bottom: 20px
+}
+
+.container-fluid {
+    padding:20px;
+}
+
+#resourceImage {
+    max-width: 500px;
+    width:100%;
+    background-color: lightgrey;
+    padding-top:100%;
+    margin:auto
+}
+
+#takeActionImage {
+    width:100%;
+    background-color:lightgrey;
+    padding-top:100%;
+    margin: 0 auto;
+}
+
+.row {
+    margin:0;
+}
+
+.neighborhood-button > p, .watershed-button > p {
+    max-width: 281px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+@media only screen and (min-width:576px)
+{
+    .container-fluid {
+        padding: 30px;
+    }
+
+    .neighborhood-button {
+        text-align:center;
+    }
+
+    .watershed-button {
+        text-align:center;
+    }
+
+    #bottomImage {
+        margin-bottom:-38px;
+    }
+
+    #takeActionImage, #resourceImage {
+        height:475px;
+        padding-top:0;
+    }
+}
+
+@media only screen and (min-width:768px) {
+    
+}
+
+@media only screen and (min-width:992px) {
+    .neighborhood-button {
+        margin-left:17%;
+    }
+
+    .text-overlay {
+        margin-left: -145px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .inner-text-overlay {
+        width:82%; 
+        position:relative; 
+        z-index:2; 
+        margin:auto;
+        text-align: center;
+    }
+
+    .text-over-picture {
+        position: relative;
+        z-index: 1;
+    }
+}
