@@ -7,7 +7,7 @@
         <div *ngIf="showEditButton()" class="customRichTextContent" style="position: relative; min-height: 30px;">
             <div class="hoverEditButton">
                 <div style="margin-top: 10px">
-                    <button type="button" class="btn-rio btn-xs" (click)="enterEdit()">
+                    <button type="button" class="btn btn-drooltool" (click)="enterEdit()">
                         Edit
                     </button>
                 </div>
@@ -25,8 +25,8 @@
         </div>
         <ckeditor [editor]="Editor" [(ngModel)]="editedContent" (ready)="ckEditorReady($event)" [config]="ckConfig"></ckeditor>
         <div style="float:right;" *ngIf="!isUploadingImage()">
-            <button type="button" class="btn-rio btn-xs mt-1" (click)="saveEdit()">Save</button>
-            <button type="button" class="btn-rio btn-xs mt-1" (click)="cancelEdit()">Cancel</button>
+            <button type="button" class="btn btn-drooltool mt-1 mr-1" (click)="saveEdit()">Save</button>
+            <button type="button" class="btn btn-drooltool mt-1" (click)="cancelEdit()">Cancel</button>
         </div>
         <div *ngIf="isUploadingImage()">
             <em>Please wait while the image is uploaded...</em>

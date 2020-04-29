@@ -31,8 +31,6 @@ $container-max-widths: (
   }
 }
 
-@import "../../node_modules/bootstrap/scss/bootstrap";
-
 // Navbar link contrast increase
 .navbar-dark .navbar-nav .nav-link {
   color: #e1e1e1;
@@ -135,10 +133,6 @@ a, a:hover {
   background-color: #046B99;
   border-color: #046B99;
   color:#fff;
-}
-
-.btn-drooltool:hover {
-  // color:#0EF16D;
 }
 
 .btn-toggle {

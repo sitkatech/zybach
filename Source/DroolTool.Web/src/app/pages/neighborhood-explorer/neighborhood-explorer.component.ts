@@ -19,7 +19,7 @@ declare var $: any;
   styleUrls: ['./neighborhood-explorer.component.scss']
 })
 export class NeighborhoodExplorerComponent implements OnInit {
-  @ViewChild("mapDiv", {static:false}) mapElement: ElementRef;
+  @ViewChild("mapDiv") mapElement: ElementRef;
 
   public defaultMapZoom = 12;
   public afterSetControl = new EventEmitter();

@@ -17,8 +17,8 @@ import { UserDetailedDto } from 'src/app/shared/models/user/user-detailed-dto';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit, OnDestroy {
-  @ViewChild('usersGrid', {static: false}) usersGrid: AgGridAngular;
-  @ViewChild('unassignedUsersGrid', {static: false}) unassignedUsersGrid: AgGridAngular;
+  @ViewChild('usersGrid') usersGrid: AgGridAngular;
+  @ViewChild('unassignedUsersGrid') unassignedUsersGrid: AgGridAngular;
 
   private watchUserChangeSubscription: any;
 

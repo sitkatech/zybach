@@ -49,3 +49,5 @@ Source/DroolTool.Web/src/assets/config.json
 Source/DroolTool.GeoServer/localhost-rsa.jks
 Source/DroolTool.GeoServer/data_dir/gwc-layers/*
 Source/DroolTool.GeoServer/docker_compose.localhost.yml
+/Source/DroolTool.GeoServer/data_dir/logs
+/Source/DroolTool.GeoServer/data_dir/layouts

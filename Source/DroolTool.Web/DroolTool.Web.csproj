@@ -34,7 +34,6 @@
         <None Remove=".editorconfig" />
         <None Remove=".gitignore" />
         <None Remove="angular.json" />
-        <None Remove="dev.geooptix.com_cert.pfx" />
         <None Remove="package-lock.json" />
         <None Remove="DroolTool.Web.sln.DotSettings" />
         <None Remove="tsconfig.json" />

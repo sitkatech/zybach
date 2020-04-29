@@ -24,7 +24,7 @@ WORKDIR /src/DroolTool.Web/
 
 RUN npm cache clean --force
 RUN npm uninstall   -g angular-cli
-RUN npm install     -g @angular/cli@8.3.9
+RUN npm install     -g @angular/cli@9.1.3
 RUN npm install
 
 ARG env
