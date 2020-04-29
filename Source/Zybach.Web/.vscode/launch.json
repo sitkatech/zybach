@@ -8,7 +8,7 @@
            "type": "chrome",
            "request": "launch",
            "name": "Launch Chrome",
-           "url": "http://dev.drooltool.org:7887",
+           "url": "http://dev.zybach.org:7887",
            "webRoot": "${workspaceFolder}/src"
        },
         {
@@ -17,7 +17,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/netcoreapp2.2/DroolTool.Web.dll",
+            "program": "${workspaceFolder}/bin/Debug/netcoreapp2.2/Zybach.Web.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

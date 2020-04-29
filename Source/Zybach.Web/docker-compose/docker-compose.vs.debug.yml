@@ -1,11 +1,11 @@
 version: '3.5'
 
 services:
-  drooltool.web:
+  zybach.web:
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
-    image: sitkacontainers.azurecr.io/drooltool/web
+    image: sitkacontainers.azurecr.io/zybach/web
     ports:
       - "7887:80"
       - "7886:443"

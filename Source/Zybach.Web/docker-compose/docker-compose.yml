@@ -1,10 +1,10 @@
 version: '3.5'
 
 services:
-  drooltool.web:
-    image: sitkacontainers.azurecr.io/drooltool/web
+  zybach.web:
+    image: sitkacontainers.azurecr.io/zybach/web
     build:
       args:
         env: ${ENVIRONMENT}
       context: ../..
-      dockerfile: DroolTool.Web/Dockerfile
+      dockerfile: Zybach.Web/Dockerfile

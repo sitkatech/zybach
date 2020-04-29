@@ -17,7 +17,7 @@
     background-color: #23AECF;
   }
   
-  .navbar.navbar-drooltool
+  .navbar.navbar-zybach
   {
     font-family: Nunito;
   }
@@ -26,16 +26,16 @@
     background-color: #00728d;
   }
 
-  .navbar.navbar-drooltool a.nav-link,
-  .navbar.navbar-drooltool a.nav-link::before,
-  .navbar.navbar-drooltool a.nav-link::after,
+  .navbar.navbar-zybach a.nav-link,
+  .navbar.navbar-zybach a.nav-link::before,
+  .navbar.navbar-zybach a.nav-link::after,
   .top-bar-nav-link,
   .top-bar-nav-link::before,
   .top-bar-nav-link::after,
   .dropdown-item {
     transition: all .5s;
   }
-  .navbar.navbar-drooltool a.nav-link:hover,
+  .navbar.navbar-zybach a.nav-link:hover,
   .top-bar-nav-link:hover,
   .dropdown-item:hover {
     color:#ea842c;
@@ -45,7 +45,7 @@
     background-color: #23AECF;
   }
 
-  .navbar.navbar-drooltool a.nav-link,
+  .navbar.navbar-zybach a.nav-link,
   .top-bar-nav-link,
   .dropdown-item
   {

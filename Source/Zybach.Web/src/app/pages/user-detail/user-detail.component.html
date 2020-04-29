@@ -11,7 +11,7 @@
 </nav>
 <div class="container mt-sm-4" *ngIf="user">
     <div style="margin: 1rem 0 1rem 0;" *ngIf="user.UserGuid === null">
-        <a class="float-right btn btn-drooltool btn-sm mr-3" routerLink="/invite-user/{{user.UserID}}">Invite User</a>
+        <a class="float-right btn btn-zybach btn-sm mr-3" routerLink="/invite-user/{{user.UserID}}">Invite User</a>
     </div>  
     <h2 class="d-inline-block">
         {{user?.FullName ||  ((user?.FirstName || user?.LastName) ? (user?.FirstName + ' ' + user?.LastName) : null)}}
@@ -21,7 +21,7 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
-                    <a *ngIf="currentUserIsAdmin()" class="btn btn-drooltool btn-sm float-right"
+                    <a *ngIf="currentUserIsAdmin()" class="btn btn-zybach btn-sm float-right"
                         routerLink="/users/{{user?.UserID}}/edit">
                         <span class="fas fa-edit"></span> Edit
                     </a>

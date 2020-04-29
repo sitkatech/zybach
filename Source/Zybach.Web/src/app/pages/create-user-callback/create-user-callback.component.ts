@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
-  selector: 'drooltool-create-user-callback',
+  selector: 'zybach-create-user-callback',
   templateUrl: './create-user-callback.component.html',
   styleUrls: ['./create-user-callback.component.scss']
 })

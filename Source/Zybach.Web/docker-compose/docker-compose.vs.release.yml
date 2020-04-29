@@ -1,9 +1,9 @@
 version: '3.5'
 
 services:
-  drooltool.web:
+  zybach.web:
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1    
-    image: sitkacontainers.azurecr.io/drooltool/web
+    image: sitkacontainers.azurecr.io/zybach/web
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"

@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "DroolTool.Web": {
+    "Zybach.Web": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

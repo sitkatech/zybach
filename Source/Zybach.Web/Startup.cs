@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 
-namespace DroolTool.Web
+namespace Zybach.Web
 {
     public class Startup
     {

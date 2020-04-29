@@ -12,7 +12,7 @@ import { UserDetailedDto } from 'src/app/shared/models/user/user-detailed-dto';
 
 
 @Component({
-  selector: 'drooltool-user-list',
+  selector: 'zybach-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss']
 })

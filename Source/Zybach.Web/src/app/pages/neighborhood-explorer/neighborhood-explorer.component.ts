@@ -14,7 +14,7 @@ import { FeatureCollection } from 'geojson';
 declare var $: any;
 
 @Component({
-  selector: 'drooltool-neighborhood-explorer',
+  selector: 'zybach-neighborhood-explorer',
   templateUrl: './neighborhood-explorer.component.html',
   styleUrls: ['./neighborhood-explorer.component.scss']
 })
@@ -88,27 +88,27 @@ export class NeighborhoodExplorerComponent implements OnInit {
     }, this.tileLayers);
 
     let neighborhoodsWMSOptions = ({
-      layers: "DroolTool:Neighborhoods",
+      layers: "Zybach:Neighborhoods",
       transparent: true,
       format: "image/png",
       tiled: true,
-      pane: "droolToolOverlayPane"
+      pane: "zybachOverlayPane"
     } as L.WMSOptions);
 
     let backboneWMSOptions = ({
-      layers: "DroolTool:Backbones",
+      layers: "Zybach:Backbones",
       transparent: true,
       format: "image/png",
       tiled: true,
-      pane: "droolToolOverlayPane"
+      pane: "zybachOverlayPane"
     } as L.WMSOptions);
 
     let watershedsWMSOptions = ({
-      layers: "DroolTool:Watersheds",
+      layers: "Zybach:Watersheds",
       transparent: true,
       format: "image/png",
       tiled: true,
-      pane: "droolToolOverlayPane"
+      pane: "zybachOverlayPane"
     } as L.WMSOptions);
 
 
@@ -179,8 +179,8 @@ export class NeighborhoodExplorerComponent implements OnInit {
   }
 
   public initializePanes(): void {
-    let droolToolOverlayPane = this.map.createPane("droolToolOverlayPane");
-    droolToolOverlayPane.style.zIndex = 10000;
+    let zybachOverlayPane = this.map.createPane("zybachOverlayPane");
+    zybachOverlayPane.style.zIndex = 10000;
     this.map.getPane("markerPane").style.zIndex = 10001;
     this.map.getPane("popupPane").style.zIndex = 10002;
   }
@@ -357,13 +357,13 @@ export class NeighborhoodExplorerComponent implements OnInit {
       let cql_filter = "NeighborhoodID in (" + neighborhoodIDs.join(",") + ")";
 
       let backboneWMSOptions = ({
-        layers: "DroolTool:Backbones",
+        layers: "Zybach:Backbones",
         transparent: true,
         format: "image/png",
         tiled: true,
         styles: "backbone_narrow",
         wmsParameterThatDoesNotExist: new Date(),
-        pane: "droolToolOverlayPane",
+        pane: "zybachOverlayPane",
         cql_filter: cql_filter
       } as L.WMSOptions);
 
@@ -391,7 +391,7 @@ export class NeighborhoodExplorerComponent implements OnInit {
                 stroke: true
               }
             },
-            pane: "droolToolOverlayPane"
+            pane: "zybachOverlayPane"
           })
         this.traceLayer.addTo(this.map);
 

@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/DroolTool.Web.csproj"
+                "${workspaceFolder}/Zybach.Web.csproj"
             ],
             "problemMatcher": "$msCompile"
         },

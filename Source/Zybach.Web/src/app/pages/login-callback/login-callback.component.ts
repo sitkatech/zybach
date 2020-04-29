@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
-  selector: 'drooltool-login-callback',
+  selector: 'zybach-login-callback',
   templateUrl: './login-callback.component.html',
   styleUrls: ['./login-callback.component.scss']
 })

@@ -15,7 +15,7 @@ import { UserDto } from 'src/app/shared/models/user/user-dto';
 
 
 @Component({
-    selector: 'drooltool-user-invite',
+    selector: 'zybach-user-invite',
     templateUrl: './user-invite.component.html',
     styleUrls: ['./user-invite.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,

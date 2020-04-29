@@ -15,12 +15,12 @@ RUN curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-lin
     && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
     
-COPY DroolTool.Web/                        ./DroolTool.Web
+COPY Zybach.Web/                        ./Zybach.Web
 
-RUN dotnet restore DroolTool.Web/DroolTool.Web.csproj
+RUN dotnet restore Zybach.Web/Zybach.Web.csproj
 
-RUN dotnet build ./DroolTool.Web/DroolTool.Web.csproj -c Release -o /app
-WORKDIR /src/DroolTool.Web/
+RUN dotnet build ./Zybach.Web/Zybach.Web.csproj -c Release -o /app
+WORKDIR /src/Zybach.Web/
 
 RUN npm cache clean --force
 RUN npm uninstall   -g angular-cli
@@ -31,9 +31,9 @@ ARG env
 RUN npm run build-${env}
 
 FROM build AS publish
-RUN dotnet publish DroolTool.Web.csproj -c Release -o /app
+RUN dotnet publish Zybach.Web.csproj -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "DroolTool.Web.dll"]
+ENTRYPOINT ["dotnet", "Zybach.Web.dll"]

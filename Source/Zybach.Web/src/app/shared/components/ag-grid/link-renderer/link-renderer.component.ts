@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
 
 @Component({
-  selector: 'drooltool-link-renderer',
+  selector: 'zybach-link-renderer',
   templateUrl: './link-renderer.component.html',
   styleUrls: ['./link-renderer.component.scss']
 })

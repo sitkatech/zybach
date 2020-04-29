@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AgRendererComponent } from 'ag-grid-angular';
 
 @Component({
-  selector: 'drooltool-fontawesome-icon-link-renderer',
+  selector: 'zybach-fontawesome-icon-link-renderer',
   templateUrl: './fontawesome-icon-link-renderer.component.html',
   styleUrls: ['./fontawesome-icon-link-renderer.component.scss']
 })

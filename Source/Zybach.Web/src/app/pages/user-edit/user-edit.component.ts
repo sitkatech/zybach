@@ -13,7 +13,7 @@ import { UserDto } from 'src/app/shared/models/user/user-dto';
 
 
 @Component({
-  selector: 'drooltool-user-edit',
+  selector: 'zybach-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

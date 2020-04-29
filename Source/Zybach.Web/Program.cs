@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace DroolTool.Web
+namespace Zybach.Web
 {
     public class Program
     {
