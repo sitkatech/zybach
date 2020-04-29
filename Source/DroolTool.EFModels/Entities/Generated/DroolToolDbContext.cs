@@ -17,8 +17,11 @@ namespace DroolTool.EFModels.Entities
 
         public virtual DbSet<BackboneSegment> BackboneSegment { get; set; }
         public virtual DbSet<BackboneSegmentType> BackboneSegmentType { get; set; }
+        public virtual DbSet<CustomRichText> CustomRichText { get; set; }
+        public virtual DbSet<CustomRichTextType> CustomRichTextType { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigration { get; set; }
-        public virtual DbSet<DroolToolRole> DroolToolRole { get; set; }
+        public virtual DbSet<FileResource> FileResource { get; set; }
+        public virtual DbSet<FileResourceMimeType> FileResourceMimeType { get; set; }
         public virtual DbSet<Neighborhood> Neighborhood { get; set; }
         public virtual DbSet<RawDroolMetric> RawDroolMetric { get; set; }
         public virtual DbSet<RegionalSubbasin> RegionalSubbasin { get; set; }
@@ -72,6 +75,33 @@ namespace DroolTool.EFModels.Entities
                 entity.Property(e => e.BackboneSegmentTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<CustomRichText>(entity =>
+            {
+                entity.Property(e => e.CustomRichTextContent).IsUnicode(false);
+
+                entity.HasOne(d => d.CustomRichTextType)
+                    .WithMany(p => p.CustomRichText)
+                    .HasForeignKey(d => d.CustomRichTextTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<CustomRichTextType>(entity =>
+            {
+                entity.HasIndex(e => e.CustomRichTextTypeDisplayName)
+                    .HasName("AK_CustomRichTextType_CustomRichTextTypeDisplayName")
+                    .IsUnique();
+
+                entity.HasIndex(e => e.CustomRichTextTypeName)
+                    .HasName("AK_CustomRichTextType_CustomRichTextTypeName")
+                    .IsUnique();
+
+                entity.Property(e => e.CustomRichTextTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.CustomRichTextTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.CustomRichTextTypeName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<DatabaseMigration>(entity =>
             {
                 entity.HasKey(e => e.DatabaseMigrationNumber)
@@ -80,23 +110,49 @@ namespace DroolTool.EFModels.Entities
                 entity.Property(e => e.DatabaseMigrationNumber).ValueGeneratedNever();
             });
 
-            modelBuilder.Entity<DroolToolRole>(entity =>
+            modelBuilder.Entity<FileResource>(entity =>
             {
-                entity.HasIndex(e => e.DroolToolRoleDisplayName)
-                    .HasName("AK_DroolToolRole_DroolToolRoleDisplayName")
+                entity.HasIndex(e => e.FileResourceGUID)
+                    .HasName("AK_FileResource_FileResourceGUID")
                     .IsUnique();
 
-                entity.HasIndex(e => e.DroolToolRoleName)
-                    .HasName("AK_DroolToolRole_DroolToolRoleName")
+                entity.Property(e => e.OriginalBaseFilename).IsUnicode(false);
+
+                entity.Property(e => e.OriginalFileExtension).IsUnicode(false);
+
+                entity.HasOne(d => d.CreateUser)
+                    .WithMany(p => p.FileResource)
+                    .HasForeignKey(d => d.CreateUserID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_FileResource_User_CreateUserID_UserID");
+
+                entity.HasOne(d => d.FileResourceMimeType)
+                    .WithMany(p => p.FileResource)
+                    .HasForeignKey(d => d.FileResourceMimeTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<FileResourceMimeType>(entity =>
+            {
+                entity.HasIndex(e => e.FileResourceMimeTypeDisplayName)
+                    .HasName("AK_FileResourceMimeType_FileResourceMimeTypeDisplayName")
                     .IsUnique();
 
-                entity.Property(e => e.DroolToolRoleID).ValueGeneratedNever();
+                entity.HasIndex(e => e.FileResourceMimeTypeName)
+                    .HasName("AK_FileResourceMimeType_FileResourceMimeTypeName")
+                    .IsUnique();
 
-                entity.Property(e => e.DroolToolRoleDescription).IsUnicode(false);
+                entity.Property(e => e.FileResourceMimeTypeID).ValueGeneratedNever();
 
-                entity.Property(e => e.DroolToolRoleDisplayName).IsUnicode(false);
+                entity.Property(e => e.FileResourceMimeTypeContentTypeName).IsUnicode(false);
 
-                entity.Property(e => e.DroolToolRoleName).IsUnicode(false);
+                entity.Property(e => e.FileResourceMimeTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.FileResourceMimeTypeIconNormalFilename).IsUnicode(false);
+
+                entity.Property(e => e.FileResourceMimeTypeIconSmallFilename).IsUnicode(false);
+
+                entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Neighborhood>(entity =>

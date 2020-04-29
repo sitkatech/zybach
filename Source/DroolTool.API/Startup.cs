@@ -61,7 +61,7 @@ namespace DroolTool.API
                 options.SupportedTokens = SupportedTokens.Jwt;
             });
 
-            var connectionString = drooltoolConfiguration.DROOLTOOL_DB_CONNECTION_STRING;
+            var connectionString = drooltoolConfiguration.DB_CONNECTION_STRING;
             services.AddDbContext<DroolToolDbContext>(c => { c.UseSqlServer(connectionString, x => x.UseNetTopologySuite()); });
 
             services.AddSingleton(Configuration);

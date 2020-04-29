@@ -11,6 +11,8 @@ import { LoginCallbackComponent } from './pages/login-callback/login-callback.co
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { UserInviteComponent } from './pages/user-invite/user-invite.component';
 import { NeighborhoodExplorerComponent } from './pages/neighborhood-explorer/neighborhood-explorer.component';
+import { AboutComponent } from './pages/about/about.component';
+import { TakeActionComponent } from './pages/take-action/take-action.component';
 
 const routes: Routes = [
   { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard]},
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "invite-user", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "neighborhood-explorer", component: NeighborhoodExplorerComponent},
+  { path: "take-action", component: TakeActionComponent},
+  { path: "about", component: AboutComponent},
   { path: "", component: HomeIndexComponent},
   { path: "login-callback", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },

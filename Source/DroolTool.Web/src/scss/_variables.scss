@@ -8,7 +8,9 @@ $theme-colors: (
         "muted": #dee2e6,       // footerGray
         "danger": #ff0000,
         "success": #00cc00,
-        "warning": #ffff9f
+        "warning": #ffff9f,
+        "drool-orange": #ea842c,
+        "header-nav-color": #00728d
 );
 
 // this looks redundant, but we need to make the override in both ways
@@ -22,6 +24,9 @@ $success: #00cc00;
 $warning: #ffff9f;
 $text-muted: darken(#d3d3d3, 15%);
 $text-warning: darken($warning, 20%);
+
+$drool-orange: #ea842c;
+$header-nav-color: #00728d;
 
 $font-family-sans-serif: 'Tahoma', sans-serif, 'Helvetica Neue', sans-serif;
 $font-size: 16px;

@@ -1,1 +1,107 @@
 @import '~leaflet.fullscreen/Control.FullScreen.css';
+@import '~src/scss/_variables.scss';
+
+@media only screen and (max-width: 991px) {
+    .section-search {
+        text-align:center;
+    }
+}
+
+.section-search {
+    background-color: $header-nav-color;
+}
+
+.section-search * h3 {
+    font-size: 18px;
+}
+
+.section-stats * h3,
+.section-search-not-found * h3 {
+    color: #1E5668;
+    font-size:16px;
+}
+
+// .section-stats * h3 {
+//     line-height:45px;
+// }
+
+.section-active-search {
+    background-color: #D6F1B6;
+}
+
+.section-active-search p,
+.section-active-search span {
+    color: $header-nav-color;
+}
+
+.section-rebates {
+    background-color: #1E5668
+}
+
+.section-rebates p {
+    color: white;
+    margin-bottom:0;
+    max-width: 167px;
+}
+
+.section-water-bill {
+    background-color: #4DC3D9;
+}
+
+.section-water-bill p {
+    color: #555555;
+    margin-bottom:0;
+}
+
+.section-water-bill p.b3,
+.section-rebates p.b3
+{
+    font-size:18px;
+}
+
+.section-water-bill p.b4 {
+    font-size: 14px;
+}
+
+.section-rebates:hover,
+.section-water-bill:hover {
+    cursor:pointer;
+}
+
+.section-water-bill:hover * a{
+    color: #555555
+}
+
+.section-rebates:hover * a {
+    color:white
+}
+
+.search {
+    background-color: $drool-orange;
+    border-color: $drool-orange;
+}
+
+.search:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.search-close {
+    cursor: pointer;
+}
+
+::ng-deep .search-popup .leaflet-popup-content-wrapper {
+    font-family: "Nunito", sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    background-color: #D3F8FF;
+}
+
+::ng-deep .search-popup .leaflet-popup-content-wrapper .search-popup-address{
+    font-weight: 800;
+}
+
+::ng-deep .leaflet-popup-tip-container {
+    display:none;
+}

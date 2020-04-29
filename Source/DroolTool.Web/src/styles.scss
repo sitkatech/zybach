@@ -186,6 +186,10 @@ $ag-range-selected-color-4: darken($ag-range-selected-color-1, 30%);
     font-size: 22px;
   }
 
+  h4 {
+    font-size: 18px;
+  }
+
   //Begin ngx-slick-carousel styles
   .prev, .next {
     z-index: 1;

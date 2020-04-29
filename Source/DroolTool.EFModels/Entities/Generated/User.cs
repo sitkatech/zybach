@@ -7,6 +7,11 @@ namespace DroolTool.EFModels.Entities
 {
     public partial class User
     {
+        public User()
+        {
+            FileResource = new HashSet<FileResource>();
+        }
+
         [Key]
         public int UserID { get; set; }
         public Guid? UserGuid { get; set; }
@@ -36,5 +41,7 @@ namespace DroolTool.EFModels.Entities
         [ForeignKey(nameof(RoleID))]
         [InverseProperty("User")]
         public virtual Role Role { get; set; }
+        [InverseProperty("CreateUser")]
+        public virtual ICollection<FileResource> FileResource { get; set; }
     }
 }
