@@ -10,4 +10,10 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataTransferObjects\Role\" />
+    <Folder Include="DataTransferObjects\User\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>
