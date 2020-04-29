@@ -51,3 +51,4 @@ Source/DroolTool.GeoServer/data_dir/gwc-layers/*
 Source/DroolTool.GeoServer/docker_compose.localhost.yml
 /Source/DroolTool.GeoServer/data_dir/logs
 /Source/DroolTool.GeoServer/data_dir/layouts
+Source/Zybach.API/api-dev.zybach.org.pfx
