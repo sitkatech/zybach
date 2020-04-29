@@ -1,7 +1,7 @@
 version: '3.5'
 
 services:
-  drooltool.api:
+  zybach.api:
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}

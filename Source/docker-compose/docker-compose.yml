@@ -1,8 +1,8 @@
 version: '3.5'
 
 services:
-  drooltool.api:
-    image: sitkacontainers.azurecr.io/drooltool/api
+  zybach.api:
+    image: sitkacontainers.azurecr.io/zybach/api
     build:
       context: ..
-      dockerfile: DroolTool.API/Dockerfile
+      dockerfile: Zybach.API/Dockerfile

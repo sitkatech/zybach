@@ -1,7 +1,7 @@
 version: '3.5'
 
 services:
-  drooltool.api:
+  zybach.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - KEYSTONE_HOST=${KEYSTONE_HOST}
