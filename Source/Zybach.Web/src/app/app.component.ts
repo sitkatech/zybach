@@ -20,6 +20,7 @@ export class AppComponent {
 
     userClaimsUpsertStarted = false;
     ignoreSessionTerminated = false;
+    public currentYear: number = new Date().getFullYear();
 
     constructor(private router: Router, private oauthService: OAuthService, private cookieStorageService: CookieStorageService, private busyService: BusyService, private authenticationService: AuthenticationService, private titleService: Title) {
     }
