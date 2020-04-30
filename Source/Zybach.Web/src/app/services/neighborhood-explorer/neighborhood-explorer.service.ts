@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from 'src/app/shared/services';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FeatureCollection } from 'geojson';
+import {TwinPlatteGeoJson} from './twinplatte';
 
 @Injectable({
     providedIn: 'root'
@@ -9,9 +10,8 @@ import { FeatureCollection } from 'geojson';
 export class NeighborhoodExplorerService {
     constructor(private apiService: ApiService) { }
 
-    getMask(): Observable<string> {
-        let route = `/neighborhood-explorer/get-mask`;
-        return this.apiService.getFromApi(route);
+    getMask(): Observable<object> {
+                return of(TwinPlatteGeoJson);
     }
 
     getStormshed(neighborhoodID:number): Observable<string> {

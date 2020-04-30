@@ -21,7 +21,7 @@ declare var $: any;
 export class NeighborhoodExplorerComponent implements OnInit {
   @ViewChild("mapDiv") mapElement: ElementRef;
 
-  public defaultMapZoom = 12;
+  public defaultMapZoom = 9;
   public afterSetControl = new EventEmitter();
   public afterLoadMap = new EventEmitter();
   public onMapMoveEnd = new EventEmitter();
@@ -63,7 +63,6 @@ export class NeighborhoodExplorerComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-
     this.tileLayers = Object.assign({}, {
       "Aerial": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',

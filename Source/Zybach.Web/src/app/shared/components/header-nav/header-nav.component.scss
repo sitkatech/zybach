@@ -1,3 +1,5 @@
+@import "~src/scss/_variables.scss";
+
 .navbarLogo {
     height: 80px;
   }
@@ -14,7 +16,7 @@
   
   .dropdown-menu {
     z-index: 1021;
-    background-color: #23AECF;
+    background-color: $dropdown-background-color;
   }
   
   .navbar.navbar-zybach
@@ -23,7 +25,7 @@
   }
 
   .header-outer {
-    background-color: #00728d;
+    background-color: $header-nav-color;
   }
 
   .navbar.navbar-zybach a.nav-link,
@@ -38,11 +40,11 @@
   .navbar.navbar-zybach a.nav-link:hover,
   .top-bar-nav-link:hover,
   .dropdown-item:hover {
-    color:#ea842c;
+    color:$dropdown-text-color;
   }
 
   .dropdown-item:hover {
-    background-color: #23AECF;
+    background-color: $dropdown-background-color;
   }
 
   .navbar.navbar-zybach a.nav-link,

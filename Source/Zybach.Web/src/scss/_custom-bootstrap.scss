@@ -1,3 +1,5 @@
+@import "~src/scss/_variables.scss";
+
 $grid-breakpoints: (
   xs:0,
   sm:576px,
@@ -114,7 +116,7 @@ a, a:hover {
 }
 
 .footer {
-  background-color: #00728d;
+  background-color: $header-nav-color;
   font-size: 12px; 
   color: white;
 }

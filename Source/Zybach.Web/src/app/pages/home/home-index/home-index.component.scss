@@ -1,10 +1,12 @@
+@import "~src/scss/_variables.scss";
+
 .homeSection {
     padding-top: 80px;
     min-height: 680px;
 }
 
 h1 {
-    color:#ea842c;
+    color: $tpnrd-green;
     margin-bottom:30px;
 }
 

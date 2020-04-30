@@ -8,12 +8,10 @@ $theme-colors: (
         "muted": #dee2e6,       // footerGray
         "danger": #ff0000,
         "success": #00cc00,
-        "warning": #ffff9f,
-        "drool-orange": #ea842c,
-        "header-nav-color": #00728d
+        "warning": #ffff9f
 );
 
-// this looks redundant, but we need to make the override in both ways
+// this looks redundant, but we need to override the bootstrap color variables in both ways
 $primary: #205c90;
 $secondary: #c4c4c4;
 $info: #228be6;
@@ -25,8 +23,11 @@ $warning: #ffff9f;
 $text-muted: darken(#d3d3d3, 15%);
 $text-warning: darken($warning, 20%);
 
-$drool-orange: #ea842c;
-$header-nav-color: #00728d;
+// do note, however, that it is NOT necessary to include custom theme variables in the $theme-colors dictionary
+$tpnrd-green: #4aaa42;
+$header-nav-color: #0076c0;
+$dropdown-background-color: #13b5ea;
+$dropdown-text-color: #333333;
 
 $font-family-sans-serif: 'Tahoma', sans-serif, 'Helvetica Neue', sans-serif;
 $font-size: 16px;
