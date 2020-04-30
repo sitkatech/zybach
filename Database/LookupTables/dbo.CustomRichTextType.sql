@@ -1,7 +1,7 @@
 MERGE INTO dbo.CustomRichTextType AS Target
 USING (VALUES
 (1, 'About', 'About'),
-(2, 'TakeAction', 'Take Action')
+(2, 'Home', 'Home')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

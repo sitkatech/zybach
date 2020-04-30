@@ -1,4 +1,4 @@
 export enum CustomRichTextType{
     About = 1,
-    TakeAction = 2,
+    Home = 2,
 }

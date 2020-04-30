@@ -10,7 +10,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'rio-custom-rich-text',
+  selector: 'sitka-custom-rich-text',
   templateUrl: './custom-rich-text.component.html',
   styleUrls: ['./custom-rich-text.component.scss']
 })

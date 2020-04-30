@@ -3,7 +3,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
 import { environment } from 'src/environments/environment';
 import { UserDto } from 'src/app/shared/models/user/user-dto';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 
 @Component({
     selector: 'app-home-index',
@@ -13,6 +13,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 export class HomeIndexComponent implements OnInit, OnDestroy {
     public watchUserChangeSubscription: any;
     public currentUser: UserDto;
+    public homeCustomRichTextTypeID: number = CustomRichTextType.Home
 
     public slides = [
         {

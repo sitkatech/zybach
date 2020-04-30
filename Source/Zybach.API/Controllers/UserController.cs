@@ -113,7 +113,7 @@ namespace Zybach.API.Controllers
                 userUpsertDto.UserGuid);
 
             var smtpClient = HttpContext.RequestServices.GetRequiredService<SitkaSmtpClientService>();
-            var mailMessage = GenerateUserCreatedEmail(_zybachConfiguration.DROOLTOOL_WEB_URL, user, _dbContext);
+            var mailMessage = GenerateUserCreatedEmail(_zybachConfiguration.WEB_URL, user, _dbContext);
             SitkaSmtpClientService.AddCcRecipientsToEmail(mailMessage,
                         EFModels.Entities.User.GetEmailAddressesForAdminsThatReceiveSupportEmails(_dbContext));
             SendEmailMessage(smtpClient, mailMessage);
