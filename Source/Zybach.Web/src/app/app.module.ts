@@ -34,6 +34,7 @@ import { CreateUserCallbackComponent } from './pages/create-user-callback/create
 import { AboutComponent } from './pages/about/about.component';
 import { AppInitService } from './app.init';
 import { MapExplorerComponent } from './pages/map-explorer/map-explorer.component';
+import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 
 export function init_app(appLoadService: AppInitService) {
   return () => appLoadService.init();
@@ -53,6 +54,7 @@ export function init_app(appLoadService: AppInitService) {
     CreateUserCallbackComponent,
     AboutComponent,
     MapExplorerComponent,
+    WellDetailComponent,
   ],
   imports: [
     AppRoutingModule,

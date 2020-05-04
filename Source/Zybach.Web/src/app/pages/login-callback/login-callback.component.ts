@@ -14,7 +14,7 @@ export class LoginCallbackComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/map-explorer']);
     });
   }
 

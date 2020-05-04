@@ -9,6 +9,11 @@ import { CustomCompileService } from '../../shared/services/custom-compile.servi
 import { MapExplorerService } from 'src/app/services/map-explorer/map-explorer.service';
 import { FeatureCollection } from 'geojson';
 import { SiteService } from 'src/app/services/site.service';
+import { SiteDto } from 'src/app/shared/models/geooptix/site-dto';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 
 declare var $: any;
 
@@ -36,6 +41,8 @@ export class MapExplorerComponent implements OnInit {
   public overlayLayers: { [key: string]: any } = {};
   public maskLayer: any;
 
+  public columnDefs: any[];
+
   public wmsParams: any;
   public stormshedLayer: L.Layers;
   public backboneDetailLayer: L.Layers;
@@ -49,17 +56,44 @@ export class MapExplorerComponent implements OnInit {
   public searchAddress: string;
   public activeSearchNotFound: boolean = false;
 
-  public selectedNeighborhoodID: number;
+  public wells: SiteDto[];
+  public certAcresLayer: any;
+  public wellsLayer: any;
+  public activeWell:any;
 
   constructor(
     private appRef: ApplicationRef,
     private compileService: CustomCompileService,
     private mapExplorerService: MapExplorerService,
-    private siteService: SiteService
+    private siteService: SiteService,
+    private alertService: AlertService
   ) {
   }
 
   public ngOnInit(): void {
+    this.columnDefs = [
+      {
+        headerName: 'Well Name', valueGetter: function (params: any) {
+          return { LinkValue: params.data.CanonicalName, LinkDisplay: params.data.CanonicalName };
+        }, cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/wells/" },
+        filterValueGetter: function (params: any) {
+          return params.data.FullName;
+        },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkDisplay;
+          let link2 = id2.LinkDisplay;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        sortable: true, filter: true, width: 170
+      }
+    ];
     this.tileLayers = Object.assign({}, {
       "Aerial": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
@@ -83,10 +117,10 @@ export class MapExplorerComponent implements OnInit {
       })
     }, this.tileLayers);
 
-    this.siteService.getSites().subscribe(x=>{
-      debugger;
-    }, error =>{
-      debugger;
+    this.siteService.getSites().subscribe(x => {
+      this.wells = x;
+    }, error => {
+      this.alertService.pushAlert(new Alert("There was an error communicating with GeoOptix for well data", AlertContext.Danger, true));
     });
 
     this.compileService.configure(this.appRef);
@@ -130,14 +164,32 @@ export class MapExplorerComponent implements OnInit {
       this.initializeMapEvents();
       this.setControl();
 
+      this.initializeTpnrdLayers();
+
       this.maskLayer.addTo(this.map);
       this.defaultFitBounds();
 
-      if(window.innerWidth > 991)
-      {
+      if (window.innerWidth > 991) {
         this.mapElement.nativeElement.scrollIntoView();
       }
     });
+  }
+
+  public initializeTpnrdLayers() {
+    this.certAcresLayer = esri.featureLayer({url: environment.certAcresLayerUrl});
+    this.wellsLayer = esri.featureLayer({url: environment.wellsLayerUrl});
+
+    this.layerControl.addOverlay(this.certAcresLayer, "Cert Acres");
+    this.layerControl.addOverlay(this.wellsLayer, "Wells");
+
+    const self = this;
+    this.wellsLayer.on("click", function(event){
+      self.activeWell = self.remapWellFeatureProperties(event.layer.feature);
+      // todo: highlight the selected well. (in the usual way?)
+    });
+    
+    this.certAcresLayer.addTo(this.map);
+    this.wellsLayer.addTo(this.map);
   }
 
   public initializePanes(): void {
@@ -186,11 +238,62 @@ export class MapExplorerComponent implements OnInit {
   public fitBoundsWithPaddingAndFeatureGroup(featureGroup: L.featureGroup): void {
     let paddingHeight = 0;
     let popupContent = $("#search-popup-address");
-    if (popupContent !== null && popupContent !== undefined && popupContent.length == 1)
-    {
+    if (popupContent !== null && popupContent !== undefined && popupContent.length == 1) {
       paddingHeight = popupContent.parent().parent().innerHeight();
     }
 
-    this.map.fitBounds(featureGroup.getBounds(), {padding: [paddingHeight, paddingHeight]});
+    this.map.fitBounds(featureGroup.getBounds(), { padding: [paddingHeight, paddingHeight] });
+  }
+
+  public remapWellFeatureProperties(feature: any): any{
+    return {FID: feature.properties.FID,
+      OBJECTID: feature.properties.Active_Irr,
+      WellID: feature.properties.Active_I_1,
+      RegCD: feature.properties.Active_I_2,
+      Replacemen: feature.properties.Active_I_3,
+      Status: feature.properties.Active_I_4,
+      Useid: feature.properties.Active_I_5,
+      NrdName: feature.properties.Active_I_6,
+      NrdID: feature.properties.Active_I_7,
+      Countyname: feature.properties.Active_I_8,
+      CountyID: feature.properties.Active_I_9,
+      Township: feature.properties.Active__10,
+      Range: feature.properties.Active__11,
+      RangeDir: feature.properties.Active__12,
+      Section_: feature.properties.Active__13,
+      SubSection: feature.properties.Active__14,
+      FootageNS: feature.properties.Active__15,
+      FootageDir: feature.properties.Active__16,
+      FootageEW: feature.properties.Active__17,
+      FootageD_1: feature.properties.Active__18,
+      NrdPermit: feature.properties.Active__19,
+      Acres: feature.properties.Active__20,
+      SeriesType: feature.properties.Active__21,
+      SeriesEnd: feature.properties.Active__22,
+      PumpRate: feature.properties.Active__23,
+      PColDiam: feature.properties.Active__24,
+      PumpDepth: feature.properties.Active__25,
+      TotalDepth: feature.properties.Active__26,
+      SWL: feature.properties.Active__27,
+      PWL: feature.properties.Active__28,
+      CertifID: feature.properties.Active__29,
+      OwnerID: feature.properties.Active__30,
+      FirstName: feature.properties.Active__31,
+      LastName: feature.properties.Active__32,
+      Address: feature.properties.Active__33,
+      CityNameID: feature.properties.Active__34,
+      StateRID: feature.properties.Active__35,
+      PostalCD: feature.properties.Active__36,
+      RegDate: feature.properties.Active__37,
+      Compdate: feature.properties.Active__38,
+      LastChgDat: feature.properties.Active__39,
+      DecommDate: feature.properties.Active__40,
+      LatDD: feature.properties.Active__41,
+      LongDD: feature.properties.Active__42,
+      CalcGPS: feature.properties.Active__43,
+      Hyperlink: feature.properties.Active__44,
+      tpid_OBJECTID: feature.properties.tpid_wells,
+      tpid_regcd: feature.properties.tpid_wel_1,
+      tpid: feature.properties.tpid_wel_2}
   }
 }

@@ -12,13 +12,15 @@ import { CreateUserCallbackComponent } from './pages/create-user-callback/create
 import { UserInviteComponent } from './pages/user-invite/user-invite.component';
 import { MapExplorerComponent } from './pages/map-explorer/map-explorer.component';
 import { AboutComponent } from './pages/about/about.component';
+import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 
 const routes: Routes = [
   { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard]},
   { path: "users/:id", component: UserDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "invite-user", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
-  { path: "map-explorer", component: MapExplorerComponent},
+  { path: "map-explorer", component: MapExplorerComponent, canActivate: [UnauthenticatedAccessGuard]},
+  { path: "wells/:reg", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard]},
   { path: "about", component: AboutComponent},
   { path: "", component: HomeIndexComponent},
   { path: "login-callback", component: LoginCallbackComponent },

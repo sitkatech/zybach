@@ -50,7 +50,7 @@ $ag-range-selected-color-4: darken($ag-range-selected-color-1, 30%);
 
 .ag-theme-balham .ag-header
 {
-    background-color: #2f5b4c;
+    background-color: $grid-header-background-color;
 }
 // end ag-grid settings
 

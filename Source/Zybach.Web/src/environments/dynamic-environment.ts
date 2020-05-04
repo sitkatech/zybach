@@ -76,4 +76,12 @@ export class DynamicEnvironment {
     public get geooptixHostName(){
         return window.config.geooptixHostName;
     }
+
+    public get certAcresLayerUrl(){
+        return window.config.certAcresLayerUrl;
+    }
+
+    public get wellsLayerUrl(){
+        return window.config.wellsLayerUrl;
+    }
 }
