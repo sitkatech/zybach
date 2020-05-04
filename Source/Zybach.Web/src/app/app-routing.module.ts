@@ -10,7 +10,7 @@ import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { UserInviteComponent } from './pages/user-invite/user-invite.component';
-import { NeighborhoodExplorerComponent } from './pages/neighborhood-explorer/neighborhood-explorer.component';
+import { MapExplorerComponent } from './pages/map-explorer/map-explorer.component';
 import { AboutComponent } from './pages/about/about.component';
 
 const routes: Routes = [
@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: "users/:id", component: UserDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "invite-user", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
-  { path: "neighborhood-explorer", component: NeighborhoodExplorerComponent},
+  { path: "map-explorer", component: MapExplorerComponent},
   { path: "about", component: AboutComponent},
   { path: "", component: HomeIndexComponent},
   { path: "login-callback", component: LoginCallbackComponent },

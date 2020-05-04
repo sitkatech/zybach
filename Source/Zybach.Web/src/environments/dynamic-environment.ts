@@ -72,4 +72,8 @@ export class DynamicEnvironment {
     public get mapquestApiUrlWithNominatimApiKey() {
         return window.config.mapquestApiUrlWithNominatimApiKey;
     }
+
+    public get geooptixHostName(){
+        return window.config.geooptixHostName;
+    }
 }

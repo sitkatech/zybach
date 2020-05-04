@@ -7,7 +7,7 @@ import {TwinPlatteGeoJson} from './twinplatte';
 @Injectable({
     providedIn: 'root'
 })
-export class NeighborhoodExplorerService {
+export class MapExplorerService {
     constructor(private apiService: ApiService) { }
 
     getMask(): Observable<object> {

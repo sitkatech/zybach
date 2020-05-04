@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NeighborhoodExplorerComponent } from './neighborhood-explorer.component';
+import { MapExplorerComponent } from './map-explorer.component';
 
 describe('NeighborhoodExplorerComponent', () => {
-  let component: NeighborhoodExplorerComponent;
-  let fixture: ComponentFixture<NeighborhoodExplorerComponent>;
+  let component: MapExplorerComponent;
+  let fixture: ComponentFixture<MapExplorerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NeighborhoodExplorerComponent ]
+      declarations: [ MapExplorerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NeighborhoodExplorerComponent);
+    fixture = TestBed.createComponent(MapExplorerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,21 +2,22 @@ import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, Even
 import { environment } from "src/environments/environment";
 import * as L from 'leaflet';
 import { GestureHandling } from "leaflet-gesture-handling";
-import '../../../../node_modules/leaflet.snogylop/src/leaflet.snogylop.js';
-import '../../../../node_modules/leaflet.fullscreen/Control.FullScreen.js';
+import 'leaflet.snogylop';
+import 'leaflet.fullscreen';
 import * as esri from 'esri-leaflet'
 import { CustomCompileService } from '../../shared/services/custom-compile.service';
-import { NeighborhoodExplorerService } from 'src/app/services/neighborhood-explorer/neighborhood-explorer.service';
+import { MapExplorerService } from 'src/app/services/map-explorer/map-explorer.service';
 import { FeatureCollection } from 'geojson';
+import { SiteService } from 'src/app/services/site.service';
 
 declare var $: any;
 
 @Component({
-  selector: 'zybach-neighborhood-explorer',
-  templateUrl: './neighborhood-explorer.component.html',
-  styleUrls: ['./neighborhood-explorer.component.scss']
+  selector: 'zybach-map-explorer',
+  templateUrl: './map-explorer.component.html',
+  styleUrls: ['./map-explorer.component.scss']
 })
-export class NeighborhoodExplorerComponent implements OnInit {
+export class MapExplorerComponent implements OnInit {
   @ViewChild("mapDiv") mapElement: ElementRef;
 
   public defaultMapZoom = 9;
@@ -34,7 +35,6 @@ export class NeighborhoodExplorerComponent implements OnInit {
   public tileLayers: { [key: string]: any } = {};
   public overlayLayers: { [key: string]: any } = {};
   public maskLayer: any;
-  public neighborhoodsWhereItIsOkayToClickIDs: number[];
 
   public wmsParams: any;
   public stormshedLayer: L.Layers;
@@ -54,7 +54,8 @@ export class NeighborhoodExplorerComponent implements OnInit {
   constructor(
     private appRef: ApplicationRef,
     private compileService: CustomCompileService,
-    private neighborhoodExplorerService: NeighborhoodExplorerService,
+    private mapExplorerService: MapExplorerService,
+    private siteService: SiteService
   ) {
   }
 
@@ -82,6 +83,12 @@ export class NeighborhoodExplorerComponent implements OnInit {
       })
     }, this.tileLayers);
 
+    this.siteService.getSites().subscribe(x=>{
+      debugger;
+    }, error =>{
+      debugger;
+    });
+
     this.compileService.configure(this.appRef);
   }
 
@@ -90,7 +97,7 @@ export class NeighborhoodExplorerComponent implements OnInit {
   }
 
   public initializeMap(): void {
-    this.neighborhoodExplorerService.getMask().subscribe(maskString => {
+    this.mapExplorerService.getMask().subscribe(maskString => {
       this.maskLayer = L.geoJSON(maskString, {
         invert: true,
         style: function (feature) {
