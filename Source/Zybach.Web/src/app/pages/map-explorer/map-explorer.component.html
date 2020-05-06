@@ -1,117 +1,126 @@
 <div class="row ml-0 mr-0">
 
-    <div class="col-lg-3 pl-0 pr-0 ">
+    <div class="col-lg-3 pl-2 pr-2 ">
         <div class="container-lg d-inline d-lg-flex flex-column min-vh-100">
-            <div class="row" *ngIf="!activeWell">
+            <div class="row mt-2" *ngIf="!activeWell">
                 <h3>All Wells</h3>
                 <ag-grid-angular #geooptixWellsGrid style="width: 100%; height: 300px;" class="ag-theme-balham"
                     [rowData]="wells" [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'"
-                    [paginationPageSize]="100">
+                    [paginationPageSize]="100" 
+                    (selectionChanged)="onSelectionChanged($event)"
+                    (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
             </div>
-            <div class="row" *ngIf="activeWell">
-                <a routerLink="/wells/{{activeWell.RegCD}}">View Details</a>
-                <dl>
-                    <dt>FID:</dt>
-                    <dd>{{activeWell.FID}}</dd>
-                    <dt>OBJECTID:</dt>
-                    <dd>{{activeWell.OBJECTID}}</dd>
-                    <dt>WellID:</dt>
-                    <dd>{{activeWell.WellID}}</dd>
-                    <dt>RegCD:</dt>
-                    <dd>{{activeWell.RegCD}}</dd>
-                    <dt>Replacemen:</dt>
-                    <dd>{{activeWell.Replacemen}}</dd>
-                    <dt>Status:</dt>
-                    <dd>{{activeWell.Status}}</dd>
-                    <dt>Useid:</dt>
-                    <dd>{{activeWell.Useid}}</dd>
-                    <dt>NrdName:</dt>
-                    <dd>{{activeWell.NrdName}}</dd>
-                    <dt>NrdID:</dt>
-                    <dd>{{activeWell.NrdID}}</dd>
-                    <dt>Countyname:</dt>
-                    <dd>{{activeWell.Countyname}}</dd>
-                    <dt>CountyID:</dt>
-                    <dd>{{activeWell.CountyID}}</dd>
-                    <dt>Township:</dt>
-                    <dd>{{activeWell.Township}}</dd>
-                    <dt>Range:</dt>
-                    <dd>{{activeWell.Range}}</dd>
-                    <dt>RangeDir:</dt>
-                    <dd>{{activeWell.RangeDir}}</dd>
-                    <dt>Section_:</dt>
-                    <dd>{{activeWell.Section_}}</dd>
-                    <dt>SubSection:</dt>
-                    <dd>{{activeWell.SubSection}}</dd>
-                    <dt>FootageNS:</dt>
-                    <dd>{{activeWell.FootageNS}}</dd>
-                    <dt>FootageDir:</dt>
-                    <dd>{{activeWell.FootageDir}}</dd>
-                    <dt>FootageEW:</dt>
-                    <dd>{{activeWell.FootageEW}}</dd>
-                    <dt>FootageD_1:</dt>
-                    <dd>{{activeWell.FootageD_1}}</dd>
-                    <dt>NrdPermit:</dt>
-                    <dd>{{activeWell.NrdPermit}}</dd>
-                    <dt>Acres:</dt>
-                    <dd>{{activeWell.Acres}}</dd>
-                    <dt>SeriesType:</dt>
-                    <dd>{{activeWell.SeriesType}}</dd>
-                    <dt>SeriesEnd:</dt>
-                    <dd>{{activeWell.SeriesEnd}}</dd>
-                    <dt>PumpRate:</dt>
-                    <dd>{{activeWell.PumpRate}}</dd>
-                    <dt>PColDiam:</dt>
-                    <dd>{{activeWell.PColDiam}}</dd>
-                    <dt>PumpDepth:</dt>
-                    <dd>{{activeWell.PumpDepth}}</dd>
-                    <dt>TotalDepth:</dt>
-                    <dd>{{activeWell.TotalDepth}}</dd>
-                    <dt>SWL:</dt>
-                    <dd>{{activeWell.SWL}}</dd>
-                    <dt>PWL:</dt>
-                    <dd>{{activeWell.PWL}}</dd>
-                    <dt>CertifID:</dt>
-                    <dd>{{activeWell.CertifID}}</dd>
-                    <dt>OwnerID:</dt>
-                    <dd>{{activeWell.OwnerID}}</dd>
-                    <dt>FirstName:</dt>
-                    <dd>{{activeWell.FirstName}}</dd>
-                    <dt>LastName:</dt>
-                    <dd>{{activeWell.LastName}}</dd>
-                    <dt>Address:</dt>
-                    <dd>{{activeWell.Address}}</dd>
-                    <dt>CityNameID:</dt>
-                    <dd>{{activeWell.CityNameID}}</dd>
-                    <dt>StateRID:</dt>
-                    <dd>{{activeWell.StateRID}}</dd>
-                    <dt>PostalCD:</dt>
-                    <dd>{{activeWell.PostalCD}}</dd>
-                    <dt>RegDate:</dt>
-                    <dd>{{activeWell.RegDate}}</dd>
-                    <dt>Compdate:</dt>
-                    <dd>{{activeWell.Compdate}}</dd>
-                    <dt>LastChgDat:</dt>
-                    <dd>{{activeWell.LastChgDat}}</dd>
-                    <dt>DecommDate:</dt>
-                    <dd>{{activeWell.DecommDate}}</dd>
-                    <dt>LatDD:</dt>
-                    <dd>{{activeWell.LatDD}}</dd>
-                    <dt>LongDD:</dt>
-                    <dd>{{activeWell.LongDD}}</dd>
-                    <dt>CalcGPS:</dt>
-                    <dd>{{activeWell.CalcGPS}}</dd>
-                    <dt>Hyperlink:</dt>
-                    <dd>{{activeWell.Hyperlink}}</dd>
-                    <dt>tpid_OBJECTID:</dt>
-                    <dd>{{activeWell.tpid_OBJECTID}}</dd>
-                    <dt>tpid_regcd:</dt>
-                    <dd>{{activeWell.tpid_regcd}}</dd>
-                    <dt>tpid:</dt>
-                    <dd>{{activeWell.tpid}}</dd>
-                </dl>
-            </div>
+            <ng-container *ngIf="activeWell">
+                <div class="row mt-2" *ngIf="activeWell">
+                    <div class="col">
+                        <h3>Selected Well</h3>
+                        <p *ngIf="hasGeoOptixDetails(activeWell.RegCD)">
+                            <a routerLink="/wells/{{activeWell.RegCD}}">View Details From GeoOptix</a>
+                        </p>
+                        <dl style="max-height: 500px; overflow-y:scroll; overflow-x:hidden;">
+                            <dt>FID:</dt>
+                            <dd>{{activeWell.FID}}</dd>
+                            <dt>OBJECTID:</dt>
+                            <dd>{{activeWell.OBJECTID}}</dd>
+                            <dt>WellID:</dt>
+                            <dd>{{activeWell.WellID}}</dd>
+                            <dt>RegCD:</dt>
+                            <dd>{{activeWell.RegCD}}</dd>
+                            <dt>Replacemen:</dt>
+                            <dd>{{activeWell.Replacemen}}</dd>
+                            <dt>Status:</dt>
+                            <dd>{{activeWell.Status}}</dd>
+                            <dt>Useid:</dt>
+                            <dd>{{activeWell.Useid}}</dd>
+                            <dt>NrdName:</dt>
+                            <dd>{{activeWell.NrdName}}</dd>
+                            <dt>NrdID:</dt>
+                            <dd>{{activeWell.NrdID}}</dd>
+                            <dt>Countyname:</dt>
+                            <dd>{{activeWell.Countyname}}</dd>
+                            <dt>CountyID:</dt>
+                            <dd>{{activeWell.CountyID}}</dd>
+                            <dt>Township:</dt>
+                            <dd>{{activeWell.Township}}</dd>
+                            <dt>Range:</dt>
+                            <dd>{{activeWell.Range}}</dd>
+                            <dt>RangeDir:</dt>
+                            <dd>{{activeWell.RangeDir}}</dd>
+                            <dt>Section_:</dt>
+                            <dd>{{activeWell.Section_}}</dd>
+                            <dt>SubSection:</dt>
+                            <dd>{{activeWell.SubSection}}</dd>
+                            <dt>FootageNS:</dt>
+                            <dd>{{activeWell.FootageNS}}</dd>
+                            <dt>FootageDir:</dt>
+                            <dd>{{activeWell.FootageDir}}</dd>
+                            <dt>FootageEW:</dt>
+                            <dd>{{activeWell.FootageEW}}</dd>
+                            <dt>FootageD_1:</dt>
+                            <dd>{{activeWell.FootageD_1}}</dd>
+                            <dt>NrdPermit:</dt>
+                            <dd>{{activeWell.NrdPermit}}</dd>
+                            <dt>Acres:</dt>
+                            <dd>{{activeWell.Acres}}</dd>
+                            <dt>SeriesType:</dt>
+                            <dd>{{activeWell.SeriesType}}</dd>
+                            <dt>SeriesEnd:</dt>
+                            <dd>{{activeWell.SeriesEnd}}</dd>
+                            <dt>PumpRate:</dt>
+                            <dd>{{activeWell.PumpRate}}</dd>
+                            <dt>PColDiam:</dt>
+                            <dd>{{activeWell.PColDiam}}</dd>
+                            <dt>PumpDepth:</dt>
+                            <dd>{{activeWell.PumpDepth}}</dd>
+                            <dt>TotalDepth:</dt>
+                            <dd>{{activeWell.TotalDepth}}</dd>
+                            <dt>SWL:</dt>
+                            <dd>{{activeWell.SWL}}</dd>
+                            <dt>PWL:</dt>
+                            <dd>{{activeWell.PWL}}</dd>
+                            <dt>CertifID:</dt>
+                            <dd>{{activeWell.CertifID}}</dd>
+                            <dt>OwnerID:</dt>
+                            <dd>{{activeWell.OwnerID}}</dd>
+                            <dt>FirstName:</dt>
+                            <dd>{{activeWell.FirstName}}</dd>
+                            <dt>LastName:</dt>
+                            <dd>{{activeWell.LastName}}</dd>
+                            <dt>Address:</dt>
+                            <dd>{{activeWell.Address}}</dd>
+                            <dt>CityNameID:</dt>
+                            <dd>{{activeWell.CityNameID}}</dd>
+                            <dt>StateRID:</dt>
+                            <dd>{{activeWell.StateRID}}</dd>
+                            <dt>PostalCD:</dt>
+                            <dd>{{activeWell.PostalCD}}</dd>
+                            <dt>RegDate:</dt>
+                            <dd>{{activeWell.RegDate}}</dd>
+                            <dt>Compdate:</dt>
+                            <dd>{{activeWell.Compdate}}</dd>
+                            <dt>LastChgDat:</dt>
+                            <dd>{{activeWell.LastChgDat}}</dd>
+                            <dt>DecommDate:</dt>
+                            <dd>{{activeWell.DecommDate}}</dd>
+                            <dt>LatDD:</dt>
+                            <dd>{{activeWell.LatDD}}</dd>
+                            <dt>LongDD:</dt>
+                            <dd>{{activeWell.LongDD}}</dd>
+                            <dt>CalcGPS:</dt>
+                            <dd>{{activeWell.CalcGPS}}</dd>
+                            <dt>Hyperlink:</dt>
+                            <dd>{{activeWell.Hyperlink}}</dd>
+                            <dt>tpid_OBJECTID:</dt>
+                            <dd>{{activeWell.tpid_OBJECTID}}</dd>
+                            <dt>tpid_regcd:</dt>
+                            <dd>{{activeWell.tpid_regcd}}</dd>
+                            <dt>tpid:</dt>
+                            <dd>{{activeWell.tpid}}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
 

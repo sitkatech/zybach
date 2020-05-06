@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SiteService } from './site.service';
+import { ArcService } from './arc.service';
 
-describe('SiteService', () => {
-  let service: SiteService;
+describe('ArcService', () => {
+  let service: ArcService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SiteService);
+    service = TestBed.inject(ArcService);
   });
 
   it('should be created', () => {

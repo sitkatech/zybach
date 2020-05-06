@@ -7,13 +7,14 @@ import 'leaflet.fullscreen';
 import * as esri from 'esri-leaflet'
 import { CustomCompileService } from '../../shared/services/custom-compile.service';
 import { MapExplorerService } from 'src/app/services/map-explorer/map-explorer.service';
-import { FeatureCollection } from 'geojson';
-import { SiteService } from 'src/app/services/site.service';
+import { FeatureCollection, Feature } from 'geojson';
+import { WellService } from 'src/app/services/well.service';
 import { SiteDto } from 'src/app/shared/models/geooptix/site-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { ArcService } from 'src/app/services/arc.service';
 
 declare var $: any;
 
@@ -59,13 +60,16 @@ export class MapExplorerComponent implements OnInit {
   public wells: SiteDto[];
   public certAcresLayer: any;
   public wellsLayer: any;
-  public activeWell:any;
+  public activeWell: any;
+  gridApi: any;
+  selectedFeatureLayer: any;
 
   constructor(
     private appRef: ApplicationRef,
     private compileService: CustomCompileService,
     private mapExplorerService: MapExplorerService,
-    private siteService: SiteService,
+    private siteService: WellService,
+    private arcService: ArcService,
     private alertService: AlertService
   ) {
   }
@@ -161,34 +165,42 @@ export class MapExplorerComponent implements OnInit {
       this.map = L.map(this.mapID, mapOptions);
 
       this.initializePanes();
-      this.initializeMapEvents();
       this.setControl();
 
       this.initializeTpnrdLayers();
+      this.initializeMapEvents();
 
       this.maskLayer.addTo(this.map);
       this.defaultFitBounds();
 
-      if (window.innerWidth > 991) {
-        this.mapElement.nativeElement.scrollIntoView();
-      }
+      // if (window.innerWidth > 991) {
+      //   this.mapElement.nativeElement.scrollIntoView();
+      // }
     });
   }
 
   public initializeTpnrdLayers() {
-    this.certAcresLayer = esri.featureLayer({url: environment.certAcresLayerUrl});
-    this.wellsLayer = esri.featureLayer({url: environment.wellsLayerUrl});
 
-    this.layerControl.addOverlay(this.certAcresLayer, "Cert Acres");
-    this.layerControl.addOverlay(this.wellsLayer, "Wells");
+    var geojsonMarkerOptions = {
+      radius: 4,
+      fillColor: "#0000ff",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    };
 
-    const self = this;
-    this.wellsLayer.on("click", function(event){
-      self.activeWell = self.remapWellFeatureProperties(event.layer.feature);
-      // todo: highlight the selected well. (in the usual way?)
+    this.certAcresLayer = esri.featureLayer({ url: environment.certAcresLayerUrl });
+    this.wellsLayer = esri.featureLayer({
+      url: environment.wellsLayerUrl,
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+      }
     });
-    
-    this.certAcresLayer.addTo(this.map);
+
+    this.layerControl.addOverlay(this.wellsLayer, "Wells");
+    this.layerControl.addOverlay(this.certAcresLayer, "Cert Acres");
+
     this.wellsLayer.addTo(this.map);
   }
 
@@ -211,11 +223,31 @@ export class MapExplorerComponent implements OnInit {
     this.map.on('load', (event: L.LeafletEvent) => {
       this.afterLoadMap.emit(event);
     });
+    
     this.map.on("moveend", (event: L.LeafletEvent) => {
       this.onMapMoveEnd.emit(event);
     });
 
+    this.map.on('click', (event: L.LeafletEvent) =>{
+      this.clearSelection(event);
+    })
+
+    this.wellsLayer.on("click", (event: L.LeafletEvent) => {
+      this.selectWellByFeatureFromArc(event.layer.feature)
+      L.DomEvent.stop(event);
+    });
+
     let dblClickTimer = null;
+  }
+
+  public selectWellByFeatureFromArc(feature: Feature){
+    this.activeWell = this.remapWellFeatureProperties(feature);
+    this.selectFeature(feature);
+  }
+
+  public clearSelection(event: L.LeafletEvent){
+    this.activeWell = null;
+    this.clearLayer(this.selectedFeatureLayer);
   }
 
   public clearLayer(layer: L.Layer): void {
@@ -235,18 +267,9 @@ export class MapExplorerComponent implements OnInit {
     this.map.setView(target.center, this.defaultMapZoom, null);
   }
 
-  public fitBoundsWithPaddingAndFeatureGroup(featureGroup: L.featureGroup): void {
-    let paddingHeight = 0;
-    let popupContent = $("#search-popup-address");
-    if (popupContent !== null && popupContent !== undefined && popupContent.length == 1) {
-      paddingHeight = popupContent.parent().parent().innerHeight();
-    }
-
-    this.map.fitBounds(featureGroup.getBounds(), { padding: [paddingHeight, paddingHeight] });
-  }
-
-  public remapWellFeatureProperties(feature: any): any{
-    return {FID: feature.properties.FID,
+  public remapWellFeatureProperties(feature: any): any {
+    return {
+      FID: feature.properties.FID,
       OBJECTID: feature.properties.Active_Irr,
       WellID: feature.properties.Active_I_1,
       RegCD: feature.properties.Active_I_2,
@@ -294,6 +317,52 @@ export class MapExplorerComponent implements OnInit {
       Hyperlink: feature.properties.Active__44,
       tpid_OBJECTID: feature.properties.tpid_wells,
       tpid_regcd: feature.properties.tpid_wel_1,
-      tpid: feature.properties.tpid_wel_2}
+      tpid: feature.properties.tpid_wel_2
+    }
+  }
+
+  public hasGeoOptixDetails(wellRegistrationNumber: string): boolean {
+    return this.wells.find(well => well.CanonicalName === wellRegistrationNumber) !== undefined;
+  }
+
+  public onSelectionChanged(event: any) {
+
+    const wellFeature: Feature = this.gridApi.getSelectedNodes()[0].data.Location;
+
+    // we need to grab the properties from the GIS layer.
+    const cName: string = this.gridApi.getSelectedNodes()[0].data.CanonicalName;
+
+    this.arcService.getWellFromArcByRegCD(cName).subscribe(x=>{
+      this.selectWellByFeatureFromArc(x.features[0])
+    });
+
+    this.selectFeature(wellFeature);
+  }
+
+  public selectFeature(feature: Feature) {
+
+    var geojsonMarkerOptions = {
+      radius: 4,
+      fillColor: "#ffff00",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    };
+    this.clearLayer(this.selectedFeatureLayer);
+    this.selectedFeatureLayer = L.geoJSON(feature, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+      }
+    });
+
+    this.selectedFeatureLayer.addTo(this.map);
+
+    let target = this.map._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
+    this.map.setView(target.center, 16, null);
+  }
+
+  onGridReady(params) {
+    this.gridApi = params.api;
   }
 }

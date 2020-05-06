@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "invite-user", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard] },
   { path: "map-explorer", component: MapExplorerComponent, canActivate: [UnauthenticatedAccessGuard]},
-  { path: "wells/:reg", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard]},
+  { path: "wells/:canonicalName", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard]},
   { path: "about", component: AboutComponent},
   { path: "", component: HomeIndexComponent},
   { path: "login-callback", component: LoginCallbackComponent },

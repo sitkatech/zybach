@@ -1,1 +1,55 @@
-<p>well-detail works!</p>
+<nav aria-label="breadcrumb" *ngIf="well">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">
+            <a routerLink="/wells">Wells</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {{well.CanonicalName}}
+        </li>
+    </ol>
+</nav>
+
+<div class="container mt-sm-4">
+
+    <app-alert-display></app-alert-display>
+
+    <ng-container *ngIf="well">
+        <h2 class="d-inline-block">
+            {{well.CanonicalName}}
+        </h2>
+        <div class="row mt-4">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Basics
+                    </div>
+                    <div class="card-body">
+                        This is where details about the well should go.
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        Location
+                    </div>
+                    <div class="card-body">
+                        <div id="{{mapID}}" style="height: 300px;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">Time Series Explorer</div>
+                    <div class="card-body">
+                        <p>This is where the time series explorer will go.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

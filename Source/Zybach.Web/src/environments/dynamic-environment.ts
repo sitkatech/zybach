@@ -69,10 +69,6 @@ export class DynamicEnvironment {
         return window.config.leadOrganizationLogoFilename;
     }
 
-    public get mapquestApiUrlWithNominatimApiKey() {
-        return window.config.mapquestApiUrlWithNominatimApiKey;
-    }
-
     public get geooptixHostName(){
         return window.config.geooptixHostName;
     }
@@ -83,5 +79,9 @@ export class DynamicEnvironment {
 
     public get wellsLayerUrl(){
         return window.config.wellsLayerUrl;
+    }
+
+    public get wellsLayerQueryUrl(){
+        return window.config.wellsLayerQueryUrl;
     }
 }

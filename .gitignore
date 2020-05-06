@@ -54,3 +54,4 @@ Source/DroolTool.GeoServer/docker_compose.localhost.yml
 Source/Zybach.API/api-dev.zybach.org.pfx
 Source/Zybach.Web/src/assets/config.json
 Source/Zybach.API/secret.json
+Source/Zybach.Web/wwwroot/
