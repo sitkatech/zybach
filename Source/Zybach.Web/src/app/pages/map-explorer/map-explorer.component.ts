@@ -190,10 +190,11 @@ export class MapExplorerComponent implements OnInit {
       fillOpacity: 0.8
     };
 
-    this.certAcresLayer = esri.featureLayer({ url: environment.certAcresLayerUrl });
+    this.certAcresLayer = esri.featureLayer({  url: `${environment.certAcresLayerUrl}?token=${environment.arcToken}` });
     this.wellsLayer = esri.featureLayer({
-      url: environment.wellsLayerUrl,
+      url: `${environment.wellsLayerUrl}?token=${environment.arcToken}`,
       pointToLayer: function (feature, latlng) {
+        // if well is in the list from geooptix, symbolize more prominently
         return L.circleMarker(latlng, geojsonMarkerOptions);
       }
     });
