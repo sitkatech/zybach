@@ -1,5 +1,16 @@
 @import "~src/scss/_variables.scss";
 
+.homepageJumbotronImage {
+    background-size: cover;
+    background-position: center center;
+    height: 350px;
+}
+
+#homepageJumbotronImage1 {
+    background-image: url("/assets/main/home_image.jpg");
+    background-position: right 0 bottom -430px;
+}
+
 .homeSection {
     padding-top: 80px;
     min-height: 680px;
@@ -15,7 +26,7 @@ h1 {
 }
 
 .container-fluid {
-    padding:20px;
+//    padding:20px;
 }
 
 #resourceImage {
