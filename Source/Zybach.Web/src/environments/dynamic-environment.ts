@@ -81,10 +81,6 @@ export class DynamicEnvironment {
         return window.config.wellsLayerUrl;
     }
 
-    public get wellsLayerQueryUrl(){
-        return window.config.wellsLayerQueryUrl;
-    }
-
     public get arcToken(){
         return window.config.arcToken;
     }

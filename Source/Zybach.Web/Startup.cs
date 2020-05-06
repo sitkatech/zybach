@@ -79,7 +79,6 @@ namespace Zybach.Web
             CreateAccountUrl = configuration["CreateAccountUrl"];
             CreateAccountRedirectUrl = configuration["CreateAccountRedirectUrl"];
             KeystoneSupportBaseUrl = configuration["KeystoneSupportBaseUrl"];
-            GeoserverMapServiceUrl = configuration["GeoserverMapServiceUrl"];
             KeystoneAuthConfiguration = new KeystoneAuthConfigurationDto(configuration);
             PlatformLongName = configuration["PlatformLongName"];
             PlatformShortName = configuration["PlatformShortName"];
@@ -88,7 +87,10 @@ namespace Zybach.Web
             LeadOrganizationHomeUrl = configuration["LeadOrganizationHomeUrl"];
             FaviconFilename = configuration["FaviconFilename"];
             LeadOrganizationLogoFilename = configuration["LeadOrganizationLogoFilename"];
-            MapquestApiUrlWithNominatimApiKey = configuration["MapquestApiUrlWithNominatimApiKey"];
+            GeoOptixHostName = configuration["GeoOptixHostName"];
+            CertAcresLayerUrl = configuration["CertAcresLayerUrl"];
+            WellsLayerUrl = configuration["WellsLayerUrl"];
+            ArcToken = configuration["ArcToken"];
         }
 
         [JsonProperty("production")]
@@ -105,8 +107,6 @@ namespace Zybach.Web
         public string CreateAccountRedirectUrl { get; set; }
         [JsonProperty("keystoneSupportBaseUrl")]
         public string KeystoneSupportBaseUrl { get; set; }
-        [JsonProperty("geoserverMapServiceUrl")]
-        public string GeoserverMapServiceUrl { get; set; }
         [JsonProperty("keystoneAuthConfiguration")]
         public KeystoneAuthConfigurationDto KeystoneAuthConfiguration { get; set; }
         [JsonProperty("platformLongName")]
@@ -123,8 +123,14 @@ namespace Zybach.Web
         public string FaviconFilename {get; set;}
         [JsonProperty("leadOrganizationLogoFilename")]
         public string LeadOrganizationLogoFilename { get; set;}
-        [JsonProperty("mapquestApiUrlWithNominatimApiKey")]
-        public string MapquestApiUrlWithNominatimApiKey { get; set;}
+        [JsonProperty("geooptixHostName")]
+        public string GeoOptixHostName { get; set; }
+        [JsonProperty("certAcresLayerUrl")]
+        public string CertAcresLayerUrl { get; set; }
+        [JsonProperty("wellsLayerUrl")]
+        public string WellsLayerUrl { get; set; }
+        [JsonProperty("arcToken")]
+        public string ArcToken { get; set; }
     }
 
     public class KeystoneAuthConfigurationDto
