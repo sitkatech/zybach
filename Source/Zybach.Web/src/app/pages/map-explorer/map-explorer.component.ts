@@ -75,29 +75,51 @@ export class MapExplorerComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.makeColumnDefs();
+    this.makeStaticMapLayers();
+
+    this.siteService.getSites().subscribe(x => {
+      this.wells = x;
+    }, error => {
+      this.alertService.pushAlert(new Alert("There was an error communicating with GeoOptix for well data", AlertContext.Danger, true));
+    });
+
+    this.compileService.configure(this.appRef);
+  }
+
+  public ngAfterViewInit(): void {
+    this.initializeMap();
+  }
+
+  private makeColumnDefs() {
     this.columnDefs = [
       {
-        headerName: 'Well Name', valueGetter: function (params: any) {
-          return { LinkValue: params.data.CanonicalName, LinkDisplay: params.data.CanonicalName };
-        }, cellRendererFramework: LinkRendererComponent,
-        cellRendererParams: { inRouterLink: "/wells/" },
-        filterValueGetter: function (params: any) {
-          return params.data.FullName;
-        },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkDisplay;
-          let link2 = id2.LinkDisplay;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
+        headerName: 'Well Name',
+        // valueGetter: function (params: any) {
+        //   return { LinkValue: params.data.CanonicalName, LinkDisplay: params.data.CanonicalName };
+        // }, cellRendererFramework: LinkRendererComponent,
+        // cellRendererParams: { inRouterLink: "/wells/" },
+        // filterValueGetter: function (params: any) {
+        //   return params.data.FullName;
+        // },
+        // comparator: function (id1: any, id2: any) {
+        //   let link1 = id1.LinkDisplay;
+        //   let link2 = id2.LinkDisplay;
+        //   if (link1 < link2) {
+        //     return -1;
+        //   }
+        //   if (link1 > link2) {
+        //     return 1;
+        //   }
+        //   return 0;
+        // },
+        field: "CanonicalName",
         sortable: true, filter: true, width: 170
       }
     ];
+  }
+
+  private makeStaticMapLayers(){
     this.tileLayers = Object.assign({}, {
       "Aerial": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
@@ -120,18 +142,6 @@ export class MapExplorerComponent implements OnInit {
         maxZoom: 22
       })
     }, this.tileLayers);
-
-    this.siteService.getSites().subscribe(x => {
-      this.wells = x;
-    }, error => {
-      this.alertService.pushAlert(new Alert("There was an error communicating with GeoOptix for well data", AlertContext.Danger, true));
-    });
-
-    this.compileService.configure(this.appRef);
-  }
-
-  public ngAfterViewInit(): void {
-    this.initializeMap();
   }
 
   public initializeMap(): void {

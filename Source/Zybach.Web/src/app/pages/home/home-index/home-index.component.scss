@@ -7,7 +7,9 @@
 }
 
 #homepageJumbotronImage1 {
+    background-size: cover;
     background-image: url("/assets/main/home_image.jpg");
+    //background-attachment: fixed;
     background-position: right 0 bottom -430px;
 }
 
@@ -23,10 +25,6 @@ h1 {
 
 .neighborhood-button {
     margin-bottom: 20px
-}
-
-.container-fluid {
-//    padding:20px;
 }
 
 #resourceImage {
