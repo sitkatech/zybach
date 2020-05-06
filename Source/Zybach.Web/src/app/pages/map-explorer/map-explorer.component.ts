@@ -63,6 +63,7 @@ export class MapExplorerComponent implements OnInit {
   public activeWell: any;
   gridApi: any;
   selectedFeatureLayer: any;
+  wellRegistrationCodes: string[];
 
   constructor(
     private appRef: ApplicationRef,
@@ -80,6 +81,8 @@ export class MapExplorerComponent implements OnInit {
 
     this.siteService.getSites().subscribe(x => {
       this.wells = x;
+      this.wellRegistrationCodes = x.map(x => x.CanonicalName)
+      this.initializeMap();
     }, error => {
       this.alertService.pushAlert(new Alert("There was an error communicating with GeoOptix for well data", AlertContext.Danger, true));
     });
@@ -88,7 +91,6 @@ export class MapExplorerComponent implements OnInit {
   }
 
   public ngAfterViewInit(): void {
-    this.initializeMap();
   }
 
   private makeColumnDefs() {
@@ -119,7 +121,7 @@ export class MapExplorerComponent implements OnInit {
     ];
   }
 
-  private makeStaticMapLayers(){
+  private makeStaticMapLayers() {
     this.tileLayers = Object.assign({}, {
       "Aerial": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
@@ -191,21 +193,35 @@ export class MapExplorerComponent implements OnInit {
 
   public initializeTpnrdLayers() {
 
-    var geojsonMarkerOptions = {
+    var wellMarkerOptions = {
       radius: 4,
-      fillColor: "#0000ff",
+      fillColor: "#666",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.4
+    };
+
+    var meteredWellMarkerOptions = {
+      radius: 8,
+      fillColor: "#0076c0",
       color: "#000",
       weight: 1,
       opacity: 1,
       fillOpacity: 0.8
-    };
 
-    this.certAcresLayer = esri.featureLayer({  url: `${environment.certAcresLayerUrl}?token=${environment.arcToken}` });
+    }
+
+    this.certAcresLayer = esri.featureLayer({ url: `${environment.certAcresLayerUrl}?token=${environment.arcToken}` });
+    const wellRegistrationCodes = this.wellRegistrationCodes;
     this.wellsLayer = esri.featureLayer({
       url: `${environment.wellsLayerUrl}?token=${environment.arcToken}`,
       pointToLayer: function (feature, latlng) {
         // if well is in the list from geooptix, symbolize more prominently
-        return L.circleMarker(latlng, geojsonMarkerOptions);
+        if (wellRegistrationCodes.includes(feature.properties.Active_I_2)) {
+          return L.circleMarker(latlng, meteredWellMarkerOptions);
+        }
+        return L.circleMarker(latlng, wellMarkerOptions);
       }
     });
 
@@ -234,12 +250,12 @@ export class MapExplorerComponent implements OnInit {
     this.map.on('load', (event: L.LeafletEvent) => {
       this.afterLoadMap.emit(event);
     });
-    
+
     this.map.on("moveend", (event: L.LeafletEvent) => {
       this.onMapMoveEnd.emit(event);
     });
 
-    this.map.on('click', (event: L.LeafletEvent) =>{
+    this.map.on('click', (event: L.LeafletEvent) => {
       this.clearSelection(event);
     })
 
@@ -248,15 +264,14 @@ export class MapExplorerComponent implements OnInit {
       L.DomEvent.stop(event);
     });
 
-    let dblClickTimer = null;
   }
 
-  public selectWellByFeatureFromArc(feature: Feature){
+  public selectWellByFeatureFromArc(feature: Feature) {
     this.activeWell = this.remapWellFeatureProperties(feature);
     this.selectFeature(feature);
   }
 
-  public clearSelection(event: L.LeafletEvent){
+  public clearSelection(event: L.LeafletEvent) {
     this.activeWell = null;
     this.clearLayer(this.selectedFeatureLayer);
   }
@@ -343,7 +358,7 @@ export class MapExplorerComponent implements OnInit {
     // we need to grab the properties from the GIS layer.
     const cName: string = this.gridApi.getSelectedNodes()[0].data.CanonicalName;
 
-    this.arcService.getWellFromArcByRegCD(cName).subscribe(x=>{
+    this.arcService.getWellFromArcByRegCD(cName).subscribe(x => {
       this.selectWellByFeatureFromArc(x.features[0])
     });
 
