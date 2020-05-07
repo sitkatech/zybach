@@ -4,7 +4,7 @@
             <a routerLink="/map-explorer">Wells</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
-            {{canonicalName}}
+            {{wellCanonicalName}}
         </li>
     </ol>
 </nav>
@@ -17,11 +17,12 @@
         <div class="row">
             <div class="col">
                 <h2 class="d-inline-block">
-                    {{canonicalName}}
+                    {{wellCanonicalName}}
                 </h2>
             </div>
             <div class="col text-right">
-                <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach" (click)="openTimeSeriesExplorer()">Open Time Series Explorer</button>
+                <a target="_blank" *ngIf="timeSeriesData" class="btn btn-zybach mr-2" href="{{wellInGeoOptixUrl()}}">View Well in GeoOptix <i class="fas fa-external-link-alt ml-1"></i></a>
+                <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach mr-2" (click)="openTimeSeriesExplorer()">Open Time Series Viewer</button>
                 <a *ngIf="wellFromArc" class="btn btn-zybach" target="_blank" [href]="wellPropertiesFromArc.Hyperlink">View in NEDNR GIS <i class="fas fa-external-link-alt ml-1"></i></a>
             </div>
         </div>
@@ -100,7 +101,7 @@
                     <div class="card-body" *ngIf="well">
                         <em *ngIf="!timeSeriesData">{{noTimeSeriesDataMessage}}</em>
                         <ngContainer *ngIf="timeSeriesData">
-                            <a _target="blank" [href]="timeSeriesInGeoOptixUrl()">View sensor details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i></a>
+                            <a _target="blank" [href]="sensorInGeoOptixUrl()">View sensor details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i></a>
                         </ngContainer>
                     </div>
                     <div class="card-body" *ngIf="!well">

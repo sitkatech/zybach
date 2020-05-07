@@ -14,7 +14,7 @@ import { Feature } from 'geojson';
   styleUrls: ['./well-detail.component.scss']
 })
 export class WellDetailComponent implements OnInit {
-  canonicalName: string;
+  wellCanonicalName: string;
 
   public well: SiteDto;
   public wellFromArc: Feature;
@@ -39,7 +39,7 @@ export class WellDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.canonicalName = params["canonicalName"];
+      this.wellCanonicalName = params["canonicalName"];
       this.makeTileLayers();
       this.getWellDetails();
       this.doSTUFF();
@@ -47,18 +47,18 @@ export class WellDetailComponent implements OnInit {
   }
 
   doSTUFF() {
-    this.wellService.getSensorName(this.canonicalName).subscribe(sensor => {
+    this.wellService.getSensorName(this.wellCanonicalName).subscribe(sensor => {
       if (sensor.length != 0) {
 
         this.sensorCanonicalName = sensor[0].CanonicalName;
 
 
-        this.wellService.getSensorFolder(this.canonicalName, this.sensorCanonicalName).subscribe(folder => {
+        this.wellService.getSensorFolder(this.wellCanonicalName, this.sensorCanonicalName).subscribe(folder => {
           if (folder.length != 0) {
             const folderName = folder[0].CanonicalName;
-            this.wellService.getFiles(this.canonicalName, this.sensorCanonicalName, folderName).subscribe(files => {
+            this.wellService.getFiles(this.wellCanonicalName, this.sensorCanonicalName, folderName).subscribe(files => {
               if (files.length != 0) {
-                this.wellService.getTimeSeriesData(this.canonicalName, this.sensorCanonicalName, folderName).subscribe(wow=>{
+                this.wellService.getTimeSeriesData(this.wellCanonicalName, this.sensorCanonicalName, folderName).subscribe(wow=>{
                   this.timeSeriesData = wow.data                
                 });
               } else {
@@ -83,14 +83,18 @@ export class WellDetailComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
-  timeSeriesInGeoOptixUrl():string {
+  sensorInGeoOptixUrl():string {
     return `https://tpnrd.qa.geooptix.com/program/main/(inner:station)?projectCName=water-data-program&stationCName=${this.sensorCanonicalName}`;
+  }
+
+  wellInGeoOptixUrl() : string {
+    return `https://tpnrd.qa.geooptix.com/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellCanonicalName}`;
   }
 
   getWellDetails() {
     forkJoin(
-      this.wellService.getSite(this.canonicalName),
-      this.arcService.getWellFromArcByRegCD(this.canonicalName)
+      this.wellService.getSite(this.wellCanonicalName),
+      this.arcService.getWellFromArcByRegCD(this.wellCanonicalName)
     ).subscribe(([wellFromGeoOptix, wellFromArc]) => {
       this.well = wellFromGeoOptix;
       this.wellFromArc = wellFromArc
@@ -112,7 +116,7 @@ export class WellDetailComponent implements OnInit {
     return `${this.wellPropertiesFromArc.FirstName} ${this.wellPropertiesFromArc.LastName}`;
   }
   public timeSeriesTitle():string {
-    return `${this.canonicalName} - Sensor Data`;
+    return `${this.wellCanonicalName} - Sensor Data`;
   }
 
   private initMap() {

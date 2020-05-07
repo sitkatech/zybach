@@ -36,13 +36,11 @@ export class TimeSeriesViewerComponent implements OnInit {
       this.isEChartsLoaded = pluginLoaded;
 
       this.chartData = this.parseTimeSeriesData(this.timeSeriesData);
-      this.cdr.detectChanges();
       this.cdr.markForCheck();
     });
   }
 
   onChartInit(chartInstance: any) {
-    debugger;
     this.chartInstance = chartInstance;
   }
 
