@@ -11,6 +11,17 @@ import { throwIfNoContent } from '../shared/static-functions';
   providedIn: 'root'
 })
 export class WellService {
+  getTimeSeriesData(wellCanonicalName: string, sensorCanonicalName: any, folderCanonicalName: any): Observable<any> {
+    const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/stations/${sensorCanonicalName}/folders/${folderCanonicalName}/files/data.json/download`
+    return this.httpClient.get(route, {observe:"response", responseType:"text"}).pipe(map(x=>{
+      return JSON.parse('{"data": [' + x.body.slice(0, -1) + ']}');
+    }));
+  }
+  getFiles(wellCanonicalName: string, sensorCanonicalName: any, folderCanonicalName: any): Observable<any> {
+    const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/stations/${sensorCanonicalName}/folders/${folderCanonicalName}/files`
+
+    return this.httpClient.get<any>(route);
+  }
 
   constructor(private httpClient: HttpClient) { }
 
@@ -24,5 +35,15 @@ export class WellService {
     const route = `${environment.geooptixHostName}/project-overview-web/water-data-program/sites/${canonicalName}`;
 
     return this.httpClient.get<SiteDto>(route);
+  }
+
+  public getSensorName(canonicalName: string): Observable<any>{
+    const initialRoute = `${environment.geooptixHostName}/projects/water-data-program/sites/${canonicalName}/stations`;
+    return this.httpClient.get<any>(initialRoute);//.pipe(map(x=>x.CanonicalName))
+  }
+
+  public getSensorFolder(wellCanonicalName: string, sensorCanonicalName: string): Observable<any> {
+    const initialRoute = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/stations/${sensorCanonicalName}/folders`;
+    return this.httpClient.get<any>(initialRoute);
   }
 }

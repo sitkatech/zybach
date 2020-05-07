@@ -15,6 +15,7 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CustomRichTextComponent } from './components/custom-rich-text/custom-rich-text.component'
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular'
+import { TimeSeriesViewerComponent } from './components/time-series-viewer/time-series-viewer.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular'
         LinkRendererComponent,
         FontAwesomeIconLinkRendererComponent,
         MultiLinkRendererComponent,
-        CustomRichTextComponent
+        CustomRichTextComponent,
+        TimeSeriesViewerComponent
     ],
     imports: [
         CommonModule,
@@ -43,7 +45,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular'
         FormsModule,
         NotFoundComponent,
         HeaderNavComponent,
-        CustomRichTextComponent
+        CustomRichTextComponent,
+        TimeSeriesViewerComponent,
+
     ],
     entryComponents:[
     ]

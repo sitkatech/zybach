@@ -1,0 +1,16 @@
+<div class="time-series-viewer">
+  <div class="close"
+    (click)="close.next()">
+  </div>
+
+  <div class="header">
+    {{ timeSeriesTitle }}
+  </div>
+
+  <div *ngIf="isEChartsLoaded && chartData"
+    echarts
+    class="chart flex-1"
+    [options]="chartData"
+    (chartInit)="onChartInit($event)">
+  </div>
+</div>

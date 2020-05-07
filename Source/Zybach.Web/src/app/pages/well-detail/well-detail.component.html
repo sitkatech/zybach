@@ -20,7 +20,7 @@
                     {{canonicalName}}
                 </h2>
             </div>
-            <div class="col text-right">
+            <div class="col text-right" *ngIf="wellFromArc">
                 <a class="btn btn-zybach" target="_blank" [href]="wellPropertiesFromArc.Hyperlink">View in NEDNR GIS <i class="fas fa-external-link-alt ml-1"></i></a>
             </div>
         </div>
@@ -74,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6" *ngIf="wellFromArc">
+            <div class="col-sm-6" *ngIf="wellFromArc || well">
                 <div class="card">
                     <div class="card-header">
                         Location

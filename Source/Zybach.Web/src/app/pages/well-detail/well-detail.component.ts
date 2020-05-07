@@ -38,7 +38,36 @@ export class WellDetailComponent implements OnInit {
       this.canonicalName = params["canonicalName"];
       this.makeTileLayers();
       this.getWellDetails();
+      this.doSTUFF();
     });
+  }
+
+  doSTUFF() {
+    this.wellService.getSensorName(this.canonicalName).subscribe(sensor => {
+      if (sensor.length != 0) {
+
+        const sensorName = sensor[0].CanonicalName;
+        this.wellService.getSensorFolder(this.canonicalName, sensorName).subscribe(folder => {
+          if (folder.length != 0) {
+            const folderName = folder[0].CanonicalName;
+            this.wellService.getFiles(this.canonicalName, sensorName, folderName).subscribe(files => {
+              if (files.length != 0) {
+                this.wellService.getTimeSeriesData(this.canonicalName, sensorName, folderName).subscribe(wow=>{
+                  debugger;
+                })
+              } else {
+                //no data
+              }
+            });
+          }
+          else {
+            //no data
+          }
+        })
+      } else {
+        // no sensor
+      }
+    })
   }
 
   getWellDetails() {
@@ -48,7 +77,10 @@ export class WellDetailComponent implements OnInit {
     ).subscribe(([wellFromGeoOptix, wellFromArc]) => {
       this.well = wellFromGeoOptix;
       this.wellFromArc = wellFromArc
-      this.wellPropertiesFromArc = remapWellFeaturePropertiesFromArc(wellFromArc);
+      
+      if (wellFromArc) {
+        this.wellPropertiesFromArc = remapWellFeaturePropertiesFromArc(wellFromArc);
+      }
 
       this.cdr.detectChanges();
 
@@ -95,7 +127,10 @@ export class WellDetailComponent implements OnInit {
       fillOpacity: 0.8
 
     }
-    this.wellLayer = L.geoJSON(this.wellFromArc, {
+
+    const wellFeatureForMap = this.wellFromArc || this.well.Location;
+
+    this.wellLayer = L.geoJSON(wellFeatureForMap, {
       pointToLayer: function (feature, latlng) {
         // if well is in the list from geooptix, symbolize more prominently
         return L.circleMarker(latlng, meteredWellMarkerOptions);
