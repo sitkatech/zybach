@@ -1,10 +1,10 @@
-<nav aria-label="breadcrumb" *ngIf="well">
+<nav aria-label="breadcrumb" *ngIf="well || wellFromArc">
     <ol class="breadcrumb">
         <li class="breadcrumb-item" aria-current="page">
-            <a routerLink="/wells">Wells</a>
+            <a routerLink="/map-explorer">Wells</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
-            {{well.CanonicalName}}
+            {{canonicalName}}
         </li>
     </ol>
 </nav>
@@ -13,22 +13,68 @@
 
     <app-alert-display></app-alert-display>
 
-    <ng-container *ngIf="well">
-        <h2 class="d-inline-block">
-            {{well.CanonicalName}}
-        </h2>
+    <ng-container *ngIf="well || wellFromArc">
+        <div class="row">
+            <div class="col">
+                <h2 class="d-inline-block">
+                    {{canonicalName}}
+                </h2>
+            </div>
+            <div class="col text-right">
+                <a class="btn btn-zybach" target="_blank" [href]="wellPropertiesFromArc.Hyperlink">View in NEDNR GIS <i class="fas fa-external-link-alt ml-1"></i></a>
+            </div>
+        </div>
         <div class="row mt-4">
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-header">
                         Basics
                     </div>
-                    <div class="card-body">
-                        This is where details about the well should go.
+                    <div class="card-body" *ngIf="wellFromArc">
+                        <dl class="row">
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Well Name</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{wellPropertiesFromArc.RegCD}}
+                                <em *ngIf="!wellPropertiesFromArc.RegCD" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Status</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{wellPropertiesFromArc.Status}}
+                                <em *ngIf="!wellPropertiesFromArc.Status" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">NRD</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{wellPropertiesFromArc.NrdName}}
+                                <em *ngIf="!wellPropertiesFromArc.NrdName" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">County</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{wellPropertiesFromArc.Countyname}}
+                                <em *ngIf="!wellPropertiesFromArc.Countyname" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">TRS</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{trs()}}
+                                <em *ngIf="!trs()" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Irrigated Acres</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{wellPropertiesFromArc.Acres}}
+                                <em *ngIf="!wellPropertiesFromArc.Acres" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Owner</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{owner()}}
+                                <em *ngIf="!owner()" class="text-muted">Not Available</em>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="card-body" *ngIf="!wellFromArc">
+                        <em>The well was not found in the GIS layer.</em>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" *ngIf="wellFromArc">
                 <div class="card">
                     <div class="card-header">
                         Location
@@ -45,8 +91,11 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">Time Series Explorer</div>
-                    <div class="card-body">
+                    <div class="card-body" *ngIf="well">
                         <p>This is where the time series explorer will go.</p>
+                    </div>
+                    <div class="card-body" *ngIf="!well">
+                        <em>The well was not found in GeoOptix</em>
                     </div>
                 </div>
             </div>

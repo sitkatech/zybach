@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ApplicationRef, Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { environment } from "src/environments/environment";
 import * as L from 'leaflet';
 import { GestureHandling } from "leaflet-gesture-handling";
@@ -7,16 +7,14 @@ import 'leaflet.fullscreen';
 import * as esri from 'esri-leaflet'
 import { CustomCompileService } from '../../shared/services/custom-compile.service';
 import { MapExplorerService } from 'src/app/services/map-explorer/map-explorer.service';
-import { FeatureCollection, Feature } from 'geojson';
+import { Feature } from 'geojson';
 import { WellService } from 'src/app/services/well.service';
 import { SiteDto } from 'src/app/shared/models/geooptix/site-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { ArcService } from 'src/app/services/arc.service';
+import { ArcService, remapWellFeaturePropertiesFromArc } from 'src/app/services/arc.service';
 
-declare var $: any;
 
 @Component({
   selector: 'zybach-map-explorer',
@@ -83,7 +81,7 @@ export class MapExplorerComponent implements OnInit {
       this.wells = x;
       this.wellRegistrationCodes = x.map(x => x.CanonicalName)
       this.initializeMap();
-    }, error => {
+    }, () => {
       this.alertService.pushAlert(new Alert("There was an error communicating with GeoOptix for well data", AlertContext.Danger, true));
     });
 
@@ -150,7 +148,7 @@ export class MapExplorerComponent implements OnInit {
     this.mapExplorerService.getMask().subscribe(maskString => {
       this.maskLayer = L.geoJSON(maskString, {
         invert: true,
-        style: function (feature) {
+        style: function () {
           return {
             fillColor: "#323232",
             fill: true,
@@ -256,7 +254,7 @@ export class MapExplorerComponent implements OnInit {
     });
 
     this.map.on('click', (event: L.LeafletEvent) => {
-      this.clearSelection(event);
+      this.clearSelection();
     })
 
     this.wellsLayer.on("click", (event: L.LeafletEvent) => {
@@ -267,11 +265,11 @@ export class MapExplorerComponent implements OnInit {
   }
 
   public selectWellByFeatureFromArc(feature: Feature) {
-    this.activeWell = this.remapWellFeatureProperties(feature);
+    this.activeWell = remapWellFeaturePropertiesFromArc(feature);
     this.selectFeature(feature);
   }
 
-  public clearSelection(event: L.LeafletEvent) {
+  public clearSelection() {
     this.activeWell = null;
     this.clearLayer(this.selectedFeatureLayer);
   }
@@ -293,73 +291,19 @@ export class MapExplorerComponent implements OnInit {
     this.map.setView(target.center, this.defaultMapZoom, null);
   }
 
-  public remapWellFeatureProperties(feature: any): any {
-    return {
-      FID: feature.properties.FID,
-      OBJECTID: feature.properties.Active_Irr,
-      WellID: feature.properties.Active_I_1,
-      RegCD: feature.properties.Active_I_2,
-      Replacemen: feature.properties.Active_I_3,
-      Status: feature.properties.Active_I_4,
-      Useid: feature.properties.Active_I_5,
-      NrdName: feature.properties.Active_I_6,
-      NrdID: feature.properties.Active_I_7,
-      Countyname: feature.properties.Active_I_8,
-      CountyID: feature.properties.Active_I_9,
-      Township: feature.properties.Active__10,
-      Range: feature.properties.Active__11,
-      RangeDir: feature.properties.Active__12,
-      Section_: feature.properties.Active__13,
-      SubSection: feature.properties.Active__14,
-      FootageNS: feature.properties.Active__15,
-      FootageDir: feature.properties.Active__16,
-      FootageEW: feature.properties.Active__17,
-      FootageD_1: feature.properties.Active__18,
-      NrdPermit: feature.properties.Active__19,
-      Acres: feature.properties.Active__20,
-      SeriesType: feature.properties.Active__21,
-      SeriesEnd: feature.properties.Active__22,
-      PumpRate: feature.properties.Active__23,
-      PColDiam: feature.properties.Active__24,
-      PumpDepth: feature.properties.Active__25,
-      TotalDepth: feature.properties.Active__26,
-      SWL: feature.properties.Active__27,
-      PWL: feature.properties.Active__28,
-      CertifID: feature.properties.Active__29,
-      OwnerID: feature.properties.Active__30,
-      FirstName: feature.properties.Active__31,
-      LastName: feature.properties.Active__32,
-      Address: feature.properties.Active__33,
-      CityNameID: feature.properties.Active__34,
-      StateRID: feature.properties.Active__35,
-      PostalCD: feature.properties.Active__36,
-      RegDate: feature.properties.Active__37,
-      Compdate: feature.properties.Active__38,
-      LastChgDat: feature.properties.Active__39,
-      DecommDate: feature.properties.Active__40,
-      LatDD: feature.properties.Active__41,
-      LongDD: feature.properties.Active__42,
-      CalcGPS: feature.properties.Active__43,
-      Hyperlink: feature.properties.Active__44,
-      tpid_OBJECTID: feature.properties.tpid_wells,
-      tpid_regcd: feature.properties.tpid_wel_1,
-      tpid: feature.properties.tpid_wel_2
-    }
-  }
-
   public hasGeoOptixDetails(wellRegistrationNumber: string): boolean {
     return this.wells.find(well => well.CanonicalName === wellRegistrationNumber) !== undefined;
   }
 
-  public onSelectionChanged(event: any) {
+  public onSelectionChanged() {
 
     const wellFeature: Feature = this.gridApi.getSelectedNodes()[0].data.Location;
 
     // we need to grab the properties from the GIS layer.
     const cName: string = this.gridApi.getSelectedNodes()[0].data.CanonicalName;
 
-    this.arcService.getWellFromArcByRegCD(cName).subscribe(x => {
-      this.selectWellByFeatureFromArc(x.features[0])
+    this.arcService.getWellFromArcByRegCD(cName).subscribe(feature => {
+      this.selectWellByFeatureFromArc(feature)
     });
 
     this.selectFeature(wellFeature);
@@ -368,7 +312,7 @@ export class MapExplorerComponent implements OnInit {
   public selectFeature(feature: Feature) {
 
     var geojsonMarkerOptions = {
-      radius: 4,
+      radius: 8,
       fillColor: "#ffff00",
       color: "#000",
       weight: 1,
