@@ -20,8 +20,9 @@
                     {{canonicalName}}
                 </h2>
             </div>
-            <div class="col text-right" *ngIf="wellFromArc">
-                <a class="btn btn-zybach" target="_blank" [href]="wellPropertiesFromArc.Hyperlink">View in NEDNR GIS <i class="fas fa-external-link-alt ml-1"></i></a>
+            <div class="col text-right">
+                <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach" (click)="openTimeSeriesExplorer()">Open Time Series Explorer</button>
+                <a *ngIf="wellFromArc" class="btn btn-zybach" target="_blank" [href]="wellPropertiesFromArc.Hyperlink">View in NEDNR GIS <i class="fas fa-external-link-alt ml-1"></i></a>
             </div>
         </div>
         <div class="row mt-4">
@@ -90,9 +91,17 @@
         <div class="row mt-4">
             <div class="col">
                 <div class="card">
-                    <div class="card-header">Time Series Explorer</div>
+                    <div class="card-header">
+                        Time Series Explorer
+                        <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach float-right" (click)="downloadTimeSeriesCsv()">
+                            Download CSV
+                        </button>
+                    </div>
                     <div class="card-body" *ngIf="well">
-                        <p>This is where the time series explorer will go.</p>
+                        <em *ngIf="!timeSeriesData">{{noTimeSeriesDataMessage}}</em>
+                        <ngContainer *ngIf="timeSeriesData">
+                            <a _target="blank" [href]="timeSeriesInGeoOptixUrl()">View sensor details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i></a>
+                        </ngContainer>
                     </div>
                     <div class="card-body" *ngIf="!well">
                         <em>The well was not found in GeoOptix</em>
@@ -102,3 +111,6 @@
         </div>
     </ng-container>
 </div>
+
+<go-time-series-viewer *ngIf="showTimeSeriesExplorer" [timeSeriesData]="timeSeriesData"
+    [timeSeriesTitle]="timeSeriesTitle()" (close)="showTimeSeriesExplorer = false"></go-time-series-viewer>

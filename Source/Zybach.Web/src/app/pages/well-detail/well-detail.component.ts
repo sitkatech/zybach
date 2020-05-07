@@ -27,6 +27,10 @@ export class WellDetailComponent implements OnInit {
   layerControl: L.Control.Layers;
   afterSetControl = new EventEmitter();
   wellPropertiesFromArc: any;
+  timeSeriesData: any[];
+  noTimeSeriesDataMessage: string = "Loading...";
+  sensorCanonicalName: any;
+  showTimeSeriesExplorer: boolean = false;
 
   constructor(private wellService: WellService,
     private arcService: ArcService,
@@ -46,28 +50,41 @@ export class WellDetailComponent implements OnInit {
     this.wellService.getSensorName(this.canonicalName).subscribe(sensor => {
       if (sensor.length != 0) {
 
-        const sensorName = sensor[0].CanonicalName;
-        this.wellService.getSensorFolder(this.canonicalName, sensorName).subscribe(folder => {
+        this.sensorCanonicalName = sensor[0].CanonicalName;
+
+
+        this.wellService.getSensorFolder(this.canonicalName, this.sensorCanonicalName).subscribe(folder => {
           if (folder.length != 0) {
             const folderName = folder[0].CanonicalName;
-            this.wellService.getFiles(this.canonicalName, sensorName, folderName).subscribe(files => {
+            this.wellService.getFiles(this.canonicalName, this.sensorCanonicalName, folderName).subscribe(files => {
               if (files.length != 0) {
-                this.wellService.getTimeSeriesData(this.canonicalName, sensorName, folderName).subscribe(wow=>{
-                  debugger;
-                })
+                this.wellService.getTimeSeriesData(this.canonicalName, this.sensorCanonicalName, folderName).subscribe(wow=>{
+                  this.timeSeriesData = wow.data                
+                });
               } else {
-                //no data
+                this.noTimeSeriesDataMessage = "No time series data was found in GeoOptix for this well."
               }
             });
           }
           else {
-            //no data
+            this.noTimeSeriesDataMessage = "No time series data was found in GeoOptix for this well."
           }
-        })
+        });
       } else {
-        // no sensor
+        this.noTimeSeriesDataMessage = "No sensor was found in GeoOptix for this well.";
       }
-    })
+    });
+  }
+
+  openTimeSeriesExplorer() {
+    this.showTimeSeriesExplorer = true;
+    
+    this.cdr.detectChanges();
+    this.cdr.markForCheck();
+  }
+
+  timeSeriesInGeoOptixUrl():string {
+    return `https://tpnrd.qa.geooptix.com/program/main/(inner:station)?projectCName=water-data-program&stationCName=${this.sensorCanonicalName}`;
   }
 
   getWellDetails() {
@@ -93,6 +110,9 @@ export class WellDetailComponent implements OnInit {
   }
   public owner() {
     return `${this.wellPropertiesFromArc.FirstName} ${this.wellPropertiesFromArc.LastName}`;
+  }
+  public timeSeriesTitle():string {
+    return `${this.canonicalName} - Sensor Data`;
   }
 
   private initMap() {
