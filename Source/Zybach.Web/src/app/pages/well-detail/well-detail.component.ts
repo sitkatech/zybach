@@ -49,17 +49,17 @@ export class WellDetailComponent implements OnInit {
       this.well = wellFromGeoOptix;
       this.wellFromArc = wellFromArc
       this.wellPropertiesFromArc = remapWellFeaturePropertiesFromArc(wellFromArc);
-      
+
       this.cdr.detectChanges();
 
       this.initMap();
     });
   }
 
-  public trs(){
+  public trs() {
     return `${this.wellPropertiesFromArc.Township} ${this.wellPropertiesFromArc.Range}${this.wellPropertiesFromArc.RangeDir} ${this.wellPropertiesFromArc.Section_}`;
   }
-  public owner(){
+  public owner() {
     return `${this.wellPropertiesFromArc.FirstName} ${this.wellPropertiesFromArc.LastName}`;
   }
 
@@ -84,7 +84,23 @@ export class WellDetailComponent implements OnInit {
   }
 
   showWellLocationOnMap() {
-    this.wellLayer = L.geoJSON(this.wellFromArc);
+
+
+    var meteredWellMarkerOptions = {
+      radius: 8,
+      fillColor: "#0076c0",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+
+    }
+    this.wellLayer = L.geoJSON(this.wellFromArc, {
+      pointToLayer: function (feature, latlng) {
+        // if well is in the list from geooptix, symbolize more prominently
+        return L.circleMarker(latlng, meteredWellMarkerOptions);
+      }
+    });
     this.wellLayer.addTo(this.map);
   }
 
