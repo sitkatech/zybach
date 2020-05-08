@@ -21,7 +21,6 @@
                 </h2>
             </div>
             <div class="col text-right">
-                <a target="_blank" *ngIf="timeSeriesData" class="btn btn-zybach mr-2" href="{{wellInGeoOptixUrl()}}">View Well in GeoOptix <i class="fas fa-external-link-alt ml-1"></i></a>
                 <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach mr-2" (click)="openTimeSeriesExplorer()">Open Time Series Viewer</button>
                 <a *ngIf="wellFromArc" class="btn btn-zybach" target="_blank" [href]="wellPropertiesFromArc.Hyperlink">View in NEDNR GIS <i class="fas fa-external-link-alt ml-1"></i></a>
             </div>
@@ -93,16 +92,32 @@
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        Time Series Explorer
-                        <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach float-right" (click)="downloadTimeSeriesCsv()">
-                            Download CSV
-                        </button>
+
+                    </div>
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        External Resources
                     </div>
                     <div class="card-body" *ngIf="well">
-                        <em *ngIf="!timeSeriesData">{{noTimeSeriesDataMessage}}</em>
-                        <ngContainer *ngIf="timeSeriesData">
-                            <a _target="blank" [href]="sensorInGeoOptixUrl()">View sensor details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i></a>
-                        </ngContainer>
+                        <a target="_blank" href="{{wellInGeoOptixUrl()}}">
+                            View Well in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                        </a>
+                        <br/>
+                        <a *ngIf="sensorCanonicalName" _target="blank" [href]="sensorInGeoOptixUrl()">
+                            View sensor details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                        </a>
+                        <br/>
+
+                        <a *ngIf="timeSeriesData" (click)="downloadTimeSeriesCsv()" href="javaScript:void(0)">
+                            Download Time Series CSV <i class="fas fa-download"></i>
+                        </a>
+                        
                     </div>
                     <div class="card-body" *ngIf="!well">
                         <em>The well was not found in GeoOptix</em>

@@ -31,6 +31,7 @@ export class WellDetailComponent implements OnInit {
   noTimeSeriesDataMessage: string = "Loading...";
   sensorCanonicalName: any;
   showTimeSeriesExplorer: boolean = false;
+  folderCanonicalName: any;
 
   constructor(private wellService: WellService,
     private arcService: ArcService,
@@ -42,24 +43,23 @@ export class WellDetailComponent implements OnInit {
       this.wellCanonicalName = params["canonicalName"];
       this.makeTileLayers();
       this.getWellDetails();
-      this.doSTUFF();
+      this.getTimeSeriesData();
     });
   }
 
-  doSTUFF() {
+  getTimeSeriesData() {
     this.wellService.getSensorName(this.wellCanonicalName).subscribe(sensor => {
       if (sensor.length != 0) {
-
         this.sensorCanonicalName = sensor[0].CanonicalName;
-
 
         this.wellService.getSensorFolder(this.wellCanonicalName, this.sensorCanonicalName).subscribe(folder => {
           if (folder.length != 0) {
-            const folderName = folder[0].CanonicalName;
-            this.wellService.getFiles(this.wellCanonicalName, this.sensorCanonicalName, folderName).subscribe(files => {
+            this.folderCanonicalName = folder[0].CanonicalName;
+
+            this.wellService.getFiles(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(files => {
               if (files.length != 0) {
-                this.wellService.getTimeSeriesData(this.wellCanonicalName, this.sensorCanonicalName, folderName).subscribe(wow=>{
-                  this.timeSeriesData = wow.data                
+                this.wellService.getTimeSeriesData(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(response=>{
+                  this.timeSeriesData = response.data                
                 });
               } else {
                 this.noTimeSeriesDataMessage = "No time series data was found in GeoOptix for this well."
@@ -74,6 +74,22 @@ export class WellDetailComponent implements OnInit {
         this.noTimeSeriesDataMessage = "No sensor was found in GeoOptix for this well.";
       }
     });
+  }
+
+  public downloadTimeSeriesCsv(): void{
+    this.wellService.downloadTimeSeriesCsv(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(x=>{
+      this.downloadFile(x);
+    })
+  }
+
+  downloadFile(data: any) {
+    const blob = new Blob([data], { type: 'text/csv' });
+    const url= window.URL.createObjectURL(blob);
+    // this is super gross, but it's the only way to set a filename for a download
+    var anchor = document.createElement("a");
+    anchor.download = `${this.wellCanonicalName}_well_sensor_data.csv`
+    anchor.href = url;
+    anchor.click();
   }
 
   openTimeSeriesExplorer() {

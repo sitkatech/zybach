@@ -88,31 +88,89 @@ export class MapExplorerComponent implements OnInit {
     this.compileService.configure(this.appRef);
   }
 
-  public ngAfterViewInit(): void {
+  onGridReady(params) {
+    this.gridApi = params.api;
+  }
+
+  public selectWellByFeatureFromArc(feature: Feature) {
+    this.activeWell = remapWellFeaturePropertiesFromArc(feature);
+    this.selectFeature(feature);
+  }
+
+  public selectWellFallback(site: SiteDto){
+    this.activeWell = {arcError: true, RegCD: site.CanonicalName};
+    this.selectFeature(site.Location);
+  }
+
+  public hasGeoOptixDetails(wellRegistrationNumber: string): boolean {
+    return this.wells.find(well => well.CanonicalName === wellRegistrationNumber) !== undefined;
+  }
+
+  public onSelectionChanged() {
+    const site: SiteDto = this.gridApi.getSelectedNodes()[0].data;
+    const wellFeature: Feature = site.Location;
+
+    // we need to grab the properties from the GIS layer.
+    const cName: string = site.CanonicalName;
+
+    this.arcService.getWellFromArcByRegCD(cName).subscribe(arcFeature => {
+      if (arcFeature){
+        this.selectWellByFeatureFromArc(arcFeature)
+      } else {
+        this.selectWellFallback(site);  
+      }
+    });
+  }
+
+  public selectFeature(feature: Feature) {
+
+    var geojsonMarkerOptions = {
+      radius: 8,
+      fillColor: "#ffff00",
+      color: "#000",
+      weight: 1,
+      opacity: 1,
+      fillOpacity: 0.8
+    };
+    this.clearLayer(this.selectedFeatureLayer);
+    this.selectedFeatureLayer = L.geoJSON(feature, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, geojsonMarkerOptions);
+      }
+    });
+
+    this.selectedFeatureLayer.addTo(this.map);
+
+    let target = this.map._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
+    this.map.setView(target.center, 16, null);
+  }
+
+  //fitBounds will use it's default zoom level over what is sent in
+  //if it determines that its max zoom is further away. This can make the 
+  //map zoom out to inappropriate levels sometimes, and then setZoom 
+  //won't be honored because it's in the middle of a zoom. So we'll manipulate
+  //it a bit.
+  public defaultFitBounds(): void {
+    let target = this.map._getBoundsCenterZoom(this.maskLayer.getBounds(), null);
+    this.map.setView(target.center, this.defaultMapZoom, null);
+  }
+
+  public clearSelection() {
+    this.activeWell = null;
+    this.clearLayer(this.selectedFeatureLayer);
+  }
+
+  public clearLayer(layer: L.Layer): void {
+    if (layer) {
+      this.map.removeLayer(layer);
+      layer = null;
+    }
   }
 
   private makeColumnDefs() {
     this.columnDefs = [
       {
         headerName: 'Well Name',
-        // valueGetter: function (params: any) {
-        //   return { LinkValue: params.data.CanonicalName, LinkDisplay: params.data.CanonicalName };
-        // }, cellRendererFramework: LinkRendererComponent,
-        // cellRendererParams: { inRouterLink: "/wells/" },
-        // filterValueGetter: function (params: any) {
-        //   return params.data.FullName;
-        // },
-        // comparator: function (id1: any, id2: any) {
-        //   let link1 = id1.LinkDisplay;
-        //   let link2 = id2.LinkDisplay;
-        //   if (link1 < link2) {
-        //     return -1;
-        //   }
-        //   if (link1 > link2) {
-        //     return 1;
-        //   }
-        //   return 0;
-        // },
         field: "CanonicalName",
         sortable: true, filter: true, width: 170
       }
@@ -144,7 +202,7 @@ export class MapExplorerComponent implements OnInit {
     }, this.tileLayers);
   }
 
-  public initializeMap(): void {
+  private initializeMap(): void {
     this.mapExplorerService.getMask().subscribe(maskString => {
       this.maskLayer = L.geoJSON(maskString, {
         invert: true,
@@ -182,14 +240,10 @@ export class MapExplorerComponent implements OnInit {
 
       this.maskLayer.addTo(this.map);
       this.defaultFitBounds();
-
-      // if (window.innerWidth > 991) {
-      //   this.mapElement.nativeElement.scrollIntoView();
-      // }
     });
   }
 
-  public initializeTpnrdLayers() {
+  private initializeTpnrdLayers() {
 
     var wellMarkerOptions = {
       radius: 4,
@@ -229,14 +283,14 @@ export class MapExplorerComponent implements OnInit {
     this.wellsLayer.addTo(this.map);
   }
 
-  public initializePanes(): void {
+  private initializePanes(): void {
     let zybachOverlayPane = this.map.createPane("zybachOverlayPane");
     zybachOverlayPane.style.zIndex = 10000;
     this.map.getPane("markerPane").style.zIndex = 10001;
     this.map.getPane("popupPane").style.zIndex = 10002;
   }
 
-  public setControl(): void {
+  private setControl(): void {
     this.layerControl = new L.Control.Layers(this.tileLayers, this.overlayLayers)
       .addTo(this.map);
     this.map.zoomControl.setPosition('topright');
@@ -244,7 +298,7 @@ export class MapExplorerComponent implements OnInit {
     this.afterSetControl.emit(this.layerControl);
   }
 
-  public initializeMapEvents(): void {
+  private initializeMapEvents(): void {
     this.map.on('load', (event: L.LeafletEvent) => {
       this.afterLoadMap.emit(event);
     });
@@ -261,78 +315,5 @@ export class MapExplorerComponent implements OnInit {
       this.selectWellByFeatureFromArc(event.layer.feature)
       L.DomEvent.stop(event);
     });
-
-  }
-
-  public selectWellByFeatureFromArc(feature: Feature) {
-    this.activeWell = remapWellFeaturePropertiesFromArc(feature);
-    this.selectFeature(feature);
-  }
-
-  public clearSelection() {
-    this.activeWell = null;
-    this.clearLayer(this.selectedFeatureLayer);
-  }
-
-  public clearLayer(layer: L.Layer): void {
-    if (layer) {
-      this.map.removeLayer(layer);
-      layer = null;
-    }
-  }
-
-  //fitBounds will use it's default zoom level over what is sent in
-  //if it determines that its max zoom is further away. This can make the 
-  //map zoom out to inappropriate levels sometimes, and then setZoom 
-  //won't be honored because it's in the middle of a zoom. So we'll manipulate
-  //it a bit.
-  public defaultFitBounds(): void {
-    let target = this.map._getBoundsCenterZoom(this.maskLayer.getBounds(), null);
-    this.map.setView(target.center, this.defaultMapZoom, null);
-  }
-
-  public hasGeoOptixDetails(wellRegistrationNumber: string): boolean {
-    return this.wells.find(well => well.CanonicalName === wellRegistrationNumber) !== undefined;
-  }
-
-  public onSelectionChanged() {
-
-    const wellFeature: Feature = this.gridApi.getSelectedNodes()[0].data.Location;
-
-    // we need to grab the properties from the GIS layer.
-    const cName: string = this.gridApi.getSelectedNodes()[0].data.CanonicalName;
-
-    this.arcService.getWellFromArcByRegCD(cName).subscribe(feature => {
-      this.selectWellByFeatureFromArc(feature)
-    });
-
-    this.selectFeature(wellFeature);
-  }
-
-  public selectFeature(feature: Feature) {
-
-    var geojsonMarkerOptions = {
-      radius: 8,
-      fillColor: "#ffff00",
-      color: "#000",
-      weight: 1,
-      opacity: 1,
-      fillOpacity: 0.8
-    };
-    this.clearLayer(this.selectedFeatureLayer);
-    this.selectedFeatureLayer = L.geoJSON(feature, {
-      pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, geojsonMarkerOptions);
-      }
-    });
-
-    this.selectedFeatureLayer.addTo(this.map);
-
-    let target = this.map._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
-    this.map.setView(target.center, 16, null);
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
   }
 }
