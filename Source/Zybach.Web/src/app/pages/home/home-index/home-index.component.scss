@@ -1,16 +1,25 @@
 @import "~src/scss/_variables.scss";
 
-.homepageJumbotronImage {
-    background-size: cover;
-    background-position: center center;
-    height: 350px;
-}
+// .homepageJumbotronImage {
+//     background-size: cover;
+//     background-position: center center;
+//     height: 350px;
+// }
+
+// #homepageJumbotronImage1 {
+//     background-size: cover;
+//     background-image: url("/assets/main/home_image.jpg");
+//     //background-attachment: fixed;
+//     background-position: right 0 bottom -430px;
+// }
 
 #homepageJumbotronImage1 {
-    background-size: cover;
     background-image: url("/assets/main/home_image.jpg");
-    //background-attachment: fixed;
-    background-position: right 0 bottom -430px;
+}
+.homepageJumbotronImage {
+    background-size: cover;
+    background-position: 50% 35%;
+    height: 300px;
 }
 
 .homeSection {
