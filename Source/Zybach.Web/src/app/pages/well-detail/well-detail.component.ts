@@ -58,6 +58,7 @@ export class WellDetailComponent implements OnInit {
         
         this.wellService.getInstallation(this.wellCanonicalName, this.installationCanonicalName).subscribe(installation =>{
           const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
+          const sensorRecord = installationRecord.sensor.Records[0]?.Fields;
 
           this.installationRecordSimple = {
             affiliation:installationRecord["installer-affiliation"] && installationRecord["installer-affiliation"][0].toUpperCase(),
@@ -65,6 +66,14 @@ export class WellDetailComponent implements OnInit {
             date: installationRecord["install-date"],
             lon: installationRecord["gps-location"]?.geometry.coordinates[0],
             lat: installationRecord["gps-location"]?.geometry.coordinates[1],
+            sensorType: sensorRecord["sensor-type"] && sensorRecord["sensor-type"][0],
+            continuitySensorModel: sensorRecord["sensor-model-continuity"] && sensorRecord["sensor-model-continuity"][0],
+            flowSensorModel: sensorRecord["sensor-model-flow"] && sensorRecord["sensor-model-flow"][0],
+            pressureSensorModel: sensorRecord["sensor-model-pressure"] && sensorRecord["sensor-model-pressure"][0],
+            wellDepth: sensorRecord["well-depth"],
+            installDepth: sensorRecord["install-depth"],
+            cableLength: sensorRecord["cable-length"],
+            waterLevel: sensorRecord["water-level"]
           }
         })
       }

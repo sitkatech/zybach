@@ -120,6 +120,46 @@
                                 <em *ngIf="!installationRecordSimple?.lat || !installationRecordSimple?.lon"
                                     class="text-muted">Not Available</em>
                             </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Sensor Type</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.sensorType}}
+                                <em *ngIf="!installationRecordSimple?.sensorType" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Continuity Sensor Model</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.continuitySensorModel}}
+                                <em *ngIf="!installationRecordSimple?.continuitySensorModel" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Flow Sensor Model</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.flowSensorModel}}
+                                <em *ngIf="!installationRecordSimple?.flowSensorModel" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Pressure Sensor Model</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.pressureSensorModel}}
+                                <em *ngIf="!installationRecordSimple?.pressureSensorModel" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Well Depth</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.wellDepth}}
+                                <em *ngIf="!installationRecordSimple?.wellDepth" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Install Depth</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.installDepth}}
+                                <em *ngIf="!installationRecordSimple?.installDepth" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Cable Length</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.cableLength}}
+                                <em *ngIf="!installationRecordSimple?.cableLength" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Water Level</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.waterLevel}}
+                                <em *ngIf="!installationRecordSimple?.waterLevel" class="text-muted">Not Available</em>
+                            </dd>
                         </dl>
                     </div>
                     <div class="card-body" *ngIf="!installationCanonicalName">
