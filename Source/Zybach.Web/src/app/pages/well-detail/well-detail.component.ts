@@ -32,6 +32,9 @@ export class WellDetailComponent implements OnInit {
   sensorCanonicalName: any;
   showTimeSeriesExplorer: boolean = false;
   folderCanonicalName: any;
+  installationCanonicalName: any;
+  installationRecord: any;
+  installationRecordSimple: any;
 
   constructor(private wellService: WellService,
     private arcService: ArcService,
@@ -44,7 +47,28 @@ export class WellDetailComponent implements OnInit {
       this.makeTileLayers();
       this.getWellDetails();
       this.getTimeSeriesData();
+      this.getInstallationDetails();
     });
+  }
+
+  getInstallationDetails() {
+    this.wellService.getInstallationName(this.wellCanonicalName).subscribe(installations =>{
+      if (installations.length !=0){
+        this.installationCanonicalName = installations[0].CanonicalName;
+        
+        this.wellService.getInstallation(this.wellCanonicalName, this.installationCanonicalName).subscribe(installation =>{
+          const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
+
+          this.installationRecordSimple = {
+            affiliation:installationRecord["installer-affiliation"][0].toUpperCase(),
+            initials: installationRecord["installer-initials"],
+            date: installationRecord["install-date"],
+            lon: installationRecord["gps-location"].geometry.coordinates[0],
+            lat: installationRecord["gps-location"].geometry.coordinates[1],
+          }
+        })
+      }
+    })
   }
 
   getTimeSeriesData() {

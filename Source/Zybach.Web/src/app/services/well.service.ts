@@ -11,7 +11,7 @@ import { throwIfNoContent } from '../shared/static-functions';
   providedIn: 'root'
 })
 export class WellService {
-
+  
   constructor(private httpClient: HttpClient) { }
 
   public getSites(): Observable<SiteDto[]> {
@@ -64,5 +64,17 @@ export class WellService {
     const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/stations/${sensorCanonicalName}/folders/${folderCanonicalName}/files/data.csv/download`
 
     return this.httpClient.get(route, {responseType:"text"});
+  }
+  
+  getInstallationName(wellCanonicalName: string): Observable<any> {
+    const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/samples`;
+
+    return this.httpClient.get(route);
+  }
+
+  getInstallation(wellCanonicalName: string, installationCanonicalName: any) : Observable<any> {
+    const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/samples/${installationCanonicalName}/methods`;
+
+    return this.httpClient.get(route);
   }
 }

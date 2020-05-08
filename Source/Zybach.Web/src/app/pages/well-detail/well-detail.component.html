@@ -88,18 +88,42 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4 mb-4">
-            <!-- <div class="col">
+        <div class="row mt-4 mb-4" *ngIf="well">
+            <div class="col">
                 <div class="card">
                     <div class="card-header">
-
+                        Sensor Installation Details
                     </div>
-                    <div class="card-body">
-
+                    <div class="card-body" *ngIf="installationRecordSimple">
+                        <dl class="row">
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Installer Affiliation</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.affiliation}}
+                                <em *ngIf="!installationRecordSimple?.affiliation" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Installer Initials</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.initials}}
+                                <em *ngIf="!installationRecordSimple?.initials" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Install Date</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{installationRecordSimple.date | date}}
+                                <em *ngIf="!installationRecordSimple?.date" class="text-muted">Not Available</em>
+                            </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">GPS Location</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                lat: {{installationRecordSimple.lat | number }}, lng: {{installationRecordSimple.lon | number}}
+                                <em *ngIf="!installationRecordSimple?.lat || !installationRecordSimple?.lon" class="text-muted">Not Available</em>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="card-body" *ngIf="!installationCanonicalName">
+                        <em>No sensor installation was found in GeoOptix for this well.</em>
                     </div>
                 </div>
-            </div> -->
-            <div class="col-6">
+            </div>
+            <div class="col">
                 <div class="card">
                     <div class="card-header">
                         External Resources
