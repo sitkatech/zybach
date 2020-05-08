@@ -21,8 +21,9 @@
                 </h2>
             </div>
             <div class="col text-right">
-                <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach mr-2" (click)="openTimeSeriesExplorer()">Open Time Series Viewer</button>
-                <a *ngIf="wellFromArc" class="btn btn-zybach" target="_blank" [href]="wellPropertiesFromArc.Hyperlink">View in NEDNR GIS <i class="fas fa-external-link-alt ml-1"></i></a>
+                <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach mr-2"
+                    (click)="openTimeSeriesExplorer()">Open Time Series Viewer</button>
+
             </div>
         </div>
         <div class="row mt-4">
@@ -88,7 +89,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4 mb-4" *ngIf="well">
+        <div class="row mt-4 mb-4">
             <div class="col">
                 <div class="card">
                     <div class="card-header">
@@ -113,8 +114,11 @@
                             </dd>
                             <dt class="text-sm-right col-sm-5 col-xs-12">GPS Location</dt>
                             <dd class="col-sm-7 col-xs-12">
-                                lat: {{installationRecordSimple.lat | number }}, lng: {{installationRecordSimple.lon | number}}
-                                <em *ngIf="!installationRecordSimple?.lat || !installationRecordSimple?.lon" class="text-muted">Not Available</em>
+                                <ng-container *ngIf="installationRecordSimple?.lat && installationRecordSimple?.lon">
+                                    lat: {{installationRecordSimple.lat | number }}, lng: {{installationRecordSimple.lon | number}}
+                                </ng-container>
+                                <em *ngIf="!installationRecordSimple?.lat || !installationRecordSimple?.lon"
+                                    class="text-muted">Not Available</em>
                             </dd>
                         </dl>
                     </div>
@@ -128,23 +132,27 @@
                     <div class="card-header">
                         External Resources
                     </div>
-                    <div class="card-body" *ngIf="well">
-                        <a target="_blank" href="{{wellInGeoOptixUrl()}}">
-                            View Well in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
-                        </a>
-                        <br/>
-                        <a *ngIf="sensorCanonicalName" _target="blank" [href]="sensorInGeoOptixUrl()">
-                            View sensor details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
-                        </a>
-                        <br/>
-
-                        <a *ngIf="timeSeriesData" (click)="downloadTimeSeriesCsv()" href="javaScript:void(0)">
-                            Download Time Series CSV <i class="fas fa-download"></i>
-                        </a>
-                        
-                    </div>
-                    <div class="card-body" *ngIf="!well">
-                        <em>The well was not found in GeoOptix</em>
+                    <div class="card-body">
+                        <p class="m-0" *ngIf="well">
+                            <a target="_blank" href="{{wellInGeoOptixUrl()}}">
+                                View Well in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                            </a>
+                        </p>
+                        <p class="m-0" *ngIf="sensorCanonicalName">
+                            <a _target="blank" [href]="sensorInGeoOptixUrl()">
+                                View sensor details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                            </a>
+                        </p>
+                        <p class="m-0" *ngIf="wellFromArc">
+                            <a target="_blank" [href]="wellPropertiesFromArc.Hyperlink">
+                                View in Nebraska DNR GIS<i class="fas fa-external-link-alt ml-1"></i>
+                            </a>
+                        </p>
+                        <p class="m-0" *ngIf="timeSeriesData">
+                            <a (click)="downloadTimeSeriesCsv()" href="javaScript:void(0)">
+                                Download Time Series CSV <i class="fas fa-download"></i>
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

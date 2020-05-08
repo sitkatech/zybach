@@ -60,11 +60,11 @@ export class WellDetailComponent implements OnInit {
           const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
 
           this.installationRecordSimple = {
-            affiliation:installationRecord["installer-affiliation"][0].toUpperCase(),
+            affiliation:installationRecord["installer-affiliation"] && installationRecord["installer-affiliation"][0].toUpperCase(),
             initials: installationRecord["installer-initials"],
             date: installationRecord["install-date"],
-            lon: installationRecord["gps-location"].geometry.coordinates[0],
-            lat: installationRecord["gps-location"].geometry.coordinates[1],
+            lon: installationRecord["gps-location"]?.geometry.coordinates[0],
+            lat: installationRecord["gps-location"]?.geometry.coordinates[1],
           }
         })
       }
