@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
@@ -22,7 +23,11 @@ namespace Zybach.API.Controllers
             _keystoneService = keystoneService;
         }
 
-
+        [HttpGet("")]
+        public ActionResult<CustomRichTextDto> SystemInfo()
+        {
+            return Ok(new {timestamp = DateTime.Now.Ticks});
+        }
 
         [HttpGet("customRichText/{customRichTextTypeID}")]
         public ActionResult<CustomRichTextDto> GetCustomRichText([FromRoute] int customRichTextTypeID)
