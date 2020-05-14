@@ -1,4 +1,7 @@
-﻿using IdentityServer4.AccessTokenValidation;
+﻿using System;
+using System.IO;
+using System.Net;
+using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -80,6 +83,13 @@ namespace Zybach.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ZybachConfiguration> configuration, ILogger<Startup> logger)
         {
+            var secretPath = Environment.GetEnvironmentVariable("SECRET_PATH");
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (!File.Exists(secretPath) && environmentName != Microsoft.Extensions.Hosting.Environments.Development)
+            {
+                logger.Log(LogLevel.Warning, "Connection string file does not exist.");
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
