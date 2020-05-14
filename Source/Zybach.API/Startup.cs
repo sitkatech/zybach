@@ -89,6 +89,7 @@ namespace Zybach.API
             logger.Log(LogLevel.Information, zybachConfiguration.SITKA_EMAIL_REDIRECT);
             logger.Log(LogLevel.Information, zybachConfiguration.WEB_URL);
             logger.Log(LogLevel.Information, zybachConfiguration.KEYSTONE_REDIRECT_URL);
+            logger.Log(LogLevel.Information, zybachConfiguration.SECRET_PATH);
             
             if (env.IsDevelopment())
             {
