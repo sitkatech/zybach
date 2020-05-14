@@ -61,6 +61,11 @@ namespace Zybach.API
                     {
                         config.AddJsonFile(secretPath);
                     }
+                    else if (configurationRoot["ASPNETCORE_ENVIRONMENT"] == Microsoft.Extensions.Hosting.Environments.Production)
+                    {
+                        throw new ArgumentNullException("SECRET_PATH",
+                            "Missing path for connection string JSON file. Application will not run.");
+                    }
                 })
                 .Build();
 
