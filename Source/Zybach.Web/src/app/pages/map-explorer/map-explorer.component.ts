@@ -98,7 +98,7 @@ export class MapExplorerComponent implements OnInit {
   }
 
   public selectWellFallback(site: SiteDto){
-    this.activeWell = {arcError: true, RegCD: site.CanonicalName};
+    this.activeWell = {arcError: true, RegistrationNumber: site.CanonicalName};
     this.selectFeature(site.Location);
   }
 
@@ -113,7 +113,7 @@ export class MapExplorerComponent implements OnInit {
     // we need to grab the properties from the GIS layer.
     const cName: string = site.CanonicalName;
 
-    this.arcService.getWellFromArcByRegCD(cName).subscribe(arcFeature => {
+    this.arcService.getWellFromArcByRegistrationNumber(cName).subscribe(arcFeature => {
       if (arcFeature){
         this.selectWellByFeatureFromArc(arcFeature)
       } else {

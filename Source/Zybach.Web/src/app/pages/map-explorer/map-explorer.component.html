@@ -14,112 +14,64 @@
                 <div class="row mt-2" *ngIf="activeWell">
                     <div class="col">
                         <h3>Selected Well</h3>
-                        <dl style="max-height: 300px; overflow-y:scroll; overflow-x:hidden;"
+                        <dl style="max-height: 300px; overflow-y:scroll; overflow-x:hidden; font-size: 14px;"
                             *ngIf="!activeWell.arcError">
-                            <dt>FID:</dt>
-                            <dd>{{activeWell.FID| placeholder: "Not provided"}}</dd>
-                            <dt>OBJECTID:</dt>
-                            <dd>{{activeWell.OBJECTID| placeholder: "Not provided"}}</dd>
-                            <dt>WellID:</dt>
+                            <dt>Object ID:</dt>
+                            <dd>{{activeWell.ObjectId | placeholder: "Not provided"}}</dd>
+                            <dt>Well ID:</dt>
                             <dd>{{activeWell.WellID| placeholder: "Not provided"}}</dd>
-                            <dt>RegCD:</dt>
-                            <dd>{{activeWell.RegCD| placeholder: "Not provided"}}</dd>
-                            <dt>Replacemen:</dt>
-                            <dd>{{activeWell.Replacemen| placeholder: "Not provided"}}</dd>
+                            <dt>Registration Number:</dt>
+                            <dd>{{activeWell.RegistrationNumber| placeholder: "Not provided"}}</dd>
                             <dt>Status:</dt>
                             <dd>{{activeWell.Status| placeholder: "Not provided"}}</dd>
-                            <dt>Useid:</dt>
-                            <dd>{{activeWell.Useid| placeholder: "Not provided"}}</dd>
-                            <dt>NrdName:</dt>
-                            <dd>{{activeWell.NrdName| placeholder: "Not provided"}}</dd>
-                            <dt>NrdID:</dt>
-                            <dd>{{activeWell.NrdID| placeholder: "Not provided"}}</dd>
-                            <dt>Countyname:</dt>
-                            <dd>{{activeWell.Countyname| placeholder: "Not provided"}}</dd>
-                            <dt>CountyID:</dt>
-                            <dd>{{activeWell.CountyID| placeholder: "Not provided"}}</dd>
-                            <dt>Township:</dt>
-                            <dd>{{activeWell.Township| placeholder: "Not provided"}}</dd>
-                            <dt>Range:</dt>
-                            <dd>{{activeWell.Range| placeholder: "Not provided"}}</dd>
-                            <dt>RangeDir:</dt>
-                            <dd>{{activeWell.RangeDir| placeholder: "Not provided"}}</dd>
-                            <dt>Section_:</dt>
-                            <dd>{{activeWell.Section_| placeholder: "Not provided"}}</dd>
-                            <dt>SubSection:</dt>
-                            <dd>{{activeWell.SubSection| placeholder: "Not provided"}}</dd>
-                            <dt>FootageNS:</dt>
-                            <dd>{{activeWell.FootageNS| placeholder: "Not provided"}}</dd>
-                            <dt>FootageDir:</dt>
-                            <dd>{{activeWell.FootageDir| placeholder: "Not provided"}}</dd>
-                            <dt>FootageEW:</dt>
-                            <dd>{{activeWell.FootageEW| placeholder: "Not provided"}}</dd>
-                            <dt>FootageD_1:</dt>
-                            <dd>{{activeWell.FootageD_1| placeholder: "Not provided"}}</dd>
-                            <dt>NrdPermit:</dt>
-                            <dd>{{activeWell.NrdPermit| placeholder: "Not provided"}}</dd>
+                            <dt>NRD Name:</dt>
+                            <dd>{{activeWell.NRDName| placeholder: "Not provided"}}</dd>
+                            <dt>County:</dt>
+                            <dd>{{activeWell.CountyName| placeholder: "Not provided"}}</dd>
+                            <dt>STR:</dt>
+                            <dd>{{activeWell.Location| placeholder: "Not provided"}}</dd>
+                            <dt>NRD Permit:</dt>
+                            <dd>{{activeWell.NRDPermit| placeholder: "Not provided"}}</dd>
                             <dt>Acres:</dt>
                             <dd>{{activeWell.Acres| placeholder: "Not provided"}}</dd>
-                            <dt>SeriesType:</dt>
+                            <dt>Series Type:</dt>
                             <dd>{{activeWell.SeriesType| placeholder: "Not provided"}}</dd>
-                            <dt>SeriesEnd:</dt>
-                            <dd>{{activeWell.SeriesEnd| placeholder: "Not provided"}}</dd>
-                            <dt>PumpRate:</dt>
+                            <dt>Pump Rate:</dt>
                             <dd>{{activeWell.PumpRate| placeholder: "Not provided"}}</dd>
-                            <dt>PColDiam:</dt>
-                            <dd>{{activeWell.PColDiam| placeholder: "Not provided"}}</dd>
-                            <dt>PumpDepth:</dt>
+                            <dt>Column Diameter:</dt>
+                            <dd>{{activeWell.PumpColumn_Diameter| placeholder: "Not provided"}}</dd>
+                            <dt>Pump Depth:</dt>
                             <dd>{{activeWell.PumpDepth| placeholder: "Not provided"}}</dd>
-                            <dt>TotalDepth:</dt>
+                            <dt>Total Depth:</dt>
                             <dd>{{activeWell.TotalDepth| placeholder: "Not provided"}}</dd>
-                            <dt>SWL:</dt>
-                            <dd>{{activeWell.SWL| placeholder: "Not provided"}}</dd>
-                            <dt>PWL:</dt>
-                            <dd>{{activeWell.PWL| placeholder: "Not provided"}}</dd>
-                            <dt>CertifID:</dt>
-                            <dd>{{activeWell.CertifID| placeholder: "Not provided"}}</dd>
-                            <dt>OwnerID:</dt>
+                            <dt>Static Water Level:</dt>
+                            <dd>{{activeWell.StaticWaterLevel| placeholder: "Not provided"}}</dd>
+                            <dt>Pumping Water Level:</dt>
+                            <dd>{{activeWell.PumpingWaterLevel| placeholder: "Not provided"}}</dd>
+                            <dt>Owner ID:</dt>
                             <dd>{{activeWell.OwnerID| placeholder: "Not provided"}}</dd>
-                            <dt>FirstName:</dt>
+                            <dt>First Name:</dt>
                             <dd>{{activeWell.FirstName| placeholder: "Not provided"}}</dd>
-                            <dt>LastName:</dt>
+                            <dt>Last Name:</dt>
                             <dd>{{activeWell.LastName| placeholder: "Not provided"}}</dd>
-                            <dt>Address:</dt>
-                            <dd>{{activeWell.Address| placeholder: "Not provided"}}</dd>
-                            <dt>CityNameID:</dt>
-                            <dd>{{activeWell.CityNameID| placeholder: "Not provided"}}</dd>
-                            <dt>StateRID:</dt>
-                            <dd>{{activeWell.StateRID| placeholder: "Not provided"}}</dd>
-                            <dt>PostalCD:</dt>
-                            <dd>{{activeWell.PostalCD| placeholder: "Not provided"}}</dd>
-                            <dt>RegDate:</dt>
-                            <dd>{{activeWell.RegDate| placeholder: "Not provided"}}</dd>
-                            <dt>Compdate:</dt>
-                            <dd>{{activeWell.Compdate| placeholder: "Not provided"}}</dd>
-                            <dt>LastChgDat:</dt>
-                            <dd>{{activeWell.LastChgDat| placeholder: "Not provided"}}</dd>
-                            <dt>DecommDate:</dt>
-                            <dd>{{activeWell.DecommDate| placeholder: "Not provided"}}</dd>
-                            <dt>LatDD:</dt>
-                            <dd>{{activeWell.LatDD| placeholder: "Not provided"}}</dd>
-                            <dt>LongDD:</dt>
-                            <dd>{{activeWell.LongDD| placeholder: "Not provided"}}</dd>
-                            <dt>CalcGPS:</dt>
-                            <dd>{{activeWell.CalcGPS| placeholder: "Not provided"}}</dd>
-                            <dt>Hyperlink:</dt>
-                            <dd>{{activeWell.Hyperlink| placeholder: "Not provided"}}</dd>
-                            <dt>tpid_OBJECTID:</dt>
-                            <dd>{{activeWell.tpid_OBJECTID| placeholder: "Not provided"}}</dd>
-                            <dt>tpid_regcd:</dt>
-                            <dd>{{activeWell.tpid_regcd| placeholder: "Not provided"}}</dd>
-                            <dt>tpid:</dt>
-                            <dd>{{activeWell.tpid| placeholder: "Not provided"}}</dd>
+                            <dt>Registration Date:</dt>
+                            <dd>{{activeWell.RegistrationDate| placeholder: "Not provided"}}</dd>
+                            <dt>Completion Date:</dt>
+                            <dd>{{activeWell.CompletionDate| placeholder: "Not provided"}}</dd>
+                            <dt>Last Change Date::</dt>
+                            <dd>{{activeWell.LastChangeDate| placeholder: "Not provided"}}</dd>
+                            <dt>Decommissioned Date:</dt>
+                            <dd>{{activeWell.DecommissionedDate| placeholder: "Not provided"}}</dd>
+                            <dt>Latitude:</dt>
+                            <dd>{{activeWell.Latitude| placeholder: "Not provided"}}</dd>
+                            <dt>Longitude:</dt>
+                            <dd>{{activeWell.Longitude| placeholder: "Not provided"}}</dd>
                         </dl>
                         <em *ngIf="activeWell.arcError">The well was not found in the GIS layer.</em>
 
                         <button type="button" class="btn btn-zybach mt-2" (click)="clearSelection($event)"><i
                                 class="fas fa-long-arrow-alt-left mr-1"></i>View all wells</button>
-                        <a class="btn btn-zybach mt-2 ml-2" routerLink="/wells/{{activeWell.RegCD}}">View Details <i class="ml-1 fas fa-eye"></i></a>
+                        <a class="btn btn-zybach mt-2 ml-2" routerLink="/wells/{{activeWell.RegistrationNumber}}">View Details <i class="ml-1 fas fa-eye"></i></a>
                     </div>
                 </div>
             </ng-container>

@@ -143,7 +143,7 @@ export class WellDetailComponent implements OnInit {
   getWellDetails() {
     forkJoin(
       this.wellService.getSite(this.wellCanonicalName),
-      this.arcService.getWellFromArcByRegCD(this.wellCanonicalName)
+      this.arcService.getWellFromArcByRegistrationNumber(this.wellCanonicalName)
     ).subscribe(([wellFromGeoOptix, wellFromArc]) => {
       this.well = wellFromGeoOptix;
       this.wellFromArc = wellFromArc

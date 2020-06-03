@@ -36,8 +36,8 @@
                         <dl class="row">
                             <dt class="text-sm-right col-sm-5 col-xs-12">Well Name</dt>
                             <dd class="col-sm-7 col-xs-12">
-                                {{wellPropertiesFromArc.RegCD}}
-                                <em *ngIf="!wellPropertiesFromArc.RegCD" class="text-muted">Not Available</em>
+                                {{wellPropertiesFromArc.RegistrationNumber}}
+                                <em *ngIf="!wellPropertiesFromArc.RegistrationNumber" class="text-muted">Not Available</em>
                             </dd>
                             <dt class="text-sm-right col-sm-5 col-xs-12">Status</dt>
                             <dd class="col-sm-7 col-xs-12">
@@ -46,18 +46,18 @@
                             </dd>
                             <dt class="text-sm-right col-sm-5 col-xs-12">NRD</dt>
                             <dd class="col-sm-7 col-xs-12">
-                                {{wellPropertiesFromArc.NrdName}}
-                                <em *ngIf="!wellPropertiesFromArc.NrdName" class="text-muted">Not Available</em>
+                                {{wellPropertiesFromArc.NRDName}}
+                                <em *ngIf="!wellPropertiesFromArc.NRDName" class="text-muted">Not Available</em>
                             </dd>
                             <dt class="text-sm-right col-sm-5 col-xs-12">County</dt>
                             <dd class="col-sm-7 col-xs-12">
-                                {{wellPropertiesFromArc.Countyname}}
-                                <em *ngIf="!wellPropertiesFromArc.Countyname" class="text-muted">Not Available</em>
+                                {{wellPropertiesFromArc.CountyName}}
+                                <em *ngIf="!wellPropertiesFromArc.CountyName" class="text-muted">Not Available</em>
                             </dd>
                             <dt class="text-sm-right col-sm-5 col-xs-12">TRS</dt>
                             <dd class="col-sm-7 col-xs-12">
-                                {{trs()}}
-                                <em *ngIf="!trs()" class="text-muted">Not Available</em>
+                                {{wellPropertiesFromArc.Location}}
+                                <em *ngIf="!wellPropertiesFromArc.CountyName" class="text-muted">Not Available</em>
                             </dd>
                             <dt class="text-sm-right col-sm-5 col-xs-12">Irrigated Acres</dt>
                             <dd class="col-sm-7 col-xs-12">
