@@ -91,8 +91,14 @@ namespace Zybach.Web
             CertAcresLayerUrl = configuration["CertAcresLayerUrl"];
             WellsLayerUrl = configuration["WellsLayerUrl"];
             ArcToken = configuration["ArcToken"];
+            NednrInventoryBaseUrl = configuration["NednrInventoryBaseUrl"];
+            GeooptixWebUrl = configuration["GeooptixWebUrl"];
         }
 
+        [JsonProperty("geooptixWebUrl")]
+        public string GeooptixWebUrl{ get; set; }
+        [JsonProperty("nednrInventoryBaseUrl")]
+        public string NednrInventoryBaseUrl { get; set; }
         [JsonProperty("production")]
         public bool Production { get; set; }
         [JsonProperty("staging")]
