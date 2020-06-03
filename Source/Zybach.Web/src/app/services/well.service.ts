@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SiteDto } from '../shared/models/geooptix/site-dto';
+import { SiteDto, StationDto } from '../shared/models/geooptix/site-dto';
 import { environment } from 'src/environments/environment';
 import { map, filter, switchMap } from 'rxjs/operators';
 import { throwIfNoContent } from '../shared/static-functions';
@@ -24,6 +24,12 @@ export class WellService {
     const route = `${environment.geooptixHostName}/project-overview-web/water-data-program/sites/${canonicalName}`;
 
     return this.httpClient.get<SiteDto>(route);
+  }
+
+  public getStations(): Observable<StationDto[]>{
+    const route = `${environment.geooptixHostName}/project-overview-web/water-data-program/stations`;
+
+    return this.httpClient.get<StationDto[]>(route);
   }
 
   // these methods make a lot of assumptions about the data model of the TPNRD GeoOptix program.

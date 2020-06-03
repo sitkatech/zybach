@@ -9,12 +9,12 @@ import { CustomCompileService } from '../../shared/services/custom-compile.servi
 import { MapExplorerService } from 'src/app/services/map-explorer/map-explorer.service';
 import { Feature } from 'geojson';
 import { WellService } from 'src/app/services/well.service';
-import { SiteDto } from 'src/app/shared/models/geooptix/site-dto';
+import { SiteDto, WellDto } from 'src/app/shared/models/geooptix/site-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ArcService, remapWellFeaturePropertiesFromArc } from 'src/app/services/arc.service';
-
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'zybach-map-explorer',
@@ -55,7 +55,7 @@ export class MapExplorerComponent implements OnInit {
   public searchAddress: string;
   public activeSearchNotFound: boolean = false;
 
-  public wells: SiteDto[];
+  public wells: WellDto[];
   public certAcresLayer: any;
   public wellsLayer: any;
   public activeWell: any;
@@ -77,15 +77,28 @@ export class MapExplorerComponent implements OnInit {
     this.makeColumnDefs();
     this.makeStaticMapLayers();
 
-    this.siteService.getSites().subscribe(x => {
-      this.wells = x;
-      this.wellRegistrationCodes = x.map(x => x.CanonicalName)
+    forkJoin(
+      this.siteService.getSites(),
+      this.siteService.getStations()
+    ).subscribe(([sites, stations])=>{
+      this.wells = sites;
+      this.wellRegistrationCodes = sites.map(x => x.CanonicalName)
       this.initializeMap();
+      this.wells.forEach(well=>{
+        const sensor = stations.find(station => station.Site.CanonicalName == well.CanonicalName)
+        well.Sensor = sensor;
+      });
+
+      console.log(this.wells.filter(x=>x.Sensor))
     }, () => {
       this.alertService.pushAlert(new Alert("There was an error communicating with GeoOptix for well data", AlertContext.Danger, true));
     });
 
     this.compileService.configure(this.appRef);
+  }
+
+  public nednrUrl(){
+    return `${environment.nednrInventoryBaseUrl}${this.activeWell.RegistrationNumber}`;
   }
 
   onGridReady(params) {
@@ -106,9 +119,14 @@ export class MapExplorerComponent implements OnInit {
     return this.wells.find(well => well.CanonicalName === wellRegistrationNumber) !== undefined;
   }
 
-  public onSelectionChanged() {
-    const site: SiteDto = this.gridApi.getSelectedNodes()[0].data;
-    const wellFeature: Feature = site.Location;
+  public onSelectionChanged(event) {
+    const selectedNode = this.gridApi.getSelectedNodes()[0];
+    if (!selectedNode){
+      // event was fired automatically when we updated the grid after a map click
+      return;
+    }
+
+    const site: SiteDto = selectedNode.data;
 
     // we need to grab the properties from the GIS layer.
     const cName: string = site.CanonicalName;
@@ -120,6 +138,14 @@ export class MapExplorerComponent implements OnInit {
         this.selectWellFallback(site);  
       }
     });
+  }
+
+  public setGridSelection(feature: Feature) : void {
+    this.gridApi.deselectAll();
+    this.gridApi.forEachNode(node => {
+      const asSite = node.data as SiteDto;
+        return asSite.CanonicalName === feature.properties.RegistrationNumber;
+    })
   }
 
   public selectFeature(feature: Feature) {
@@ -172,6 +198,11 @@ export class MapExplorerComponent implements OnInit {
       {
         headerName: 'Well Name',
         field: "CanonicalName",
+        sortable: true, filter: true, width: 170
+      },
+      {
+        headerName: "Sensor Name",
+        field: "Sensor.CanonicalName",
         sortable: true, filter: true, width: 170
       }
     ];
@@ -270,7 +301,7 @@ export class MapExplorerComponent implements OnInit {
       url: `${environment.wellsLayerUrl}?token=${environment.arcToken}`,
       pointToLayer: function (feature, latlng) {
         // if well is in the list from geooptix, symbolize more prominently
-        if (wellRegistrationCodes.includes(feature.properties.Active_I_2)) {
+        if (wellRegistrationCodes.includes(feature.properties.RegistrationNumber)) {
           return L.circleMarker(latlng, meteredWellMarkerOptions);
         }
         return L.circleMarker(latlng, wellMarkerOptions);
@@ -313,6 +344,7 @@ export class MapExplorerComponent implements OnInit {
 
     this.wellsLayer.on("click", (event: L.LeafletEvent) => {
       this.selectWellByFeatureFromArc(event.layer.feature)
+      this.setGridSelection(event.layer.feature);
       L.DomEvent.stop(event);
     });
   }

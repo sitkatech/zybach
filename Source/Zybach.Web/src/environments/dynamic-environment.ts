@@ -3,7 +3,7 @@ declare var window: any;
 export class DynamicEnvironment {
     private _production: boolean;
 
-    constructor(_production: boolean){
+    constructor(_production: boolean) {
         this._production = _production
     }
 
@@ -45,23 +45,23 @@ export class DynamicEnvironment {
         return window.config.keystoneAuthConfiguration;
     }
 
-    public get platformLongName(){
+    public get platformLongName() {
         return window.config.platformLongName;
     }
 
-    public get platformShortName(){
+    public get platformShortName() {
         return window.config.platformShortName;
     }
 
-    public get leadOrganizationLongName(){
+    public get leadOrganizationLongName() {
         return window.config.leadOrganizationLongName;
     }
 
-    public get leadOrganizationShortName(){
+    public get leadOrganizationShortName() {
         return window.config.leadOrganizationShortName;
     }
 
-    public get leadOrganizationHomeUrl(){
+    public get leadOrganizationHomeUrl() {
         return window.config.leadOrganizationHomeUrl;
     }
 
@@ -69,19 +69,27 @@ export class DynamicEnvironment {
         return window.config.leadOrganizationLogoFilename;
     }
 
-    public get geooptixHostName(){
+    public get geooptixHostName() {
         return window.config.geooptixHostName;
     }
 
-    public get certAcresLayerUrl(){
+    public get certAcresLayerUrl() {
         return window.config.certAcresLayerUrl;
     }
 
-    public get wellsLayerUrl(){
+    public get wellsLayerUrl() {
         return window.config.wellsLayerUrl;
     }
 
-    public get arcToken(){
+    public get arcToken() {
         return window.config.arcToken;
+    }
+
+    public get nednrInventoryBaseUrl() {
+        return window.config.nednrInventoryBaseUrl;
+    }
+
+    public get geooptixWebUrl() {
+        return window.config.geooptixWebUrl;
     }
 }

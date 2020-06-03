@@ -7,6 +7,7 @@ import { GestureHandling } from "leaflet-gesture-handling";
 import { forkJoin } from 'rxjs';
 import { ArcService, remapWellFeaturePropertiesFromArc } from 'src/app/services/arc.service';
 import { Feature } from 'geojson';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -133,11 +134,11 @@ export class WellDetailComponent implements OnInit {
   }
 
   sensorInGeoOptixUrl():string {
-    return `https://tpnrd.qa.geooptix.com/program/main/(inner:station)?projectCName=water-data-program&stationCName=${this.sensorCanonicalName}`;
+    return `${environment.geooptixWebUrl}/program/main/(inner:station)?projectCName=water-data-program&stationCName=${this.sensorCanonicalName}`;
   }
 
   wellInGeoOptixUrl() : string {
-    return `https://tpnrd.qa.geooptix.com/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellCanonicalName}`;
+    return `${environment.geooptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellCanonicalName}`;
   }
 
   getWellDetails() {
@@ -166,6 +167,9 @@ export class WellDetailComponent implements OnInit {
   }
   public timeSeriesTitle():string {
     return `${this.wellCanonicalName} - Sensor Data`;
+  }
+  public nednrUrl(){
+    return `${environment.nednrInventoryBaseUrl}${this.well.CanonicalName}`;
   }
 
   private initMap() {
