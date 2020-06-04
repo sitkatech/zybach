@@ -84,7 +84,6 @@ export class WellDetailComponent implements OnInit {
             const photoUrls = photoRecords.map(x => x.Fields.photo);
             photoUrls.forEach(url => {
               this.wellService.getPhoto(this.wellCanonicalName, this.installationCanonicalName, photoUrls[0]).subscribe(blob => {
-                debugger;
                 const reader = new FileReader();
                 reader.readAsDataURL(blob);
                 let photoDataUrls = this.photoDataUrls;
