@@ -62,7 +62,6 @@ export function remapWellFeaturePropertiesFromArc(feature: Feature): any {
 
 
 // export function remapWellFeaturePropertiesFromArc(feature: Feature): any {
-//   debugger;
 //   return {
 //     FID: feature.properties.FID,
 //     OBJECTID: feature.properties.Active_Irr,

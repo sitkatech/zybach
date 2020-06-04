@@ -83,4 +83,10 @@ export class WellService {
 
     return this.httpClient.get(route);
   }
+
+  getPhoto(wellCanonicalName:string, installationCanonicalName: string, photoUrl: string) : Observable<any>{
+    const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/samples/${installationCanonicalName}/folders/.methods/files/${photoUrl}/download`;
+
+    return this.httpClient.get(route, {responseType:"blob"});
+  }
 }

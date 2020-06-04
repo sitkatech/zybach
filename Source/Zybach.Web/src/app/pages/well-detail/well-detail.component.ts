@@ -37,6 +37,8 @@ export class WellDetailComponent implements OnInit {
   installationRecord: any;
   installationRecordSimple: any;
 
+  photoDataUrls: any[] = [];
+
   constructor(private wellService: WellService,
     private arcService: ArcService,
     private route: ActivatedRoute,
@@ -53,16 +55,16 @@ export class WellDetailComponent implements OnInit {
   }
 
   getInstallationDetails() {
-    this.wellService.getInstallationName(this.wellCanonicalName).subscribe(installations =>{
-      if (installations.length !=0){
+    this.wellService.getInstallationName(this.wellCanonicalName).subscribe(installations => {
+      if (installations.length != 0) {
         this.installationCanonicalName = installations[0].CanonicalName;
-        
-        this.wellService.getInstallation(this.wellCanonicalName, this.installationCanonicalName).subscribe(installation =>{
+
+        this.wellService.getInstallation(this.wellCanonicalName, this.installationCanonicalName).subscribe(installation => {
           const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
           const sensorRecord = installationRecord.sensor.Records[0]?.Fields;
 
           this.installationRecordSimple = {
-            affiliation:installationRecord["installer-affiliation"] && installationRecord["installer-affiliation"][0].toUpperCase(),
+            affiliation: installationRecord["installer-affiliation"] && installationRecord["installer-affiliation"][0].toUpperCase(),
             initials: installationRecord["installer-initials"],
             date: installationRecord["install-date"],
             lon: installationRecord["gps-location"]?.geometry.coordinates[0],
@@ -75,6 +77,26 @@ export class WellDetailComponent implements OnInit {
             installDepth: sensorRecord["install-depth"],
             cableLength: sensorRecord["cable-length"],
             waterLevel: sensorRecord["water-level"]
+          }
+
+          try {
+            const photoRecords = installation[0].MethodInstance.RecordSets[0].Records[0].Fields.sensor.Records[0].Fields.photos.Records;
+            const photoUrls = photoRecords.map(x => x.Fields.photo);
+            photoUrls.forEach(url => {
+              this.wellService.getPhoto(this.wellCanonicalName, this.installationCanonicalName, photoUrls[0]).subscribe(blob => {
+                debugger;
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                let photoDataUrls = this.photoDataUrls;
+                reader.onloadend = function () {
+                  // result includes identifier 'data:image/png;base64,' plus the base64 data
+                  photoDataUrls.push(reader.result)
+                }
+              })
+            });
+          }
+          catch {
+            console.log("No photos found");
           }
         })
       }
@@ -92,8 +114,8 @@ export class WellDetailComponent implements OnInit {
 
             this.wellService.getFiles(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(files => {
               if (files.length != 0) {
-                this.wellService.getTimeSeriesData(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(response=>{
-                  this.timeSeriesData = response.data                
+                this.wellService.getTimeSeriesData(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(response => {
+                  this.timeSeriesData = response.data
                 });
               } else {
                 this.noTimeSeriesDataMessage = "No time series data was found in GeoOptix for this well."
@@ -110,15 +132,15 @@ export class WellDetailComponent implements OnInit {
     });
   }
 
-  public downloadTimeSeriesCsv(): void{
-    this.wellService.downloadTimeSeriesCsv(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(x=>{
+  public downloadTimeSeriesCsv(): void {
+    this.wellService.downloadTimeSeriesCsv(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(x => {
       this.downloadFile(x);
     })
   }
 
   downloadFile(data: any) {
     const blob = new Blob([data], { type: 'text/csv' });
-    const url= window.URL.createObjectURL(blob);
+    const url = window.URL.createObjectURL(blob);
     // this is super gross, but it's the only way to set a filename for a download
     var anchor = document.createElement("a");
     anchor.download = `${this.wellCanonicalName}_well_sensor_data.csv`
@@ -128,16 +150,16 @@ export class WellDetailComponent implements OnInit {
 
   openTimeSeriesExplorer() {
     this.showTimeSeriesExplorer = true;
-    
+
     this.cdr.detectChanges();
     this.cdr.markForCheck();
   }
 
-  sensorInGeoOptixUrl():string {
+  sensorInGeoOptixUrl(): string {
     return `${environment.geooptixWebUrl}/program/main/(inner:station)?projectCName=water-data-program&stationCName=${this.sensorCanonicalName}`;
   }
 
-  wellInGeoOptixUrl() : string {
+  wellInGeoOptixUrl(): string {
     return `${environment.geooptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellCanonicalName}`;
   }
 
@@ -148,7 +170,7 @@ export class WellDetailComponent implements OnInit {
     ).subscribe(([wellFromGeoOptix, wellFromArc]) => {
       this.well = wellFromGeoOptix;
       this.wellFromArc = wellFromArc
-      
+
       if (wellFromArc) {
         this.wellPropertiesFromArc = remapWellFeaturePropertiesFromArc(wellFromArc);
       }
@@ -163,13 +185,13 @@ export class WellDetailComponent implements OnInit {
     return `${this.wellPropertiesFromArc.Township} ${this.wellPropertiesFromArc.Range}${this.wellPropertiesFromArc.RangeDir} ${this.wellPropertiesFromArc.Section_}`;
   }
   public owner() {
-    return `${this.wellPropertiesFromArc.FirstName} ${this.wellPropertiesFromArc.LastName}`;
+    return `${this.wellPropertiesFromArc.FirstName || ""} ${this.wellPropertiesFromArc.LastName}`.trim();
   }
-  public timeSeriesTitle():string {
+  public timeSeriesTitle(): string {
     return `${this.wellCanonicalName} - Sensor Data`;
   }
-  public nednrUrl(){
-    return `${environment.nednrInventoryBaseUrl}${this.well.CanonicalName}`;
+  public nednrUrl() {
+    return `${environment.nednrInventoryBaseUrl}${this.wellCanonicalName}`;
   }
 
   private initMap() {
