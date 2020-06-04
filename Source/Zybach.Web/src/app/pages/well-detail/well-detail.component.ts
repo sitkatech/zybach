@@ -192,6 +192,14 @@ export class WellDetailComponent implements OnInit {
   public nednrUrl() {
     return `${environment.nednrInventoryBaseUrl}${this.wellCanonicalName}`;
   }
+  
+  public viewDataTitleMessage() {
+    if (this.timeSeriesData){
+      return "View time series data";
+    } else{
+      return "No time series data available for this well";
+    }
+  }
 
   private initMap() {
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);

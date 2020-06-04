@@ -21,8 +21,10 @@
                 </h2>
             </div>
             <div class="col text-right">
-                <button type="button" *ngIf="timeSeriesData" class="btn btn-zybach mr-2"
-                    (click)="openTimeSeriesExplorer()">Open Time Series Viewer</button>
+                <button type="button" [disabled]="!timeSeriesData" class="btn btn-zybach mr-2"
+                    (click)="openTimeSeriesExplorer()" [title]="viewDataTitleMessage()"
+                    [ngClass]="{'time-series-disabled': !timeSeriesData}"
+                    >Open Time Series Viewer</button>
 
             </div>
         </div>
