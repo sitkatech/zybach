@@ -224,7 +224,10 @@ export class MapExplorerComponent implements OnInit {
         sortable: true, filter: true, width: 170,
         valueFormatter: function (params) {
           if (params.value) {
-            return moment(params.value).format('MMMM Do YYYY, h:mm:ss a')
+            const time = moment(params.value)
+            const timepiece = time.format('h:mm a');
+            debugger;
+            return time.format('M/D/yyyy ') + timepiece;
           }
           else {
             return null;
