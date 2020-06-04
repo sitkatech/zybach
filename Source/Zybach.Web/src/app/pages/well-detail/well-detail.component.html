@@ -162,6 +162,11 @@
                                 {{installationRecordSimple.waterLevel}}
                                 <em *ngIf="!installationRecordSimple?.waterLevel" class="text-muted">Not Available</em>
                             </dd>
+                            <dt class="text-sm-right col-sm-5 col-xs-12">Last Reading Date</dt>
+                            <dd class="col-sm-7 col-xs-12">
+                                {{lastReadingDate | date:'medium'}}
+                                <em *ngIf="!lastReadingDate" class="text-muted">Not Available</em>
+                            </dd>
                         </dl>
                     </div>
                     <div class="card-body" *ngIf="!installationCanonicalName">

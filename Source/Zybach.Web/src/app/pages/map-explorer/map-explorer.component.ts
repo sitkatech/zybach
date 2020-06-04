@@ -1,4 +1,4 @@
-import { ApplicationRef, Component, EventEmitter, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ApplicationRef, Component, EventEmitter, OnInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { environment } from "src/environments/environment";
 import * as L from 'leaflet';
 import { GestureHandling } from "leaflet-gesture-handling";
@@ -9,12 +9,13 @@ import { CustomCompileService } from '../../shared/services/custom-compile.servi
 import { MapExplorerService } from 'src/app/services/map-explorer/map-explorer.service';
 import { Feature } from 'geojson';
 import { WellService } from 'src/app/services/well.service';
-import { SiteDto, WellDto } from 'src/app/shared/models/geooptix/site-dto';
+import { SiteDto, WellDto, StationDto } from 'src/app/shared/models/geooptix/site-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ArcService, remapWellFeaturePropertiesFromArc } from 'src/app/services/arc.service';
 import { forkJoin } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'zybach-map-explorer',
@@ -69,7 +70,8 @@ export class MapExplorerComponent implements OnInit {
     private mapExplorerService: MapExplorerService,
     private siteService: WellService,
     private arcService: ArcService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
@@ -80,16 +82,12 @@ export class MapExplorerComponent implements OnInit {
     forkJoin(
       this.siteService.getSites(),
       this.siteService.getStations()
-    ).subscribe(([sites, stations])=>{
+    ).subscribe(([sites, stations]) => {
       this.wells = sites;
       this.wellRegistrationCodes = sites.map(x => x.CanonicalName)
       this.initializeMap();
-      this.wells.forEach(well=>{
-        const sensor = stations.find(station => station.Site.CanonicalName == well.CanonicalName)
-        well.Sensor = sensor;
-      });
+      this.prepareWells(stations);
 
-      console.log(this.wells.filter(x=>x.Sensor))
     }, () => {
       this.alertService.pushAlert(new Alert("There was an error communicating with GeoOptix for well data", AlertContext.Danger, true));
     });
@@ -97,7 +95,22 @@ export class MapExplorerComponent implements OnInit {
     this.compileService.configure(this.appRef);
   }
 
-  public nednrUrl(){
+  public prepareWells(stations: StationDto[]): void {
+    this.wells.forEach(well => {
+      const sensor = stations.find(station => station.Site.CanonicalName == well.CanonicalName)
+      well.Sensor = sensor;
+    });
+
+    this.wells.filter(x => x.Sensor).forEach(site => {
+      this.siteService.getDataFile(site.Sensor).subscribe(dataFile => {
+        if (dataFile.UpdateDate) {
+          site.LastReading = new Date(dataFile.UpdateDate);
+        }
+      }, error => { /*expect 404s*/ });
+    });
+  }
+
+  public nednrUrl() {
     return `${environment.nednrInventoryBaseUrl}${this.activeWell.RegistrationNumber}`;
   }
 
@@ -110,8 +123,8 @@ export class MapExplorerComponent implements OnInit {
     this.selectFeature(feature);
   }
 
-  public selectWellFallback(site: SiteDto){
-    this.activeWell = {arcError: true, RegistrationNumber: site.CanonicalName};
+  public selectWellFallback(site: SiteDto) {
+    this.activeWell = { arcError: true, RegistrationNumber: site.CanonicalName };
     this.selectFeature(site.Location);
   }
 
@@ -121,30 +134,30 @@ export class MapExplorerComponent implements OnInit {
 
   public onSelectionChanged(event) {
     const selectedNode = this.gridApi.getSelectedNodes()[0];
-    if (!selectedNode){
+    if (!selectedNode) {
       // event was fired automatically when we updated the grid after a map click
       return;
     }
 
     const site: SiteDto = selectedNode.data;
-
+    console.log(site);
     // we need to grab the properties from the GIS layer.
     const cName: string = site.CanonicalName;
 
     this.arcService.getWellFromArcByRegistrationNumber(cName).subscribe(arcFeature => {
-      if (arcFeature){
+      if (arcFeature) {
         this.selectWellByFeatureFromArc(arcFeature)
       } else {
-        this.selectWellFallback(site);  
+        this.selectWellFallback(site);
       }
     });
   }
 
-  public setGridSelection(feature: Feature) : void {
+  public setGridSelection(feature: Feature): void {
     this.gridApi.deselectAll();
     this.gridApi.forEachNode(node => {
       const asSite = node.data as SiteDto;
-        return asSite.CanonicalName === feature.properties.RegistrationNumber;
+      return asSite.CanonicalName === feature.properties.RegistrationNumber;
     })
   }
 
@@ -198,12 +211,25 @@ export class MapExplorerComponent implements OnInit {
       {
         headerName: 'Well Name',
         field: "CanonicalName",
-        sortable: true, filter: true, width: 170
+        sortable: true, filter: true, width: 120
       },
       {
         headerName: "Sensor Name",
         field: "Sensor.CanonicalName",
-        sortable: true, filter: true, width: 170
+        sortable: true, filter: true, width: 120
+      },
+      {
+        headerName: "Last Reading",
+        field: "LastReading",
+        sortable: true, filter: true, width: 170,
+        valueFormatter: function (params) {
+          if (params.value) {
+            return moment(params.value).format('MMMM Do YYYY, h:mm:ss a')
+          }
+          else {
+            return null;
+          }
+        },
       }
     ];
   }

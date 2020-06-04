@@ -60,4 +60,5 @@ export class DataDestinationDto{
 
 export class WellDto extends SiteDto {
     Sensor?: StationDto;
+    LastReading?: Date;
 }

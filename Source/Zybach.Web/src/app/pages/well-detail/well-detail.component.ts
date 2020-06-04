@@ -38,6 +38,7 @@ export class WellDetailComponent implements OnInit {
   installationRecordSimple: any;
 
   photoDataUrls: any[] = [];
+  lastReadingDate: Date;
 
   constructor(private wellService: WellService,
     private arcService: ArcService,
@@ -116,6 +117,10 @@ export class WellDetailComponent implements OnInit {
                 this.wellService.getTimeSeriesData(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName).subscribe(response => {
                   this.timeSeriesData = response.data
                 });
+                this.wellService.getFile(this.wellCanonicalName, this.sensorCanonicalName, this.folderCanonicalName, "data.csv").subscribe(result=>{
+                  this.lastReadingDate = new Date(result.UpdateDate);
+                  console.log(this.lastReadingDate);
+                })
               } else {
                 this.noTimeSeriesDataMessage = "No time series data was found in GeoOptix for this well."
               }
@@ -192,7 +197,7 @@ export class WellDetailComponent implements OnInit {
   public nednrUrl() {
     return `${environment.nednrInventoryBaseUrl}${this.wellCanonicalName}`;
   }
-  
+
   public viewDataTitleMessage() {
     if (this.timeSeriesData){
       return "View time series data";

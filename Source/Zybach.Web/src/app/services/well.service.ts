@@ -32,6 +32,16 @@ export class WellService {
     return this.httpClient.get<StationDto[]>(route);
   }
 
+  public getDataFile(x: StationDto): Observable<any>{
+    const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${x.Site.CanonicalName}/stations/${x.CanonicalName}/folders/${x.Definition.sensorType}-${x.CanonicalName}/files/data.csv`
+    return this.httpClient.get<any>(route);
+  }
+
+  public getFile(wellCanonicalName: string, sensorCanonicalName: any, folderCanonicalName: any, arg3: string): Observable<any> {
+    const route = `${environment.geooptixHostName}/projects/water-data-program/sites/${wellCanonicalName}/stations/${sensorCanonicalName}/folders/${folderCanonicalName}/files/${arg3}`
+    return this.httpClient.get<any>(route);
+  }
+
   // these methods make a lot of assumptions about the data model of the TPNRD GeoOptix program.
 
   // todo: DTOs for these responses would be nice for type-safety, but this code works and gets us to MVP
