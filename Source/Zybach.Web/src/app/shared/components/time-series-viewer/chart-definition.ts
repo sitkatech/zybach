@@ -18,6 +18,9 @@ export function getChartDefinition() {
         color: 'white'
       },
       top: 50,
+      selected: {
+        
+      }
     },
     tooltip : {
       trigger: 'axis',

@@ -56,6 +56,15 @@ export class TimeSeriesViewerComponent implements OnInit {
           chartData.xAxis.data.push(new Date(timeSeriesData[0][key]));
         } else if (key !== 'Time' && key !== 'time' && key !== 'No') {
           chartData.legend.data.push(key);
+          
+          // only display series by default if it's the water below etc series.
+          // this could be configurated in a more robust implementation, but this gets us where we need to be right now.
+          if (key !== 'waterBelowGroundLevel'){
+            chartData.legend.selected[key] = false;
+          } else{
+            chartData.legend.selected[key] = true;
+          }
+
           chartData.series.push({
             name: key,
             type: 'line',
