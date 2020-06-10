@@ -105,6 +105,7 @@ export class MapExplorerComponent implements OnInit {
       this.siteService.getDataFile(site.Sensor).subscribe(dataFile => {
         if (dataFile.UpdateDate) {
           site.LastReading = new Date(dataFile.UpdateDate);
+          this.gridApi.refreshCells();
         }
       }, error => { /*expect 404s*/ });
     });
@@ -116,6 +117,7 @@ export class MapExplorerComponent implements OnInit {
 
   onGridReady(params) {
     this.gridApi = params.api;
+    debugger;
   }
 
   public selectWellByFeatureFromArc(feature: Feature) {
