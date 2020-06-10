@@ -64,16 +64,21 @@ export class WellDetailComponent implements OnInit {
           const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
           const sensorRecord = installationRecord.sensor.Records[0]?.Fields;
 
+          const sensorType = sensorRecord["sensor-type"] && (Array.isArray(sensorRecord["sensor-type"]) ? sensorRecord["sensor-type"][0] : sensorRecord["sensor-type"]);
+          const continuitySensorModel = sensorRecord["sensor-model-continuity"] && (Array.isArray(sensorRecord["sensor-model-continuity"]) ? sensorRecord["sensor-model-continuity"][0] : sensorRecord["sensor-model-flow"]);
+          const flowSensorModel = sensorRecord["sensor-model-flow"] && (Array.isArray(sensorRecord["sensor-model-flow"]) ? sensorRecord["sensor-model-flow"][0] : sensorRecord["sensor-model-flow"]);
+          const pressureSensorModel = sensorRecord["sensor-model-pressure"] && (Array.isArray(sensorRecord["sensor-model-pressure"]) ? sensorRecord["sensor-model-pressure"][0] : sensorRecord["sensor-model-pressure"]);
+
           this.installationRecordSimple = {
             affiliation: installationRecord["installer-affiliation"] && installationRecord["installer-affiliation"][0].toUpperCase(),
             initials: installationRecord["installer-initials"],
             date: installationRecord["install-date"],
             lon: installationRecord["gps-location"]?.geometry.coordinates[0],
             lat: installationRecord["gps-location"]?.geometry.coordinates[1],
-            sensorType: sensorRecord["sensor-type"] && sensorRecord["sensor-type"][0],
-            continuitySensorModel: sensorRecord["sensor-model-continuity"] && sensorRecord["sensor-model-continuity"][0],
-            flowSensorModel: sensorRecord["sensor-model-flow"] && sensorRecord["sensor-model-flow"][0],
-            pressureSensorModel: sensorRecord["sensor-model-pressure"] && sensorRecord["sensor-model-pressure"][0],
+            sensorType: sensorType,
+            continuitySensorModel: continuitySensorModel,
+            flowSensorModel: flowSensorModel,
+            pressureSensorModel: pressureSensorModel,
             wellDepth: sensorRecord["well-depth"],
             installDepth: sensorRecord["install-depth"],
             cableLength: sensorRecord["cable-length"],
