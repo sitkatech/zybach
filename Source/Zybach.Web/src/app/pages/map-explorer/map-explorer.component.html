@@ -7,7 +7,7 @@
                     <h3>Monitored Wells</h3>
                     <ag-grid-angular #geooptixWellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham"
                         [rowData]="wells" [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'"
-                        [paginationPageSize]="100" (selectionChanged)="onSelectionChanged($event)"
+                        [paginationPageSize]="100" 
                         (gridReady)="onGridReady($event)">
                     </ag-grid-angular>
                 </div>

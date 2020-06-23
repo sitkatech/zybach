@@ -369,14 +369,14 @@ export class MapExplorerComponent implements OnInit {
       this.onMapMoveEnd.emit(event);
     });
 
-    this.map.on('click', (event: L.LeafletEvent) => {
-      this.clearSelection();
-    })
+    // this.map.on('click', (event: L.LeafletEvent) => {
+    //   this.clearSelection();
+    // })
 
-    this.wellsLayer.on("click", (event: L.LeafletEvent) => {
-      this.selectWellByFeatureFromArc(event.layer.feature)
-      this.setGridSelection(event.layer.feature);
-      L.DomEvent.stop(event);
-    });
+    // this.wellsLayer.on("click", (event: L.LeafletEvent) => {
+    //   this.selectWellByFeatureFromArc(event.layer.feature)
+    //   this.setGridSelection(event.layer.feature);
+    //   L.DomEvent.stop(event);
+    // });
   }
 }
