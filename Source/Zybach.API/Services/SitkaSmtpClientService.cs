@@ -162,30 +162,14 @@ Subject: {mm.Subject}
             mailMessage.ReplyToList.Add("admin@rrbwsd.com");
         }
 
-        public static string GetDefaultEmailSignature()
-        {
-            const string defaultEmailSignature = @"<br /><br />
-Respectfully, the RRB WSD Water Accounting Platform team
-<br /><br />
-***
-<br /><br />
-You have received this email because you are a registered user of the Rosedale-Zybach Bravo WSD Water Accounting Platform. 
-<br /><br />
-P.O. Box 20820<br />
-Bakersfield, CA 93390-0820<br />
-Phone: (661) 589-6045<br />
-<a href=""mailto:admin@rrbwsd.com"">admin@rrbwsd.com</a>";
-            return defaultEmailSignature;
-        }
-
         public static string GetSupportNotificationEmailSignature()
         {
             const string supportNotificationEmailSignature = @"<br /><br />
-Respectfully, the RRB WSD Water Accounting Platform team
+Respectfully, the TPNRD Groundwater Platform team
 <br /><br />
 ***
 <br /><br />
-You have received this email because you are assigned to receive support notifications within the Rosedale-Zybach Bravo WSD Water Accounting Platform. 
+You have received this email because you are assigned to receive support notifications within the TPNRD Groundwater Platform. 
 <br /><br />
 P.O. Box 20820<br />
 Bakersfield, CA 93390-0820<br />

@@ -47,8 +47,8 @@ namespace Zybach.API.Controllers
                 return BadRequest("Role ID is required.");
             }
 
-            const string applicationName = "Rosedale-Zybach Bravo Water Accounting Platform";
-            const string zybachBravoWaterStorageDistrict = "Rosedale-Zybach Bravo Water Storage District";
+            const string applicationName = "TPNRD Groundwater Platform";
+            const string zybachBravoWaterStorageDistrict = "Twin Platte Natural Resources District";
             var inviteModel = new KeystoneService.KeystoneInviteModel
             {
                 FirstName = inviteDto.FirstName,
@@ -57,7 +57,7 @@ namespace Zybach.API.Controllers
                 Subject = $"Invitation to the {applicationName}",
                 WelcomeText = $"You are receiving this notification because an administrator of the {applicationName}, an online service of {zybachBravoWaterStorageDistrict}, has invited you to create an account.",
                 SiteName = applicationName,
-                SignatureBlock = $"{zybachBravoWaterStorageDistrict}<br /><a href='mailto:admin@rrbwsd.com'>admin@rrbwsd.com</a><br />(661) 589-6045<br /><a href='https://www.rrbwsd.com'>https://www.rrbwsd.com</a>",
+                SignatureBlock = $"{zybachBravoWaterStorageDistrict}<br /><a href='mailto:donotreply@sitkatech.com'>donotreply@sitkatech.com</a><br />(661) 589-6045<br /><a href='https://www.twinplatte.org'>https://www.twinplatte.org</a>",
                 RedirectURL = _zybachConfiguration.KEYSTONE_REDIRECT_URL
             };
 
@@ -201,14 +201,14 @@ namespace Zybach.API.Controllers
 
         private static MailMessage GenerateUserCreatedEmail(string zybachUrl, UserDto user, ZybachDbContext dbContext)
         {
-            var messageBody = $@"A new user has signed up to the Rosedale-Zybach Bravo Water Accounting Platform: <br/><br/>
+            var messageBody = $@"A new user has signed up to the TPNRD Groundwater Platform: <br/><br/>
  {user.FullName} ({user.Email}) <br/><br/>
-As an administrator of the Water Accounting Platform, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
+As an administrator of the Groundwater Platform, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
 {SitkaSmtpClientService.GetSupportNotificationEmailSignature()}";
 
             var mailMessage = new MailMessage
             {
-                Subject = $"New User in Rosedale-Zybach Bravo Water Accounting Platform",
+                Subject = $"New User in TPNRD Groundwater Platform",
                 Body = $"Hello,<br /><br />{messageBody}",
             };
 
