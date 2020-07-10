@@ -159,7 +159,7 @@ Subject: {mm.Subject}
 
         public static void AddReplyToEmail(MailMessage mailMessage)
         {
-            mailMessage.ReplyToList.Add("admin@rrbwsd.com");
+            mailMessage.ReplyToList.Add("donotreply@sitkatech.com");
         }
 
         public static string GetSupportNotificationEmailSignature()
@@ -174,13 +174,13 @@ You have received this email because you are assigned to receive support notific
 P.O. Box 20820<br />
 Bakersfield, CA 93390-0820<br />
 Phone: (661) 589-6045<br />
-<a href=""mailto:admin@rrbwsd.com"">admin@rrbwsd.com</a>";
+<a href=""mailto:donotreply@sitkatech.com"">donotreply@sitkatech.com</a>";
             return supportNotificationEmailSignature;
         }
 
         public static MailAddress GetDefaultEmailFrom()
         {
-            return new MailAddress("donotreply @sitkatech.com", "RRB Water Accounting Platform");
+            return new MailAddress("donotreply@sitkatech.com", "TPNRD Groundwater Platform");
         }
 
         public static void AddBccRecipientsToEmail(MailMessage mailMessage, IEnumerable<string> recipients)
