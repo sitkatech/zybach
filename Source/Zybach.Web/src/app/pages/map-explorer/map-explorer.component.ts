@@ -118,7 +118,6 @@ export class MapExplorerComponent implements OnInit {
 
   onGridReady(params) {
     this.gridApi = params.api;
-    debugger;
   }
 
   public selectWellByFeatureFromArc(feature: Feature) {
@@ -245,7 +244,6 @@ export class MapExplorerComponent implements OnInit {
           if (params.value) {
             const time = moment(params.value)
             const timepiece = time.format('h:mm a');
-            debugger;
             return time.format('M/D/yyyy ') + timepiece;
           }
           else {

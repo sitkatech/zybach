@@ -78,11 +78,19 @@ namespace Zybach.API
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<ZybachDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
             services.AddControllers();
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ZybachConfiguration> configuration, ILogger<Startup> logger)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Zybach API V1");
+            });
+
             var secretPath = Environment.GetEnvironmentVariable("SECRET_PATH");
             var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (!File.Exists(secretPath) && environmentName != Microsoft.Extensions.Hosting.Environments.Development)

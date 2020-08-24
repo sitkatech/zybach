@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace Zybach.API.Controllers
 {
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class FileResourceController : ControllerBase
     {
         private readonly ZybachDbContext _dbContext;

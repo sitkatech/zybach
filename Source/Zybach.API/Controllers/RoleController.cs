@@ -7,6 +7,7 @@ using Zybach.EFModels.Entities;
 namespace Zybach.API.Controllers
 {
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class RoleController : ControllerBase
     {
         private readonly ZybachDbContext _dbContext;
