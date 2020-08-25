@@ -6,10 +6,12 @@ namespace Zybach.Models.DataTransferObjects
 {
     public class PumpedVolumeDto
     {
-        public string WellRegistrationID { get; set; }
-        public decimal AveragePumpedVolume { get; set; }
-        public int ReportingIntervalMinutes { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public PumpedVolumeTimePoint[] AveragePumpedVolumeTimeSeries { get; set; }
+    }
+
+    public class PumpedVolumeTimePoint
+    {
+        public DateTime Time { get; set; }
+        public decimal PumpedVolume { get; set; }
     }
 }
