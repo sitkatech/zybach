@@ -82,9 +82,9 @@ namespace Zybach.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("v0.1", new OpenApiInfo
                 {
-                    Version = "v1",
+                    Version = "v0.1",
                     Title = "Zybach API",
                     Description = "A component of the Water Data Program",
                 });
@@ -101,7 +101,7 @@ namespace Zybach.API
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Zybach API V1");
+                c.SwaggerEndpoint("/swagger/v0.1/swagger.json", "Zybach API V0.1");
             });
 
             var secretPath = Environment.GetEnvironmentVariable("SECRET_PATH");
