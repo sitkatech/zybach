@@ -2,15 +2,35 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Zybach.API.Services;
+using Zybach.API.Services.Authorization;
+using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
 namespace Zybach.API.Controllers
 {
     [ApiController]
     public class WellController : ControllerBase
     {
+        private readonly ZybachDbContext _dbContext;
+        private readonly ILogger<UserController> _logger;
+        private readonly ZybachConfiguration _zybachConfiguration;
+
+        public WellController(ZybachDbContext dbContext, ILogger<UserController> logger, IOptions<ZybachConfiguration> zybachConfigurationOptions)
+        {
+            _dbContext = dbContext;
+            _logger = logger;
+            _zybachConfiguration = zybachConfigurationOptions.Value;
+        }
+
         /// <summary>
         /// Returns a time series representing pumped volume at a well, averaged on a chosen reporting interval, for a given date range.
         /// Each point in the output time series represents the average pumped volume over the previous reporting interval.
@@ -31,7 +51,7 @@ namespace Zybach.API.Controllers
             [FromQuery] int reportingIntervalMinutes, [FromQuery] string startDateISO, [FromQuery] string endDateISO)
         {
             var startDate = DateTime.Parse(startDateISO, null, DateTimeStyles.RoundtripKind).Date;
-            var endDate = DateTime.Parse(startDateISO, null, DateTimeStyles.RoundtripKind).Date;
+            var endDate = DateTime.Parse(endDateISO, null, DateTimeStyles.RoundtripKind).Date;
 
             // todo: implement endpoint
 
@@ -56,5 +76,25 @@ namespace Zybach.API.Controllers
             // todo: implement endpoint
             return Ok(new WellSummaryStatisticsDto());
         }
+
+        [HttpGet("/well/get-wells")]
+        [UserViewFeature]
+        public async Task<ActionResult> GetWells()
+        {
+            var url = $"{_zybachConfiguration.GEOOPTIX_HOST_NAME}/project-overview-web/water-data-program/sites";
+            var response = await GeoOptixService.GetGeoOptixResponse(url, _zybachConfiguration.GEOOPTIX_USERNAME,
+                _zybachConfiguration.GEOOPTIX_PASSWORD, _zybachConfiguration.KEYSTONE_AUTHORITY_URL,
+                _zybachConfiguration.GEOOPTIX_CLIENT_ID, _zybachConfiguration.GEOOPTIX_CLIENT_SECRET, _dbContext);
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                return StatusCode((int)response.StatusCode);
+            }
+
+            var contents = await response.Content.ReadAsStringAsync();
+            var siteDtos = JsonConvert.DeserializeObject(contents);
+            return Ok(siteDtos);
+        }
+
     }
 }

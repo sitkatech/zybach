@@ -5,8 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Zybach.EFModels.Entities;
 
 namespace Zybach.API.Services
 {
@@ -171,6 +174,26 @@ namespace Zybach.API.Services
 
                     return new KeystoneApiResponse<T> { StatusCode = response.StatusCode, Payload = data };
                 }
+            }
+        }
+
+        public static async Task<TokenResponse> GetKeystoneAuthorizationToken(string username, string password, string authorityURL, string clientIdentifier, string clientSecret)
+        {
+
+            using (var client = new HttpClient())
+            {
+                var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
+                {
+                    Address = authorityURL,
+                    ClientId = clientIdentifier,
+                    ClientSecret = clientSecret,
+                    Scope = "openid all_claims keystone",
+
+                    UserName = username,
+                    Password = password
+                });
+
+                return tokenResponse;
             }
         }
     }

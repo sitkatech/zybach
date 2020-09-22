@@ -22,6 +22,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<DatabaseMigration> DatabaseMigration { get; set; }
         public virtual DbSet<FileResource> FileResource { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeType { get; set; }
+        public virtual DbSet<GeoOptixAccessToken> GeoOptixAccessToken { get; set; }
         public virtual DbSet<Neighborhood> Neighborhood { get; set; }
         public virtual DbSet<RawDroolMetric> RawDroolMetric { get; set; }
         public virtual DbSet<RegionalSubbasin> RegionalSubbasin { get; set; }
@@ -153,6 +154,11 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.FileResourceMimeTypeIconSmallFilename).IsUnicode(false);
 
                 entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<GeoOptixAccessToken>(entity =>
+            {
+                entity.Property(e => e.GeoOptixAccessTokenValue).IsUnicode(false);
             });
 
             modelBuilder.Entity<Neighborhood>(entity =>
