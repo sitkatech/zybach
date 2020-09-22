@@ -1,0 +1,13 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GeoOptixAccessToken](
+	[GeoOptixAccessTokenID] [int] IDENTITY(1,1) NOT NULL,
+	[GeoOptixAccessTokenValue] [varchar](2048) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[GeoOptixAccessTokenExpiryDate] [datetime] NOT NULL,
+ CONSTRAINT [PK_GeoOptixAccessToken_GeoOptixAccessTokenID] PRIMARY KEY CLUSTERED 
+(
+	[GeoOptixAccessTokenID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
