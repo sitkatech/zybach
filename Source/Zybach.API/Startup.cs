@@ -91,6 +91,8 @@ namespace Zybach.API
                     Description = "A component of the Water Data Program.\nFor authorization, please use your Keystone username and password.",
                 });
 
+                //For Swagger, we want people to authenticate with Keystone.
+                //This adds a modal to the window that provides inputs for Username, Password, ClientID, and ClientSecret
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,

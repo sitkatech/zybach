@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Zybach.API.Services.Authorization
 {
+    //Informs Swagger to apply authentication to any endpoint with any kind of Authorize attribute
     public class AuthorizeCheckOperationFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
