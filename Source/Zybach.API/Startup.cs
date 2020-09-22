@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using IdentityServer4.AccessTokenValidation;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Zybach.API.Services;
+using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API
@@ -86,8 +88,26 @@ namespace Zybach.API
                 {
                     Version = "v0.1",
                     Title = "Zybach API",
-                    Description = "A component of the Water Data Program",
+                    Description = "A component of the Water Data Program.\nFor authorization, please use your Keystone username and password.",
                 });
+
+                c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        Password = new OpenApiOAuthFlow
+                        {
+                            TokenUrl = new Uri(zybachConfiguration.KEYSTONE_AUTHORITY_URL),
+                            Scopes = new Dictionary<string, string>
+                            {
+                                {"openid all_claims keystone", "Demo API - full access"}
+                            }
+                        }
+                    }
+                });
+
+                c.OperationFilter<AuthorizeCheckOperationFilter>();
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -98,10 +118,13 @@ namespace Zybach.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ZybachConfiguration> configuration, ILogger<Startup> logger)
         {
+            var zybachConfiguration = configuration.Value;
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v0.1/swagger.json", "Zybach API V0.1");
+                c.OAuthAppName("ZybachAPIAccess");
+                c.OAuthUsePkce();
             });
 
             var secretPath = Environment.GetEnvironmentVariable("SECRET_PATH");

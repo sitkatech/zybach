@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -77,7 +72,14 @@ namespace Zybach.API.Controllers
             return Ok(new WellSummaryStatisticsDto());
         }
 
-        [HttpGet("/well/get-wells")]
+        /// <summary>
+        /// Returns a json object with basic information about every well in system
+        /// </summary>
+        /// <returns>Returns a json object with basic information about every well in system</returns>
+        /// <response code="200">Returns the list of wells</response>
+        /// <response code="401">If the authentication fails</response>
+        /// <response code="403">If Authorization level is insufficient</response>
+        [HttpGet("/well/getWells")]
         [UserViewFeature]
         public async Task<ActionResult> GetWells()
         {
@@ -95,6 +97,5 @@ namespace Zybach.API.Controllers
             var siteDtos = JsonConvert.DeserializeObject(contents);
             return Ok(siteDtos);
         }
-
     }
 }

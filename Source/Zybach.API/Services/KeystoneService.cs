@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -188,7 +189,6 @@ namespace Zybach.API.Services
                     ClientId = clientIdentifier,
                     ClientSecret = clientSecret,
                     Scope = "openid all_claims keystone",
-
                     UserName = username,
                     Password = password
                 });

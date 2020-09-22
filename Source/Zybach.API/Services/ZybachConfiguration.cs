@@ -15,6 +15,5 @@
         public string GEOOPTIX_CLIENT_ID { get; set; }
         public string GEOOPTIX_CLIENT_SECRET { get; set; }
         public string GEOOPTIX_HOST_NAME { get; set; }
-        public string GEOOPTIX_WEB_URL { get; set; }
     }
 }
