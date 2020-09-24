@@ -185,7 +185,7 @@ namespace Zybach.API.Controllers
         /// <response code="200">Returns the list of wells</response>
         /// <response code="401">If the authentication fails</response>
         /// <response code="403">If Authorization level is insufficient</response>
-        [HttpGet("/wells/getWells")]
+        [HttpGet("/wells")]
         [UserViewFeature]
         public async Task<ActionResult> GetWells()
         {
