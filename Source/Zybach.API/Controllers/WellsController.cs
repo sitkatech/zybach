@@ -42,7 +42,7 @@ namespace Zybach.API.Controllers
         /// <param name="endDateISO">The end date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00)</param>
         /// <returns>A time series representing the average pumped volume for the given date range.</returns>
         /// <response code="200">Returns the requested time series</response>
-        /// <response code="404">Will return this in a number of cases: if the Well is not found, if the Well has no Flow Sensors, if the Flow Sensor has no stored data available.</response>
+        /// <response code="404">Will return this in a number of cases: if the Well is not found, if the Well has no Flow Sensors, if the Flow Sensor has no stored data available, if the TimeSeries that is returned does not have dates that fall within the given date range.</response>
         /// <response code="400">If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)</response>
         [HttpGet("/wells/{wellRegistrationID}/pumpedVolume")]
         [ProducesResponseType(StatusCodes.Status200OK)]
