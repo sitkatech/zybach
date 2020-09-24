@@ -12,7 +12,7 @@ namespace Zybach.Models.DataTransferObjects
         
     }
 
-    public class FlowMeterDto
+    public class FlowMeterTimePointDto
     {
         [JsonProperty("time")]
         public DateTime ReadingTime { get; set; }

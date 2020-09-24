@@ -34,6 +34,7 @@ namespace Zybach.API.Controllers
         /// <summary>
         /// Returns a time series representing pumped volume at a well, averaged on a chosen reporting interval, for a given date range.
         /// Each point in the output time series represents the average pumped volume over the previous reporting interval.
+        /// In order for this call to be successful, the Well in question must have a Flow Meter sensor installed.
         /// </summary>
         /// <param name="wellRegistrationID">The Well Registration ID for the requested Well.</param>
         /// <param name="reportingIntervalMinutes">The reporting interval, in minutes</param>
@@ -41,7 +42,7 @@ namespace Zybach.API.Controllers
         /// <param name="endDateISO">The end date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00)</param>
         /// <returns>A time series representing the average pumped volume for the given date range.</returns>
         /// <response code="200">Returns the requested time series</response>
-        /// <response code="404">If the requested Well was not found</response>
+        /// <response code="404">Will return this in a number of cases: if the Well is not found, if the Well has no Flow Sensors, if the Flow Sensor has no stored data available.</response>
         /// <response code="400">If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)</response>
         [HttpGet("/wells/{wellRegistrationID}/pumpedVolume")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -121,7 +122,7 @@ namespace Zybach.API.Controllers
                 return StatusCode((int)timeSeriesDataResponse.StatusCode, message);
             }
             var timeSeriesDataContentsAsString = await timeSeriesDataResponse.Content.ReadAsStringAsync();
-            var timeSeriesDataContents = JsonConvert.DeserializeObject<List<FlowMeterDto>>($"[{timeSeriesDataContentsAsString.TrimEnd(',')}]");
+            var timeSeriesDataContents = JsonConvert.DeserializeObject<List<FlowMeterTimePointDto>>($"[{timeSeriesDataContentsAsString.TrimEnd(',')}]");
 
             var jsonInDates = timeSeriesDataContents.Where(x => x.ReadingTime >= startDate && x.ReadingTime <= endDate).ToList();
 
