@@ -48,6 +48,7 @@ namespace Zybach.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [UserViewFeature]
         public async Task<ActionResult<PumpedVolumeDto>> PumpedVolume([FromRoute] string wellRegistrationID,
             [FromQuery] int reportingIntervalMinutes, [FromQuery] string startDateISO, [FromQuery] string endDateISO)
         {
@@ -171,6 +172,7 @@ namespace Zybach.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [UserViewFeature]
         public async Task<ActionResult<WellSummaryStatisticsDto>> SummaryStatistics([FromRoute] string wellRegistrationID)
         {
             //todo implement endpoint
