@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "debug": "nodemon --inspect ./bin/www"
+    "start": "nodemon ./bucket/www",
+    "debug": "nodemon --inspect ./bucket/www"
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.6.0",
