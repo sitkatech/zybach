@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   zybachapi:
-    image: zybachapi
+    image: sitkacontainers.azurecr.io/zybach/nodeAPI
     build: .
     env_file:
       - .env
