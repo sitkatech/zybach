@@ -7,8 +7,8 @@ var secrets = require('./secrets');
 
 const apiRouter = require('./app_api/routes/index');
 const checkApiKey = function(req, res, next) {
-  let keyName = secrets.read('API_KEY_NAME_FILE') || process.env.API_KEY_NAME;
-  let keyValue = secrets.read('API_KEY_VALUE_FILE') || process.env.API_KEY_VALUE;
+  let keyName = secrets.read('API_KEY_NAME') || process.env.API_KEY_NAME;
+  let keyValue = secrets.read('API_KEY_VALUE') || process.env.API_KEY_VALUE;
   let keySent = req.get(keyName);
   if (keySent == null || keySent == undefined || keySent !== keyValue) {
     return res.status(401).json({status: 'error', reason: 'unauthenticated'});

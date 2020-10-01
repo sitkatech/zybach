@@ -2,8 +2,8 @@ const moment = require('moment');
 const secrets =  require('../../secrets');
 const { InfluxDB } = require('@influxdata/influxdb-client');
 
-const token = secrets.read('INFLUXDB_TOKEN_FILE') || process.env.INFLUXDB_TOKEN;
-const org = secrets.read('INFLUXDB_ORG_FILE') || process.env.INFLUXDB_ORG;
+const token = secrets.read('INFLUXDB_TOKEN') || process.env.INFLUXDB_TOKEN;
+const org = secrets.read('INFLUXDB_ORG') || process.env.INFLUXDB_ORG;
 
 const getPumpedVolume = async (req, res) => {
     const startDateQuery = req.query.startDate;
