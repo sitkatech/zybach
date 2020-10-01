@@ -4,14 +4,14 @@ const dockerSecret = {};
 
 dockerSecret.read = function read(secretNameAndPath) {
   try {
+    console.log(secretNameAndPath);
     return fs.readFileSync(`/run/secrets/${secretNameAndPath}`, 'utf8');
   } catch(err) {
-    //TODO implement logging here to ensure we know why we failed
-    // if (err.code !== 'ENOENT') {
-    //   log.error(`An error occurred while trying to read the secret: ${secretName}. Err: ${err}`);
-    // } else {
-    //   log.debug(`Could not find the secret, probably not running in swarm mode: ${secretName}. Err: ${err}`);
-    // }    
+    if (err.code !== 'ENOENT') {
+      console.log(`An error occurred while trying to read the secret: ${secretNameAndPath}. Err: ${err}`);
+    } else {
+      console.log(`Could not find the secret, probably not running in swarm mode: ${secretNameAndPath}. Err: ${err}`);
+    }    
     return false;
   }
 };
