@@ -5,9 +5,9 @@ services:
     image: sitkacontainers.azurecr.io/zybach/nodeapi
     build: .
     secrets:
-      - APP_SECRETS
+      - NODE_API_SECRETS
     ports:
       - 3000:3000
 secrets:
-  APP_SECRETS: 
+  NODE_API_SECRETS: 
     file: secrets.json
