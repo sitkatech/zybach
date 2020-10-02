@@ -34,7 +34,7 @@ const getPumpedVolume = async (req, res) => {
     }
 
     try {
-        let results = await getFlowMeterSeries(req.params.wellid, startDateQuery,  endDateQuery);
+        let results = await getFlowMeterSeries(req.params.wellRegistrationID, startDateQuery,  endDateQuery);
         //Don't do any processing if we don't have to
         if (interval == 15 || results.length == 0) {
             return res.status(200).json({ "status": "success", "resultCount": results.length, "result": results});

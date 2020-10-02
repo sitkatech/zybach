@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var secrets = require('./secrets');
+var swaggerUi = require('swagger-ui-express');
+const specs = require('../../swagger');
 
 const apiRouter = require('./app_api/routes/index');
 const checkApiKey = function(req, res, next) {
@@ -25,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.all('/api/wells/*', checkApiKey);
 app.use('/api', apiRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 
 // catch 404 and forward to error handler
