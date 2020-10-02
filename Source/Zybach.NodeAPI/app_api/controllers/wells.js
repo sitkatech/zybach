@@ -2,9 +2,6 @@ const moment = require('moment');
 const secrets =  require('../../secrets');
 const { InfluxDB } = require('@influxdata/influxdb-client');
 
-const token = secrets.read('INFLUXDB_TOKEN') || process.env.INFLUXDB_TOKEN;
-const org = secrets.read('INFLUXDB_ORG') || process.env.INFLUXDB_ORG;
-
 const getPumpedVolume = async (req, res) => {
     const startDateQuery = req.query.startDate;
     const endDateQuery = req.query.endDate ? req.query.endDate : moment(new Date()).format();
@@ -73,6 +70,8 @@ const getPumpedVolume = async (req, res) => {
 //"G-118986"
 
 async function getFlowMeterSeries(wellRegistrationID, startDate, endDate) {
+    const token = secrets.INFLUXDB_TOKEN;
+    const org = secrets.INFLUXDB_ORG;
     const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: token });
     const queryApi = client.getQueryApi(org);
 

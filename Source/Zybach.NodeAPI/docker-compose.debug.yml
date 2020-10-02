@@ -4,9 +4,12 @@ services:
   zybachapi:
     image: zybachapi
     build: .
-    env_file:
-      - .env
+    secrets:
+      - APP_SECRETS
     ports:
       - 3000:3000
       - 9229:9229
     command: node --inspect=0.0.0.0:9229 ./bucket/www
+secrets:
+  APP_SECRETS: 
+    file: secrets.json

@@ -7,6 +7,7 @@
     "debug": "node --inspect ./bucket/www"
   },
   "dependencies": {
+    "@cloudreach/docker-secrets": "^1.0.3",
     "@influxdata/influxdb-client": "^1.6.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
