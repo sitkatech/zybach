@@ -3,9 +3,14 @@ const secrets =  require('../../secrets');
 const { InfluxDB } = require('@influxdata/influxdb-client');
 
 const getPumpedVolume = async (req, res) => {
+    const wellRegistrationIDs = req.query.wellRegistrationIDs
     const startDateQuery = req.query.startDate;
     const endDateQuery = req.query.endDate ? req.query.endDate : moment(new Date()).format();
     const interval = req.query.interval ? parseInt(req.query.interval) : 60;
+
+    if (wellRegistrationIDs === null || wellRegistrationIDs === undefined) {
+        return res.status(400).json({ "status": "invalid request", "reason": "No Well Registration IDs included in request. Please include at least one Well Registration ID." });
+    }
 
     [{ name: "Start Date", value: startDateQuery },
     { name: "End Date", value: endDateQuery }].forEach(x => {
@@ -34,32 +39,8 @@ const getPumpedVolume = async (req, res) => {
     }
 
     try {
-        let results = await getFlowMeterSeries(req.params.wellRegistrationID, startDateQuery,  endDateQuery);
-        //Don't do any processing if we don't have to
-        if (interval == 15 || results.length == 0) {
-            return res.status(200).json({ "status": "success", "resultCount": results.length, "result": results});
-        }
-
-        let aggregatedResults = [];
-        let sum = 0;
-        let count = 0;
-        let startTime = results[0].endTime
-        let timeThreshold = interval * 60 * 1000;
-        results.forEach(x => {
-            sum += x.gallons;
-            count++;
-            if  (x.endTime.getTime() - startTime.getTime() >= timeThreshold) {
-                aggregatedResults.push({
-                    endTime : x.endTime,
-                    gallons : sum / count
-                })
-                sum = 0;
-                count = 0;
-                startTime = x.endTime;
-            }
-        })
-
-        return res.status(200).json({ "status": "success", "resultCount": aggregatedResults.length, "result": aggregatedResults});
+        let results = await getFlowMeterSeries(wellRegistrationIDs, startDateQuery,  endDateQuery);
+        return res.status(200).json({ "status": "success", "result": results.length > 0 ? structureResults(results, interval) : results});
     }
     catch (err) {
         return res.status(500).json({ "status": "failed", "result":err });
@@ -69,27 +50,20 @@ const getPumpedVolume = async (req, res) => {
 //"G-162367"
 //"G-118986"
 
-async function getFlowMeterSeries(wellRegistrationID, startDate, endDate) {
+async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     const token = secrets.INFLUXDB_TOKEN;
     const org = secrets.INFLUXDB_ORG;
     const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: token });
     const queryApi = client.getQueryApi(org);
 
-    /*
-        the flow meter data comes in 30 minute increments, so this query fills in the missing intervals with 0 and then calculates
-        a moving average using a window size of two to average out the 30 minute readings to 15 minute readings.
-    */
-
+    const registrationIDQuery = `r["registration-id"] == "${Array.isArray(wellRegistrationIDs) ? wellRegistrationIDs.join(`" or r["registration-id"]=="`) : wellRegistrationIDs}"`;
     const query = `from(bucket: "tpnrd") \
         |> range(start: ${startDate}, stop:${endDate}) \
         |> filter(fn: (r) => 
             r["_measurement"] == "gallons" and \
             r["_field"] == "pumped" and \
-            r["registration-id"] == "${wellRegistrationID}"
-        ) \
-        |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
-        |> fill(value: 0.0) \
-        |> movingAverage(n: 2)`;
+            ${registrationIDQuery}
+        )`;
 
     let results = [];
 
@@ -107,6 +81,62 @@ async function getFlowMeterSeries(wellRegistrationID, startDate, endDate) {
             },
         });
     });
+}
+
+function structureResults(results, interval) {
+    const intervalInMS = interval * 60000;
+    const startDate = new Date(results[0].endTime.getTime() - intervalInMS);
+    const endDate = results[results.length - 1].endTime;
+    const distinctWells = [...new Set(results.map(x => x.wellRegistrationID))];
+    let totalResults = 0;
+    let volumesByWell = [];
+    distinctWells.forEach(wellRegistrationID => {
+        let currentWellResults = results.filter(x => x.wellRegistrationID === wellRegistrationID);
+        let aggregatedResults = interval > 15 ? aggregateResults(currentWellResults, interval) : currentWellResults;
+        totalResults += aggregatedResults.length;
+        let finalWellResults = aggregatedResults.filter(x => x.wellRegistrationID == wellRegistrationID).map(x => {
+            return {intervalEndTime : x.endTime, gallonsPumped: x.gallons}});
+        let newWellObj = {
+            wellRegistrationID : wellRegistrationID,
+            intervalCount : finalWellResults.length,
+            internalVolumes : finalWellResults
+        };
+        volumesByWell.push(newWellObj);       
+    });
+
+    return {
+        intervalCountTotal : totalResults,
+        intervalWidthInMinutes : interval,
+        intervalStart : startDate.toISOString(),
+        intervalEnd: endDate.toISOString(),
+        durationInMinutes : Math.round((endDate.getTime() - startDate.getTime()) / 60000),
+        wellCount : distinctWells.length,
+        volumesByWell : volumesByWell
+    }
+}
+
+function aggregateResults(resultsToAggregate, interval) {
+    let aggregatedResults = [];
+    let sum = 0;
+    let count = 0;
+    let startTime = resultsToAggregate[0].endTime
+    let timeThreshold = interval * 60 * 1000;
+    resultsToAggregate.forEach(x => {
+        sum += x.gallons;
+        count++;
+        if  (x.endTime.getTime() - startTime.getTime() >= timeThreshold) {
+            aggregatedResults.push({
+                wellRegistrationID: x.wellRegistrationID,
+                endTime : x.endTime,
+                gallons : sum / count
+            })
+            sum = 0;
+            count = 0;
+            startTime = x.endTime;
+        }
+    })
+
+    return aggregatedResults;
 }
 
 module.exports = { getPumpedVolume };
