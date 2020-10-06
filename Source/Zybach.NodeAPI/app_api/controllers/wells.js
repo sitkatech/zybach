@@ -3,13 +3,13 @@ const secrets =  require('../../secrets');
 const { InfluxDB } = require('@influxdata/influxdb-client');
 
 const getPumpedVolume = async (req, res) => {
-    const wellRegistrationIDs = req.query.wellRegistrationIDs
+    const wellRegistrationIDs = req.params.wellRegistrationID || req.query.wellRegistrationIDs;
     const startDateQuery = req.query.startDate;
     const endDateQuery = req.query.endDate ? req.query.endDate : moment(new Date()).format();
     const interval = req.query.interval ? parseInt(req.query.interval) : 60;
 
     if (wellRegistrationIDs === null || wellRegistrationIDs === undefined) {
-        return res.status(400).json({ "status": "invalid request", "reason": "No Well Registration IDs included in request. Please include at least one Well Registration ID." });
+        return res.status(400).json({ "status": "invalid request", "reason": "No Well Registration ID included in request. Please include a Well Registration ID." });
     }
 
     [{ name: "Start Date", value: startDateQuery },
