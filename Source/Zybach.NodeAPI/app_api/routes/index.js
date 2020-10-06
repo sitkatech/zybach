@@ -74,7 +74,7 @@ const ctrlWells = require('../controllers/wells');
 
 /**
 * @swagger
-* /api/wells/:wellRegistrationID/pumpedVolume:
+* /api/wells/{wellRegistrationID}/pumpedVolume:
 *   get:
 *     tags: 
 *       - Wells
@@ -82,7 +82,7 @@ const ctrlWells = require('../controllers/wells');
 *     parameters:
 *       - name: wellRegistrationID
 *         description: The Well Registration ID for the requested Well
-*         in: route
+*         in: path
 *         required: true
 *       - name: startDate
 *         description: The start date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00)
