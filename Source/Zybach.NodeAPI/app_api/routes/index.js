@@ -146,10 +146,10 @@ router.route('/wells/:wellRegistrationID/pumpedVolume').get(ctrlWells.getPumpedV
 *       - Wells
 *     summary: Returns a time series representing pumped volume at a well or series of wells, averaged on a chosen reporting interval, for a given date range. Each point in the output time series represents the average pumped volume over the previous reporting interval.
 *     parameters:
-*       - name: wellRegistrationIDs
-*         description: The Well Registration ID(s) for the requested Well(s)
+*       - name: filter
+*         description: The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data for every Well that has reported data within the time range.
 *         in: query
-*         required: true
+*         required: false
 *         schema:
 *           type: array
 *           items: 

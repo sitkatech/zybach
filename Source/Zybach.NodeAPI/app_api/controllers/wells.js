@@ -2,15 +2,11 @@ const moment = require('moment');
 const secrets =  require('../../secrets');
 const { InfluxDB } = require('@influxdata/influxdb-client');
 
-const getPumpedVolume = async (req, res) => {
-    const wellRegistrationIDs = req.params.wellRegistrationID || req.query.wellRegistrationIDs;
+const getPumpedVolume = async (req, res)  => {
+    const wellRegistrationIDs = req.params.wellRegistrationID || req.query.filter;
     const startDateQuery = req.query.startDate;
     const endDateQuery = req.query.endDate ? req.query.endDate : moment(new Date()).format();
     const interval = req.query.interval ? parseInt(req.query.interval) : 60;
-
-    if (wellRegistrationIDs === null || wellRegistrationIDs === undefined) {
-        return res.status(400).json({ "status": "invalid request", "reason": "No Well Registration ID included in request. Please include a Well Registration ID." });
-    }
 
     [{ name: "Start Date", value: startDateQuery },
     { name: "End Date", value: endDateQuery }].forEach(x => {
@@ -56,12 +52,12 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: token });
     const queryApi = client.getQueryApi(org);
 
-    const registrationIDQuery = `r["registration-id"] == "${Array.isArray(wellRegistrationIDs) ? wellRegistrationIDs.join(`" or r["registration-id"]=="`) : wellRegistrationIDs}"`;
+    const registrationIDQuery = wellRegistrationIDs !== null && wellRegistrationIDs != undefined ? `and r["registration-id"] == "${Array.isArray(wellRegistrationIDs) ? wellRegistrationIDs.join(`" or r["registration-id"]=="`) : wellRegistrationIDs}"`:"";
     const query = `from(bucket: "tpnrd") \
         |> range(start: ${startDate}, stop:${endDate}) \
         |> filter(fn: (r) => 
             r["_measurement"] == "gallons" and \
-            r["_field"] == "pumped" and \
+            r["_field"] == "pumped" \
             ${registrationIDQuery}
         )`;
 
