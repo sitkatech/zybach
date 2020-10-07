@@ -143,21 +143,21 @@ function abbreviateWellsDataResponse(wellsData) {
 
 function abbreviateWellDataResponse(wellData) {
     return {
-      WellRegistrationID : wellData.CanonicalName,
-      Description : wellData.Description,
-      Tags : wellData.Tags,
-      Location : wellData.Location,
-      CreateDate : wellData.CreateDate,
-      CreateUserID : wellData.CreateUserID,
-      UpdateDate : wellData.UpdateDate,
-      UpdateUserID : wellData.UpdateUserID  
+        WellRegistrationID: wellData.CanonicalName,
+        Description: wellData.Description,
+        Tags: wellData.Tags,
+        Location: wellData.Location,
+        CreateDate: wellData.CreateDate,
+        CreateUserID: wellData.CreateUserID,
+        UpdateDate: wellData.UpdateDate,
+        UpdateUserID: wellData.UpdateUserID
     }
 }
 
 function abbreviateWellSensorsResponse(wellSensors) {
     return wellSensors.map(x => ({
-        SensorName : x.CanonicalName,
-        SensorType : x.Definition.sensorType 
+        SensorName: x.CanonicalName,
+        SensorType: x.Definition.sensorType
     }));
 }
 

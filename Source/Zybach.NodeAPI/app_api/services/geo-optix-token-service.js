@@ -18,8 +18,8 @@ const getGeoOptixAccessToken = async function () {
                         await deleteTableRecords();
                     }
                     const newToken = {
-                        GeoOptixAccessTokenValue : newTokenRequest.access_token,
-                        GeoOptixAccessTokenExpiryDate : new Date(new Date().getTime() + newTokenRequest.expires_in * 1000)
+                        GeoOptixAccessTokenValue: newTokenRequest.access_token,
+                        GeoOptixAccessTokenExpiryDate: new Date(new Date().getTime() + newTokenRequest.expires_in * 1000)
                     };
                     await insertNewTokenIntoDatabase(newToken);
                     currentToken = newToken;
@@ -90,4 +90,4 @@ async function makeKeystoneTokenRequest() {
     });
 }
 
-module.exports =  {getGeoOptixAccessToken}
+module.exports = { getGeoOptixAccessToken }
