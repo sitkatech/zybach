@@ -2,9 +2,8 @@ const secrets = require('./secrets');
 delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
 const appInsights = require('applicationinsights');
 appInsights.setup(secrets.APPINSIGHTS_INSTRUMENTATIONKEY)
-          .setAutoCollectConsole(true, true)
-          .start();
-const client = appInsights.defaultClient;
+  .setAutoCollectConsole(true, true)
+  .start();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -26,12 +25,12 @@ app.use('/api', apiRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -39,7 +38,7 @@ app.use(function(err, req, res, next) {
   console.error(err);
 
   // render the error page
-  res.status(err.status || 500).json({status: err.message});
+  res.status(err.status || 500).json({ status: err.message });
 });
 
 module.exports = app;

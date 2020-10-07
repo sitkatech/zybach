@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const ctrlWells = require('../controllers/wells');
-const ctrlAuthentication = require('../controllers/authentication');
+const authenticationService = require('../services/authentication-service');
 
 //Ensure that all requests for wells have authentication
-router.all('/wells/*', ctrlAuthentication.checkApiKey);
+router.all('/wells*', authenticationService.checkApiKey);
 
 /**
 * @swagger
@@ -66,6 +66,36 @@ router.all('/wells/*', ctrlAuthentication.checkApiKey);
 *                                               type: number
 *                                               format: double
 *                                               description: gallons pumped over the previous interval
+*   WellDetailsObject:
+*       properties:
+*           WellRegistrationID:
+*               type: string
+*               description: The registration ID of the Well
+*           Description:
+*               type: string
+*               description: A description of the well (if provided)
+*           Tags:
+*               type: array
+*               description: Array of tags that group wells together
+*               items:
+*                   type: string
+*           Location:
+*               type: object
+*               description: A geojson object that provides the location of the Well
+*           CreateDate:
+*               type: string
+*               format: date-time
+*               description: The date the well was created
+*           CreateUserID:
+*               type: number
+*               description: The ID for the GeoOptix user who created the well
+*           UpdateDate:
+*               type: string
+*               format: date-time
+*               description: The date the well was last updated
+*           UpdateUserID:
+*               type: number
+*               description: The ID for the GeoOptix user who last updated the well
 *   Error:
 *       properties:
 *           status: 
@@ -78,52 +108,28 @@ router.all('/wells/*', ctrlAuthentication.checkApiKey);
 
 /**
 * @swagger
-* /api/wells/{wellRegistrationID}/pumpedVolume:
+* /api/wells:
 *   get:
 *     tags: 
 *       - Wells
-*     summary: Returns a time series representing pumped volume at a well, averaged on a chosen reporting interval, for a given date range. Each point in the output time series represents the average pumped volume over the previous reporting interval.
-*     parameters:
-*       - name: wellRegistrationID
-*         description: The Well Registration ID for the requested Well
-*         in: path
-*         required: true
-*       - name: startDate
-*         description: The start date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00)
-*         in: query
-*         required: true
-*         schema:
-*           type: string
-*       - name: endDate
-*         description: The end date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00). Defaults to today's date
-*         in: query
-*         required: false
-*         schema:
-*           type: string
-*       - name: interval
-*         description: The reporting interval, in minutes. Defaults to 60.
-*         in: query
-*         required: false
-*         schema:
-*           type: integer
+*     summary: Returns an array of all Wells in the Water Data Program registered in GeoOptix
 *     security:
 *       - bearerAuth: [] 
 *     responses: 
 *       200:
-*         description: Returns the requested time series
+*         description: Returns a list of all wells
 *         content: 
 *           application/json:
 *               schema:
 *                   type: object
-*                   $ref: '#/definitions/PumpedVolumeReturnObject'
-*           
-*       400:
-*         description: If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)
-*         content: 
-*           application/json:
-*               schema:
-*                   type: object
-*                   $ref: '#/definitions/Error'
+*                   properties:
+*                       status:
+*                           type: string
+*                       result:
+*                           type: array
+*                           items:
+*                               type: object
+*                               $ref: '#/definitions/WellDetailsObject'
 *       401:
 *         description: Unauthorized to perform request
 *         content: 
@@ -138,9 +144,15 @@ router.all('/wells/*', ctrlAuthentication.checkApiKey);
 *               schema:
 *                   type: object
 *                   $ref: '#/definitions/Error'
+*       500:
+*         description: If something went wrong within the API
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
 */
-router.route('/wells/:wellRegistrationID/pumpedVolume').get(ctrlWells.getPumpedVolume);
-
+router.route('/wells').get(ctrlWells.getWells);
 
 /**
 * @swagger
@@ -209,8 +221,160 @@ router.route('/wells/:wellRegistrationID/pumpedVolume').get(ctrlWells.getPumpedV
 *               schema:
 *                   type: object
 *                   $ref: '#/definitions/Error'
+*       500:
+*         description: If something went wrong within the API
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
 */
 router.route('/wells/pumpedVolume').get(ctrlWells.getPumpedVolume);
+
+/**
+* @swagger
+* /api/wells/{wellRegistrationID}:
+*   get:
+*     tags: 
+*       - Wells
+*     summary: Returns Well details from GeoOptix for a given well along with an array of sensors that have been associated with that Well. 
+*     security:
+*       - bearerAuth: [] 
+*     parameters:
+*       - name: wellRegistrationID
+*         description: The Well Registration ID for the requested Well
+*         in: path
+*         required: true
+*     responses: 
+*       200:
+*         description: Returns a Well detail object with an array of associated wells
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   properties:
+*                       status:
+*                           type: string
+*                       result:
+*                           type: object
+*                           properties:
+*                               wellDetails:
+*                                   type: object
+*                                   $ref: '#/definitions/WellDetailsObject'
+*                               sensorsAssociatedWithWell:
+*                                   type: array
+*                                   items:
+*                                       type: object
+*                                       properties:
+*                                           SensorName:
+*                                               type: string
+*                                               description: Name of sensor
+*                                           SensorType:
+*                                               type: string
+*                                               description: Type of sensor
+*           
+*       400:
+*         description: If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*       401:
+*         description: Unauthorized to perform request
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*       403:
+*         description: Forbidden
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*       500:
+*         description: If something went wrong within the API
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*/
+router.route('/wells/:wellRegistrationID').get(ctrlWells.getWell);
+
+/**
+* @swagger
+* /api/wells/{wellRegistrationID}/pumpedVolume:
+*   get:
+*     tags: 
+*       - Wells
+*     summary: Returns a time series representing pumped volume at a well, averaged on a chosen reporting interval, for a given date range. Each point in the output time series represents the average pumped volume over the previous reporting interval.
+*     parameters:
+*       - name: wellRegistrationID
+*         description: The Well Registration ID for the requested Well
+*         in: path
+*         required: true
+*       - name: startDate
+*         description: The start date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00)
+*         in: query
+*         required: true
+*         schema:
+*           type: string
+*       - name: endDate
+*         description: The end date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00). Defaults to today's date
+*         in: query
+*         required: false
+*         schema:
+*           type: string
+*       - name: interval
+*         description: The reporting interval, in minutes. Defaults to 60.
+*         in: query
+*         required: false
+*         schema:
+*           type: integer
+*     security:
+*       - bearerAuth: [] 
+*     responses: 
+*       200:
+*         description: Returns the requested time series
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/PumpedVolumeReturnObject'
+*           
+*       400:
+*         description: If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*       401:
+*         description: Unauthorized to perform request
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*       403:
+*         description: Forbidden
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*       500:
+*         description: If something went wrong within the API
+*         content: 
+*           application/json:
+*               schema:
+*                   type: object
+*                   $ref: '#/definitions/Error'
+*/
+router.route('/wells/:wellRegistrationID/pumpedVolume').get(ctrlWells.getPumpedVolume);
 
 /**
 * @swagger
