@@ -10,13 +10,16 @@
     "@cloudreach/docker-secrets": "^1.0.3",
     "@influxdata/influxdb-client": "^1.6.0",
     "applicationinsights": "^1.8.7",
+    "axios": "^0.20.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "moment": "^2.29.0",
     "morgan": "~1.9.1",
+    "mssql": "^6.2.3",
     "nodemon": "^2.0.4",
+    "querystring": "^0.2.0",
     "swagger-jsdoc": "^4.2.0",
     "swagger-ui-express": "^4.1.4"
   }
