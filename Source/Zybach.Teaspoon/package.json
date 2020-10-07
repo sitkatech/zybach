@@ -4,6 +4,7 @@
   "dependencies": {
     "@cloudreach/docker-secrets": "^1.0.3",
     "@influxdata/influxdb-client": "^1.6.0",
+    "applicationinsights": "^1.8.7",
     "debug": "^4.2.0",
     "fs": "0.0.1-security",
     "node-getopt": "^0.3.2",

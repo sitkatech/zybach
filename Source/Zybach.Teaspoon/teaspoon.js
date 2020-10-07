@@ -1,13 +1,17 @@
-const debug = require('debug');
+const {APPINSIGHTS_INSTRUMENTATIONKEY} = require('./config');
+delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
+const appInsights = require('applicationinsights');
+appInsights.setup(APPINSIGHTS_INSTRUMENTATIONKEY)
+          .setAutoCollectConsole(true, true)
+          .start();
+const client = appInsights.defaultClient;
+
 const {getFlowMeterSeries,getContinuityMeterSeries,writePumpedVolumeIntervals, getWellsWithDataAsOf, getWellsWithEarliestTimestamps} = require('./influxService');
 const getGpmFromNednrAPI = require('./nednrService');
 let GetOpt = require('node-getopt');
 let Stopwatch = require('statman-stopwatch');
 
 const stopwatch = new Stopwatch();
-debug.log = console.debug.bind(console);
-
-process.on('unhandledRejection', console.log.bind(console));
 
 function processWell(well) {
     return (new Promise((resolve) => {
@@ -28,7 +32,6 @@ function processWell(well) {
 
         seriesProcessedPromise.then(res => {
             if (!res.length){
-                //console.log(`No points for ${well.wellRegistrationID}`);
                 return Promise.resolve({
                     wellRegistrationID:well.wellRegistrationID,
                     status:"error",
@@ -36,12 +39,10 @@ function processWell(well) {
                 });
             }
             return writePumpedVolumeIntervals(res, well.wellRegistrationID);
-        // todo: resolve a more useful object for logging.
         }).then(res => {
             res.sensorType = well.sensorType;
             resolve(res);
         }).catch(()=>{
-            //console.log(`Strange error for ${well.wellRegistrationID}`);
             resolve({
                 wellRegistrationID: well.wellRegistrationID,
                 sensorType: well.sensorType,
@@ -54,14 +55,13 @@ function processWell(well) {
 
 async function readyDebug() {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    debug("TSPM Ready");
+    console.log("TSPM Ready");
 }
 
 async function assignPumpingRate(continuityWell){
     const pumpingRate = await getGpmFromNednrAPI(continuityWell.wellRegistrationID);
 
     continuityWell.pumpingRate = pumpingRate
-    //console.log(`Assigned pumping rate to Well ${continuityWell.wellRegistrationID}`);
 }
 
 async function incrementalProcessing() {
@@ -86,16 +86,9 @@ async function incrementalProcessing() {
 
 async function assignPumpingRatesAndProcessWells(wellsToProcess) {
     const continuityWellsWithNewData = wellsToProcess.filter(x => x.sensorType === 'continuity');
-    console.log("Assigning pumping rates to continuity wells");
-    stopwatch.start();
     for (let i = 0; i < continuityWellsWithNewData.length; i++) {
         await assignPumpingRate(continuityWellsWithNewData[i]);
     }
-    stopwatch.stop();
-    console.log("Done assigining pumping rates to continuity wells");
-    console.log(`(Took ${stopwatch.read()} ms)`);
-
-    stopwatch.reset();
 
     // will work through the wells and their processing as promises, only allowing one well's
     // promise to be created after the previous one is resolved, so our task queue will stay
@@ -111,14 +104,16 @@ async function assignPumpingRatesAndProcessWells(wellsToProcess) {
         results.push(result);
     }
 
-    console.log(results);
-    console.log(results.filter(x => x.sensorType == 'flow' && x.status == 'error').length + " erroring flows");
-    console.log(results.filter(x => x.sensorType == 'continuity' && x.status == 'error').length + " erroring continuities");
+    const errors = results.filter(x=>x.status === "error");
+
+    if (errors && errors.length){
+        console.error(`Encountered errors on ${errors.length} wells!`);
+        errors.forEach(e=>console.error(e));
+    }
 }
 
 async function completeProcessing(){
     const wellsWithEarliestTimestamp = Array.from(await getWellsWithEarliestTimestamps());
-    console.log(wellsWithEarliestTimestamp);
     await assignPumpingRatesAndProcessWells(wellsWithEarliestTimestamp);
 }
 
@@ -133,15 +128,11 @@ async function main(){
         .bindHelp()     // bind option 'help' to default action
         .parseSystem(); // parse command line
     
-    console.log(`Begin run at ${new Date()}`);
-
     if (getopt.options.complete) {
         completeProcessing();
     } else{
         incrementalProcessing();
     }
- 
-    console.log(`End run at ${new Date()}`);
 }
 
 main();

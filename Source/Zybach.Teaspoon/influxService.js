@@ -2,7 +2,7 @@ const { InfluxDB } = require('@influxdata/influxdb-client');
 const { Client } = require('node-rest-client');
 const {normalizeISOStringTime} = require("./util")
 
-const { influxDBToken, influxDBOrg } = require('./influxConfig');
+const { influxDBToken, influxDBOrg } = require('./config');
 const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: influxDBToken });
 
 // these get*MeterSeries functions have their work wrapped in promises so that we don't proceed without letting all of the rows get processed and pushed to the intervalsToWrite array later
@@ -139,7 +139,6 @@ function writePumpedVolumeIntervals(intervals, wellRegistrationID) {
         let client = new Client();
         client.post(url, args, (body, response) => {
             if (response.statusCode == 200 || response.statusCode == 204) {
-                console.log(`Posted new time series for Well ${wellRegistrationID}. Status ${response.statusCode}`);
                 resolve({
                     wellRegistrationID: wellRegistrationID,
                     status: "success"
@@ -220,8 +219,6 @@ async function getWellsWithDataAsOf(startTime) {
 
     const flowWells = await flowMeterPromise;
     const continuityWells = await continuityMeterPromise;
-
-    console.log(`${[...continuityWells].length} continuities`)
 
     return new Set([...flowWells, ...continuityWells])
 }

@@ -19,7 +19,6 @@ async function _main() {
         return -1;
     }
     let maxPage = parseInt(getopt.options.page) + parseInt(getopt.options.count) - 1;
-    console.info(`retrieving WellIDs for all Wells in Twin Platte...`);
 
     let twinPlatteWells = []
     let nextPageUrl = "dummy";
