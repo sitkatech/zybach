@@ -160,7 +160,7 @@ async function getWellsWithDataAsOf(startTime) {
             |> filter(fn: (r) => r["_measurement"] == "gallons") \
             |> filter(fn: (r) => r["_field"] == "pumped") \
             |> count() \
-            |> group(columns: ["registration_id"])`;
+            |> group(columns: ["registration-id"])`;
 
 
     const continuityMeterQuery = `from(bucket: "tpnrd") \
@@ -168,7 +168,7 @@ async function getWellsWithDataAsOf(startTime) {
             |> filter(fn: (r) => r["_measurement"] == "continuity") \
             |> filter(fn: (r) => r["_field"] == "on") \
             |> count() \
-            |> group(columns: ["registration_id"])`;
+            |> group(columns: ["registration-id"])`;
 
     const queryApi = client.getQueryApi(influxDBOrg);
 
@@ -236,14 +236,14 @@ async function getWellsWithEarliestTimestamps(){
             |> filter(fn: (r) => r["_measurement"] == "gallons") \
             |> filter(fn: (r) => r["_field"] == "pumped") \
             |> first() \
-            |> group(columns: ["registration_id"])`;
+            |> group(columns: ["registration-id"])`;
 
     const continuityMeterQuery = `from(bucket: "tpnrd") \
     |> range(start: 2000-01-01T00:00:00Z) \
     |> filter(fn: (r) => r["_measurement"] == "continuity") \
     |> filter(fn: (r) => r["_field"] == "on") \
     |> first() \
-    |> group(columns: ["registration_id"])`;
+    |> group(columns: ["registration-id"])`;
 
     const continuityMeterPromise = new Promise((resolve, reject) => {
         const wells = []
