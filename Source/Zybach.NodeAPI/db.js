@@ -1,10 +1,11 @@
 // DB.js config for your database  
-const sql = require('mssql')
+const sql = require('mssql');
+const secrets = require('./secrets');
 const config = {
-    user: 'ZybachWebLocal',
-    password: 'password#1',
-    server: "host.docker.internal",
-    database: "ZybachDB"
+    user: secrets.ZYBACH_DB_USER,
+    password: secrets.ZYBACH_DB_PASSWORD,
+    server: secrets.ZYBACH_DB_SERVER,
+    database: secrets.ZYBACH_DB_NAME
 }
 const poolPromise = new sql.ConnectionPool(config)
     .connect()
