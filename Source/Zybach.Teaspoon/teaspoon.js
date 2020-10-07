@@ -65,10 +65,7 @@ async function assignPumpingRate(continuityWell){
 }
 
 async function incrementalProcessing() {
-    // todo: only call this code if running in development mode
-    await readyDebug();
-
-    // todo: kill minutes and seconds so that 15min intervals are what they should be
+    // minutes and seconds so that 15min intervals are what they should be
     const startTime = new Date();
     startTime.setHours(startTime.getHours() - 3);
     startTime.setMinutes(0);
@@ -126,6 +123,9 @@ async function completeProcessing(){
 }
 
 async function main(){
+    // debugging isn't exactly working anymore now that I've switched over to docker-compose for parity with QA
+    // await readyDebug();
+
     let getopt = new GetOpt([
         ['c', 'complete'  , 're-run from earliest available data for all wells'],
         ['h', 'help'      , 'display this help'],
