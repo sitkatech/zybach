@@ -1,10 +1,8 @@
 const moment = require('moment');
 const secrets = require('../../secrets');
+const geoOptixService = require('../services/geo-optix-token-service');
 const { InfluxDB } = require('@influxdata/influxdb-client');
-const { poolPromise } = require('../../db')
-const sql = require('mssql');
 const axios = require('axios');
-const querystring = require('querystring');
 
 const getPumpedVolume = async (req, res) => {
     const wellRegistrationIDs = req.params.wellRegistrationID || req.query.filter;
@@ -47,91 +45,6 @@ const getPumpedVolume = async (req, res) => {
         return res.status(500).json({ "status": "failed", "result": err.message });
     }
 };
-
-//"G-162367"
-//"G-118986"
-
-async function getGeoOptixAccessToken() {
-    return new Promise(async function (resolve, reject) {
-        try {
-            const pool = await poolPromise
-            const getAccessTokenResult = await pool.request()
-                .query('select top 1 * from dbo.GeoOptixAccessToken');
-            let currentToken = getAccessTokenResult.recordset.length > 0 ? getAccessTokenResult.recordset[0].GeoOptixAccessTokenValue : null;
-            if (currentToken == null || ((new Date(currentToken).getTime() - new Date().getTime()) / 1000 * 60 * 60) < 2) {
-                try {
-                    const newTokenRequest = await makeKeystoneTokenRequest();
-                    if (currentToken != null) {
-                        await deleteTableRecords();
-                    }
-                    await insertNewTokenIntoDatabase(newTokenRequest.data);
-                    currentToken = newTokenRequest.data.access_token;
-                }
-                catch (err) {
-                    reject(err);
-                }
-            }
-            resolve(currentToken);
-        } catch (err) {
-            console.log(err.message);
-            reject(err.message);
-        }
-    });
-}
-
-async function deleteTableRecords() {
-    return new Promise(async function (resolve, reject) {
-        const pool = await poolPromise
-        const result = await pool.request()
-            .query('delete from dbo.GeoOptixAccessToken', async function (err, results) {
-                if (err) {
-                    reject(err);
-                }
-                else {
-                    resolve(results);
-                }
-            })
-    });
-}
-
-async function insertNewTokenIntoDatabase(newTokenDataObject) {
-    return new Promise(async function (resolve, reject) {
-        try {
-            const pool = await poolPromise
-            const result = await pool.request()
-                .input('newToken', sql.VarChar(2048), newTokenDataObject.access_token)
-                .input('expiryDate', sql.DateTime, new Date(new Date().getTime() + newTokenDataObject.expires_in * 1000))
-                .query('insert into dbo.GeoOptixAccessToken (GeoOptixAccessTokenValue, GeoOptixAccessTokenExpiryDate) values (@newToken, @expiryDate)');
-            resolve(result);
-        }
-        catch (err) {
-            reject(err);
-        }
-    });
-}
-
-async function makeKeystoneTokenRequest() {
-    return new Promise(async function (resolve, reject) {
-        axios.post("https://qa.keystone.sitkatech.com/core/connect/token",
-            querystring.stringify({
-                client_id: 'ZybachApiAccess', //gave the values directly for testing
-                client_secret: 'CBE88174-D110-4B27-83CC-8EE2280CE9EB',
-                scope: "openid all_claims keystone",
-                grant_type: "password",
-                username: "ZybachGeoOptixUser",
-                password: "O7iqve#HwW66l1uU"
-            }), {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        }).then(function (response) {
-            resolve(response);
-        }).catch(error => {
-            console.error(error);
-            reject(error);
-        })
-    });
-}
 
 async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     const token = secrets.INFLUXDB_TOKEN;
@@ -224,17 +137,41 @@ function aggregateResults(resultsToAggregate, interval) {
     return aggregatedResults;
 }
 
+function abbreviateWellsDataResponse(wellsData) {
+    return wellsData.map(x => abbreviateWellDataResponse(x));
+}
+
+function abbreviateWellDataResponse(wellData) {
+    return {
+      WellRegistrationID : wellData.CanonicalName,
+      Description : wellData.Description,
+      Tags : wellData.Tags,
+      Location : wellData.Location,
+      CreateDate : wellData.CreateDate,
+      CreateUserID : wellData.CreateUserID,
+      UpdateDate : wellData.UpdateDate,
+      UpdateUserID : wellData.UpdateUserID  
+    }
+}
+
+function abbreviateWellSensorsResponse(wellSensors) {
+    return wellSensors.map(x => ({
+        SensorName : x.CanonicalName,
+        SensorType : x.Definition.sensorType 
+    }));
+}
+
 const getWells = async (req, res) => {
     try {
-        const geoOptixAccessToken = await getGeoOptixAccessToken();
-        const geoOptixRequest = await axios.get("https://tpnrd.api-qa.geooptix.com/project-overview-web/water-data-program/sites", {
+        const geoOptixAccessToken = await geoOptixService.getGeoOptixAccessToken();
+        const geoOptixRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites`, {
             headers: {
                 "Authorization": `Bearer ${geoOptixAccessToken}`
             }
         });
         return res.status(200).json({
-            "status": "success", 
-            "result": geoOptixRequest.data
+            "status": "success",
+            "result": abbreviateWellsDataResponse(geoOptixRequest.data)
         });
     }
     catch (err) {
@@ -243,4 +180,34 @@ const getWells = async (req, res) => {
     }
 }
 
-module.exports = { getPumpedVolume, getWells };
+const getWell = async (req, res) => {
+    try {
+        const wellRegistrationID = req.params.wellRegistrationID;
+        const geoOptixAccessToken = await geoOptixService.getGeoOptixAccessToken();
+        const geoOptixWellRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}`, {
+            headers: {
+                "Authorization": `Bearer ${geoOptixAccessToken}`
+            }
+        });
+        let resultsObject = { "wellDetails": geoOptixWellRequest.data };
+        const geoOptixWellSensorsRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}/stations`, {
+            headers: {
+                "Authorization": `Bearer ${geoOptixAccessToken}`
+            }
+        });
+        resultsObject["sensorsForWell"] = geoOptixWellSensorsRequest.data;
+        return res.status(200).json({
+            "status": "success",
+            "result": {
+                "wellDetails": abbreviateWellDataResponse(geoOptixWellRequest.data),
+                "sensorsAssociatedWithWell": abbreviateWellSensorsResponse(geoOptixWellSensorsRequest.data)
+            }
+        });
+    }
+    catch (err) {
+        console.error(err);
+        return res.status(500).json({ "status": "failed", "result": err.message });
+    }
+}
+
+module.exports = { getPumpedVolume, getWells, getWell };
