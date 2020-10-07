@@ -1,0 +1,21 @@
+{
+  "name": "zybach-teaspoon",
+  "version": "0.0.1",
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.6.0",
+    "debug": "^4.2.0",
+    "fs": "0.0.1-security",
+    "node-getopt": "^0.3.2",
+    "node-rest-client": "^3.1.0",
+    "statman-stopwatch": "^2.11.1"
+  },
+  "scripts": {
+    "start": "node --inspect=0.0.0.0 teaspoon.js",
+    "runTsp": "node teaspoon.js >> /var/log/teaspoon",
+    "runTspComplete": "node teaspoon.js -c",
+    "scrapeWellIDs": "node nednrScrape.js -f ./scrappy"
+  },
+  "devDependencies": {
+    "eslint": "^7.10.0"
+  }
+}

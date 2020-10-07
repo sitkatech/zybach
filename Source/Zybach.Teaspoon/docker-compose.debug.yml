@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+  zybach-teaspoon:
+    image: zybach-teaspoon
+    build: .
+    environment:
+      NODE_ENV: development
+    ports:
+      - 9229:9229
+    command: node --inspect=0.0.0.0:9229 teaspoon.js
