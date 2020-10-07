@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const ctrlWells = require('../controllers/wells');
+const ctrlAuthentication = require('../controllers/authentication');
+
+//Ensure that all requests for wells have authentication
+router.all('/wells/*', ctrlAuthentication.checkApiKey);
 
 /**
 * @swagger

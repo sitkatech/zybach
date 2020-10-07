@@ -1,23 +1,20 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var secrets = require('./secrets');
-var swaggerUi = require('swagger-ui-express');
+const secrets = require('./secrets');
+delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
+const appInsights = require('applicationinsights');
+appInsights.setup(secrets.APPINSIGHTS_INSTRUMENTATIONKEY)
+          .setAutoCollectConsole(true, true)
+          .start();
+const client = appInsights.defaultClient;
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const swaggerUi = require('swagger-ui-express');
 const specs = require('../../swagger');
-
 const apiRouter = require('./app_api/routes/index');
-const checkApiKey = function(req, res, next) {
-  let keyValue = secrets.API_KEY_VALUE;
-  let keySent = req.get('authorization');
-  if (keySent == null || keySent == undefined || keyValue === null || keyValue === undefined || keySent !== keyValue) {
-    return res.status(401).json({status: 'error', reason: 'unauthorized'});
-  }
-  next();
-};
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,10 +22,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.all('/api/wells/*', checkApiKey);
 app.use('/api', apiRouter);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -40,6 +35,8 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  console.error(err);
 
   // render the error page
   res.status(err.status || 500).json({status: err.message});

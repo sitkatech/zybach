@@ -39,6 +39,7 @@ const getPumpedVolume = async (req, res)  => {
         return res.status(200).json({ "status": "success", "result": results.length > 0 ? structureResults(results, interval) : results});
     }
     catch (err) {
+        console.error(err);
         return res.status(500).json({ "status": "failed", "result":err });
     }
 };
@@ -53,13 +54,13 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     const queryApi = client.getQueryApi(org);
 
     const registrationIDQuery = wellRegistrationIDs !== null && wellRegistrationIDs != undefined ? `and r["registration-id"] == "${Array.isArray(wellRegistrationIDs) ? wellRegistrationIDs.join(`" or r["registration-id"]=="`) : wellRegistrationIDs}"`:"";
-    const query = `from(bucket: "tpnrd") \
+    const query = `from(bucket: "tpnrd-qa") \
         |> range(start: ${startDate}, stop:${endDate}) \
         |> filter(fn: (r) => 
-            r["_measurement"] == "gallons" and \
-            r["_field"] == "pumped" \
-            ${registrationIDQuery}
-        )`;
+            r["_measurement"] == "pumped-volume" and \
+            r["_field"] == "gallons" \
+            ${registrationIDQuery}) \
+        |> sort(columns:["_time"])`;
 
     let results = [];
 
@@ -79,7 +80,8 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     });
 }
 
-function structureResults(results, interval) {
+function structureResults(resultsIn, interval) {
+    const results = resultsIn.sort((a, b) => a.endTime - b.endTime);
     const intervalInMS = interval * 60000;
     const startDate = new Date(results[0].endTime.getTime() - intervalInMS);
     const endDate = results[results.length - 1].endTime;
