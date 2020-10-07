@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   zybach-teaspoon:
-    image: sitkacontainers.azurecr.io/zybachteaspoon
+    image: sitkacontainers.azurecr.io/zybach/teaspoon
     build: .
     environment:
       NODE_ENV: production
