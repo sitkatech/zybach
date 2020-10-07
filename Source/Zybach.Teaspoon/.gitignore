@@ -1,5 +1,4 @@
 node_modules
 .vscode
-influxConfig.js
 log
 secrets.json

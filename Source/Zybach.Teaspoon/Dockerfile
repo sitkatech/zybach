@@ -11,4 +11,6 @@ RUN echo "*/15       *       *       *       *       /usr/src/app/teaspoon-cron"
 RUN apk add dos2unix
 RUN dos2unix ./teaspoon-cron
 
+RUN chmod a+rx ./teaspoon-cron
+
 CMD ["crond","-f", "-l", "8"]
