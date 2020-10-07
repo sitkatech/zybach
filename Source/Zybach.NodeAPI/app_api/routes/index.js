@@ -212,6 +212,8 @@ router.route('/wells/:wellRegistrationID/pumpedVolume').get(ctrlWells.getPumpedV
 */
 router.route('/wells/pumpedVolume').get(ctrlWells.getPumpedVolume);
 
+router.route('/wells').get(ctrlWells.getWells);
+
 /**
 * @swagger
 * /api/:

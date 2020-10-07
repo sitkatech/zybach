@@ -4,7 +4,6 @@ const appInsights = require('applicationinsights');
 appInsights.setup(secrets.APPINSIGHTS_INSTRUMENTATIONKEY)
           .setAutoCollectConsole(true, true)
           .start();
-const client = appInsights.defaultClient;
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
