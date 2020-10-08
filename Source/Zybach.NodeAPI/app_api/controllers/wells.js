@@ -79,19 +79,28 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     });
 }
 
-function structureResults(resultsIn, interval) {
-    const results = resultsIn.sort((a, b) => a.endTime - b.endTime);
+function structureResults(results, interval) {
     const intervalInMS = interval * 60000;
-    const startDate = new Date(results[0].endTime.getTime() - intervalInMS);
-    const endDate = results[results.length - 1].endTime;
     const distinctWells = [...new Set(results.map(x => x.wellRegistrationID))];
+    let startDate = results[0].endTime;
+    let endDate = results[results.length - 1].endTime;
     let totalResults = 0;
     let volumesByWell = [];
     distinctWells.forEach(wellRegistrationID => {
-        let currentWellResults = results.filter(x => x.wellRegistrationID === wellRegistrationID);
+        let currentWellResults = results.filter(x => x.wellRegistrationID === wellRegistrationID).sort((a, b) => a.endTime -  b.endTime);
         let aggregatedResults = interval > 15 ? aggregateResults(currentWellResults, interval) : currentWellResults;
+        
+        if (aggregatedResults.length > 0) {
+            if (aggregatedResults[0].endTime < startDate) {
+                startDate = aggregatedResults[0].endTime;
+            }
+            if (aggregatedResults[aggregatedResults.length-1].endTime > endDate) {
+                endDate = aggregatedResults[aggregatedResults.length-1].endTime;
+            }
+        }
+
         totalResults += aggregatedResults.length;
-        let finalWellResults = aggregatedResults.filter(x => x.wellRegistrationID == wellRegistrationID).map(x => {
+        let finalWellResults = aggregatedResults.map(x => {
             return { intervalEndTime: x.endTime, gallonsPumped: x.gallons }
         });
         let newWellObj = {
@@ -105,7 +114,7 @@ function structureResults(resultsIn, interval) {
     return {
         intervalCountTotal: totalResults,
         intervalWidthInMinutes: interval,
-        intervalStart: startDate.toISOString(),
+        intervalStart: new Date(startDate.getTime() - intervalInMS).toISOString(),
         intervalEnd: endDate.toISOString(),
         durationInMinutes: Math.round((endDate.getTime() - startDate.getTime()) / 60000),
         wellCount: distinctWells.length,
@@ -133,6 +142,14 @@ function aggregateResults(resultsToAggregate, interval) {
             startTime = x.endTime;
         }
     })
+
+    if (count > 0) {
+        aggregatedResults.push({
+            wellRegistrationID: resultsToAggregate[resultsToAggregate.length - 1].wellRegistrationID,
+            endTime: resultsToAggregate[resultsToAggregate.length - 1].endTime,
+            gallons: sum / count
+        })
+    }
 
     return aggregatedResults;
 }
