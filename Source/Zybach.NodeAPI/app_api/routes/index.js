@@ -62,7 +62,7 @@ router.all('/wells*', authenticationService.checkApiKey);
 *                                               type: string
 *                                               format: date-time
 *                                               description: date (as ISO string) when specified interval ended
-*                                           gallonsPumped:
+*                                           pumpedVolumeGallons:
 *                                               type: number
 *                                               format: double
 *                                               description: gallons pumped over the previous interval
@@ -174,7 +174,7 @@ router.route('/wells').get(ctrlWells.getWells);
 *   get:
 *     tags: 
 *       - Wells
-*     summary: Returns a time series representing pumped volume at a well or series of wells, averaged on a chosen reporting interval, for a given date range. Each point in the output time series represents the average pumped volume over the previous reporting interval.
+*     summary: Returns a time series representing pumped volume at a well or series of wells, summed on a chosen reporting interval, for a given date range. Each point in the output time series represents the total pumped volume over the previous reporting interval.
 *     parameters:
 *       - name: filter
 *         description: The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data for every Well that has reported data within the time range.
@@ -314,7 +314,7 @@ router.route('/wells/:wellRegistrationID').get(ctrlWells.getWell);
 *   get:
 *     tags: 
 *       - Wells
-*     summary: Returns a time series representing pumped volume at a well, averaged on a chosen reporting interval, for a given date range. Each point in the output time series represents the average pumped volume over the previous reporting interval.
+*     summary: Returns a time series representing pumped volume at a well, summed on a chosen reporting interval, for a given date range. Each point in the output time series represents the total pumped volume over the previous reporting interval.
 *     parameters:
 *       - name: wellRegistrationID
 *         description: The Well Registration ID for the requested Well
