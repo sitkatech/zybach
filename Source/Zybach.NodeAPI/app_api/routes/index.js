@@ -68,34 +68,39 @@ router.all('/wells*', authenticationService.checkApiKey);
 *                                               description: gallons pumped over the previous interval
 *   WellDetailsObject:
 *       properties:
-*           WellRegistrationID:
+*           wellRegistrationID:
 *               type: string
 *               description: The registration ID of the Well
-*           Description:
+*           description:
 *               type: string
 *               description: A description of the well (if provided)
-*           Tags:
+*           tags:
 *               type: array
 *               description: Array of tags that group wells together
 *               items:
 *                   type: string
-*           Location:
+*           location:
 *               type: object
 *               description: A geojson object that provides the location of the Well
-*           CreateDate:
+*           createDate:
 *               type: string
 *               format: date-time
 *               description: The date the well was created
-*           CreateUserID:
-*               type: number
-*               description: The ID for the GeoOptix user who created the well
-*           UpdateDate:
+*           updateDate:
 *               type: string
 *               format: date-time
 *               description: The date the well was last updated
-*           UpdateUserID:
-*               type: number
-*               description: The ID for the GeoOptix user who last updated the well
+*           sensors:
+*               type: array
+*               items:
+*                   type: object
+*                   properties:
+*                       sensorName:
+*                           type: string
+*                           description: Name of sensor
+*                       sensorType:
+*                           type: string
+*                           description: Type of sensor
 *   Error:
 *       properties:
 *           status: 
@@ -129,7 +134,16 @@ router.all('/wells*', authenticationService.checkApiKey);
 *                           type: array
 *                           items:
 *                               type: object
-*                               $ref: '#/definitions/WellDetailsObject'
+*                               properties:
+*                                   wellRegistrationID:
+*                                       type: string
+*                                       description: The registration ID of the Well
+*                                   description:
+*                                       type: string
+*                                       description: A description of the well (if provided)
+*                                   location:
+*                                       type: object
+*                                       description: A geojson object that provides the location of the Well
 *       401:
 *         description: Unauthorized to perform request
 *         content: 
@@ -247,7 +261,7 @@ router.route('/wells/pumpedVolume').get(ctrlWells.getPumpedVolume);
 *         required: true
 *     responses: 
 *       200:
-*         description: Returns a Well detail object with an array of associated wells
+*         description: Returns a Well detail object which includes an array of associated sensors
 *         content: 
 *           application/json:
 *               schema:
@@ -261,17 +275,7 @@ router.route('/wells/pumpedVolume').get(ctrlWells.getPumpedVolume);
 *                               wellDetails:
 *                                   type: object
 *                                   $ref: '#/definitions/WellDetailsObject'
-*                               sensorsAssociatedWithWell:
-*                                   type: array
-*                                   items:
-*                                       type: object
-*                                       properties:
-*                                           SensorName:
-*                                               type: string
-*                                               description: Name of sensor
-*                                           SensorType:
-*                                               type: string
-*                                               description: Type of sensor
+*                               
 *           
 *       400:
 *         description: If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)

@@ -137,27 +137,21 @@ function aggregateResults(resultsToAggregate, interval) {
     return aggregatedResults;
 }
 
-function abbreviateWellsDataResponse(wellsData) {
-    return wellsData.map(x => abbreviateWellDataResponse(x));
-}
-
 function abbreviateWellDataResponse(wellData) {
     return {
-        WellRegistrationID: wellData.CanonicalName,
-        Description: wellData.Description,
-        Tags: wellData.Tags,
-        Location: wellData.Location,
-        CreateDate: wellData.CreateDate,
-        CreateUserID: wellData.CreateUserID,
-        UpdateDate: wellData.UpdateDate,
-        UpdateUserID: wellData.UpdateUserID
+        wellRegistrationID: wellData.CanonicalName,
+        description: wellData.Description,
+        tags: wellData.Tags,
+        location: wellData.Location,
+        createDate: wellData.CreateDate,
+        updateDate: wellData.UpdateDate
     }
 }
 
 function abbreviateWellSensorsResponse(wellSensors) {
     return wellSensors.map(x => ({
-        SensorName: x.CanonicalName,
-        SensorType: x.Definition.sensorType
+        sensorName: x.CanonicalName,
+        sensorType: x.Definition.sensorType
     }));
 }
 
@@ -171,7 +165,7 @@ const getWells = async (req, res) => {
         });
         return res.status(200).json({
             "status": "success",
-            "result": abbreviateWellsDataResponse(geoOptixRequest.data)
+            "result": geoOptixRequest.data.map(x => ({wellRegistrationID : x.CanonicalName, description : x.Description, location: x.Location}))
         });
     }
     catch (err) {
@@ -189,19 +183,16 @@ const getWell = async (req, res) => {
                 "Authorization": `Bearer ${geoOptixAccessToken}`
             }
         });
-        let resultsObject = { "wellDetails": geoOptixWellRequest.data };
+        let resultsObject = abbreviateWellDataResponse(geoOptixWellRequest.data);
         const geoOptixWellSensorsRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}/stations`, {
             headers: {
                 "Authorization": `Bearer ${geoOptixAccessToken}`
             }
         });
-        resultsObject["sensorsForWell"] = geoOptixWellSensorsRequest.data;
+        resultsObject["sensors"] = abbreviateWellSensorsResponse(geoOptixWellSensorsRequest.data);
         return res.status(200).json({
             "status": "success",
-            "result": {
-                "wellDetails": abbreviateWellDataResponse(geoOptixWellRequest.data),
-                "sensorsAssociatedWithWell": abbreviateWellSensorsResponse(geoOptixWellSensorsRequest.data)
-            }
+            "result": resultsObject
         });
     }
     catch (err) {
