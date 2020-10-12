@@ -15,14 +15,9 @@ function getContinuityMeterSeries(well) {
         const queryApi = client.getQueryApi(influxDBOrg);
 
         /*
-            the continuity meter data comes in at seemingly random intervals. this query aggregates data into 15 minute intervals and fills 
-            in the missing intervals with null. unlike the flow meters, we can't assume that null means the pump is off, since the meter 
-            may have reported on in the prior interval which would mean that the pump is on in the null interval. the rowfunction passed in
-            from the caller's job is to replace nulls in this series with the last known non-null value.
-    
-            another approach would be to query the output series (from the prior run) with a broader range, and then identify the last time
-            point in that interval. If you then calculatd the difference between now and that interval, you would know exactly what range
-            you needed without having to worry about scheduled runs not working on time, etc.
+            the continuity meter data comes in at seemingly random intervals and indicates whether the well was on or off at the time of the signal
+            this query multiplies the value (1 or 0) of the series by the pumping rate (gallons per minute) of the well. To aggregate this to 15-minute
+            intervals, we fill in the missing minutes with immediate previous non-null values, then use aggregateWindow
         */
 
         const query = `from(bucket: "tpnrd") \
@@ -30,16 +25,20 @@ function getContinuityMeterSeries(well) {
             |> filter(fn: (r) => r["_measurement"] == "continuity") \
             |> filter(fn: (r) => r["_field"] == "on") \
             |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
-            |> aggregateWindow(every: 15m, fn: mean, createEmpty: true)`;
+            |> map(fn: (r) => ({ \
+                    r with \
+                    _value: r["_value"] * float(v: ${well.pumpingRate}) \
+                }) \
+            )\
+            |> aggregateWindow(every: 1m, fn: mean, createEmpty: true) \
+            |> fill(usePrevious: true) \
+            |> aggregateWindow(every:15m, fn: sum)`;
 
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                const toPush = getContinuityMeterIntervalFromReturnedRow(o, well.pumpingRate);
-
-                if (toPush.gallons) {
-                    intervalsToWrite.push(toPush);
-                };
+                const toPush = getIntervalFromReturnedRow(o);
+                intervalsToWrite.push(toPush);
             },
             error(error) {
                 console.error(error);
@@ -50,27 +49,6 @@ function getContinuityMeterSeries(well) {
             },
         });
     }));
-}
-
-function getContinuityMeterIntervalFromReturnedRow(row, pumpRate) {
-    const wellRegistrationID = row["registration-id"];
-    let lastKnownValue = null;
-
-    if (pumpRate === null) {
-        pumpRate = 0;
-    }
-
-    if (row._value == 0 || row._value == 1) {
-        lastKnownValue = row._value;
-    };
-
-    let newValue = (row._value == null) ? lastKnownValue : row._value;
-    return {
-        intervalEndTime: row._time,
-        wellRegistrationID: row["registration-id"],
-        sn: row.sn,
-        gallons: newValue * pumpRate * 15 // 15-minute intervals
-    }
 }
 
 function getFlowMeterSeries(well) {
@@ -99,7 +77,7 @@ function getFlowMeterSeries(well) {
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                intervalsToWrite.push(getFlowMeterIntervalFromReturnedRow(o));
+                intervalsToWrite.push(getIntervalFromReturnedRow(o));
             },
             error(error) {
                 console.error(error);
@@ -112,7 +90,7 @@ function getFlowMeterSeries(well) {
     }));
 }
 
-function getFlowMeterIntervalFromReturnedRow(row) {
+function getIntervalFromReturnedRow(row) {
     return {
         intervalEndTime: row._time,
         wellRegistrationID: row["registration-id"],
