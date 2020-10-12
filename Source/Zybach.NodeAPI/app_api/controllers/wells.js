@@ -3,6 +3,7 @@ const secrets = require('../../secrets');
 const geoOptixService = require('../services/geo-optix-token-service');
 const { InfluxDB } = require('@influxdata/influxdb-client');
 const axios = require('axios');
+const { start } = require('applicationinsights');
 
 const getPumpedVolume = async (req, res) => {
     const wellRegistrationIDs = req.params.wellRegistrationID || req.query.filter;
@@ -37,7 +38,7 @@ const getPumpedVolume = async (req, res) => {
     }
 
     try {
-        let results = await getFlowMeterSeries(wellRegistrationIDs, startDateQuery, endDateQuery);
+        let results = await getFlowMeterSeries(wellRegistrationIDs, startDate, endDate);
         return res.status(200).json({ "status": "success", "result": results.length > 0 ? structureResults(results, interval) : results });
     }
     catch (err) {
@@ -52,9 +53,13 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: token });
     const queryApi = client.getQueryApi(org);
 
+    const fifteenMinutesInms = 1000  * 60 * 15;
+    const startDateForFlux = new Date((Math.round(startDate.getTime() / fifteenMinutesInms) * fifteenMinutesInms) + 1000).toISOString();
+    const endDateForFlux = new Date((Math.round(endDate.getTime() / fifteenMinutesInms) * fifteenMinutesInms) + 1000).toISOString();
+
     const registrationIDQuery = wellRegistrationIDs !== null && wellRegistrationIDs != undefined ? `and r["registration-id"] == "${Array.isArray(wellRegistrationIDs) ? wellRegistrationIDs.join(`" or r["registration-id"]=="`) : wellRegistrationIDs}"` : "";
     const query = `from(bucket: "tpnrd-qa") \
-        |> range(start: ${startDate}, stop:${endDate}) \
+        |> range(start: ${startDateForFlux}, stop:${endDateForFlux}) \
         |> filter(fn: (r) => 
             r["_measurement"] == "pumped-volume" and \
             r["_field"] == "gallons" \
@@ -80,7 +85,6 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
 }
 
 function structureResults(results, interval) {
-    const intervalInMS = interval * 60000;
     const distinctWells = [...new Set(results.map(x => x.wellRegistrationID))];
     let startDate = results[0].endTime;
     let endDate = results[results.length - 1].endTime;
@@ -88,33 +92,35 @@ function structureResults(results, interval) {
     let volumesByWell = [];
     distinctWells.forEach(wellRegistrationID => {
         let currentWellResults = results.filter(x => x.wellRegistrationID === wellRegistrationID).sort((a, b) => a.endTime -  b.endTime);
-        let aggregatedResults = interval > 15 ? aggregateResults(currentWellResults, interval) : currentWellResults;
         
-        if (aggregatedResults.length > 0) {
-            if (aggregatedResults[0].endTime < startDate) {
-                startDate = aggregatedResults[0].endTime;
-            }
-            if (aggregatedResults[aggregatedResults.length-1].endTime > endDate) {
-                endDate = aggregatedResults[aggregatedResults.length-1].endTime;
-            }
+        if (currentWellResults[0].endTime < startDate) {
+            startDate = currentWellResults[0].endTime;
+        }
+
+        let aggregatedResults = aggregateResults(currentWellResults, interval);
+        
+        if (aggregatedResults[aggregatedResults.length-1].endTime > endDate) {
+            endDate = aggregatedResults[aggregatedResults.length-1].endTime;
         }
 
         totalResults += aggregatedResults.length;
-        let finalWellResults = aggregatedResults.map(x => {
-            return { intervalEndTime: x.endTime, gallonsPumped: x.gallons }
-        });
+
         let newWellObj = {
             wellRegistrationID: wellRegistrationID,
-            intervalCount: finalWellResults.length,
-            internalVolumes: finalWellResults
+            intervalCount: aggregatedResults.length,
+            intervalVolumes: aggregatedResults
         };
         volumesByWell.push(newWellObj);
     });
 
+    //Because we get the intervals back in 15 minute increments, technically our startDate is 15 minutes BEFORE our actual first time
+    //Remove this extra piece if we decide we just want the first interval's end date
+    startDate = new Date(startDate.getTime() - (15 * 60000));
+
     return {
         intervalCountTotal: totalResults,
         intervalWidthInMinutes: interval,
-        intervalStart: new Date(startDate.getTime() - intervalInMS).toISOString(),
+        intervalStart: startDate.toISOString(),
         intervalEnd: endDate.toISOString(),
         durationInMinutes: Math.round((endDate.getTime() - startDate.getTime()) / 60000),
         wellCount: distinctWells.length,
@@ -125,29 +131,30 @@ function structureResults(results, interval) {
 function aggregateResults(resultsToAggregate, interval) {
     let aggregatedResults = [];
     let sum = 0;
-    let count = 0;
-    let startTime = resultsToAggregate[0].endTime
+    //Again, because of the 15 minute intervals the first date we get will have been over a previous 15 minute interval
+    //So, when we start aggregating, we need to have our first start time 15 minutes BEFORE our first endTime
+    let startTime = new Date(resultsToAggregate[0].endTime.getTime() - (15 * 60000));
     let timeThreshold = interval * 60 * 1000;
     resultsToAggregate.forEach(x => {
-        sum += x.gallons;
-        count++;
+        sum += Math.round(x.gallons);
         if (x.endTime.getTime() - startTime.getTime() >= timeThreshold) {
             aggregatedResults.push({
-                wellRegistrationID: x.wellRegistrationID,
-                endTime: x.endTime,
-                gallons: sum / count
+                intervalEndTime: x.endTime,
+                volumePumpedGallons: sum
             })
             sum = 0;
-            count = 0;
             startTime = x.endTime;
         }
     })
 
-    if (count > 0) {
+    //TODO:If we have an incomplete interval, do we want to push it? 
+    //Or should we leave incomplete intervals out of the payload? 
+    //Should there be a marker stating that it's incomplete?
+    if (sum > 0) {
         aggregatedResults.push({
             wellRegistrationID: resultsToAggregate[resultsToAggregate.length - 1].wellRegistrationID,
             endTime: resultsToAggregate[resultsToAggregate.length - 1].endTime,
-            gallons: sum / count
+            gallons: sum
         })
     }
 
