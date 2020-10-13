@@ -1,81 +1,60 @@
-const {APPINSIGHTS_INSTRUMENTATIONKEY} = require('./config');
+const { APPINSIGHTS_INSTRUMENTATIONKEY } = require('./config');
 delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
 const appInsights = require('applicationinsights');
 appInsights.setup(APPINSIGHTS_INSTRUMENTATIONKEY)
-          .setAutoCollectConsole(true, true)
-          .start();
+    .setAutoCollectConsole(true, true)
+    .start();
 const client = appInsights.defaultClient;
 
-const {getFlowMeterSeries,getContinuityMeterSeries,writePumpedVolumeIntervals, getWellsWithDataAsOf, getWellsWithEarliestTimestamps} = require('./influxService');
+const { getFlowMeterSeries, getContinuityMeterSeries, writePumpedVolumeIntervals, getWellsWithDataAsOf, getWellsWithEarliestTimestamps } = require('./influxService');
 const getGpmFromNednrAPI = require('./nednrService');
 let GetOpt = require('node-getopt');
 let Stopwatch = require('statman-stopwatch');
 
 const stopwatch = new Stopwatch();
 
-function processWell(well) {
-    return (new Promise(async (resolve) => {
-        /* 
-            the range parameter of the "get*MeterSeries()" calls is relative to right now and can be expressed in a wide variety 
-            of time scales (seconds, minutes, hours, days, etc.). the ideal range choice would be long enough in duration to cover
-            the time period between the last known interval processed by this code and right now. iow, if this function were to run
-            once per hour, we would want a duration of -1h (plus a buffer to make sure we're not missing observations).
-        */
+async function processWell(well) {
+    /* 
+        the range parameter of the "get*MeterSeries()" calls is relative to right now and can be expressed in a wide variety 
+        of time scales (seconds, minutes, hours, days, etc.). the ideal range choice would be long enough in duration to cover
+        the time period between the last known interval processed by this code and right now. iow, if this function were to run
+        once per hour, we would want a duration of -1h (plus a buffer to make sure we're not missing observations).
+    */
 
-        let seriesProcessedPromise;
-        if (well.sensorType == 'flow') {
-            seriesProcessedPromise = getFlowMeterSeries(well);
-        }
-        else if (well.sensorType == 'continuity') {
-            seriesProcessedPromise = getContinuityMeterSeries(well);
-        }
+    let seriesProcessedPromise;
+    if (well.sensorType == 'flow') {
+        seriesProcessedPromise = getFlowMeterSeries(well);
+    }
+    else if (well.sensorType == 'continuity') {
+        seriesProcessedPromise = getContinuityMeterSeries(well);
+    }
 
-        let intervals;
+    let intervals;
 
-        try {
-            intervals = await seriesProcessedPromise;
-            
-            if (!intervals.length){
-                resolve({
-                    wellRegistrationID:well.wellRegistrationID,
-                    status:"error",
-                    reason:"nodata",
-                    sensorType: well.sensorType
-                })
-                return;
-            }
+    try {
+        intervals = await seriesProcessedPromise;
 
-            const result = await writePumpedVolumeIntervals(intervals, well.wellRegistrationID);
-            resolve(result);
-            return;
-        } catch (error) {
-            resolve({
+        if (!intervals.length) {
+            return {
                 wellRegistrationID: well.wellRegistrationID,
-                sensorType: well.sensorType,
                 status: "error",
-                reason:"strange",
-                message: error
-            });
-
-            return;
+                reason: "nodata",
+                sensorType: well.sensorType
+            };
         }
 
-        // seriesProcessedPromise.then(res => {
-        //     if (!res.length){
-        //         return Promise.resolve({
-        //             wellRegistrationID:well.wellRegistrationID,
-        //             status:"error",
-        //             reason:"nodata"
-        //         });
-        //     }
-        //     return writePumpedVolumeIntervals(res, well.wellRegistrationID);
-        // }).then(res => {
-        //     res.sensorType = well.sensorType;
-        //     resolve(res);
-        // }).catch(()=>{
-            
-        // });
-    }));
+        const result = await writePumpedVolumeIntervals(intervals, well.wellRegistrationID);
+
+        return result;
+    } catch (error) {
+        return {
+            wellRegistrationID: well.wellRegistrationID,
+            sensorType: well.sensorType,
+            status: "error",
+            reason: "strange",
+            message: error
+        }
+    }
 }
 
 async function readyDebug() {
@@ -83,7 +62,7 @@ async function readyDebug() {
     console.log("TSPM Ready");
 }
 
-async function assignPumpingRate(continuityWell){
+async function assignPumpingRate(continuityWell) {
     const pumpingRate = await getGpmFromNednrAPI(continuityWell.wellRegistrationID);
 
     continuityWell.pumpingRate = pumpingRate
@@ -129,33 +108,33 @@ async function assignPumpingRatesAndProcessWells(wellsToProcess) {
         results.push(result);
     }
 
-    const errors = results.filter(x=>x.status === "error");
+    const errors = results.filter(x => x.status === "error");
 
-    if (errors && errors.length){
+    if (errors && errors.length) {
         console.error(`Encountered errors on ${errors.length} wells!`);
-        errors.forEach(e=>console.error(e));
+        errors.forEach(e => console.error(e));
     }
 }
 
-async function completeProcessing(){
+async function completeProcessing() {
     const wellsWithEarliestTimestamp = Array.from(await getWellsWithEarliestTimestamps());
     await assignPumpingRatesAndProcessWells(wellsWithEarliestTimestamp);
 }
 
-async function main(){
+async function main() {
     // debugging isn't exactly working anymore now that I've switched over to docker-compose for parity with QA
     // await readyDebug();
 
     let getopt = new GetOpt([
-        ['c', 'complete'  , 're-run from earliest available data for all wells'],
-        ['h', 'help'      , 'display this help'],
+        ['c', 'complete', 're-run from earliest available data for all wells'],
+        ['h', 'help', 'display this help'],
     ])
         .bindHelp()     // bind option 'help' to default action
         .parseSystem(); // parse command line
-    
+
     if (getopt.options.complete) {
         completeProcessing();
-    } else{
+    } else {
         incrementalProcessing();
     }
 }
