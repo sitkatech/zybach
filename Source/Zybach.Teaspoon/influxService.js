@@ -7,13 +7,12 @@ const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.co
 
 // queries that generate intervals to write to the normalized time series bucket should draw from a range that stops at exactly XX:00:00.000
 const stopTime = normalizeISOStringTime(new Date().toISOString());
-console.log(stopTime);
-stopTime="bork";
 
 // these get*MeterSeries functions have their work wrapped in promises so that we don't proceed without letting all of the rows get processed and pushed to the intervalsToWrite array later
 function getContinuityMeterSeries(well) {
     const wellRegistrationID = well.wellRegistrationID;
-    const range = well.startTime;
+    const startTime = well.startTime;
+    const sn = well.sn;
 
     return (new Promise((resolve, reject) => {
         const intervalsToWrite = [];
@@ -31,10 +30,11 @@ function getContinuityMeterSeries(well) {
         */
 
         const query = `from(bucket: "tpnrd") \
-            |> range(start: ${range}, stop: ${stopTime}) \
+            |> range(start: ${startTime}, stop: ${stopTime}) \
             |> filter(fn: (r) => r["_measurement"] == "continuity") \
             |> filter(fn: (r) => r["_field"] == "on") \
             |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
+            |> filter(fn: (r) => r["sn"] == "${sn}") \
             |> aggregateWindow(every: 15m, fn: mean, createEmpty: true)`;
 
         queryApi.queryRows(query, {
@@ -80,7 +80,8 @@ function getContinuityMeterIntervalFromReturnedRow(row, pumpRate) {
 
 function getFlowMeterSeries(well) {
     const wellRegistrationID = well.wellRegistrationID;
-    const range = well.startTime;
+    const sn = well.sn;
+    const startTime = well.startTime;
 
     return (new Promise((resolve, reject) => {
         const intervalsToWrite = []
@@ -93,10 +94,11 @@ function getFlowMeterSeries(well) {
         */
 
         const query = `from(bucket: "tpnrd") \
-            |> range(start: ${range}, stop: ${stopTime}) \
+            |> range(start: ${startTime}, stop: ${stopTime}) \
             |> filter(fn: (r) => r["_measurement"] == "gallons") \
             |> filter(fn: (r) => r["_field"] == "pumped") \
             |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
+            |> filter(fn: (r) => r["sn"] == "${sn}") \
             |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
             |> fill(value: 0.0) \
             |> movingAverage(n: 2)`;
@@ -238,14 +240,14 @@ async function getWellsWithEarliestTimestamps(){
             |> filter(fn: (r) => r["_measurement"] == "gallons") \
             |> filter(fn: (r) => r["_field"] == "pumped") \
             |> first() \
-            |> group(columns: ["registration-id"])`;
+            |> group(columns: ["registration-id", "sn"])`;
 
     const continuityMeterQuery = `from(bucket: "tpnrd") \
     |> range(start: 2000-01-01T00:00:00Z) \
     |> filter(fn: (r) => r["_measurement"] == "continuity") \
     |> filter(fn: (r) => r["_field"] == "on") \
     |> first() \
-    |> group(columns: ["registration-id"])`;
+    |> group(columns: ["registration-id", "sn"])`;
 
     const continuityMeterPromise = new Promise((resolve, reject) => {
         const wells = []
@@ -256,7 +258,8 @@ async function getWellsWithEarliestTimestamps(){
                 wells.push({
                     wellRegistrationID: o["registration-id"],
                     sensorType: "continuity",
-                    startTime: normalizeISOStringTime(o["_time"])
+                    startTime: normalizeISOStringTime(o["_time"]),
+                    sn: o["sn"]
                 });
             },
             error(error) {
@@ -278,7 +281,8 @@ async function getWellsWithEarliestTimestamps(){
                 wells.push({
                     wellRegistrationID: o["registration-id"],
                     sensorType: "flow",
-                    startTime: normalizeISOStringTime(o["_time"])
+                    startTime: normalizeISOStringTime(o["_time"]),
+                    sn: o["sn"]
                 });
             },
             error(error) {
