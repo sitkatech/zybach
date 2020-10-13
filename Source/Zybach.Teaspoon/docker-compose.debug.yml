@@ -5,12 +5,12 @@ services:
     image: zybach-teaspoon
     build: .
     secrets:
-        - TEASPOON_INFLUX_SECRETS
+        - TEASPOON_SECRETS
     environment:
       NODE_ENV: development
     ports:
       - 9229:9229
-    command: node --inspect=0.0.0.0:9229 teaspoon.js
+    command: node --inspect=0.0.0.0:9229 teaspoon.js -c
 secrets:
-  TEASPOON_INFLUX_SECRETS:
+  TEASPOON_SECRETS:
     file: secrets.json

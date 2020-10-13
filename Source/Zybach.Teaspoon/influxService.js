@@ -5,6 +5,11 @@ const {normalizeISOStringTime} = require("./util")
 const { influxDBToken, influxDBOrg } = require('./config');
 const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: influxDBToken });
 
+// queries that generate intervals to write to the normalized time series bucket should draw from a range that stops at exactly XX:00:00.000
+const stopTime = normalizeISOStringTime(new Date().toISOString());
+console.log(stopTime);
+stopTime="bork";
+
 // these get*MeterSeries functions have their work wrapped in promises so that we don't proceed without letting all of the rows get processed and pushed to the intervalsToWrite array later
 function getContinuityMeterSeries(well) {
     const wellRegistrationID = well.wellRegistrationID;
@@ -26,7 +31,7 @@ function getContinuityMeterSeries(well) {
         */
 
         const query = `from(bucket: "tpnrd") \
-            |> range(start: ${range}) \
+            |> range(start: ${range}, stop: ${stopTime}) \
             |> filter(fn: (r) => r["_measurement"] == "continuity") \
             |> filter(fn: (r) => r["_field"] == "on") \
             |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
@@ -88,7 +93,7 @@ function getFlowMeterSeries(well) {
         */
 
         const query = `from(bucket: "tpnrd") \
-            |> range(start: ${range}) \
+            |> range(start: ${range}, stop: ${stopTime}) \
             |> filter(fn: (r) => r["_measurement"] == "gallons") \
             |> filter(fn: (r) => r["_field"] == "pumped") \
             |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
