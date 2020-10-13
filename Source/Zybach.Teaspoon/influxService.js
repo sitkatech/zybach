@@ -110,7 +110,7 @@ function getFlowMeterSeries(well) {
             },
             error(error) {
                 console.error(error);
-                reject();
+                reject(error);
             },
             complete() {
                 resolve(intervalsToWrite);
@@ -153,7 +153,7 @@ function writePumpedVolumeIntervals(intervals, wellRegistrationID) {
             }
             else {
                 console.error(body.message);
-                reject();
+                reject(body.message);
             }
         });
     });

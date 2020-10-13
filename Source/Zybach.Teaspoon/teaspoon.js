@@ -14,7 +14,7 @@ let Stopwatch = require('statman-stopwatch');
 const stopwatch = new Stopwatch();
 
 function processWell(well) {
-    return (new Promise((resolve) => {
+    return (new Promise(async (resolve) => {
         /* 
             the range parameter of the "get*MeterSeries()" calls is relative to right now and can be expressed in a wide variety 
             of time scales (seconds, minutes, hours, days, etc.). the ideal range choice would be long enough in duration to cover
@@ -30,26 +30,51 @@ function processWell(well) {
             seriesProcessedPromise = getContinuityMeterSeries(well);
         }
 
-        seriesProcessedPromise.then(res => {
-            if (!res.length){
-                return Promise.resolve({
+        let intervals;
+
+        try {
+            intervals = await seriesProcessedPromise;
+            
+            if (!intervals.length){
+                resolve({
                     wellRegistrationID:well.wellRegistrationID,
                     status:"error",
-                    reason:"nodata"
-                });
+                    reason:"nodata",
+                    sensorType: well.sensorType
+                })
+                return;
             }
-            return writePumpedVolumeIntervals(res, well.wellRegistrationID);
-        }).then(res => {
-            res.sensorType = well.sensorType;
-            resolve(res);
-        }).catch(()=>{
+
+            const result = await writePumpedVolumeIntervals(intervals, well.wellRegistrationID);
+            resolve(result);
+            return;
+        } catch (error) {
             resolve({
                 wellRegistrationID: well.wellRegistrationID,
                 sensorType: well.sensorType,
                 status: "error",
-                reason:"strange"
+                reason:"strange",
+                message: error
             });
-        });
+
+            return;
+        }
+
+        // seriesProcessedPromise.then(res => {
+        //     if (!res.length){
+        //         return Promise.resolve({
+        //             wellRegistrationID:well.wellRegistrationID,
+        //             status:"error",
+        //             reason:"nodata"
+        //         });
+        //     }
+        //     return writePumpedVolumeIntervals(res, well.wellRegistrationID);
+        // }).then(res => {
+        //     res.sensorType = well.sensorType;
+        //     resolve(res);
+        // }).catch(()=>{
+            
+        // });
     }));
 }
 
