@@ -11,6 +11,7 @@ const stopTime = normalizeISOStringTime(new Date().toISOString());
 // these get*MeterSeries functions have their work wrapped in promises so that we don't proceed without letting all of the rows get processed and pushed to the intervalsToWrite array later
 function getContinuityMeterSeries(well) {
     const wellRegistrationID = well.wellRegistrationID;
+    const gpm = well.pumpingRate
     const startTime = well.startTime;
     const sn = well.sn;
 
@@ -35,14 +36,17 @@ function getContinuityMeterSeries(well) {
             |> filter(fn: (r) => r["_field"] == "on") \
             |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
             |> filter(fn: (r) => r["sn"] == "${sn}") \
-            |> aggregateWindow(every: 15m, fn: mean, createEmpty: true)`;
+            |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
+            |> aggregateWindow(every: 15m, fn: last, createEmpty: true) \
+            |> fill(usePrevious: true)`;
+
 
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                const toPush = getContinuityMeterIntervalFromReturnedRow(o, well.pumpingRate);
+                const toPush = getFlowMeterIntervalFromReturnedRow(o, well.pumpingRate);
 
-                if (toPush.gallons) {
+                if (toPush.gallons != null) {
                     intervalsToWrite.push(toPush);
                 };
             },

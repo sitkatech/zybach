@@ -133,9 +133,9 @@ async function main() {
         .parseSystem(); // parse command line
 
     if (getopt.options.complete) {
-        completeProcessing();
+        await completeProcessing();
     } else {
-        incrementalProcessing();
+        await incrementalProcessing();
     }
 }
 
