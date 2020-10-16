@@ -4,14 +4,11 @@ const appInsights = require('applicationinsights');
 appInsights.setup(APPINSIGHTS_INSTRUMENTATIONKEY)
     .setAutoCollectConsole(true, true)
     .start();
-const client = appInsights.defaultClient;
 
-const { getFlowMeterSeries, getContinuityMeterSeries, writePumpedVolumeIntervals, getWellsWithDataAsOf, getWellsWithEarliestTimestamps } = require('./influxService');
-const getGpmFromNednrAPI = require('./nednrService');
+const { getFlowMeterSeries, getContinuityMeterSeries, writePumpedVolumeIntervals, getWellsWithDataAsOf, getWellsWithEarliestTimestamps } = require('./services/influxService');
 let GetOpt = require('node-getopt');
-let Stopwatch = require('statman-stopwatch');
+const { getPumpingRate } = require('./services/zappaService');
 
-const stopwatch = new Stopwatch();
 
 async function processWell(well) {
     /* 
@@ -63,8 +60,7 @@ async function readyDebug() {
 }
 
 async function assignPumpingRate(continuityWell) {
-    const pumpingRate = await getGpmFromNednrAPI(continuityWell.wellRegistrationID);
-
+    const pumpingRate = await getPumpingRate(continuityWell.wellRegistrationID);
     continuityWell.pumpingRate = pumpingRate
 }
 

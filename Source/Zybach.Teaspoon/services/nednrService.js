@@ -1,5 +1,5 @@
 const { Client } = require('node-rest-client');
-const wellsFromNednrAPI = require('./scrappy/TwinPlatte');
+const wellsFromNednrAPI = require('../scrappy/TwinPlatte');
 
 const registrationIDWellIDMapping = wellsFromNednrAPI.reduce((map, obj) => {
     map[obj.RegistrationNumber] = obj.WellID;

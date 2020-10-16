@@ -1,8 +1,8 @@
 const { InfluxDB } = require('@influxdata/influxdb-client');
 const { Client } = require('node-rest-client');
-const {normalizeISOStringTime} = require("./util")
+const {normalizeISOStringTime} = require("../util")
 
-const { influxDBToken, influxDBOrg } = require('./config');
+const { influxDBToken, influxDBOrg } = require('../config');
 const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: influxDBToken });
 
 // queries that generate intervals to write to the normalized time series bucket should draw from a range that stops at exactly XX:00:00.000
