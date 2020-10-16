@@ -3,6 +3,7 @@ const { Client } = require('node-rest-client');
 const {normalizeISOStringTime} = require("../util")
 
 const { influxDBToken, influxDBOrg } = require('../config');
+const destinationBucket = process.env.DESTINATION_BUCKET;
 const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: influxDBToken });
 
 // queries that generate intervals to write to the normalized time series bucket should draw from a range that stops at exactly XX:00:00.000
@@ -44,7 +45,7 @@ function getContinuityMeterSeries(well) {
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                const toPush = getFlowMeterIntervalFromReturnedRow(o, well.pumpingRate);
+                const toPush = getIntervalFromReturnedRow(o, well.pumpingRate);
 
                 if (toPush.gallons != null) {
                     intervalsToWrite.push(toPush);
@@ -59,27 +60,6 @@ function getContinuityMeterSeries(well) {
             },
         });
     }));
-}
-
-function getContinuityMeterIntervalFromReturnedRow(row, pumpRate) {
-    const wellRegistrationID = row["registration-id"];
-    let lastKnownValue = null;
-
-    if (pumpRate === null) {
-        pumpRate = 0;
-    }
-
-    if (row._value == 0 || row._value == 1) {
-        lastKnownValue = row._value;
-    };
-
-    let newValue = (row._value == null) ? lastKnownValue : row._value;
-    return {
-        intervalEndTime: row._time,
-        wellRegistrationID: row["registration-id"],
-        sn: row.sn,
-        gallons: newValue * pumpRate * 15 // 15-minute intervals
-    }
 }
 
 function getFlowMeterSeries(well) {
@@ -110,7 +90,7 @@ function getFlowMeterSeries(well) {
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                intervalsToWrite.push(getFlowMeterIntervalFromReturnedRow(o));
+                intervalsToWrite.push(getIntervalFromReturnedRow(o));
             },
             error(error) {
                 console.error(error);
@@ -123,7 +103,7 @@ function getFlowMeterSeries(well) {
     }));
 }
 
-function getFlowMeterIntervalFromReturnedRow(row) {
+function getIntervalFromReturnedRow(row) {
     return {
         intervalEndTime: row._time,
         wellRegistrationID: row["registration-id"],
@@ -133,7 +113,7 @@ function getFlowMeterIntervalFromReturnedRow(row) {
 }
 
 function writePumpedVolumeIntervals(intervals, wellRegistrationID) {
-    let url = `https://us-west-2-1.aws.cloud2.influxdata.com/api/v2/write?org=${influxDBOrg}&bucket=tpnrd-qa&precision=ms`;
+    let url = `https://us-west-2-1.aws.cloud2.influxdata.com/api/v2/write?org=${influxDBOrg}&bucket=${destinationBucket}&precision=ms`;
 
     const lineProtocolMessage = intervals.reduce((prev, interval) => {
         return prev + getLineFromInterval(interval)
