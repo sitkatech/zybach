@@ -4,6 +4,8 @@ services:
   zybachapi:
     image: zybachapi
     build: .
+    environment: 
+      - SOURCE_BUCKET=tpnrd-qa
     secrets:
       - NODE_API_SECRETS
     ports:
