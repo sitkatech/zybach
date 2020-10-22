@@ -58,7 +58,7 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     const endDateForFlux = new Date((Math.round(endDate.getTime() / fifteenMinutesInms) * fifteenMinutesInms) + 1000).toISOString();
 
     const registrationIDQuery = wellRegistrationIDs !== null && wellRegistrationIDs != undefined ? `and r["registration-id"] == "${Array.isArray(wellRegistrationIDs) ? wellRegistrationIDs.join(`" or r["registration-id"]=="`) : wellRegistrationIDs}"` : "";
-    const query = `from(bucket: "tpnrd-qa") \
+    const query = `from(bucket: "tpnrd") \
         |> range(start: ${startDateForFlux}, stop:${endDateForFlux}) \
         |> filter(fn: (r) => 
             r["_measurement"] == "pumped-volume" and \
