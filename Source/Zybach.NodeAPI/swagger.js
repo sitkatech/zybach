@@ -15,7 +15,7 @@ const options = {
     },
     externalDocs: {
       description : "Documentation as raw JSON",
-      url : `${secrets.WEB_SCHEME_AND_DOMAIN}/api-docs/swagger.json`
+      url : `${secrets.APP_HOSTNAME}/api-docs/swagger.json`
     },
     components: {
         securitySchemes: {
