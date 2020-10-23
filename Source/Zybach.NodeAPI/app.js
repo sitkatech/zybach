@@ -22,6 +22,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', apiRouter);
+app.get('/api-docs/swagger.json', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(specs, null, 4));
+});
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // catch 404 and forward to error handler
