@@ -58,3 +58,4 @@ Source/Zybach.Web/wwwroot/
 Source/Zybach.NodeAPI/secrets.json
 Source/Zybach.Teaspoon/rows
 Source/Zybach.Teaspoon/test.js
+Source/Zybach.Teaspoon/secrets.prod.json

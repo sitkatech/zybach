@@ -38,7 +38,7 @@ function getContinuityMeterSeries(well) {
             |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
             |> filter(fn: (r) => r["sn"] == "${sn}") \
             |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
-            |> aggregateWindow(every: 15m, fn: last, createEmpty: true) \
+            |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
             |> fill(usePrevious: true)`;
 
 
@@ -56,6 +56,11 @@ function getContinuityMeterSeries(well) {
                 reject();
             },
             complete() {
+                if (sn === 'PW010364'){
+                    for(let i = 0; i < intervalsToWrite.length; i++){
+                        console.log(intervalsToWrite[i]);
+                    }
+                }
                 resolve(intervalsToWrite);
             },
         });
