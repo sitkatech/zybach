@@ -19,7 +19,7 @@ const getPumpedVolume = async (req, res) => {
             return res.status(400).json({ "status": "invalid request", "reason": `${x.name} empty. Please enter a valid ${x.name}.` });
         }
 
-        if (!moment(x.value, "YYYY-MM-DDTHH:mm:ssZ", true).isValid()) {
+        if (!moment(x.value, "YYYY-MM-DD",true).isValid() && !moment(x.value, "YYYY-MM-DDTHH:mm:ssZ", true).isValid()) {
             return res.status(400).json({ "status": "invalid request", "reason": `${x.name} is not a valid Date string in ISO 8601 format. Please enter a valid date string` });
         }
     });
