@@ -186,13 +186,13 @@ router.route('/wells').get(ctrlWells.getWells);
 *               type: string
 *           minItems: 1
 *       - name: startDate
-*         description: The start date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00)
+*         description: The start date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00)
 *         in: query
 *         required: true
 *         schema:
 *           type: string
 *       - name: endDate
-*         description: The end date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00). Defaults to today's date
+*         description: The end date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00). Default's to today's date.
 *         in: query
 *         required: false
 *         schema:
@@ -321,13 +321,13 @@ router.route('/wells/:wellRegistrationID').get(ctrlWells.getWell);
 *         in: path
 *         required: true
 *       - name: startDate
-*         description: The start date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00)
+*         description: The start date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00)
 *         in: query
 *         required: true
 *         schema:
 *           type: string
 *       - name: endDate
-*         description: The end date for the report, formatted as an ISO date string with a timezone (eg. 2020-06-23T17:24:56+00:00). Defaults to today's date
+*         description: The end date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00). Default's to today's date.
 *         in: query
 *         required: false
 *         schema:
