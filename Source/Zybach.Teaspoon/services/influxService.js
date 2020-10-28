@@ -41,6 +41,7 @@ function getContinuityMeterSeries(well) {
             |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
             |> fill(usePrevious: true)`;
 
+        console.log(query);
 
         queryApi.queryRows(query, {
             next(row, tableMeta) {
@@ -86,6 +87,8 @@ function getFlowMeterSeries(well) {
             |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
             |> fill(value: 0.0) \
             |> movingAverage(n: 2)`;
+
+        console.log(query);
 
         queryApi.queryRows(query, {
             next(row, tableMeta) {
