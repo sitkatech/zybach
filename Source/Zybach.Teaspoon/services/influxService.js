@@ -137,6 +137,7 @@ function writePumpedVolumeIntervals(intervals, wellRegistrationID) {
             }
             else {
                 console.error(body.message);
+                console.log(body.message);
                 reject(body.message);
             }
         });
