@@ -153,60 +153,59 @@ async function getWellsWithDataAsOf(startTime) {
             |> range(start: ${startTime}) \
             |> filter(fn: (r) => r["_measurement"] == "gallons") \
             |> filter(fn: (r) => r["_field"] == "pumped") \
-            |> count() \
-            |> group(columns: ["registration-id"])`;
+            |> first() \
+            |> group(columns: ["registration-id", "sn"])`;
 
 
     const continuityMeterQuery = `from(bucket: "tpnrd") \
             |> range(start: ${startTime}) \
             |> filter(fn: (r) => r["_measurement"] == "continuity") \
             |> filter(fn: (r) => r["_field"] == "on") \
-            |> count() \
-            |> group(columns: ["registration-id"])`;
+            |> first() \
+            |> group(columns: ["registration-id", "sn"])`;
 
     const queryApi = client.getQueryApi(influxDBOrg);
 
     const flowMeterPromise = new Promise((resolve, reject) => {
-        const wellRegistrationIDs = new Set();
+        const wells = []
 
         queryApi.queryRows(flowMeterQuery, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                const wellRegistrationID = o["registration-id"];
-                wellRegistrationIDs.add(wellRegistrationID);
+                wells.push({
+                    wellRegistrationID: o["registration-id"],
+                    sensorType: "flow",
+                    startTime: startTime,
+                    sn: o["sn"]
+                });
             },
             error(error) {
                 console.error(error);
                 reject();
             },
             complete() {
-                const wells = Array.from(wellRegistrationIDs).map(x=>{ return {
-                    wellRegistrationID: x,
-                    sensorType: "flow",
-                    startTime: startTime
-                }});
                 resolve(wells);
             }
         });
     });
     const continuityMeterPromise = new Promise((resolve, reject) => {
-        const wellRegistrationIDs = new Set();
+        const wells = [];
+        
         queryApi.queryRows(continuityMeterQuery, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                const wellRegistrationID = o["registration-id"];
-                wellRegistrationIDs.add(wellRegistrationID);
+                wells.push({
+                    wellRegistrationID: o["registration-id"],
+                    sensorType: "continuity",
+                    startTime: startTime,
+                    sn: o["sn"]
+                });
             },
             error(error) {
                 console.error(error);
                 reject();
             },
             complete() {
-                const wells = Array.from(wellRegistrationIDs).map(x=>{ return {
-                    wellRegistrationID: x,
-                    sensorType: "continuity",
-                    startTime: startTime
-                }});
                 resolve(wells);
             }
         });
@@ -215,7 +214,7 @@ async function getWellsWithDataAsOf(startTime) {
     const flowWells = await flowMeterPromise;
     const continuityWells = await continuityMeterPromise;
 
-    return new Set([...flowWells, ...continuityWells])
+    return [...flowWells, ...continuityWells];
 }
 
 // todo: finish implement 
