@@ -72,7 +72,7 @@ async function incrementalProcessing() {
     startTime.setSeconds(0);
     startTime.setMilliseconds(0);
 
-    console.log(startTime);
+    console.log(`Running at ${startTime}`);
 
     // this is the mock collection of wells that have had data come in over since we last checked
     const wellsWithNewData = Array.from(await getWellsWithDataAsOf(startTime.toISOString()));
@@ -90,15 +90,7 @@ async function assignPumpingRatesAndProcessWells(wellsToProcess) {
         await assignPumpingRate(continuityWellsWithNewData[i]);
     }
 
-    // will work through the wells and their processing as promises, only allowing one well's
-    // promise to be created after the previous one is resolved, so our task queue will stay
-    // lean.
-    // await wellsWithNewData.reduce((previousPromise, nextWell) => previousPromise.then(()=>{
-    //     processWell(nextWell).then(log);
-    // }),
-    // emptyPromise);
     const results = [];
-    // I think this serializes the promises but I'm not sure?
     for (let i = 0; i < wellsToProcess.length; i++) {
         const result = await processWell(wellsToProcess[i]);
         results.push(result);
@@ -107,6 +99,7 @@ async function assignPumpingRatesAndProcessWells(wellsToProcess) {
     const errors = results.filter(x => x.status === "error");
 
     if (errors && errors.length) {
+        console.log("Errors executing")
         console.error(`Encountered errors on ${errors.length} wells!`);
         errors.forEach(e => console.error(e));
     }

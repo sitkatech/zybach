@@ -56,11 +56,6 @@ function getContinuityMeterSeries(well) {
                 reject();
             },
             complete() {
-                if (sn === 'PW010364'){
-                    for(let i = 0; i < intervalsToWrite.length; i++){
-                        console.log(intervalsToWrite[i]);
-                    }
-                }
                 resolve(intervalsToWrite);
             },
         });

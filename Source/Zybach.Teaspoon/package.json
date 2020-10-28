@@ -14,7 +14,7 @@
   "scripts": {
     "start": "node --inspect=0.0.0.0 teaspoon.js",
     "runTsp": "node teaspoon.js >> /var/log/teaspoon",
-    "runTspComplete": "node teaspoon.js -c",
+    "runTspComplete": "node teaspoon.js -c >> /var/log/teaspoon-complete",
     "scrapeWellIDs": "node nednrScrape.js -f ./scrappy"
   },
   "devDependencies": {
