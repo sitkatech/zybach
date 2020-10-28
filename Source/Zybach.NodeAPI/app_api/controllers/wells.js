@@ -19,7 +19,9 @@ const getPumpedVolume = async (req, res) => {
             return res.status(400).json({ "status": "invalid request", "reason": `${x.name} empty. Please enter a valid ${x.name}.` });
         }
 
-        if (!moment(x.value, "YYYY-MM-DD",true).isValid() && !moment(x.value, "YYYY-MM-DDTHH:mm:ssZ", true).isValid()) {
+        if (!moment(x.value, "YYYY-MM-DD",true).isValid() && !moment(x.value, "YYYYMMDD", true).isValid()
+            && !moment(x.value, "YYYYMMDDTHHmmssZ", true).isValid() && !moment(x.value, "YYYY-MM-DDTHH:mm:ssZ", true).isValid()
+            ) {
             return res.status(400).json({ "status": "invalid request", "reason": `${x.name} is not a valid Date string in ISO 8601 format. Please enter a valid date string` });
         }
     });
@@ -32,8 +34,8 @@ const getPumpedVolume = async (req, res) => {
         return res.status(400).json({ "status": "invalid request", "reason": "Interval must be a number evenly divisible by 15 and greater than 0. Please enter a new interval." });
     }
 
-    const startDate = new Date(startDateQuery);
-    const endDate = new Date(endDateQuery);
+    const startDate = moment(startDateQuery).toDate();
+    const endDate = moment(endDateQuery).toDate();
 
     if (startDate > endDate) {
         return res.status(400).json({ "status": "invalid request", "reason": "Start date occurs after End date. Please ensure that Start Date occurs before End date" });
