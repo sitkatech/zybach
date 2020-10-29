@@ -99,10 +99,8 @@ async function assignPumpingRatesAndProcessWells(wellsToProcess) {
     const errors = results.filter(x => x.status === "error");
 
     if (errors && errors.length) {
-        console.log("Errors executing")
         console.error(`Encountered errors on ${errors.length} wells!`);
         errors.forEach(e => console.error(e));
-        errors.forEach(e => console.log(e));
     }
 }
 
