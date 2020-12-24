@@ -6,12 +6,13 @@ services:
     build: .
     environment: 
       - SOURCE_BUCKET=tpnrd-qa
+      - TS_NODE_PROJECT=/src/tsconfig.json
     secrets:
       - NODE_API_SECRETS
     ports:
       - 3000:3000
       - 9229:9229
-    command: node --inspect=0.0.0.0:9229 ./bucket/www
+    command: yarn debug
 secrets:
   NODE_API_SECRETS: 
     file: secrets.json

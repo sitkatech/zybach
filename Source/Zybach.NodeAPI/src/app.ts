@@ -1,17 +1,21 @@
-const secrets = require('./secrets');
+import secrets from './secrets';
 delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
-const appInsights = require('applicationinsights');
+import * as appInsights from 'applicationinsights';
 appInsights.setup(secrets.APPINSIGHTS_INSTRUMENTATIONKEY)
   .setAutoCollectConsole(true, true)
   .start();
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const swaggerUi = require('swagger-ui-express');
+
+  //const createError = require('http-errors');
+
+import createError from 'http-errors';
+
+import express, { NextFunction, Request, Response } from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import swaggerUi from 'swagger-ui-express'
 //const specs = require('../../swagger');
-const apiRouter = require('./app_api/routes/index');
+import apiRouter from './app_api/routes/index'
 
 const app = express();
 
@@ -34,7 +38,7 @@ app.use(function (req, res, next) {
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err: { message: any; status: any; }, req: Request, res: Response, next: NextFunction) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -45,4 +49,4 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500).json({ status: err.message });
 });
 
-module.exports = app;
+export default app;

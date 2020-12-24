@@ -1,5 +1,6 @@
 const swaggerJsdoc = require('swagger-jsdoc');
-const secrets = require('./secrets');
+import secrets from './secrets';
+
 const options = {
   // List of files to be processed.
   apis: ['./app_api/routes/index.js'],

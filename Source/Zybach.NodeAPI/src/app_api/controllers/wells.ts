@@ -1,26 +1,28 @@
-const moment = require('moment');
-const secrets = require('../../secrets');
-const geoOptixService = require('../services/geo-optix-token-service');
-const { InfluxDB } = require('@influxdata/influxdb-client');
-const axios = require('axios');
-const { start } = require('applicationinsights');
+import moment from 'moment';
+import secrets from '../../secrets';
+import {getGeoOptixAccessToken} from '../services/geo-optix-token-service';
+import {Request, Response} from 'express'; 
+import {InfluxDB} from '@influxdata/influxdb-client'
+import axios from 'axios';
+//const { start } = require('applicationinsights');
 
 const bucketName = process.env.SOURCE_BUCKET;
 
-const getPumpedVolume = async (req, res) => {
+const getPumpedVolume = async (req: Request, res: Response) => {
     const wellRegistrationIDs = req.params.wellRegistrationID || req.query.filter;
     const startDateQuery = req.query.startDate;
     const endDateQuery = req.query.endDate ? req.query.endDate : moment(new Date()).format();
-    const interval = req.query.interval ? parseInt(req.query.interval) : 60;
+    const interval = req.query.interval ? parseInt(req.query.interval as string) : 60;
 
     [{ name: "Start Date", value: startDateQuery },
     { name: "End Date", value: endDateQuery }].forEach(x => {
+        const value = x.value as string;
         if (x.value === null || x.value === undefined) {
             return res.status(400).json({ "status": "invalid request", "reason": `${x.name} empty. Please enter a valid ${x.name}.` });
         }
 
-        if (!moment(x.value, "YYYY-MM-DD",true).isValid() && !moment(x.value, "YYYYMMDD", true).isValid()
-            && !moment(x.value, "YYYYMMDDTHHmmssZ", true).isValid() && !moment(x.value, "YYYY-MM-DDTHH:mm:ssZ", true).isValid()
+        if (!moment(value, "YYYY-MM-DD",true).isValid() && !moment(value, "YYYYMMDD", true).isValid()
+            && !moment(value, "YYYYMMDDTHHmmssZ", true).isValid() && !moment(value, "YYYY-MM-DDTHH:mm:ssZ", true).isValid()
             ) {
             return res.status(400).json({ "status": "invalid request", "reason": `${x.name} is not a valid Date string in ISO 8601 format. Please enter a valid date string` });
         }
@@ -34,15 +36,15 @@ const getPumpedVolume = async (req, res) => {
         return res.status(400).json({ "status": "invalid request", "reason": "Interval must be a number evenly divisible by 15 and greater than 0. Please enter a new interval." });
     }
 
-    const startDate = moment(startDateQuery).toDate();
-    const endDate = moment(endDateQuery).toDate();
+    const startDate = moment(startDateQuery as string).toDate();
+    const endDate = moment(endDateQuery as string).toDate();
 
     if (startDate > endDate) {
         return res.status(400).json({ "status": "invalid request", "reason": "Start date occurs after End date. Please ensure that Start Date occurs before End date" });
     }
 
     try {
-        let results = await getFlowMeterSeries(wellRegistrationIDs, startDate, endDate);
+        let results = await getFlowMeterSeries(wellRegistrationIDs as string | string[], startDate, endDate);
         return res.status(200).json({ "status": "success", "result": results.length > 0 ? structureResults(results, interval) : results });
     }
     catch (err) {
@@ -51,7 +53,13 @@ const getPumpedVolume = async (req, res) => {
     }
 };
 
-async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
+class ResultFromInfluxDB {
+    endTime!: Date;
+    gallons!: number;
+    wellRegistrationID!: string;
+}
+
+async function getFlowMeterSeries(wellRegistrationIDs: string | string [], startDate: Date, endDate:Date): Promise<ResultFromInfluxDB[]> {
     const token = secrets.INFLUXDB_TOKEN;
     const org = secrets.INFLUXDB_ORG;
     const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: token });
@@ -70,7 +78,7 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
             ${registrationIDQuery}) \
         |> sort(columns:["_time"])`;
 
-    let results = [];
+    let results: ResultFromInfluxDB[] = [];
 
     return new Promise((resolve, reject) => {
         queryApi.queryRows(query, {
@@ -88,14 +96,14 @@ async function getFlowMeterSeries(wellRegistrationIDs, startDate, endDate) {
     });
 }
 
-function structureResults(results, interval) {
+function structureResults(results: ResultFromInfluxDB[], interval: number) : StructuredResults {
     const distinctWells = [...new Set(results.map(x => x.wellRegistrationID))];
     let startDate = results[0].endTime;
     let endDate = results[results.length - 1].endTime;
     let totalResults = 0;
-    let volumesByWell = [];
+    let volumesByWell: VolumeByWell[] = [];
     distinctWells.forEach(wellRegistrationID => {
-        let currentWellResults = results.filter(x => x.wellRegistrationID === wellRegistrationID).sort((a, b) => a.endTime -  b.endTime);
+        let currentWellResults = results.filter(x => x.wellRegistrationID === wellRegistrationID).sort((a, b) => a.endTime.getTime() -  b.endTime.getTime());
         
         if (currentWellResults[0].endTime < startDate) {
             startDate = currentWellResults[0].endTime;
@@ -132,7 +140,23 @@ function structureResults(results, interval) {
     }
 }
 
-function aggregateResults(resultsToAggregate, interval) {
+class VolumeByWell {
+    wellRegistrationID!: string;
+    intervalCount!: number;
+    intervalVolumes!: AggregatedResult[];
+}
+
+class StructuredResults {
+    intervalCountTotal!: number;
+    intervalWidthInMinutes!: number;
+    intervalStart!: string;
+    intervalEnd!: string;
+    durationInMinutes!: number;
+    wellCount!: number;
+    volumesByWell!: VolumeByWell[];
+}
+
+function aggregateResults(resultsToAggregate: ResultFromInfluxDB[], interval: number) :AggregatedResult[] {
     let aggregatedResults = [];
     let sum = 0;
     //Again, because of the 15 minute intervals the first date we get will have been over a previous 15 minute interval
@@ -165,27 +189,47 @@ function aggregateResults(resultsToAggregate, interval) {
     return aggregatedResults;
 }
 
-function abbreviateWellDataResponse(wellData) {
+class AggregatedResult{
+    wellRegistrationID!: string;
+    endTime!: Date;
+    gallons!: number;
+}
+
+// TODO: these methods all need better typing.
+
+function abbreviateWellDataResponse(wellData: { CanonicalName: any; Description: any; Tags: any; Location: any; CreateDate: any; UpdateDate: any; }) : AbbreviatedWellDataResponse {
     return {
         wellRegistrationID: wellData.CanonicalName,
         description: wellData.Description,
         tags: wellData.Tags,
         location: wellData.Location,
         createDate: wellData.CreateDate,
-        updateDate: wellData.UpdateDate
+        updateDate: wellData.UpdateDate,
+        sensors: []
     }
 }
 
-function abbreviateWellSensorsResponse(wellSensors) {
+class AbbreviatedWellDataResponse {
+    wellRegistrationID!: string;
+    description!: string;
+    tags: any;
+    location: any;
+    createDate: any;
+    updateDate: any;
+    sensors!: any[];
+
+}
+
+function abbreviateWellSensorsResponse(wellSensors: {CanonicalName: any, Definition: {sensorType: any}}[]) {
     return wellSensors.map(x => ({
         sensorName: x.CanonicalName,
         sensorType: x.Definition.sensorType
     }));
 }
 
-const getWells = async (req, res) => {
+const getWells = async (req: Request, res: Response) => {
     try {
-        const geoOptixAccessToken = await geoOptixService.getGeoOptixAccessToken();
+        const geoOptixAccessToken = await getGeoOptixAccessToken();
         const geoOptixRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites`, {
             headers: {
                 "Authorization": `Bearer ${geoOptixAccessToken}`
@@ -193,7 +237,7 @@ const getWells = async (req, res) => {
         });
         return res.status(200).json({
             "status": "success",
-            "result": geoOptixRequest.data.map(x => ({wellRegistrationID : x.CanonicalName, description : x.Description, location: x.Location}))
+            "result": geoOptixRequest.data.map((x: { CanonicalName: any; Description: any; Location: any; }) => ({wellRegistrationID : x.CanonicalName, description : x.Description, location: x.Location}))
         });
     }
     catch (err) {
@@ -202,10 +246,10 @@ const getWells = async (req, res) => {
     }
 }
 
-const getWell = async (req, res) => {
+const getWell = async (req: Request, res: Response) => {
     try {
         const wellRegistrationID = req.params.wellRegistrationID;
-        const geoOptixAccessToken = await geoOptixService.getGeoOptixAccessToken();
+        const geoOptixAccessToken = await getGeoOptixAccessToken();
         const geoOptixWellRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}`, {
             headers: {
                 "Authorization": `Bearer ${geoOptixAccessToken}`
@@ -217,7 +261,7 @@ const getWell = async (req, res) => {
                 "Authorization": `Bearer ${geoOptixAccessToken}`
             }
         });
-        resultsObject["sensors"] = abbreviateWellSensorsResponse(geoOptixWellSensorsRequest.data);
+        resultsObject.sensors = abbreviateWellSensorsResponse(geoOptixWellSensorsRequest.data);
         return res.status(200).json({
             "status": "success",
             "result": resultsObject
@@ -229,4 +273,4 @@ const getWell = async (req, res) => {
     }
 }
 
-module.exports = { getPumpedVolume, getWells, getWell };
+export { getPumpedVolume, getWells, getWell };

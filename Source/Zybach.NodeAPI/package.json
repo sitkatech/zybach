@@ -3,14 +3,16 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bucket/www",
-    "debug": "node --inspect ./bucket/www"
+    "start": "node ./dist/bucket/www.js",
+    "build": "tsc -p src",
+    "debug": "node -r ts-node/register --inspect=0.0.0.0:9229 ./src/bucket/www.ts"
   },
   "dependencies": {
     "@cloudreach/docker-secrets": "^1.0.3",
     "@influxdata/influxdb-client": "^1.6.0",
     "applicationinsights": "^1.8.7",
     "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -21,5 +23,17 @@
     "nodemon": "^2.0.4",
     "querystring": "^0.2.0",
     "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/debug": "^4.1.5",
+    "@types/express": "^4.17.9",
+    "@types/http-errors": "^1.8.0",
+    "@types/morgan": "^1.9.2",
+    "@types/mssql": "^6.0.7",
+    "@types/node": "^14.14.14",
+    "@types/swagger-ui-express": "^4.1.2",
+    "typescript": "^4.1.3"
   }
 }

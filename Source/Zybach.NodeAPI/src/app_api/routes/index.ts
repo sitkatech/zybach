@@ -1,10 +1,10 @@
-var express = require('express');
+import express from 'express';
 var router = express.Router();
-const ctrlWells = require('../controllers/wells');
-const authenticationService = require('../services/authentication-service');
+import { getPumpedVolume, getWells, getWell } from '../controllers/wells';
 
+import {checkApiKey} from '../services/authentication-service';
 //Ensure that all requests for wells have authentication
-router.all('/wells*', authenticationService.checkApiKey);
+router.all('/wells*', checkApiKey);
 
 /**
 * @swagger
@@ -166,7 +166,7 @@ router.all('/wells*', authenticationService.checkApiKey);
 *                   type: object
 *                   $ref: '#/definitions/Error'
 */
-router.route('/wells').get(ctrlWells.getWells);
+router.route('/wells').get(getWells);
 
 /**
 * @swagger
@@ -243,7 +243,7 @@ router.route('/wells').get(ctrlWells.getWells);
 *                   type: object
 *                   $ref: '#/definitions/Error'
 */
-router.route('/wells/pumpedVolume').get(ctrlWells.getPumpedVolume);
+router.route('/wells/pumpedVolume').get(getPumpedVolume);
 
 /**
 * @swagger
@@ -306,7 +306,7 @@ router.route('/wells/pumpedVolume').get(ctrlWells.getPumpedVolume);
 *                   type: object
 *                   $ref: '#/definitions/Error'
 */
-router.route('/wells/:wellRegistrationID').get(ctrlWells.getWell);
+router.route('/wells/:wellRegistrationID').get(getWell);
 
 /**
 * @swagger
@@ -378,7 +378,7 @@ router.route('/wells/:wellRegistrationID').get(ctrlWells.getWell);
 *                   type: object
 *                   $ref: '#/definitions/Error'
 */
-router.route('/wells/:wellRegistrationID/pumpedVolume').get(ctrlWells.getPumpedVolume);
+router.route('/wells/:wellRegistrationID/pumpedVolume').get(getPumpedVolume);
 
 /**
 * @swagger
@@ -395,4 +395,4 @@ router.route('/').get((req, res) => {
     res.status(200).json({status:"success"});
 });
 
-module.exports = router;
+export default router;

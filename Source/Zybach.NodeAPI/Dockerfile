@@ -1,7 +1,10 @@
 FROM node:current-alpine3.10
 WORKDIR /
 COPY ["package.json", "yarn.lock*", "npm-shrinkwrap.json*", "./"]
-RUN yarn install --production --silent && mv node_modules ../
+# will need to use multi-stage builds so that we can install dev deps for compiling and only prod deps for running...
+RUN yarn install --silent && mv node_modules ../
+RUN yarn add ts-node
 COPY . .
+RUN yarn run tsc -p ./src
 EXPOSE 80
 CMD ["yarn", "start"]

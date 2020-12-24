@@ -1,10 +1,10 @@
-const { poolPromise } = require('../../db')
-const sql = require('mssql');
-const axios = require('axios');
-const querystring = require('querystring');
-const secrets = require('../../secrets');
+import {poolPromise} from '../../db';
+import sql from 'mssql';
+import axios from 'axios';
+import querystring from 'querystring';
+import secrets from '../../secrets'
 
-const getGeoOptixAccessToken = async function () {
+async function getGeoOptixAccessToken() {
     return new Promise(async function (resolve, reject) {
         try {
             const pool = await poolPromise
@@ -50,7 +50,7 @@ async function deleteTableRecords() {
     });
 }
 
-async function insertNewTokenIntoDatabase(newTokenObject) {
+async function insertNewTokenIntoDatabase(newTokenObject: { GeoOptixAccessTokenValue: any; GeoOptixAccessTokenExpiryDate: any; }) {
     return new Promise(async function (resolve, reject) {
         try {
             const pool = await poolPromise
@@ -66,7 +66,7 @@ async function insertNewTokenIntoDatabase(newTokenObject) {
     });
 }
 
-async function makeKeystoneTokenRequest() {
+async function makeKeystoneTokenRequest(): Promise<{access_token: any, expires_in: any}> {
     return new Promise(async function (resolve, reject) {
         try {
             const keystoneTokenRequest = await axios.post(secrets.KEYSTONE_AUTHORITY_URL,
@@ -90,4 +90,4 @@ async function makeKeystoneTokenRequest() {
     });
 }
 
-module.exports = { getGeoOptixAccessToken }
+export { getGeoOptixAccessToken }
