@@ -5,7 +5,7 @@ services:
     image: zybachapi
     build: .
     environment: 
-      - SOURCE_BUCKET=tpnrd-qa
+      - SOURCE_BUCKET=tpnrd
       - TS_NODE_PROJECT=/src/tsconfig.json
     secrets:
       - NODE_API_SECRETS
@@ -13,6 +13,8 @@ services:
       - 3000:3000
       - 9229:9229
     command: yarn debug
+    volumes:
+      - ./src:/src
 secrets:
   NODE_API_SECRETS: 
     file: secrets.json

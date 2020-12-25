@@ -1,0 +1,5 @@
+{
+    "exec": "node -r ts-node/register --inspect=0.0.0.0:9229 ./src/bucket/www.ts",
+    "watch": ["src"],
+    "ext": "ts"
+}

@@ -5,6 +5,6 @@ COPY ["package.json", "yarn.lock*", "npm-shrinkwrap.json*", "./"]
 RUN yarn install --silent && mv node_modules ../
 RUN yarn add ts-node
 COPY . .
-RUN yarn run tsc -p ./src
+RUN yarn run build
 EXPOSE 80
 CMD ["yarn", "start"]

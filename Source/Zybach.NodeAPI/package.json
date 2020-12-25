@@ -4,15 +4,18 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/bucket/www.js",
-    "build": "tsc -p src",
-    "debug": "node -r ts-node/register --inspect=0.0.0.0:9229 ./src/bucket/www.ts"
+    "build": "tsoa routes && tsc -p src",
+    "autogen-routes": "nodemon -w src/app_api/controllers -x tsoa routes",
+    "debug": "nodemon"
   },
   "dependencies": {
     "@cloudreach/docker-secrets": "^1.0.3",
     "@influxdata/influxdb-client": "^1.6.0",
+    "api-error-handler": "^1.0.0",
     "applicationinsights": "^1.8.7",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
@@ -20,11 +23,13 @@
     "moment": "^2.29.0",
     "morgan": "~1.9.1",
     "mssql": "^6.2.3",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.6",
     "querystring": "^0.2.0",
-    "swagger-ui-express": "^4.1.4"
+    "swagger-ui-express": "^4.1.4",
+    "tsoa": "^3.4.0"
   },
   "devDependencies": {
+    "@types/api-error-handler": "^1.0.32",
     "@types/body-parser": "^1.19.0",
     "@types/cookie-parser": "^1.4.2",
     "@types/debug": "^4.1.5",
