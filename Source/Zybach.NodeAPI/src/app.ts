@@ -22,7 +22,13 @@ import {RegisterRoutes} from './app_api/routes/generated/routes'
 import { ApiError } from 'errors/apiError';
 import { ValidateError } from 'tsoa';
 
+import connect from "./mdb";
+const databaseUri: string = process.env["DATABASE_URI"] || "DATABASE_URI_NOT_FOUND";
+
+connect(databaseUri);
+
 const app = express();
+
 
 app.use(logger('dev'));
 app.use(express.json());

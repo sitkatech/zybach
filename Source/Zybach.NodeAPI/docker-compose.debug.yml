@@ -7,6 +7,7 @@ services:
     environment: 
       - SOURCE_BUCKET=tpnrd
       - TS_NODE_PROJECT=/src/tsconfig.json
+      - DATABASE_URI=mongodb://host.docker.internal:27017/zybachDb
     secrets:
       - NODE_API_SECRETS
     ports:
@@ -15,6 +16,15 @@ services:
     command: yarn debug
     volumes:
       - ./src:/src
+  mongo:
+    image: mongo
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - 27017:27017
 secrets:
   NODE_API_SECRETS: 
     file: secrets.json
+
+volumes:
+  mongodata:

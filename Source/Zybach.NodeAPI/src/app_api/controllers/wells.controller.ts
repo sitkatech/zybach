@@ -11,7 +11,7 @@ import {
 } from "tsoa";
 import secrets from '../../secrets';
 import { ApiError } from '../../errors/apiError'
-import { getGeoOptixAccessToken } from '../services/geo-optix-token-service';
+import { GeoOptixTokenService } from '../services/geo-optix-token-service';
 import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
@@ -22,11 +22,11 @@ const bucketName = process.env.SOURCE_BUCKET;
 export class WellController extends Controller {
 
     @Get("")
-    @Response<ApiError>('500', 'Internal Server Error')
+    //@Response<ApiError>('500', 'Internal Server Error')
     public async getWells() {
         try {
             // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
-            let geoOptixAccessToken = await getGeoOptixAccessToken();
+            let geoOptixAccessToken = await new GeoOptixTokenService().getGeoOptixAccessToken();
             const geoOptixRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites`, {
                 headers: {
                     "Authorization": `Bearer ${geoOptixAccessToken}`
@@ -59,7 +59,7 @@ export class WellController extends Controller {
         @Path() wellRegistrationID: string
     ) {
         try {
-            const geoOptixAccessToken = await getGeoOptixAccessToken();
+            const geoOptixAccessToken = await new GeoOptixTokenService().getGeoOptixAccessToken();
             const geoOptixWellRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}`, {
                 headers: {
                     "Authorization": `Bearer ${geoOptixAccessToken}`
@@ -109,26 +109,21 @@ export class WellController extends Controller {
             const value = x.value as string;
             if (x.value === null || x.value === undefined) {
                 throw new ApiError("Invalid Request", 400, `${x.name} empty. Please enter a valid ${x.name}.`)
-                //return res.status(400).json({ "status": "invalid request", "reason": `${x.name} empty. Please enter a valid ${x.name}.` });
             }
 
             if (!moment(value, "YYYY-MM-DD", true).isValid() && !moment(value, "YYYYMMDD", true).isValid()
                 && !moment(value, "YYYYMMDDTHHmmssZ", true).isValid() && !moment(value, "YYYY-MM-DDTHH:mm:ssZ", true).isValid()
             ) {
                 throw new ApiError("Invalid Request", 400, `${x.name} is not a valid Date string in ISO 8601 format. Please enter a valid date string`)
-
-                //return res.status(400).json({ "status": "invalid request", "reason": `${x.name} is not a valid Date string in ISO 8601 format. Please enter a valid date string` });
             }
         });
 
         if (isNaN(interval)) {
             throw new ApiError("Invalid Request", 400, "Interval is invalid. Please enter an integer evenly divisible by 15 to use for interval.");
-            // return res.status(400).json({ "status": "invalid request", "reason": "Interval is invalid. Please enter an integer evenly divisible by 15 to use for interval." });
         }
 
         if (interval === 0 || interval % 15 != 0) {
             throw new ApiError("Invalid Request", 400, "Interval must be a number evenly divisible by 15 and greater than 0. Please enter a new interval.")
-            // return res.status(400).json({ "status": "invalid request", "reason": "Interval must be a number evenly divisible by 15 and greater than 0. Please enter a new interval." });
         }
 
         const startDate = moment(startDateString as string).toDate();
@@ -136,12 +131,10 @@ export class WellController extends Controller {
 
         if (startDate > endDate) {
             throw new ApiError("Invalid Request", 400, "Start date occurs after End date. Please ensure that Start Date occurs before End date");
-            // return res.status(400).json({ "status": "invalid request", "reason": "Start date occurs after End date. Please ensure that Start Date occurs before End date" });
         }
 
         try {
             let results = await getFlowMeterSeries(wellRegistrationIDs as string | string[], startDate, endDate);
-            //return res.status(200).json({ "status": "success", "result": results.length > 0 ? structureResults(results, interval) : results });
             return {
                 "status": "success",
                 "result": results.length > 0 ? structureResults(results, interval) : results
@@ -150,10 +143,10 @@ export class WellController extends Controller {
         catch (err) {
             console.error(err);
             throw new ApiError("Internal Server Error", 500, err.message);
-            //return res.status(500).json({ "status": "failed", "result": err.message });
         }
     }
 }
+
 // TODO: these methods all need better typing.
 
 function abbreviateWellDataResponse(wellData: { CanonicalName: any; Description: any; Tags: any; Location: any; CreateDate: any; UpdateDate: any; }): AbbreviatedWellDataResponse {

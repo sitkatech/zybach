@@ -16,7 +16,7 @@
       "strictPropertyInitialization": true,
       "noImplicitThis": true,
       "alwaysStrict": true,
-  
+ 
       /* Additional Checks */
       "noUnusedLocals": false,
       "noUnusedParameters": false,
@@ -35,6 +35,7 @@
       /* Advanced Options */
       "forceConsistentCasingInFileNames": true,
   
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "skipLibCheck": true
     }
   }
