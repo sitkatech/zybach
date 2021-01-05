@@ -28,9 +28,14 @@ this is what an incoming event message looks like:
 
 */
 
+const STATUS_OK = 0
+const STATUS_WARNING = 1
+const STATUS_ERROR = 2
+
 const appInsights = require('applicationinsights');
 const settings = require('./config.json');
 const got = require('got');
+let requestContext = null;
 
 // prints a list of boards available to the user that the api key is mappped to
 
@@ -337,27 +342,36 @@ function logException(error) {
     
     if (typeof error === 'object' && error !== null)
     {
-        console.error(JSON.stringify(error));
+        if (requestContext)
+            requestContext.log(JSON.stringify(error));
+        else
+            console.error(JSON.stringify(error));
     }
     else {
-        console.error(error);
+        if (requestContext) 
+            requestContext.log(error);
+        else
+            console.error(error);
     }
 
     appInsights.defaultClient.trackException({exception: error});
 }
 
 function logMessage(message) {
-    let telemetry = appInsights.defaultClient;
 
     if (typeof message === 'object' && message !== null)
     {
-        console.info(JSON.stringify(message));
+        if (requestContext)
+            requestContext.log(JSON.stringify(message));
+        else
+            console.info(JSON.stringify(message));
     }
     else {
-        console.info(message);
+        if (requestContext) 
+            requestContext.log(message);
+        else
+            console.info(message);
     }
-
-    // todo: app insights message?
 }
 
 function getEventOrigin(event) {
@@ -467,11 +481,16 @@ async function handleErrorEvent(event, origin) {
     return "OK, error event handled";
 }
 
-const STATUS_OK = 0
-const STATUS_WARNING = 1
-const STATUS_ERROR = 2
+// This is the entry point for this module 
 
-exports.handleStatusEvent = async function(event) {
+exports.handleStatusEvent = async function(context, event) {
+
+    requestContext = context;
+    
+    if (Object.keys(event.data).length === 0) {
+        logException('Event data object cannot be empty');
+        return 'Failed'
+    }
 
     // try to classify the origin of this status event
     let origin = getEventOrigin(event);
@@ -535,9 +554,6 @@ exports.handleStatusEvent = async function(event) {
 
     return "Failed";
 };
-
-// APPINSIGHTS_INSTRUMENTATIONKEY
-// GEOOPTIX_API_KEY
 
 (async () => {
 
