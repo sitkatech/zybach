@@ -14,21 +14,15 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import bodyParser from "body-parser";
 import logger from 'morgan';
-import swaggerUi from 'swagger-ui-express'
-//const specs = require('../../swagger');
-//import apiRouter from './app_api/routes/index'
-import errorHandler from "api-error-handler";
 import {RegisterRoutes} from './app_api/routes/generated/routes'
 import { ApiError } from 'errors/apiError';
 import { ValidateError } from 'tsoa';
 
-import connect from "./mdb";
-const databaseUri: string = process.env["DATABASE_URI"] || "DATABASE_URI_NOT_FOUND";
+import connect from "./connect";
 
-connect(databaseUri);
+connect();
 
 const app = express();
-
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -40,20 +34,13 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-RegisterRoutes(app);
-//app.use('/api', apiRouter);
-// app.get('/api-docs/swagger.json', function(req, res) {
-//   res.setHeader('Content-Type', 'application/json');
-//   res.send(JSON.stringify(specs, null, 4));
-// });
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-// catch 404 and forward to error handler
+RegisterRoutes(app);
+
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-//app.use(errorHandler())
 
 // error handler
 app.use(function (err: ApiError, req: Request, res: Response, next: NextFunction) {

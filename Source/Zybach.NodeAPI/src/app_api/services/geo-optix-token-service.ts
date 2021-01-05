@@ -1,74 +1,61 @@
-import {poolPromise} from '../../db';
-import sql from 'mssql';
 import axios from 'axios';
 import querystring from 'querystring';
 import secrets from '../../secrets'
+import GeoOptixToken, { GeoOptixTokenInterface } from '../models/geo-optix-token';
+import { ApiError } from '../../errors/apiError';
+import { GeoOptixTokenDto } from '../dtos/geo-optix-token-dto';
 
 export class GeoOptixTokenService {
+    
     public async getGeoOptixAccessToken() {
         var self = this;
-        return new Promise(async function (resolve, reject) {
-            try {
-                const pool = await poolPromise
-                const getAccessTokenResult = await pool.request()
-                    .query('select top 1 * from dbo.GeoOptixAccessToken');
-                let currentToken = getAccessTokenResult.recordset.length > 0 ? getAccessTokenResult.recordset[0] : null;
-                if (currentToken == null || ((new Date(currentToken.GeoOptixAccessTokenExpiryDate).getTime() - new Date().getTime()) / 1000 * 60 * 60) < 2) {
-                    try {
-                        const newTokenRequest = await self.makeKeystoneTokenRequest();
-                        if (currentToken != null) {
-                            await self.deleteTableRecords();
-                        }
-                        const newToken = {
-                            GeoOptixAccessTokenValue: newTokenRequest.access_token,
-                            GeoOptixAccessTokenExpiryDate: new Date(new Date().getTime() + newTokenRequest.expires_in * 1000)
-                        };
-                        await self.insertNewTokenIntoDatabase(newToken);
-                        currentToken = newToken;
-                    }
-                    catch (err) {
-                        reject(err);
-                    }
+        let currentToken: GeoOptixTokenInterface | null;
+
+        try {
+            currentToken = await GeoOptixToken.findOne();
+            //let currentToken = getAccessTokenResult.recordset.length > 0 ? getAccessTokenResult.recordset[0] : null;
+            if (currentToken == null || ((new Date(currentToken.ExpirationDate).getTime() - new Date().getTime()) / 1000 * 60 * 60) < 2) {
+
+                const newTokenRequest = await self.makeKeystoneTokenRequest();
+                if (currentToken != null) {
+                    await self.clearExistingTokens();
                 }
-                resolve(currentToken.GeoOptixAccessTokenValue);
-            } catch (err) {
-                console.log(err.message);
-                reject(err.message);
+                const newToken: GeoOptixTokenDto = {
+                    TokenValue: newTokenRequest.access_token as string,
+                    ExpirationDate: new Date(new Date().getTime() + newTokenRequest.expires_in * 1000)
+                };
+                currentToken = await self.insertToken(newToken);
             }
-        });
+        }
+        catch (err){
+            throw new ApiError("Internal Server Error", 500, err.message);
+        }
+
+        return currentToken.TokenValue;
     }
-    
-    async deleteTableRecords() {
-        return new Promise(async function (resolve, reject) {
-            try {
-                const pool = await poolPromise
-                const result = await pool.request()
-                    .query('delete from dbo.GeoOptixAccessToken');
-                resolve(result);
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
+
+    async clearExistingTokens() {
+        try {
+            await GeoOptixToken.deleteMany();
+        } catch (err) {
+            throw new ApiError("Internal Server Error", 500, "Error deleting old GeoOptix tokens");
+        }
     }
-    
-    async insertNewTokenIntoDatabase(newTokenObject: { GeoOptixAccessTokenValue: any; GeoOptixAccessTokenExpiryDate: any; }) {
-        return new Promise(async function (resolve, reject) {
-            try {
-                const pool = await poolPromise
-                const result = await pool.request()
-                    .input('newToken', sql.VarChar(2048), newTokenObject.GeoOptixAccessTokenValue)
-                    .input('expiryDate', sql.DateTime, newTokenObject.GeoOptixAccessTokenExpiryDate)
-                    .query('insert into dbo.GeoOptixAccessToken (GeoOptixAccessTokenValue, GeoOptixAccessTokenExpiryDate) values (@newToken, @expiryDate)');
-                resolve(result);
-            }
-            catch (err) {
-                reject(err);
-            }
-        });
+
+    async insertToken(newTokenObject: GeoOptixTokenDto): Promise<GeoOptixTokenInterface> {
+        const newToken = new GeoOptixToken(newTokenObject);
+
+        try {
+            await newToken.save();
+        }
+        catch (err) {
+            throw new ApiError("Internal Server Error", 500, "Error inserting new GeoOptix token");
+        }
+
+        return newToken;
     }
-    
-    async makeKeystoneTokenRequest(): Promise<{access_token: any, expires_in: any}> {
+
+    async makeKeystoneTokenRequest(): Promise<{ access_token: any, expires_in: any }> {
         return new Promise(async function (resolve, reject) {
             try {
                 const keystoneTokenRequest = await axios.post(secrets.KEYSTONE_AUTHORITY_URL,

@@ -7,7 +7,6 @@ services:
     environment: 
       - SOURCE_BUCKET=tpnrd
       - TS_NODE_PROJECT=/src/tsconfig.json
-      - DATABASE_URI=mongodb://host.docker.internal:27017/zybachDb
     secrets:
       - NODE_API_SECRETS
     ports:
@@ -18,7 +17,11 @@ services:
       - ./src:/src
   mongo:
     image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
+      - ./mongo-entrypoint/:/docker-entrypoint-initdb.d/
       - mongodata:/data/db
     ports:
       - 27017:27017

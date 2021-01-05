@@ -3,6 +3,8 @@
 * Yarn package manager
 * * We're doing this instead of npm for this one. It works almost exactly the same as npm with a few minor differences in CLI, and uses the npm package registry as its source for packages, but is slightly more modern.
 * * You can install it with `npm install -g yarn`
+* MongoDB Compass
+
 # Make it run
 * As always, copy `secrets.template.json` to `secrets.json` and fill it out.
 * Currently, there is no `.env` file.
@@ -19,6 +21,9 @@
 * * This command runs `tsoa` to re-generate routes from controllers, then `tsc` to compile TypeScript to JavaScript
 * * Because we are using `tsoa`, there is **no need to write routing code**. 
 
+# Database it
+* The `docker-compose.debug.yml` file has instructions for `docker-compose` to automatically run a Mongo instance in a container, using a docker volume on your host machine as the backing store. An `entrypoint.js` file will set up the user for this local Mongo instance, and the default connection string is already in the `secrets.template.json` file you copied earlier. So, there is no set-up required to get your local database instance running.
+
 # Debug it
 * The debug launch task is already configured for VS Code. Just hit `F5` after running the `docker-compose` command above.
 * The `docker-compose.debug.yml` file runs `node -r ts-node/register` in the container, launching the application directly from the TypeScript files. This, together with the `"sourceMap": true` option in the `src/.tsconfig` file and the `sourceMapPathOverrides` option in the `launch.json` file will allow the VS Code debug client to hook into breakpoints that you set in the `*.ts` files, so you don't need to worry about the compiled code when debugging.
@@ -29,3 +34,4 @@
 # Todos
 * Eventually we'll want to use a multistage build for QA/Production to build the TypeScript in one container and copy the built files to a separate container for slimmer images.
 * We might also consider using a separate Dockerfile for development/debugging that only installs modules and copies TypeScript, without building.
+* Setting up an automated migration system for Mongo
