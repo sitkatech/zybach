@@ -499,7 +499,7 @@ exports.handleStatusEvent = async function(context, event) {
     switch (origin)
     {
         case settings.trello.origins.geooptix:
-            appInsights.trackEvent('EventOriginGeoOptix'); 
+            appInsights.defaultClient.trackEvent('EventOriginGeoOptix'); 
             break;
     
         case settings.trello.origins.paige:
@@ -507,19 +507,19 @@ exports.handleStatusEvent = async function(context, event) {
             break;
 
         case settings.trello.origins.aghub:
-            appInsights.trackEvent('EventOriginAgHub'); 
+            appInsights.defaultClient.trackEvent('EventOriginAgHub'); 
             break;
 
         case settings.trello.origins.portal:
-            appInsights.trackEvent('EventOriginGroundwaterPortal'); 
+            appInsights.defaultClient.trackEvent('EventOriginGroundwaterPortal'); 
             break;
 
         case settings.trello.origins.email:
-            appInsights.trackEvent('EventOriginEmail'); 
+            appInsights.defaultClient.trackEvent('EventOriginEmail'); 
             break;
 
         case settings.trello.origins.user:
-            appInsights.trackEvent('EventOriginUser'); 
+            appInsights.defaultClient.trackEvent('EventOriginUser'); 
             break;
                                         
         default:
@@ -535,12 +535,12 @@ exports.handleStatusEvent = async function(context, event) {
     switch (event.data.status.status)
     {
         case STATUS_OK:
-            appInsights.trackEvent('DeviceStatusOK'); 
+            appInsights.defaultClient.trackEvent('DeviceStatusOK'); 
             return "OK, no Trello action taken";
             break;
 
         case STATUS_WARNING:
-            appInsights.trackEvent('DeviceStatusError'); 
+            appInsights.defaultClient.trackEvent('DeviceStatusError'); 
             return "OK, no action taken";
             break;
 
