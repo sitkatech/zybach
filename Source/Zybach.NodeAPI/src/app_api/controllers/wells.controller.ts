@@ -7,8 +7,11 @@ import {
     Query,
     Route,
     SuccessResponse,
-    Response
+    Response,
+    Security,
+    Request
 } from "tsoa";
+import * as express from 'express';
 import secrets from '../../secrets';
 import { ApiError } from '../../errors/apiError'
 import { GeoOptixTokenService } from '../services/geo-optix-token-service';
@@ -22,8 +25,11 @@ const bucketName = process.env.SOURCE_BUCKET;
 export class WellController extends Controller {
 
     @Get("")
+    @Security("key")
     //@Response<ApiError>('500', 'Internal Server Error')
-    public async getWells() {
+    public async getWells(@Request() req: express.Request) {
+        console.log(req);
+        
         try {
             // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
             let geoOptixAccessToken = await new GeoOptixTokenService().getGeoOptixAccessToken();
@@ -45,6 +51,7 @@ export class WellController extends Controller {
     }
 
     @Get("pumpedVolume")
+    @Security("key")
     public async getPumpedVolume(
         @Query("startDate") startDateString: string,
         @Query("filter") wellRegistrationIDs?: string[],
@@ -55,6 +62,7 @@ export class WellController extends Controller {
     }
 
     @Get("{wellRegistrationID}")
+    @Security("key")
     public async getWell(
         @Path() wellRegistrationID: string
     ) {
@@ -84,6 +92,7 @@ export class WellController extends Controller {
     }
 
     @Get("{wellRegistrationID}/pumpedVolume")
+    @Security("key")
     public async getPumpedVolumeByWell(
         @Query("startDate") startDateString: string,
         @Path() wellRegistrationID?: string,

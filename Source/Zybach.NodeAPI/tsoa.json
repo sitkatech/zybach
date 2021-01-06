@@ -10,9 +10,17 @@
         "outputDirectory":"./src",
         "controllerPathGlobs": [
             "./src/app_api/controllers/**/*controller.ts"
-        ]
+        ],
+        "securityDefinitions": {
+            "api_key" :{
+                "type": "apiKey",
+                "name": "authorization",
+                "in": "header"
+            }
+        }
     },
     "routes":{
-        "routesDir": "./src/app_api/routes/generated"
+        "routesDir": "./src/app_api/routes/generated",
+        "authenticationModule": "./src/app_api/security/authentication.ts"
     }
 }
