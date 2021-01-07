@@ -90,10 +90,11 @@ export function RegisterRoutes(app: express.Router) {
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
         app.post('/api/books',
-            authenticateMiddleware([{"feature":["DummyFeature"]}]),
+            authenticateMiddleware([{"anonymous":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"BookCreateDto"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -113,10 +114,9 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/wells',
-            authenticateMiddleware([{"key":[]}]),
+            authenticateMiddleware([{"api_key":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -136,7 +136,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/wells/pumpedVolume',
-            authenticateMiddleware([{"key":[]}]),
+            authenticateMiddleware([{"api_key":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},
@@ -162,7 +162,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/wells/:wellRegistrationID',
-            authenticateMiddleware([{"key":[]}]),
+            authenticateMiddleware([{"api_key":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
@@ -185,7 +185,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/wells/:wellRegistrationID/pumpedVolume',
-            authenticateMiddleware([{"key":[]}]),
+            authenticateMiddleware([{"api_key":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},

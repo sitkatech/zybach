@@ -9,7 +9,6 @@ export default () => {
         return console.log(`Successfully connected to database`);
       })
       .catch(error => {
-        console.log(secrets.DATABASE_URI)
         console.log("Error connecting to database: ", error);
         return process.exit(1);
       });
