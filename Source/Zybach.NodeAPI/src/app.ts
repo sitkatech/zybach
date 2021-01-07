@@ -1,14 +1,13 @@
 import secrets from './secrets';
 delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
 import * as appInsights from 'applicationinsights';
-appInsights.setup(secrets.APPINSIGHTS_INSTRUMENTATIONKEY)
+if (process.env["ENVIRONMENT"] !== "DEBUG"){
+  appInsights.setup(secrets.APPINSIGHTS_INSTRUMENTATIONKEY)
   .setAutoCollectConsole(true, true)
   .start();
-
-  //const createError = require('http-errors');
+}
 
 import createError from 'http-errors';
-
 import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
@@ -17,7 +16,6 @@ import logger from 'morgan';
 import {RegisterRoutes} from './app_api/routes/generated/routes'
 import { ApiError } from 'errors/apiError';
 import { ValidateError } from 'tsoa';
-
 import connect from "./connect";
 
 connect();
