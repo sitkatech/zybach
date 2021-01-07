@@ -1,5 +1,5 @@
 import Book from "../models/book";
-import { BookCreateDto } from "../dtos/book-create-dto";
+import { BookCreateDto, BookDto } from "../dtos/book-create-dto";
 import { ApiError } from "../../errors/apiError";
 
 export class BookService{
@@ -13,5 +13,11 @@ export class BookService{
         }
 
         return newBook;  
+    }
+
+    public async get() : Promise<BookDto[]>{
+        const books = await Book.find();
+
+        return books;
     }
 }
