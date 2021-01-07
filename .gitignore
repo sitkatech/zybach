@@ -59,3 +59,6 @@ Source/Zybach.NodeAPI/secrets.json
 Source/Zybach.Teaspoon/rows
 Source/Zybach.Teaspoon/test.js
 Source/Zybach.Teaspoon/secrets.prod.json
+Source/Zybach.NodeAPI/src/bucket/cert.pem
+Source/Zybach.NodeAPI/src/bucket/key.pem
+Source/old/Zybach.Web/wwwroot/assets/config.json

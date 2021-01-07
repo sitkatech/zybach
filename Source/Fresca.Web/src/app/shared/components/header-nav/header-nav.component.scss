@@ -1,0 +1,52 @@
+@import "~src/scss/_variables.scss";
+
+.navbarLogo {
+    height: 80px;
+  }
+  
+  .footerLogo {
+    height: 50px;
+    float: right;
+    margin: 5px 0;
+  }
+  
+  a.signOut {
+    cursor: pointer;
+  }
+  
+  .dropdown-menu {
+    z-index: 1021;
+  }
+  
+  .navbar.navbar-fresca
+  {
+    background-color: $header-background;
+  }
+
+  .navbar.navbar-fresca a.nav-link,
+  .navbar.navbar-fresca a.nav-link::before,
+  .navbar.navbar-fresca a.nav-link::after {
+    transition: all .5s;
+  }
+  
+  .navbar.navbar-fresca a.nav-link:hover {
+    color:$select-and-nav-hover;
+  }
+
+  nav .dropdown-item:hover {
+    background-color: $select-and-nav-dropdown-hover;
+  }
+
+  .navbar.navbar-fresca a.nav-link
+  {
+    color: $header-nav-link;
+  }
+
+  .welcomeUser{
+    @media screen and (min-width: 991px){
+      text-align:right;
+    }
+    @media screen and (max-width: 990px){
+      text-align:left;
+    }
+  }

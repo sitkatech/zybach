@@ -4,11 +4,19 @@
  * Module dependencies.
  */
 
-import app from '../app'
+import app from '../app';
 import Debug from 'debug';
 const debug = Debug('zybachapi:server');
 
+import fs from 'fs';
+console.log(process.cwd());
+const key = fs.readFileSync('/src/bucket/key.pem');
+const cert = fs.readFileSync('/src/bucket/cert.pem');
+
 import http from 'http';
+
+
+import https from 'https';
 
 /**
  * Get port from environment and store in Express.
@@ -21,7 +29,8 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+//var server = http.createServer(app);
+var server = https.createServer({key:key, cert:cert}, app);
 
 /**
  * Listen on provided port, on all network interfaces.
