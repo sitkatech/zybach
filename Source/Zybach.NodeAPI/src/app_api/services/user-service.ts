@@ -3,6 +3,6 @@ import * as express from 'express';
 
 export class UserService{
     public getUser(req: express.Request) : UserDto {
-        return {UserName: "FredBarnacles", UserID: -2};
+        return {UserName: "FrankZybach", UserID: -2};
     }
 }
