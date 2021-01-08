@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8113",
+            "url": "http://api-dev.zybach.org:8113",
             "webRoot": "${workspaceFolder}"
         }
     ]

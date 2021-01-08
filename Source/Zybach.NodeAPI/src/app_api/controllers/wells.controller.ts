@@ -8,7 +8,6 @@ import {
 } from "tsoa";
 import secrets from '../../secrets';
 import { ApiError } from '../../errors/apiError'
-import { GeoOptixTokenService } from '../services/geo-optix-token-service';
 import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
@@ -25,10 +24,9 @@ export class WellController extends Controller {
     public async getWells() {
         try {
             // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
-            let geoOptixAccessToken = await new GeoOptixTokenService().getGeoOptixAccessToken();
             const geoOptixRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites`, {
                 headers: {
-                    "Authorization": `Bearer ${geoOptixAccessToken}`
+                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
                 }
             });
 
@@ -60,16 +58,15 @@ export class WellController extends Controller {
         @Path() wellRegistrationID: string
     ) {
         try {
-            const geoOptixAccessToken = await new GeoOptixTokenService().getGeoOptixAccessToken();
             const geoOptixWellRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}`, {
                 headers: {
-                    "Authorization": `Bearer ${geoOptixAccessToken}`
+                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
                 }
             });
             let resultsObject = abbreviateWellDataResponse(geoOptixWellRequest.data);
             const geoOptixWellSensorsRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}/stations`, {
                 headers: {
-                    "Authorization": `Bearer ${geoOptixAccessToken}`
+                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
                 }
             });
             resultsObject.sensors = abbreviateWellSensorsResponse(geoOptixWellSensorsRequest.data);
