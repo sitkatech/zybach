@@ -9,7 +9,6 @@ import Debug from 'debug';
 const debug = Debug('zybachapi:server');
 
 import fs from 'fs';
-console.log(process.cwd());
 const key = fs.readFileSync('/src/bucket/key.pem');
 const cert = fs.readFileSync('/src/bucket/cert.pem');
 

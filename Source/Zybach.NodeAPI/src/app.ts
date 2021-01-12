@@ -13,15 +13,31 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import bodyParser from "body-parser";
 import logger from 'morgan';
-import {RegisterRoutes} from './app_api/routes/generated/routes'
 import { ApiError } from 'errors/apiError';
 import { ValidateError } from 'tsoa';
+
+import jwt from 'express-jwt';
+import jwksRsa from 'jwks-rsa';
+
+import {RegisterRoutes} from './app_api/routes/generated/routes'
 import connect from "./connect";
 import cors from 'cors';
 
 connect();
-
 const app = express();
+app.use(jwt({
+  // todo: if expired token, issue 401 so frontend redirects to login
+  secret: jwksRsa.expressJwtSecret({
+    cache:true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: "https://qa.keystone.sitkatech.com/core/.well-known/jwks",
+  }),
+  algorithms: ['RS256'],
+  requestProperty: "auth",
+  credentialsRequired: false,
+  
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -29,7 +45,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  optionsSuccessStatus: 200
+}));
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -59,7 +78,7 @@ app.use(function (err: ApiError, req: Request, res: Response, next: NextFunction
   console.error(err);
 
   // render the error page
-  res.status(err.statusCode || 500).json({ status: err.message });
+  res.status(err.status || 500).json({ status: err.status, message: err.message });
 });
 
 export default app;

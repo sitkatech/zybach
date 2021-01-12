@@ -1,6 +1,6 @@
 {
     "entryFile": "./src/app.ts",
-    "noImplicitAdditionalProperties": "throw-on-extras",
+    "noImplicitAdditionalProperties": "silently-remove-extras",
     "controllerPathGlobs": [
         "./src/app_api/controllers/**/*controller.ts"
     ],

@@ -19,7 +19,8 @@ export class BookController extends Controller{
 
     @Get("")
     @Security(SecurityType.ANONYMOUS)
-    public async get() : Promise<BookDto[]>{
+    public async get(@Request() req: RequestWithUserContext) : Promise<BookDto[]>{
+        console.log(req.user);
         return await new BookService().get();
     }
 }

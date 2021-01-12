@@ -26,17 +26,17 @@ export class UserService {
         return this.apiService.getFromApi(route);
     }
 
-    getUserFromUserID(userID: number): Observable<UserDetailedDto> {
+    getUserFromUserID(userID: string): Observable<UserDetailedDto> {
         let route = `/users/${userID}`;
         return this.apiService.getFromApi(route);
     }
 
     getUserFromGlobalID(globalID: string): Observable<UserDetailedDto> {
-        let route = `/user-claims/${globalID}`;
+        let route = `/users/user-claims/${globalID}`;
         return this.apiService.getFromApi(route);
     }
 
-    updateUser(userID: number, userUpdateDto: any): Observable<UserDetailedDto> {
+    updateUser(userID: string, userUpdateDto: any): Observable<UserDetailedDto> {
         let route = `/users/${userID}`;
         return this.apiService.putToApi(route, userUpdateDto);
     }
@@ -46,8 +46,8 @@ export class UserService {
         return this.apiService.getFromApi(route);
     }
 
-    setDisclaimerAcknowledgedDate(userID: number): Observable<UserDetailedDto> {
+    setDisclaimerAcknowledgedDate(userGuid: string): Observable<UserDetailedDto> {
         let route = `/users/set-disclaimer-acknowledged-date`
-        return this.apiService.putToApi(route, userID);
+        return this.apiService.putToApi(route, {UserGuid: userGuid});
     }
 }
