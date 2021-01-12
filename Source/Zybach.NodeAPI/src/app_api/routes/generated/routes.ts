@@ -38,6 +38,34 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CustomRichTextTypeDto": {
+        "dataType": "refObject",
+        "properties": {
+            "CustomRichTextTypeID": {"dataType":"double"},
+            "CustomRichTextTypeName": {"dataType":"string"},
+            "CustomRichTextTypeDisplayName": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CustomRichTextDto": {
+        "dataType": "refObject",
+        "properties": {
+            "CustomRichTextID": {"dataType":"double"},
+            "CustomRichTextType": {"ref":"CustomRichTextTypeDto"},
+            "CustomRichTextContent": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CustomRichTextUpdateDto": {
+        "dataType": "refObject",
+        "properties": {
+            "CustomRichTextContent": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "FieldDefinitionTypeDto": {
         "dataType": "refObject",
         "properties": {
@@ -245,6 +273,30 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.getCustomRichText.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/customRichText/:customRichTextID',
+            authenticateMiddleware([{"keystone":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    customRichTextID: {"in":"path","name":"customRichTextID","required":true,"dataType":"double"},
+                    customRichTextUpdateDto: {"in":"body","name":"customRichTextUpdateDto","required":true,"ref":"CustomRichTextUpdateDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new CustomRichTextController();
+
+
+            const promise = controller.updateCustomRichText.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

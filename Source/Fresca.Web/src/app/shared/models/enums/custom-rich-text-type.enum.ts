@@ -4,6 +4,5 @@ export enum CustomRichTextType{
     Homepage = 3,
     Help = 4,
     LabelsAndDefinitionsList = 5,
-    WatershedList = 6,
-    Training = 7
+    Training = 6
 }

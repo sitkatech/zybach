@@ -5,11 +5,14 @@ import FieldDefinition, { FieldDefinitionInterface } from "../models/field-defin
 export class FieldDefinitionService {
     public async update(fieldDefinitionID: number, fieldDefinitionUpdateDto: FieldDefinitionUpdateDto): Promise<FieldDefinitionDto> {
         let updatedFieldDefinition = await FieldDefinition.findOneAndUpdate({FieldDefinitionID: fieldDefinitionID}, fieldDefinitionUpdateDto, {new: true});
+        
         if (!updatedFieldDefinition){
             throw new NotFoundError("Field Definition not found");
         }
-        return updatedFieldDefinition;
+        
+        return FieldDefinitionDtoFactory.FromModel(updatedFieldDefinition);
     }
+
     public async getAll(): Promise<FieldDefinitionDto[]> {
         const fieldDefinitions = await FieldDefinition.find();
 
@@ -21,6 +24,7 @@ export class FieldDefinitionService {
 
     public async getByFieldDefinitionID(fieldDefinitionID: number) : Promise<FieldDefinitionDto> {
         const fieldDefinition =  await FieldDefinition.findOne({FieldDefinitionID: fieldDefinitionID})
+        
         if (!fieldDefinition) {
             throw new NotFoundError("Field Definition not found");
         }
