@@ -1,7 +1,15 @@
-import { FieldDefinitionDto, FieldDefinitionDtoFactory } from "../dtos/field-definition-dto";
+import { NotFoundError } from "../../errors/not-found-error";
+import { FieldDefinitionDto, FieldDefinitionDtoFactory, FieldDefinitionUpdateDto } from "../dtos/field-definition-dto";
 import FieldDefinition, { FieldDefinitionInterface } from "../models/field-definition";
 
 export class FieldDefinitionService {
+    public async update(fieldDefinitionID: number, fieldDefinitionUpdateDto: FieldDefinitionUpdateDto): Promise<FieldDefinitionDto> {
+        let updatedFieldDefinition = await FieldDefinition.findOneAndUpdate({FieldDefinitionID: fieldDefinitionID}, fieldDefinitionUpdateDto, {new: true});
+        if (!updatedFieldDefinition){
+            throw new NotFoundError("Field Definition not found");
+        }
+        return updatedFieldDefinition;
+    }
     public async getAll(): Promise<FieldDefinitionDto[]> {
         const fieldDefinitions = await FieldDefinition.find();
 
@@ -9,5 +17,14 @@ export class FieldDefinitionService {
             .map((x: FieldDefinitionInterface) => FieldDefinitionDtoFactory.FromModel(x));
 
         return fieldDefinitionDtos;
+    }
+
+    public async getByFieldDefinitionID(fieldDefinitionID: number) : Promise<FieldDefinitionDto> {
+        const fieldDefinition =  await FieldDefinition.findOne({FieldDefinitionID: fieldDefinitionID})
+        if (!fieldDefinition) {
+            throw new NotFoundError("Field Definition not found");
+        }
+
+        return FieldDefinitionDtoFactory.FromModel(fieldDefinition);
     }
 }

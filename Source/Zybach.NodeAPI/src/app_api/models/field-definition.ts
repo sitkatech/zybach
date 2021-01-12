@@ -15,5 +15,5 @@ const FieldDefinitionSchema: Schema = new Schema({
   FieldDefinitionValue: {type: String, required: true}
 });
 
-const FieldDefinition = mongoose.model<FieldDefinitionInterface>("FieldDefinition", FieldDefinitionSchema);
+const FieldDefinition = mongoose.model<FieldDefinitionInterface>("FieldDefinition", FieldDefinitionSchema, "fieldDefinitions");
 export default FieldDefinition;

@@ -58,6 +58,14 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "FieldDefinitionUpdateDto": {
+        "dataType": "refObject",
+        "properties": {
+            "FieldDefinitionValue": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "RoleDto": {
         "dataType": "refObject",
         "properties": {
@@ -259,6 +267,53 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.list.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/fieldDefinitions/:fieldDefinitionID',
+            authenticateMiddleware([{"anonymous":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    fieldDefinitionID: {"in":"path","name":"fieldDefinitionID","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new FieldDefinitionController();
+
+
+            const promise = controller.getByFieldDefinitionID.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/fieldDefinitions/:fieldDefinitionID',
+            authenticateMiddleware([{"keystone":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    fieldDefinitionID: {"in":"path","name":"fieldDefinitionID","required":true,"dataType":"double"},
+                    fieldDefinitionUpdateDto: {"in":"body","name":"fieldDefinitionUpdateDto","required":true,"ref":"FieldDefinitionUpdateDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new FieldDefinitionController();
+
+
+            const promise = controller.update.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

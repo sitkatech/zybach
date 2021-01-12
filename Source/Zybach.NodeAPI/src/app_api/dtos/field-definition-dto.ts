@@ -20,15 +20,19 @@ export class FieldDefinitionTypeDto {
     }
 }
 
+export interface FieldDefinitionUpdateDto {
+    FieldDefinitionValue: string
+}
+
 export class FieldDefinitionDtoFactory {
-    public static FromModel (model: FieldDefinitionInterface){
+    public static FromModel (model: FieldDefinitionInterface): FieldDefinitionDto{
         const fieldDefinitionType = {
             FieldDefinitionTypeID: model.FieldDefinitionID,
             FieldDefinitionTypeName: model.FieldDefinitionName,
             FieldDefinitionTypeDisplayName: model.FieldDefinitionDisplayName
         }
 
-        return new FieldDefinition({
+        return new FieldDefinitionDto({
             FieldDefinitionID: model.FieldDefinitionID,
             FieldDefinitionType: fieldDefinitionType,
             FieldDefinitionValue: model.FieldDefinitionValue
