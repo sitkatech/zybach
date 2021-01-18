@@ -1,0 +1,14 @@
+{
+  "name": "trello-handler",
+  "version": "1.0.0",
+  "description": "Trello handler for TPNRD Paige Wireless Device Status Messages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests yet...\""
+  },
+  "author": "Keith Steele <keith@sitkatech.com>",
+  "dependencies": {
+    "applicationinsights": "^1.8.8",
+    "got": "^11.8.1"
+  }
+}

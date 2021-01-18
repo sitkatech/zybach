@@ -1,0 +1,13 @@
+{
+  "name": "httptrigger",
+  "version": "1.0.0",
+  "description": "Http Trigger for Trello handler",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "author": "Keith Steele",
+  "dependencies": {
+    "got": "^11.8.1"
+  }
+}
