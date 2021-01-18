@@ -8,4 +8,4 @@ COPY . .
 RUN yarn run build
 EXPOSE 80
 #CMD ["yarn", "start"]
-CMD ["bash", "-c", "while true; do sleep 1; done"]
+CMD ["tail", "-f", "/dev/null"]
