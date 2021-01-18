@@ -9,12 +9,12 @@ services:
       - TS_NODE_PROJECT=/src/tsconfig.json
       - ENVIRONMENT=DEBUG
     secrets:
-      - NODE_API_SECRETS
+      - Zybach_API_Secret
     ports:
       - 3000:3000
       - 9229:9229
-    #command: yarn start
-    command: "tail -f /dev/null"
+    command: yarn start
+    #command: "tail -f /dev/null"
     volumes:
       - ./src:/src
   mongo:
@@ -28,7 +28,7 @@ services:
     ports:
       - 27017:27017
 secrets:
-  NODE_API_SECRETS: 
+  Zybach_API_Secret: 
     file: secrets.json
 
 volumes:

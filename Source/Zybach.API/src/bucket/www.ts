@@ -27,7 +27,7 @@ app.set('port', port);
 
 let server: http.Server | https.Server;
 
-if (process.env["ENVIRONMENT"] !== "DEBUG") {
+if (process.env["ENVIRONMENT"] === "DEBUG") {
   const key = fs.readFileSync('/src/bucket/key.pem');
   const cert = fs.readFileSync('/src/bucket/cert.pem');
   server = https.createServer({ key: key, cert: cert }, app);
