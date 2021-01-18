@@ -1,5 +1,6 @@
 import { Controller, Route, Get, Hidden } from "tsoa";
-import { RoleDto } from "../dtos/user-dto";
+import { RoleDto } from "../dtos/role-dto";
+import { GetLegacyRole, RoleEnum } from "../models/role";
 
 
 @Route("/api/roles")
@@ -8,14 +9,8 @@ export class RoleController extends Controller{
     @Get("")
     public async getRoles() : Promise<RoleDto[]> {
         return [
-            {
-                RoleID: 1,
-                RoleDisplayName: "Administrator"
-            },
-            {
-                RoleID:3,
-                RoleDisplayName:"Unassigned"
-            }
-        ]
+            GetLegacyRole(RoleEnum.Adminstrator),
+            GetLegacyRole(RoleEnum.Unassigned)
+        ];
     }
 }

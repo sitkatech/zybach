@@ -30,7 +30,11 @@ export class CustomRichTextComponent implements OnInit {
 
   //For media embed https://ckeditor.com/docs/ckeditor5/latest/api/module_media-embed_mediaembed-MediaEmbedConfig.html
   //Only some embeds will work, and if we want others to work we'll likely need to write some extra functions
-  public ckConfig = {mediaEmbed: {previewsInData: true}};
+  public ckConfig = {
+    mediaEmbed: { previewsInData: true },
+    // remove this line to re-enable image upload after the API for it has been built.
+    removePlugins: ["MediaEmbed", "ImageUpload"]
+  };
 
   constructor(private customRichTextService: CustomRichTextService,
     private authenticationService: AuthenticationService,
@@ -91,8 +95,8 @@ export class CustomRichTextComponent implements OnInit {
       this.alertService.pushAlert(new Alert("There was an error updating the rich text content", AlertContext.Danger, true));
     });
   }
-  
-  public isUploadingImage():boolean{
+
+  public isUploadingImage(): boolean {
     return this.editor && this.editor.isReadOnly;
   }
 

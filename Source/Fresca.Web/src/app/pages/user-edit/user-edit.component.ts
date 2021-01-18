@@ -43,7 +43,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
         this.router.navigateByUrl("/not-found")
           .then();
@@ -68,10 +67,14 @@ export class UserEditComponent implements OnInit, OnDestroy {
           return 0;
         });
 
+        console.log(this.roles);
+
+
         this.model = new UserUpdateDto();
         this.model.RoleID = user.Role.RoleID;
+        this.model.Role = user.Role.RoleName;
         this.model.ReceiveSupportEmails = user.ReceiveSupportEmails;
-
+        console.log(this.model);
         this.cdr.detectChanges();
       });
     });
@@ -85,6 +88,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   onSubmit(editUserForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+    console.log(this.model);
 
     this.userService.updateUser(this.userID, this.model)
       .subscribe(response => {
@@ -102,7 +106,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   }
 
   checkReceiveSupportEmails(): void {
-    if (this.model.RoleID != 1){
+    if (this.model.RoleID != 1) {
       this.model.ReceiveSupportEmails = false;
     }
   }

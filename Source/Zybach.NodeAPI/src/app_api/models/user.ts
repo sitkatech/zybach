@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { RoleDto, UserDto } from "../dtos/user-dto";
+import { RoleDBOptions } from "./role";
 
 export interface UserInterface extends Document {
   UserGuid: string;
@@ -14,7 +14,7 @@ export interface UserInterface extends Document {
   ReceiveSupportEmails: boolean;
   LoginName: string;
   Company: string;
-  Role: RoleDto;
+  Role: string;
 }
 
 const UserSchema: Schema = new Schema({
@@ -30,7 +30,8 @@ const UserSchema: Schema = new Schema({
     ReceiveSupportEmails: {type: Boolean, required: true},
     LoginName: {type: String, required: false},
     Company: {type: String, required: false},
+    Role: {type: String, required: true, enum: RoleDBOptions}
 });
 
-const User = mongoose.model<UserInterface>("User", UserSchema);
+const User = mongoose.model<UserInterface>("User", UserSchema, "User");
 export default User;

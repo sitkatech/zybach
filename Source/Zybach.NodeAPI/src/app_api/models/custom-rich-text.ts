@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { RoleDto, UserDto } from "../dtos/user-dto";
 
 export interface CustomRichTextInterface extends Document {
     CustomRichTextID: number,

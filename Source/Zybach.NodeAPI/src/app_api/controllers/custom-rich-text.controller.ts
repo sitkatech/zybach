@@ -5,6 +5,7 @@ import { CustomRichTextDto, CustomRichTextUpdateDto } from "../dtos/custom-rich-
 import { UserCreateDto } from "../dtos/user-create-dto";
 import { UserDto } from "../dtos/user-dto";
 import CustomRichText from "../models/custom-rich-text";
+import { RoleEnum } from "../models/role";
 import User from "../models/user";
 import { RequestWithUserContext } from "../request-with-user-context";
 import { SecurityType } from "../security/authentication";
@@ -24,7 +25,7 @@ export class CustomRichTextController extends Controller{
     }
 
     @Put("{customRichTextID}")
-    @Security(SecurityType.KEYSTONE)
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async updateCustomRichText(
         @Path() customRichTextID: number,
         @Body() customRichTextUpdateDto: CustomRichTextUpdateDto

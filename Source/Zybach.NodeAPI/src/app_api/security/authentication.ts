@@ -4,6 +4,7 @@ import { UnauthorizedError } from '../../errors/unauthorized-error';
 import { ApiError } from '../../errors/apiError';
 import { UserService } from '../services/user-service';
 import { RequestWithUserContext } from '../request-with-user-context';
+import { promises } from 'fs';
 
 export enum SecurityType {
     API_KEY = "api_key",
@@ -34,10 +35,19 @@ export async function expressAuthentication(req: RequestWithUserContext, securit
         if (!req.auth){
             throw new UnauthorizedError("Authorization missing from header.");
         }
+        const user = await new UserService().getUserByGuid(req.auth.sub)
 
-        const user = await new UserService().getUserByGuid(req.auth.sub);
+        if (!scopes){
+            return Promise.resolve(user);
+        }
 
-        return Promise.resolve(user);
+        for (var i = 0; i < scopes.length; i++){
+            if (user.Role?.RoleName === scopes[i]){
+                return Promise.resolve(user);
+            }
+        }
+
+        throw new UnauthorizedError("User does not have the necessary role to complete this action");
     }
 
     else {

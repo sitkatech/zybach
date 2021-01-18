@@ -5,7 +5,7 @@ module.exports = {
       // use transaction API to ensure that entire script executes
       await session.withTransaction(async () => {
         // Insert our first field definition 
-        await db.collection("fieldDefinitions").insertOne(
+        await db.collection("FieldDefinition").insertOne(
           {
             FieldDefinitionID: 1,
             FieldDefinitionName: "Name",
@@ -15,17 +15,17 @@ module.exports = {
         );
 
         // declare indexes on the fields we require to be unique
-        await db.collection("fieldDefinitions").createIndex({
+        await db.collection("FieldDefinition").createIndex({
           "FieldDefinitionID": 1
         }, {
           unique: true
         })
-        await db.collection("fieldDefinitions").createIndex({
+        await db.collection("FieldDefinition").createIndex({
           "FieldDefinitionName": 1
         }, {
           unique: true
         })
-        await db.collection("fieldDefinitions").createIndex({
+        await db.collection("FieldDefinition").createIndex({
           "FieldDefinitionDisplayName": 1
         }, {
           unique: true
@@ -38,6 +38,6 @@ module.exports = {
   },
 
   async down(db, client) {
-    await db.collection("fieldDefinitions").drop();
+    await db.collection("FieldDefinition").drop();
   }
 };

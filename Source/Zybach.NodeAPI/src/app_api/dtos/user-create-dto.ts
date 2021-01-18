@@ -5,3 +5,8 @@ export interface UserCreateDto{
     LastName: string;
     Email: string;
 }
+
+export interface UserEditDto{
+    Role: string;
+    ReceiveSupportEmails: boolean
+}

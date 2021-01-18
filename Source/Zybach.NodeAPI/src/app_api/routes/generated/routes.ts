@@ -99,6 +99,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "RoleID": {"dataType":"double","required":true},
             "RoleDisplayName": {"dataType":"string","required":true},
+            "RoleName": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -134,6 +135,15 @@ const models: TsoaRoute.Models = {
             "FirstName": {"dataType":"string","required":true},
             "LastName": {"dataType":"string","required":true},
             "Email": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserEditDto": {
+        "dataType": "refObject",
+        "properties": {
+            "Role": {"dataType":"string","required":true},
+            "ReceiveSupportEmails": {"dataType":"boolean","required":true},
         },
         "additionalProperties": false,
     },
@@ -277,7 +287,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/api/customRichText/:customRichTextID',
-            authenticateMiddleware([{"keystone":[]}]),
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     customRichTextID: {"in":"path","name":"customRichTextID","required":true,"dataType":"double"},
@@ -391,7 +401,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/users',
-            authenticateMiddleware([{"keystone":[]}]),
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
             };
@@ -436,7 +446,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/users/unassigned-report',
-            authenticateMiddleware([{"keystone":[]}]),
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
             };
@@ -481,7 +491,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/users/:userID',
-            authenticateMiddleware([{"keystone":[]}]),
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     userID: {"in":"path","name":"userID","required":true,"dataType":"string"},
@@ -500,6 +510,30 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.getByID.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.put('/api/users/:userID',
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    userID: {"in":"path","name":"userID","required":true,"dataType":"string"},
+                    userEditDto: {"in":"body","name":"userEditDto","required":true,"ref":"UserEditDto"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const controller = new UserController();
+
+
+            const promise = controller.updateUser.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

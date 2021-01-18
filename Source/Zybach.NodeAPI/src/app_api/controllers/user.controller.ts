@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Route, Security, Get, Path, Hidden, Put } from "tsoa";
-import { UserCreateDto } from "../dtos/user-create-dto";
+import { UserCreateDto, UserEditDto } from "../dtos/user-create-dto";
 import { UserDto } from "../dtos/user-dto";
+import { RoleDBOptions, RoleEnum } from "../models/role";
 import { SecurityType } from "../security/authentication";
 import { UserService } from "../services/user-service";
 
@@ -9,7 +10,7 @@ import { UserService } from "../services/user-service";
 @Hidden()
 export class UserController extends Controller{
     @Get("")
-    @Security(SecurityType.KEYSTONE)
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async list() : Promise<UserDto[]>{
         return await new UserService().list()
     }
@@ -24,7 +25,7 @@ export class UserController extends Controller{
     }
 
     @Get("unassigned-report")
-    @Security(SecurityType.KEYSTONE)
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getUnassignedUsers() : Promise<{Count: number}>{
         const countOfUnassignedUsers = await new UserService().getCountOfUnassignedUsers();
         return {Count: countOfUnassignedUsers};
@@ -40,11 +41,22 @@ export class UserController extends Controller{
     }
 
     @Get("{userID}")
-    @Security(SecurityType.KEYSTONE)
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getByID(
         @Path() userID: string
     ): Promise<UserDto> {
+        console.log(RoleDBOptions);
         return await new UserService().getUserById(userID);
+    }
+
+    @Put("{userID}")
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
+    public async updateUser(
+        @Path() userID: string,
+        @Body() userEditDto: UserEditDto
+
+    ): Promise<UserDto> {
+        return await new UserService().updateUser(userID, userEditDto);
     }
 
     @Get("user-claims/{guid}")

@@ -1,4 +1,6 @@
-import User, { UserInterface } from "../models/user";
+import { GetLegacyRole, RoleEnum } from "../models/role";
+import { UserInterface } from "../models/user";
+import { RoleDto } from "./role-dto";
 
 export class UserDto {
     UserID?: string;
@@ -37,15 +39,8 @@ export class UserDto {
               LoginName: user.LoginName,
               Company: user.Company,
               // todo: currently hardcoding role to sidestep the question of how to represent roles in the database
-              Role: {
-                  RoleID: 1,
-                  RoleDisplayName: "Administrator"
-              }
+              Role: GetLegacyRole(user.Role as RoleEnum)
           }
       }
   }
-
-  export interface RoleDto{
-      RoleID: number;
-      RoleDisplayName: string;
-  }
+  

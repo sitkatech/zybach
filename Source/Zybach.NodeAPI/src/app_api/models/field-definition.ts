@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { RoleDto, UserDto } from "../dtos/user-dto";
 
 export interface FieldDefinitionInterface extends Document {
   FieldDefinitionID: number,
@@ -15,5 +14,5 @@ const FieldDefinitionSchema: Schema = new Schema({
   FieldDefinitionValue: {type: String, required: true}
 });
 
-const FieldDefinition = mongoose.model<FieldDefinitionInterface>("FieldDefinition", FieldDefinitionSchema, "fieldDefinitions");
+const FieldDefinition = mongoose.model<FieldDefinitionInterface>("FieldDefinition", FieldDefinitionSchema, "FieldDefinition");
 export default FieldDefinition;
