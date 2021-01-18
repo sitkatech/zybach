@@ -356,7 +356,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.put('/api/fieldDefinitions/:fieldDefinitionID',
-            authenticateMiddleware([{"keystone":[]}]),
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     fieldDefinitionID: {"in":"path","name":"fieldDefinitionID","required":true,"dataType":"double"},

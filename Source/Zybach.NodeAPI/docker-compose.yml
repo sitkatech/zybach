@@ -2,12 +2,7 @@ version: '3.4'
 
 services:
   zybachapi:
-    image: sitkacontainers.azurecr.io/zybach/nodeapi
+    image: sitkacontainers.azurecr.io/zybach/api
     build: .
-    secrets:
-      - NODE_API_SECRETS
     ports:
       - 3000:3000
-secrets:
-  NODE_API_SECRETS: 
-    file: secrets.json

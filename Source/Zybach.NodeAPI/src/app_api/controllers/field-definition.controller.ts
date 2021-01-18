@@ -1,5 +1,6 @@
 import { Controller, Route, Security, Get, Hidden, Path, Put, Body } from "tsoa";
 import { FieldDefinitionDto, FieldDefinitionUpdateDto } from "../dtos/field-definition-dto";
+import { RoleEnum } from "../models/role";
 import { SecurityType } from "../security/authentication";
 import { FieldDefinitionService } from "../services/field-definition-service";
 
@@ -22,7 +23,7 @@ export class FieldDefinitionController extends Controller{
     }
     
     @Put("{fieldDefinitionID}")
-    @Security(SecurityType.KEYSTONE /*TODO scopes*/)
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async update(
         @Path() fieldDefinitionID: number,
         @Body() fieldDefinitionUpdateDto: FieldDefinitionUpdateDto
