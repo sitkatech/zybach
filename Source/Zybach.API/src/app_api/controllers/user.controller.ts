@@ -45,7 +45,6 @@ export class UserController extends Controller{
     public async getByID(
         @Path() userID: string
     ): Promise<UserDto> {
-        console.log(RoleDBOptions);
         return await new UserService().getUserById(userID);
     }
 

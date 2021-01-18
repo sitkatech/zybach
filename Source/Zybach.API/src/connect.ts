@@ -4,7 +4,6 @@ import secrets from "./secrets";
 const protocol = process.env["ENVIRONMENT"] === "DEBUG" ? "mongodb" : "mongodb+srv";
 
 const connectionString = `${protocol}://${secrets.DATABASE_USER}:${secrets.DATABASE_PASSWORD}@${secrets.DATABASE_URI}`;
-console.log(connectionString);
 export default () => {
   const connect = () => {
     mongoose

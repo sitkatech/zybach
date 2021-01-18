@@ -12,11 +12,7 @@ export enum SecurityType {
     ANONYMOUS = "anonymous"
 }
 
-export async function expressAuthentication(req: RequestWithUserContext, securityName: string, scopes?: string[]): Promise<UserDto> {
-    // included to keep vscode from removing the scopes declaration if you do ctrl+. "Remove all unused declarations"
-    // can be removed once we start using this to define allowed roles on routes
-    console.log(scopes);
-    
+export async function expressAuthentication(req: RequestWithUserContext, securityName: string, scopes?: string[]): Promise<UserDto> {    
     // if endpoint is API-key authenticated, don't bother getting the user context
     if (securityName === SecurityType.API_KEY) {
         let keyValue = secrets.API_KEY_VALUE;
