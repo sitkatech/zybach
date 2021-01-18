@@ -9,9 +9,6 @@ import Debug from 'debug';
 const debug = Debug('zybachapi:server');
 
 import fs from 'fs';
-const key = fs.readFileSync('/src/bucket/key.pem');
-const cert = fs.readFileSync('/src/bucket/cert.pem');
-
 import http from 'http';
 
 
@@ -28,9 +25,15 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-//var server = http.createServer(app);
-var server = https.createServer({key:key, cert:cert}, app);
+let server;
 
+if (process.env["ENVIRONMENT"] !== "DEBUG") {
+  const key = fs.readFileSync('/src/bucket/key.pem');
+  const cert = fs.readFileSync('/src/bucket/cert.pem');
+  server = https.createServer({ key: key, cert: cert }, app);
+} else {
+  server = http.createServer(app);
+}
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -93,7 +96,7 @@ function onError(error: NodeJS.ErrnoException) {
 
 function onListening() {
   var addr = server.address();
-  if (addr === null){
+  if (addr === null) {
     throw new Error("This shouldn't happen!!!!!!!!!!!");
   }
   var bind = typeof addr === 'string'
