@@ -25,7 +25,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-let server;
+let server: http.Server | https.Server;
 
 if (process.env["ENVIRONMENT"] !== "DEBUG") {
   const key = fs.readFileSync('/src/bucket/key.pem');
