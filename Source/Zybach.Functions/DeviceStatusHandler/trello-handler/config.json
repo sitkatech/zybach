@@ -1,0 +1,46 @@
+{
+    "azure": {
+        "appInsightsKey": "<environment>",
+        "appInsightsDeveloperMode": false
+    },
+    "geooptix": {
+        "apiKey": "<environment>"
+    },
+    "trello": {
+        "apiKey": "<environment>",
+        "apiToken": "<environment>",
+        "board": "5fb700f066205b40adc35810",
+        "lists": {
+            "unassigned": "5fb700f066205b40adc35811",
+            "paige": "5fb700f066205b40adc35812",
+            "sitka": "5fb706fcd4148f37e52226fe",
+            "olsson": "5fb7072020a8d57f66340909",
+            "tpnrd": "5fb706bf4f6aa34c3fb466fe",
+            "gisc": "5fb7070e2c73d708399aeeb6",
+            "resolved": "5fb700f066205b40adc35813"
+        },
+        "customFields": {
+            "registration": "5fb7f5bf2d40fd7b655fb300",
+            "serial": "5fb7f5d60b9c5f30a3412a80",
+            "sensorType": "5fb7f5eb3376c84c5963b98e",
+            "errorMessage": "5fb7f63202818d5aaeff156b",
+            "errorCount": "5fb7f63e9743ea170028ce5e",
+            "windowStart": "5fb7f654d922e2421f9c7977",
+            "windowEnd": "5fb7f663cc0fc21f6c9a682c",
+            "origin": "5fb7f6e177480c4c2065f8c1"
+        },
+        "origins": {
+            "paige": "5fb7f6e177480c4c2065f8c2",
+            "aghub": "5fb7f6e177480c4c2065f8c3",
+            "portal": "5fb7f6e177480c4c2065f8c4",
+            "email": "5fb7f6e177480c4c2065f8c5",
+            "user": "5fb7f6e177480c4c2065f8c6",
+            "geooptix": "5fb811b0c213dd81e0f2e1b7"
+        },
+        "sensorTypes": {
+            "flowMeter": "5fb7f5f97b6c3a0a51aa9bfd",
+            "pumpMonitor": "5fb7f602c856c3438cb3f5d6",
+            "depthSensor": "5fb7f61c5726351eb66ebe37"
+        } 
+    }
+}
