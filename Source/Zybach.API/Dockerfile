@@ -7,4 +7,5 @@ RUN yarn add ts-node
 COPY . .
 RUN yarn run build
 EXPOSE 80
-CMD ["yarn", "start"]
+#CMD ["yarn", "start"]
+CMD ["bash", "-c", "while true; do sleep 1; done"]
