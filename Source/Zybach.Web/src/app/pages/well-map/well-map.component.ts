@@ -69,4 +69,25 @@ export class WellMapComponent implements OnInit {
     this.compileService.configure(this.appRef);
   }
 
+  public ngAfterViewInit(): void {
+
+    const mapOptions: MapOptions = {
+      // center: [46.8797, -110],
+      // zoom: 6,
+      minZoom: 9,
+      maxZoom: 17,
+      layers: [
+        this.tileLayers["Aerial"],
+      ],
+      fullscreenControl: true
+    } as MapOptions;
+    this.map = map(this.mapID, mapOptions);
+
+    this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
+
+    //this.setControl();
+
+  }
+
+
 }
