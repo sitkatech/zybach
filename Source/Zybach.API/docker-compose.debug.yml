@@ -13,8 +13,7 @@ services:
     ports:
       - 3000:3000
       - 9229:9229
-    command: yarn start
-    #command: "tail -f /dev/null"
+    command: yarn debug
     volumes:
       - ./src:/src
   mongo:
