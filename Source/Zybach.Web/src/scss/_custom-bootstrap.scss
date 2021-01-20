@@ -109,6 +109,7 @@ a:hover {
 .btn-zybach:hover {
   color: $button-hover-text-color;
   background: $button-hover-background;
+  border-color: $button-hover-background;
 }
 
 .btn-toggle {
