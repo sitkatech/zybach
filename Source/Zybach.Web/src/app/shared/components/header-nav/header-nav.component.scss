@@ -1,8 +1,6 @@
 @import "~src/scss/_variables.scss";
 
-.navbarLogo {
-    height: 80px;
-  }
+
   
   .footerLogo {
     height: 50px;
@@ -42,11 +40,34 @@
     color: $header-nav-link;
   }
 
+
+  .navbarLogo {
+    height: 106px;
+  }
+  .navbar-brand {
+    padding: 0px;
+  }
+  nav{
+    padding-top:0;
+    padding-bottom:0;
+  }
+
+  
   .welcomeUser{
     @media screen and (min-width: 991px){
       text-align:right;
     }
     @media screen and (max-width: 990px){
       text-align:left;
+    }
+  }
+
+  @media screen and (max-width: 605px){
+    .navbarLogo {
+      display:none;
+    }
+    nav{
+      padding-top: 8px;
+      padding-bottom: 8px;
     }
   }
