@@ -21,6 +21,7 @@
     },
     "routes":{
         "routesDir": "./src/app_api/routes/generated",
-        "authenticationModule": "./src/app_api/security/authentication.ts"
+        "authenticationModule": "./src/app_api/security/authentication.ts",
+        "iocModule": "src/ioc"
     }
 }

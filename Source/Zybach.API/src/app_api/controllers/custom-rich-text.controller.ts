@@ -1,27 +1,26 @@
-import { Query } from "mongoose";
-import { Body, Controller, Post, Route, Request, Security, Get, Path, Hidden, Put } from "tsoa";
-import { ApiError } from "../../errors/apiError";
+import { inject } from "inversify";
+import { Body, Controller, Route, Security, Get, Path, Hidden, Put } from "tsoa";
+import { provideSingleton } from "../../util/provide-singleton";
 import { CustomRichTextDto, CustomRichTextUpdateDto } from "../dtos/custom-rich-text-dto";
-import { UserCreateDto } from "../dtos/user-create-dto";
-import { UserDto } from "../dtos/user-dto";
-import CustomRichText from "../models/custom-rich-text";
 import { RoleEnum } from "../models/role";
-import User from "../models/user";
-import { RequestWithUserContext } from "../request-with-user-context";
 import { SecurityType } from "../security/authentication";
 import { CustomRichTextService } from "../services/custom-rich-text-service";
-import { UserService } from "../services/user-service";
 
 
 @Route("/api/customRichText")
 @Hidden()
+@provideSingleton(CustomRichTextController)
 export class CustomRichTextController extends Controller{
+    constructor(@inject(CustomRichTextService) private customRichTextService: CustomRichTextService){
+        super();
+    }
+
     @Get("{customRichTextID}")
     @Security(SecurityType.ANONYMOUS)
     public async getCustomRichText(
         @Path() customRichTextID: number
     ): Promise<CustomRichTextDto> {
-        return await new CustomRichTextService().getByCustomRichTextID(customRichTextID);
+        return await this.customRichTextService.getByCustomRichTextID(customRichTextID);
     }
 
     @Put("{customRichTextID}")
@@ -30,6 +29,6 @@ export class CustomRichTextController extends Controller{
         @Path() customRichTextID: number,
         @Body() customRichTextUpdateDto: CustomRichTextUpdateDto
     ) : Promise<CustomRichTextDto> {
-        return await new CustomRichTextService().updateCustomRichText(customRichTextID, customRichTextUpdateDto);
+        return await this.customRichTextService.updateCustomRichText(customRichTextID, customRichTextUpdateDto);
     }
 }

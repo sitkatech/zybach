@@ -23,8 +23,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.wellsObservable = this.wellService.getWellsMapData();
-      this.wellsObservable.subscribe(wells => {
+      this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
         this.wells = wells.result;
 
         this.wellsGeoJson =

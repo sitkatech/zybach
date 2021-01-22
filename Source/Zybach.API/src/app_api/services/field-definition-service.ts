@@ -1,7 +1,9 @@
 import { NotFoundError } from "../../errors/not-found-error";
+import { provideSingleton } from "../../util/provide-singleton";
 import { FieldDefinitionDto, FieldDefinitionDtoFactory, FieldDefinitionUpdateDto } from "../dtos/field-definition-dto";
 import FieldDefinition, { FieldDefinitionInterface } from "../models/field-definition";
 
+@provideSingleton(FieldDefinitionService)
 export class FieldDefinitionService {
     public async update(fieldDefinitionID: number, fieldDefinitionUpdateDto: FieldDefinitionUpdateDto): Promise<FieldDefinitionDto> {
         let updatedFieldDefinition = await FieldDefinition.findOneAndUpdate({FieldDefinitionID: fieldDefinitionID}, fieldDefinitionUpdateDto, {new: true});

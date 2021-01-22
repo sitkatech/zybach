@@ -17,6 +17,8 @@ import { UserController } from './../../controllers/user.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WellController } from './../../controllers/wells.controller';
 import { expressAuthentication } from './../../security/authentication';
+import { iocContainer } from './../../../ioc';
+import { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import * as express from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -284,7 +286,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new BookController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<BookController>(BookController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.addBook.apply(controller, validatedArgs as any);
@@ -307,7 +314,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new BookController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<BookController>(BookController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.get.apply(controller, validatedArgs as any);
@@ -330,7 +342,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new CustomRichTextController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<CustomRichTextController>(CustomRichTextController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getCustomRichText.apply(controller, validatedArgs as any);
@@ -354,7 +371,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new CustomRichTextController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<CustomRichTextController>(CustomRichTextController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.updateCustomRichText.apply(controller, validatedArgs as any);
@@ -376,7 +398,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new FieldDefinitionController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<FieldDefinitionController>(FieldDefinitionController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.list.apply(controller, validatedArgs as any);
@@ -399,7 +426,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new FieldDefinitionController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<FieldDefinitionController>(FieldDefinitionController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getByFieldDefinitionID.apply(controller, validatedArgs as any);
@@ -423,7 +455,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new FieldDefinitionController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<FieldDefinitionController>(FieldDefinitionController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
@@ -445,7 +482,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new MapDataController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<MapDataController>(MapDataController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getWellsWithSensors.apply(controller, validatedArgs as any);
@@ -466,7 +508,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new RoleController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<RoleController>(RoleController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getRoles.apply(controller, validatedArgs as any);
@@ -488,7 +535,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new UserController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.list.apply(controller, validatedArgs as any);
@@ -511,7 +563,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new UserController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.createUser.apply(controller, validatedArgs as any);
@@ -533,7 +590,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new UserController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getUnassignedUsers.apply(controller, validatedArgs as any);
@@ -556,7 +618,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new UserController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.setDisclaimerAcknowledgedDate.apply(controller, validatedArgs as any);
@@ -579,7 +646,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new UserController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getByID.apply(controller, validatedArgs as any);
@@ -603,7 +675,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new UserController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.updateUser.apply(controller, validatedArgs as any);
@@ -626,7 +703,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new UserController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getByClaim.apply(controller, validatedArgs as any);
@@ -648,7 +730,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new WellController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getWells.apply(controller, validatedArgs as any);
@@ -674,7 +761,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new WellController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getPumpedVolume.apply(controller, validatedArgs as any);
@@ -697,7 +789,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new WellController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getWell.apply(controller, validatedArgs as any);
@@ -723,7 +820,12 @@ export function RegisterRoutes(app: express.Router) {
                 return next(err);
             }
 
-            const controller = new WellController();
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
 
 
             const promise = controller.getPumpedVolumeByWell.apply(controller, validatedArgs as any);

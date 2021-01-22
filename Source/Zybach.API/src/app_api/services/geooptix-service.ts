@@ -1,9 +1,10 @@
 import axios from "axios";
-import { ApiError } from "../../errors/apiError";
 import { InternalServerError } from "../../errors/internal-server-error";
 import secrets from "../../secrets";
+import { provideSingleton } from "../../util/provide-singleton";
 import { SensorSummaryDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 
+@provideSingleton(GeoOptixService)
 export class GeoOptixService {
     public async getWellSummaries(): Promise<WellSummaryDto[]> {
         try {

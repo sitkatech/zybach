@@ -1,7 +1,6 @@
 import {
     Controller,
     Get,
-    Hidden,
     Path,
     Query,
     Route,
@@ -13,16 +12,21 @@ import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
 import { SecurityType } from "../security/authentication";
-import { SensorSummaryDto, WellSummaryDto, WellWithSensorSummaryDto as WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { WellSummaryDto } from "../dtos/well-summary-dto";
 import { ApiResult } from "../dtos/api-result";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InternalServerError } from "../../errors/internal-server-error";
-import { RoleEnum } from "../models/role";
+import { provideSingleton } from "../../util/provide-singleton";
+import { inject } from "inversify";
 
 const bucketName = process.env.SOURCE_BUCKET;
 
 @Route("/api/wells")
+@provideSingleton(WellController)
 export class WellController extends Controller {
+    constructor(@inject(GeoOptixService) private geoOptixService: GeoOptixService){
+        super();
+    }
 
     @Get("")
     @Security(SecurityType.API_KEY)
