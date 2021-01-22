@@ -1,6 +1,7 @@
 import Book from "../models/book";
 import { BookCreateDto, BookDto } from "../dtos/book-create-dto";
 import { ApiError } from "../../errors/apiError";
+import { InternalServerError } from "../../errors/internal-server-error";
 
 
 export class BookService{
@@ -10,7 +11,7 @@ export class BookService{
         try {
            await newBook.save();
         } catch (err){
-            throw new ApiError("Internal Server Error", 500, "Couldn't add book :(");
+            throw new InternalServerError("Couldn't add book :(");
         }
 
         return newBook;  

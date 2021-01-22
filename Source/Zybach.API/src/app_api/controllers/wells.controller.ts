@@ -1,6 +1,7 @@
 import {
     Controller,
     Get,
+    Hidden,
     Path,
     Query,
     Route,
@@ -12,6 +13,11 @@ import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
 import { SecurityType } from "../security/authentication";
+import { SensorSummaryDto, WellSummaryDto, WellWithSensorSummaryDto as WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { ApiResult } from "../dtos/api-result";
+import { GeoOptixService } from "../services/geooptix-service";
+import { InternalServerError } from "../../errors/internal-server-error";
+import { RoleEnum } from "../models/role";
 
 const bucketName = process.env.SOURCE_BUCKET;
 
@@ -20,25 +26,13 @@ export class WellController extends Controller {
 
     @Get("")
     @Security(SecurityType.API_KEY)
-    //@Response<ApiError>('500', 'Internal Server Error')
-    public async getWells() {
-        try {
-            // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
-            const geoOptixRequest = await axios.get(`${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites`, {
-                headers: {
-                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-                }
-            });
+    public async getWells(): Promise<ApiResult<WellSummaryDto[]>> {
+        const wellSummaryDtos = await new GeoOptixService().getWellSummaries();
 
-            return {
-                "status": "success",
-                "result": geoOptixRequest.data.map((x: { CanonicalName: any; Description: any; Location: any; }) => ({ wellRegistrationID: x.CanonicalName, description: x.Description, location: x.Location }))
-            }
-        }
-        catch (err) {
-            console.error(err);
-            throw new ApiError("Internal Server Error", 500, err.message);
-        }
+        return {
+            "status": "success",
+            "result": wellSummaryDtos
+        };
     }
 
     @Get("pumpedVolume")
@@ -77,7 +71,7 @@ export class WellController extends Controller {
         }
         catch (err) {
             console.error(err);
-            throw new ApiError("Internal Server Error", 500, err.message);
+            throw new InternalServerError(err.message);
         }
     }
 
@@ -141,7 +135,7 @@ export class WellController extends Controller {
         }
         catch (err) {
             console.error(err);
-            throw new ApiError("Internal Server Error", 500, err.message);
+            throw new InternalServerError(err.message);
         }
     }
 }

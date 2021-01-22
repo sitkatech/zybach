@@ -3,6 +3,7 @@ import User, { UserInterface } from "../models/user";
 import { NotFoundError } from "../../errors/not-found-error";
 import { UserCreateDto, UserEditDto } from "../dtos/user-create-dto";
 import { ApiError } from "../../errors/apiError";
+import { InternalServerError } from "../../errors/internal-server-error";
 
 
 export class UserService{
@@ -12,8 +13,9 @@ export class UserService{
         try {
             updatedUser = await User.findOneAndUpdate({_id : userID}, userEditDto, {new: true} );
         }
-        catch{
-            throw new ApiError("Internal Server Error", 500, "Failed to udate user");
+        catch (err){
+            console.error(err)
+            throw new InternalServerError("Failed to udate user");
         }
 
         return UserDtoFactory.FromModel(updatedUser);
@@ -36,8 +38,9 @@ export class UserService{
         try {
             const userModels = await User.find();
             return userModels.map((x:UserInterface) => UserDtoFactory.FromModel(x));
-        } catch{
-            throw new ApiError("Internal Server Error", 500, "Failed to fetch users")
+        } catch (err) {
+            console.error(err)
+            throw new InternalServerError("Failed to fetch users")
         }
     }
 
@@ -46,8 +49,9 @@ export class UserService{
         try{
             updatedUser = await User.findOneAndUpdate({UserGuid: userGuid}, {DisclaimerAcknowledgedDate: new Date()}, {new: true})
         }
-        catch{
-            throw new ApiError("Internal Server Error", 500, "Failed to udate disclaimer date")
+        catch (err) {
+            console.error(err);
+            throw new InternalServerError("Failed to udate disclaimer date")
         }
         
         if (updatedUser === null){
@@ -70,7 +74,8 @@ export class UserService{
         try {
             await newUser.save();
          } catch (err){
-             throw new ApiError("Internal Server Error", 500, "Adding user failed");
+             console.error(err)
+             throw new InternalServerError("Adding user failed");
          }
 
         return UserDtoFactory.FromModel(newUser);

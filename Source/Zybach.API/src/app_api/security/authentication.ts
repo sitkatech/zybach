@@ -5,6 +5,7 @@ import { ApiError } from '../../errors/apiError';
 import { UserService } from '../services/user-service';
 import { RequestWithUserContext } from '../request-with-user-context';
 import { promises } from 'fs';
+import { InternalServerError } from '../../errors/internal-server-error';
 
 export enum SecurityType {
     API_KEY = "api_key",
@@ -53,6 +54,6 @@ export async function expressAuthentication(req: RequestWithUserContext, securit
     }
 
     else {
-        return Promise.reject(new ApiError("Internal Server Error", 500, `Unsupported authentication ('${securityName}') type on requested resource.`));
+        return Promise.reject(new InternalServerError(`Unsupported authentication ('${securityName}') type on requested resource.`));
     }
 };

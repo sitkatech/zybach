@@ -18,9 +18,12 @@ import { FieldDefinitionListComponent } from './pages/field-definition-list/fiel
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
 import { TrainingComponent } from './pages/training/training.component';
 import { TestAPIComponent } from './pages/test-api/test-api.component';
+import { WellMapComponent } from './pages/well-map/well-map.component';
+import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
 
 const routes: Routes = [
   { path: "test-api", component: TestAPIComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
 
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },

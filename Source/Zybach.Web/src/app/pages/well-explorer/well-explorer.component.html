@@ -1,0 +1,9 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Well Map</li>
+    </ol>
+  </nav>
+
+<div class="container" *ngIf="wells">
+    <zybach-well-map [wellsGeoJson]="wellsGeoJson"></zybach-well-map>
+</div>
