@@ -164,11 +164,12 @@ const models: TsoaRoute.Models = {
     "UserCreateDto": {
         "dataType": "refObject",
         "properties": {
-            "LoginName": {"dataType":"string","required":true},
-            "UserGuid": {"dataType":"string","required":true},
+            "LoginName": {"dataType":"string"},
+            "UserGuid": {"dataType":"string"},
             "FirstName": {"dataType":"string","required":true},
             "LastName": {"dataType":"string","required":true},
             "Email": {"dataType":"string","required":true},
+            "Role": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -176,8 +177,9 @@ const models: TsoaRoute.Models = {
     "UserEditDto": {
         "dataType": "refObject",
         "properties": {
-            "Role": {"dataType":"string","required":true},
-            "ReceiveSupportEmails": {"dataType":"boolean","required":true},
+            "Role": {"dataType":"string"},
+            "ReceiveSupportEmails": {"dataType":"boolean"},
+            "UserGuid": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -572,6 +574,35 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.createUser.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/api/users/invite',
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    userCreateDto: {"in":"body","name":"userCreateDto","required":true,"ref":"UserCreateDto"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<UserController>(UserController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.inviteUser.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

@@ -1,10 +1,14 @@
 import { inject } from "inversify";
-import { Body, Controller, Post, Route, Security, Get, Path, Hidden, Put } from "tsoa";
+import { Body, Controller, Post, Route, Security, Get, Path, Hidden, Put, Request } from "tsoa";
+import secrets from "../../secrets";
 import { provideSingleton } from "../../util/provide-singleton";
+import { KeystoneInviteDto } from "../dtos/keystone-invite-dto";
 import { UserCreateDto, UserEditDto } from "../dtos/user-create-dto";
 import { UserDto } from "../dtos/user-dto";
 import { RoleEnum } from "../models/role";
+import { RequestWithUserContext } from "../request-with-user-context";
 import { SecurityType } from "../security/authentication";
+import { KeystoneService } from "../services/keystone-service";
 import { UserService } from "../services/user-service";
 
 
@@ -12,7 +16,10 @@ import { UserService } from "../services/user-service";
 @Hidden()
 @provideSingleton(UserController)
 export class UserController extends Controller{
-    constructor(@inject(UserService) private userService: UserService){
+    constructor(
+        @inject(UserService) private userService: UserService,
+        @inject(KeystoneService) private keystoneService: KeystoneService
+    ){
         super();
     }
 
@@ -29,6 +36,48 @@ export class UserController extends Controller{
     ): Promise<UserDto> {
         const newUser = await this.userService.addUser(user);
         return newUser;
+    }
+
+    @Post("invite")
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
+    public async inviteUser(
+        @Body() userCreateDto: UserCreateDto,
+        @Request() req: RequestWithUserContext
+    ): Promise<UserDto>
+    {
+        const keystoneInviteDto: KeystoneInviteDto = {
+            FirstName : userCreateDto.FirstName,
+            LastName: userCreateDto.LastName,
+            Email: userCreateDto.Email,
+            // todo: envs
+            Subject: "Invitation to the TPNRD Groundwater Platform",
+            WelcomeText: "You are receiving this notification because an administrator of the TPNRD Groundwater Platform, an online service of the Twin Platte Natural Resources District, has invited you to create an account.",
+            SiteName: "TPNRD Groundwater Platform",
+            // todo
+            SignatureBlock: "",
+            RedirectUrl: process.env["KEYSTONE_REDIRECT_URL"] as string
+        }
+        const result = await this.keystoneService.invite(keystoneInviteDto, req.headers.authorization as string)
+
+        const keystoneUser : {email: string, userGuid:string, firstName: string, lastName: string} = result.claims
+
+        let existingUser = await this.userService.getByEmail(keystoneUser.email);
+
+        if (existingUser){
+            existingUser = await this.userService.updateUser(existingUser.UserID as string, {UserGuid: keystoneUser.userGuid})
+            return existingUser;
+        }
+
+        const newUser: UserCreateDto = {
+            FirstName: keystoneUser.firstName,
+            LastName: keystoneUser.lastName,
+            Email: keystoneUser.email,
+            Role: userCreateDto.Role,
+            LoginName: keystoneUser.email,
+            UserGuid: keystoneUser.userGuid
+        }
+
+        return await this.userService.addUser(newUser);
     }
 
     @Get("unassigned-report")

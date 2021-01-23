@@ -58,9 +58,9 @@
                             <label class="required">Role</label>
                         </div>
                         <div class="col-sm-10">
-                            <select name="RoleID" class="form-control" [(ngModel)]="model.RoleID" required>
+                            <select name="RoleID" class="form-control" [(ngModel)]="model.Role" required>
                                 <option value=""></option>
-                                <option *ngFor="let role of roles" [value]="role.RoleID">
+                                <option *ngFor="let role of roles" [value]="role.RoleName">
                                     {{role.RoleDisplayName}}
                                 </option>
                             </select>

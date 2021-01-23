@@ -7,6 +7,16 @@ import { provideSingleton } from "../../util/provide-singleton";
 
 @provideSingleton(UserService)
 export class UserService{
+    public async getByEmail(Email: string): Promise<UserDto | null> {
+        const user = await User.findOne({Email: Email})
+
+        if (user === null){
+            return null;
+        }
+
+        return UserDtoFactory.FromModel(user);
+    }
+    
     public async updateUser(userID: string, userEditDto: UserEditDto): Promise<UserDto> {
         let updatedUser;
 

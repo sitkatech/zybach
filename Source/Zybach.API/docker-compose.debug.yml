@@ -8,6 +8,7 @@ services:
       - SOURCE_BUCKET=tpnrd
       - TS_NODE_PROJECT=/src/tsconfig.json
       - ENVIRONMENT=DEBUG
+      - KEYSTONE_REDIRECT_URL=http://dev.zybach.org:8113/create-user-callback
     secrets:
       - Zybach_API_Secret
     ports:
