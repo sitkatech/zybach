@@ -9,6 +9,7 @@ services:
       - TS_NODE_PROJECT=/src/tsconfig.json
       - ENVIRONMENT=DEBUG
       - KEYSTONE_REDIRECT_URL=http://dev.zybach.org:8113/create-user-callback
+      - KEYSTONE_BASE_URL=https://qa.keystone.sitkatech.com
     secrets:
       - Zybach_API_Secret
     ports:

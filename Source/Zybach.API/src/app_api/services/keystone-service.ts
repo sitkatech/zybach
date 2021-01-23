@@ -2,14 +2,14 @@ import { provideSingleton } from "../../util/provide-singleton";
 import got from 'got';
 import { KeystoneInviteDto } from "../dtos/keystone-invite-dto";
 import secrets from "../../secrets";
-import { InternalServerError } from "http-errors";
+import { InternalServerError } from "../../errors/internal-server-error";
 
 @provideSingleton(KeystoneService)
 export class KeystoneService {
     public async invite(inviteDto:KeystoneInviteDto, token: string): Promise<any>{
         let result;
         try {
-        const inviteUrl = `${secrets.KEYSTONE_BASE_URL}/api/v1/invite`
+        const inviteUrl = `${process.env["KEYSTONE_BASE_URL"]}/api/v1/invite`
         result = await got.post(inviteUrl, {
             headers: {
                 Authorization: token

@@ -77,7 +77,7 @@ export class UserService{
 
         xyz.CreateDate = new Date();
         xyz.ReceiveSupportEmails = false;
-        xyz.Role = "Unassigned";
+        xyz.Role = user.Role || "Unassigned";
 
         const newUser = new User(user);
 
