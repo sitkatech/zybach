@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ApplicationRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   Control, FitBoundsOptions,
   GeoJSON,
@@ -8,20 +8,24 @@ import {
   MapOptions,
   tileLayer,
   Icon,
-  geoJSON} from 'leaflet';
-  import 'leaflet.snogylop'
+  geoJSON
+} from 'leaflet';
+import 'leaflet.snogylop'
 import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
 import { TwinPlatteBoundaryGeoJson } from '../well-explorer/tpnrd-boundary';
+
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+
 @Component({
   selector: 'zybach-well-map',
   templateUrl: './well-map.component.html',
-  styleUrls: ['./well-map.component.scss']
+  styleUrls: ['./well-map.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class WellMapComponent implements OnInit, AfterViewInit {
-
   public mapID: string = 'wellMap';
   public onEachFeatureCallback?: (feature, layer) => void;
   public zoomMapToDefaultExtent: boolean = true;
@@ -41,13 +45,18 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public wellsObservable: Observable<any>;
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
-  
+
   public tpnrdBoundaryLayer: GeoJSON<any>;
   public wellsLayer: GeoJSON<any>;
 
+  public dataSourceDropdownList: {item_id: number, item_text: string}[] = [];
+  public selectedDataSources : {item_id: number, item_text: string}[] = [];
+  public dataSourceDropdownSettings: IDropdownSettings = {};
+
   constructor(
     private appRef: ApplicationRef,
-    private compileService: CustomCompileService  ) { }
+    private compileService: CustomCompileService
+  ) { }
 
 
   public ngOnInit(): void {
@@ -71,6 +80,28 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     }, this.tileLayers);
 
     this.compileService.configure(this.appRef);
+
+    this.dataSourceDropdownList = [
+      {item_id: 1, item_text: DataSourceFilterOption.FLOW},
+      {item_id: 2, item_text: DataSourceFilterOption.CONTINUITY},
+      {item_id: 3, item_text: DataSourceFilterOption.ELECTRICAL},
+      {item_id: 4, item_text: DataSourceFilterOption.NODATA}
+    ];
+    this.selectedDataSources = [
+      {item_id: 1, item_text: "Flowmeter"},
+      {item_id: 2, item_text: "Continuity Devices"},
+      {item_id: 3, item_text: "Electrical Data"},
+      {item_id: 4, item_text: "No Estimate Available"}
+    ]
+    this.dataSourceDropdownSettings = {
+      singleSelection: false,
+      idField: "item_id",
+      textField: "item_text",
+      selectAllText: "Select All",
+      unSelectAllText: "Unselect All",
+      allowSearchFilter: false,
+      enableCheckAll: false
+    }
   }
 
   public ngAfterViewInit(): void {
@@ -85,13 +116,13 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.map = map(this.mapID, mapOptions);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
-    
+
     console.log(this.wellsGeoJson);
 
 
     var wellIcon = new Icon({
       iconUrl: "/assets/main/noun_Well_190658.png",
-      iconSize: [30,30]
+      iconSize: [30, 30]
     });
 
     // var wellMarkerOptions = {
@@ -103,37 +134,46 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     //   fillOpacity: 0.4
     // };
 
-    // todo: rename, make into class property
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        // if well is in the list from geooptix, symbolize more prominently
+        return marker(latlng, { icon: wellIcon });
+      },
+      filter: (feature) => {
+        const selectedDataSourceOptions = this.selectedDataSources.map(x=>x.item_text);
+
+        const allowedSensorTypes = selectedDataSourceOptions.map(x=> DataSourceSensorTypeMap[x]);
+        console.log(allowedSensorTypes);
+
+        if(feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))){
+          return true;
+        }
         
-        return marker(latlng, {icon: wellIcon});
+        return false;
       }
     });
 
     this.wellsLayer.addTo(this.map);
 
-    this.tpnrdBoundaryLayer  = geoJSON(TwinPlatteBoundaryGeoJson as any, {
+    this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
       invert: true,
-        style: function () {
-          return {
-            fillColor: "#323232",
-            fill: true,
-            fillOpacity: 0.4,
-            color: "#3388ff",
-            weight: 5,
-            stroke: true
-          };
-        }
+      style: function () {
+        return {
+          fillColor: "#323232",
+          fill: true,
+          fillOpacity: 0.4,
+          color: "#3388ff",
+          weight: 5,
+          stroke: true
+        };
+      }
     } as any)
 
     this.tpnrdBoundaryLayer.addTo(this.map);
 
     this.map.fitBounds(this.tpnrdBoundaryLayer.getBounds());
 
-    this.overlayLayers ={
-      "Wells" : this.wellsLayer,
+    this.overlayLayers = {
+      "Wells": this.wellsLayer,
       "District Boundary": this.tpnrdBoundaryLayer
     };
 
@@ -147,4 +187,24 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       .addTo(this.map);
   }
 
+  public onDataSourceFilterChange(event: Event){
+    this.wellsLayer.clearLayers();
+    this.wellsLayer.addData(this.wellsGeoJson);
+  }
+
 }
+
+enum DataSourceFilterOption {
+  FLOW = "Flowmeter",
+  CONTINUITY = "Continuity Devices",
+  ELECTRICAL = "Electrical Data",
+  NODATA = "No Estimate Available"
+}
+
+const DataSourceSensorTypeMap = {
+  "Flowmeter": "FlowMeter",
+  "Continuity Devices": "PumpMonitor",
+  "Electrical Data": "N/A",
+  "No Estimate Available": "N/A"
+}
+

@@ -44,6 +44,7 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
 import { TestAPIComponent } from './pages/test-api/test-api.component';
 import { WellMapComponent } from './pages/well-map/well-map.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -88,7 +89,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     AgGridModule.withComponents([]),
     SelectDropDownModule,
     MyDatePickerModule,
-    CKEditorModule
+    CKEditorModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],  
   providers: [
     CookieService,

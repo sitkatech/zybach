@@ -1,1 +1,12 @@
+<div class="row mb-2">
+    <div class="col-sm col-3 col-xs-3 text-right pt-2 mr-0 pr-0">
+        Data Sources:
+    </div>
+    <div class="col-sm col-9 col-xs-9 ml-0">
+        <ng-multiselect-dropdown [placeholder]="'custom placeholder'" [(ngModel)]="selectedDataSources"
+            [settings]="dataSourceDropdownSettings" [data]="dataSourceDropdownList" name="dataSourceFilter"
+            (onSelect)="onDataSourceFilterChange($event)" (onDeSelect)="onDataSourceFilterChange($event)">
+        </ng-multiselect-dropdown>
+    </div>
+</div>
 <div id="{{mapID}}" [style.height]="mapHeight"></div>
