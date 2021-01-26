@@ -2,14 +2,14 @@
     "entryFile": "./src/app.ts",
     "noImplicitAdditionalProperties": "silently-remove-extras",
     "controllerPathGlobs": [
-        "./src/app_api/controllers/**/*controller.ts"
+        "./src/controllers/**/*controller.ts"
     ],
 
     "spec":{
         "specVersion": 3,
         "outputDirectory":"./src",
         "controllerPathGlobs": [
-            "./src/app_api/controllers/**/*controller.ts"
+            "./src/controllers/**/*controller.ts"
         ],
         "securityDefinitions": {
             "api_key" :{
@@ -20,8 +20,8 @@
         }
     },
     "routes":{
-        "routesDir": "./src/app_api/routes/generated",
-        "authenticationModule": "./src/app_api/security/authentication.ts",
+        "routesDir": "./src/routes/generated",
+        "authenticationModule": "./src/security/authentication.ts",
         "iocModule": "src/ioc"
     }
 }

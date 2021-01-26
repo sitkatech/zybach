@@ -1,6 +1,6 @@
 import { inject } from "inversify";
 import { Body, Controller, Post, Route, Request, Security, Get, Hidden } from "tsoa";
-import { provideSingleton } from "../../util/provide-singleton";
+import { provideSingleton } from "../util/provide-singleton";
 import { BookCreateDto, BookDto } from "../dtos/book-create-dto";
 import { RequestWithUserContext } from "../request-with-user-context";
 import { SecurityType } from "../security/authentication";

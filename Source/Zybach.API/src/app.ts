@@ -19,7 +19,7 @@ import { ValidateError } from 'tsoa';
 import jwt from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
 
-import {RegisterRoutes} from './app_api/routes/generated/routes'
+import {RegisterRoutes} from './routes/generated/routes'
 import connect from "./connect";
 import cors from 'cors';
 
@@ -60,12 +60,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 RegisterRoutes(app);
-
-// app.use("/api/docs", swaggerUi.serve, async(_req: Request, res: Response) => {
-//   return res.send(
-//     swaggerUi.generateHTML(await import("./swagger.json"))
-//   )
-// })
 
 app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc, {
   swaggerOptions:{

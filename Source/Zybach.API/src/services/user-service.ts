@@ -1,9 +1,9 @@
 import { UserDto, UserDtoFactory } from "../dtos/user-dto";
 import User, { UserInterface } from "../models/user";
-import { NotFoundError } from "../../errors/not-found-error";
+import { NotFoundError } from "../errors/not-found-error";
 import { UserCreateDto, UserEditDto } from "../dtos/user-create-dto";
-import { InternalServerError } from "../../errors/internal-server-error";
-import { provideSingleton } from "../../util/provide-singleton";
+import { InternalServerError } from "../errors/internal-server-error";
+import { provideSingleton } from "../util/provide-singleton";
 
 @provideSingleton(UserService)
 export class UserService{

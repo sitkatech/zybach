@@ -17,7 +17,7 @@ import { UserController } from './../../controllers/user.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { WellController } from './../../controllers/wells.controller';
 import { expressAuthentication } from './../../security/authentication';
-import { iocContainer } from './../../../ioc';
+import { iocContainer } from './../../ioc';
 import { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import * as express from 'express';
 

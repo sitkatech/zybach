@@ -1,11 +1,11 @@
-import secrets from '../../secrets';
+import secrets from '../secrets';
 import { UserDto } from '../dtos/user-dto';
-import { UnauthorizedError } from '../../errors/unauthorized-error';
-import { ApiError } from '../../errors/apiError';
+import { UnauthorizedError } from '../errors/unauthorized-error';
+import { ApiError } from '../errors/apiError';
 import { UserService } from '../services/user-service';
 import { RequestWithUserContext } from '../request-with-user-context';
 import { promises } from 'fs';
-import { InternalServerError } from '../../errors/internal-server-error';
+import { InternalServerError } from '../errors/internal-server-error';
 
 export enum SecurityType {
     API_KEY = "api_key",

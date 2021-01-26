@@ -1,7 +1,7 @@
 import { inject } from "inversify";
 import { Body, Controller, Post, Route, Security, Get, Path, Hidden, Put, Request } from "tsoa";
-import secrets from "../../secrets";
-import { provideSingleton } from "../../util/provide-singleton";
+import secrets from "../secrets";
+import { provideSingleton } from "../util/provide-singleton";
 import { KeystoneInviteDto } from "../dtos/keystone-invite-dto";
 import { UserCreateDto, UserEditDto } from "../dtos/user-create-dto";
 import { UserDto } from "../dtos/user-dto";

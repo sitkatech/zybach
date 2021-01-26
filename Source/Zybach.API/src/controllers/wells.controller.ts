@@ -6,8 +6,8 @@ import {
     Route,
     Security
 } from "tsoa";
-import secrets from '../../secrets';
-import { ApiError } from '../../errors/apiError'
+import secrets from '../secrets';
+import { ApiError } from '../errors/apiError'
 import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
@@ -15,8 +15,8 @@ import { SecurityType } from "../security/authentication";
 import { WellSummaryDto } from "../dtos/well-summary-dto";
 import { ApiResult } from "../dtos/api-result";
 import { GeoOptixService } from "../services/geooptix-service";
-import { InternalServerError } from "../../errors/internal-server-error";
-import { provideSingleton } from "../../util/provide-singleton";
+import { InternalServerError } from "../errors/internal-server-error";
+import { provideSingleton } from "../util/provide-singleton";
 import { inject } from "inversify";
 
 const bucketName = process.env.SOURCE_BUCKET;

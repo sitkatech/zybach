@@ -1,5 +1,5 @@
 import { Controller, Route, Get, Hidden } from "tsoa";
-import { provideSingleton } from "../../util/provide-singleton";
+import { provideSingleton } from "../util/provide-singleton";
 import { RoleDto } from "../dtos/role-dto";
 import { GetLegacyRole, RoleEnum } from "../models/role";
 

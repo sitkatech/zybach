@@ -1,5 +1,5 @@
-import { NotFoundError } from "../../errors/not-found-error";
-import { provideSingleton } from "../../util/provide-singleton";
+import { NotFoundError } from "../errors/not-found-error";
+import { provideSingleton } from "../util/provide-singleton";
 import { CustomRichTextDto, CustomRichTextDtoFactory, CustomRichTextUpdateDto } from "../dtos/custom-rich-text-dto";
 import CustomRichText from "../models/custom-rich-text";
 

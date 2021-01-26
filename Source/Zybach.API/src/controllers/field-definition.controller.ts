@@ -1,6 +1,6 @@
 import { inject } from "inversify";
 import { Controller, Route, Security, Get, Hidden, Path, Put, Body } from "tsoa";
-import { provideSingleton } from "../../util/provide-singleton";
+import { provideSingleton } from "../util/provide-singleton";
 import { FieldDefinitionDto, FieldDefinitionUpdateDto } from "../dtos/field-definition-dto";
 import { RoleEnum } from "../models/role";
 import { SecurityType } from "../security/authentication";

@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-import app from '../app';
+import app from './app';
 import Debug from 'debug';
 const debug = Debug('zybachapi:server');
 
@@ -28,8 +28,8 @@ app.set('port', port);
 let server: http.Server | https.Server;
 
 if (process.env["ENVIRONMENT"] === "DEBUG") {
-  const key = fs.readFileSync('/src/bucket/key.pem');
-  const cert = fs.readFileSync('/src/bucket/cert.pem');
+  const key = fs.readFileSync('/src/key.pem');
+  const cert = fs.readFileSync('/src/cert.pem');
   server = https.createServer({ key: key, cert: cert }, app);
 } else {
   server = http.createServer(app);

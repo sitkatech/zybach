@@ -1,5 +1,5 @@
-import { NotFoundError } from "../../errors/not-found-error";
-import { provideSingleton } from "../../util/provide-singleton";
+import { NotFoundError } from "../errors/not-found-error";
+import { provideSingleton } from "../util/provide-singleton";
 import { FieldDefinitionDto, FieldDefinitionDtoFactory, FieldDefinitionUpdateDto } from "../dtos/field-definition-dto";
 import FieldDefinition, { FieldDefinitionInterface } from "../models/field-definition";
 

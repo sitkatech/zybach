@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./dist/bucket/www.js",
+    "start": "node ./dist/www.js",
     "build": "tsoa routes && tsc -p src",
     "autogen-routes": "nodemon -w ./src/app_api/controllers -x tsoa routes",
     "debug": "nodemon",

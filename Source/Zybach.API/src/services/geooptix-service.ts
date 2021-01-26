@@ -1,7 +1,7 @@
 import axios from "axios";
-import { InternalServerError } from "../../errors/internal-server-error";
-import secrets from "../../secrets";
-import { provideSingleton } from "../../util/provide-singleton";
+import { InternalServerError } from "../errors/internal-server-error";
+import secrets from "../secrets";
+import { provideSingleton } from "../util/provide-singleton";
 import { SensorSummaryDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 
 @provideSingleton(GeoOptixService)

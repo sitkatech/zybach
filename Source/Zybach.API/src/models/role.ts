@@ -1,4 +1,4 @@
-import {EnumToArray} from '../../util';
+import {EnumToArray} from '../util';
 import { RoleDto } from '../dtos/role-dto';
 
 export enum RoleEnum{

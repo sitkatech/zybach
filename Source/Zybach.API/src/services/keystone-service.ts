@@ -1,8 +1,8 @@
-import { provideSingleton } from "../../util/provide-singleton";
+import { provideSingleton } from "../util/provide-singleton";
 import got from 'got';
 import { KeystoneInviteDto } from "../dtos/keystone-invite-dto";
-import secrets from "../../secrets";
-import { InternalServerError } from "../../errors/internal-server-error";
+import secrets from "../secrets";
+import { InternalServerError } from "../errors/internal-server-error";
 
 @provideSingleton(KeystoneService)
 export class KeystoneService {
