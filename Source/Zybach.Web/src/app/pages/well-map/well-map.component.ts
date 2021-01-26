@@ -8,9 +8,11 @@ import {
   MapOptions,
   tileLayer,
   Icon,
-  geoJSON
+  geoJSON,
+  icon
 } from 'leaflet';
-import 'leaflet.snogylop'
+import 'leaflet.snogylop';
+import 'leaflet.icon.glyph';
 import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
@@ -30,7 +32,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public onEachFeatureCallback?: (feature, layer) => void;
   public zoomMapToDefaultExtent: boolean = true;
   public disableDefaultClick: boolean = false;
-  public mapHeight: string = '500px';
+  public mapHeight: string = '650px';
   public defaultFitBoundsOptions?: FitBoundsOptions = null;
 
   @Input()
@@ -117,9 +119,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
 
-    console.log(this.wellsGeoJson);
-
-
     var wellIcon = new Icon({
       iconUrl: "/assets/main/noun_Well_190658.png",
       iconSize: [30, 30]
@@ -136,13 +135,17 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        return marker(latlng, { icon: wellIcon });
+        const markerIcon = icon.glyph({
+          prefix: "fas",
+          glyph: "tint",
+
+        })
+        return marker(latlng, { icon: markerIcon } );
       },
       filter: (feature) => {
         const selectedDataSourceOptions = this.selectedDataSources.map(x=>x.item_text);
 
         const allowedSensorTypes = selectedDataSourceOptions.map(x=> DataSourceSensorTypeMap[x]);
-        console.log(allowedSensorTypes);
 
         if(feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))){
           return true;
@@ -173,7 +176,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.map.fitBounds(this.tpnrdBoundaryLayer.getBounds());
 
     this.overlayLayers = {
-      "Wells": this.wellsLayer,
       "District Boundary": this.tpnrdBoundaryLayer
     };
 

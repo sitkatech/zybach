@@ -6,7 +6,8 @@
     "start": "node ./dist/bucket/www.js",
     "build": "tsoa routes && tsc -p src",
     "autogen-routes": "nodemon -w ./src/app_api/controllers -x tsoa routes",
-    "debug": "nodemon"
+    "debug": "nodemon",
+    "build-swagger": "tsoa spec"
   },
   "dependencies": {
     "@cloudreach/docker-secrets": "^1.0.3",

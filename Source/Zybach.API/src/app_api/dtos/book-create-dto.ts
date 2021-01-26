@@ -1,9 +1,16 @@
-
+/**
+ * @class
+ * @ignore
+ */
 export interface BookCreateDto {
     title: string,
     author: string
 }
 
-export interface BookDto extends BookCreateDto{
-    
+/**
+ * @class
+ * @ignore
+ */
+export interface BookDto extends BookCreateDto {
+
 }

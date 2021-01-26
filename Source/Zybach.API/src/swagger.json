@@ -6,32 +6,499 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"ApiError": {
+			"BookDto": {
 				"properties": {
-					"name": {
+					"title": {
 						"type": "string"
 					},
-					"message": {
+					"author": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"author"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"BookCreateDto": {
+				"properties": {
+					"title": {
 						"type": "string"
 					},
-					"stack": {
+					"author": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"title",
+					"author"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomRichTextTypeDto": {
+				"properties": {
+					"CustomRichTextTypeID": {
+						"type": "number",
+						"format": "double"
+					},
+					"CustomRichTextTypeName": {
 						"type": "string"
 					},
-					"statusCode": {
+					"CustomRichTextTypeDisplayName": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomRichTextDto": {
+				"properties": {
+					"CustomRichTextID": {
+						"type": "number",
+						"format": "double"
+					},
+					"CustomRichTextType": {
+						"$ref": "#/components/schemas/CustomRichTextTypeDto"
+					},
+					"CustomRichTextContent": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomRichTextUpdateDto": {
+				"properties": {
+					"CustomRichTextContent": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"CustomRichTextContent"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FieldDefinitionTypeDto": {
+				"properties": {
+					"FieldDefinitionTypeID": {
+						"type": "number",
+						"format": "double"
+					},
+					"FieldDefinitionTypeName": {
+						"type": "string"
+					},
+					"FieldDefinitionTypeDisplayName": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FieldDefinitionDto": {
+				"properties": {
+					"FieldDefinitionID": {
+						"type": "number",
+						"format": "double"
+					},
+					"FieldDefinitionType": {
+						"$ref": "#/components/schemas/FieldDefinitionTypeDto"
+					},
+					"FieldDefinitionValue": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FieldDefinitionUpdateDto": {
+				"properties": {
+					"FieldDefinitionValue": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"FieldDefinitionValue"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SensorSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"sensorName": {
+						"type": "string"
+					},
+					"sensorType": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"sensorName",
+					"sensorType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"WellWithSensorSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {},
+					"sensors": {
+						"items": {
+							"$ref": "#/components/schemas/SensorSummaryDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"description",
+					"location",
+					"sensors"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResult_WellWithSensorSummaryDto-Array_": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"result": {
+						"items": {
+							"$ref": "#/components/schemas/WellWithSensorSummaryDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status",
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RoleDto": {
+				"properties": {
+					"RoleID": {
+						"type": "number",
+						"format": "double"
+					},
+					"RoleDisplayName": {
+						"type": "string"
+					},
+					"RoleName": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"RoleID",
+					"RoleDisplayName",
+					"RoleName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserDto": {
+				"properties": {
+					"UserID": {
+						"type": "string"
+					},
+					"UserGuid": {
+						"type": "string"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"FullName": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"CreateDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdateDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"LastActivityDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"DisclaimerAcknowledgedDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"ReceiveSupportEmails": {
+						"type": "boolean"
+					},
+					"LoginName": {
+						"type": "string"
+					},
+					"Company": {
+						"type": "string"
+					},
+					"IsAnonymous": {
+						"type": "boolean"
+					},
+					"Role": {
+						"$ref": "#/components/schemas/RoleDto"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserCreateDto": {
+				"properties": {
+					"LoginName": {
+						"type": "string"
+					},
+					"UserGuid": {
+						"type": "string"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"Role": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"FirstName",
+					"LastName",
+					"Email",
+					"Role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserEditDto": {
+				"properties": {
+					"Role": {
+						"type": "string"
+					},
+					"ReceiveSupportEmails": {
+						"type": "boolean"
+					},
+					"UserGuid": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"WellSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {}
+				},
+				"required": [
+					"wellRegistrationID",
+					"description",
+					"location"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResult_WellSummaryDto-Array_": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"result": {
+						"items": {
+							"$ref": "#/components/schemas/WellSummaryDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status",
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ResultFromInfluxDB": {
+				"properties": {
+					"endTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"gallons": {
+						"type": "number",
+						"format": "double"
+					},
+					"wellRegistrationID": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"endTime",
+					"gallons",
+					"wellRegistrationID"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AggregatedResult": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"endTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"gallons": {
 						"type": "number",
 						"format": "double"
 					}
 				},
 				"required": [
-					"name",
-					"message",
-					"statusCode"
+					"wellRegistrationID",
+					"endTime",
+					"gallons"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VolumeByWell": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"intervalCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"intervalVolumes": {
+						"items": {
+							"$ref": "#/components/schemas/AggregatedResult"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"intervalCount",
+					"intervalVolumes"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"StructuredResults": {
+				"properties": {
+					"intervalCountTotal": {
+						"type": "number",
+						"format": "double"
+					},
+					"intervalWidthInMinutes": {
+						"type": "number",
+						"format": "double"
+					},
+					"intervalStart": {
+						"type": "string"
+					},
+					"intervalEnd": {
+						"type": "string"
+					},
+					"durationInMinutes": {
+						"type": "number",
+						"format": "double"
+					},
+					"wellCount": {
+						"type": "number",
+						"format": "double"
+					},
+					"volumesByWell": {
+						"items": {
+							"$ref": "#/components/schemas/VolumeByWell"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"intervalCountTotal",
+					"intervalWidthInMinutes",
+					"intervalStart",
+					"intervalEnd",
+					"durationInMinutes",
+					"wellCount",
+					"volumesByWell"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AbbreviatedWellDataResponse": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"tags": {},
+					"location": {},
+					"createDate": {},
+					"updateDate": {},
+					"sensors": {
+						"items": {},
+						"type": "array"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"description",
+					"tags",
+					"location",
+					"createDate",
+					"updateDate",
+					"sensors"
 				],
 				"type": "object",
 				"additionalProperties": false
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "authorization",
+				"in": "header"
+			}
+		}
 	},
 	"info": {
 		"title": "zybachapi",
@@ -49,8 +516,43 @@
 						"content": {
 							"application/json": {
 								"schema": {
+									"$ref": "#/components/schemas/ApiResult_WellSummaryDto-Array_"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/api/wells/pumpedVolume": {
+			"get": {
+				"operationId": "GetPumpedVolume",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
 									"properties": {
-										"result": {},
+										"result": {
+											"anyOf": [
+												{
+													"items": {
+														"$ref": "#/components/schemas/ResultFromInfluxDB"
+													},
+													"type": "array"
+												},
+												{
+													"$ref": "#/components/schemas/StructuredResults"
+												}
+											]
+										},
 										"status": {
 											"type": "string"
 										}
@@ -63,20 +565,174 @@
 								}
 							}
 						}
+					}
+				},
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
 					},
-					"500": {
-						"description": "Internal Server Error",
+					{
+						"in": "query",
+						"name": "filter",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "interval",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/api/wells/{wellRegistrationID}": {
+			"get": {
+				"operationId": "GetWell",
+				"responses": {
+					"200": {
+						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ApiError"
+									"properties": {
+										"result": {
+											"$ref": "#/components/schemas/AbbreviatedWellDataResponse"
+										},
+										"status": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"result",
+										"status"
+									],
+									"type": "object"
 								}
 							}
 						}
 					}
 				},
-				"security": [],
-				"parameters": []
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "wellRegistrationID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/wells/{wellRegistrationID}/pumpedVolume": {
+			"get": {
+				"operationId": "GetPumpedVolumeByWell",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"result": {
+											"anyOf": [
+												{
+													"items": {
+														"$ref": "#/components/schemas/ResultFromInfluxDB"
+													},
+													"type": "array"
+												},
+												{
+													"$ref": "#/components/schemas/StructuredResults"
+												}
+											]
+										},
+										"status": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"result",
+										"status"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "wellRegistrationID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "endDate",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "interval",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
 			}
 		}
 	},

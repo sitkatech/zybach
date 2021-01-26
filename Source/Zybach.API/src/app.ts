@@ -23,6 +23,10 @@ import {RegisterRoutes} from './app_api/routes/generated/routes'
 import connect from "./connect";
 import cors from 'cors';
 
+import swaggerUi from "swagger-ui-express";
+import swaggerDoc from "./swagger.json";
+console.log(swaggerDoc);
+
 connect();
 const app = express();
 app.use(jwt({
@@ -56,6 +60,18 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 RegisterRoutes(app);
+
+// app.use("/api/docs", swaggerUi.serve, async(_req: Request, res: Response) => {
+//   return res.send(
+//     swaggerUi.generateHTML(await import("./swagger.json"))
+//   )
+// })
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc, {
+  swaggerOptions:{
+    defaultModelsExpandDepth: -1
+  }
+}));
 
 app.use(function (req, res, next) {
   next(createError(404));

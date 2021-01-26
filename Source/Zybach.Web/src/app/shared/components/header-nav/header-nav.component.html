@@ -17,6 +17,9 @@
                     View
                 </a>
             </li> -->
+            <a class="nav-link" routerLinkActive="active" *ngIf="isAdministrator()" routerLink="/well-map">
+                Well Map
+            </a>
             <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAdministrator()">
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
@@ -31,9 +34,6 @@
                     </a>
                     <a routerLink="/test-api" class="dropdown-item">
                         Test API
-                    </a>
-                    <a routerLink="/well-map" class="dropdown-item">
-                        Well Map
                     </a>
                 </div>
             </li>

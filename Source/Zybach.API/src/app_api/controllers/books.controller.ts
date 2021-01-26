@@ -1,5 +1,5 @@
 import { inject } from "inversify";
-import { Body, Controller, Post, Route, Request, Security, Get } from "tsoa";
+import { Body, Controller, Post, Route, Request, Security, Get, Hidden } from "tsoa";
 import { provideSingleton } from "../../util/provide-singleton";
 import { BookCreateDto, BookDto } from "../dtos/book-create-dto";
 import { RequestWithUserContext } from "../request-with-user-context";
@@ -9,6 +9,7 @@ import { BookService } from "../services/book-service";
 
 @Route("/api/books")
 @provideSingleton(BookController)
+@Hidden()
 export class BookController extends Controller{
     constructor(@inject(BookService) private bookService: BookService){
         super();
