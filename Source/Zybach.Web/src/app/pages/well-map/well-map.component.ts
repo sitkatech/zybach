@@ -102,7 +102,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       selectAllText: "Select All",
       unSelectAllText: "Unselect All",
       allowSearchFilter: false,
-      enableCheckAll: false
+      enableCheckAll: true
     }
   }
 
@@ -192,6 +192,19 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public onDataSourceFilterChange(event: Event){
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
+  }
+
+  // the select-all/deselect-all events fire before the model updates.
+  // not sure if this is a fundamental limitation or just an annoying bug in the multiselect library,
+  // but manually filling/clearing the selectedDataSources array lets select/deselect all work
+  public onDataSourceFilterSelectAll(event){
+    this.selectedDataSources = [...this.dataSourceDropdownList];
+    this.onDataSourceFilterChange(event)
+  }
+
+  public onDataSourceFilterDeselectAll(event){
+    this.selectedDataSources = [];
+    this.onDataSourceFilterChange(event);
   }
 
 }

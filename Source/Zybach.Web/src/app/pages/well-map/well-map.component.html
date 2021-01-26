@@ -3,7 +3,8 @@
         Showing wells with
         <ng-multiselect-dropdown  [placeholder]="'No Data Source Selected'" [(ngModel)]="selectedDataSources"
             [settings]="dataSourceDropdownSettings" [data]="dataSourceDropdownList" name="dataSourceFilter"
-            (onSelect)="onDataSourceFilterChange($event)" (onDeSelect)="onDataSourceFilterChange($event)">
+            (onSelect)="onDataSourceFilterChange($event)" (onDeSelect)="onDataSourceFilterChange($event)"
+            (onSelectAll)="onDataSourceFilterSelectAll($event)" (onDeSelectAll)="onDataSourceFilterDeselectAll($event)">
         </ng-multiselect-dropdown>
     </div>
 </div>
