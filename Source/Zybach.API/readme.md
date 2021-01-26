@@ -4,6 +4,7 @@
 * * We're doing this instead of npm for this one. It works almost exactly the same as npm with a few minor differences in CLI, and uses the npm package registry as its source for packages, but is slightly more modern.
 * * You can install it with `npm install -g yarn`
 * MongoDB Compass
+* Run `yarn global add migrate-mongo` to install the database migration package.
 
 # Make it run
 * As always, copy `secrets.template.json` to `secrets.json` and fill it out.
@@ -22,7 +23,8 @@
 * * Because we are using `tsoa`, there is **no need to write routing code**. 
 
 # Database it
-* The `docker-compose.debug.yml` file has instructions for `docker-compose` to automatically run a Mongo instance in a container, using a docker volume on your host machine as the backing store. An `entrypoint.js` file will set up the user for this local Mongo instance, and the default connection string is already in the `secrets.template.json` file you copied earlier. So, there is no set-up required to get your local database instance running.
+* The `docker-compose.debug.yml` file has instructions for `docker-compose` to automatically run a Mongo instance in a container, using a docker volume on your host machine as the backing store. An `entrypoint.js` file will set up the user for this local Mongo instance, and the default connection string is already in the `secrets.template.json` file you copied earlier. So, there is minimal set-up required to get your local database instance running.
+* We are using `migrate-mongo` for database migrations. Migration files are in the `zybach-migrations` directory. To run them, `cd` into `zybach-migrations` and run `migrate-mongo up`. See the `migrate-mongo` docs for details on how to add new migrations.
 
 # Debug it
 * The debug launch task is already configured for VS Code. Just hit `F5` after running the `docker-compose` command above.

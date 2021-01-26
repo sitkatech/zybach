@@ -40,7 +40,7 @@ export class WellController extends Controller {
     @Response<ErrorResult>(403, "Forbidden")
     @Response<ErrorResult>(500, "If something went wrong within the API")
     public async getWells(): Promise<ApiResult<WellSummaryDto[]>> {
-        const wellSummaryDtos = await new GeoOptixService().getWellSummaries();
+        const wellSummaryDtos = await this.geoOptixService.getWellSummaries();
 
         return {
             "status": "success",
