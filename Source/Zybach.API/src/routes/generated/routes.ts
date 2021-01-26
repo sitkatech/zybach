@@ -203,6 +203,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ErrorResult": {
+        "dataType": "refObject",
+        "properties": {
+            "status": {"dataType":"string","required":true},
+            "message": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ResultFromInfluxDB": {
         "dataType": "refObject",
         "properties": {
@@ -836,8 +845,8 @@ export function RegisterRoutes(app: express.Router) {
             authenticateMiddleware([{"api_key":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
-                    startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},
                     wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
+                    startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},
                     endDateString: {"in":"query","name":"endDate","dataType":"string"},
                     interval: {"in":"query","name":"interval","dataType":"double"},
             };

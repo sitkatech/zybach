@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./dist/www.js",
     "build": "tsoa routes && tsc -p src",
-    "autogen-routes": "nodemon -w ./src/app_api/controllers -x tsoa routes",
+    "autogen-routes": "nodemon -w ./src/controllers -x tsoa spec-and-routes",
     "debug": "nodemon",
     "build-swagger": "tsoa spec"
   },

@@ -351,6 +351,22 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ErrorResult": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"status",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ResultFromInfluxDB": {
 				"properties": {
 					"endTime": {
@@ -512,7 +528,7 @@
 				"operationId": "GetWells",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Returns a list of all wells",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -520,8 +536,39 @@
 								}
 							}
 						}
+					},
+					"401": {
+						"description": "Unauthorized to perform request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "If something went wrong within the API",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
 					}
 				},
+				"description": "Returns an array of all Wells in the Water Data Program registered in GeoOptix",
 				"security": [
 					{
 						"api_key": []
@@ -535,7 +582,7 @@
 				"operationId": "GetPumpedVolume",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Returns the requested time series",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -565,8 +612,49 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized to perform request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "If something went wrong within the API",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
 					}
 				},
+				"description": "Returns a time series representing pumped volume at a well or series of wells, summed on a chosen reporting interval,\r\nfor a given date range. Each point in the output time series represents the total pumped volume over the previous\r\nreporting interval.",
 				"security": [
 					{
 						"api_key": []
@@ -574,6 +662,7 @@
 				],
 				"parameters": [
 					{
+						"description": "The start date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific\rtime is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00)",
 						"in": "query",
 						"name": "startDate",
 						"required": true,
@@ -582,6 +671,7 @@
 						}
 					},
 					{
+						"description": "The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data\rfor every Well that has reported data within the time range.",
 						"in": "query",
 						"name": "filter",
 						"required": false,
@@ -593,6 +683,7 @@
 						}
 					},
 					{
+						"description": "The end date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific\rtime is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00). Default's to today's date.",
 						"in": "query",
 						"name": "endDate",
 						"required": false,
@@ -601,6 +692,7 @@
 						}
 					},
 					{
+						"description": "The reporting interval, in minutes. Defaults to 60.",
 						"in": "query",
 						"name": "interval",
 						"required": false,
@@ -617,7 +709,7 @@
 				"operationId": "GetWell",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Returns a Well detail object which includes an array of associated sensors",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -637,8 +729,49 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized to perform request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "If something went wrong within the API",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
 					}
 				},
+				"description": "Returns Well details from GeoOptix for a given well along with an array of sensors that have been associated\r\nwith that Well.",
 				"security": [
 					{
 						"api_key": []
@@ -646,6 +779,7 @@
 				],
 				"parameters": [
 					{
+						"description": "The Well Registration ID for the requested Well",
 						"in": "path",
 						"name": "wellRegistrationID",
 						"required": true,
@@ -661,7 +795,7 @@
 				"operationId": "GetPumpedVolumeByWell",
 				"responses": {
 					"200": {
-						"description": "Ok",
+						"description": "Returns the requested time series",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -691,8 +825,49 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized to perform request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "If something went wrong within the API",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResult"
+								}
+							}
+						}
 					}
 				},
+				"description": "Returns a time series representing pumped volume at a well, summed on a chosen reporting interval,\r\nfor a given date range. Each point in the output time series represents the total pumped volume over the previous\r\nreporting interval.",
 				"security": [
 					{
 						"api_key": []
@@ -700,14 +875,7 @@
 				],
 				"parameters": [
 					{
-						"in": "query",
-						"name": "startDate",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
+						"description": "The Well Registration ID for the requested well",
 						"in": "path",
 						"name": "wellRegistrationID",
 						"required": true,
@@ -716,6 +884,16 @@
 						}
 					},
 					{
+						"description": "The start date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific\rtime is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00)",
+						"in": "query",
+						"name": "startDate",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"description": "The end date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific\rtime is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00). Default's to today's date.",
 						"in": "query",
 						"name": "endDate",
 						"required": false,
@@ -724,6 +902,7 @@
 						}
 					},
 					{
+						"description": "The reporting interval, in minutes. Defaults to 60.",
 						"in": "query",
 						"name": "interval",
 						"required": false,

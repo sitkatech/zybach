@@ -4,7 +4,9 @@ import {
     Path,
     Query,
     Route,
-    Security
+    Security,
+    Response,
+    SuccessResponse
 } from "tsoa";
 import secrets from '../secrets';
 import { ApiError } from '../errors/apiError'
@@ -13,7 +15,7 @@ import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
 import { SecurityType } from "../security/authentication";
 import { WellSummaryDto } from "../dtos/well-summary-dto";
-import { ApiResult } from "../dtos/api-result";
+import { ApiResult, ErrorResult } from "../dtos/api-result";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InternalServerError } from "../errors/internal-server-error";
 import { provideSingleton } from "../util/provide-singleton";
@@ -28,8 +30,15 @@ export class WellController extends Controller {
         super();
     }
 
+    /**
+     * Returns an array of all Wells in the Water Data Program registered in GeoOptix
+     */
     @Get("")
     @Security(SecurityType.API_KEY)
+    @SuccessResponse(200, "Returns a list of all wells")
+    @Response<ErrorResult>(401, "Unauthorized to perform request")
+    @Response<ErrorResult>(403, "Forbidden")
+    @Response<ErrorResult>(500, "If something went wrong within the API")
     public async getWells(): Promise<ApiResult<WellSummaryDto[]>> {
         const wellSummaryDtos = await new GeoOptixService().getWellSummaries();
 
@@ -39,8 +48,25 @@ export class WellController extends Controller {
         };
     }
 
+    /**
+     * Returns a time series representing pumped volume at a well or series of wells, summed on a chosen reporting interval,
+     * for a given date range. Each point in the output time series represents the total pumped volume over the previous
+     * reporting interval.
+     * @param wellRegistrationIDs The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data
+     * for every Well that has reported data within the time range.
+     * @param startDateString The start date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific
+     * time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00)
+     * @param endDateString The end date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific
+     * time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00). Default's to today's date.
+     * @param interval The reporting interval, in minutes. Defaults to 60.
+     */
     @Get("pumpedVolume")
     @Security(SecurityType.API_KEY)
+    @SuccessResponse(200, "Returns the requested time series")
+    @Response<ErrorResult>(400, "If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)")
+    @Response<ErrorResult>(401, "Unauthorized to perform request")
+    @Response<ErrorResult>(403, "Forbidden")
+    @Response<ErrorResult>(500, "If something went wrong within the API")
     public async getPumpedVolume(
         @Query("startDate") startDateString: string,
         @Query("filter") wellRegistrationIDs?: string[],
@@ -50,8 +76,18 @@ export class WellController extends Controller {
         return this.getPumpedVolumeImpl(startDateString, wellRegistrationIDs, endDateString, interval)
     }
 
+    /**
+     * Returns Well details from GeoOptix for a given well along with an array of sensors that have been associated
+     * with that Well.
+     * @param wellRegistrationID The Well Registration ID for the requested Well
+     */
     @Get("{wellRegistrationID}")
+    @SuccessResponse(200, "Returns a Well detail object which includes an array of associated sensors")
     @Security(SecurityType.API_KEY)
+    @Response<ErrorResult>(400, "If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)")
+    @Response<ErrorResult>(401, "Unauthorized to perform request")
+    @Response<ErrorResult>(403, "Forbidden")
+    @Response<ErrorResult>(500, "If something went wrong within the API")
     public async getWell(
         @Path() wellRegistrationID: string
     ) {
@@ -79,11 +115,28 @@ export class WellController extends Controller {
         }
     }
 
+    /**
+     * Returns a time series representing pumped volume at a well, summed on a chosen reporting interval,
+     * for a given date range. Each point in the output time series represents the total pumped volume over the previous
+     * reporting interval.
+     * 
+     * @param wellRegistrationID The Well Registration ID for the requested well
+     * @param startDateString The start date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific
+     * time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00)
+     * @param endDateString The end date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific
+     * time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00). Default's to today's date.
+     * @param interval The reporting interval, in minutes. Defaults to 60.
+     */
     @Get("{wellRegistrationID}/pumpedVolume")
     @Security(SecurityType.API_KEY)
+    @SuccessResponse(200, "Returns the requested time series")
+    @Response<ErrorResult>(400, "If the inputs are improperly-formatted or the date range or reporting interval are invalid. Error message will describe the invalid parameter(s)")
+    @Response<ErrorResult>(401, "Unauthorized to perform request")
+    @Response<ErrorResult>(403, "Forbidden")
+    @Response<ErrorResult>(500, "If something went wrong within the API")
     public async getPumpedVolumeByWell(
+        @Path() wellRegistrationID: string,
         @Query("startDate") startDateString: string,
-        @Path() wellRegistrationID?: string,
         @Query("endDate") endDateString?: string,
         @Query() interval?: number) {
         return this.getPumpedVolumeImpl(startDateString, wellRegistrationID, endDateString, interval)
