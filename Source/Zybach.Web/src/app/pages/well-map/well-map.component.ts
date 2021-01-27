@@ -111,7 +111,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     const mapOptions: MapOptions = {
       maxZoom: 17,
       layers: [
-        this.tileLayers["Terrain"],
+        this.tileLayers["Aerial"],
       ],
       fullscreenControl: true
     } as MapOptions;
