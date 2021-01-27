@@ -13,6 +13,7 @@ import {
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
+import 'leaflet.fullscreen';
 import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
