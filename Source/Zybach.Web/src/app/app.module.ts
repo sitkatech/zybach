@@ -45,6 +45,7 @@ import { TestAPIComponent } from './pages/test-api/test-api.component';
 import { WellMapComponent } from './pages/well-map/well-map.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ToastrModule } from 'ngx-toastr';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -90,7 +91,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     SelectDropDownModule,
     MyDatePickerModule,
     CKEditorModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],  
   providers: [
     CookieService,

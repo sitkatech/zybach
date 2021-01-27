@@ -4,6 +4,7 @@ import { NotFoundError } from "../errors/not-found-error";
 import { UserCreateDto, UserEditDto } from "../dtos/user-create-dto";
 import { InternalServerError } from "../errors/internal-server-error";
 import { provideSingleton } from "../util/provide-singleton";
+import { RoleEnum } from "../models/role";
 
 @provideSingleton(UserService)
 export class UserService{
@@ -31,8 +32,11 @@ export class UserService{
         return UserDtoFactory.FromModel(updatedUser);
     }
     public async getCountOfUnassignedUsers() : Promise<number> {
-        // todo: implement
-        return 0;
+        try {
+            return  await User.count({Role: RoleEnum.Unassigned})
+        } catch {
+            throw new InternalServerError("Error retrieving unassigned users");
+        }
     }
     public async getUserById(userID: string): Promise<UserDto> {
         const user = await User.findOne({_id: userID})

@@ -9,7 +9,8 @@ import {
   tileLayer,
   Icon,
   geoJSON,
-  icon
+  icon,
+  latLng
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
@@ -20,6 +21,11 @@ import { CustomCompileService } from 'src/app/shared/services/custom-compile.ser
 import { TwinPlatteBoundaryGeoJson } from '../well-explorer/tpnrd-boundary';
 
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { NominatimService } from 'src/app/services/nominatim.service';
+
+import { point, polygon } from '@turf/helpers';
+import booleanWithin from '@turf/boolean-within';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'zybach-well-map',
@@ -51,13 +57,18 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public tpnrdBoundaryLayer: GeoJSON<any>;
   public wellsLayer: GeoJSON<any>;
 
-  public dataSourceDropdownList: {item_id: number, item_text: string}[] = [];
-  public selectedDataSources : {item_id: number, item_text: string}[] = [];
+  public dataSourceDropdownList: { item_id: number, item_text: string }[] = [];
+  public selectedDataSources: { item_id: number, item_text: string }[] = [];
   public dataSourceDropdownSettings: IDropdownSettings = {};
+
+  public mapSearchQuery: string;
+  public maxZoom: number = 17;
 
   constructor(
     private appRef: ApplicationRef,
-    private compileService: CustomCompileService
+    private compileService: CustomCompileService,
+    private nominatimService: NominatimService,
+    private toastr: ToastrService
   ) { }
 
 
@@ -84,16 +95,16 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.compileService.configure(this.appRef);
 
     this.dataSourceDropdownList = [
-      {item_id: 1, item_text: DataSourceFilterOption.FLOW},
-      {item_id: 2, item_text: DataSourceFilterOption.CONTINUITY},
-      {item_id: 3, item_text: DataSourceFilterOption.ELECTRICAL},
-      {item_id: 4, item_text: DataSourceFilterOption.NODATA}
+      { item_id: 1, item_text: DataSourceFilterOption.FLOW },
+      { item_id: 2, item_text: DataSourceFilterOption.CONTINUITY },
+      { item_id: 3, item_text: DataSourceFilterOption.ELECTRICAL },
+      { item_id: 4, item_text: DataSourceFilterOption.NODATA }
     ];
     this.selectedDataSources = [
-      {item_id: 1, item_text: "Flowmeter"},
-      {item_id: 2, item_text: "Continuity Devices"},
-      {item_id: 3, item_text: "Electrical Data"},
-      {item_id: 4, item_text: "No Estimate Available"}
+      { item_id: 1, item_text: "Flowmeter" },
+      { item_id: 2, item_text: "Continuity Devices" },
+      { item_id: 3, item_text: "Electrical Data" },
+      { item_id: 4, item_text: "No Estimate Available" }
     ]
     this.dataSourceDropdownSettings = {
       singleSelection: false,
@@ -109,7 +120,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
 
     const mapOptions: MapOptions = {
-      maxZoom: 17,
+      maxZoom: this.maxZoom,
       layers: [
         this.tileLayers["Terrain"],
       ],
@@ -140,17 +151,17 @@ export class WellMapComponent implements OnInit, AfterViewInit {
           glyph: "tint",
 
         })
-        return marker(latlng, { icon: markerIcon } );
+        return marker(latlng, { icon: markerIcon });
       },
       filter: (feature) => {
-        const selectedDataSourceOptions = this.selectedDataSources.map(x=>x.item_text);
+        const selectedDataSourceOptions = this.selectedDataSources.map(x => x.item_text);
 
-        const allowedSensorTypes = selectedDataSourceOptions.map(x=> DataSourceSensorTypeMap[x]);
+        const allowedSensorTypes = selectedDataSourceOptions.map(x => DataSourceSensorTypeMap[x]);
 
-        if(feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))){
+        if (feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))) {
           return true;
         }
-        
+
         return false;
       }
     });
@@ -180,7 +191,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     };
 
     this.setControl();
-
   }
 
 
@@ -189,7 +199,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       .addTo(this.map);
   }
 
-  public onDataSourceFilterChange(event: Event){
+  public onDataSourceFilterChange(event: Event) {
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
   }
@@ -197,14 +207,36 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   // the select-all/deselect-all events fire before the model updates.
   // not sure if this is a fundamental limitation or just an annoying bug in the multiselect library,
   // but manually filling/clearing the selectedDataSources array lets select/deselect all work
-  public onDataSourceFilterSelectAll(event){
+  public onDataSourceFilterSelectAll(event) {
     this.selectedDataSources = [...this.dataSourceDropdownList];
     this.onDataSourceFilterChange(event)
   }
 
-  public onDataSourceFilterDeselectAll(event){
+  public onDataSourceFilterDeselectAll(event) {
     this.selectedDataSources = [];
     this.onDataSourceFilterChange(event);
+  }
+
+  public mapSearch() {
+    this.nominatimService.makeNominatimRequest(this.mapSearchQuery).subscribe(x => {
+      if (!x.length) {
+        this.toastr.error("There was an error!", "You are sad :(", {timeOut: 60000});
+      }
+
+      const nominatimResult = x[0];
+
+      if (this.nominatimResultWithinTpnrdBoundary(nominatimResult)) {
+        this.map.setView(latLng(nominatimResult.lat, nominatimResult.lon), this.maxZoom)
+      } else {
+        this.toastr.error("There was an error!", "You are sad :(", {timeOut: 60000});
+      }
+    })
+  }
+
+  nominatimResultWithinTpnrdBoundary(nominatimResult: { lat: number, lon: number }): boolean {
+    const turfPoint = point([nominatimResult.lon, nominatimResult.lat]);
+    const turfPolygon = polygon(TwinPlatteBoundaryGeoJson.features[0].geometry.coordinates);
+    return booleanWithin(turfPoint, turfPolygon);
   }
 
 }

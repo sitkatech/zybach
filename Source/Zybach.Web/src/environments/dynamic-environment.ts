@@ -76,4 +76,8 @@ export class DynamicEnvironment {
     public get appInsightsInstrumentationKey() {
         return window.config.appInsightsInstrumentationKey;
     }
+
+    public get mapQuestApiUrl(){
+        return window.config.mapQuestApiUrl;
+    }
 }

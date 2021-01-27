@@ -2,8 +2,15 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item active" aria-current="page">Well Map</li>
     </ol>
-  </nav>
+</nav>
 
 <div class="container-fluid" *ngIf="wells">
     <zybach-well-map [wellsGeoJson]="wellsGeoJson"></zybach-well-map>
+</div>
+
+<div class="container" *ngIf="wells">
+    <ag-grid-angular #wellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="wells"
+        [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'" [paginationPageSize]="100"
+        (gridReady)="onGridReady($event)">
+    </ag-grid-angular>
 </div>
