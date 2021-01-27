@@ -12,6 +12,7 @@ export class RoleController extends Controller{
     public async getRoles() : Promise<RoleDto[]> {
         return [
             GetLegacyRole(RoleEnum.Adminstrator),
+            GetLegacyRole(RoleEnum.Disabled),
             GetLegacyRole(RoleEnum.Unassigned)
         ];
     }
