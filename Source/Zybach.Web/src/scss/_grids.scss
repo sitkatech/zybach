@@ -6,7 +6,7 @@ $grid-header-background: #0076C0;
 .ag-theme-balham {
   @include ag-theme-balham((
       // use theme parameters where possible
-      balham-active-color: purple
+      balham-active-color: #c7c70e
   ));
 
   .ag-header {

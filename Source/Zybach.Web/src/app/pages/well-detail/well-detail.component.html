@@ -1,0 +1,17 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/well-map">Wells</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{well?.wellRegistrationID}}</li>
+    </ol>
+</nav>
+<div class="container">
+    <app-alert-display></app-alert-display>
+    <p class="lead">
+        (Stub detail page--implementation forthcoming!)
+    </p>
+    <code *ngIf="well">
+        {{rawResults}}
+    </code>
+</div>

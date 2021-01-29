@@ -54,6 +54,7 @@
     "leaflet.fullscreen": "^1.6.0",
     "leaflet.icon.glyph": "^0.3.0",
     "leaflet.snogylop": "^0.4.0",
+    "moment": "^2.29.1",
     "mydatepicker": "^9.0.1",
     "ng-multiselect-dropdown": "^0.2.14",
     "ngprogress": "^1.1.3",

@@ -155,6 +155,10 @@
 						"type": "string"
 					},
 					"location": {},
+					"lastReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
 					"sensors": {
 						"items": {
 							"$ref": "#/components/schemas/SensorSummaryDto"
@@ -322,7 +326,11 @@
 					"description": {
 						"type": "string"
 					},
-					"location": {}
+					"location": {},
+					"lastReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					}
 				},
 				"required": [
 					"wellRegistrationID",

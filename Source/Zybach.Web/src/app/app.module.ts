@@ -46,6 +46,7 @@ import { WellMapComponent } from './pages/well-map/well-map.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ToastrModule } from 'ngx-toastr';
+import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -75,6 +76,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     TestAPIComponent,
     WellMapComponent,
     WellExplorerComponent,
+    WellDetailComponent,
   ],
   imports: [
     AppRoutingModule,

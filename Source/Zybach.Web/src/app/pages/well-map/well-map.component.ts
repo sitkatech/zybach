@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ApplicationRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import {
   Control, FitBoundsOptions,
   GeoJSON,
@@ -10,7 +10,9 @@ import {
   Icon,
   geoJSON,
   icon,
-  latLng
+  latLng,
+  Layer,
+  LeafletEvent
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
@@ -45,18 +47,21 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   @Input()
   public wellsGeoJson: any;
 
+  @Output()
+  public onWellSelected: EventEmitter<any> = new EventEmitter();
+
   public map: Map;
   public featureLayer: any;
   public layerControl: Control.Layers;
   public tileLayers: { [key: string]: any } = {};
   public overlayLayers: { [key: string]: any } = {};
   public boundingBox: BoundingBoxDto;
-  public wellsObservable: Observable<any>;
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
 
   public tpnrdBoundaryLayer: GeoJSON<any>;
   public wellsLayer: GeoJSON<any>;
+  selectedFeatureLayer: any;
 
   public dataSourceDropdownList: { item_id: number, item_text: string }[] = [];
   public selectedDataSources: { item_id: number, item_text: string }[] = [];
@@ -64,6 +69,9 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
   public mapSearchQuery: string;
   public maxZoom: number = 17;
+
+  searchErrormessage: string = "Sorry, the address you searched is not within the NRD area. Click a well on the map or search another address.";
+  
 
   constructor(
     private appRef: ApplicationRef,
@@ -130,28 +138,14 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.map = map(this.mapID, mapOptions);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
+    const markerIcon = icon.glyph({
+      prefix: "fas",
+      glyph: "tint",
 
-    var wellIcon = new Icon({
-      iconUrl: "/assets/main/noun_Well_190658.png",
-      iconSize: [30, 30]
     });
-
-    // var wellMarkerOptions = {
-    //   radius: 4,
-    //   fillColor: "#666",
-    //   color: "#000",
-    //   weight: 1,
-    //   opacity: 1,
-    //   fillOpacity: 0.4
-    // };
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        const markerIcon = icon.glyph({
-          prefix: "fas",
-          glyph: "tint",
-
-        })
         return marker(latlng, { icon: markerIcon });
       },
       filter: (feature) => {
@@ -168,6 +162,11 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     });
 
     this.wellsLayer.addTo(this.map);
+
+    this.wellsLayer.on("click", (event: LeafletEvent) => {
+      this.selectFeature(event.propagatedFrom.feature);
+      this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
+    })
 
     this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
       invert: true,
@@ -221,7 +220,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public mapSearch() {
     this.nominatimService.makeNominatimRequest(this.mapSearchQuery).subscribe(x => {
       if (!x.length) {
-        this.toastr.error("There was an error!", "You are sad :(", {timeOut: 60000});
+        this.toastr.warning("", this.searchErrormessage, {timeOut: 10000});
       }
 
       const nominatimResult = x[0];
@@ -229,7 +228,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       if (this.nominatimResultWithinTpnrdBoundary(nominatimResult)) {
         this.map.setView(latLng(nominatimResult.lat, nominatimResult.lon), this.maxZoom)
       } else {
-        this.toastr.error("There was an error!", "You are sad :(", {timeOut: 60000});
+        this.toastr.warning("", this.searchErrormessage, {timeOut: 10000});
       }
     })
   }
@@ -238,6 +237,37 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     const turfPoint = point([nominatimResult.lon, nominatimResult.lat]);
     const turfPolygon = polygon(TwinPlatteBoundaryGeoJson.features[0].geometry.coordinates);
     return booleanWithin(turfPoint, turfPolygon);
+  }
+
+  public selectWell(wellRegistrationID: string): void {
+    const wellFeature = this.wellsGeoJson.features.find(x=>x.properties.wellRegistrationID === wellRegistrationID);
+    this.selectFeature(wellFeature);
+  }
+
+  selectFeature(feature) : void {
+    this.clearLayer(this.selectedFeatureLayer);
+    const markerIcon = icon.glyph({
+      prefix: "fas",
+      glyph: "tint",
+      iconUrl: "/assets/main/selectionMarker.png"
+    });
+    this.selectedFeatureLayer = new GeoJSON(feature, {
+      pointToLayer: (feature,latlng) =>{
+        return marker(latlng, {icon: markerIcon});
+      }
+    })
+
+    this.selectedFeatureLayer.addTo(this.map);
+    
+    let target = (this.map as any)._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
+    this.map.setView(target.center, 16, null);
+  }
+  
+  public clearLayer(layer: Layer): void {
+    if (layer) {
+      this.map.removeLayer(layer);
+      layer = null;
+    }
   }
 
 }

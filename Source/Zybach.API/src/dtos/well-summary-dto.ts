@@ -2,6 +2,7 @@ export interface WellSummaryDto {
     wellRegistrationID: string;
     description: string;
     location: any;
+    lastReadingDate?: Date;
 }
 
 export interface SensorSummaryDto {

@@ -1,22 +1,21 @@
 <div class="row mb-2">
-    <div class="col-sm col-6 col-xs-3 pt-2 mr-0 pr-0">
-        Showing wells with
+    <div class="col-12 col-lg-6">
         <ng-multiselect-dropdown  [placeholder]="'No Data Source Selected'" [(ngModel)]="selectedDataSources"
             [settings]="dataSourceDropdownSettings" [data]="dataSourceDropdownList" name="dataSourceFilter"
             (onSelect)="onDataSourceFilterChange($event)" (onDeSelect)="onDataSourceFilterChange($event)"
             (onSelectAll)="onDataSourceFilterSelectAll($event)" (onDeSelectAll)="onDataSourceFilterDeselectAll($event)">
         </ng-multiselect-dropdown>
     </div>
-</div>
-<div class="row">
-    <div class="col-6 col-sm-6 col-xs-6 py-1">
-        <div class="input-group" style="width: 790px">
-            <input type="text" name="mapSearchQuery" class="form-control" placeholder="Search map by address..." [(ngModel)]="mapSearchQuery" (keyup.enter)="mapSearch()"/>
+    <div class="col-12 col-lg-6 py-1">
+        <div class="input-group">
+            <input type="text" style="width:100%;" name="mapSearchQuery" class="form-control" placeholder="Search map by address..." [(ngModel)]="mapSearchQuery" (keyup.enter)="mapSearch()"/>
             <div class="input-group-append">
                 <button class="btn btn-zybach" type="button" (click)="mapSearch()" >Search</button>
             </div>
         </div>
     </div>
 </div>
+
+<div id="{{mapID}}" [style.height]="mapHeight">
     
-<div id="{{mapID}}" [style.height]="mapHeight"></div>
+</div>

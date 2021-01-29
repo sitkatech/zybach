@@ -5,12 +5,12 @@
 </nav>
 
 <div class="container-fluid" *ngIf="wells">
-    <zybach-well-map [wellsGeoJson]="wellsGeoJson"></zybach-well-map>
+    <zybach-well-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"></zybach-well-map>
 </div>
 
-<div class="container" *ngIf="wells">
+<div class="container mt-2" *ngIf="wells">
     <ag-grid-angular #wellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="wells"
         [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'" [paginationPageSize]="100"
-        (gridReady)="onGridReady($event)">
+        (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
     </ag-grid-angular>
 </div>

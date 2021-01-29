@@ -16,4 +16,8 @@ export class WellService {
   public getWellsMapData(): Observable<any> {
     return this.apiService.getFromApi("mapData/wells")
   }
+  
+  public getWell(id: string): Observable<any> {
+    return this.apiService.getFromApi(`wells/${id}`);
+  }
 }

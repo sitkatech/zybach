@@ -35,7 +35,7 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         MultiLinkRendererComponent,
         CustomRichTextComponent,
         FieldDefinitionComponent,
-        FieldDefinitionGridHeaderComponent
+        FieldDefinitionGridHeaderComponent,
     ],
     imports: [
         CommonModule,
