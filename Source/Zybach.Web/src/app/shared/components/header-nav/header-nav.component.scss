@@ -41,17 +41,26 @@
   }
 
 
-  .navbarLogo {
-    height: 106px;
-  }
-  .navbar-brand {
+  .navbar-logo {
+    img {
+      height: 106px;
+    }
     padding: 0px;
+    float:left;
+    position:absolute;
+    z-index:1025;
+    left:0;
+    top: 0
   }
   nav{
     padding-top:0;
     padding-bottom:0;
   }
 
+  .navbar-responsive-header {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
   
   .welcomeUser{
     @media screen and (min-width: 991px){
@@ -62,12 +71,21 @@
     }
   }
 
-  @media screen and (max-width: 605px){
-    .navbarLogo {
+  @media screen and (min-width: 768px){
+    nav {
+      height:53px;
+    }
+    .navbar-responsive-header {
       display:none;
     }
-    nav{
-      padding-top: 8px;
-      padding-bottom: 8px;
+    .logoPadding{
+      padding-left: 239px;
     }
+  }
+
+  @media screen and (max-width: 767px){
+    .navbar-logo, .navbar-brand-primary {
+      display:none;
+    }
+    
   }
