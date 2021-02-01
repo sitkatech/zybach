@@ -97,6 +97,10 @@
   .navbar-responsive-current-page{
     color: white;
     background-color: $button-hover-background;
+    div {
+      padding-left: 16px;
+      padding-top: 0;
+    }
   }
 
   .navbar-responsive-header, .navbar-responsive-current-page {
