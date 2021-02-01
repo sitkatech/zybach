@@ -7,6 +7,7 @@ import { AlertService } from '../../services/alert.service';
 import { Alert } from '../../models/alert';
 import { environment } from 'src/environments/environment';
 import { AlertContext } from '../../models/enums/alert-context.enum';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'header-nav',
@@ -19,6 +20,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     private currentUser: UserDetailedDto;
 
     windowWidth: number;
+    public showCurrentPageHeader: boolean = true;
 
     @HostListener('window:resize', ['$event'])
     resize() {
@@ -30,7 +32,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         private cookieStorageService: CookieStorageService,
         private userService: UserService,
         private alertService: AlertService,
-        private cdr: ChangeDetectorRef) {
+        private cdr: ChangeDetectorRef,
+        private router: Router) {
     }
 
     ngOnInit() {
@@ -51,6 +54,18 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         this.watchUserChangeSubscription.unsubscribe();
         this.authenticationService.dispose();
         this.cdr.detach();
+    }
+
+    public isDashboardCurrentPage(){
+        return false;
+    }
+
+    public isMapCurrentPage(){
+        return this.router.url === '/well-map';
+    }
+
+    public toggleCurrentPageHeader(){
+        this.showCurrentPageHeader = !this.showCurrentPageHeader;
     }
 
     public isAuthenticated(): boolean {
