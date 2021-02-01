@@ -64,11 +64,15 @@
       color: $header-nav-link;
     }
 
+    .nav-item img{
+      height: 50px;
+    }
+
     li {
       transition: all .5s;
     }
 
-    li.currentPage, li:not(#searchItem):hover{
+    li.currentPage, li:not(.searchItem):hover{
       background-color: $button-hover-background;
     }
   }
@@ -107,19 +111,30 @@
       padding-top: 0px;
       padding-bottom: 0px;
     }
+    img {
+      padding-right: 5px;
+    }
+    padding-top: 10px;
   }
 
   .mapItem {
     padding-left: 7px;
+    a {
+      padding:0;
+    }
 
     img {
       padding-right: 7px;
     }
+    padding-top: 10px;
   }
 
   .searchItem {
     padding-left: 7px;
-    padding-top: 5px;
+    padding-top: 10px;
+    img {
+      padding-right: 7px;
+    }
   }
 
   //responsive adjustments
@@ -149,5 +164,16 @@
     }
     .navbar-zybach:not(.navbar-responsive-header), #navbar2{
       padding: 0 !important;
+    }
+
+    .navbar-zybach {
+      .nav-item {
+        padding-left: 10px;
+        padding-bottom: 5px;
+      }
+
+      .searchItem {
+        padding-left: 20px;
+      }
     }
   }
