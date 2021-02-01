@@ -100,7 +100,7 @@
     </div>
 </nav>
 
-<nav *ngIf="showCurrentPageHeader" class="navbar navbar-expand-lg justify-content-start navbar-responsive-current-page">
+<nav *ngIf="showCurrentPageHeader && (isDashboardCurrentPage() || isMapCurrentPage())" class="navbar navbar-expand-lg justify-content-start navbar-responsive-current-page">
 
     <div *ngIf="isDashboardCurrentPage()" class="dashboardItem">
         <img src="/assets/main/nav/dashboard.png" style="height:71px;" /> Dashboard
