@@ -1,4 +1,4 @@
-<div class="container-fluid" *ngIf="wells">
+<div class="container-fluid mt-2" *ngIf="wells">
     <zybach-well-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"></zybach-well-map>
 </div>
 
