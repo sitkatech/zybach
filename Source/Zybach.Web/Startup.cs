@@ -89,6 +89,7 @@ namespace Zybach.Web
             FaviconFilename = configuration["FaviconFilename"];
             LeadOrganizationLogoFilename = configuration["LeadOrganizationLogoFilename"];
             AppInsightsInstrumentationKey =  configuration["AppInsightsInstrumentationKey"];
+            MapQuestApiUrl =  configuration["MapQuestApiUrl"];
         }
 
         [JsonProperty("production")]
@@ -125,6 +126,8 @@ namespace Zybach.Web
         public string LeadOrganizationLogoFilename { get; set;}
         [JsonProperty("appInsightsInstrumentationKey")]
         public string AppInsightsInstrumentationKey {get; set;}
+        [JsonProperty("mapQuestApiUrl")]
+        public string MapQuestApiUrl { get; set; }
     }
 
     public class KeystoneAuthConfigurationDto

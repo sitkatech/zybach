@@ -72,7 +72,7 @@
       transition: all .5s;
     }
 
-    li.currentPage, li:not(.searchItem):hover{
+    li.currentPage, li:hover{
       background-color: $button-hover-background;
     }
   }
@@ -90,6 +90,11 @@
     a.nav-link
     {
       color: $select-and-nav-hover;
+    }
+
+    a {
+      padding-left: 0;
+      padding-right: 16px !important;
     }
   }
   
@@ -136,6 +141,7 @@
   .searchItem {
     padding-left: 7px;
     padding-top: 10px;
+    padding-right: 8px;
     img {
       padding-right: 7px;
     }
@@ -154,11 +160,11 @@
       display:none;
     }
     .logoPadding{
-      padding-left: 239px;
+      padding-left: 294px;
     }
     .mapItem, .dashboardItem{
       width: 200px;
-      text-align: center;
+      text-align: left;
     }
   }
 

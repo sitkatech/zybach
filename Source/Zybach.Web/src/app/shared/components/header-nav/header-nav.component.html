@@ -78,7 +78,7 @@
         {{platformShortName()}}
     </a>
 
-    <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2">
+    <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2" *ngIf="isAuthenticated()">
         <ul class="navbar-nav">
             <li class="nav-item dashboardItem" [ngClass]="{'currentPage': isDashboardCurrentPage()}">
                 <a class="nav-link disabled" routerLinkActive="active" *ngIf="isAdministrator()" routerLink="/well-map"
@@ -94,7 +94,7 @@
             <li class="nav-item searchItem">
                 <img src="/assets/main/nav/search.png">
                 <input type="text" class="form-control" style="display: inline; width:auto;"
-                    placeholder="Search by Registration #" disabled>
+                    placeholder="Registration #" disabled>
             </li>
         </ul>
     </div>

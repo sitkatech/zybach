@@ -29,6 +29,12 @@ console.log(swaggerDoc);
 
 connect();
 const app = express();
+
+app.use(cors({
+  origin: "*",
+  optionsSuccessStatus: 200
+}));
+
 app.use(jwt({
   // todo: if expired token, issue 401 so frontend redirects to login
   secret: jwksRsa.expressJwtSecret({
@@ -48,11 +54,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(cors({
-  origin: "*",
-  optionsSuccessStatus: 200
-}));
 
 app.use(bodyParser.urlencoded({
   extended: true
