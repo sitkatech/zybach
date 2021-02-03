@@ -22,7 +22,7 @@
 
   .navbar-logo {
     img {
-      height: 106px;
+      height: 105px;
     }
     padding: 0px;
     float:left;
@@ -48,6 +48,7 @@
   // primary nav
   .navbar.navbar-zybach{
     background-color: $header-background;
+    border-bottom: 1px solid $header-background;
 
     #navbar2 {
       height: 100%;
@@ -70,6 +71,7 @@
 
     li {
       transition: all .5s;
+      position: relative;
     }
 
     li.currentPage, li:hover{
@@ -165,6 +167,18 @@
     .mapItem, .dashboardItem{
       width: 200px;
       text-align: left;
+    }
+    li.currentPage::after {
+      content: '';
+      position: absolute;
+      left: 42%;
+      top: 100%;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 20px solid $button-hover-background;
+      clear: both;
     }
   }
 

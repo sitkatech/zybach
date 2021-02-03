@@ -57,7 +57,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     }
 
     public isDashboardCurrentPage(){
-        return false;
+        return this.router.url === '/dashboard';
     }
 
     public isMapCurrentPage(){
