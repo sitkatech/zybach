@@ -94,9 +94,9 @@
       color: $select-and-nav-hover;
     }
 
-    a {
+    a:not(.dropdown-item) {
       padding-left: 0;
-      padding-right: 16px !important;
+      padding-right: 16px;
     }
   }
   
