@@ -86,13 +86,14 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
-        // sortable: true, filter: true, 
-        width: 70
+        width: 70,
+        resizable: true
       },
       {
         headerName: "Registration #",
         field: "wellRegistrationID",
-        width: 125
+        width: 125,
+        sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Last Reading Date",
@@ -107,7 +108,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return null;
           }
         },
-        width: 150
+        width: 150,
+        sortable: true, filter: true, resizable: true
       }
     ]
     // this.columnDefs = [
