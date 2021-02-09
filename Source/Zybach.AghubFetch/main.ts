@@ -25,7 +25,7 @@ async function main() {
 
     await cacheWellsInDb(wells);
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < wells.length; i++) {
         await processWell(wells[i]);
     }
 }
