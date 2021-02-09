@@ -4,16 +4,15 @@ services:
   aghub-integration:
     image: aghub-integration
     build: .
+    # environment: 
+    #   - DEBUG=true
     secrets:
-      - aghub_integration_secret
+      - Aghub_Fetch_Secret
     ports:
       - 3001:3001
       - 9230:9230
     command: yarn start-dev
     # command: crond -f -l 8
 secrets:
-  aghub_integration_secret: 
+  Aghub_Fetch_Secret: 
     file: secrets.json
-
-volumes:
-  mongodata:

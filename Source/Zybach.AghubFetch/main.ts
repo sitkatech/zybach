@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb';
 import { DateTime } from 'luxon';
 import { InfluxDB } from "@influxdata/influxdb-client";
 
-const config = JSON.parse(dockerSecrets.aghub_integration_secret);
+const config = JSON.parse(dockerSecrets.Aghub_Fetch_Secret);
 
 delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
 import * as appInsights from 'applicationinsights'
@@ -88,15 +88,11 @@ async function cacheWellsInDb(wells: agHubWell[]) {
     if (!process.env["DEBUG"]){
         srv = "+srv";
     }
-    const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}`;
-    console.log(connstring);
 
+    const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}`;
     const client = await MongoClient.connect(connstring);
 
-    console.log("Connected successfully to server");
-
     const db = client.db("zybachDb");
-
     const collection = db.collection("agHubWells");
 
     await collection.deleteMany({});

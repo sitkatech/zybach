@@ -6,7 +6,7 @@ RUN yarn install --silent && mv node_modules ../
 COPY . .
 RUN yarn run build
 
-RUN echo "0       *       *       *       *       /cron.sh" >> /etc/crontabs/root
+RUN echo "0       0       *       *       *       /cron.sh" >> /etc/crontabs/root
 
 RUN apk add dos2unix
 RUN dos2unix ./cron.sh
