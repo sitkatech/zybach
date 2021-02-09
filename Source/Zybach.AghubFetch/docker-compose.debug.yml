@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  aghub-integration:
+    image: aghub-integration
+    build: .
+    secrets:
+      - aghub_integration_secret
+    ports:
+      - 3001:3001
+      - 9230:9230
+    command: yarn start-dev
+    # command: crond -f -l 8
+secrets:
+  aghub_integration_secret: 
+    file: secrets.json
+
+volumes:
+  mongodata:

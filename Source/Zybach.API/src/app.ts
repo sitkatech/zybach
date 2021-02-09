@@ -25,7 +25,6 @@ import cors from 'cors';
 
 import swaggerUi from "swagger-ui-express";
 import swaggerDoc from "./swagger.json";
-console.log(swaggerDoc);
 
 connect();
 const app = express();
