@@ -49,22 +49,31 @@ export class GeoOptixService {
         }
     }
 
-    public async getWellsWithSensors() : Promise<WellWithSensorSummaryDto[]>{
+    // returns a map to facilitate quick cross-reference operations
+    public async getWellsWithSensors() : Promise<Map<string,WellWithSensorSummaryDto>>{
         const sensors = await this.getSensorSummaries();
         const wells = await this.getWellSummaries();
 
+        // add a sensor array to the wells
         const wellsWithSensors: WellWithSensorSummaryDto[] = wells.map(x=> ({
             wellRegistrationID: x.wellRegistrationID,
             description: x.description,
             location: x.location,
             sensors: []
-        }))
+        }));
 
-        const wellMap: {[key: string]: WellWithSensorSummaryDto} = {};
-        wellsWithSensors.forEach(x => wellMap[x.wellRegistrationID] = x);
+        // create a Map from the array of wells
+        const wellMap: Map<string, WellWithSensorSummaryDto> = new Map();
+        wellsWithSensors.forEach(x => wellMap.set(x.wellRegistrationID, x));
 
+        // iterate the sensor, adding each one to its well
         sensors.forEach(x => {
-            const well = wellMap[x.wellRegistrationID];
+            const well = wellMap.get(x.wellRegistrationID);
+
+            if (!well){
+                return;
+            }
+
             if (!well.sensors){
                 well.sensors = []
             }
@@ -72,6 +81,7 @@ export class GeoOptixService {
             well.sensors.push(x);
         });
 
-        return wellsWithSensors;
+        // return the Map for further use
+        return wellMap;
     }
 }

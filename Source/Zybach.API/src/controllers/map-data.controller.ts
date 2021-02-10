@@ -7,6 +7,8 @@ import { SecurityType } from "../security/authentication";
 import { GeoOptixService } from "../services/geooptix-service";
 import { inject } from "inversify";
 import { InfluxService } from "../services/influx-service";
+import { Stopwatch } from "ts-stopwatch";
+import { AghubWellService } from "../services/aghub-well-service";
 
 @Hidden()
 @Route("/api/mapData")
@@ -14,7 +16,8 @@ import { InfluxService } from "../services/influx-service";
 export class MapDataController extends Controller{
     constructor(
         @inject(GeoOptixService) private geooptixService: GeoOptixService,
-        @inject(InfluxService) private influxService: InfluxService
+        @inject(InfluxService) private influxService: InfluxService,
+        @inject(AghubWellService) private aghubWellService: AghubWellService
     ){
         super();
     }
@@ -22,16 +25,41 @@ export class MapDataController extends Controller{
     @Get("wells")
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getWellsWithSensors(): Promise<ApiResult<WellWithSensorSummaryDto[]>>{
-        const wellSummaryWithSensorsDtos = await this.geooptixService.getWellsWithSensors();
+        const sw = new Stopwatch();
+        sw.start();
+        const wellSummaryWithSensorsDtoMap = await this.geooptixService.getWellsWithSensors();
         const lastReadingDates = await this.influxService.getLastReadingDatetime();
+        const aghubWells = await this.aghubWellService.getAghubWells();
+        console.log(sw.getTime());
 
-        wellSummaryWithSensorsDtos.forEach(x=>{
+        // iterate the aghub wells
+        // if the well summary map does not have a well with a given wellRegistrationID, add it
+        // otherwise, append the sensors from the aghub well to the existing record
+        aghubWells.forEach(x=> {
+            const geoOptixWell = wellSummaryWithSensorsDtoMap.get(x.wellRegistrationID);
+            if (!geoOptixWell){
+                wellSummaryWithSensorsDtoMap.set(x.wellRegistrationID, x);
+                return;
+            }
+
+            geoOptixWell.sensors = [...geoOptixWell.sensors, ...x.sensors];
+            geoOptixWell.wellTPID = x.wellTPID;
+        })
+
+        console.log(sw.getTime());
+
+        // iterate the combined collection, setting the last reading date for each well
+        wellSummaryWithSensorsDtoMap.forEach(x=>{
             x.lastReadingDate = lastReadingDates[x.wellRegistrationID]
         })
 
+        console.log(sw.getTime());
+
+        const resultArray = Array.from(wellSummaryWithSensorsDtoMap.values())
+
         return {
             "status": "success",
-            "result": wellSummaryWithSensorsDtos
+            "result": resultArray
         };
     }
 }

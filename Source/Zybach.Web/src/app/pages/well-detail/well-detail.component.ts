@@ -14,8 +14,10 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   public watchUserChangeSubscription: any;
   currentUser: UserDetailedDto;
   wellSubscription: any;
+  chartSubscription: any;
   well: WellWithSensorSummaryDto;
   rawResults: string;
+  timeSeries: any;
   constructor(
     private wellService: WellService,
     private authenticationService: AuthenticationService,
@@ -28,6 +30,10 @@ export class WellDetailComponent implements OnInit, OnDestroy {
       const id = this.route.snapshot.paramMap.get("wellRegistrationID");
       this.wellSubscription = this.wellService.getWell(id).subscribe(response=>{
         this.well = response.result;
+      })
+
+      this.chartSubscription = this.wellService.getElectricalBasedFlowEstimateSeries(id).subscribe(response => {
+        this.timeSeries = response;
         this.rawResults = JSON.stringify(response);
       })
     })
@@ -36,6 +42,7 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.watchUserChangeSubscription.unsubscribe();
     this.wellSubscription.unsubscribe();
+    this.chartSubscription.unsubscribe();
   }
 
 }

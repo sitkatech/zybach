@@ -5,6 +5,8 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BookController } from './../../controllers/books.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ChartDataController } from './../../controllers/chart-data.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CustomRichTextController } from './../../controllers/custom-rich-text.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { FieldDefinitionController } from './../../controllers/field-definition.controller';
@@ -102,7 +104,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "wellRegistrationID": {"dataType":"string","required":true},
-            "sensorName": {"dataType":"string","required":true},
+            "sensorName": {"dataType":"string"},
             "sensorType": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
@@ -112,7 +114,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "wellRegistrationID": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
+            "wellTPID": {"dataType":"string"},
+            "description": {"dataType":"string"},
             "location": {"dataType":"any","required":true},
             "lastReadingDate": {"dataType":"datetime"},
             "sensors": {"dataType":"array","array":{"ref":"SensorSummaryDto"},"required":true},
@@ -189,7 +192,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "wellRegistrationID": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
+            "wellTPID": {"dataType":"string"},
+            "description": {"dataType":"string"},
             "location": {"dataType":"any","required":true},
             "lastReadingDate": {"dataType":"datetime"},
         },
@@ -336,6 +340,33 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.get.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/chartData/electricalBasedEstimate/:wellRegistrationID',
+            function (request: any, response: any, next: any) {
+            const args = {
+                    wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<ChartDataController>(ChartDataController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getElectricalBasedFlowEstimateSeries.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

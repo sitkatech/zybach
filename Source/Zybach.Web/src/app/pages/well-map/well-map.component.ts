@@ -164,6 +164,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.wellsLayer.addTo(this.map);
 
     this.wellsLayer.on("click", (event: LeafletEvent) => {
+      debugger;
       this.selectFeature(event.propagatedFrom.feature);
       this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
     })
@@ -282,7 +283,7 @@ enum DataSourceFilterOption {
 const DataSourceSensorTypeMap = {
   "Flowmeter": "FlowMeter",
   "Continuity Devices": "PumpMonitor",
-  "Electrical Data": "N/A",
+  "Electrical Data": "Electrical Data",
   "No Estimate Available": "N/A"
 }
 

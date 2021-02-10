@@ -3,6 +3,7 @@ export class WellWithSensorSummaryDto {
     description: string;
     location: any;
     lastReadingDate?: Date;
+    wellTPID?: string;
     sensors: SensorSummaryDto[]
 }
 

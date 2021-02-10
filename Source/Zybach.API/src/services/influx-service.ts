@@ -1,7 +1,6 @@
 import { provideSingleton } from "../util/provide-singleton";
 import { InfluxDB, QueryApi } from "@influxdata/influxdb-client";
 import secrets from '../secrets'
-import { InternalServerError } from "../errors/internal-server-error";
 
 @provideSingleton(InfluxService)
 export class InfluxService {
@@ -14,9 +13,9 @@ export class InfluxService {
     }
 
     public async getLastReadingDatetime(): Promise<{ [key: string]: Date }> {
-        const query = 'from(bucket: "tpnrd") \
+        const query = 'from(bucket: "tpnrd-qa") \
         |> range(start: 2000-01-01T00:00:00Z) \
-        |> filter(fn: (r) => r["_measurement"] == "continuity" or r["_measurement"] == "gallons") \
+        |> filter(fn: (r) => r["_measurement"] == "continuity" or r["_measurement"] == "gallons" or r["_measurement"] == "estimated-pumped-volume") \
         |> last() \
         |> group(columns: ["registration-id"])'
 
@@ -39,5 +38,35 @@ export class InfluxService {
             });
         })
         return lastReadingDates;
+    }
+
+    // todo: type this
+    public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string) {
+        // todo: this query needs to fill missing days with zeroes?
+        const query = `from(bucket: "tpnrd-qa") \
+        |> range(start: 2000-01-01T00:00:00Z) \
+        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) `
+
+        var results = await new Promise((resolve,reject) => {
+            let results: any = [];
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results.push({
+                        time: new Date(o["_time"]),
+                        gallons: o["_value"]
+                    })
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error)
+                },
+                complete() {
+                    resolve(results);
+                },
+            });
+        })
+
+        return results;
     }
 }

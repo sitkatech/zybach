@@ -9,15 +9,19 @@ export class WellService {
 
   constructor(private apiService: ApiService) { }
 
-  public getWells() : Observable<any>{
+  public getWells(): Observable<any> {
     return this.apiService.getFromApi("wells");
   }
 
   public getWellsMapData(): Observable<any> {
     return this.apiService.getFromApi("mapData/wells")
   }
-  
+
   public getWell(id: string): Observable<any> {
     return this.apiService.getFromApi(`wells/${id}`);
+  }
+
+  public getElectricalBasedFlowEstimateSeries(id: string) {
+    return this.apiService.getFromApi(`chartData/electricalBasedEstimate/${id}`);
   }
 }

@@ -140,7 +140,6 @@
 				},
 				"required": [
 					"wellRegistrationID",
-					"sensorName",
 					"sensorType"
 				],
 				"type": "object",
@@ -149,6 +148,9 @@
 			"WellWithSensorSummaryDto": {
 				"properties": {
 					"wellRegistrationID": {
+						"type": "string"
+					},
+					"wellTPID": {
 						"type": "string"
 					},
 					"description": {
@@ -168,7 +170,6 @@
 				},
 				"required": [
 					"wellRegistrationID",
-					"description",
 					"location",
 					"sensors"
 				],
@@ -323,6 +324,9 @@
 					"wellRegistrationID": {
 						"type": "string"
 					},
+					"wellTPID": {
+						"type": "string"
+					},
 					"description": {
 						"type": "string"
 					},
@@ -334,7 +338,6 @@
 				},
 				"required": [
 					"wellRegistrationID",
-					"description",
 					"location"
 				],
 				"type": "object",

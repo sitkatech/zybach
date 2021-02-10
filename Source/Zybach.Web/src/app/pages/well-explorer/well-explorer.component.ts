@@ -36,6 +36,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
         this.wells = wells.result;
+        console.log(wells);
 
         this.wellsGeoJson =
         {
@@ -96,6 +97,12 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, filter: true, resizable: true
       },
       {
+        headerName: "TPID",
+        field: "wellTPID",
+        width: 125,
+        sortable: true, filter: true, resizable: true
+      },
+      {
         headerName: "Last Reading Date",
         field: "lastReadingDate",
         valueFormatter: function (params) {
@@ -137,6 +144,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   public onMapSelection(wellRegistrationID: string) {
+    debugger;
     this.gridApi.deselectAll();
     this.gridApi.forEachNode(node => {
       if (node.data.wellRegistrationID === wellRegistrationID) {
