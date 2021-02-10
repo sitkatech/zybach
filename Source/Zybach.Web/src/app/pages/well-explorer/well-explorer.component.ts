@@ -144,7 +144,6 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   public onMapSelection(wellRegistrationID: string) {
-    debugger;
     this.gridApi.deselectAll();
     this.gridApi.forEachNode(node => {
       if (node.data.wellRegistrationID === wellRegistrationID) {
