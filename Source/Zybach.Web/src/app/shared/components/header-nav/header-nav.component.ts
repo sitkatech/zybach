@@ -64,6 +64,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         return this.router.url === '/well-map';
     }
 
+    public isHomepageCurrentPage(){
+        return this.router.url === '/';
+    }
+
     public toggleCurrentPageHeader(){
         this.showCurrentPageHeader = !this.showCurrentPageHeader;
     }

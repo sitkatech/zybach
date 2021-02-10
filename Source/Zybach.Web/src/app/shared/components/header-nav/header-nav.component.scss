@@ -45,6 +45,10 @@
     }
   }
 
+  .nav-link.navbar-brand{
+    padding-left: .5rem;
+  }
+
   // primary nav
   .navbar.navbar-zybach{
     background-color: $header-background;
@@ -85,6 +89,14 @@
     font-size: 12px;
     font-weight: bold;
     
+    .dropdown-menu{
+      font-size: 12px;
+    }
+
+    .dropdown-item{
+      padding: 0.25rem 0.75rem;
+    }
+
     a.nav-link:hover {
       color: $select-and-nav-hover;
     }
