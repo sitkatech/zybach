@@ -161,6 +161,17 @@
 						"type": "string",
 						"format": "date-time"
 					},
+					"firstReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"inGeoOptix": {
+						"type": "boolean"
+					},
+					"fetchDate": {
+						"type": "string",
+						"format": "date-time"
+					},
 					"sensors": {
 						"items": {
 							"$ref": "#/components/schemas/SensorSummaryDto"
@@ -171,6 +182,7 @@
 				"required": [
 					"wellRegistrationID",
 					"location",
+					"fetchDate",
 					"sensors"
 				],
 				"type": "object",
@@ -334,11 +346,23 @@
 					"lastReadingDate": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"firstReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"inGeoOptix": {
+						"type": "boolean"
+					},
+					"fetchDate": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
 					"wellRegistrationID",
-					"location"
+					"location",
+					"fetchDate"
 				],
 				"type": "object",
 				"additionalProperties": false

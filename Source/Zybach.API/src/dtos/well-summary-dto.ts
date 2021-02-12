@@ -6,6 +6,9 @@ export interface WellSummaryDto {
     description?: string;
     location: any;
     lastReadingDate?: Date;
+    firstReadingDate?: Date;
+    inGeoOptix?: boolean;
+    fetchDate?: Date;
 }
 
 export interface SensorSummaryDto {
@@ -31,7 +34,8 @@ export class WellSummaryDtoFactory {
             wellRegistrationID: model.wellRegistrationID,
             wellTPID: model.wellTPID,
             location: { geometry: model.location, type: "Feature", properties: {} },
-            sensors: sensors
+            sensors: sensors,
+            fetchDate: model.fetchDate
         }
     }
 }

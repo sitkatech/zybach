@@ -95,6 +95,8 @@ async function cacheWellsInDb(wells: agHubWell[]) {
     const db = client.db("zybachDb");
     const collection = db.collection("agHubWells");
 
+    wells.forEach(x=> x.fetchDate = DateTime.local().toJSDate())
+
     await collection.deleteMany({});
     await collection.insertMany(wells);
 
@@ -178,4 +180,5 @@ interface agHubWell {
     wellAuditPumpRate: number;
     wellConnectedMeter: boolean;
     wellTPID: string;
+    fetchDate: Date;
 }

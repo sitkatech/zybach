@@ -59,7 +59,8 @@ export class GeoOptixService {
             wellRegistrationID: x.wellRegistrationID,
             description: x.description,
             location: x.location,
-            sensors: []
+            sensors: [],
+            inGeoOptix: true
         }));
 
         // create a Map from the array of wells

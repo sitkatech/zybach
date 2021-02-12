@@ -4,8 +4,8 @@ services:
   aghub-integration:
     image: aghub-integration
     build: .
-    # environment: 
-    #   - DEBUG=true
+    environment: 
+      - DEBUG=true
     secrets:
       - Aghub_Fetch_Secret
     ports:

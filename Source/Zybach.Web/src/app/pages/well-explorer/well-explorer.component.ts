@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
@@ -117,6 +118,95 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         },
         width: 150,
         sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "First Reading Date",
+        field: "firstReadingDate",
+        valueFormatter: function (params) {
+          if (params.value) {
+            const time = moment(params.value)
+            const timepiece = time.format('h:mm a');
+            return time.format('M/D/yyyy ') + timepiece;
+          }
+          else {
+            return null;
+          }
+        },
+        width: 150,
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Has Flow Meter?",
+        valueGetter: function(params){
+          const sensorTypes = params.data.sensors.map(x=>x.sensorType);
+          if (sensorTypes.includes("FlowMeter")){
+            return "Yes";
+          } else{
+            return "No";
+          }
+        },
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Has Continuity Device?",
+        valueGetter: function(params){
+          const sensorTypes = params.data.sensors.map(x=>x.sensorType);
+          if (sensorTypes.includes("PumpMonitor")){
+            return "Yes";
+          } else{
+            return "No";
+          }
+        },
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Has Electrical Use Meter?",
+        valueGetter: function(params){
+          const sensorTypes = params.data.sensors.map(x=>x.sensorType);
+          if (sensorTypes.includes("Electrical Data")){
+            return "Yes";
+          } else{
+            return "No";
+          }
+        },
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "In AgHub?",
+        valueGetter: function (params){
+          if (params.data.wellTPID){
+            return "Yes"
+          } else {
+            return "No"
+          }
+        },
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "In GeoOptix?",
+        field: "inGeoOptix",
+        valueFormatter: function (params){
+          if (params.value){
+            return "Yes"
+          } else {
+            return "No"
+          }
+        },
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Last Fetched from AgHub",
+        field: "fetchDate",
+        valueFormatter: function(params){
+          if (params.value) {
+            const time = moment(params.value)
+            const timepiece = time.format('h:mm a');
+            return time.format('M/D/yyyy ') + timepiece;
+          }
+          else {
+            return null;
+          }
+        }
       }
     ]
     // this.columnDefs = [
@@ -151,5 +241,28 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         this.gridApi.ensureIndexVisible(node.rowIndex, "top")
       }
     })
+  }
+
+  public onFilterChange(selectedDataSources: any){
+    const filteredWells = this.wells.filter(x=>{
+      const selectedDataSourceOptions = selectedDataSources.map(x => x.item_text);
+
+        const allowedSensorTypes = selectedDataSourceOptions.map(x => DataSourceSensorTypeMap[x]);
+
+
+        if (x.sensors.some(st => allowedSensorTypes.includes(st.sensorType))) {
+          return true;
+        }
+
+        if (selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA) && (
+          x.sensors === null || x.sensors.length === 0
+        )){
+          return true;
+        }
+
+        return false;
+    });
+
+    this.gridApi.setRowData(filteredWells);
   }
 }

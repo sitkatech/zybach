@@ -29,6 +29,7 @@ import { NominatimService } from 'src/app/services/nominatim.service';
 import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
+import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 
 @Component({
   selector: 'zybach-well-map',
@@ -49,6 +50,9 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
   @Output()
   public onWellSelected: EventEmitter<any> = new EventEmitter();
+  
+  @Output()
+  public onFilterChange: EventEmitter<any> = new EventEmitter();
 
   public map: Map;
   public featureLayer: any;
@@ -153,7 +157,14 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
         const allowedSensorTypes = selectedDataSourceOptions.map(x => DataSourceSensorTypeMap[x]);
 
+
         if (feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))) {
+          return true;
+        }
+
+        if (selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA) && (
+          feature.properties.sensorTypes === null || feature.properties.sensorTypes.length === 0
+        )){
           return true;
         }
 
@@ -164,7 +175,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.wellsLayer.addTo(this.map);
 
     this.wellsLayer.on("click", (event: LeafletEvent) => {
-      debugger;
       this.selectFeature(event.propagatedFrom.feature);
       this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
     })
@@ -201,6 +211,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   }
 
   public onDataSourceFilterChange(event: Event) {
+    this.onFilterChange.emit(this.selectedDataSources);
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
   }
@@ -271,19 +282,5 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     }
   }
 
-}
-
-enum DataSourceFilterOption {
-  FLOW = "Flowmeter",
-  CONTINUITY = "Continuity Devices",
-  ELECTRICAL = "Electrical Data",
-  NODATA = "No Estimate Available"
-}
-
-const DataSourceSensorTypeMap = {
-  "Flowmeter": "FlowMeter",
-  "Continuity Devices": "PumpMonitor",
-  "Electrical Data": "Electrical Data",
-  "No Estimate Available": "N/A"
 }
 

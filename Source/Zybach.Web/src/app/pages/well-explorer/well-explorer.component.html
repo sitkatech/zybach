@@ -1,5 +1,7 @@
 <div class="container navCaretMargin" *ngIf="wells">
-    <zybach-well-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"></zybach-well-map>
+    <zybach-well-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"
+        (onFilterChange)="onFilterChange($event)">
+    </zybach-well-map>
 </div>
 
 <div class="container mt-2" *ngIf="wells">

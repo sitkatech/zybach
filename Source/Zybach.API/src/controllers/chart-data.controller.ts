@@ -13,10 +13,22 @@ export class ChartDataController extends Controller{
         super();
     }
 
-    @Get("/electricalBasedEstimate/{wellRegistrationID}")
+    @Get("electricalBasedEstimate/{wellRegistrationID}")
     public async getElectricalBasedFlowEstimateSeries(
         @Path() wellRegistrationID: string
     ) {
         return await this.influxService.getElectricalBasedFlowEstimateSeries(wellRegistrationID);
     }
+
+    // @Get("{wellRegistrationID}")
+    // public async getChartData(
+    //     @Path() wellRegistrationID: string
+    // ){
+    //     return [
+    //         {
+    //             dataSource: "Flow Meter",
+    //             time
+    //         }
+    //     ]
+    // }
 }

@@ -9,6 +9,7 @@ export interface AghubWellInterface extends Document {
     wellTpnrdPumpRate: number;
     tpnrdPumpRateUpdated: string;
     location: any;
+    fetchDate: Date;
 }
 
 const AghubWellSchema: Schema = new Schema({
@@ -19,7 +20,8 @@ const AghubWellSchema: Schema = new Schema({
     auditPumpRateUpdated: {type:String, required: true},
     wellTpnrdPumpRate: {type:Number, required: true},
     tpnrdPumpRateUpdated: {type:String, required: true},
-    location: {type: Object, required: true}
+    location: {type: Object, required: true},
+    fetchDate: {type: Date, required: true}
 })
 
 const AghubWell = mongoose.model<AghubWellInterface>("agHubWells", AghubWellSchema, "agHubWells");

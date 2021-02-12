@@ -12,11 +12,39 @@ export class InfluxService {
         this.queryApi = this.client.getQueryApi(secrets.INFLUXDB_ORG);
     }
 
-    public async getLastReadingDatetime(): Promise<{ [key: string]: Date }> {
+    public async getLastReadingDateTime(): Promise<{ [key: string]: Date }> {
         const query = 'from(bucket: "tpnrd-qa") \
         |> range(start: 2000-01-01T00:00:00Z) \
         |> filter(fn: (r) => r["_measurement"] == "continuity" or r["_measurement"] == "gallons" or r["_measurement"] == "estimated-pumped-volume") \
         |> last() \
+        |> group(columns: ["registration-id"])'
+
+        var lastReadingDates: { [key: string]: Date } = await new Promise((resolve,reject) => {
+            let results
+                : { [key: string]: Date }
+                = {}
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results[o["registration-id"]] = new Date(o["_time"])
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error)
+                },
+                complete() {
+                    resolve(results);
+                },
+            });
+        })
+        return lastReadingDates;
+    }
+
+    public async getFirstReadingDateTime(): Promise<{ [key: string]: Date }> {
+        const query = 'from(bucket: "tpnrd-qa") \
+        |> range(start: 2000-01-01T00:00:00Z) \
+        |> filter(fn: (r) => r["_measurement"] == "continuity" or r["_measurement"] == "gallons" or r["_measurement"] == "estimated-pumped-volume") \
+        |> first() \
         |> group(columns: ["registration-id"])'
 
         var lastReadingDates: { [key: string]: Date } = await new Promise((resolve,reject) => {
@@ -54,7 +82,8 @@ export class InfluxService {
                     const o = tableMeta.toObject(row);
                     results.push({
                         time: new Date(o["_time"]),
-                        gallons: o["_value"]
+                        gallons: o["_value"],
+                        dataSource: "Electrical Data"
                     })
                 },
                 error(error) {

@@ -28,7 +28,8 @@ export class MapDataController extends Controller{
         const sw = new Stopwatch();
         sw.start();
         const wellSummaryWithSensorsDtoMap = await this.geooptixService.getWellsWithSensors();
-        const lastReadingDates = await this.influxService.getLastReadingDatetime();
+        const lastReadingDates = await this.influxService.getLastReadingDateTime();
+        const firstReadingDates = await this.influxService.getFirstReadingDateTime();
         const aghubWells = await this.aghubWellService.getAghubWells();
         console.log(sw.getTime());
 
@@ -44,6 +45,7 @@ export class MapDataController extends Controller{
 
             geoOptixWell.sensors = [...geoOptixWell.sensors, ...x.sensors];
             geoOptixWell.wellTPID = x.wellTPID;
+            geoOptixWell.fetchDate = x.fetchDate;
         })
 
         console.log(sw.getTime());
@@ -51,6 +53,7 @@ export class MapDataController extends Controller{
         // iterate the combined collection, setting the last reading date for each well
         wellSummaryWithSensorsDtoMap.forEach(x=>{
             x.lastReadingDate = lastReadingDates[x.wellRegistrationID]
+            x.firstReadingDate = firstReadingDates[x.wellRegistrationID]
         })
 
         console.log(sw.getTime());
