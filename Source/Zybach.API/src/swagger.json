@@ -182,7 +182,6 @@
 				"required": [
 					"wellRegistrationID",
 					"location",
-					"fetchDate",
 					"sensors"
 				],
 				"type": "object",
@@ -361,8 +360,7 @@
 				},
 				"required": [
 					"wellRegistrationID",
-					"location",
-					"fetchDate"
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false

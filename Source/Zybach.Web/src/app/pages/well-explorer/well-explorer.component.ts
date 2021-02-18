@@ -139,7 +139,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerName: "Has Flow Meter?",
         valueGetter: function(params){
           const sensorTypes = params.data.sensors.map(x=>x.sensorType);
-          if (sensorTypes.includes("FlowMeter")){
+          if (sensorTypes.includes("Flow Meter")){
             return "Yes";
           } else{
             return "No";
@@ -151,7 +151,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerName: "Has Continuity Device?",
         valueGetter: function(params){
           const sensorTypes = params.data.sensors.map(x=>x.sensorType);
-          if (sensorTypes.includes("PumpMonitor")){
+          if (sensorTypes.includes("Continuity Meter")){
             return "Yes";
           } else{
             return "No";
@@ -248,15 +248,13 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       const selectedDataSourceOptions = selectedDataSources.map(x => x.item_text);
 
         const allowedSensorTypes = selectedDataSourceOptions.map(x => DataSourceSensorTypeMap[x]);
+        
 
-
-        if (x.sensors.some(st => allowedSensorTypes.includes(st.sensorType))) {
-          return true;
+        if (          x.sensors === null || x.sensors.length === 0        ){
+          return selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA);
         }
 
-        if (selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA) && (
-          x.sensors === null || x.sensors.length === 0
-        )){
+        if (x.sensors.some(st => allowedSensorTypes.includes(st.sensorType))) {
           return true;
         }
 

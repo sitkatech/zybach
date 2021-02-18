@@ -114,8 +114,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       { item_id: 4, item_text: DataSourceFilterOption.NODATA }
     ];
     this.selectedDataSources = [
-      { item_id: 1, item_text: "Flowmeter" },
-      { item_id: 2, item_text: "Continuity Devices" },
+      { item_id: 1, item_text: "Flow Meter" },
+      { item_id: 2, item_text: "Continuity Meter" },
       { item_id: 3, item_text: "Electrical Data" },
       { item_id: 4, item_text: "No Estimate Available" }
     ]
@@ -157,14 +157,11 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
         const allowedSensorTypes = selectedDataSourceOptions.map(x => DataSourceSensorTypeMap[x]);
 
-
-        if (feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))) {
-          return true;
+        if (feature.properties.sensorTypes === null || feature.properties.sensorTypes.length === 0) {
+          return selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA)
         }
 
-        if (selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA) && (
-          feature.properties.sensorTypes === null || feature.properties.sensorTypes.length === 0
-        )){
+        if (feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))) {
           return true;
         }
 

@@ -1,6 +1,7 @@
 import { provideSingleton } from "../util/provide-singleton";
 import { InfluxDB, QueryApi } from "@influxdata/influxdb-client";
 import secrets from '../secrets'
+import { SensorSummaryDto } from "../dtos/well-summary-dto";
 
 @provideSingleton(InfluxService)
 export class InfluxService {
@@ -47,7 +48,7 @@ export class InfluxService {
         |> first() \
         |> group(columns: ["registration-id"])'
 
-        var lastReadingDates: { [key: string]: Date } = await new Promise((resolve,reject) => {
+        var firstReadingDates: { [key: string]: Date } = await new Promise((resolve,reject) => {
             let results
                 : { [key: string]: Date }
                 = {}
@@ -65,17 +66,80 @@ export class InfluxService {
                 },
             });
         })
-        return lastReadingDates;
+        return firstReadingDates;
+    }
+
+    public async getFirstReadingDateTimeForWell(wellRegistrationID: string): Promise<Date> {
+        const query = `from(bucket: "tpnrd-qa") 
+        |> range(start: 2000-01-01T00:00:00Z) 
+        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
+        |> first() 
+        |> group(columns: ["registration-id"])`
+
+        var firstReadingDate: Date =  await new Promise((resolve,reject) => {
+            let results: Date;
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results = new Date(o["_time"])
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error)
+                },
+                complete() {
+                    resolve(results);
+                },
+            });
+        })
+
+        return firstReadingDate;
+    }
+
+    public async getPumpedVolumeForSensor(sensor: SensorSummaryDto, from: Date): Promise<any[]> {
+        // todo: this query needs to fill missing days with zeroes?
+        const query = `from(bucket: "tpnrd") 
+        |> range(start: ${from.toISOString()}) 
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume" and r["registration-id"] == "${sensor.wellRegistrationID}" and r["sn"] == "${sensor.sensorName}" ) 
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true)
+        |> fill(value: 0.0)`
+
+        var results: any[] = await new Promise((resolve,reject) => {
+            let results: any = [];
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results.push({
+                        time: new Date(o["_time"]),
+                        gallons: o["_value"],
+                        dataSource: sensor.sensorType
+                    })
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error)
+                },
+                complete() {
+                    resolve(results);
+                },
+            });
+        });
+
+        return results;
     }
 
     // todo: type this
-    public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string) {
+    public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string, from: Date): Promise<any[]> {
         // todo: this query needs to fill missing days with zeroes?
+        console.log(from)
         const query = `from(bucket: "tpnrd-qa") \
-        |> range(start: 2000-01-01T00:00:00Z) \
-        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) `
+        |> range(start: ${from.toISOString()}) \
+        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true) \
+        |> fill(value: 0.0)`
 
-        var results = await new Promise((resolve,reject) => {
+        var results: any[] = await new Promise((resolve,reject) => {
             let results: any = [];
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {

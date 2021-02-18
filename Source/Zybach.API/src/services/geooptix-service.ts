@@ -2,7 +2,7 @@ import axios from "axios";
 import { InternalServerError } from "../errors/internal-server-error";
 import secrets from "../secrets";
 import { provideSingleton } from "../util/provide-singleton";
-import { SensorSummaryDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { SensorSummaryDto, SensorTypeMap, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 
 @provideSingleton(GeoOptixService)
 export class GeoOptixService {
@@ -40,12 +40,43 @@ export class GeoOptixService {
             );
 
             return geoOptixRequest.data.map((x: {SiteCanonicalName: string, Name: string, Definition: {sensorType: string}}) =>
-                ({wellRegistrationID: x.SiteCanonicalName, sensorName: x.Name, sensorType: x.Definition.sensorType})
+                ({wellRegistrationID: x.SiteCanonicalName, sensorName: x.Name, sensorType: SensorTypeMap[x.Definition.sensorType]})
             );
 
         } catch (err) {
             console.error(err);
             throw new InternalServerError(err.message);
+        }
+    }
+
+    public async getSensorsForWell(wellRegistrationID: string): Promise<SensorSummaryDto[]>{
+        let geoOptixRequest;
+        try {
+            geoOptixRequest = await axios.get(
+                `${secrets.GEOOPTIX_HOSTNAME}/projects/water-data-program/sites/${wellRegistrationID}/stations`,
+                {
+                    headers: {
+                        "x-geooptix-token": secrets.GEOOPTIX_API_KEY
+                    },
+                    validateStatus: (x: number) => true
+                }
+            );
+        } catch (err){
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+
+        if (geoOptixRequest.status === 200){
+            return geoOptixRequest.data.map(( x: any) =>({
+                wellRegistrationID: wellRegistrationID,
+                sensorName: x.CanonicalName,
+                sensorType: SensorTypeMap[x.Definition.sensorType]
+            }));
+        } else if (geoOptixRequest.status === 404){
+            return [];
+        } else{
+            console.error(`GeoOptix returned ${geoOptixRequest.status} for Well ${wellRegistrationID} Sensors`);
+            throw new InternalServerError(`GeoOptix returned ${geoOptixRequest.status} for Well ${wellRegistrationID} Sensors`);
         }
     }
 

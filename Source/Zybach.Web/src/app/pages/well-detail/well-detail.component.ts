@@ -4,7 +4,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
-import {default as vegaEmbed} from 'vega-embed';
+import { default as vegaEmbed } from 'vega-embed';
 @Component({
   selector: 'zybach-well-detail',
   templateUrl: './well-detail.component.html',
@@ -20,8 +20,9 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   chartSubscription: any;
   well: WellWithSensorSummaryDto;
   rawResults: string;
-  timeSeries: any;
+  timeSeries: any[];
   vegaView: any;
+  rangeMax: number;
 
 
   constructor(
@@ -34,19 +35,24 @@ export class WellDetailComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       const id = this.route.snapshot.paramMap.get("wellRegistrationID");
-      this.wellSubscription = this.wellService.getWell(id).subscribe(response=>{
+      this.wellSubscription = this.wellService.getWell(id).subscribe(response => {
         this.well = response.result;
-      })
+      });
 
-      this.chartSubscription = this.wellService.getElectricalBasedFlowEstimateSeries(id).subscribe(response => {
+      this.chartSubscription = this.wellService.getChartData(id).subscribe(response => {
         this.timeSeries = response;
-        this.rawResults = JSON.stringify(response);
+        const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
+        if (gallonsMax !== 0) {
+          this.rangeMax = gallonsMax * 1.05;
+        } else{
+          this.rangeMax = 10000;
+        }
         this.buildChart();
-      })
+      });
     })
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
     this.wellSubscription.unsubscribe();
     this.chartSubscription.unsubscribe();
@@ -54,24 +60,56 @@ export class WellDetailComponent implements OnInit, OnDestroy {
 
   buildChart() {
     var self = this;
-    debugger;
-    vegaEmbed(`#${this.chartID}`, this.getVegaSpec()).then(function (res){
+    vegaEmbed(`#${this.chartID}`, this.getVegaSpec(), {
+      actions: false, tooltip: true, renderer: "svg"
+    }).then(function (res) {
       self.vegaView = res.view;
     });
   }
 
-  getVegaSpec() : any{
+  getVegaSpec(): any {
     return {
       "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
       "description": "A charmt",
-      "data": {"values": this.timeSeries, "name": "data"},
+      "width": "container",
+      "height": "container",
+      "data": { "values": this.timeSeries, "name": "data" },
       "mark": {
         "type": "line",
       },
       "encoding": {
-        "x": { "field": "time", "timeUnit": "yearmonthdate" },
-        "y": { "field": "gallons", "type": "quantitative"},
-        "color": {"field": "dataSource", "type": "nominal"}
+        "x": {
+          "field": "time",
+          "timeUnit": "yearmonthdate",
+          "axis": {
+            "title": "Date"
+          }
+        },
+        "y": {
+          "field": "gallons",
+          "type": "quantitative",
+          "axis": {
+            "title": "Gallons"
+          },
+          "scale": {
+            "domain": [0, this.rangeMax]
+          }
+        },
+        "color": {
+          "field": "dataSource",
+          "type": "nominal",
+          "axis": {
+            "title": "Data Source"
+          },
+          "scale": {
+            "domain": ["Flow Meter", "Continuity Meter", "Electrical Data"],
+            "range": ["#13B5EA", "#4AAA42", "#0076C0"],
+          }
+        },
+        "tooltip":[
+          { field: "time", type: "ordinal" },
+          { field: "gallons", type: "quantitative" }
+        ]
       }
     }
   }

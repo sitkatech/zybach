@@ -17,6 +17,11 @@ export interface SensorSummaryDto {
     sensorType: string;
 }
 
+export const SensorTypeMap: {[key: string]: string} = {
+    "FlowMeter": "Flow Meter",
+    "PumpMonitor": "Continuity Meter"
+}
+
 export interface WellWithSensorSummaryDto extends WellSummaryDto {
     sensors: SensorSummaryDto[]
 }
@@ -24,7 +29,7 @@ export interface WellWithSensorSummaryDto extends WellSummaryDto {
 export class WellSummaryDtoFactory {
     public static fromAghubWell(model: AghubWellInterface) : WellWithSensorSummaryDto{
         const sensors: SensorSummaryDto[] = [];
-        if (model.wellConnectedMeter){
+        if (model.hasElectricalData){
             sensors.push({
                 wellRegistrationID: model.wellRegistrationID,
                 sensorType: "Electrical Data"

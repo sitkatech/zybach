@@ -23,11 +23,11 @@ async function main() {
 
     lastReadingDates = await getLastReadingDatetime();
 
-    await cacheWellsInDb(wells);
-
     for (let i = 0; i < wells.length; i++) {
         await processWell(wells[i]);
     }
+
+    await cacheWellsInDb(wells);
 }
 
 async function getWellCollection(): Promise<agHubWell[]> {
@@ -105,11 +105,16 @@ async function cacheWellsInDb(wells: agHubWell[]) {
 
 async function processWell(well: agHubWell) {
     if (well.wellConnectedMeter) {
-        const pumpedVolume = await getPumpedVolume(well);
-        await writePumpedVolumeIntervals(pumpedVolume.pumpedVolumeTimeSeries, well.wellRegistrationID);
-        const k = 8;
+        const pumpedVolumeResult = await getPumpedVolume(well);
+        if (pumpedVolumeResult.pumpedVolumeTimeSeries.length !== 0){
+            well.hasElectricalData = true;
+            await writePumpedVolumeIntervals(pumpedVolumeResult.pumpedVolumeTimeSeries, well.wellRegistrationID);
+        } else{
+            well.hasElectricalData = false;
+        }
+    } else{
+        well.hasElectricalData = false;
     }
-
 }
 
 async function getPumpedVolume(well: agHubWell) {
@@ -181,4 +186,5 @@ interface agHubWell {
     wellConnectedMeter: boolean;
     wellTPID: string;
     fetchDate: Date;
+    hasElectricalData: boolean;
 }

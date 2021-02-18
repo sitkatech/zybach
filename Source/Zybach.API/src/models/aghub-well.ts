@@ -10,6 +10,7 @@ export interface AghubWellInterface extends Document {
     tpnrdPumpRateUpdated: string;
     location: any;
     fetchDate: Date;
+    hasElectricalData: boolean;
 }
 
 const AghubWellSchema: Schema = new Schema({
@@ -21,7 +22,8 @@ const AghubWellSchema: Schema = new Schema({
     wellTpnrdPumpRate: {type:Number, required: true},
     tpnrdPumpRateUpdated: {type:String, required: true},
     location: {type: Object, required: true},
-    fetchDate: {type: Date, required: true}
+    fetchDate: {type: Date, required: true},
+    hasElectricalData: {type: Boolean, required: true}
 })
 
 const AghubWell = mongoose.model<AghubWellInterface>("agHubWells", AghubWellSchema, "agHubWells");
