@@ -44,6 +44,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SensorSummaryDto": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "sensorName": {"dataType":"string"},
+            "sensorType": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CustomRichTextTypeDto": {
         "dataType": "refObject",
         "properties": {
@@ -96,16 +106,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "FieldDefinitionValue": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "SensorSummaryDto": {
-        "dataType": "refObject",
-        "properties": {
-            "wellRegistrationID": {"dataType":"string","required":true},
-            "sensorName": {"dataType":"string"},
-            "sensorType": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },

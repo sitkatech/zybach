@@ -243,22 +243,17 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     })
   }
 
-  public onFilterChange(selectedDataSources: any){
+  public onFilterChange(dataSourceOptions: any){
     const filteredWells = this.wells.filter(x=>{
-      const selectedDataSourceOptions = selectedDataSources.map(x => x.item_text);
+      if (x.sensors === null || x.sensors.length === 0) {
+        return dataSourceOptions.showNoEstimate;
+      }
 
-        const allowedSensorTypes = selectedDataSourceOptions.map(x => DataSourceSensorTypeMap[x]);
-        
+      const sensorTypes = x.sensors.map(s=>s.sensorType);
 
-        if (          x.sensors === null || x.sensors.length === 0        ){
-          return selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA);
-        }
-
-        if (x.sensors.some(st => allowedSensorTypes.includes(st.sensorType))) {
-          return true;
-        }
-
-        return false;
+      return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
+        (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
+        (dataSourceOptions.showElectricalData && sensorTypes.includes("Electrical Data"));
     });
 
     this.gridApi.setRowData(filteredWells);

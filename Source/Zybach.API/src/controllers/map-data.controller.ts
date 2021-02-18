@@ -28,8 +28,10 @@ export class MapDataController extends Controller{
         const sw = new Stopwatch();
         sw.start();
         const wellSummaryWithSensorsDtoMap = await this.geooptixService.getWellsWithSensors();
+        console.log(sw.getTime());
         const lastReadingDates = await this.influxService.getLastReadingDateTime();
         const firstReadingDates = await this.influxService.getFirstReadingDateTime();
+        console.log(sw.getTime());
         const aghubWells = await this.aghubWellService.getAghubWells();
         console.log(sw.getTime());
 

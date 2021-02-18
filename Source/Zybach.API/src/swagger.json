@@ -38,6 +38,25 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"SensorSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"sensorName": {
+						"type": "string"
+					},
+					"sensorType": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"sensorType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"CustomRichTextTypeDto": {
 				"properties": {
 					"CustomRichTextTypeID": {
@@ -122,25 +141,6 @@
 				},
 				"required": [
 					"FieldDefinitionValue"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"SensorSummaryDto": {
-				"properties": {
-					"wellRegistrationID": {
-						"type": "string"
-					},
-					"sensorName": {
-						"type": "string"
-					},
-					"sensorType": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"wellRegistrationID",
-					"sensorType"
 				],
 				"type": "object",
 				"additionalProperties": false

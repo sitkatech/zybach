@@ -102,7 +102,7 @@ export class GeoOptixService {
         sensors.forEach(x => {
             const well = wellMap.get(x.wellRegistrationID);
 
-            if (!well){
+            if (!well || !x.sensorType){
                 return;
             }
 

@@ -16,13 +16,14 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   public watchUserChangeSubscription: any;
 
   currentUser: UserDetailedDto;
-  wellSubscription: any;
   chartSubscription: any;
   well: WellWithSensorSummaryDto;
   rawResults: string;
   timeSeries: any[];
   vegaView: any;
   rangeMax: number;
+  wellRegistrationID: string;
+  tooltipFields: any;
 
 
   constructor(
@@ -34,28 +35,32 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      const id = this.route.snapshot.paramMap.get("wellRegistrationID");
-      this.wellSubscription = this.wellService.getWell(id).subscribe(response => {
-        this.well = response.result;
-      });
-
-      this.chartSubscription = this.wellService.getChartData(id).subscribe(response => {
-        this.timeSeries = response;
-        const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
-        if (gallonsMax !== 0) {
-          this.rangeMax = gallonsMax * 1.05;
-        } else{
-          this.rangeMax = 10000;
-        }
-        this.buildChart();
-      });
+      this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
+      this.getChartDataAndBuildChart();
     })
   }
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
-    this.wellSubscription.unsubscribe();
     this.chartSubscription.unsubscribe();
+  }
+
+  getChartDataAndBuildChart(){
+    
+    this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
+      this.timeSeries = response.timeSeries;
+
+      const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
+      if (gallonsMax !== 0) {
+        this.rangeMax = gallonsMax * 1.05;
+      } else{
+        this.rangeMax = 10000;
+      }
+
+      this.tooltipFields = response.sensors.map(x=>({"field": x.sensorType, "type": "ordinal"}));
+
+      this.buildChart();
+    });
   }
 
   buildChart() {
@@ -74,43 +79,72 @@ export class WellDetailComponent implements OnInit, OnDestroy {
       "width": "container",
       "height": "container",
       "data": { "values": this.timeSeries, "name": "data" },
-      "mark": {
-        "type": "line",
-      },
       "encoding": {
         "x": {
           "field": "time",
           "timeUnit": "yearmonthdate",
+          "type": "temporal",
           "axis": {
             "title": "Date"
           }
-        },
-        "y": {
-          "field": "gallons",
-          "type": "quantitative",
-          "axis": {
-            "title": "Gallons"
+        }
+      },
+      
+      "layer": [
+        {
+          "encoding": {
+            "y": {
+              "field": "gallons",
+              "type": "quantitative",
+              "axis": {
+                "title": "Gallons"
+              },
+              "scale": {
+                "domain": [0, this.rangeMax]
+              }
+            },
+            "color": {
+              "field": "dataSource",
+              "type": "nominal",
+              "axis": {
+                "title": "Data Source"
+              },
+              "scale": {
+                "domain": ["Flow Meter", "Continuity Meter", "Electrical Data"],
+                "range": ["#13B5EA", "#4AAA42", "#0076C0"],
+              }
+            }
           },
-          "scale": {
-            "domain": [0, this.rangeMax]
-          }
+          "layer": [
+            {"mark": "line"},
+            {"transform": [{"filter": {"selection": "hover"}}], "mark": "point"}
+          ]
         },
-        "color": {
-          "field": "dataSource",
-          "type": "nominal",
-          "axis": {
-            "title": "Data Source"
+        {
+          "transform": [{"pivot": "dataSource", "value": "gallonsString", "groupby": ["time"], "op": "max"}],
+          "mark": "rule",
+          "encoding": {
+            "opacity": {
+              "condition": {"value": 0.3, "selection": "hover"},
+              "value": 0
+            },
+            "tooltip": [
+              {"field": "time", "type": "temporal", "title": "Date"},
+              ...this.tooltipFields
+            ]
           },
-          "scale": {
-            "domain": ["Flow Meter", "Continuity Meter", "Electrical Data"],
-            "range": ["#13B5EA", "#4AAA42", "#0076C0"],
+          "selection": {
+            "hover": {
+              "type": "single",
+              "fields": ["time"],
+              "nearest": true,
+              "on": "mouseover",
+              "empty": "none",
+              "clear": "mouseout"
+            }
           }
-        },
-        "tooltip":[
-          { field: "time", type: "ordinal" },
-          { field: "gallons", type: "quantitative" }
-        ]
-      }
+        }
+      ]
     }
   }
 

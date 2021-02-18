@@ -42,10 +42,15 @@ export class ChartDataController extends Controller{
         }
 
         if (hasElectricalData){
+            sensors.push({ wellRegistrationID: wellRegistrationID, sensorType: "Electrical Data" });
             const electricPoints = await this.influxService.getElectricalBasedFlowEstimateSeries(wellRegistrationID, firstReadingDate);
             timeSeriesPoints = [...timeSeriesPoints, ...electricPoints];
         }
 
-        return timeSeriesPoints; 
+        timeSeriesPoints.forEach(x=>{
+            x.gallonsString = x.gallons.toLocaleString() + " gallons"
+        })
+
+        return {timeSeries: timeSeriesPoints, sensors: sensors}; 
     }
 }

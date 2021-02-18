@@ -12,7 +12,8 @@ import {
   icon,
   latLng,
   Layer,
-  LeafletEvent
+  LeafletEvent,
+  layerGroup
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
@@ -76,6 +77,10 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
   searchErrormessage: string = "Sorry, the address you searched is not within the NRD area. Click a well on the map or search another address.";
   
+  showFlowMeters: boolean = true;
+  showContinuityMeters: boolean = true;
+  showElectricalData: boolean = true;
+  showNoEstimate: boolean = true;
 
   constructor(
     private appRef: ApplicationRef,
@@ -108,17 +113,17 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.compileService.configure(this.appRef);
 
     this.dataSourceDropdownList = [
-      { item_id: 1, item_text: DataSourceFilterOption.FLOW },
-      { item_id: 2, item_text: DataSourceFilterOption.CONTINUITY },
-      { item_id: 3, item_text: DataSourceFilterOption.ELECTRICAL },
-      { item_id: 4, item_text: DataSourceFilterOption.NODATA }
+      { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
+      { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
+      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Data" },
+      { item_id: DataSourceFilterOption.NODATA, item_text: "No Estimate Available" }
     ];
     this.selectedDataSources = [
-      { item_id: 1, item_text: "Flow Meter" },
-      { item_id: 2, item_text: "Continuity Meter" },
-      { item_id: 3, item_text: "Electrical Data" },
-      { item_id: 4, item_text: "No Estimate Available" }
-    ]
+      { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
+      { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
+      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Data" },
+      { item_id: DataSourceFilterOption.NODATA, item_text: "No Estimate Available" }
+    ];
     this.dataSourceDropdownSettings = {
       singleSelection: false,
       idField: "item_id",
@@ -142,30 +147,57 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.map = map(this.mapID, mapOptions);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
-    const markerIcon = icon.glyph({
+    
+    const flowMeterMarkerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
-
+      iconUrl: "/assets/main/flowMeterMarker.png"
     });
+    const continuityMeterMarkerIcon = icon.glyph({
+      prefix: "fas",
+      glyph: "tint",
+      iconUrl: "/assets/main/continuityMeterMarker.png"
+    });
+    const electricalDataMarkerIcon = icon.glyph({
+      prefix: "fas",
+      glyph: "tint",
+      iconUrl: "/assets/main/electricalDataMarker.png"
+    });
+    const noDataSourceMarkerIcon = icon.glyph({
+      prefix: "fas",
+      glyph: "tint",
+      iconUrl: "/assets/main/noDataSourceMarker.png"
+    });
+    
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        return marker(latlng, { icon: markerIcon });
+        var emptyGroup = layerGroup();
+        // building the actual markers in a promise seems to have a slightly better user experience than doing it directly
+        new Promise(res => {
+          if (feature.properties.sensorTypes.includes("Flow Meter")){
+            var icon = flowMeterMarkerIcon
+          } else if (feature.properties.sensorTypes.includes("Continuity Meter")){
+            var icon = continuityMeterMarkerIcon
+          } else if (feature.properties.sensorTypes.includes("Electrical Data")){
+            var icon = electricalDataMarkerIcon
+          } else {
+            var icon = noDataSourceMarkerIcon
+          }
+          res(icon)
+        }).then((markerIcon :any) =>{
+          marker(latlng, { icon: markerIcon}).addTo(emptyGroup);
+        })
+        return emptyGroup;
       },
       filter: (feature) => {
-        const selectedDataSourceOptions = this.selectedDataSources.map(x => x.item_text);
-
-        const allowedSensorTypes = selectedDataSourceOptions.map(x => DataSourceSensorTypeMap[x]);
-
         if (feature.properties.sensorTypes === null || feature.properties.sensorTypes.length === 0) {
-          return selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA)
+          return this.showNoEstimate;
         }
 
-        if (feature.properties.sensorTypes.some(st => allowedSensorTypes.includes(st))) {
-          return true;
-        }
-
-        return false;
+        return (this.showFlowMeters && feature.properties.sensorTypes.includes("Flow Meter")) || 
+          (this.showContinuityMeters && feature.properties.sensorTypes.includes("Continuity Meter")) ||
+          (this.showElectricalData && feature.properties.sensorTypes.includes("Electrical Data"));
       }
     });
 
@@ -208,7 +240,22 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   }
 
   public onDataSourceFilterChange(event: Event) {
-    this.onFilterChange.emit(this.selectedDataSources);
+    const selectedDataSourceOptions = this.selectedDataSources.map(x=>x.item_id);
+
+    this.showFlowMeters = selectedDataSourceOptions.includes(DataSourceFilterOption.FLOW)
+    this.showContinuityMeters = selectedDataSourceOptions.includes(DataSourceFilterOption.CONTINUITY)
+    this.showElectricalData = selectedDataSourceOptions.includes(DataSourceFilterOption.ELECTRICAL)
+    this.showNoEstimate = selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA)
+    
+    // todo: change this to emit an object holding the above values, then change the handler on the other side
+
+    this.onFilterChange.emit({
+      showFlowMeters: this.showFlowMeters,
+      showContinuityMeters: this.showContinuityMeters,
+      showElectricalData: this.showElectricalData,
+      showNoEstimate: this.showNoEstimate
+    });
+    
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
   }
