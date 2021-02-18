@@ -172,23 +172,17 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        var emptyGroup = layerGroup();
-        // building the actual markers in a promise seems to have a slightly better user experience than doing it directly
-        new Promise(res => {
-          if (feature.properties.sensorTypes.includes("Flow Meter")){
-            var icon = flowMeterMarkerIcon
-          } else if (feature.properties.sensorTypes.includes("Continuity Meter")){
-            var icon = continuityMeterMarkerIcon
-          } else if (feature.properties.sensorTypes.includes("Electrical Data")){
-            var icon = electricalDataMarkerIcon
-          } else {
-            var icon = noDataSourceMarkerIcon
-          }
-          res(icon)
-        }).then((markerIcon :any) =>{
-          marker(latlng, { icon: markerIcon}).addTo(emptyGroup);
-        })
-        return emptyGroup;
+
+        if (feature.properties.sensorTypes.includes("Flow Meter")) {
+          var icon = flowMeterMarkerIcon
+        } else if (feature.properties.sensorTypes.includes("Continuity Meter")) {
+          var icon = continuityMeterMarkerIcon
+        } else if (feature.properties.sensorTypes.includes("Electrical Data")) {
+          var icon = electricalDataMarkerIcon
+        } else {
+          var icon = noDataSourceMarkerIcon
+        }
+        return marker(latlng, { icon: icon})
       },
       filter: (feature) => {
         if (feature.properties.sensorTypes === null || feature.properties.sensorTypes.length === 0) {
@@ -204,6 +198,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.wellsLayer.addTo(this.map);
 
     this.wellsLayer.on("click", (event: LeafletEvent) => {
+      debugger;
       this.selectFeature(event.propagatedFrom.feature);
       this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
     })
@@ -255,7 +250,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       showElectricalData: this.showElectricalData,
       showNoEstimate: this.showNoEstimate
     });
-    
+
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
   }
