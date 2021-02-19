@@ -8,10 +8,49 @@
 </nav>
 <div class="container">
     <app-alert-display></app-alert-display>
-    <p class="lead">
-        (Stub detail page--implementation forthcoming!)
-    </p>
-    
-    <div *ngIf="!noTimeSeriesData" id="{{chartID}}" style="width:100%; min-height: 340px;"></div>
-    <em *ngIf="noTimeSeriesData">No time series data available for this well.</em>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Basics
+                </div>
+                <div class="card-body">
+                    <div class="row" *ngIf="well">
+                        <div class="col-12  col-sm-6 label"><strong>Registration ID: </strong> </div>
+                        <div class="col-12  col-sm-6">{{well.wellRegistrationID}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>TPID: </strong></div>
+                        <div class="col-12  col-sm-6">{{well.wellTPID}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>Device Type: </strong></div>
+                        <div class="col-12  col-sm-6">{{getSensorTypes()}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>Last Reading Date: </strong></div>
+                        <div class="col-12  col-sm-6">{{getLastReadingDate()}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Location
+                </div>
+                <div class="card-body">
+                    <div id="{{mapID}}" style="height:300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Flow Measurements
+                </div>
+                <div class="card-body">
+                    <div *ngIf="!noTimeSeriesData" id="{{chartID}}" style="width:100%; min-height: 340px;"></div>
+                    <em *ngIf="noTimeSeriesData">No time series data available for this well.</em>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

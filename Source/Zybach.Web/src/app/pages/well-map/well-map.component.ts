@@ -80,7 +80,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   showFlowMeters: boolean = true;
   showContinuityMeters: boolean = true;
   showElectricalData: boolean = true;
-  showNoEstimate: boolean = true;
+  showNoEstimate: boolean = false;
 
   constructor(
     private appRef: ApplicationRef,
@@ -122,7 +122,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
       { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
       { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Data" },
-      { item_id: DataSourceFilterOption.NODATA, item_text: "No Estimate Available" }
     ];
     this.dataSourceDropdownSettings = {
       singleSelection: false,

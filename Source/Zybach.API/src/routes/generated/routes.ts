@@ -54,6 +54,21 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WellSummaryDto": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "wellTPID": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "location": {"dataType":"any","required":true},
+            "lastReadingDate": {"dataType":"datetime"},
+            "firstReadingDate": {"dataType":"datetime"},
+            "inGeoOptix": {"dataType":"boolean"},
+            "fetchDate": {"dataType":"datetime"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CustomRichTextTypeDto": {
         "dataType": "refObject",
         "properties": {
@@ -187,21 +202,6 @@ const models: TsoaRoute.Models = {
             "Role": {"dataType":"string"},
             "ReceiveSupportEmails": {"dataType":"boolean"},
             "UserGuid": {"dataType":"string"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "WellSummaryDto": {
-        "dataType": "refObject",
-        "properties": {
-            "wellRegistrationID": {"dataType":"string","required":true},
-            "wellTPID": {"dataType":"string"},
-            "description": {"dataType":"string"},
-            "location": {"dataType":"any","required":true},
-            "lastReadingDate": {"dataType":"datetime"},
-            "firstReadingDate": {"dataType":"datetime"},
-            "inGeoOptix": {"dataType":"boolean"},
-            "fetchDate": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },

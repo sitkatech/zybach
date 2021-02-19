@@ -28,6 +28,29 @@ export class GeoOptixService {
         }
     }
 
+    public async getWellSummary(wellRegistrationID: string): Promise<WellSummaryDto> {
+        try {
+            // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
+            const geoOptixRequest = await axios.get(
+                `${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}`,
+                {
+                    headers: {
+                        "x-geooptix-token": secrets.GEOOPTIX_API_KEY
+                    }
+                }
+            );
+
+            return {
+                location: geoOptixRequest.data.location,
+                wellRegistrationID: wellRegistrationID
+            };
+        }
+        catch (err) {
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+    }
+
     public async getSensorSummaries(): Promise<SensorSummaryDto[]> {
         try {
             const geoOptixRequest = await axios.get(

@@ -53,6 +53,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
               return geoJsonPoint;
             })
         }
+
+
       })
     });
   }
@@ -65,6 +67,12 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   public onGridReady(params) {
     this.gridApi = params.api;
+    this.onFilterChange({
+      showFlowMeters: true,
+      showContinuityMeters: true,
+      showElectricalData: true,
+      showNoEstimate: false
+    });
   }
 
   private makeColumnDefs() {
@@ -137,11 +145,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "Has Flow Meter?",
-        valueGetter: function(params){
-          const sensorTypes = params.data.sensors.map(x=>x.sensorType);
-          if (sensorTypes.includes("Flow Meter")){
+        valueGetter: function (params) {
+          const sensorTypes = params.data.sensors.map(x => x.sensorType);
+          if (sensorTypes.includes("Flow Meter")) {
             return "Yes";
-          } else{
+          } else {
             return "No";
           }
         },
@@ -149,11 +157,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "Has Continuity Device?",
-        valueGetter: function(params){
-          const sensorTypes = params.data.sensors.map(x=>x.sensorType);
-          if (sensorTypes.includes("Continuity Meter")){
+        valueGetter: function (params) {
+          const sensorTypes = params.data.sensors.map(x => x.sensorType);
+          if (sensorTypes.includes("Continuity Meter")) {
             return "Yes";
-          } else{
+          } else {
             return "No";
           }
         },
@@ -161,11 +169,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "Has Electrical Use Meter?",
-        valueGetter: function(params){
-          const sensorTypes = params.data.sensors.map(x=>x.sensorType);
-          if (sensorTypes.includes("Electrical Data")){
+        valueGetter: function (params) {
+          const sensorTypes = params.data.sensors.map(x => x.sensorType);
+          if (sensorTypes.includes("Electrical Data")) {
             return "Yes";
-          } else{
+          } else {
             return "No";
           }
         },
@@ -173,8 +181,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "In AgHub?",
-        valueGetter: function (params){
-          if (params.data.wellTPID){
+        valueGetter: function (params) {
+          if (params.data.wellTPID) {
             return "Yes"
           } else {
             return "No"
@@ -184,8 +192,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "In GeoOptix?",
-        valueGetter: function (params){
-          if (params.data.inGeoOptix){
+        valueGetter: function (params) {
+          if (params.data.inGeoOptix) {
             return "Yes"
           } else {
             return "No"
@@ -196,7 +204,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Last Fetched from AgHub",
         field: "fetchDate",
-        valueFormatter: function(params){
+        valueFormatter: function (params) {
           if (params.value) {
             const time = moment(params.value)
             const timepiece = time.format('h:mm a');
@@ -242,15 +250,15 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     })
   }
 
-  public onFilterChange(dataSourceOptions: any){
-    const filteredWells = this.wells.filter(x=>{
+  public onFilterChange(dataSourceOptions: any) {
+    const filteredWells = this.wells.filter(x => {
       if (x.sensors === null || x.sensors.length === 0) {
         return dataSourceOptions.showNoEstimate;
       }
 
-      const sensorTypes = x.sensors.map(s=>s.sensorType);
+      const sensorTypes = x.sensors.map(s => s.sensorType);
 
-      return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
+      return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) ||
         (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
         (dataSourceOptions.showElectricalData && sensorTypes.includes("Electrical Data"));
     });

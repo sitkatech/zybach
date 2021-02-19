@@ -96,6 +96,33 @@ export class InfluxService {
 
         return firstReadingDate;
     }
+    public async getLastReadingDateTimeForWell(wellRegistrationID: string): Promise<Date> {
+        const query = `from(bucket: "tpnrd-qa") 
+        |> range(start: 2000-01-01T00:00:00Z) 
+        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
+        |> last() 
+        |> group(columns: ["registration-id"])`
+
+        var lastReadingDate: Date =  await new Promise((resolve,reject) => {
+            let results: Date;
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results = new Date(o["_time"])
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error)
+                },
+                complete() {
+                    resolve(results);
+                },
+            });
+        })
+
+        return lastReadingDate;
+    }
 
     public async getPumpedVolumeForSensor(sensor: SensorSummaryDto, from: Date): Promise<any[]> {
         // todo: this query needs to fill missing days with zeroes?

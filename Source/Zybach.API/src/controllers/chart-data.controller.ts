@@ -29,14 +29,31 @@ export class ChartDataController extends Controller{
     public async getChartData(
         @Path() wellRegistrationID: string
     ){
-        const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
-        const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
+        
         const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
+        
         if (!firstReadingDate){
             this.setStatus(204);
-            return {timeSeries: null, sensors: null};
+            return {timeSeries: null, sensors: null, well: null};
         }
-        const hasElectricalData = agHubWell && agHubWell.wellConnectedMeter;
+        
+        const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
+        let well = await this.geooptixService.getWellSummary(wellRegistrationID);
+        const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
+
+        const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
+        if (well){
+            well.wellTPID = agHubWell?.wellTPID;
+            if (agHubWell){
+                well.location = agHubWell.location;
+            }
+        } else {
+            well = agHubWell
+        }
+
+        well.lastReadingDate = lastReadingDate;
+
+        const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
 
         let timeSeriesPoints: any[] = []
 
@@ -55,6 +72,6 @@ export class ChartDataController extends Controller{
             x.gallonsString = x.gallons.toLocaleString() + " gallons"
         })
 
-        return {timeSeries: timeSeriesPoints, sensors: sensors}; 
+        return {timeSeries: timeSeriesPoints, sensors: sensors, well: well}; 
     }
 }

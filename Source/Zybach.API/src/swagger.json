@@ -57,6 +57,41 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"WellSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"wellTPID": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {},
+					"lastReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"firstReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"inGeoOptix": {
+						"type": "boolean"
+					},
+					"fetchDate": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"location"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"CustomRichTextTypeDto": {
 				"properties": {
 					"CustomRichTextTypeID": {
@@ -327,41 +362,6 @@
 						"type": "string"
 					}
 				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"WellSummaryDto": {
-				"properties": {
-					"wellRegistrationID": {
-						"type": "string"
-					},
-					"wellTPID": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"location": {},
-					"lastReadingDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"firstReadingDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"inGeoOptix": {
-						"type": "boolean"
-					},
-					"fetchDate": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"wellRegistrationID",
-					"location"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},

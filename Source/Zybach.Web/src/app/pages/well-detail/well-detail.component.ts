@@ -1,19 +1,43 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
+
+import {
+  Control, FitBoundsOptions,
+  GeoJSON,
+  marker,
+  map,
+  Map,
+  MapOptions,
+  tileLayer,
+  Icon,
+  geoJSON,
+  icon,
+  latLng,
+  Layer,
+  LeafletEvent,
+  layerGroup
+} from 'leaflet';
+import 'leaflet.icon.glyph';
+import 'leaflet.fullscreen';
+import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
+
 @Component({
   selector: 'zybach-well-detail',
   templateUrl: './well-detail.component.html',
   styleUrls: ['./well-detail.component.scss']
 })
-export class WellDetailComponent implements OnInit, OnDestroy {
+export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   public chartID: string = "wellChart";
 
   public watchUserChangeSubscription: any;
+
+  maxZoom = 17;
 
   currentUser: UserDetailedDto;
   chartSubscription: any;
@@ -24,16 +48,24 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   rangeMax: number;
   wellRegistrationID: string;
   tooltipFields: any;
-  noTimeSeriesData: boolean = false;;
+  noTimeSeriesData: boolean = false; sensors: any;
+  boundingBox: any;
+  tileLayers: any;
+  map: Map;
+  mapID = "wellLocation"
+    ;
 
 
   constructor(
     private wellService: WellService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+    this.initMapConstants();
+
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
@@ -46,10 +78,51 @@ export class WellDetailComponent implements OnInit, OnDestroy {
     this.chartSubscription.unsubscribe();
   }
 
-  getChartDataAndBuildChart(){
-    
+  public ngAfterViewInit(): void {
+    const mapOptions: MapOptions = {
+      maxZoom: this.maxZoom,
+      layers: [
+        this.tileLayers["Aerial"],
+      ],
+      fullscreenControl: true
+    } as MapOptions;
+    this.map = map(this.mapID, mapOptions);
+
+    this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], null);
+
+  }
+
+  public initMapConstants() {
+    this.boundingBox = new BoundingBoxDto();
+    this.boundingBox.Left = -122.65840077734131;
+    this.boundingBox.Bottom = 44.800395454281436;
+    this.boundingBox.Right = -121.65139301718362;
+    this.boundingBox.Top = 45.528908149000124;
+
+    this.tileLayers = Object.assign({}, {
+      "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Aerial',
+      }),
+      "Street": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Aerial',
+      }),
+      "Terrain": tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Terrain',
+      }),
+    }, this.tileLayers);
+  }
+
+  getChartDataAndBuildChart() {
+
     this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
-      if (!response){
+      this.well = response.well;
+      this.sensors = response.sensors;
+      this.addWellToMap();
+      this.cdr.detectChanges();
+
+      console.log(this.well);
+
+      if (!response) {
         this.noTimeSeriesData = true;
         return;
       }
@@ -58,14 +131,55 @@ export class WellDetailComponent implements OnInit, OnDestroy {
       const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
       if (gallonsMax !== 0) {
         this.rangeMax = gallonsMax * 1.05;
-      } else{
+      } else {
         this.rangeMax = 10000;
       }
 
-      this.tooltipFields = response.sensors.map(x=>({"field": x.sensorType, "type": "ordinal"}));
+      this.tooltipFields = response.sensors.map(x => ({ "field": x.sensorType, "type": "ordinal" }));
 
       this.buildChart();
     });
+  }
+
+  addWellToMap() {
+    const sensorTypes = this.sensors.map(x => x.sensorType);
+    let mapIcon;
+    debugger;
+
+    if (sensorTypes.includes("Flow Meter")) {
+      mapIcon = icon.glyph({
+        prefix: "fas",
+        glyph: "tint",
+        iconUrl: "/assets/main/flowMeterMarker.png"
+      });
+    } else if (sensorTypes.includes("Continuity Meter")) {
+      mapIcon = icon.glyph({
+        prefix: "fas",
+        glyph: "tint",
+        iconUrl: "/assets/main/continuityMeterMarker.png"
+      });
+    } else if (sensorTypes.includes("Electrical Data")) {
+      mapIcon = icon.glyph({
+        prefix: "fas",
+        glyph: "tint",
+        iconUrl: "/assets/main/electricalDataMarker.png"
+      });
+    } else {
+      mapIcon = icon.glyph({
+        prefix: "fas",
+        glyph: "tint",
+        iconUrl: "/assets/main/noDataSourceMarker.png"
+      });
+    }
+    const wellLayer = new GeoJSON(this.well.location, {
+      pointToLayer: function (feature, latlng) {
+        return marker(latlng, {icon: mapIcon});
+      }
+    });
+    wellLayer.addTo(this.map);
+    
+    let target = (this.map as any)._getBoundsCenterZoom(wellLayer.getBounds(), null);
+    this.map.setView(target.center, 16, null);
   }
 
   buildChart() {
@@ -94,7 +208,7 @@ export class WellDetailComponent implements OnInit, OnDestroy {
           }
         }
       },
-      
+
       "layer": [
         {
           "encoding": {
@@ -121,20 +235,20 @@ export class WellDetailComponent implements OnInit, OnDestroy {
             }
           },
           "layer": [
-            {"mark": "line"},
-            {"transform": [{"filter": {"selection": "hover"}}], "mark": "point"}
+            { "mark": "line" },
+            { "transform": [{ "filter": { "selection": "hover" } }], "mark": "point" }
           ]
         },
         {
-          "transform": [{"pivot": "dataSource", "value": "gallonsString", "groupby": ["time"], "op": "max"}],
+          "transform": [{ "pivot": "dataSource", "value": "gallonsString", "groupby": ["time"], "op": "max" }],
           "mark": "rule",
           "encoding": {
             "opacity": {
-              "condition": {"value": 0.3, "selection": "hover"},
+              "condition": { "value": 0.3, "selection": "hover" },
               "value": 0
             },
             "tooltip": [
-              {"field": "time", "type": "temporal", "title": "Date"},
+              { "field": "time", "type": "temporal", "title": "Date" },
               ...this.tooltipFields
             ]
           },
@@ -153,4 +267,16 @@ export class WellDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  getSensorTypes() {
+    return this.sensors.map(x => x.sensorType).join(", ");
+  }
+
+  getLastReadingDate() {
+    if (!this.well.lastReadingDate) {
+      return ""
+    }
+    const time = moment(this.well.lastReadingDate)
+    const timepiece = time.format('h:mm a');
+    return time.format('M/D/yyyy ') + timepiece;
+  }
 }
