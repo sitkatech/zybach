@@ -34,7 +34,7 @@ export class ChartDataController extends Controller{
         const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
         if (!firstReadingDate){
             this.setStatus(204);
-            return {};
+            return {timeSeries: null, sensors: null};
         }
         const hasElectricalData = agHubWell && agHubWell.wellConnectedMeter;
 
