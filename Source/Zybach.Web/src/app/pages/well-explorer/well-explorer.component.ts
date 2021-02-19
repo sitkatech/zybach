@@ -184,9 +184,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "In GeoOptix?",
-        field: "inGeoOptix",
-        valueFormatter: function (params){
-          if (params.value){
+        valueGetter: function (params){
+          if (params.data.inGeoOptix){
             return "Yes"
           } else {
             return "No"

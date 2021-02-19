@@ -24,6 +24,7 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   rangeMax: number;
   wellRegistrationID: string;
   tooltipFields: any;
+  noTimeSeriesData: boolean = false;;
 
 
   constructor(
@@ -48,6 +49,10 @@ export class WellDetailComponent implements OnInit, OnDestroy {
   getChartDataAndBuildChart(){
     
     this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
+      if (!response){
+        this.noTimeSeriesData = true;
+        return;
+      }
       this.timeSeries = response.timeSeries;
 
       const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;

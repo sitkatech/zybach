@@ -12,5 +12,6 @@
         (Stub detail page--implementation forthcoming!)
     </p>
     
-    <div id="{{chartID}}" style="width:100%; min-height: 340px;"></div>
+    <div *ngIf="!noTimeSeriesData" id="{{chartID}}" style="width:100%; min-height: 340px;"></div>
+    <em *ngIf="noTimeSeriesData">No time series data available for this well.</em>
 </div>

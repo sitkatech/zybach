@@ -16,7 +16,7 @@ export class InfluxService {
     public async getLastReadingDateTime(): Promise<{ [key: string]: Date }> {
         const query = 'from(bucket: "tpnrd-qa") \
         |> range(start: 2000-01-01T00:00:00Z) \
-        |> filter(fn: (r) => r["_measurement"] == "continuity" or r["_measurement"] == "gallons" or r["_measurement"] == "estimated-pumped-volume") \
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") \
         |> last() \
         |> group(columns: ["registration-id"])'
 
@@ -44,7 +44,7 @@ export class InfluxService {
     public async getFirstReadingDateTime(): Promise<{ [key: string]: Date }> {
         const query = 'from(bucket: "tpnrd-qa") \
         |> range(start: 2000-01-01T00:00:00Z) \
-        |> filter(fn: (r) => r["_measurement"] == "continuity" or r["_measurement"] == "gallons" or r["_measurement"] == "estimated-pumped-volume") \
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") \
         |> first() \
         |> group(columns: ["registration-id"])'
 

@@ -32,6 +32,10 @@ export class ChartDataController extends Controller{
         const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
         const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
         const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
+        if (!firstReadingDate){
+            this.setStatus(204);
+            return {};
+        }
         const hasElectricalData = agHubWell && agHubWell.wellConnectedMeter;
 
         let timeSeriesPoints: any[] = []

@@ -10,8 +10,8 @@ services:
       NODE_ENV: development
       DESTINATION_BUCKET: tpnrd-qa
     ports:
-      - 9229:9229
-    command: node --inspect=0.0.0.0:9229 teaspoon.js -c
+      - 9232:9232
+    command: node --inspect=0.0.0.0:9232 teaspoon.js -c
 secrets:
   TEASPOON_SECRETS:
     file: secrets.json

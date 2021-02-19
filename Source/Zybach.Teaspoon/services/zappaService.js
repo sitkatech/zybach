@@ -1,5 +1,5 @@
 //const config = require("./config");
-const baseUrl = "https://i7mkwlfa1b.execute-api.us-east-2.amazonaws.com/prod";
+const baseUrl = "https://azwhtugjz2.execute-api.us-east-2.amazonaws.com/prod";
 const { Client } = require('node-rest-client');
 const config = require('../config');
 
