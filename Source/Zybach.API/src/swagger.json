@@ -344,8 +344,7 @@
 				"required": [
 					"FirstName",
 					"LastName",
-					"Email",
-					"Role"
+					"Email"
 				],
 				"type": "object",
 				"additionalProperties": false
