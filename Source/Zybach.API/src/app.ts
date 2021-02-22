@@ -76,7 +76,7 @@ app.use(function (req, res, next) {
 app.use(function (err: ApiError, req: Request, res: Response, next: NextFunction) {
   // set locals, only providing error in development
   if (err instanceof ValidateError) {
-    console.warn(`Caught Validation Error for ${req.path}:`, err.fields);
+    console.error(`Caught Validation Error for ${req.path}:`, err.fields);
     return res.status(422).json({
       message: "Validation Failed",
       details: err?.fields,

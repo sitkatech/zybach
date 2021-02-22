@@ -4,7 +4,7 @@ export interface UserCreateDto{
     FirstName: string;
     LastName: string;
     Email: string;
-    Role: string;
+    Role?: string;
 }
 
 export interface UserEditDto{
