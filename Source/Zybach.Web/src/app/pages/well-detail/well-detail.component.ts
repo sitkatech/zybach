@@ -8,21 +8,13 @@ import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor
 import { default as vegaEmbed } from 'vega-embed';
 
 import {
-  Control, FitBoundsOptions,
   GeoJSON,
   marker,
   map,
   Map,
   MapOptions,
   tileLayer,
-  Icon,
-  geoJSON,
-  icon,
-  latLng,
-  Layer,
-  LeafletEvent,
-  layerGroup
-} from 'leaflet';
+  icon} from 'leaflet';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
@@ -52,8 +44,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   boundingBox: any;
   tileLayers: any;
   map: Map;
-  mapID = "wellLocation"
-    ;
+  mapID = "wellLocation";
 
 
   constructor(
@@ -69,6 +60,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
+      this.getWellDetails();
       this.getChartDataAndBuildChart();
     })
   }
@@ -77,6 +69,29 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.watchUserChangeSubscription.unsubscribe();
     this.chartSubscription.unsubscribe();
   }
+
+  getWellDetails(){
+    this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
+      this.well = well;
+      this.addWellToMap();
+      this.cdr.detectChanges();
+    })
+  }
+
+  getSensorTypes() {
+    return this.sensors.map(x => x.sensorType).join(", ");
+  }
+
+  getLastReadingDate() {
+    if (!this.well.lastReadingDate) {
+      return ""
+    }
+    const time = moment(this.well.lastReadingDate)
+    const timepiece = time.format('h:mm a');
+    return time.format('M/D/yyyy ') + timepiece;
+  }
+
+  // Begin section: location map
 
   public ngAfterViewInit(): void {
     const mapOptions: MapOptions = {
@@ -112,36 +127,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }, this.tileLayers);
   }
 
-  getChartDataAndBuildChart() {
-
-    this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
-      this.well = response.well;
-      this.sensors = response.sensors;
-      this.addWellToMap();
-      this.cdr.detectChanges();
-
-      console.log(this.well);
-
-      if (!response) {
-        this.noTimeSeriesData = true;
-        return;
-      }
-      this.timeSeries = response.timeSeries;
-
-      const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
-      if (gallonsMax !== 0) {
-        this.rangeMax = gallonsMax * 1.05;
-      } else {
-        this.rangeMax = 10000;
-      }
-
-      this.tooltipFields = response.sensors.map(x => ({ "field": x.sensorType, "type": "ordinal" }));
-
-      this.buildChart();
-    });
-  }
-
-  addWellToMap() {
+  public addWellToMap() {
     const sensorTypes = this.sensors.map(x => x.sensorType);
     let mapIcon;
     debugger;
@@ -180,6 +166,37 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     
     let target = (this.map as any)._getBoundsCenterZoom(wellLayer.getBounds(), null);
     this.map.setView(target.center, 16, null);
+  }
+
+  // End section: location map
+
+  // Begin section: chart
+
+  getChartDataAndBuildChart() {
+
+    this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
+      
+      this.sensors = response.sensors;
+
+      if (!response) {
+        this.noTimeSeriesData = true;
+        this.timeSeries = [];
+        return;
+      }
+      this.timeSeries = response.timeSeries;
+      this.cdr.detectChanges();
+
+      const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
+      if (gallonsMax !== 0) {
+        this.rangeMax = gallonsMax * 1.05;
+      } else {
+        this.rangeMax = 10000;
+      }
+
+      this.tooltipFields = response.sensors.map(x => ({ "field": x.sensorType, "type": "ordinal" }));
+
+      this.buildChart();
+    });
   }
 
   buildChart() {
@@ -266,17 +283,5 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       ]
     }
   }
-
-  getSensorTypes() {
-    return this.sensors.map(x => x.sensorType).join(", ");
-  }
-
-  getLastReadingDate() {
-    if (!this.well.lastReadingDate) {
-      return ""
-    }
-    const time = moment(this.well.lastReadingDate)
-    const timepiece = time.format('h:mm a');
-    return time.format('M/D/yyyy ') + timepiece;
-  }
+  // End section: chart
 }

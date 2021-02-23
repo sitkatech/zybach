@@ -38,25 +38,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"SensorSummaryDto": {
-				"properties": {
-					"wellRegistrationID": {
-						"type": "string"
-					},
-					"sensorName": {
-						"type": "string"
-					},
-					"sensorType": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"wellRegistrationID",
-					"sensorType"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"WellSummaryDto": {
 				"properties": {
 					"wellRegistrationID": {
@@ -88,6 +69,25 @@
 				"required": [
 					"wellRegistrationID",
 					"location"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SensorSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"sensorName": {
+						"type": "string"
+					},
+					"sensorType": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"sensorType"
 				],
 				"type": "object",
 				"additionalProperties": false

@@ -25,6 +25,12 @@
                         <div class="col-12  col-sm-6 label"><strong>Last Reading Date: </strong></div>
                         <div class="col-12  col-sm-6">{{getLastReadingDate()}}</div>
                     </div>
+                    <div class="row" *ngIf="!well">
+                        <div class="col text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -46,6 +52,12 @@
                     Flow Measurements
                 </div>
                 <div class="card-body">
+                    <div class="row" *ngIf="!timeSeries">
+                        <div class="col text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
                     <div *ngIf="!noTimeSeriesData" id="{{chartID}}" style="width:100%; min-height: 340px;"></div>
                     <em *ngIf="noTimeSeriesData">No time series data available for this well.</em>
                 </div>

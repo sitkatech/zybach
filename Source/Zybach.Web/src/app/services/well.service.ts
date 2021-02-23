@@ -21,11 +21,11 @@ export class WellService {
     return this.apiService.getFromApi(`wells/${id}`);
   }
 
-  public getElectricalBasedFlowEstimateSeries(id: string) {
-    return this.apiService.getFromApi(`chartData/electricalBasedEstimate/${id}`);
-  }
-
   public getChartData(id: string) {
     return this.apiService.getFromApi(`chartData/${id}`);
+  }
+
+  public getWellDetails(id: string) {
+    return this.apiService.getFromApi(`chartData/${id}/details`);
   }
 }

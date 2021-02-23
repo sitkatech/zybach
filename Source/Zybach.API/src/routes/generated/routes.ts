@@ -44,16 +44,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "SensorSummaryDto": {
-        "dataType": "refObject",
-        "properties": {
-            "wellRegistrationID": {"dataType":"string","required":true},
-            "sensorName": {"dataType":"string"},
-            "sensorType": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "WellSummaryDto": {
         "dataType": "refObject",
         "properties": {
@@ -65,6 +55,16 @@ const models: TsoaRoute.Models = {
             "firstReadingDate": {"dataType":"datetime"},
             "inGeoOptix": {"dataType":"boolean"},
             "fetchDate": {"dataType":"datetime"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SensorSummaryDto": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "sensorName": {"dataType":"string"},
+            "sensorType": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -349,7 +349,7 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/chartData/electricalBasedEstimate/:wellRegistrationID',
+        app.get('/api/chartData/:wellRegistrationID/details',
             function (request: any, response: any, next: any) {
             const args = {
                     wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
@@ -372,7 +372,7 @@ export function RegisterRoutes(app: express.Router) {
             }
 
 
-            const promise = controller.getElectricalBasedFlowEstimateSeries.apply(controller, validatedArgs as any);
+            const promise = controller.getWellDetails.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

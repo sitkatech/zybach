@@ -1,5 +1,6 @@
 import { inject } from "inversify";
 import { Hidden, Route, Controller, Get, Path } from "tsoa";
+import { WellSummaryDto } from "../dtos/well-summary-dto";
 import { AghubWellService } from "../services/aghub-well-service";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InfluxService } from "../services/influx-service";
@@ -8,7 +9,7 @@ import { provideSingleton } from "../util/provide-singleton";
 @Hidden()
 @Route("/api/chartData")
 @provideSingleton(ChartDataController)
-export class ChartDataController extends Controller{
+export class ChartDataController extends Controller {
     constructor(
         @inject(InfluxService) private influxService: InfluxService,
         @inject(GeoOptixService) private geooptixService: GeoOptixService,
@@ -17,34 +18,17 @@ export class ChartDataController extends Controller{
         super();
     }
 
-    @Get("electricalBasedEstimate/{wellRegistrationID}")
-    public async getElectricalBasedFlowEstimateSeries(
+    @Get("{wellRegistrationID}/details")
+    public async getWellDetails(
         @Path() wellRegistrationID: string
-    ) {
-        const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
-        return await this.influxService.getElectricalBasedFlowEstimateSeries(wellRegistrationID, firstReadingDate);
-    }
-
-    @Get("{wellRegistrationID}")
-    public async getChartData(
-        @Path() wellRegistrationID: string
-    ){
-        
-        const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
-        
-        if (!firstReadingDate){
-            this.setStatus(204);
-            return {timeSeries: null, sensors: null, well: null};
-        }
-        
-        const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
+    ): Promise<WellSummaryDto> {
         let well = await this.geooptixService.getWellSummary(wellRegistrationID);
         const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
 
         const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
-        if (well){
+        if (well) {
             well.wellTPID = agHubWell?.wellTPID;
-            if (agHubWell){
+            if (agHubWell) {
                 well.location = agHubWell.location;
             }
         } else {
@@ -52,26 +36,42 @@ export class ChartDataController extends Controller{
         }
 
         well.lastReadingDate = lastReadingDate;
+        return well;
+    }
 
+    @Get("{wellRegistrationID}")
+    public async getChartData(
+        @Path() wellRegistrationID: string
+    ) {
+        const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
+
+        if (!firstReadingDate) {
+            this.setStatus(204);
+            return { timeSeries: null, sensors: null };
+        }
+
+        const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
+
+        const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
         const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
 
         let timeSeriesPoints: any[] = []
 
-        for (var sensor of sensors){
+        for (var sensor of sensors) {
             const sensorPoints = await this.influxService.getPumpedVolumeForSensor(sensor, firstReadingDate)
             timeSeriesPoints = [...timeSeriesPoints, ...sensorPoints];
         }
 
-        if (hasElectricalData){
+        if (hasElectricalData) {
             sensors.push({ wellRegistrationID: wellRegistrationID, sensorType: "Electrical Data" });
             const electricPoints = await this.influxService.getElectricalBasedFlowEstimateSeries(wellRegistrationID, firstReadingDate);
             timeSeriesPoints = [...timeSeriesPoints, ...electricPoints];
         }
 
-        timeSeriesPoints.forEach(x=>{
+        timeSeriesPoints.forEach(x => {
             x.gallonsString = x.gallons.toLocaleString() + " gallons"
         })
 
-        return {timeSeries: timeSeriesPoints, sensors: sensors, well: well}; 
+        return { timeSeries: timeSeriesPoints, sensors: sensors };
     }
 }
