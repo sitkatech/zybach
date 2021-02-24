@@ -64,5 +64,40 @@
             </div>
         </div>
     </div>
-
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Installation Details
+                </div>
+                <div class="card-body">
+                    <div class="row" *ngIf="!installation">
+                        <div class="col text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="installation">
+                        <div class="col">
+                            <div class="row">
+                                <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
+                                <div class="col-12  col-sm-6">{{installation.status}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
+                                <div class="col-12  col-sm-6">{{getInstallationDate()}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
+                                <div class="col-12  col-sm-6">lat: {{installation.lat}}, <br/> lng: {{installation.lon}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
+                                <div class="col-12  col-sm-6">{{installation.flowmeterSerialNumber}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
+                                <div class="col-12  col-sm-6">{{installation.sensorSerialNumber}}</div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <img class="img img-fluid" src="/assets/main/placeholder.png"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

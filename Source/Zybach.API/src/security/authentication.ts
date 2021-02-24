@@ -1,10 +1,8 @@
 import secrets from '../secrets';
 import { UserDto } from '../dtos/user-dto';
 import { UnauthorizedError } from '../errors/unauthorized-error';
-import { ApiError } from '../errors/apiError';
 import { UserService } from '../services/user-service';
 import { RequestWithUserContext } from '../request-with-user-context';
-import { promises } from 'fs';
 import { InternalServerError } from '../errors/internal-server-error';
 
 export enum SecurityType {
@@ -38,6 +36,7 @@ export async function expressAuthentication(req: RequestWithUserContext, securit
         if (!req.auth) {
             throw new UnauthorizedError("Authorization missing from header.");
         }
+        
         const user = await new UserService().getUserByGuid(req.auth.sub)
 
         if (!scopes || !scopes.length) {

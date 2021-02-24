@@ -40,7 +40,8 @@ app.use(jwt({
     cache:true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: "https://qa.keystone.sitkatech.com/core/.well-known/jwks",
+    // TODO this needs to be set by configuration
+    jwksUri: `${process.env["KEYSTONE_BASE_URL"]}/core/.well-known/jwks`,
   }),
   algorithms: ['RS256'],
   requestProperty: "auth",

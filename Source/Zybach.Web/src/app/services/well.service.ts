@@ -28,4 +28,8 @@ export class WellService {
   public getWellDetails(id: string) {
     return this.apiService.getFromApi(`chartData/${id}/details`);
   }
+
+  public getInstallationDetails(id: string){
+    return this.apiService.getFromApi(`wells/${id}/installation`);
+  }
 }

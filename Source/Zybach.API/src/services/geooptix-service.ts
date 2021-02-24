@@ -3,6 +3,9 @@ import { InternalServerError } from "../errors/internal-server-error";
 import secrets from "../secrets";
 import { provideSingleton } from "../util/provide-singleton";
 import { SensorSummaryDto, SensorTypeMap, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { WellController } from "../controllers/wells.controller";
+
+const FileReader = require('filereader');
 
 @provideSingleton(GeoOptixService)
 export class GeoOptixService {
@@ -30,7 +33,6 @@ export class GeoOptixService {
 
     public async getWellSummary(wellRegistrationID: string): Promise<WellSummaryDto> {
         try {
-            // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
             const geoOptixRequest = await axios.get(
                 `${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}`,
                 {
@@ -138,5 +140,84 @@ export class GeoOptixService {
 
         // return the Map for further use
         return wellMap;
+    }
+
+    public async getInstallationRecord(wellRegistrationID: string): Promise<any> {
+        const installationCollectionRoute =
+         `${secrets.GEOOPTIX_HOSTNAME}/projects/water-data-program/sites/${wellRegistrationID}/samples`;
+        try {
+            const collectionResult = await axios.get(installationCollectionRoute, {
+                headers: {
+                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
+                }
+            });
+
+            const installationCanonicalName = collectionResult.data[0]?.CanonicalName;
+            if (!installationCollectionRoute){
+                return null;
+            }
+
+            const installationResult = await axios.get(`${installationCollectionRoute}/${installationCanonicalName}/methods`, {
+                headers: {
+                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
+                }
+            });
+
+            const installation = installationResult.data;
+
+            const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
+            const sensorRecord = installationRecord.sensor.Records[0]?.Fields;
+  
+            const sensorType = sensorRecord["sensor-type"] && (Array.isArray(sensorRecord["sensor-type"]) ? sensorRecord["sensor-type"][0] : sensorRecord["sensor-type"]);
+            const continuitySensorModel = sensorRecord["sensor-model-continuity"] && (Array.isArray(sensorRecord["sensor-model-continuity"]) ? sensorRecord["sensor-model-continuity"][0] : sensorRecord["sensor-model-flow"]);
+            const flowSensorModel = sensorRecord["sensor-model-flow"] && (Array.isArray(sensorRecord["sensor-model-flow"]) ? sensorRecord["sensor-model-flow"][0] : sensorRecord["sensor-model-flow"]);
+            const pressureSensorModel = sensorRecord["sensor-model-pressure"] && (Array.isArray(sensorRecord["sensor-model-pressure"]) ? sensorRecord["sensor-model-pressure"][0] : sensorRecord["sensor-model-pressure"]);
+  
+            const installationRecordDto = {
+                status: installation[0].Status.Name,
+                date: installationRecord["install-date"],
+                lon: installationRecord["gps-location"]?.geometry.coordinates[0],
+                lat: installationRecord["gps-location"]?.geometry.coordinates[1],
+                flowmeterSerialNumber: sensorRecord["flow-serial-number"],
+                sensorSerialNumber: sensorRecord["sensor-serial-number"],
+                affiliation: installationRecord["installer-affiliation"] && installationRecord["installer-affiliation"][0].toUpperCase(),
+                initials: installationRecord["installer-initials"],
+                sensorType: sensorType,
+                continuitySensorModel: continuitySensorModel,
+                flowSensorModel: flowSensorModel,
+                pressureSensorModel: pressureSensorModel,
+                wellDepth: sensorRecord["well-depth"],
+                installDepth: sensorRecord["install-depth"],
+                cableLength: sensorRecord["cable-length"],
+                waterLevel: sensorRecord["water-level"]
+            }
+
+            const photoRecords = installation[0].MethodInstance.RecordSets[0].Records[0].Fields.sensor.Records[0].Fields.photos.Records;
+
+            const photoUrls = photoRecords.map((x: any) =>
+                `${installationCollectionRoute}/${installationCanonicalName}/folders/.methods/files/${x.Fields.photo}/view`
+            );
+
+            // for (const photoUrl of photoUrls){
+            //     const photo = await axios.get(photoUrl, {
+            //         headers: {
+            //             "x-geooptix-token": secrets.GEOOPTIX_API_KEY
+            //         },
+            //         responseType: "arraybuffer"
+            //     });
+
+            //     const reader = new FileReader();
+            //     reader.readAsDataURL(photo.data);
+            //     reader.onloadend = () =>{
+            //         const b64 = reader.result;
+            //         console.log(b64);
+            //     }
+            // }
+
+            return installationRecordDto;
+        } catch(err){
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
     }
 }

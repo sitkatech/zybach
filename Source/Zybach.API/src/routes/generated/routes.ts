@@ -5,6 +5,8 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BookController } from './../../controllers/books.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { WellController } from './../../controllers/wells.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ChartDataController } from './../../controllers/chart-data.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CustomRichTextController } from './../../controllers/custom-rich-text.controller';
@@ -16,8 +18,6 @@ import { MapDataController } from './../../controllers/map-data.controller';
 import { RoleController } from './../../controllers/role.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../../controllers/user.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { WellController } from './../../controllers/wells.controller';
 import { expressAuthentication } from './../../security/authentication';
 import { iocContainer } from './../../ioc';
 import { IocContainer, IocContainerFactory } from '@tsoa/runtime';
@@ -55,6 +55,83 @@ const models: TsoaRoute.Models = {
             "firstReadingDate": {"dataType":"datetime"},
             "inGeoOptix": {"dataType":"boolean"},
             "fetchDate": {"dataType":"datetime"},
+            "hasElectricalData": {"dataType":"boolean"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ApiResult_WellSummaryDto-Array_": {
+        "dataType": "refObject",
+        "properties": {
+            "status": {"dataType":"string","required":true},
+            "result": {"dataType":"array","array":{"ref":"WellSummaryDto"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ErrorResult": {
+        "dataType": "refObject",
+        "properties": {
+            "status": {"dataType":"string","required":true},
+            "message": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ResultFromInfluxDB": {
+        "dataType": "refObject",
+        "properties": {
+            "endTime": {"dataType":"datetime","required":true},
+            "gallons": {"dataType":"double","required":true},
+            "wellRegistrationID": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AggregatedResult": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "endTime": {"dataType":"datetime","required":true},
+            "gallons": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "VolumeByWell": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "intervalCount": {"dataType":"double","required":true},
+            "intervalVolumes": {"dataType":"array","array":{"ref":"AggregatedResult"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "StructuredResults": {
+        "dataType": "refObject",
+        "properties": {
+            "intervalCountTotal": {"dataType":"double","required":true},
+            "intervalWidthInMinutes": {"dataType":"double","required":true},
+            "intervalStart": {"dataType":"string","required":true},
+            "intervalEnd": {"dataType":"string","required":true},
+            "durationInMinutes": {"dataType":"double","required":true},
+            "wellCount": {"dataType":"double","required":true},
+            "volumesByWell": {"dataType":"array","array":{"ref":"VolumeByWell"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AbbreviatedWellDataResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "tags": {"dataType":"any","required":true},
+            "location": {"dataType":"any","required":true},
+            "createDate": {"dataType":"any","required":true},
+            "updateDate": {"dataType":"any","required":true},
+            "sensors": {"dataType":"array","array":{"dataType":"any"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -136,6 +213,7 @@ const models: TsoaRoute.Models = {
             "firstReadingDate": {"dataType":"datetime"},
             "inGeoOptix": {"dataType":"boolean"},
             "fetchDate": {"dataType":"datetime"},
+            "hasElectricalData": {"dataType":"boolean"},
             "sensors": {"dataType":"array","array":{"ref":"SensorSummaryDto"},"required":true},
         },
         "additionalProperties": false,
@@ -206,82 +284,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ApiResult_WellSummaryDto-Array_": {
-        "dataType": "refObject",
-        "properties": {
-            "status": {"dataType":"string","required":true},
-            "result": {"dataType":"array","array":{"ref":"WellSummaryDto"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ErrorResult": {
-        "dataType": "refObject",
-        "properties": {
-            "status": {"dataType":"string","required":true},
-            "message": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ResultFromInfluxDB": {
-        "dataType": "refObject",
-        "properties": {
-            "endTime": {"dataType":"datetime","required":true},
-            "gallons": {"dataType":"double","required":true},
-            "wellRegistrationID": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AggregatedResult": {
-        "dataType": "refObject",
-        "properties": {
-            "wellRegistrationID": {"dataType":"string","required":true},
-            "endTime": {"dataType":"datetime","required":true},
-            "gallons": {"dataType":"double","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "VolumeByWell": {
-        "dataType": "refObject",
-        "properties": {
-            "wellRegistrationID": {"dataType":"string","required":true},
-            "intervalCount": {"dataType":"double","required":true},
-            "intervalVolumes": {"dataType":"array","array":{"ref":"AggregatedResult"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "StructuredResults": {
-        "dataType": "refObject",
-        "properties": {
-            "intervalCountTotal": {"dataType":"double","required":true},
-            "intervalWidthInMinutes": {"dataType":"double","required":true},
-            "intervalStart": {"dataType":"string","required":true},
-            "intervalEnd": {"dataType":"string","required":true},
-            "durationInMinutes": {"dataType":"double","required":true},
-            "wellCount": {"dataType":"double","required":true},
-            "volumesByWell": {"dataType":"array","array":{"ref":"VolumeByWell"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AbbreviatedWellDataResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "wellRegistrationID": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
-            "tags": {"dataType":"any","required":true},
-            "location": {"dataType":"any","required":true},
-            "createDate": {"dataType":"any","required":true},
-            "updateDate": {"dataType":"any","required":true},
-            "sensors": {"dataType":"array","array":{"dataType":"any"},"required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -346,6 +348,150 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.get.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/wells',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getWells.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/wells/pumpedVolume',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},
+                    wellRegistrationIDs: {"in":"query","name":"filter","dataType":"array","array":{"dataType":"string"}},
+                    endDateString: {"in":"query","name":"endDate","dataType":"string"},
+                    interval: {"in":"query","name":"interval","dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getPumpedVolume.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/wells/:wellRegistrationID',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getWell.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/wells/:wellRegistrationID/installation',
+            function (request: any, response: any, next: any) {
+            const args = {
+                    wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getInstallationRecordForWell.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/wells/:wellRegistrationID/pumpedVolume',
+            authenticateMiddleware([{"api_key":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
+                    startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},
+                    endDateString: {"in":"query","name":"endDate","dataType":"string"},
+                    interval: {"in":"query","name":"interval","dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getPumpedVolumeByWell.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -818,123 +964,6 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.getByClaim.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/wells',
-            authenticateMiddleware([{"api_key":[]}]),
-            function (request: any, response: any, next: any) {
-            const args = {
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
-
-            const controller: any = container.get<WellController>(WellController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-
-            const promise = controller.getWells.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/wells/pumpedVolume',
-            authenticateMiddleware([{"api_key":[]}]),
-            function (request: any, response: any, next: any) {
-            const args = {
-                    startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},
-                    wellRegistrationIDs: {"in":"query","name":"filter","dataType":"array","array":{"dataType":"string"}},
-                    endDateString: {"in":"query","name":"endDate","dataType":"string"},
-                    interval: {"in":"query","name":"interval","dataType":"double"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
-
-            const controller: any = container.get<WellController>(WellController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-
-            const promise = controller.getPumpedVolume.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/wells/:wellRegistrationID',
-            authenticateMiddleware([{"api_key":[]}]),
-            function (request: any, response: any, next: any) {
-            const args = {
-                    wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
-
-            const controller: any = container.get<WellController>(WellController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-
-            const promise = controller.getWell.apply(controller, validatedArgs as any);
-            promiseHandler(controller, promise, response, next);
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/wells/:wellRegistrationID/pumpedVolume',
-            authenticateMiddleware([{"api_key":[]}]),
-            function (request: any, response: any, next: any) {
-            const args = {
-                    wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
-                    startDateString: {"in":"query","name":"startDate","required":true,"dataType":"string"},
-                    endDateString: {"in":"query","name":"endDate","dataType":"string"},
-                    interval: {"in":"query","name":"interval","dataType":"double"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-            } catch (err) {
-                return next(err);
-            }
-
-            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
-
-            const controller: any = container.get<WellController>(WellController);
-            if (typeof controller['setStatus'] === 'function') {
-                controller.setStatus(undefined);
-            }
-
-
-            const promise = controller.getPumpedVolumeByWell.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

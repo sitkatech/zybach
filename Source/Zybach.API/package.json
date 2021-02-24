@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./dist/www.js",
-    "build": "tsoa routes && tsc -p src",
+    "build": "tsoa spec-and-routes && tsc -p src",
     "autogen-routes": "nodemon -w ./src/controllers -x tsoa spec-and-routes",
     "debug": "nodemon",
     "build-swagger": "tsoa spec"
@@ -22,6 +22,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "express-jwt": "^6.0.0",
+    "filereader": "^0.10.3",
     "http-errors": "~1.6.3",
     "inversify": "^5.0.5",
     "inversify-binding-decorators": "^4.0.0",

@@ -1,6 +1,6 @@
 import { inject } from "inversify";
 import { Hidden, Route, Controller, Get, Path } from "tsoa";
-import { WellSummaryDto } from "../dtos/well-summary-dto";
+import { WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { AghubWellService } from "../services/aghub-well-service";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InfluxService } from "../services/influx-service";
@@ -26,6 +26,8 @@ export class ChartDataController extends Controller {
         const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
 
         const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
+        well.lastReadingDate = lastReadingDate;
+
         if (well) {
             well.wellTPID = agHubWell?.wellTPID;
             if (agHubWell) {
@@ -35,8 +37,11 @@ export class ChartDataController extends Controller {
             well = agHubWell
         }
 
-        well.lastReadingDate = lastReadingDate;
-        return well;
+        let wellWithSensors = well as WellWithSensorSummaryDto
+        const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
+        wellWithSensors.sensors = sensors;
+
+        return wellWithSensors;
     }
 
     @Get("{wellRegistrationID}")
@@ -46,7 +51,7 @@ export class ChartDataController extends Controller {
         const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
 
         if (!firstReadingDate) {
-            this.setStatus(204);
+            //this.setStatus(204);
             return { timeSeries: null, sensors: null };
         }
 

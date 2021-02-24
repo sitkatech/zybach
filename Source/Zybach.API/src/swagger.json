@@ -64,303 +64,15 @@
 					"fetchDate": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"hasElectricalData": {
+						"type": "boolean"
 					}
 				},
 				"required": [
 					"wellRegistrationID",
 					"location"
 				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"SensorSummaryDto": {
-				"properties": {
-					"wellRegistrationID": {
-						"type": "string"
-					},
-					"sensorName": {
-						"type": "string"
-					},
-					"sensorType": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"wellRegistrationID",
-					"sensorType"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CustomRichTextTypeDto": {
-				"properties": {
-					"CustomRichTextTypeID": {
-						"type": "number",
-						"format": "double"
-					},
-					"CustomRichTextTypeName": {
-						"type": "string"
-					},
-					"CustomRichTextTypeDisplayName": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CustomRichTextDto": {
-				"properties": {
-					"CustomRichTextID": {
-						"type": "number",
-						"format": "double"
-					},
-					"CustomRichTextType": {
-						"$ref": "#/components/schemas/CustomRichTextTypeDto"
-					},
-					"CustomRichTextContent": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CustomRichTextUpdateDto": {
-				"properties": {
-					"CustomRichTextContent": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"CustomRichTextContent"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"FieldDefinitionTypeDto": {
-				"properties": {
-					"FieldDefinitionTypeID": {
-						"type": "number",
-						"format": "double"
-					},
-					"FieldDefinitionTypeName": {
-						"type": "string"
-					},
-					"FieldDefinitionTypeDisplayName": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"FieldDefinitionDto": {
-				"properties": {
-					"FieldDefinitionID": {
-						"type": "number",
-						"format": "double"
-					},
-					"FieldDefinitionType": {
-						"$ref": "#/components/schemas/FieldDefinitionTypeDto"
-					},
-					"FieldDefinitionValue": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"FieldDefinitionUpdateDto": {
-				"properties": {
-					"FieldDefinitionValue": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"FieldDefinitionValue"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"WellWithSensorSummaryDto": {
-				"properties": {
-					"wellRegistrationID": {
-						"type": "string"
-					},
-					"wellTPID": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"location": {},
-					"lastReadingDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"firstReadingDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"inGeoOptix": {
-						"type": "boolean"
-					},
-					"fetchDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"sensors": {
-						"items": {
-							"$ref": "#/components/schemas/SensorSummaryDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"wellRegistrationID",
-					"location",
-					"sensors"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ApiResult_WellWithSensorSummaryDto-Array_": {
-				"properties": {
-					"status": {
-						"type": "string"
-					},
-					"result": {
-						"items": {
-							"$ref": "#/components/schemas/WellWithSensorSummaryDto"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"status",
-					"result"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"RoleDto": {
-				"properties": {
-					"RoleID": {
-						"type": "number",
-						"format": "double"
-					},
-					"RoleDisplayName": {
-						"type": "string"
-					},
-					"RoleName": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"RoleID",
-					"RoleDisplayName",
-					"RoleName"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"UserDto": {
-				"properties": {
-					"UserID": {
-						"type": "string"
-					},
-					"UserGuid": {
-						"type": "string"
-					},
-					"FirstName": {
-						"type": "string"
-					},
-					"LastName": {
-						"type": "string"
-					},
-					"FullName": {
-						"type": "string"
-					},
-					"Email": {
-						"type": "string"
-					},
-					"Phone": {
-						"type": "string"
-					},
-					"CreateDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"UpdateDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"LastActivityDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"DisclaimerAcknowledgedDate": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"ReceiveSupportEmails": {
-						"type": "boolean"
-					},
-					"LoginName": {
-						"type": "string"
-					},
-					"Company": {
-						"type": "string"
-					},
-					"IsAnonymous": {
-						"type": "boolean"
-					},
-					"Role": {
-						"$ref": "#/components/schemas/RoleDto"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
-			"UserCreateDto": {
-				"properties": {
-					"LoginName": {
-						"type": "string"
-					},
-					"UserGuid": {
-						"type": "string"
-					},
-					"FirstName": {
-						"type": "string"
-					},
-					"LastName": {
-						"type": "string"
-					},
-					"Email": {
-						"type": "string"
-					},
-					"Role": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"FirstName",
-					"LastName",
-					"Email"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"UserEditDto": {
-				"properties": {
-					"Role": {
-						"type": "string"
-					},
-					"ReceiveSupportEmails": {
-						"type": "boolean"
-					},
-					"UserGuid": {
-						"type": "string"
-					}
-				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -536,6 +248,300 @@
 					"updateDate",
 					"sensors"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SensorSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"sensorName": {
+						"type": "string"
+					},
+					"sensorType": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"sensorType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomRichTextTypeDto": {
+				"properties": {
+					"CustomRichTextTypeID": {
+						"type": "number",
+						"format": "double"
+					},
+					"CustomRichTextTypeName": {
+						"type": "string"
+					},
+					"CustomRichTextTypeDisplayName": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomRichTextDto": {
+				"properties": {
+					"CustomRichTextID": {
+						"type": "number",
+						"format": "double"
+					},
+					"CustomRichTextType": {
+						"$ref": "#/components/schemas/CustomRichTextTypeDto"
+					},
+					"CustomRichTextContent": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CustomRichTextUpdateDto": {
+				"properties": {
+					"CustomRichTextContent": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"CustomRichTextContent"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FieldDefinitionTypeDto": {
+				"properties": {
+					"FieldDefinitionTypeID": {
+						"type": "number",
+						"format": "double"
+					},
+					"FieldDefinitionTypeName": {
+						"type": "string"
+					},
+					"FieldDefinitionTypeDisplayName": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FieldDefinitionDto": {
+				"properties": {
+					"FieldDefinitionID": {
+						"type": "number",
+						"format": "double"
+					},
+					"FieldDefinitionType": {
+						"$ref": "#/components/schemas/FieldDefinitionTypeDto"
+					},
+					"FieldDefinitionValue": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"FieldDefinitionUpdateDto": {
+				"properties": {
+					"FieldDefinitionValue": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"FieldDefinitionValue"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"WellWithSensorSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"wellTPID": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {},
+					"lastReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"firstReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"inGeoOptix": {
+						"type": "boolean"
+					},
+					"fetchDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"hasElectricalData": {
+						"type": "boolean"
+					},
+					"sensors": {
+						"items": {
+							"$ref": "#/components/schemas/SensorSummaryDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"location",
+					"sensors"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResult_WellWithSensorSummaryDto-Array_": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"result": {
+						"items": {
+							"$ref": "#/components/schemas/WellWithSensorSummaryDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"status",
+					"result"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"RoleDto": {
+				"properties": {
+					"RoleID": {
+						"type": "number",
+						"format": "double"
+					},
+					"RoleDisplayName": {
+						"type": "string"
+					},
+					"RoleName": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"RoleID",
+					"RoleDisplayName",
+					"RoleName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserDto": {
+				"properties": {
+					"UserID": {
+						"type": "string"
+					},
+					"UserGuid": {
+						"type": "string"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"FullName": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"Phone": {
+						"type": "string"
+					},
+					"CreateDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"UpdateDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"LastActivityDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"DisclaimerAcknowledgedDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"ReceiveSupportEmails": {
+						"type": "boolean"
+					},
+					"LoginName": {
+						"type": "string"
+					},
+					"Company": {
+						"type": "string"
+					},
+					"IsAnonymous": {
+						"type": "boolean"
+					},
+					"Role": {
+						"$ref": "#/components/schemas/RoleDto"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserCreateDto": {
+				"properties": {
+					"LoginName": {
+						"type": "string"
+					},
+					"UserGuid": {
+						"type": "string"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"Email": {
+						"type": "string"
+					},
+					"Role": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"FirstName",
+					"LastName",
+					"Email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserEditDto": {
+				"properties": {
+					"Role": {
+						"type": "string"
+					},
+					"ReceiveSupportEmails": {
+						"type": "boolean"
+					},
+					"UserGuid": {
+						"type": "string"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			}

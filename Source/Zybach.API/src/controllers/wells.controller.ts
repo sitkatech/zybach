@@ -6,7 +6,8 @@ import {
     Route,
     Security,
     Response,
-    SuccessResponse
+    SuccessResponse,
+    Hidden
 } from "tsoa";
 import secrets from '../secrets';
 import { ApiError } from '../errors/apiError'
@@ -113,6 +114,16 @@ export class WellController extends Controller {
             console.error(err);
             throw new InternalServerError(err.message);
         }
+    }
+
+    @Get("{wellRegistrationID}/installation")
+    @Hidden()
+    public async getInstallationRecordForWell(
+        @Path() wellRegistrationID: string
+    ) {
+        const installationRecord = await this.geoOptixService.getInstallationRecord(wellRegistrationID);
+
+        return installationRecord;
     }
 
     /**

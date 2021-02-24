@@ -18,6 +18,7 @@ import {
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
+import { InstallationDto } from 'src/app/shared/models/installation-dto';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -34,6 +35,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   currentUser: UserDetailedDto;
   chartSubscription: any;
   well: WellWithSensorSummaryDto;
+  installation: InstallationDto;
   rawResults: string;
   timeSeries: any[];
   vegaView: any;
@@ -61,6 +63,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.currentUser = currentUser;
       this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
       this.getWellDetails();
+      this.getInstallationDetails();
       this.getChartDataAndBuildChart();
     })
   }
@@ -73,13 +76,22 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
       this.well = well;
-      this.addWellToMap();
+      console.log(this.well);
+      
       this.cdr.detectChanges();
+      this.addWellToMap();
+    })
+  }
+
+  getInstallationDetails(){
+    this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installation => {
+      this.installation = installation;
+      console.log(installation);
     })
   }
 
   getSensorTypes() {
-    return this.sensors.map(x => x.sensorType).join(", ");
+    return this.well.sensors.map(x => x.sensorType).join(", ");
   }
 
   getLastReadingDate() {
@@ -87,6 +99,15 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       return ""
     }
     const time = moment(this.well.lastReadingDate)
+    const timepiece = time.format('h:mm a');
+    return time.format('M/D/yyyy ') + timepiece;
+  }
+
+  getInstallationDate() {
+    if (!this.installation.date) {
+      return ""
+    }
+    const time = moment(this.installation.date)
     const timepiece = time.format('h:mm a');
     return time.format('M/D/yyyy ') + timepiece;
   }
@@ -128,9 +149,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public addWellToMap() {
-    const sensorTypes = this.sensors.map(x => x.sensorType);
+    const sensorTypes = this.well.sensors.map(x => x.sensorType);
     let mapIcon;
-    debugger;
 
     if (sensorTypes.includes("Flow Meter")) {
       mapIcon = icon.glyph({
@@ -175,14 +195,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getChartDataAndBuildChart() {
 
     this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
-      
-      this.sensors = response.sensors;
-
-      if (!response) {
+      if (!response.timeSeries) {
         this.noTimeSeriesData = true;
         this.timeSeries = [];
         return;
       }
+
+      this.sensors = response.sensors;
       this.timeSeries = response.timeSeries;
       this.cdr.detectChanges();
 
