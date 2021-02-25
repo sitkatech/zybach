@@ -6,5 +6,5 @@ RUN yarn install --silent && mv node_modules ../
 RUN yarn add ts-node
 COPY . .
 RUN yarn run build
-EXPOSE 80
+EXPOSE 3000
 CMD ["yarn", "start"]
