@@ -20,12 +20,15 @@ services:
       - ./src:/src
   mongo:
     image: mongo
+    env_file: 
+      - mongo.env
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
       - ./mongo-entrypoint/:/docker-entrypoint-initdb.d/
       - mongodata:/data/db
+      - ./db-script/:/db-script
     ports:
       - 27017:27017
 secrets:

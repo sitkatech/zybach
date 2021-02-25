@@ -63,3 +63,5 @@ typings/
 # don't commit compiled files
 dist
 secrets.json
+
+db-script/dump
