@@ -33,10 +33,10 @@ async function main() {
 async function getWellCollection(): Promise<agHubWell[]> {
     let result;
     try {
-        const wellCollectionUrl = config.COLLECTION_URL;
+        const wellCollectionUrl = config.MAIN_API_BASE_URL;
         result = await got.get(wellCollectionUrl, {
             headers: {
-                "x-api-key": config.COLLECTION_API_KEY
+                "x-api-key": config.MAIN_API_KEY
             },
             responseType: "json",
         });
@@ -92,7 +92,7 @@ async function cacheWellsInDb(wells: agHubWell[]) {
     const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}`;
     const client = await MongoClient.connect(connstring);
 
-    const db = client.db("zybachDb");
+    const db = client.db(config.DATABASE_NAME);
     const collection = db.collection("agHubWells");
 
     wells.forEach(x=> x.fetchDate = DateTime.local().toJSDate())
