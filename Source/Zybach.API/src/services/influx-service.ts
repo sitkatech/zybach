@@ -7,18 +7,20 @@ import { SensorSummaryDto } from "../dtos/well-summary-dto";
 export class InfluxService {
     private client: InfluxDB;
     private queryApi: QueryApi;
+    private bucket: string;
+
     constructor(){
-        
         this.client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: secrets.INFLUXDB_TOKEN });
         this.queryApi = this.client.getQueryApi(secrets.INFLUXDB_ORG);
+        this.bucket = secrets.INFLUX_BUCKET
     }
 
     public async getLastReadingDateTime(): Promise<{ [key: string]: Date }> {
-        const query = 'from(bucket: "tpnrd-qa") \
+        const query = `from(bucket: "${this.bucket}") \
         |> range(start: 2000-01-01T00:00:00Z) \
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") \
         |> last() \
-        |> group(columns: ["registration-id"])'
+        |> group(columns: ["registration-id"])`
 
         var lastReadingDates: { [key: string]: Date } = await new Promise((resolve,reject) => {
             let results
@@ -42,11 +44,11 @@ export class InfluxService {
     }
 
     public async getFirstReadingDateTime(): Promise<{ [key: string]: Date }> {
-        const query = 'from(bucket: "tpnrd-qa") \
+        const query = `from(bucket: "${this.bucket}") \
         |> range(start: 2000-01-01T00:00:00Z) \
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") \
         |> first() \
-        |> group(columns: ["registration-id"])'
+        |> group(columns: ["registration-id"])`
 
         var firstReadingDates: { [key: string]: Date } = await new Promise((resolve,reject) => {
             let results
@@ -70,7 +72,7 @@ export class InfluxService {
     }
 
     public async getFirstReadingDateTimeForWell(wellRegistrationID: string): Promise<Date> {
-        const query = `from(bucket: "tpnrd-qa") 
+        const query = `from(bucket: "${this.bucket}") 
         |> range(start: 2000-01-01T00:00:00Z) 
         |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
@@ -97,7 +99,7 @@ export class InfluxService {
         return firstReadingDate;
     }
     public async getLastReadingDateTimeForWell(wellRegistrationID: string): Promise<Date> {
-        const query = `from(bucket: "tpnrd-qa") 
+        const query = `from(bucket: "${this.bucket}") 
         |> range(start: 2000-01-01T00:00:00Z) 
         |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
@@ -160,7 +162,7 @@ export class InfluxService {
     public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string, from: Date): Promise<any[]> {
         // todo: this query needs to fill missing days with zeroes?
         console.log(from)
-        const query = `from(bucket: "tpnrd-qa") \
+        const query = `from(bucket: "${this.bucket}") \
         |> range(start: ${from.toISOString()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
         |> aggregateWindow(every: 1d, fn: sum, createEmpty: true) \
