@@ -17,6 +17,7 @@ import {
   icon} from 'leaflet';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
+import {GestureHandling} from 'leaflet-gesture-handling';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { InstallationDto } from 'src/app/shared/models/installation-dto';
 
@@ -115,11 +116,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   // Begin section: location map
 
   public ngAfterViewInit(): void {
+    Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
     const mapOptions: MapOptions = {
       maxZoom: this.maxZoom,
       layers: [
         this.tileLayers["Aerial"],
       ],
+      gestureHandling: true,
       fullscreenControl: true
     } as MapOptions;
     this.map = map(this.mapID, mapOptions);

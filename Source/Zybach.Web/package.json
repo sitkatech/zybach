@@ -51,6 +51,7 @@
     "iso8601-js-period": "^0.2.1",
     "jquery": "^3.4.1",
     "leaflet": "^1.5.1",
+    "leaflet-gesture-handling": "^1.2.1",
     "leaflet.fullscreen": "^1.6.0",
     "leaflet.icon.glyph": "^0.3.0",
     "leaflet.snogylop": "^0.4.0",
