@@ -14,8 +14,7 @@ import {
   Layer,
   LeafletEvent,
   layerGroup,
-  LatLng,
-  Marker
+  LatLng
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
@@ -72,7 +71,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public tpnrdBoundaryLayer: GeoJSON<any>;
   public wellsLayer: GeoJSON<any>;
   selectedFeatureLayer: any;
-  public selectedFeatureMarker: Marker;
 
   public dataSourceDropdownList: { item_id: number, item_text: string }[] = [];
   public selectedDataSources: { item_id: number, item_text: string }[] = [];
@@ -301,24 +299,35 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   }
 
   selectFeature(feature) : void {
-    if (this.selectedFeatureMarker) {
-      this.map.removeLayer(this.selectedFeatureMarker)
-    }
-
+    this.clearLayer(this.selectedFeatureLayer);
     const markerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
       iconUrl: "/assets/main/selectionMarker.png"
     });
 
-    let featureLatLng = new LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]);
+    this.selectedFeatureLayer = new GeoJSON(feature, {
+      pointToLayer: (feature,latlng) =>{
+        return marker(latlng, {icon: markerIcon});
+      },
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(() => {
+          const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
+          popupEl.registrationID = feature.properties.wellRegistrationID;
+          popupEl.sensorTypes = feature.properties.sensorTypes;
+          return popupEl;
+        });
+      }
+    })
 
-    this.selectedFeatureMarker = new Marker(featureLatLng, {icon: markerIcon});
-    this.selectedFeatureMarker.bindPopup(this.getPopupContentForWellFeature(feature));
+    this.selectedFeatureLayer
+      .addTo(this.map);
+    let target = (this.map as any)._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
+    this.map.setView(target.center, 16, null);
 
-    this.selectedFeatureMarker.addTo(this.map)
-    .openPopup();
-    this.map.setView(featureLatLng, 16, null);
+    this.selectedFeatureLayer.eachLayer(function (layer) {
+      layer.openPopup();
+    })
   }
 
   public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
