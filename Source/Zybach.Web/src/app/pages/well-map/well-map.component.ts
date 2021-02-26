@@ -13,11 +13,13 @@ import {
   latLng,
   Layer,
   LeafletEvent,
-  layerGroup
+  layerGroup,
+  LatLng
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
+import {GestureHandling} from 'leaflet-gesture-handling'
 import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
@@ -31,6 +33,8 @@ import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
 import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
+import { NgElement, WithProperties } from '@angular/elements';
+import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 
 @Component({
   selector: 'zybach-well-map',
@@ -135,13 +139,14 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-
+    Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
     const mapOptions: MapOptions = {
       maxZoom: this.maxZoom,
       layers: [
         this.tileLayers["Aerial"],
       ],
-      fullscreenControl: true
+      fullscreenControl: true,
+      gestureHandling:true
     } as MapOptions;
     this.map = map(this.mapID, mapOptions);
 
@@ -300,16 +305,36 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       glyph: "tint",
       iconUrl: "/assets/main/selectionMarker.png"
     });
+
     this.selectedFeatureLayer = new GeoJSON(feature, {
       pointToLayer: (feature,latlng) =>{
         return marker(latlng, {icon: markerIcon});
+      },
+      onEachFeature: (feature, layer) => {
+        layer.bindPopup(() => {
+          const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
+          popupEl.registrationID = feature.properties.wellRegistrationID;
+          popupEl.sensorTypes = feature.properties.sensorTypes;
+          return popupEl;
+        });
       }
     })
 
-    this.selectedFeatureLayer.addTo(this.map);
-    
+    this.selectedFeatureLayer
+      .addTo(this.map);
     let target = (this.map as any)._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
     this.map.setView(target.center, 16, null);
+
+    this.selectedFeatureLayer.eachLayer(function (layer) {
+      layer.openPopup();
+    })
+  }
+
+  public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
+    const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
+    popupEl.registrationID = feature.properties.wellRegistrationID;
+    popupEl.sensorTypes = feature.properties.sensorTypes;
+    return popupEl;
   }
   
   public clearLayer(layer: Layer): void {
