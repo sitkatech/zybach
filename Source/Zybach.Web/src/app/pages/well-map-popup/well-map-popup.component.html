@@ -9,9 +9,10 @@
         <tr>
             <td class="rowHeader">Data Source(s) Available:</td>
             <td class="rowValue">
-                <ng-container *ngFor="let sensor of sensorTypes">
-                    <p class="m-0">{{sensor}}</p>
+                <ng-container *ngIf="sensorTypes.length > 0">
+                    <p *ngFor="let sensor of sensorTypes" class="m-0">{{sensor}}</p>
                 </ng-container>
+                <span *ngIf="sensorTypes.length ==  0">None</span>
             </td>
         </tr>
     </tbody>
