@@ -32,6 +32,8 @@ import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
 import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
+import { NgElement, WithProperties } from '@angular/elements';
+import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 
 @Component({
   selector: 'zybach-well-map',
@@ -308,10 +310,21 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       }
     })
 
-    this.selectedFeatureLayer.addTo(this.map);
+    let popupContent = this.getPopupContentForWellFeature(feature);
+
+    this.selectedFeatureLayer.addTo(this.map)
+      .bindPopup(this.getPopupContentForWellFeature(feature))
+      .openPopup();
     
     let target = (this.map as any)._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
     this.map.setView(target.center, 16, null);
+  }
+
+  //In order to render a routerLink in the Popup we needed a slightly more robust solution
+  public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
+    const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
+    popupEl.feature = feature;
+    return popupEl;
   }
   
   public clearLayer(layer: Layer): void {

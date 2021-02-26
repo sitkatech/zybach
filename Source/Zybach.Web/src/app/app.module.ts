@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, APP_INITIALIZER, ErrorHandler } from '@angular/core';
+import { NgModule, APP_INITIALIZER, ErrorHandler, Injector } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
@@ -48,6 +48,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ToastrModule } from 'ngx-toastr';
 import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { WellMapPopupComponent } from './pages/well-map-popup/well-map-popup.component';
+import { createCustomElement } from '@angular/elements';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -79,6 +81,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WellExplorerComponent,
     WellDetailComponent,
     DashboardComponent,
+    WellMapPopupComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -111,7 +114,14 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     },
     DecimalPipe, CurrencyPipe, DatePipe
   ],
-  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent],
+  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, WellMapPopupComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  //https://github.com/Asymmetrik/ngx-leaflet/issues/178 for explanation
+  constructor(private injector: Injector) {
+    const WellMapPopupElement = createCustomElement(WellMapPopupComponent, {injector});
+    // Register the custom element with the browser.
+    customElements.define('well-map-popup-element', WellMapPopupElement);
+  }
+}
