@@ -7,18 +7,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class WellMapPopupComponent implements OnInit {
 
-  @Input() feature;
+  @Input() registrationID: string;
+  @Input() sensorTypes: Array<string>;
 
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  public getFeature() {
-    console.log(this.feature);
-  }
-
-  public getDistinctSensorTypes() : Array<string> {
-    return Array.from(new Set(this.feature.properties.sensorTypes));
   }
 }

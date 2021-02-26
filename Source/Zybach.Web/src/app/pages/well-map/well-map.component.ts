@@ -323,7 +323,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   //In order to render a routerLink in the Popup we needed a slightly more robust solution
   public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
     const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-    popupEl.feature = feature;
+    popupEl.registrationID = feature.properties.wellRegistrationID;
+    popupEl.sensorTypes = feature.properties.sensorTypes;
     return popupEl;
   }
   

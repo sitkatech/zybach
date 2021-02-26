@@ -1,22 +1,18 @@
-<div class="container text-center">
-    <table class="mb-1">
-        <tbody>
-            <tr>
-                <td class="rowHeader">Registration #:</td>
-                <td class="rowValue">{{feature.properties.wellRegistrationID}}</td>
-            </tr>
-            <tr>
-                <td class="rowHeader">Data Source(s) Available:</td>
-                <td class="rowValue">
-                    {{getFeature()}}
-                    <ng-container *ngFor="let sensor of feature.properties.sensorTypes">
-                        <p class="m-0">{{sensor}}</p>
-                    </ng-container>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <a class="text-center mt-2" routerLink="/wells/{{feature.properties.wellRegistrationID}}">Go To Detail Page</a>
-</div>
-
-
+<table class="mb-1">
+    <tbody>
+        <tr>
+            <td class="rowHeader">Registration #:</td>
+            <td class="rowValue"><a
+                    routerLink="/wells/{{registrationID}}">{{registrationID}}</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="rowHeader">Data Source(s) Available:</td>
+            <td class="rowValue">
+                <ng-container *ngFor="let sensor of sensorTypes">
+                    <p class="m-0">{{sensor}}</p>
+                </ng-container>
+            </td>
+        </tr>
+    </tbody>
+</table>
