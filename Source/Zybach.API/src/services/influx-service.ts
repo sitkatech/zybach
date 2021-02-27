@@ -47,8 +47,8 @@ export class InfluxService {
         const query = `from(bucket: "${this.bucket}") \
         |> range(start: 2000-01-01T00:00:00Z) \
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") \
-        |> first() \
-        |> group(columns: ["registration-id"])`
+        |> group(columns: ["registration-id"]) \
+        |> first()`
 
         var firstReadingDates: { [key: string]: Date } = await new Promise((resolve,reject) => {
             let results
