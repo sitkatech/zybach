@@ -438,6 +438,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/wells/:wellRegistrationID/installation',
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
@@ -461,6 +462,37 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.getInstallationRecordForWell.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/wells/:wellRegistrationID/installation/:installationCanonicalName/photo/:photoCanonicalName',
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+                    wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
+                    installationCanonicalName: {"in":"path","name":"installationCanonicalName","required":true,"dataType":"string"},
+                    photoCanonicalName: {"in":"path","name":"photoCanonicalName","required":true,"dataType":"string"},
+                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<WellController>(WellController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getPhoto.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -496,6 +528,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/chartData/:wellRegistrationID/details',
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},
@@ -523,6 +556,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/chartData/:wellRegistrationID',
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
                     wellRegistrationID: {"in":"path","name":"wellRegistrationID","required":true,"dataType":"string"},

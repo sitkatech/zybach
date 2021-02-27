@@ -48,6 +48,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   tileLayers: any;
   map: Map;
   mapID = "wellLocation";
+  photoDataUrl: string | ArrayBuffer;
 
 
   constructor(
@@ -88,7 +89,17 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installation => {
       this.installation = installation;
       console.log(installation);
-    })
+
+      this.wellService.getPhoto(this.wellRegistrationID, this.installation.installationCanonicalName, installation.photos[0]).subscribe(photo => {
+        const reader = new FileReader();
+        reader.readAsDataURL(photo);
+        reader.onloadend = () => {
+          // result includes identifier 'data:image/png;base64,' plus the base64 data
+          this.photoDataUrl = reader.result;
+          console.log(this.photoDataUrl);
+        }
+      });
+    });
   }
 
   getSensorTypes() {

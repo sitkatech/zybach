@@ -6,6 +6,7 @@ import {
     Route,
     Security,
     Response,
+    Request,
     SuccessResponse,
     Hidden
 } from "tsoa";
@@ -21,6 +22,8 @@ import { GeoOptixService } from "../services/geooptix-service";
 import { InternalServerError } from "../errors/internal-server-error";
 import { provideSingleton } from "../util/provide-singleton";
 import { inject } from "inversify";
+import { RequestWithUserContext } from "../request-with-user-context";
+import { RoleEnum } from "../models/role";
 
 const bucketName = process.env.SOURCE_BUCKET;
 
@@ -118,12 +121,27 @@ export class WellController extends Controller {
 
     @Get("{wellRegistrationID}/installation")
     @Hidden()
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getInstallationRecordForWell(
         @Path() wellRegistrationID: string
     ) {
         const installationRecord = await this.geoOptixService.getInstallationRecord(wellRegistrationID);
 
         return installationRecord;
+    }
+
+    @Get("{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")
+    @Hidden()
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
+    public async getPhoto(
+        @Path() wellRegistrationID: string,
+        @Path() installationCanonicalName: string,
+        @Path() photoCanonicalName: string,
+        @Request() req: RequestWithUserContext
+    ) {
+        const photoBuffer = await this.geoOptixService.getPhoto(wellRegistrationID, installationCanonicalName, photoCanonicalName);
+        req.res?.contentType("image/jpeg");
+        req.res?.end(photoBuffer);
     }
 
     /**

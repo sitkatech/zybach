@@ -9,15 +9,22 @@ const FileReader = require('filereader');
 
 @provideSingleton(GeoOptixService)
 export class GeoOptixService {
+    baseUrl: string;
+    headers: { "x-geooptix-token": string };
+    constructor(){
+        this.baseUrl = secrets.GEOOPTIX_HOSTNAME;
+        this.headers = {
+            "x-geooptix-token": secrets.GEOOPTIX_API_KEY
+        }
+    }
+
     public async getWellSummaries(): Promise<WellSummaryDto[]> {
         try {
             // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
             const geoOptixRequest = await axios.get(
-                `${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites`,
+                `${this.baseUrl}/project-overview-web/water-data-program/sites`,
                 {
-                    headers: {
-                        "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-                    }
+                    headers: this.headers
                 }
             );
 
@@ -34,11 +41,9 @@ export class GeoOptixService {
     public async getWellSummary(wellRegistrationID: string): Promise<WellSummaryDto> {
         try {
             const geoOptixRequest = await axios.get(
-                `${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/sites/${wellRegistrationID}`,
+                `${this.baseUrl}/project-overview-web/water-data-program/sites/${wellRegistrationID}`,
                 {
-                    headers: {
-                        "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-                    }
+                    headers: this.headers
                 }
             );
 
@@ -56,11 +61,9 @@ export class GeoOptixService {
     public async getSensorSummaries(): Promise<SensorSummaryDto[]> {
         try {
             const geoOptixRequest = await axios.get(
-                `${secrets.GEOOPTIX_HOSTNAME}/project-overview-web/water-data-program/stations`,
+                `${this.baseUrl}/project-overview-web/water-data-program/stations`,
                 {
-                    headers: {
-                        "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-                    }
+                    headers: this.headers
                 }
             );
 
@@ -78,11 +81,9 @@ export class GeoOptixService {
         let geoOptixRequest;
         try {
             geoOptixRequest = await axios.get(
-                `${secrets.GEOOPTIX_HOSTNAME}/projects/water-data-program/sites/${wellRegistrationID}/stations`,
+                `${this.baseUrl}/projects/water-data-program/sites/${wellRegistrationID}/stations`,
                 {
-                    headers: {
-                        "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-                    },
+                    headers: this.headers,
                     validateStatus: (x: number) => true
                 }
             );
@@ -144,12 +145,10 @@ export class GeoOptixService {
 
     public async getInstallationRecord(wellRegistrationID: string): Promise<any> {
         const installationCollectionRoute =
-         `${secrets.GEOOPTIX_HOSTNAME}/projects/water-data-program/sites/${wellRegistrationID}/samples`;
+         `${this.baseUrl}/projects/water-data-program/sites/${wellRegistrationID}/samples`;
         try {
             const collectionResult = await axios.get(installationCollectionRoute, {
-                headers: {
-                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-                }
+                headers: this.headers
             });
 
             const installationCanonicalName = collectionResult.data[0]?.CanonicalName;
@@ -158,15 +157,14 @@ export class GeoOptixService {
             }
 
             const installationResult = await axios.get(`${installationCollectionRoute}/${installationCanonicalName}/methods`, {
-                headers: {
-                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-                }
+                headers: this.headers
             });
 
             const installation = installationResult.data;
 
             const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
             const sensorRecord = installationRecord.sensor.Records[0]?.Fields;
+            const photoRecords = sensorRecord.photos.Records;
   
             const sensorType = sensorRecord["sensor-type"] && (Array.isArray(sensorRecord["sensor-type"]) ? sensorRecord["sensor-type"][0] : sensorRecord["sensor-type"]);
             const continuitySensorModel = sensorRecord["sensor-model-continuity"] && (Array.isArray(sensorRecord["sensor-model-continuity"]) ? sensorRecord["sensor-model-continuity"][0] : sensorRecord["sensor-model-flow"]);
@@ -174,6 +172,7 @@ export class GeoOptixService {
             const pressureSensorModel = sensorRecord["sensor-model-pressure"] && (Array.isArray(sensorRecord["sensor-model-pressure"]) ? sensorRecord["sensor-model-pressure"][0] : sensorRecord["sensor-model-pressure"]);
   
             const installationRecordDto = {
+                installationCanonicalName: installationCanonicalName,
                 status: installation[0].Status.Name,
                 date: installationRecord["install-date"],
                 lon: installationRecord["gps-location"]?.geometry.coordinates[0],
@@ -189,32 +188,31 @@ export class GeoOptixService {
                 wellDepth: sensorRecord["well-depth"],
                 installDepth: sensorRecord["install-depth"],
                 cableLength: sensorRecord["cable-length"],
-                waterLevel: sensorRecord["water-level"]
+                waterLevel: sensorRecord["water-level"],
+                photos: photoRecords.map((x: any) => x.Fields.photo)
             }
 
-            const photoRecords = installation[0].MethodInstance.RecordSets[0].Records[0].Fields.sensor.Records[0].Fields.photos.Records;
-
-            const photoUrls = photoRecords.map((x: any) =>
-                `${installationCollectionRoute}/${installationCanonicalName}/folders/.methods/files/${x.Fields.photo}/view`
-            );
-
-            // for (const photoUrl of photoUrls){
-            //     const photo = await axios.get(photoUrl, {
-            //         headers: {
-            //             "x-geooptix-token": secrets.GEOOPTIX_API_KEY
-            //         },
-            //         responseType: "arraybuffer"
-            //     });
-
-            //     const reader = new FileReader();
-            //     reader.readAsDataURL(photo.data);
-            //     reader.onloadend = () =>{
-            //         const b64 = reader.result;
-            //         console.log(b64);
-            //     }
-            // }
-
             return installationRecordDto;
+        } catch(err){
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+    }
+
+    public async getPhoto(wellRegistrationID: string, installationCanonicalName: string, photoCanonicalName: string) {
+        const photoUrl = `${this.baseUrl}/projects/water-data-program/sites/${wellRegistrationID}/samples/${installationCanonicalName}/folders/.methods/files/${photoCanonicalName}/view`
+
+        const otherPhotoUrl = "https://tpnrd.api-qa.geooptix.com/projects/water-data-program/sites/G-065708/samples/fm-shane-storer-9-2/folders/.methods/files/well-install:photos:1e5e0510-769c-4093-a135-548a55a5e799:photo:photo.jpeg/view";
+        
+        try {
+            const result = await axios.get(photoUrl, {
+                headers: {
+                    "x-geooptix-token": secrets.GEOOPTIX_API_KEY
+                },
+                responseType: "arraybuffer"
+            });
+
+            return result.data
         } catch(err){
             console.error(err);
             throw new InternalServerError(err.message);

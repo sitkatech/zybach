@@ -7,4 +7,6 @@ export class InstallationDto {
     lat: number;
     flowmeterSerialNumber: string;
     sensorSerialNumber: string;
+    installationCanonicalName: string;
+    photos: string[];
 }

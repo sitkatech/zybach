@@ -71,15 +71,9 @@
                     Installation Details
                 </div>
                 <div class="card-body">
-                    <div class="row" *ngIf="!installation">
-                        <div class="col text-center">
-                            <span class="fas fa-spinner loading-spinner"></span>
-                            <p>Loading...</p>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="installation">
+                    <div class="row">
                         <div class="col">
-                            <div class="row">
+                            <div class="row" *ngIf="installation">
                                 <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
                                 <div class="col-12  col-sm-6">{{installation.status}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
@@ -91,9 +85,17 @@
                                 <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
                                 <div class="col-12  col-sm-6">{{installation.sensorSerialNumber}}</div>
                             </div>
+                            <ng-container *ngIf="!installation">
+                                <span class="fas fa-spinner loading-spinner"></span>
+                                <p>Loading...</p>
+                            </ng-container>
                         </div>
-                        <div class="col">
-                            <img class="img img-fluid" src="/assets/main/placeholder.png"/>
+                        <div class="col text-center">
+                            <img  *ngIf="photoDataUrl" class="img img-fluid" src="{{photoDataUrl}}" style="max-height: 300px"/>
+                            <ng-container *ngIf="!photoDataUrl">
+                                <span class="fas fa-spinner loading-spinner"></span>
+                                <p>Loading...</p>
+                            </ng-container>
                         </div>
                     </div>
                 </div>

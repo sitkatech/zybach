@@ -1,6 +1,8 @@
 import { inject } from "inversify";
-import { Hidden, Route, Controller, Get, Path } from "tsoa";
+import { Hidden, Route, Controller, Get, Path, Security } from "tsoa";
 import { WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { RoleEnum } from "../models/role";
+import { SecurityType } from "../security/authentication";
 import { AghubWellService } from "../services/aghub-well-service";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InfluxService } from "../services/influx-service";
@@ -19,6 +21,7 @@ export class ChartDataController extends Controller {
     }
 
     @Get("{wellRegistrationID}/details")
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getWellDetails(
         @Path() wellRegistrationID: string
     ): Promise<WellSummaryDto> {
@@ -45,6 +48,7 @@ export class ChartDataController extends Controller {
     }
 
     @Get("{wellRegistrationID}")
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getChartData(
         @Path() wellRegistrationID: string
     ) {

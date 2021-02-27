@@ -76,8 +76,7 @@ export class InfluxService {
         |> range(start: 2000-01-01T00:00:00Z) 
         |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
-        |> first() 
-        |> group(columns: ["registration-id"])`
+        |> first()`
 
         var firstReadingDate: Date =  await new Promise((resolve,reject) => {
             let results: Date;
@@ -103,8 +102,7 @@ export class InfluxService {
         |> range(start: 2000-01-01T00:00:00Z) 
         |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
-        |> last() 
-        |> group(columns: ["registration-id"])`
+        |> last()`
 
         var lastReadingDate: Date =  await new Promise((resolve,reject) => {
             let results: Date;
