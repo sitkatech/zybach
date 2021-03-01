@@ -213,7 +213,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           else {
             return null;
           }
-        }
+        },
+        sortable: true, filter: true, resizable: true
       }
     ]
     // this.columnDefs = [
