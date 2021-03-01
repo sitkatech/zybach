@@ -156,10 +156,7 @@ export class InfluxService {
         return results;
     }
 
-    // todo: type this
     public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string, from: Date): Promise<any[]> {
-        // todo: this query needs to fill missing days with zeroes?
-        console.log(from)
         const query = `from(bucket: "${this.bucket}") \
         |> range(start: ${from.toISOString()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
@@ -188,5 +185,33 @@ export class InfluxService {
         })
 
         return results;
+    }
+
+    public async getAnnualPumpedVolumeForSensor(sensor: SensorSummaryDto): Promise<any>{
+        const query = `from(bucket: "${this.bucket}")
+        |> range(start: 2019-01-01T00:00:00.000Z)
+        |> filter(fn: (r) => r["sn"] == "${sensor.sensorName}")
+        |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
+        |> fill(value: 0.0)`
+
+        var results: any[] = await new Promise((resolve,reject)=>{
+            let results: any[] = [];
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results.push({
+                        year: new Date(o["_time"]).getFullYear(),
+                        dataSource: sensor.sensorType
+                    })
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error);
+                },
+                complete() {
+                    resolve(results);
+                }
+            });
+        });
     }
 }

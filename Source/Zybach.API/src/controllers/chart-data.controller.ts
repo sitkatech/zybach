@@ -24,7 +24,7 @@ export class ChartDataController extends Controller {
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getWellDetails(
         @Path() wellRegistrationID: string
-    ): Promise<WellSummaryDto> {
+    ): Promise<WellWithSensorSummaryDto> {
         let well = await this.geooptixService.getWellSummary(wellRegistrationID);
         const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
 
@@ -43,6 +43,10 @@ export class ChartDataController extends Controller {
         let wellWithSensors = well as WellWithSensorSummaryDto
         const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
         wellWithSensors.sensors = sensors;
+
+        for (var sensor of sensors) {
+            const annualPumpedVolume = await this.influxService.getAnnualPumpedVolumeForSensor(sensor);
+        }
 
         return wellWithSensors;
     }
