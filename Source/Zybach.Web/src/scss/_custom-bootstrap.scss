@@ -103,7 +103,7 @@ a:hover {
 {
   background-color: $button-border-and-background;
   border-color: $button-border-and-background;
-  color: $button-text-color;
+  color: $button-text-color !important;
 }
 
 .btn-zybach:hover {

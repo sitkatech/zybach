@@ -21,6 +21,7 @@ export class ChartDataController extends Controller {
         super();
     }
 
+    // todo: this should really live on wells.controller.ts
     @Get("{wellRegistrationID}/details")
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getWellDetails(

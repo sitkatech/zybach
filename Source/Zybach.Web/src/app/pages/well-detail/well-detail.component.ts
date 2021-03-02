@@ -6,12 +6,13 @@ import { WellService } from 'src/app/services/well.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
+import { AsyncParser } from 'json2csv';
 
 import {
   GeoJSON,
   marker,
   map,
-  Map,
+  Map as LeafletMap,
   MapOptions,
   tileLayer,
   icon} from 'leaflet';
@@ -20,6 +21,8 @@ import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { InstallationDto } from 'src/app/shared/models/installation-dto';
+import { prepareEventListenerParameters } from '@angular/compiler/src/render3/view/template';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -46,7 +49,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   noTimeSeriesData: boolean = false; sensors: any;
   boundingBox: any;
   tileLayers: any;
-  map: Map;
+  map: LeafletMap;
   mapID = "wellLocation";
   photoDataUrl: string | ArrayBuffer;
   years: number[];
@@ -116,7 +119,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const time = moment(this.well.lastReadingDate)
     const timepiece = time.format('h:mm a');
-    return time.format('M/D/yyyy ') + timepiece;
+    return time.format('M/D/yyyy') + timepiece;
   }
 
   getInstallationDate() {
@@ -141,7 +144,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   // Begin section: location map
 
   public ngAfterViewInit(): void {
-    Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
+    LeafletMap.addInitHook("addHandler", "gestureHandling", GestureHandling);
     const mapOptions: MapOptions = {
       maxZoom: this.maxZoom,
       layers: [
@@ -244,6 +247,65 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.buildChart();
     });
+  }
+
+  async exportChartData(){
+    const pivoted = new Map();
+    for (const point of this.timeSeries){
+      let pivotRow = pivoted.get(point.time);
+      if (pivotRow){
+        pivotRow[point.dataSource] = point.gallons;
+      } else{
+        pivotRow = {"Date": point.time};
+        pivotRow[point.dataSource] = point.gallons;
+        pivoted.set(point.time, pivotRow);
+      }
+    }
+    const pivotedAndSorted = Array.from(pivoted.values())
+      .map(x=> ({
+        "Date": moment(x.Date).format('M/D/yyyy'),
+        "FlowmeterGallons": x["Flow Meter"],
+        "ElectricalUsageGallons": x["Electrical Data"],
+        "ContinuityMeterDeviceGallons": x["Continuity Device"]
+      }))
+      .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
+    
+    const fields = ['Date', 'FlowmeterGallons', 'ElectricalUsageGallons', 'ContinuityMeterDeviceGallons'];
+    const opts = { fields };
+
+    const asyncParser = new AsyncParser(opts);
+
+    let csv: string = await new Promise((resolve,reject)=>{
+      let csv = '';
+      asyncParser.processor
+        .on('data', chunk => (csv += chunk.toString()))
+        .on('end', () => {
+          resolve(csv);
+        })
+        .on('error', err => {
+          console.error(err);
+          reject(err);
+        });
+      
+      asyncParser.input.push(JSON.stringify(pivotedAndSorted));
+      asyncParser.input.push(null);
+    });
+
+    var exportedFilename = `${this.wellRegistrationID}_WaterUsage.csv`;
+    
+
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    var link = document.createElement("a");
+
+    var url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", exportedFilename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    return pivotedAndSorted;
   }
 
   buildChart() {

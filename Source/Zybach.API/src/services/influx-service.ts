@@ -130,7 +130,7 @@ export class InfluxService {
         const query = `from(bucket: "tpnrd") 
         |> range(start: ${from.toISOString()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" and r["registration-id"] == "${sensor.wellRegistrationID}" and r["sn"] == "${sensor.sensorName}" ) 
-        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true)
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")
         |> fill(value: 0.0)`
 
         var results: any[] = await new Promise((resolve,reject) => {
@@ -161,7 +161,7 @@ export class InfluxService {
         const query = `from(bucket: "${this.bucket}") \
         |> range(start: ${from.toISOString()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
-        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true) \
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start") \
         |> fill(value: 0.0)`
 
         var results: any[] = await new Promise((resolve,reject) => {

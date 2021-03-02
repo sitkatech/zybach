@@ -136,12 +136,40 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "AnnualPumpedVolumeDto": {
+        "dataType": "refObject",
+        "properties": {
+            "year": {"dataType":"double","required":true},
+            "dataSource": {"dataType":"string","required":true},
+            "gallons": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "SensorSummaryDto": {
         "dataType": "refObject",
         "properties": {
             "wellRegistrationID": {"dataType":"string","required":true},
             "sensorName": {"dataType":"string"},
             "sensorType": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WellDetailDto": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "wellTPID": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "location": {"dataType":"any","required":true},
+            "lastReadingDate": {"dataType":"datetime"},
+            "firstReadingDate": {"dataType":"datetime"},
+            "inGeoOptix": {"dataType":"boolean"},
+            "fetchDate": {"dataType":"datetime"},
+            "hasElectricalData": {"dataType":"boolean"},
+            "sensors": {"dataType":"array","array":{"ref":"SensorSummaryDto"},"required":true},
+            "annualPumpedVolume": {"dataType":"array","array":{"ref":"AnnualPumpedVolumeDto"},"required":true},
         },
         "additionalProperties": false,
     },

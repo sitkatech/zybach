@@ -251,6 +251,28 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"AnnualPumpedVolumeDto": {
+				"properties": {
+					"year": {
+						"type": "number",
+						"format": "double"
+					},
+					"dataSource": {
+						"type": "string"
+					},
+					"gallons": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"year",
+					"dataSource",
+					"gallons"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"SensorSummaryDto": {
 				"properties": {
 					"wellRegistrationID": {
@@ -266,6 +288,58 @@
 				"required": [
 					"wellRegistrationID",
 					"sensorType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"WellDetailDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"wellTPID": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {},
+					"lastReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"firstReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"inGeoOptix": {
+						"type": "boolean"
+					},
+					"fetchDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"hasElectricalData": {
+						"type": "boolean"
+					},
+					"sensors": {
+						"items": {
+							"$ref": "#/components/schemas/SensorSummaryDto"
+						},
+						"type": "array"
+					},
+					"annualPumpedVolume": {
+						"items": {
+							"$ref": "#/components/schemas/AnnualPumpedVolumeDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"location",
+					"sensors",
+					"annualPumpedVolume"
 				],
 				"type": "object",
 				"additionalProperties": false
