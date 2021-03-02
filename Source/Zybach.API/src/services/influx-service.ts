@@ -2,6 +2,7 @@ import { provideSingleton } from "../util/provide-singleton";
 import { InfluxDB, QueryApi } from "@influxdata/influxdb-client";
 import secrets from '../secrets'
 import { SensorSummaryDto } from "../dtos/well-summary-dto";
+import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
 
 @provideSingleton(InfluxService)
 export class InfluxService {
@@ -187,21 +188,22 @@ export class InfluxService {
         return results;
     }
 
-    public async getAnnualPumpedVolumeForSensor(sensor: SensorSummaryDto): Promise<any>{
+    public async getAnnualPumpedVolumeForSensor(sensor: SensorSummaryDto): Promise<AnnualPumpedVolumeDto[]>{
         const query = `from(bucket: "${this.bucket}")
         |> range(start: 2019-01-01T00:00:00.000Z)
         |> filter(fn: (r) => r["sn"] == "${sensor.sensorName}")
         |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
         |> fill(value: 0.0)`
 
-        var results: any[] = await new Promise((resolve,reject)=>{
-            let results: any[] = [];
+        var results: AnnualPumpedVolumeDto[] = await new Promise((resolve,reject)=>{
+            let results: AnnualPumpedVolumeDto[] = [];
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
                     results.push({
                         year: new Date(o["_time"]).getFullYear(),
-                        dataSource: sensor.sensorType
+                        dataSource: sensor.sensorType,
+                        gallons: o["_value"]
                     })
                 },
                 error(error) {
@@ -213,5 +215,38 @@ export class InfluxService {
                 }
             });
         });
+
+        return results;
+    }
+
+    public async getAnnualEstimatedPumpedVolumeForWell(wellRegistrationID: string): Promise<AnnualPumpedVolumeDto[]> {
+        const query = `from(bucket: "${this.bucket}")
+        |> range(start: 2019-01-01T00:00:00.000Z)
+        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}" and r["_measurement"] == "estimated-pumped-volume")
+        |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
+        |> fill(value: 0.0)`
+
+        var results: AnnualPumpedVolumeDto[] = await new Promise((resolve,reject)=>{
+            let results: AnnualPumpedVolumeDto[] = [];
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results.push({
+                        year: new Date(o["_time"]).getFullYear(),
+                        dataSource: "Electrical Data",
+                        gallons: o["_value"]
+                    })
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error);
+                },
+                complete() {
+                    resolve(results);
+                }
+            });
+        });
+
+        return results;
     }
 }

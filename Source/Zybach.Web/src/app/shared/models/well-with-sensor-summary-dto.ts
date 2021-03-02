@@ -6,6 +6,7 @@ export class WellWithSensorSummaryDto {
     firstReadingDate?: Date;
     wellTPID?: string;
     sensors: SensorSummaryDto[]
+    annualPumpedVolume?: any[];
 }
 
 

@@ -67,14 +67,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
           return 0;
         });
 
-        console.log(this.roles);
-
-
         this.model = new UserUpdateDto();
         this.model.RoleID = user.Role.RoleID;
         this.model.Role = user.Role.RoleName;
         this.model.ReceiveSupportEmails = user.ReceiveSupportEmails;
-        console.log(this.model);
         this.cdr.detectChanges();
       });
     });
@@ -88,7 +84,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   onSubmit(editUserForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    console.log(this.model);
 
     this.userService.updateUser(this.userID, this.model)
       .subscribe(response => {

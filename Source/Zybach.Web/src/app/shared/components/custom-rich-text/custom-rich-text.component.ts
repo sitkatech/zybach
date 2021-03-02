@@ -85,7 +85,6 @@ export class CustomRichTextComponent implements OnInit {
     this.isEditing = false;
     this.isLoading = true;
     const updateDto = new CustomRichTextDetailedDto({ CustomRichTextContent: this.editedContent });
-    console.log(updateDto);
     this.customRichTextService.updateCustomRichText(this.customRichTextTypeID, updateDto).subscribe(x => {
       this.customRichTextContent = this.sanitizer.bypassSecurityTrustHtml(x.CustomRichTextContent);
       this.editedContent = x.CustomRichTextContent;

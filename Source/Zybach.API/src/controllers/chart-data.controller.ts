@@ -1,6 +1,7 @@
 import { inject } from "inversify";
 import { Hidden, Route, Controller, Get, Path, Security } from "tsoa";
-import { WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
+import { WellDetailDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { RoleEnum } from "../models/role";
 import { SecurityType } from "../security/authentication";
 import { AghubWellService } from "../services/aghub-well-service";
@@ -24,9 +25,10 @@ export class ChartDataController extends Controller {
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getWellDetails(
         @Path() wellRegistrationID: string
-    ): Promise<WellWithSensorSummaryDto> {
+    ): Promise<WellDetailDto> {
         let well = await this.geooptixService.getWellSummary(wellRegistrationID);
         const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
+        const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
 
         const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
         well.lastReadingDate = lastReadingDate;
@@ -40,13 +42,21 @@ export class ChartDataController extends Controller {
             well = agHubWell
         }
 
-        let wellWithSensors = well as WellWithSensorSummaryDto
+        let wellWithSensors = well as WellDetailDto
         const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
         wellWithSensors.sensors = sensors;
 
+        let annualPumpedVolume: AnnualPumpedVolumeDto[] = []
+
         for (var sensor of sensors) {
-            const annualPumpedVolume = await this.influxService.getAnnualPumpedVolumeForSensor(sensor);
+           annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualPumpedVolumeForSensor(sensor)];
         }
+
+        if (hasElectricalData){
+            annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualEstimatedPumpedVolumeForWell(wellRegistrationID)]
+        }
+
+        wellWithSensors.annualPumpedVolume = annualPumpedVolume;
 
         return wellWithSensors;
     }

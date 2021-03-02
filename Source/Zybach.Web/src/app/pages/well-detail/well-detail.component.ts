@@ -49,6 +49,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   map: Map;
   mapID = "wellLocation";
   photoDataUrl: string | ArrayBuffer;
+  years: number[];
 
 
   constructor(
@@ -59,6 +60,12 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.years = []
+    const currentYear = new Date().getFullYear();
+    for (var year = 2019; year <= currentYear; year++){
+      this.years.push(year);
+    }
+
     this.initMapConstants();
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -78,7 +85,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
       this.well = well;
-      console.log(this.well);
       
       this.cdr.detectChanges();
       this.addWellToMap();
@@ -88,7 +94,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getInstallationDetails(){
     this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installation => {
       this.installation = installation;
-      console.log(installation);
 
       this.wellService.getPhoto(this.wellRegistrationID, this.installation.installationCanonicalName, installation.photos[0]).subscribe(photo => {
         const reader = new FileReader();
@@ -96,7 +101,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         reader.onloadend = () => {
           // result includes identifier 'data:image/png;base64,' plus the base64 data
           this.photoDataUrl = reader.result;
-          console.log(this.photoDataUrl);
         }
       });
     });
@@ -122,6 +126,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     const time = moment(this.installation.date)
     const timepiece = time.format('h:mm a');
     return time.format('M/D/yyyy ') + timepiece;
+  }
+
+  getAnnualPumpedVolume(year, dataSource){
+    const annualPumpedVolume = this.well.annualPumpedVolume.find(x=> 
+      x.year === year && x.dataSource === dataSource
+    )
+    if (!annualPumpedVolume){
+      return "N/A"
+    }
+    return `${annualPumpedVolume.gallons.toLocaleString()} gal`
   }
 
   // Begin section: location map

@@ -1,4 +1,5 @@
 import { AghubWellInterface } from "../models/aghub-well";
+import { AnnualPumpedVolumeDto } from "./annual-pumped-volume-dto";
 
 export interface WellSummaryDto {
     wellRegistrationID: string;
@@ -25,6 +26,10 @@ export const SensorTypeMap: {[key: string]: string} = {
 
 export interface WellWithSensorSummaryDto extends WellSummaryDto {
     sensors: SensorSummaryDto[]
+}
+
+export interface WellDetailDto extends WellWithSensorSummaryDto{
+    annualPumpedVolume: AnnualPumpedVolumeDto[]
 }
 
 export class WellSummaryDtoFactory {

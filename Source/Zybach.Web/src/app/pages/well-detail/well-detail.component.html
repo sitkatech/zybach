@@ -10,25 +10,63 @@
     <app-alert-display></app-alert-display>
     <div class="row">
         <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Basics
-                </div>
-                <div class="card-body">
-                    <div class="row" *ngIf="well">
-                        <div class="col-12  col-sm-6 label"><strong>Registration ID: </strong> </div>
-                        <div class="col-12  col-sm-6">{{well.wellRegistrationID}}</div>
-                        <div class="col-12  col-sm-6 label"><strong>TPID: </strong></div>
-                        <div class="col-12  col-sm-6">{{well.wellTPID}}</div>
-                        <div class="col-12  col-sm-6 label"><strong>Device Type: </strong></div>
-                        <div class="col-12  col-sm-6">{{getSensorTypes()}}</div>
-                        <div class="col-12  col-sm-6 label"><strong>Last Reading Date: </strong></div>
-                        <div class="col-12  col-sm-6">{{getLastReadingDate()}}</div>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Basics
+                        </div>
+                        <div class="card-body">
+                            <div class="row" *ngIf="well">
+                                <div class="col-12  col-sm-6 label"><strong>Registration ID: </strong> </div>
+                                <div class="col-12  col-sm-6">{{well.wellRegistrationID}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>TPID: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.wellTPID}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Device Type: </strong></div>
+                                <div class="col-12  col-sm-6">{{getSensorTypes()}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Last Reading Date: </strong></div>
+                                <div class="col-12  col-sm-6">{{getLastReadingDate()}}</div>
+                            </div>
+                            <div class="row" *ngIf="!well">
+                                <div class="col text-center">
+                                    <span class="fas fa-spinner loading-spinner"></span>
+                                    <p>Loading...</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row" *ngIf="!well">
-                        <div class="col text-center">
-                            <span class="fas fa-spinner loading-spinner"></span>
-                            <p>Loading...</p>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+    
+                    <div class="card">
+                        <div class="card-header">
+                            Annual Pumped Volume
+                        </div>
+                        <div class="card-body text-center">
+                            <table class="table table-responsive" *ngIf="well">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align: center;">Year</th>
+                                        <th>Flow Meter</th>
+                                        <th>Continuity Device</th>
+                                        <th>Electrical Usage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let year of years">
+                                        <td style="text-align: center;">{{year}}</td>
+                                        <td>{{getAnnualPumpedVolume(year, "Flow Meter")}}</td>
+                                        <td>{{getAnnualPumpedVolume(year, "Continuity Device")}}</td>
+                                        <td>{{getAnnualPumpedVolume(year, "Electrical Data")}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-container *ngIf="!well">
+                                <span class="fas fa-spinner loading-spinner"></span>
+                                <p>Loading...</p>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
@@ -79,7 +117,8 @@
                                 <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
                                 <div class="col-12  col-sm-6">{{getInstallationDate()}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
-                                <div class="col-12  col-sm-6">lat: {{installation.lat}}, <br/> lng: {{installation.lon}}</div>
+                                <div class="col-12  col-sm-6">lat: {{installation.lat}}, <br /> lng:
+                                    {{installation.lon}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
                                 <div class="col-12  col-sm-6">{{installation.flowmeterSerialNumber}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
@@ -91,7 +130,8 @@
                             </ng-container>
                         </div>
                         <div class="col text-center">
-                            <img  *ngIf="photoDataUrl" class="img img-fluid" src="{{photoDataUrl}}" style="max-height: 300px"/>
+                            <img *ngIf="photoDataUrl" class="img img-fluid" src="{{photoDataUrl}}"
+                                style="max-height: 300px" />
                             <ng-container *ngIf="!photoDataUrl">
                                 <span class="fas fa-spinner loading-spinner"></span>
                                 <p>Loading...</p>
