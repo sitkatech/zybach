@@ -1,4 +1,8 @@
+import { DecimalPipe } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { UserListComponent } from './user-list.component';
 
@@ -8,7 +12,9 @@ describe('UserListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserListComponent ]
+      declarations: [ UserListComponent ],
+      imports: [ RouterTestingModule, OAuthModule.forRoot(), HttpClientModule ],
+      providers: [ DecimalPipe ]
     })
     .compileComponents();
   }));

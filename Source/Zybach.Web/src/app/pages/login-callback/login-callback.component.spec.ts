@@ -1,4 +1,7 @@
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { LoginCallbackComponent } from './login-callback.component';
 
@@ -8,7 +11,8 @@ describe('LoginCallbackComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginCallbackComponent ]
+      declarations: [ LoginCallbackComponent ],
+      imports: [ RouterTestingModule, OAuthModule.forRoot(), HttpClientModule ],
     })
     .compileComponents();
   }));

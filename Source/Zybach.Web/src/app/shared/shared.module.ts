@@ -8,10 +8,8 @@ import { UnauthenticatedComponent } from './pages/unauthenticated/unauthenticate
 import { SubscriptionInsufficientComponent } from './pages/subscription-insufficient/subscription-insufficient.component';
 import { NgProgressModule } from '@ngx-progressbar/core';
 import { RouterModule } from '@angular/router';
-import { WatershedDetailPopupComponent } from './components/watershed-detail-popup/watershed-detail-popup.component';
 import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-renderer.component';
 import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
-import { WatershedMapComponent } from './components/watershed-map/watershed-map.component';
 import { MultiLinkRendererComponent } from './components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { CustomRichTextComponent } from './components/custom-rich-text/custom-rich-text.component'
@@ -28,8 +26,6 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         NotFoundComponent,
         UnauthenticatedComponent,
         SubscriptionInsufficientComponent,
-        WatershedMapComponent,
-        WatershedDetailPopupComponent,
         LinkRendererComponent,
         FontAwesomeIconLinkRendererComponent,
         MultiLinkRendererComponent,
@@ -52,14 +48,10 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         CommonModule,
         FormsModule,
         NotFoundComponent,
-        WatershedMapComponent,
         HeaderNavComponent,
         CustomRichTextComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent
-    ],
-    entryComponents:[
-        WatershedDetailPopupComponent,
     ]
 })
 export class SharedModule {

@@ -100,7 +100,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     CKEditorModule,
     NgMultiSelectDropDownModule.forRoot(),
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      positionClass: "toast-top-right"
+    })
   ],  
   providers: [
     CookieService,

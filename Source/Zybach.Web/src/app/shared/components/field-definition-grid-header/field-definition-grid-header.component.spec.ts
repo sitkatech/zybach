@@ -16,6 +16,7 @@ describe('FieldDefinitionGridHeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FieldDefinitionGridHeaderComponent);
     component = fixture.componentInstance;
+    component.params = {};
     fixture.detectChanges();
   });
 

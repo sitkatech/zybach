@@ -1,11 +1,15 @@
+import { HttpClientModule } from '@angular/common/http';
 import { TestBed, async, inject } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { UnauthenticatedAccessGuard } from './unauthenticated-access.guard';
 
 describe('UnauthenticatedAccessGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UnauthenticatedAccessGuard]
+      providers: [UnauthenticatedAccessGuard],
+      imports: [RouterTestingModule, OAuthModule.forRoot(), HttpClientModule]
     });
   });
 

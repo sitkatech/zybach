@@ -16,6 +16,7 @@ describe('WellMapPopupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(WellMapPopupComponent);
     component = fixture.componentInstance;
+    component.sensorTypes = []
     fixture.detectChanges();
   });
 

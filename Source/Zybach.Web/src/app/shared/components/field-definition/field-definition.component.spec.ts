@@ -1,14 +1,22 @@
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { FieldDefinitionComponent } from './field-definition.component';
+
+import * as config from '../../../../assets/config.json';
+declare var window: any;
 
 describe('FieldDefinitionComponent', () => {
   let component: FieldDefinitionComponent;
   let fixture: ComponentFixture<FieldDefinitionComponent>;
 
   beforeEach(async(() => {
+    window.config = config;
     TestBed.configureTestingModule({
-      declarations: [ FieldDefinitionComponent ]
+      declarations: [ FieldDefinitionComponent ],
+      imports: [ RouterTestingModule, OAuthModule.forRoot(), HttpClientModule ],
     })
     .compileComponents();
   }));
