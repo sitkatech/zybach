@@ -8,6 +8,8 @@ import { Alert } from '../../models/alert';
 import { environment } from 'src/environments/environment';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { Router } from '@angular/router';
+import { WellService } from 'src/app/services/well.service';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
     selector: 'header-nav',
@@ -30,6 +32,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     constructor(
         private authenticationService: AuthenticationService,
         private cookieStorageService: CookieStorageService,
+        private searchService: SearchService,
         private userService: UserService,
         private alertService: AlertService,
         private cdr: ChangeDetectorRef,
@@ -117,5 +120,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     public leadOrganizationLogoSrc(): string{
         return `assets/main/logos/${environment.leadOrganizationLogoFilename}`;
+    }
+
+    public getSearchSuggestions() {
+        console.log("Triggering");
+        this.searchService.getSearchSuggestions().subscribe(x => {
+            console.log(x);
+        })
     }
 }
