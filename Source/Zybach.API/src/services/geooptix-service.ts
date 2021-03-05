@@ -227,4 +227,20 @@ export class GeoOptixService {
             throw new InternalServerError(err.message);
         }
     }
+
+    public async getSearchSuggestions(textToSearch: string) {
+        const searchUrl = `https://tpnrd.search-qa.geooptix.com/suggest/${textToSearch}`;
+
+        try {
+            const result = await axios.get(searchUrl, {
+                headers: this.headers
+            })
+
+            return result.data
+        }
+        catch(err){
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+    }
 }
