@@ -45,12 +45,12 @@
                             Annual Pumped Volume
                         </div>
                         <div class="card-body text-center">
-                            <table class="table table-responsive" *ngIf="well">
+                            <table class="table table-responsive table-striped" *ngIf="well">
                                 <thead>
                                     <tr>
                                         <th style="text-align: center;">Year</th>
                                         <th>Flow Meter</th>
-                                        <th>Continuity Device</th>
+                                        <th>Continuity Meter</th>
                                         <th>Electrical Usage</th>
                                     </tr>
                                 </thead>
@@ -58,7 +58,7 @@
                                     <tr *ngFor="let year of years">
                                         <td style="text-align: center;">{{year}}</td>
                                         <td>{{getAnnualPumpedVolume(year, "Flow Meter")}}</td>
-                                        <td>{{getAnnualPumpedVolume(year, "Continuity Device")}}</td>
+                                        <td>{{getAnnualPumpedVolume(year, "Continuity Meter")}}</td>
                                         <td>{{getAnnualPumpedVolume(year, "Electrical Data")}}</td>
                                     </tr>
                                 </tbody>

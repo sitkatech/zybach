@@ -43,6 +43,8 @@ export class ChartDataController extends Controller {
             well = agHubWell
         }
 
+        well.hasElectricalData = hasElectricalData;
+
         let wellWithSensors = well as WellDetailDto
         const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
         wellWithSensors.sensors = sensors;
@@ -83,6 +85,12 @@ export class ChartDataController extends Controller {
 
         for (var sensor of sensors) {
             const sensorPoints = await this.influxService.getPumpedVolumeForSensor(sensor, firstReadingDate)
+
+            let gallons = 0;
+            for (var obs of sensorPoints){
+                gallons += obs.gallons;
+            }
+
             timeSeriesPoints = [...timeSeriesPoints, ...sensorPoints];
         }
 

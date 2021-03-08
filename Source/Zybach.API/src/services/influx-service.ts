@@ -127,7 +127,7 @@ export class InfluxService {
 
     public async getPumpedVolumeForSensor(sensor: SensorSummaryDto, from: Date): Promise<any[]> {
         // todo: this query needs to fill missing days with zeroes?
-        const query = `from(bucket: "tpnrd") 
+        const query = `from(bucket: "${this.bucket}") 
         |> range(start: ${from.toISOString()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" and r["registration-id"] == "${sensor.wellRegistrationID}" and r["sn"] == "${sensor.sensorName}" ) 
         |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")

@@ -7,6 +7,7 @@ export class WellWithSensorSummaryDto {
     wellTPID?: string;
     sensors: SensorSummaryDto[]
     annualPumpedVolume?: any[];
+  hasElectricalData: any;
 }
 
 

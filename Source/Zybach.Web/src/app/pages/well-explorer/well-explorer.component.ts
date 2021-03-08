@@ -155,7 +155,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, filter: true, resizable: true
       },
       {
-        headerName: "Has Continuity Device?",
+        headerName: "Has Continuity Meter?",
         valueGetter: function (params) {
           const sensorTypes = params.data.sensors.map(x => x.sensorType);
           if (sensorTypes.includes("Continuity Meter")) {

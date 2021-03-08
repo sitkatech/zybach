@@ -53,6 +53,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   mapID = "wellLocation";
   photoDataUrl: string | ArrayBuffer;
   years: number[];
+  legendNames: any[];
+  legendColors: any[];
 
 
   constructor(
@@ -65,7 +67,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.years = []
     const currentYear = new Date().getFullYear();
-    for (var year = 2019; year <= currentYear; year++){
+    for (var year = currentYear; year >= 2019; year--){
       this.years.push(year);
     }
 
@@ -88,6 +90,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
       this.well = well;
+      console.log(this.well);
       
       this.cdr.detectChanges();
       this.addWellToMap();
@@ -119,7 +122,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     const time = moment(this.well.lastReadingDate)
     const timepiece = time.format('h:mm a');
-    return time.format('M/D/yyyy') + timepiece;
+    return time.format('M/D/yyyy ') + timepiece;
   }
 
   getInstallationDate() {
@@ -136,7 +139,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       x.year === year && x.dataSource === dataSource
     )
     if (!annualPumpedVolume){
-      return "N/A"
+      return "-"
     }
     return `${annualPumpedVolume.gallons.toLocaleString()} gal`
   }
@@ -234,6 +237,9 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.sensors = response.sensors;
       this.timeSeries = response.timeSeries;
+      
+      console.log(this.timeSeries);
+      
       this.cdr.detectChanges();
 
       const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
@@ -244,6 +250,25 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       this.tooltipFields = response.sensors.map(x => ({ "field": x.sensorType, "type": "ordinal" }));
+      const sensorTypes = response.sensors.map(x=>x.sensorType);
+
+      this.legendNames = [];
+      this.legendColors = [];
+
+      if( sensorTypes.includes("Flow Meter")){
+        this.legendNames.push("Flow Meter");
+        this.legendColors.push("#13B5EA");
+      }
+
+      if( sensorTypes.includes("Continuity Meter")){
+        this.legendNames.push("Continuity Meter");
+        this.legendColors.push("#4AAA42");
+      }
+
+      if( sensorTypes.includes("Electrical Data")){
+        this.legendNames.push("Electrical Data");
+        this.legendColors.push("#0076C0");
+      }
 
       this.buildChart();
     });
@@ -266,11 +291,29 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         "Date": moment(x.Date).format('M/D/yyyy'),
         "FlowmeterGallons": x["Flow Meter"],
         "ElectricalUsageGallons": x["Electrical Data"],
-        "ContinuityMeterDeviceGallons": x["Continuity Device"]
+        "ContinuityDeviceGallons": x["Continuity Meter"]
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
     
-    const fields = ['Date', 'FlowmeterGallons', 'ElectricalUsageGallons', 'ContinuityMeterDeviceGallons'];
+    const fields = ['Date'];
+
+    const sensorTypes = this.well.sensors.map(x=>x.sensorType);
+
+    console.log(sensorTypes);
+
+    if (sensorTypes.includes("Flow Meter")){
+      fields.push('FlowmeterGallons');
+    }
+    
+    if (this.well.hasElectricalData){
+      fields.push('ElectricalUsageGallons');
+    }
+    
+    if (sensorTypes.includes("Continuity Meter")){
+      fields.push('ContinuityDeviceGallons');
+    }
+
+
     const opts = { fields };
 
     const asyncParser = new AsyncParser(opts);
@@ -355,8 +398,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 "title": "Data Source"
               },
               "scale": {
-                "domain": ["Flow Meter", "Continuity Meter", "Electrical Data"],
-                "range": ["#13B5EA", "#4AAA42", "#0076C0"],
+                // "domain": ["Flow Meter", "Continuity Meter", "Electrical Data"],
+                // "range": ["#13B5EA", "#4AAA42", "#0076C0"],
+                "domain": this.legendNames,
+                "range": this.legendColors
               }
             }
           },
