@@ -27,7 +27,6 @@ import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-gri
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
 import { SelectDropDownModule } from 'ngx-select-dropdown'
-import { MyDatePickerModule } from 'mydatepicker';
 import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -50,6 +49,7 @@ import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WellMapPopupComponent } from './pages/well-map-popup/well-map-popup.component';
 import { createCustomElement } from '@angular/elements';
+import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -96,13 +96,13 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     BrowserAnimationsModule,
     AgGridModule.withComponents([]),
     SelectDropDownModule,
-    MyDatePickerModule,
     CKEditorModule,
     NgMultiSelectDropDownModule.forRoot(),
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass: "toast-top-right"
-    })
+    }),
+    AngularMyDatePickerModule
   ],  
   providers: [
     CookieService,

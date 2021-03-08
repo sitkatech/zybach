@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -6,6 +6,7 @@ import { WellService } from 'src/app/services/well.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
+import * as vega from 'vega';
 import { AsyncParser } from 'json2csv';
 
 import {
@@ -21,8 +22,8 @@ import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { InstallationDto } from 'src/app/shared/models/installation-dto';
-import { prepareEventListenerParameters } from '@angular/compiler/src/render3/view/template';
-import { async } from '@angular/core/testing';
+import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
+import { doPerf } from '@microsoft/applicationinsights-web';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -30,7 +31,10 @@ import { async } from '@angular/core/testing';
   styleUrls: ['./well-detail.component.scss']
 })
 export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('dp') mydp: AngularMyDatePickerDirective;
+  
   public chartID: string = "wellChart";
+
 
   public watchUserChangeSubscription: any;
 
@@ -55,7 +59,15 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   years: number[];
   legendNames: any[];
   legendColors: any[];
-
+  
+  myDpOptions: IAngularMyDpOptions = {
+    dateRange: true,
+    dateFormat: 'mm/dd/yyyy'
+    // other options are here...
+  };
+  // For example initialize to specific date (09.10.2018 - 19.10.2018). It is also possible
+  // to set initial date range value using the selDateRange attribute.
+  dateRange: any;
 
   constructor(
     private wellService: WellService,
@@ -64,12 +76,33 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private cdr: ChangeDetectorRef
   ) { }
 
+  initDateRange(startDate: Date, endDate: Date) {
+
+
+    this.dateRange = {
+      isRange: true, 
+      singleDate: null, 
+      dateRange: {
+        beginDate: {
+          year: startDate.getFullYear(), month: startDate.getMonth() + 1, day: startDate.getDate()
+        },
+        endDate: {
+          year: endDate.getFullYear(), month: endDate.getMonth() + 1, day: endDate.getDate()
+        }
+      }
+    };
+  }
+
   ngOnInit(): void {
     this.years = []
-    const currentYear = new Date().getFullYear();
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
     for (var year = currentYear; year >= 2019; year--){
       this.years.push(year);
     }
+
+    const startDate = new Date(currentYear, 0, 1)
+    this.initDateRange(startDate, currentDate);
 
     this.initMapConstants();
 
@@ -357,7 +390,44 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.vegaView = res.view;
+
+      // var changeSet = vega.changeset().insert(self.timeSeries);
+      // self.vegaView.change('timeSeries', changeSet).run();
+
+      // todo: this is just here to test the thing.
+      self.filterChart(new Date(2021, 0, 1), new Date());
     });
+  }
+
+  onDateChanged(event){
+    console.log(event);
+    // const startDate = new Date(event.dateRange.beginDate.year, event.dateRange.beginDate.month, event.dateRange.beginDate.day);
+    // const endDate = new Date(event.dateRange.endDate.year, event.dateRange.endDate.month, event.dateRange.endDate.day);
+    
+    const startDate = event.dateRange.beginJsDate;
+    const endDate = event.dateRange.endJsDate;
+    
+    console.log(startDate, endDate);
+    this.filterChart(startDate, endDate);
+  }
+
+  useFullDateRange(){
+    const startDate = new Date(this.well.firstReadingDate) 
+    const endDate = new Date(this.well.lastReadingDate)
+
+    this.initDateRange(startDate, endDate);
+
+    this.filterChart(startDate, endDate);
+  }
+
+  filterChart(startDate: Date, endDate: Date){
+    const filteredTimeSeries = this.timeSeries.filter(x=>{
+      const asDate =  new Date(x.time)
+      return asDate.getTime() >= startDate.getTime() && asDate.getTime() <= endDate.getTime()
+    });
+
+    var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
+    this.vegaView.change('timeSeries', changeSet).run();
   }
 
   getVegaSpec(): any {
@@ -366,7 +436,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       "description": "A charmt",
       "width": "container",
       "height": "container",
-      "data": { "values": this.timeSeries, "name": "data" },
+      "data": { "name": "timeSeries" },
       "encoding": {
         "x": {
           "field": "time",

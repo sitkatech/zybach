@@ -31,8 +31,8 @@ export class ChartDataController extends Controller {
         const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
         const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
 
+        const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
         const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
-        well.lastReadingDate = lastReadingDate;
 
         if (well) {
             well.wellTPID = agHubWell?.wellTPID;
@@ -44,6 +44,9 @@ export class ChartDataController extends Controller {
         }
 
         well.hasElectricalData = hasElectricalData;
+        well.firstReadingDate = firstReadingDate;
+        well.lastReadingDate = lastReadingDate;
+
 
         let wellWithSensors = well as WellDetailDto
         const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
