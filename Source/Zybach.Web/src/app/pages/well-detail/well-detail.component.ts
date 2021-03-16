@@ -24,6 +24,7 @@ import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { InstallationDto } from 'src/app/shared/models/installation-dto';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
 import { doPerf } from '@microsoft/applicationinsights-web';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -73,7 +74,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private wellService: WellService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private decimalPipe: DecimalPipe
   ) { }
 
   initDateRange(startDate: Date, endDate: Date) {
@@ -174,7 +176,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!annualPumpedVolume){
       return "-"
     }
-    return `${annualPumpedVolume.gallons.toLocaleString()} gal`
+
+    const value = this.decimalPipe.transform(annualPumpedVolume.gallons, "1.0-0")
+
+    return `${value} gal`
   }
 
   // Begin section: location map

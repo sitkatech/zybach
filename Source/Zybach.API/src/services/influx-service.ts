@@ -80,18 +80,23 @@ export class InfluxService {
         |> first()`
 
         var firstReadingDate: Date =  await new Promise((resolve,reject) => {
-            let results: Date;
+            let resultDate: Date;
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
-                    results = new Date(o["_time"])
+                    const currentRowDate = new Date(o["_time"]);
+                    // since we are searching across multiple measurements, there may be multiple rows returned,
+                    // so we have to check if the date from this row is before the date we already found
+                    if (!resultDate || currentRowDate.getTime() < resultDate.getTime()){
+                        resultDate = currentRowDate;
+                    }
                 },
                 error(error) {
                     console.error(error);
                     reject(error)
                 },
                 complete() {
-                    resolve(results);
+                    resolve(resultDate);
                 },
             });
         })
