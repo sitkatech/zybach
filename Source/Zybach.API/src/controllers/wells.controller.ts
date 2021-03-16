@@ -16,7 +16,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
 import { SecurityType } from "../security/authentication";
-import { WellSummaryDto } from "../dtos/well-summary-dto";
+import { WellDetailDto, WellSummaryDto } from "../dtos/well-summary-dto";
 import { ApiResult, ErrorResult } from "../dtos/api-result";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InternalServerError } from "../errors/internal-server-error";
@@ -24,13 +24,20 @@ import { provideSingleton } from "../util/provide-singleton";
 import { inject } from "inversify";
 import { RequestWithUserContext } from "../request-with-user-context";
 import { RoleEnum } from "../models/role";
+import { AghubWellService } from "../services/aghub-well-service";
+import { InfluxService } from "../services/influx-service";
+import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
 
 const bucketName = process.env.SOURCE_BUCKET;
 
 @Route("/api/wells")
 @provideSingleton(WellController)
 export class WellController extends Controller {
-    constructor(@inject(GeoOptixService) private geoOptixService: GeoOptixService){
+    constructor(
+        @inject(GeoOptixService) private geooptixService: GeoOptixService,
+        @inject(AghubWellService) private aghubWellService: AghubWellService,
+        @inject(InfluxService) private influxService: InfluxService,
+    ) {
         super();
     }
 
@@ -44,7 +51,7 @@ export class WellController extends Controller {
     @Response<ErrorResult>(403, "Forbidden")
     @Response<ErrorResult>(500, "If something went wrong within the API")
     public async getWells(): Promise<ApiResult<WellSummaryDto[]>> {
-        const wellSummaryDtos = await this.geoOptixService.getWellSummaries();
+        const wellSummaryDtos = await this.geooptixService.getWellSummaries();
 
         return {
             "status": "success",
@@ -119,13 +126,61 @@ export class WellController extends Controller {
         }
     }
 
+    
+
+    // todo: this should really live on wells.controller.ts
+    @Get("{wellRegistrationID}/details")
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
+    public async getWellDetails(
+        @Path() wellRegistrationID: string
+    ): Promise<WellDetailDto> {
+        let well = await this.geooptixService.getWellSummary(wellRegistrationID);
+        const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
+        const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
+
+        const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
+        const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
+
+        if (well) {
+            well.wellTPID = agHubWell?.wellTPID;
+            if (agHubWell) {
+                well.location = agHubWell.location;
+            }
+        } else {
+            well = agHubWell
+        }
+
+        well.hasElectricalData = hasElectricalData;
+        well.firstReadingDate = firstReadingDate;
+        well.lastReadingDate = lastReadingDate;
+
+
+        let wellWithSensors = well as WellDetailDto
+        const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
+        wellWithSensors.sensors = sensors;
+
+        let annualPumpedVolume: AnnualPumpedVolumeDto[] = []
+
+        for (var sensor of sensors) {
+           annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualPumpedVolumeForSensor(sensor)];
+        }
+
+        if (hasElectricalData){
+            annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualEstimatedPumpedVolumeForWell(wellRegistrationID)]
+        }
+
+        wellWithSensors.annualPumpedVolume = annualPumpedVolume;
+
+        return wellWithSensors;
+    }
+
     @Get("{wellRegistrationID}/installation")
     @Hidden()
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getInstallationRecordForWell(
         @Path() wellRegistrationID: string
     ) {
-        const installationRecord = await this.geoOptixService.getInstallationRecord(wellRegistrationID);
+        const installationRecord = await this.geooptixService.getInstallationRecord(wellRegistrationID);
 
         return installationRecord;
     }
@@ -139,7 +194,7 @@ export class WellController extends Controller {
         @Path() photoCanonicalName: string,
         @Request() req: RequestWithUserContext
     ) {
-        const photoBuffer = await this.geoOptixService.getPhoto(wellRegistrationID, installationCanonicalName, photoCanonicalName);
+        const photoBuffer = await this.geooptixService.getPhoto(wellRegistrationID, installationCanonicalName, photoCanonicalName);
         req.res?.contentType("image/jpeg");
         req.res?.end(photoBuffer);
     }

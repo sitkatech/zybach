@@ -135,6 +135,8 @@
                     <div class="row">
                         <div class="col">
                             <div class="row" *ngIf="installation">
+                                <div class="col-12  col-sm-6 label"><strong>Installation Name: </strong> </div>
+                                <div class="col-12  col-sm-6">{{installation.installationCanonicalName}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
                                 <div class="col-12  col-sm-6">{{installation.status}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>

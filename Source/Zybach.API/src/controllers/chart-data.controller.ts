@@ -21,52 +21,6 @@ export class ChartDataController extends Controller {
         super();
     }
 
-    // todo: this should really live on wells.controller.ts
-    @Get("{wellRegistrationID}/details")
-    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
-    public async getWellDetails(
-        @Path() wellRegistrationID: string
-    ): Promise<WellDetailDto> {
-        let well = await this.geooptixService.getWellSummary(wellRegistrationID);
-        const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
-        const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
-
-        const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
-        const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
-
-        if (well) {
-            well.wellTPID = agHubWell?.wellTPID;
-            if (agHubWell) {
-                well.location = agHubWell.location;
-            }
-        } else {
-            well = agHubWell
-        }
-
-        well.hasElectricalData = hasElectricalData;
-        well.firstReadingDate = firstReadingDate;
-        well.lastReadingDate = lastReadingDate;
-
-
-        let wellWithSensors = well as WellDetailDto
-        const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
-        wellWithSensors.sensors = sensors;
-
-        let annualPumpedVolume: AnnualPumpedVolumeDto[] = []
-
-        for (var sensor of sensors) {
-           annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualPumpedVolumeForSensor(sensor)];
-        }
-
-        if (hasElectricalData){
-            annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualEstimatedPumpedVolumeForWell(wellRegistrationID)]
-        }
-
-        wellWithSensors.annualPumpedVolume = annualPumpedVolume;
-
-        return wellWithSensors;
-    }
-
     @Get("{wellRegistrationID}")
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getChartData(

@@ -31,7 +31,7 @@ export class WellService {
   }
 
   public getWellDetails(id: string): Observable<any> {
-    return this.apiService.getFromApi(`chartData/${id}/details`);
+    return this.apiService.getFromApi(`wells/${id}/details`);
   }
 
   public getInstallationDetails(id: string): Observable<any> {

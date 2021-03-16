@@ -902,6 +902,40 @@
 				]
 			}
 		},
+		"/api/wells/{wellRegistrationID}/details": {
+			"get": {
+				"operationId": "GetWellDetails",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/WellDetailDto"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"keystone": [
+							"Administrator"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "wellRegistrationID",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/api/wells/{wellRegistrationID}/pumpedVolume": {
 			"get": {
 				"operationId": "GetPumpedVolumeByWell",
