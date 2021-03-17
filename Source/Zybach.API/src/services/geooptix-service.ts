@@ -233,7 +233,7 @@ export class GeoOptixService {
 
     public async getSearchSuggestions(textToSearch: string) : Promise<SearchSummaryDto[]> {
         //PageSize = -1 ensures we get as many results as Azure will let GeoOptix give us
-        const searchUrl = `https://tpnrd.search-qa.geooptix.com/suggest/${textToSearch}?pageSize=-1`;
+        const searchUrl = `${this.searchUrl}/suggest/${textToSearch}?pageSize=-1`;
 
         try {
             const result = await axios.get(searchUrl, {
