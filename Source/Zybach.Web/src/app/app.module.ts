@@ -50,6 +50,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WellMapPopupComponent } from './pages/well-map-popup/well-map-popup.component';
 import { createCustomElement } from '@angular/elements';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
+import { IvyCarouselModule } from 'angular-responsive-carousel';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -102,7 +103,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ToastrModule.forRoot({
       positionClass: "toast-top-right"
     }),
-    AngularMyDatePickerModule
+    AngularMyDatePickerModule,
+    IvyCarouselModule
   ],  
   providers: [
     CookieService,

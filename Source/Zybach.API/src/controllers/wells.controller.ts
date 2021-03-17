@@ -195,8 +195,13 @@ export class WellController extends Controller {
         @Request() req: RequestWithUserContext
     ) {
         const photoBuffer = await this.geooptixService.getPhoto(wellRegistrationID, installationCanonicalName, photoCanonicalName);
-        req.res?.contentType("image/jpeg");
-        req.res?.end(photoBuffer);
+        
+        if (photoBuffer){
+            req.res?.contentType("image/jpeg");
+            req.res?.end(photoBuffer);
+        } else{
+            req.res?.status(204).end();
+        }
     }
 
     /**

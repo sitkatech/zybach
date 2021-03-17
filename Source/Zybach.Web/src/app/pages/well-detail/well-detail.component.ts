@@ -25,6 +25,7 @@ import { InstallationDto } from 'src/app/shared/models/installation-dto';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
 import { doPerf } from '@microsoft/applicationinsights-web';
 import { DecimalPipe } from '@angular/common';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -44,7 +45,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   currentUser: UserDetailedDto;
   chartSubscription: any;
   well: WellWithSensorSummaryDto;
-  installation: InstallationDto;
+  installations: InstallationDto[] = [];
   rawResults: string;
   timeSeries: any[];
   vegaView: any;
@@ -125,7 +126,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
       this.well = well;
-      console.log(this.well);
       
       this.cdr.detectChanges();
       this.addWellToMap();
@@ -133,17 +133,46 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getInstallationDetails(){
-    this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installation => {
-      this.installation = installation;
+    this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installations => {
+      this.installations = installations;
 
-      this.wellService.getPhoto(this.wellRegistrationID, this.installation.installationCanonicalName, installation.photos[0]).subscribe(photo => {
+      for (const installation of installations) {
+
+        this.getPhotoRecords(installation)
+      }
+    });
+  }
+
+  getPhotoRecords(installation){
+    installation.photoDataUrls = [];
+    installation.noPhotoAvailable = false;
+    const photos = installation.photos;
+
+    const photoObservables = photos.map(
+      photo => this.wellService.getPhoto(this.wellRegistrationID, installation.installationCanonicalName, photo)
+    );
+
+    let foundPhoto = false;
+
+    forkJoin(photoObservables).subscribe((blobs: any[]) => {
+      for (const blob of blobs){
+        if (!blob){
+          // we're ignoring errors that come from the GO request by sending 204 in their place, 
+          // so skip through this iteration if the current blob is null/undefined
+          continue; 
+        }
+
+        foundPhoto = true;
+
         const reader = new FileReader();
-        reader.readAsDataURL(photo);
+        reader.readAsDataURL(blob);
         reader.onloadend = () => {
           // result includes identifier 'data:image/png;base64,' plus the base64 data
-          this.photoDataUrl = reader.result;
-        }
-      });
+          installation.photoDataUrls.push({path: reader.result});
+        };
+      }
+
+      installation.noPhotoAvailable = !foundPhoto;
     });
   }
 
@@ -160,11 +189,11 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return time.format('M/D/yyyy ') + timepiece;
   }
 
-  getInstallationDate() {
-    if (!this.installation.date) {
+  getInstallationDate(installation) {
+    if (!installation.date) {
       return ""
     }
-    const time = moment(this.installation.date)
+    const time = moment(installation.date)
     const timepiece = time.format('h:mm a');
     return time.format('M/D/yyyy ') + timepiece;
   }
@@ -276,8 +305,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.sensors = response.sensors;
       this.timeSeries = response.timeSeries;
       
-      console.log(this.timeSeries);
-      
       this.cdr.detectChanges();
 
       const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
@@ -337,8 +364,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const sensorTypes = this.well.sensors.map(x=>x.sensorType);
 
-    console.log(sensorTypes);
-
     if (sensorTypes.includes("Flow Meter")){
       fields.push('FlowmeterGallons');
     }
@@ -396,23 +421,14 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }).then(function (res) {
       self.vegaView = res.view;
 
-      // var changeSet = vega.changeset().insert(self.timeSeries);
-      // self.vegaView.change('timeSeries', changeSet).run();
-
-      // todo: this is just here to test the thing.
       self.filterChart(new Date(2021, 0, 1), new Date());
     });
   }
 
   onDateChanged(event){
-    console.log(event);
-    // const startDate = new Date(event.dateRange.beginDate.year, event.dateRange.beginDate.month, event.dateRange.beginDate.day);
-    // const endDate = new Date(event.dateRange.endDate.year, event.dateRange.endDate.month, event.dateRange.endDate.day);
-    
     const startDate = event.dateRange.beginJsDate;
     const endDate = event.dateRange.endJsDate;
     
-    console.log(startDate, endDate);
     this.filterChart(startDate, endDate);
   }
 

@@ -132,37 +132,51 @@
                     Installation Details
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col">
-                            <div class="row" *ngIf="installation">
-                                <div class="col-12  col-sm-6 label"><strong>Installation Name: </strong> </div>
-                                <div class="col-12  col-sm-6">{{installation.installationCanonicalName}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
-                                <div class="col-12  col-sm-6">{{installation.status}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
-                                <div class="col-12  col-sm-6">{{getInstallationDate()}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
-                                <div class="col-12  col-sm-6">lat: {{installation.lat}}, <br /> lng:
-                                    {{installation.lon}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
-                                <div class="col-12  col-sm-6">{{installation.flowmeterSerialNumber}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
-                                <div class="col-12  col-sm-6">{{installation.sensorSerialNumber}}</div>
+                    <ng-container *ngFor="let installation of installations; index as i">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="row">
+                                    <div class="col-12  col-sm-6 label"><strong>Installation Name: </strong> </div>
+                                    <div class="col-12  col-sm-6">{{installation.installationCanonicalName}}</div>
+                                    <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
+                                    <div class="col-12  col-sm-6">{{installation.status}}</div>
+                                    <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
+                                    <div class="col-12  col-sm-6">{{getInstallationDate(installation)}}</div>
+                                    <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
+                                    <div class="col-12  col-sm-6">lat: {{installation.lat | number: '1.0-3'}}, lng:
+                                        {{installation.lon | number: '1.0-3'}}</div>
+                                    <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
+                                    <div class="col-12  col-sm-6">{{installation.flowmeterSerialNumber}}</div>
+                                    <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
+                                    <div class="col-12  col-sm-6">{{installation.sensorSerialNumber}}</div>
+                                </div>
                             </div>
-                            <ng-container *ngIf="!installation">
-                                <span class="fas fa-spinner loading-spinner"></span>
-                                <p>Loading...</p>
-                            </ng-container>
+                            <div class="col-12 col-md-6 text-center">
+                                <carousel *ngIf="installation.photoDataUrls?.length > 1"
+                                    [images]="installation.photoDataUrls" [height]="300" [cellsToShow]="1"
+                                    [objectFit]="contain" [dots]="true">
+                                </carousel>
+
+                                <img *ngIf="installation.photoDataUrls?.length === 1" class="img img-fluid" src="{{installation.photoDataUrls[0].path}}"
+                                    style="height: 300px" />
+
+                                <ng-container *ngIf="!installation.photoDataUrls?.length && !installation.noPhotoAvailable">
+                                    <span class="fas fa-spinner loading-spinner"></span>
+                                    <p>Loading...</p>
+                                </ng-container>
+
+                                <img *ngIf="installation.noPhotoAvailable" class="img img-fluid" style="height:300px"
+                                    src="/assets/main/no-photo-available.jpg" />
+                            </div>
                         </div>
-                        <div class="col text-center">
-                            <img *ngIf="photoDataUrl" class="img img-fluid" src="{{photoDataUrl}}"
-                                style="max-height: 300px" />
-                            <ng-container *ngIf="!photoDataUrl">
-                                <span class="fas fa-spinner loading-spinner"></span>
-                                <p>Loading...</p>
-                            </ng-container>
+                        <hr *ngIf="i != installations.length - 1" />
+                    </ng-container>
+                    <ng-container *ngIf="!installations">
+                        <div class="row text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
                         </div>
-                    </div>
+                    </ng-container>
                 </div>
             </div>
         </div>
