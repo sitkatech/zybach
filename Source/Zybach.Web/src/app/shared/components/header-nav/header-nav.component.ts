@@ -23,8 +23,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     searchSuggestions: any[];
     text: string;
-
-    private hasHitEnterToNavigate: boolean = false;
     private isSearching: boolean = false;
 
     windowWidth: number;
@@ -129,30 +127,24 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     }
 
     public search(event) {
-        console.log("Triggering");
         this.isSearching = true;
         this.searchService.getSearchSuggestions(event.query.trim()).subscribe(results => {
             this.searchSuggestions = results;
-            this.hasHitEnterToNavigate = false;
             this.isSearching = false;
         })
     }
 
-    keyUp(event) {
-        if (event.key === 'Enter') {
-          this.hasHitEnterToNavigate = true;
-        //   if (!this.isSearching && this.searchSuggestions.length === 1) {
-        //     this.navigateTo(this.searchSuggestions[0].Document);
-  
-        //     this.text = '';
-        //     this.searchSuggestions = null;
-        //   }
+    select(event) {
+        this.text = '';
+        this.router.navigateByUrl(`/wells/${event.ObjectName}`);
+    }
+
+    //The dropdown closes when we remove focus, so if we go back in and still have text we should show the search suggestions
+    reFocus(geoOptixSearch) {
+        if (this.text != undefined && this.text != '') {
+            geoOptixSearch.show();
         }
     }
 
-    select(event) {
-        console.log(event);
-        this.text = '';
-        //this.navigateTo(event.Document);
-    }
+    
 }
