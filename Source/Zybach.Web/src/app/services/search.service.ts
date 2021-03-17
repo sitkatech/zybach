@@ -12,6 +12,6 @@ export class SearchService {
   ) { }
 
   public getSearchSuggestions(): Observable<any> {
-    return this.apiService.getFromApi(`search/hello`);
+    return this.apiService.getFromApi(`search/a`);
   }
 }

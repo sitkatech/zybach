@@ -4,6 +4,7 @@ import secrets from "../secrets";
 import { provideSingleton } from "../util/provide-singleton";
 import { SensorSummaryDto, SensorTypeMap, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { WellController } from "../controllers/wells.controller";
+import { GeoOptixObjectTypeToZybachObjectType, SearchSummaryDto } from "../dtos/search-summary-dto";
 
 const FileReader = require('filereader');
 
@@ -219,7 +220,7 @@ export class GeoOptixService {
         }
     }
 
-    public async getSearchSuggestions(textToSearch: string) {
+    public async getSearchSuggestions(textToSearch: string) : Promise<SearchSummaryDto[]> {
         const searchUrl = `https://tpnrd.search-qa.geooptix.com/suggest/${textToSearch}`;
 
         try {
@@ -227,7 +228,24 @@ export class GeoOptixService {
                 headers: this.headers
             })
 
-            return result.data
+            return result.data.value
+            .filter((x: { Document: { ObjectType: string; }; }) => GeoOptixObjectTypeToZybachObjectType(x.Document.ObjectType) != "")
+            .map((x: { Document: { ObjectType: string; Name: string; SiteCanonicalName: string; }; }) => 
+                ({
+                    ObjectType : GeoOptixObjectTypeToZybachObjectType(x.Document.ObjectType),
+                    Name : x.Document.Name,
+                    WellRegistrationID : x.Document.SiteCanonicalName
+                })
+            )
+            .sort((a: { Name: string; }, b: { Name: string; }) => {
+                if (a.Name < b.Name) {
+                    return -1;
+                }
+                if (a.Name > b.Name) {
+                    return  1;
+                }
+                return 0
+            });
         }
         catch(err){
             console.error(err);
