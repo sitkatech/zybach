@@ -21,6 +21,12 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     private watchUserChangeSubscription: any;
     private currentUser: UserDetailedDto;
 
+    searchSuggestions: any[];
+    text: string;
+
+    private hasHitEnterToNavigate: boolean = false;
+    private isSearching: boolean = false;
+
     windowWidth: number;
     public showCurrentPageHeader: boolean = true;
 
@@ -122,10 +128,31 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         return `assets/main/logos/${environment.leadOrganizationLogoFilename}`;
     }
 
-    public getSearchSuggestions() {
+    public search(event) {
         console.log("Triggering");
-        this.searchService.getSearchSuggestions().subscribe(x => {
-            console.log(x);
+        this.isSearching = true;
+        this.searchService.getSearchSuggestions(event.query.trim()).subscribe(results => {
+            this.searchSuggestions = results;
+            this.hasHitEnterToNavigate = false;
+            this.isSearching = false;
         })
+    }
+
+    keyUp(event) {
+        if (event.key === 'Enter') {
+          this.hasHitEnterToNavigate = true;
+        //   if (!this.isSearching && this.searchSuggestions.length === 1) {
+        //     this.navigateTo(this.searchSuggestions[0].Document);
+  
+        //     this.text = '';
+        //     this.searchSuggestions = null;
+        //   }
+        }
+    }
+
+    select(event) {
+        console.log(event);
+        this.text = '';
+        //this.navigateTo(event.Document);
     }
 }

@@ -18,6 +18,7 @@ import { FieldDefinitionComponent } from './components/field-definition/field-de
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AlertDisplayComponent } from './components/alert-display/alert-display.component';
 import { FieldDefinitionGridHeaderComponent } from './components/field-definition-grid-header/field-definition-grid-header.component';
+import { AutoCompleteModule } from "primeng/autocomplete"
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
         RouterModule,
         SelectDropDownModule,
         CKEditorModule,
-        NgbModule
+        NgbModule,
+        AutoCompleteModule
     ],
     exports: [
         AlertDisplayComponent,

@@ -11,7 +11,7 @@ export class SearchService {
     public apiService: ApiService
   ) { }
 
-  public getSearchSuggestions(): Observable<any> {
-    return this.apiService.getFromApi(`search/a`);
+  public getSearchSuggestions(searchText : string): Observable<any> {
+    return this.apiService.getFromApi(`search/${searchText}`);
   }
 }
