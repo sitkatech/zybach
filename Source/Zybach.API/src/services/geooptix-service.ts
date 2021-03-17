@@ -237,20 +237,23 @@ export class GeoOptixService {
                 headers: this.headers
             })
 
+            var searchLowercase = textToSearch.toLowerCase();
+            //GeoOptix search will return results where the Description or the Tags have the string
+            //We're only really concerned with the Name and CanonicalName, so do some extra filtering and also make sure it isn't a new type
             return result.data.value
-            .filter((x: { Document: { ObjectType: string; }; }) => GeoOptixObjectTypeToZybachObjectType(x.Document.ObjectType) != "")
+            .filter((x: { Document: { ObjectType: string; Name: string; CanonicalName: string }; }) => GeoOptixObjectTypeToZybachObjectType(x.Document.ObjectType) != "" && (x.Document.Name.toLowerCase().includes(searchLowercase) || x.Document.CanonicalName.toLowerCase().includes(searchLowercase)))
             .map((x: { Document: { ObjectType: string; Name: string; SiteCanonicalName: string; }; }) => 
                 ({
                     ObjectType : GeoOptixObjectTypeToZybachObjectType(x.Document.ObjectType),
-                    Name : x.Document.Name,
-                    WellRegistrationID : x.Document.SiteCanonicalName
+                    ObjectName : x.Document.Name,
+                    WellID : x.Document.SiteCanonicalName
                 })
             )
-            .sort((a: { Name: string; }, b: { Name: string; }) => {
-                if (a.Name < b.Name) {
+            .sort((a: { ObjectName: string; }, b: { ObjectName: string; }) => {
+                if (a.ObjectName < b.ObjectName) {
                     return -1;
                 }
-                if (a.Name > b.Name) {
+                if (a.ObjectName > b.ObjectName) {
                     return  1;
                 }
                 return 0
