@@ -1,3 +1,1 @@
-#!
-mongodump --out=/dump $CONNECTION_STRING_PROD
-mongorestore -d zybachDb --drop mongodb://zybachLocalUser:password@127.0.0.1:27017 /dump/zybachDbProd
+mongodump $CONNECTION_STRING_PROD --out=/dump && mongorestore -d zybachDb --drop mongodb://zybachLocalUser:password@127.0.0.1:27017 /dump/zybachDbProd
