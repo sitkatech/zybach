@@ -11,9 +11,11 @@ const FileReader = require('filereader');
 @provideSingleton(GeoOptixService)
 export class GeoOptixService {
     baseUrl: string;
+    searchUrl: string;
     headers: { "x-geooptix-token": string };
     constructor(){
         this.baseUrl = secrets.GEOOPTIX_HOSTNAME;
+        this.searchUrl = secrets.GEOOPTIX_SEARCH_HOSTNAME;
         this.headers = {
             "x-geooptix-token": secrets.GEOOPTIX_API_KEY
         }
@@ -230,7 +232,8 @@ export class GeoOptixService {
     }
 
     public async getSearchSuggestions(textToSearch: string) : Promise<SearchSummaryDto[]> {
-        const searchUrl = `https://tpnrd.search-qa.geooptix.com/suggest/${textToSearch}`;
+        //PageSize = -1 ensures we get as many results as Azure will let GeoOptix give us
+        const searchUrl = `https://tpnrd.search-qa.geooptix.com/suggest/${textToSearch}?pageSize=-1`;
 
         try {
             const result = await axios.get(searchUrl, {
