@@ -4,15 +4,18 @@ import secrets from "../secrets";
 import { provideSingleton } from "../util/provide-singleton";
 import { SensorSummaryDto, SensorTypeMap, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { WellController } from "../controllers/wells.controller";
+import { GeoOptixObjectTypeToZybachObjectType, SearchSummaryDto } from "../dtos/search-summary-dto";
 
 const FileReader = require('filereader');
 
 @provideSingleton(GeoOptixService)
 export class GeoOptixService {
     baseUrl: string;
+    searchUrl: string;
     headers: { "x-geooptix-token": string };
     constructor(){
         this.baseUrl = secrets.GEOOPTIX_HOSTNAME;
+        this.searchUrl = secrets.GEOOPTIX_SEARCH_HOSTNAME;
         this.headers = {
             "x-geooptix-token": secrets.GEOOPTIX_API_KEY
         }
@@ -223,6 +226,43 @@ export class GeoOptixService {
 
             return result.data
         } catch(err){
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+    }
+
+    public async getSearchSuggestions(textToSearch: string) : Promise<SearchSummaryDto[]> {
+        //PageSize = -1 ensures we get as many results as Azure will let GeoOptix give us
+        const searchUrl = `${this.searchUrl}/suggest/${textToSearch}?pageSize=-1`;
+
+        try {
+            const result = await axios.get(searchUrl, {
+                headers: this.headers
+            })
+
+            var searchLowercase = textToSearch.toLowerCase();
+            //GeoOptix search will return results where the Description or the Tags have the string
+            //We're only really concerned with the Name and CanonicalName, so do some extra filtering and also make sure it isn't a new type
+            return result.data.value
+            .filter((x: { Document: { ObjectType: string; Name: string; CanonicalName: string }; }) => GeoOptixObjectTypeToZybachObjectType(x.Document.ObjectType) != "" && (x.Document.Name.toLowerCase().includes(searchLowercase) || x.Document.CanonicalName.toLowerCase().includes(searchLowercase)))
+            .map((x: { Document: { ObjectType: string; Name: string; SiteCanonicalName: string; }; }) => 
+                ({
+                    ObjectType : GeoOptixObjectTypeToZybachObjectType(x.Document.ObjectType),
+                    ObjectName : x.Document.Name,
+                    WellID : x.Document.SiteCanonicalName
+                })
+            )
+            .sort((a: { ObjectName: string; }, b: { ObjectName: string; }) => {
+                if (a.ObjectName < b.ObjectName) {
+                    return -1;
+                }
+                if (a.ObjectName > b.ObjectName) {
+                    return  1;
+                }
+                return 0
+            });
+        }
+        catch(err){
             console.error(err);
             throw new InternalServerError(err.message);
         }

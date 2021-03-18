@@ -1,3 +1,4 @@
+import { literalMap } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -145,9 +146,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Flow Meter?",
         valueGetter: function (params) {
-          const sensorTypes = params.data.sensors.map(x => x.sensorType);
-          if (sensorTypes.includes("Flow Meter")) {
-            return "Yes";
+          const flowMeters = params.data.sensors.filter(x => x.sensorType == "Flow Meter").map(x => x.sensorName);
+          if (flowMeters.length > 0) {
+            return `Yes (${flowMeters.join(', ')})`;
           } else {
             return "No";
           }
@@ -157,9 +158,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Continuity Meter?",
         valueGetter: function (params) {
-          const sensorTypes = params.data.sensors.map(x => x.sensorType);
-          if (sensorTypes.includes("Continuity Meter")) {
-            return "Yes";
+          const continuityMeters = params.data.sensors.filter(x => x.sensorType == "Continuity Meter").map(x => x.sensorName);
+          if (continuityMeters.length > 0) {
+            return `Yes (${continuityMeters.join(', ')})`;
           } else {
             return "No";
           }

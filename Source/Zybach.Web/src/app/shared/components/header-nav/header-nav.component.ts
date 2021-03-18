@@ -8,6 +8,8 @@ import { Alert } from '../../models/alert';
 import { environment } from 'src/environments/environment';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { Router } from '@angular/router';
+import { WellService } from 'src/app/services/well.service';
+import { SearchService } from 'src/app/services/search.service';
 
 @Component({
     selector: 'header-nav',
@@ -18,6 +20,10 @@ import { Router } from '@angular/router';
 export class HeaderNavComponent implements OnInit, OnDestroy {
     private watchUserChangeSubscription: any;
     private currentUser: UserDetailedDto;
+
+    searchSuggestions: any[];
+    text: string;
+    private isSearching: boolean = false;
 
     windowWidth: number;
     public showCurrentPageHeader: boolean = true;
@@ -30,6 +36,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     constructor(
         private authenticationService: AuthenticationService,
         private cookieStorageService: CookieStorageService,
+        private searchService: SearchService,
         private userService: UserService,
         private alertService: AlertService,
         private cdr: ChangeDetectorRef,
@@ -118,4 +125,26 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     public leadOrganizationLogoSrc(): string{
         return `assets/main/logos/${environment.leadOrganizationLogoFilename}`;
     }
+
+    public search(event) {
+        this.isSearching = true;
+        this.searchService.getSearchSuggestions(event.query.trim()).subscribe(results => {
+            this.searchSuggestions = results;
+            this.isSearching = false;
+        })
+    }
+
+    select(event) {
+        this.text = '';
+        this.router.navigateByUrl(`/wells/${event.ObjectName}`);
+    }
+
+    //The dropdown closes when we remove focus, so if we go back in and still have text we should show the search suggestions
+    reFocus(geoOptixSearch) {
+        if (this.text != undefined && this.text != '') {
+            geoOptixSearch.show();
+        }
+    }
+
+    
 }
