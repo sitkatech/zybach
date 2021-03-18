@@ -25,15 +25,10 @@ export class MapDataController extends Controller{
     @Get("wells")
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getWellsWithSensors(): Promise<ApiResult<WellWithSensorSummaryDto[]>>{
-        const sw = new Stopwatch();
-        sw.start();
         const wellSummaryWithSensorsDtoMap = await this.geooptixService.getWellsWithSensors();
-        console.log(sw.getTime());
         const lastReadingDates = await this.influxService.getLastReadingDateTime();
         const firstReadingDates = await this.influxService.getFirstReadingDateTime();
-        console.log(sw.getTime());
         const aghubWells = await this.aghubWellService.getAghubWells();
-        console.log(sw.getTime());
 
         // iterate the aghub wells
         // if the well summary map does not have a well with a given wellRegistrationID, add it
@@ -50,15 +45,11 @@ export class MapDataController extends Controller{
             geoOptixWell.fetchDate = x.fetchDate;
         })
 
-        console.log(sw.getTime());
-
         // iterate the combined collection, setting the last reading date for each well
         wellSummaryWithSensorsDtoMap.forEach(x=>{
             x.lastReadingDate = lastReadingDates[x.wellRegistrationID]
             x.firstReadingDate = firstReadingDates[x.wellRegistrationID]
         })
-
-        console.log(sw.getTime());
 
         const resultArray = Array.from(wellSummaryWithSensorsDtoMap.values())
 

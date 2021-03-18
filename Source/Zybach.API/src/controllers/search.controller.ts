@@ -1,5 +1,6 @@
 import { inject } from "inversify";
 import { Route, Controller, Get, Hidden, Security, Path } from "tsoa";
+import { RoleEnum } from "../models/role";
 import { SecurityType } from "../security/authentication";
 import { AghubWellService } from "../services/aghub-well-service";
 import { GeoOptixService } from "../services/geooptix-service";
@@ -16,7 +17,7 @@ export class SearchController extends Controller {
 
     @Get("{searchText}")
     @Hidden()
-    @Security(SecurityType.API_KEY)
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getSearchSuggestions(
         @Path() searchText: string
     ) {
