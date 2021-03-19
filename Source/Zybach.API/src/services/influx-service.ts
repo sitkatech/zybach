@@ -254,4 +254,32 @@ export class InfluxService {
 
         return results;
     }
+
+    public async getWellRegistrationIdsWithElectricalEstimateAsOfYear(year: number): Promise<string[]> {
+        
+        const query = `from(bucket: "${this.bucket}")
+        |> range(start: 2019-01-01T00:00:00.000Z, stop: ${year}-12-31T23:59:59.999Z)
+        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume")
+        |> group(columns: ["registration-id"], mode: "by")
+        |> last()`
+
+        var results: string[] = await new Promise((resolve,reject)=>{
+            let results: string[] = [];
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results.push(o["registration-id"]);
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error);
+                },
+                complete() {
+                    resolve(results);
+                }
+            });
+        });
+
+        return results;
+    }
 }

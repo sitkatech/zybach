@@ -432,6 +432,34 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"DistrictStatisticsDto": {
+				"properties": {
+					"NumberOfWellsTracked": {
+						"type": "number",
+						"format": "double"
+					},
+					"NumberOfFlowMeters": {
+						"type": "number",
+						"format": "double"
+					},
+					"NumberOfContinuityMeters": {
+						"type": "number",
+						"format": "double"
+					},
+					"NumberOfElectricalUsageEstimates": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"NumberOfWellsTracked",
+					"NumberOfFlowMeters",
+					"NumberOfContinuityMeters",
+					"NumberOfElectricalUsageEstimates"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"WellWithSensorSummaryDto": {
 				"properties": {
 					"wellRegistrationID": {

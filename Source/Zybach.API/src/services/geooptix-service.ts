@@ -41,6 +41,28 @@ export class GeoOptixService {
         }
     }
 
+    public async getWellSummariesCreatedAsOfYear(year: number): Promise<WellSummaryDto[]> {
+        try {
+            // todo: this getting stuff from GeoOptix needs to live in GeoOptixService class
+            const geoOptixRequest = await axios.get(
+                `${this.baseUrl}/project-overview-web/water-data-program/sites`,
+                {
+                    headers: this.headers
+                }
+            );
+
+            const filteredWells = geoOptixRequest.data.filter((x: any) => new Date(x.CreateDate).getFullYear() <= year);
+
+            return filteredWells
+                .map((x: { CanonicalName: any; Description: any; Location: any; }) =>
+                    ({ wellRegistrationID: x.CanonicalName, description: x.Description, location: x.Location }));
+        }
+        catch (err) {
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+    }
+
     public async getWellSummary(wellRegistrationID: string): Promise<WellSummaryDto> {
         try {
             const geoOptixRequest = await axios.get(
@@ -71,6 +93,27 @@ export class GeoOptixService {
             );
 
             return geoOptixRequest.data.map((x: {SiteCanonicalName: string, Name: string, Definition: {sensorType: string}}) =>
+                ({wellRegistrationID: x.SiteCanonicalName, sensorName: x.Name, sensorType: SensorTypeMap[x.Definition.sensorType]})
+            );
+
+        } catch (err) {
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+    }
+
+    public async getSensorSummariesCreatedAsOfYear(year: number): Promise<SensorSummaryDto[]> {
+        try {
+            const geoOptixRequest = await axios.get(
+                `${this.baseUrl}/project-overview-web/water-data-program/stations`,
+                {
+                    headers: this.headers
+                }
+            );
+
+            const filteredSensors = geoOptixRequest.data.filter((x:any) => new Date(x.CreateDate).getFullYear() <= year);
+
+            return filteredSensors.map((x: {SiteCanonicalName: string, Name: string, Definition: {sensorType: string}}) =>
                 ({wellRegistrationID: x.SiteCanonicalName, sensorName: x.Name, sensorType: SensorTypeMap[x.Definition.sensorType]})
             );
 

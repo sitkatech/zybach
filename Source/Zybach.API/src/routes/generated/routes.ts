@@ -13,6 +13,8 @@ import { CustomRichTextController } from './../../controllers/custom-rich-text.c
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { FieldDefinitionController } from './../../controllers/field-definition.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ManagerDashboardController } from './../../controllers/manager-dashboard.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { MapDataController } from './../../controllers/map-data.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RoleController } from './../../controllers/role.controller';
@@ -228,6 +230,17 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "FieldDefinitionValue": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "DistrictStatisticsDto": {
+        "dataType": "refObject",
+        "properties": {
+            "NumberOfWellsTracked": {"dataType":"double","required":true},
+            "NumberOfFlowMeters": {"dataType":"double","required":true},
+            "NumberOfContinuityMeters": {"dataType":"double","required":true},
+            "NumberOfElectricalUsageEstimates": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -751,6 +764,33 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.update.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/managerDashboard/districtStatistics/:year',
+            function (request: any, response: any, next: any) {
+            const args = {
+                    year: {"in":"path","name":"year","required":true,"dataType":"double"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<ManagerDashboardController>(ManagerDashboardController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getDistrictStatistics.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
