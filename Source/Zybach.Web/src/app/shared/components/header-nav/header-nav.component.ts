@@ -136,7 +136,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     select(event) {
         this.text = '';
-        this.router.navigateByUrl(`/wells/${event.ObjectName}`);
+        this.router.navigateByUrl(`/wells/${event.WellID}`);
     }
 
     //The dropdown closes when we remove focus, so if we go back in and still have text we should show the search suggestions
