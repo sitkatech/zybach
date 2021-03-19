@@ -223,3 +223,9 @@ figure.media {
   .navCaretMargin{
     margin-top: 22px;
   }
+
+  @media screen and (min-width: 576px){
+    .label{
+        text-align: right;
+    }
+  }

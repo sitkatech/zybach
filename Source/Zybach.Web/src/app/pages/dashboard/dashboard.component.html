@@ -1,7 +1,13 @@
 <div class="container navCaretMargin">
     <div class="row">
-        <div class="col">
-            <h2>Manager Dashboard</h2>
+        <div class="col-12 col-md-6">
+            <h2 class="d-inline-block">Manager Dashboard</h2>
+        </div>
+        <div class="col-12 col-md-6 text-right">
+            <div class="float-right pl-2">
+                <zybach-water-year-select [(selectedYear)]="yearToDisplay" (selectedYearChange)="updateAnnualData()">
+                </zybach-water-year-select>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -11,7 +17,23 @@
                     District-Wide Statistics
                 </div>
                 <div class="card-body">
-                    Coming soon!
+                    
+                    <div class="row" *ngIf="loadingDistrictStatistics">
+                        <div class="col text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!loadingDistrictStatistics">
+                        <div class="col-12  col-sm-6 label"><strong>Number of Wells Tracked: </strong> </div>
+                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfWellsTracked}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>Flow Meters: </strong> </div>
+                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfFlowMeters}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>Continuity Meters: </strong> </div>
+                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfContinuityMeters}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>Electrical Usage Estimates: </strong> </div>
+                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfElectricalUsageEstimates}}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -21,19 +43,19 @@
                     Usage Charts
                 </div>
                 <div class="card-body">
-                    Coming soon!
+                    <p class="text-italic">Under construction</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-2">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     Water Usage Maps
                 </div>
                 <div class="card-body">
-                    Coming soon!
+                    <p class="text-italic">Under construction</p>
                 </div>
             </div>
         </div>

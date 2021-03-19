@@ -18,7 +18,8 @@ import { FieldDefinitionComponent } from './components/field-definition/field-de
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AlertDisplayComponent } from './components/alert-display/alert-display.component';
 import { FieldDefinitionGridHeaderComponent } from './components/field-definition-grid-header/field-definition-grid-header.component';
-import { AutoCompleteModule } from "primeng/autocomplete"
+import { AutoCompleteModule } from "primeng/autocomplete";
+import { WaterYearSelectComponent } from './components/water-year-select/water-year-select.component'
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { AutoCompleteModule } from "primeng/autocomplete"
         CustomRichTextComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
+        WaterYearSelectComponent,
     ],
     imports: [
         CommonModule,
@@ -53,7 +55,8 @@ import { AutoCompleteModule } from "primeng/autocomplete"
         HeaderNavComponent,
         CustomRichTextComponent,
         FieldDefinitionComponent,
-        FieldDefinitionGridHeaderComponent
+        FieldDefinitionGridHeaderComponent,
+        WaterYearSelectComponent
     ]
 })
 export class SharedModule {

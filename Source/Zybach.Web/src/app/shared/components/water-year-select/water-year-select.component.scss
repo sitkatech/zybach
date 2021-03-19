@@ -1,0 +1,21 @@
+@import "~src/scss/_variables.scss";
+
+.water-year-dropdown {
+    color : $select;
+    padding-left: 4px;
+}
+
+.water-year-dropdown,
+.water-year-dropdown:after,
+.water-year-dropdown:before {
+    transition: all .5s;
+  }
+
+.water-year-dropdown:hover {
+    background-color: #EEE;
+}
+
+.dropdown-item:hover {
+    background-color: $select-and-nav-dropdown-hover;
+    cursor: pointer;
+}
