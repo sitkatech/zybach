@@ -111,18 +111,23 @@ export class InfluxService {
         |> last()`
 
         var lastReadingDate: Date =  await new Promise((resolve,reject) => {
-            let results: Date;
+            let resultDate: Date;
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
-                    results = new Date(o["_time"])
+                    const currentRowDate = new Date(o["_time"]);
+                    // since we are searching across multiple measurements, there may be multiple rows returned,
+                    // so we have to check if the date from this row is after the date we already found
+                    if (!resultDate || currentRowDate.getTime() > resultDate.getTime()){
+                        resultDate = currentRowDate;
+                    }
                 },
                 error(error) {
                     console.error(error);
                     reject(error)
                 },
                 complete() {
-                    resolve(results);
+                    resolve(resultDate);
                 },
             });
         })
@@ -196,7 +201,7 @@ export class InfluxService {
     public async getAnnualPumpedVolumeForSensor(sensor: SensorSummaryDto): Promise<AnnualPumpedVolumeDto[]>{
         const query = `from(bucket: "${this.bucket}")
         |> range(start: 2019-01-01T00:00:00.000Z)
-        |> filter(fn: (r) => r["sn"] == "${sensor.sensorName}")
+        |> filter(fn: (r) => r["sn"] == "${sensor.sensorName}" and r["_measurement"] == "pumped-volume")
         |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
         |> fill(value: 0.0)`
 
