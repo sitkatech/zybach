@@ -70,6 +70,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   // For example initialize to specific date (09.10.2018 - 19.10.2018). It is also possible
   // to set initial date range value using the selDateRange attribute.
   dateRange: any;
+  public unitsShown: string = "gal";
 
   constructor(
     private wellService: WellService,
@@ -125,6 +126,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
+      debugger;
       this.well = well;
       
       this.cdr.detectChanges();
@@ -199,16 +201,40 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getAnnualPumpedVolume(year, dataSource){
+    debugger;
     const annualPumpedVolume = this.well.annualPumpedVolume.find(x=> 
       x.year === year && x.dataSource === dataSource
     )
+
     if (!annualPumpedVolume){
       return "-"
     }
 
-    const value = this.decimalPipe.transform(annualPumpedVolume.gallons, "1.0-0")
+    if (this.unitsShown == "gal") {
+      const value = this.decimalPipe.transform(annualPumpedVolume.gallons , "1.0-0")
+      return `${value} ${this.unitsShown}`; 
+    }
 
-    return `${value} gal`
+    const irrigatedAcresPerYear = this.well.irrigatedAcresPerYear.find(x => x.Year === year);
+
+    if (!irrigatedAcresPerYear || (irrigatedAcresPerYear.Acres == null || irrigatedAcresPerYear.Acres == undefined)) {
+      return "-";
+    }
+
+    const value = this.decimalPipe.transform((annualPumpedVolume.gallons / 27154) / irrigatedAcresPerYear.Acres , "1.0-2")
+    return `${value} ${this.unitsShown}`;
+  }
+
+  displayIrrigatedAcres(): boolean {
+    if (!this.well) {
+      return false;
+    }
+
+    return this.well.irrigatedAcresPerYear.length > 0 && !this.well.irrigatedAcresPerYear.every(x => x.Acres == null || x.Acres == undefined);
+  }
+
+  public toggleUnitsShown(units : string): void {
+    this.unitsShown = units;
   }
 
   // Begin section: location map
