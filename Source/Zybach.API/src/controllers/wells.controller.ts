@@ -126,7 +126,7 @@ export class WellController extends Controller {
         }
     }
 
-    
+
 
     // todo: this should really live on wells.controller.ts
     @Get("{wellRegistrationID}/details")
@@ -161,11 +161,17 @@ export class WellController extends Controller {
 
         let annualPumpedVolume: AnnualPumpedVolumeDto[] = []
 
-        for (var sensor of sensors) {
-           annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualPumpedVolumeForSensor(sensor)];
+        for (var sensorType of ["Flow Meter", "Continuity Meter"]) {
+            const sensorTypeSensors = sensors.filter(x => x.sensorType == sensorType);
+
+            if (!sensorTypeSensors.length){
+                continue;
+            }
+
+            annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualPumpedVolumeForSensor(sensorTypeSensors, sensorType)];
         }
 
-        if (hasElectricalData){
+        if (hasElectricalData) {
             annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualEstimatedPumpedVolumeForWell(wellRegistrationID)]
         }
 
@@ -195,11 +201,11 @@ export class WellController extends Controller {
         @Request() req: RequestWithUserContext
     ) {
         const photoBuffer = await this.geooptixService.getPhoto(wellRegistrationID, installationCanonicalName, photoCanonicalName);
-        
-        if (photoBuffer){
+
+        if (photoBuffer) {
             req.res?.contentType("image/jpeg");
             req.res?.end(photoBuffer);
-        } else{
+        } else {
             req.res?.status(204).end();
         }
     }

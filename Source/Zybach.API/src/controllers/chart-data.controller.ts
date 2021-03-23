@@ -1,7 +1,5 @@
 import { inject } from "inversify";
 import { Hidden, Route, Controller, Get, Path, Security } from "tsoa";
-import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
-import { WellDetailDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { RoleEnum } from "../models/role";
 import { SecurityType } from "../security/authentication";
 import { AghubWellService } from "../services/aghub-well-service";
@@ -40,8 +38,14 @@ export class ChartDataController extends Controller {
 
         let timeSeriesPoints: any[] = []
 
-        for (var sensor of sensors) {
-            const sensorPoints = await this.influxService.getPumpedVolumeForSensor(sensor, firstReadingDate)
+        for (var sensorType of ["Flow Meter", "Continuity Meter"]) {
+            const sensorTypeSensors = sensors.filter(x=>x.sensorType == sensorType);
+
+            if (!sensorTypeSensors.length){
+                continue;
+            }
+            
+            const sensorPoints = await this.influxService.getPumpedVolumeForSensor(sensorTypeSensors, sensorType, firstReadingDate)
 
             let gallons = 0;
             for (var obs of sensorPoints){

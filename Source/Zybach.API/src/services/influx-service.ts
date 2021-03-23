@@ -135,11 +135,14 @@ export class InfluxService {
         return lastReadingDate;
     }
 
-    public async getPumpedVolumeForSensor(sensor: SensorSummaryDto, from: Date): Promise<any[]> {
-        // todo: this query needs to fill missing days with zeroes?
+    public async getPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date): Promise<any[]> {
+        const sensorIDFilter = sensors.map(x=> `r["sn"] == "${x.sensorName}"`).join(" or ");
+
         const query = `from(bucket: "${this.bucket}") 
         |> range(start: ${from.toISOString()}) 
-        |> filter(fn: (r) => r["_measurement"] == "pumped-volume" and r["registration-id"] == "${sensor.wellRegistrationID}" and r["sn"] == "${sensor.sensorName}" ) 
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
+        |> filter(fn: (r) => ${sensorIDFilter}) 
+        |> group(columns: ["registration-id"])
         |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")
         |> fill(value: 0.0)`
 
@@ -151,7 +154,7 @@ export class InfluxService {
                     results.push({
                         time: new Date(o["_time"]),
                         gallons: o["_value"],
-                        dataSource: sensor.sensorType
+                        dataSource: sensorType
                     })
                 },
                 error(error) {
@@ -198,10 +201,14 @@ export class InfluxService {
         return results;
     }
 
-    public async getAnnualPumpedVolumeForSensor(sensor: SensorSummaryDto): Promise<AnnualPumpedVolumeDto[]>{
+    public async getAnnualPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string): Promise<AnnualPumpedVolumeDto[]>{
+        const sensorIDFilter = sensors.map(x=> `r["sn"] == "${x.sensorName}"`).join(" or ");
+        
         const query = `from(bucket: "${this.bucket}")
         |> range(start: 2019-01-01T00:00:00.000Z)
-        |> filter(fn: (r) => r["sn"] == "${sensor.sensorName}" and r["_measurement"] == "pumped-volume")
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
+        |> filter(fn: (r) => ${sensorIDFilter})
+        |> group(columns: ["registration-id"])
         |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
         |> fill(value: 0.0)`
 
@@ -212,7 +219,7 @@ export class InfluxService {
                     const o = tableMeta.toObject(row);
                     results.push({
                         year: new Date(o["_time"]).getFullYear(),
-                        dataSource: sensor.sensorType,
+                        dataSource: sensorType,
                         gallons: o["_value"]
                     })
                 },
