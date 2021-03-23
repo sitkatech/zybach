@@ -22,8 +22,15 @@
                                 <div class="col-12  col-sm-6">{{well.wellRegistrationID}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>TPID: </strong></div>
                                 <div class="col-12  col-sm-6">{{well.wellTPID}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Device Type: </strong></div>
-                                <div class="col-12  col-sm-6">{{getSensorTypes()}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>{{getDataSourcesLabel()}}</strong></div>
+                                <div class="col-12  col-sm-6">
+                                    <p *ngFor="let sensor of getSensors()" class="m-0">
+                                        {{sensor.sensorType}} ({{sensor.sensorName}})
+                                    </p>
+                                    <p *ngIf="well.hasElectricalData" class="m-0">
+                                        Electrical Usage
+                                    </p>
+                                </div>
                                 <div class="col-12  col-sm-6 label"><strong>Last Reading Date: </strong></div>
                                 <div class="col-12  col-sm-6">{{getLastReadingDate()}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Irrigated Acres: </strong></div>

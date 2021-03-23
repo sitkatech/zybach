@@ -144,6 +144,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  getDataSourcesLabel() {
+    let plural = true;
+    let sensorCount = this.getSensors().length;
+    if ((sensorCount == 0 && this.well.hasElectricalData) || (sensorCount == 1 && !this.well.hasElectricalData)) {
+      plural = false;
+    }
+
+    return `Data Source${plural ? "(s)": ""}: `
+  }
+
   getPhotoRecords(installation){
     installation.photoDataUrls = [];
     installation.noPhotoAvailable = false;
@@ -177,8 +187,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  getSensorTypes() {
-    return this.well.sensors.map(x => x.sensorType).join(", ");
+  getSensors() {
+    return this.well.sensors;
   }
 
   getLastReadingDate() {
