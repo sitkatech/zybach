@@ -151,7 +151,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       plural = false;
     }
 
-    return `Data Source${plural ? "(s)": ""}: `
+    return `Data Source${plural ? "s": ""}: `
   }
 
   getPhotoRecords(installation){
