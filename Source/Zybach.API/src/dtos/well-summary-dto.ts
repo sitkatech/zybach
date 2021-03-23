@@ -41,7 +41,7 @@ export class WellSummaryDtoFactory {
         if (model.hasElectricalData){
             sensors.push({
                 wellRegistrationID: model.wellRegistrationID,
-                sensorType: "Electrical Data"
+                sensorType: "Electrical Usage"
             })
         }
         return {

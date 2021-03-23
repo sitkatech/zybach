@@ -48,7 +48,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
               const geoJsonPoint = x.location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.wellRegistrationID,
-                sensorTypes: x.sensors.map(x => x.sensorType)
+                sensors: x.sensors
               };
               return geoJsonPoint;
             })
@@ -171,7 +171,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerName: "Has Electrical Use Meter?",
         valueGetter: function (params) {
           const sensorTypes = params.data.sensors.map(x => x.sensorType);
-          if (sensorTypes.includes("Electrical Data")) {
+          if (sensorTypes.includes("Electrical Usage")) {
             return "Yes";
           } else {
             return "No";
@@ -261,7 +261,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
       return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) ||
         (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
-        (dataSourceOptions.showElectricalData && sensorTypes.includes("Electrical Data"));
+        (dataSourceOptions.showElectricalData && sensorTypes.includes("Electrical Usage"));
     });
 
     this.gridApi.setRowData(filteredWells);

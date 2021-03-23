@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 
 @Component({
   selector: 'zybach-well-map-popup',
@@ -8,10 +9,22 @@ import { Component, OnInit, Input } from '@angular/core';
 export class WellMapPopupComponent implements OnInit {
 
   @Input() registrationID: string;
-  @Input() sensorTypes: Array<string>;
+  @Input() sensors: SensorSummaryDto[];
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  getDataSourceDisplay(): string {
+    return `Data Source${this.sensors.length != 1 ? "s":""}:`;
+  }
+
+  getSensorDisplay(sensor: SensorSummaryDto): string {
+    if (sensor.sensorName == null || sensor.sensorName == undefined) {
+      return sensor.sensorType;
+    }
+
+    return `${sensor.sensorType} (${sensor.sensorName})`;
   }
 }
