@@ -1,3 +1,5 @@
+import { IrrigatedAcresPerYearDto } from "./irrigated-acres-per-year-dto";
+
 export class WellWithSensorSummaryDto {
     wellRegistrationID: string;
     description: string;
@@ -5,9 +7,10 @@ export class WellWithSensorSummaryDto {
     lastReadingDate?: Date;
     firstReadingDate?: Date;
     wellTPID?: string;
-    sensors: SensorSummaryDto[]
+    sensors: SensorSummaryDto[];
     annualPumpedVolume?: any[];
-  hasElectricalData: any;
+    hasElectricalData: any;
+    irrigatedAcresPerYear: IrrigatedAcresPerYearDto[];
 }
 
 

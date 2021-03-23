@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import IrrigatedAcresPerYearSchema, { IrrigatedAcresPerYearInterface } from "./irrigated-acres-per-year";
 
 export interface AghubWellInterface extends Document {
     wellRegistrationID: string;
@@ -11,6 +12,7 @@ export interface AghubWellInterface extends Document {
     location: any;
     fetchDate: Date;
     hasElectricalData: boolean;
+    irrigatedAcresPerYear: IrrigatedAcresPerYearInterface[];
 }
 
 const AghubWellSchema: Schema = new Schema({
@@ -23,8 +25,8 @@ const AghubWellSchema: Schema = new Schema({
     tpnrdPumpRateUpdated: {type:String, required: true},
     location: {type: Object, required: true},
     fetchDate: {type: Date, required: true},
-    hasElectricalData: {type: Boolean, required: true}
+    hasElectricalData: {type: Boolean, required: true},
+    irrigatedAcresPerYear: {type: [IrrigatedAcresPerYearSchema], required:false}
 })
-
 const AghubWell = mongoose.model<AghubWellInterface>("agHubWells", AghubWellSchema, "agHubWells");
 export default AghubWell;

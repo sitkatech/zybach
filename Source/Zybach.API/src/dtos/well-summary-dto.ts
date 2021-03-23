@@ -1,5 +1,7 @@
 import { AghubWellInterface } from "../models/aghub-well";
+import { IrrigatedAcresPerYearInterface } from "../models/irrigated-acres-per-year";
 import { AnnualPumpedVolumeDto } from "./annual-pumped-volume-dto";
+import { IrrigatedAcresPerYearDto, IrrigatedAcresPerYearDtoFactory } from "./irrigated-acres-per-year-dto";
 
 export interface WellSummaryDto {
     wellRegistrationID: string;
@@ -11,6 +13,7 @@ export interface WellSummaryDto {
     inGeoOptix?: boolean;
     fetchDate?: Date;
     hasElectricalData?: boolean;
+    irrigatedAcresPerYear?: IrrigatedAcresPerYearDto[];
 }
 
 export interface SensorSummaryDto {
@@ -47,7 +50,8 @@ export class WellSummaryDtoFactory {
             location: { geometry: model.location, type: "Feature", properties: {} },
             sensors: sensors,
             fetchDate: model.fetchDate,
-            hasElectricalData: model.hasElectricalData
+            hasElectricalData: model.hasElectricalData,
+            irrigatedAcresPerYear: model.irrigatedAcresPerYear.map(x => IrrigatedAcresPerYearDtoFactory.FromModel(x))
         }
     }
 }

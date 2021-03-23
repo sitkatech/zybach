@@ -145,6 +145,7 @@ export class WellController extends Controller {
             well.wellTPID = agHubWell?.wellTPID;
             if (agHubWell) {
                 well.location = agHubWell.location;
+                well.irrigatedAcresPerYear = agHubWell.irrigatedAcresPerYear;
             }
         } else {
             well = agHubWell

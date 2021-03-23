@@ -112,7 +112,8 @@ a:hover {
   border-color: $button-hover-background;
 }
 
-.btn-toggle {
+.btn-toggle,
+.btn-toggle.disabled:hover {
   color: #212529;
   background-color: #ababab;
   border-color: #a4a4a4;

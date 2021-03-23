@@ -103,7 +103,35 @@ async function cacheWellsInDb(wells: agHubWell[]) {
     await client.close();
 }
 
+async function getWellIrrigatedAcresPerYear(wellRegistrationID: string): Promise<irrigatedAcresPerYear[]> {
+    let result;
+    try {
+        const wellCollectionUrl = `${config.MAIN_API_BASE_URL}/${wellRegistrationID}/summary-statistics`;
+        result = await got.get(wellCollectionUrl, {
+            headers: {
+                "x-api-key": config.MAIN_API_KEY
+            },
+            responseType: "json",
+        });
+
+    } catch (err) {
+        console.error(err)
+        throw err;
+    }
+
+    if (result.statusCode !== 200) {
+        const message = `Could not get Summary Statistics for Well:${wellRegistrationID}. ${result.statusCode}: ${result.body.message}`;
+        console.error(message);
+        throw new Error(message);
+    }
+
+    return result.body.data.acresYear;
+}
+
 async function processWell(well: agHubWell) {
+
+    well.irrigatedAcresPerYear = await getWellIrrigatedAcresPerYear(well.wellRegistrationID);
+
     if (well.wellConnectedMeter) {
         const pumpedVolumeResult = await getPumpedVolume(well);
         if (pumpedVolumeResult.pumpedVolumeTimeSeries.length !== 0){
@@ -187,4 +215,10 @@ interface agHubWell {
     wellTPID: string;
     fetchDate: Date;
     hasElectricalData: boolean;
+    irrigatedAcresPerYear: irrigatedAcresPerYear[];
+}
+
+interface irrigatedAcresPerYear {
+    year: number;
+    acres: number;
 }

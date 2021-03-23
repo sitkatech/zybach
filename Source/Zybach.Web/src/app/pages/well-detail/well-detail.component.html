@@ -26,6 +26,17 @@
                                 <div class="col-12  col-sm-6">{{getSensorTypes()}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Last Reading Date: </strong></div>
                                 <div class="col-12  col-sm-6">{{getLastReadingDate()}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Irrigated Acres: </strong></div>
+                                <div class="col-12  col-sm-6">
+                                    <ng-container *ngIf="displayIrrigatedAcres(); else irrigatedAcresPerYearEmpty">
+                                        <p *ngFor="let result of well.irrigatedAcresPerYear" class="m-0">
+                                            {{result.Acres}} ac in {{result.Year}}
+                                        </p>
+                                    </ng-container>
+                                    <ng-template #irrigatedAcresPerYearEmpty>
+                                        <em>Irrigated Acres are not available for this parcel</em>
+                                    </ng-template>
+                                </div>
                             </div>
                             <div class="row" *ngIf="!well">
                                 <div class="col text-center">
@@ -43,6 +54,14 @@
                     <div class="card">
                         <div class="card-header">
                             Annual Pumped Volume
+                            <div class="btn-group btn-group-toggle float-right">
+                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="unitsShown === 'gal' ? 'active' : ''">
+                                  <input type="radio" name="units" id="gal" (click)="toggleUnitsShown('gal')" [disabled]="displayIrrigatedAcres()"> Volume&nbsp;(gal)
+                                </label>
+                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="[unitsShown === 'in' ? 'active' : '', displayIrrigatedAcres() ? '' : 'disabled']" style="width:100px">
+                                  <input type="radio" name="units" id="in" (click)="toggleUnitsShown('in')" [disabled]="!displayIrrigatedAcres()"> Depth&nbsp;(in)
+                                </label>
+                              </div>
                         </div>
                         <div class="card-body text-center">
                             <table class="table table-responsive table-striped" *ngIf="well">
