@@ -48,6 +48,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IrrigatedAcresPerYearDto": {
+        "dataType": "refObject",
+        "properties": {
+            "Year": {"dataType":"double"},
+            "Acres": {"dataType":"double"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "WellSummaryDto": {
         "dataType": "refObject",
         "properties": {
@@ -60,6 +69,7 @@ const models: TsoaRoute.Models = {
             "inGeoOptix": {"dataType":"boolean"},
             "fetchDate": {"dataType":"datetime"},
             "hasElectricalData": {"dataType":"boolean"},
+            "irrigatedAcresPerYear": {"dataType":"array","array":{"ref":"IrrigatedAcresPerYearDto"}},
         },
         "additionalProperties": false,
     },
@@ -172,6 +182,7 @@ const models: TsoaRoute.Models = {
             "inGeoOptix": {"dataType":"boolean"},
             "fetchDate": {"dataType":"datetime"},
             "hasElectricalData": {"dataType":"boolean"},
+            "irrigatedAcresPerYear": {"dataType":"array","array":{"ref":"IrrigatedAcresPerYearDto"}},
             "sensors": {"dataType":"array","array":{"ref":"SensorSummaryDto"},"required":true},
             "annualPumpedVolume": {"dataType":"array","array":{"ref":"AnnualPumpedVolumeDto"},"required":true},
         },
@@ -257,6 +268,7 @@ const models: TsoaRoute.Models = {
             "inGeoOptix": {"dataType":"boolean"},
             "fetchDate": {"dataType":"datetime"},
             "hasElectricalData": {"dataType":"boolean"},
+            "irrigatedAcresPerYear": {"dataType":"array","array":{"ref":"IrrigatedAcresPerYearDto"}},
             "sensors": {"dataType":"array","array":{"ref":"SensorSummaryDto"},"required":true},
         },
         "additionalProperties": false,
