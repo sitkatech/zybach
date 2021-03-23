@@ -185,7 +185,7 @@ export class InfluxService {
                     results.push({
                         time: new Date(o["_time"]),
                         gallons: o["_value"],
-                        dataSource: "Electrical Data"
+                        dataSource: "Electrical Usage"
                     })
                 },
                 error(error) {
@@ -250,7 +250,7 @@ export class InfluxService {
                     const o = tableMeta.toObject(row);
                     results.push({
                         year: new Date(o["_time"]).getFullYear(),
-                        dataSource: "Electrical Data",
+                        dataSource: "Electrical Usage",
                         gallons: o["_value"]
                     })
                 },

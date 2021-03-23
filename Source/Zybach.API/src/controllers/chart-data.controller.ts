@@ -56,7 +56,7 @@ export class ChartDataController extends Controller {
         }
 
         if (hasElectricalData) {
-            sensors.push({ wellRegistrationID: wellRegistrationID, sensorType: "Electrical Data" });
+            sensors.push({ wellRegistrationID: wellRegistrationID, sensorType: "Electrical Usage" });
             const electricPoints = await this.influxService.getElectricalBasedFlowEstimateSeries(wellRegistrationID, firstReadingDate);
             timeSeriesPoints = [...timeSeriesPoints, ...electricPoints];
         }

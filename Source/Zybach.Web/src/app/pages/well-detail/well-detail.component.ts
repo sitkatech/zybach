@@ -299,7 +299,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         glyph: "tint",
         iconUrl: "/assets/main/continuityMeterMarker.png"
       });
-    } else if (sensorTypes.includes("Electrical Data")) {
+    } else if (sensorTypes.includes("Electrical Usage")) {
       mapIcon = icon.glyph({
         prefix: "fas",
         glyph: "tint",
@@ -364,8 +364,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this.legendColors.push("#4AAA42");
       }
 
-      if( sensorTypes.includes("Electrical Data")){
-        this.legendNames.push("Electrical Data");
+      if( sensorTypes.includes("Electrical Usage")){
+        this.legendNames.push("Electrical Usage");
         this.legendColors.push("#0076C0");
       }
 
@@ -389,7 +389,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       .map(x=> ({
         "Date": moment(x.Date).format('M/D/yyyy'),
         "FlowmeterGallons": x["Flow Meter"],
-        "ElectricalUsageGallons": x["Electrical Data"],
+        "ElectricalUsageGallons": x["Electrical Usage"],
         "ContinuityDeviceGallons": x["Continuity Meter"]
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
@@ -523,7 +523,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 "title": "Data Source"
               },
               "scale": {
-                // "domain": ["Flow Meter", "Continuity Meter", "Electrical Data"],
+                // "domain": ["Flow Meter", "Continuity Meter", "Electrical Usage"],
                 // "range": ["#13B5EA", "#4AAA42", "#0076C0"],
                 "domain": this.legendNames,
                 "range": this.legendColors
