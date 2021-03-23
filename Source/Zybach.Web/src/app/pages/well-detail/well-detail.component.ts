@@ -126,7 +126,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
-      debugger;
       this.well = well;
       
       this.cdr.detectChanges();
@@ -201,7 +200,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getAnnualPumpedVolume(year, dataSource){
-    debugger;
     const annualPumpedVolume = this.well.annualPumpedVolume.find(x=> 
       x.year === year && x.dataSource === dataSource
     )
