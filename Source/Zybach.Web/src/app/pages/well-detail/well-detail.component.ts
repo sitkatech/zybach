@@ -229,7 +229,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       return "-";
     }
 
-    const value = this.decimalPipe.transform((annualPumpedVolume.gallons / 27154) / irrigatedAcresPerYear.Acres , "1.0-2")
+    const value = this.decimalPipe.transform((annualPumpedVolume.gallons / 27154) / irrigatedAcresPerYear.Acres , "1.1-1")
     return `${value} ${this.unitsShown}`;
   }
 

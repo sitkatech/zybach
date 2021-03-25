@@ -63,7 +63,7 @@
                             Annual Pumped Volume
                             <div class="btn-group btn-group-toggle float-right">
                                 <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="unitsShown === 'gal' ? 'active' : ''">
-                                  <input type="radio" name="units" id="gal" (click)="toggleUnitsShown('gal')" [disabled]="displayIrrigatedAcres()"> Volume&nbsp;(gal)
+                                  <input type="radio" name="units" id="gal" (click)="toggleUnitsShown('gal')"> Volume&nbsp;(gal)
                                 </label>
                                 <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="[unitsShown === 'in' ? 'active' : '', displayIrrigatedAcres() ? '' : 'disabled']" style="width:100px">
                                   <input type="radio" name="units" id="in" (click)="toggleUnitsShown('in')" [disabled]="!displayIrrigatedAcres()"> Depth&nbsp;(in)
