@@ -149,6 +149,9 @@
             <div class="card">
                 <div class="card-header">
                     Installation Details
+                    <a *ngIf="well?.inGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
+                        View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                    </a>
                 </div>
                 <div class="card-body">
                     <ng-container *ngFor="let installation of installations; index as i">
@@ -196,6 +199,9 @@
                             <p>Loading...</p>
                         </div>
                     </ng-container>
+                    <p class="font-italic" *ngIf="installations?.length === 0">
+                        No Installations Records were found for this well.
+                    </p>
                 </div>
             </div>
         </div>

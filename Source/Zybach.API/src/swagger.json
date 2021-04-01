@@ -365,7 +365,8 @@
 					"wellRegistrationID",
 					"location",
 					"sensors",
-					"annualPumpedVolume"
+					"annualPumpedVolume",
+					"inGeoOptix"
 				],
 				"type": "object",
 				"additionalProperties": false

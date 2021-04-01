@@ -90,6 +90,7 @@ namespace Zybach.Web
             LeadOrganizationLogoFilename = configuration["LeadOrganizationLogoFilename"];
             AppInsightsInstrumentationKey =  configuration["AppInsightsInstrumentationKey"];
             MapQuestApiUrl =  configuration["MapQuestApiUrl"];
+            GeoOptixWebUrl = configuration["GeoOptixWebUrl"];
         }
 
         [JsonProperty("production")]
@@ -128,6 +129,8 @@ namespace Zybach.Web
         public string AppInsightsInstrumentationKey {get; set;}
         [JsonProperty("mapQuestApiUrl")]
         public string MapQuestApiUrl { get; set; }
+        [JsonProperty("geoOptixWebUrl")]
+        public string GeoOptixWebUrl {get; set;}
     }
 
     public class KeystoneAuthConfigurationDto

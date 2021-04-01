@@ -26,6 +26,7 @@ import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydat
 import { doPerf } from '@microsoft/applicationinsights-web';
 import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -176,6 +177,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       installation.noPhotoAvailable = !foundPhoto;
     });
   }
+  
+  wellInGeoOptixUrl(): string {
+    return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellRegistrationID}`;
+  }
 
   getSensorTypes() {
     return this.well.sensors.map(x => x.sensorType).join(", ");
@@ -204,9 +209,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       x.year === year && x.dataSource === dataSource
     )
 
-    if (!annualPumpedVolume){
+    if (!annualPumpedVolume || ! annualPumpedVolume.gallons){
       return "-"
     }
+    
 
     if (this.unitsShown == "gal") {
       const value = this.decimalPipe.transform(annualPumpedVolume.gallons , "1.0-0")
@@ -329,6 +335,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.sensors = response.sensors;
       this.timeSeries = response.timeSeries;
       
+      console.log(this.timeSeries);
+
       this.cdr.detectChanges();
 
       const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
@@ -384,6 +392,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
     
+    console.log(pivotedAndSorted);
+
     const fields = ['Date'];
 
     const sensorTypes = this.well.sensors.map(x=>x.sensorType);
@@ -452,6 +462,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   onDateChanged(event){
     const startDate = event.dateRange.beginJsDate;
     const endDate = event.dateRange.endJsDate;
+    console.log(startDate, endDate);
     
     this.filterChart(startDate, endDate);
   }
@@ -459,6 +470,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   useFullDateRange(){
     const startDate = new Date(this.well.firstReadingDate) 
     const endDate = new Date(this.well.lastReadingDate)
+    console.log(startDate,endDate);
 
     this.initDateRange(startDate, endDate);
 
@@ -472,6 +484,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
+    console.log(filteredTimeSeries)
     this.vegaView.change('timeSeries', changeSet).run();
   }
 

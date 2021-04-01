@@ -63,14 +63,19 @@ export class GeoOptixService {
         }
     }
 
-    public async getWellSummary(wellRegistrationID: string): Promise<WellSummaryDto> {
+    public async getWellSummary(wellRegistrationID: string): Promise<WellSummaryDto | null> {
         try {
             const geoOptixRequest = await axios.get(
                 `${this.baseUrl}/project-overview-web/water-data-program/sites/${wellRegistrationID}`,
                 {
-                    headers: this.headers
+                    headers: this.headers,
+                    validateStatus: (x: number) => true
                 }
             );
+
+            if (geoOptixRequest.status === 404 || geoOptixRequest.status === 204){
+                return null;
+            }
 
             return {
                 location: geoOptixRequest.data.location,
@@ -195,8 +200,13 @@ export class GeoOptixService {
 
         try {
             const collectionResult = await axios.get(installationCollectionRoute, {
-                headers: this.headers
+                headers: this.headers,
+                validateStatus: (x: number) => true
             });
+
+            if (collectionResult.status === 404){
+                return [];
+            }
 
             const installationRecordDtos = []
 

@@ -32,7 +32,8 @@ export interface WellWithSensorSummaryDto extends WellSummaryDto {
 }
 
 export interface WellDetailDto extends WellWithSensorSummaryDto{
-    annualPumpedVolume: AnnualPumpedVolumeDto[]
+    annualPumpedVolume: AnnualPumpedVolumeDto[];
+    inGeoOptix: boolean;
 }
 
 export class WellSummaryDtoFactory {

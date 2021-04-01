@@ -80,4 +80,8 @@ export class DynamicEnvironment {
     public get mapQuestApiUrl(){
         return window.config.mapQuestApiUrl;
     }
+
+    public get geoOptixWebUrl(){
+        return window.config.geoOptixWebUrl;
+    }
 }

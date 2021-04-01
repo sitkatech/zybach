@@ -138,6 +138,11 @@ export class InfluxService {
     public async getPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date): Promise<any[]> {
         const sensorIDFilter = sensors.map(x=> `r["sn"] == "${x.sensorName}"`).join(" or ");
 
+        from.setHours(0);
+        from.setMinutes(0);
+        from.setSeconds(0);
+        from.setMilliseconds(0);
+
         const query = `from(bucket: "${this.bucket}") 
         |> range(start: ${from.toISOString()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")

@@ -179,7 +179,7 @@ const models: TsoaRoute.Models = {
             "location": {"dataType":"any","required":true},
             "lastReadingDate": {"dataType":"datetime"},
             "firstReadingDate": {"dataType":"datetime"},
-            "inGeoOptix": {"dataType":"boolean"},
+            "inGeoOptix": {"dataType":"boolean","required":true},
             "fetchDate": {"dataType":"datetime"},
             "hasElectricalData": {"dataType":"boolean"},
             "irrigatedAcresPerYear": {"dataType":"array","array":{"ref":"IrrigatedAcresPerYearDto"}},

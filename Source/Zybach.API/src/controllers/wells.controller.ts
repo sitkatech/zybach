@@ -126,9 +126,6 @@ export class WellController extends Controller {
         }
     }
 
-
-
-    // todo: this should really live on wells.controller.ts
     @Get("{wellRegistrationID}/details")
     @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getWellDetails(
@@ -139,9 +136,14 @@ export class WellController extends Controller {
         const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
 
         const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
+        firstReadingDate.setHours(0);
+        firstReadingDate.setMinutes(0);
+        firstReadingDate.setSeconds(0);
+        firstReadingDate.setMilliseconds(0);
         const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
 
         if (well) {
+            well.inGeoOptix = true;
             well.wellTPID = agHubWell?.wellTPID;
             if (agHubWell) {
                 well.location = agHubWell.location;
@@ -149,6 +151,7 @@ export class WellController extends Controller {
             }
         } else {
             well = agHubWell
+            well.inGeoOptix = false;
         }
 
         well.hasElectricalData = hasElectricalData;
