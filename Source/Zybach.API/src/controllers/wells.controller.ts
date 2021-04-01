@@ -136,10 +136,12 @@ export class WellController extends Controller {
         const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
 
         const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
-        firstReadingDate.setHours(0);
-        firstReadingDate.setMinutes(0);
-        firstReadingDate.setSeconds(0);
-        firstReadingDate.setMilliseconds(0);
+        if (firstReadingDate) {
+            firstReadingDate.setHours(0);
+            firstReadingDate.setMinutes(0);
+            firstReadingDate.setSeconds(0);
+            firstReadingDate.setMilliseconds(0);
+        }
         const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
 
         if (well) {

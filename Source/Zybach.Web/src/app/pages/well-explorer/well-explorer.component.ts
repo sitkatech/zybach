@@ -82,9 +82,6 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           return { LinkValue: params.data.wellRegistrationID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
-        // filterValueGetter: function (params: any) {
-        //   return params.data.FullName;
-        // },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkDisplay;
           let link2 = id2.LinkDisplay;
@@ -103,7 +100,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerName: "Registration #",
         field: "wellRegistrationID",
         width: 125,
-        sortable: true, filter: true, resizable: true
+        sortable: true, filter: true, resizable: true,
+        
       },
       {
         headerName: "TPID",
@@ -148,7 +146,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         valueGetter: function (params) {
           const flowMeters = params.data.sensors.filter(x => x.sensorType == "Flow Meter").map(x => x.sensorName);
           if (flowMeters.length > 0) {
-            return `Yes (${flowMeters.join(', ')})`;
+            return `Yes (${flowMeters.join('; ')})`;
           } else {
             return "No";
           }
@@ -160,7 +158,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         valueGetter: function (params) {
           const continuityMeters = params.data.sensors.filter(x => x.sensorType == "Continuity Meter").map(x => x.sensorName);
           if (continuityMeters.length > 0) {
-            return `Yes (${continuityMeters.join(', ')})`;
+            return `Yes (${continuityMeters.join('; ')})`;
           } else {
             return "No";
           }
@@ -266,4 +264,25 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
     this.gridApi.setRowData(filteredWells);
   }
+
+  public downloadCsv(){
+
+    // quick and easy way to exclude the column with the "View" buttons from the download:
+    // since it's the first column in the grid, we can just get all columns and ignore the first one
+    const columns = this.gridApi.columnController.getAllGridColumns();
+    const columnsToDownload = columns.slice(1);
+
+
+    // the columnKeys parameter can be either a column object (obtained as above from the grid api)
+    // or a string, set as the "colId" property of a column in the column definitions.
+    // if we ever need to add more columns that won't be intended for download, we'll need to set
+    // colIds on the column definitions and pass an explicit list of the desired ids to exportDataAsCsv,
+    // because the trick we're using here only works since the one column we want to ignore is the first one.
+    this.gridApi.exportDataAsCsv({columnKeys: columnsToDownload});
+  }
+
+  public getParams() {
+    throw new Error('Function not implemented.');
+  }
 }
+
