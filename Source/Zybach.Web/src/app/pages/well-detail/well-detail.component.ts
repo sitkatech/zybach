@@ -4,7 +4,7 @@ import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { UserDetailedDto } from 'src/app/shared/models';
-import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { WellDetailDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { AsyncParser } from 'json2csv';
@@ -23,7 +23,6 @@ import {GestureHandling} from 'leaflet-gesture-handling';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { InstallationDto } from 'src/app/shared/models/installation-dto';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
-import { doPerf } from '@microsoft/applicationinsights-web';
 import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -45,7 +44,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   currentUser: UserDetailedDto;
   chartSubscription: any;
-  well: WellWithSensorSummaryDto;
+  well: WellDetailDto;
   installations: InstallationDto[] = [];
   rawResults: string;
   timeSeries: any[];
@@ -82,8 +81,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   initDateRange(startDate: Date, endDate: Date) {
-
-
     this.dateRange = {
       isRange: true, 
       singleDate: null, 
@@ -345,8 +342,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.sensors = response.sensors;
       this.timeSeries = response.timeSeries;
       
-      console.log(this.timeSeries);
-
       this.cdr.detectChanges();
 
       const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
@@ -402,8 +397,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
     
-    console.log(pivotedAndSorted);
-
     const fields = ['Date'];
 
     const sensorTypes = this.well.sensors.map(x=>x.sensorType);
@@ -472,15 +465,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   onDateChanged(event){
     const startDate = event.dateRange.beginJsDate;
     const endDate = event.dateRange.endJsDate;
-    console.log(startDate, endDate);
-    
+
     this.filterChart(startDate, endDate);
   }
 
   useFullDateRange(){
     const startDate = new Date(this.well.firstReadingDate) 
     const endDate = new Date(this.well.lastReadingDate)
-    console.log(startDate,endDate);
 
     this.initDateRange(startDate, endDate);
 
@@ -494,7 +485,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
-    console.log(filteredTimeSeries)
     this.vegaView.change('timeSeries', changeSet).run();
   }
 

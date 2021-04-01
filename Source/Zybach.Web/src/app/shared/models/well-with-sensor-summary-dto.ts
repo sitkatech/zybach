@@ -8,9 +8,13 @@ export class WellWithSensorSummaryDto {
     firstReadingDate?: Date;
     wellTPID?: string;
     sensors: SensorSummaryDto[];
-    annualPumpedVolume?: any[];
     hasElectricalData: any;
     irrigatedAcresPerYear: IrrigatedAcresPerYearDto[];
+}
+
+export class WellDetailDto extends WellWithSensorSummaryDto {
+    annualPumpedVolume?: any[];
+    inGeoOptix?: boolean;
 }
 
 

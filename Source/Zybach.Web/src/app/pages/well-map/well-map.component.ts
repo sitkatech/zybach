@@ -315,7 +315,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
           const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-          console.log(feature);
           popupEl.registrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
           return popupEl;
