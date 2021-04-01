@@ -7,12 +7,12 @@
             </td>
         </tr>
         <tr>
-            <td class="rowHeader">Data Source(s) Available:</td>
+            <td class="rowHeader">{{getDataSourceDisplay()}}</td>
             <td class="rowValue">
-                <ng-container *ngIf="sensorTypes.length > 0">
-                    <p *ngFor="let sensor of sensorTypes" class="m-0">{{sensor}}</p>
+                <ng-container *ngIf="sensors.length > 0">
+                    <p *ngFor="let sensor of sensors" class="m-0">{{getSensorDisplay(sensor)}}</p>
                 </ng-container>
-                <span *ngIf="sensorTypes.length ==  0">None</span>
+                <span *ngIf="sensors.length ==  0">None</span>
             </td>
         </tr>
     </tbody>

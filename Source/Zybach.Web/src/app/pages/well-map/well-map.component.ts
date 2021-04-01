@@ -119,13 +119,13 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.dataSourceDropdownList = [
       { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
       { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
-      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Data" },
+      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Usage" },
       { item_id: DataSourceFilterOption.NODATA, item_text: "No Estimate Available" }
     ];
     this.selectedDataSources = [
       { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
       { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
-      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Data" },
+      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Usage" },
     ];
     this.dataSourceDropdownSettings = {
       singleSelection: false,
@@ -176,12 +176,12 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-
-        if (feature.properties.sensorTypes.includes("Flow Meter")) {
+        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
+        if (sensorTypes.includes("Flow Meter")) {
           var icon = flowMeterMarkerIcon
-        } else if (feature.properties.sensorTypes.includes("Continuity Meter")) {
+        } else if (sensorTypes.includes("Continuity Meter")) {
           var icon = continuityMeterMarkerIcon
-        } else if (feature.properties.sensorTypes.includes("Electrical Data")) {
+        } else if (sensorTypes.includes("Electrical Usage")) {
           var icon = electricalDataMarkerIcon
         } else {
           var icon = noDataSourceMarkerIcon
@@ -189,13 +189,15 @@ export class WellMapComponent implements OnInit, AfterViewInit {
         return marker(latlng, { icon: icon})
       },
       filter: (feature) => {
-        if (feature.properties.sensorTypes === null || feature.properties.sensorTypes.length === 0) {
+        if (feature.properties.sensors === null || feature.properties.sensors === 0) {
           return this.showNoEstimate;
         }
 
-        return (this.showFlowMeters && feature.properties.sensorTypes.includes("Flow Meter")) || 
-          (this.showContinuityMeters && feature.properties.sensorTypes.includes("Continuity Meter")) ||
-          (this.showElectricalData && feature.properties.sensorTypes.includes("Electrical Data"));
+        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
+
+        return (this.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
+          (this.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
+          (this.showElectricalData && sensorTypes.includes("Electrical Usage"));
       }
     });
 
@@ -313,10 +315,11 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
           const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
+          console.log(feature);
           popupEl.registrationID = feature.properties.wellRegistrationID;
-          popupEl.sensorTypes = feature.properties.sensorTypes;
+          popupEl.sensors = feature.properties.sensors;
           return popupEl;
-        });
+        }, {maxWidth:500});
       }
     })
 
@@ -333,7 +336,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
     const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
     popupEl.registrationID = feature.properties.wellRegistrationID;
-    popupEl.sensorTypes = feature.properties.sensorTypes;
+    popupEl.sensors = feature.properties.sensors;
     return popupEl;
   }
   

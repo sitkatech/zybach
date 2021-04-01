@@ -9,7 +9,7 @@ export enum DataSourceFilterOption {
   export const DataSourceSensorTypeMap = {
     "Flowmeter": "Flow Meter",
     "Continuity Meters": "Continuity Meter",
-    "Electrical Data": "Electrical Data",
+    "Electrical Usage": "Electrical Usage",
     "No Estimate Available": "N/A"
   }
   

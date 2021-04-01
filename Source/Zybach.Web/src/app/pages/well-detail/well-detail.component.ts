@@ -145,6 +145,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  getDataSourcesLabel() {
+    let plural = true;
+    let sensorCount = this.getSensors().length;
+    if ((sensorCount == 0 && this.well.hasElectricalData) || (sensorCount == 1 && !this.well.hasElectricalData)) {
+      plural = false;
+    }
+
+    return `Data Source${plural ? "s": ""}: `
+  }
+
   getPhotoRecords(installation){
     installation.photoDataUrls = [];
     installation.noPhotoAvailable = false;
@@ -182,8 +192,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellRegistrationID}`;
   }
 
-  getSensorTypes() {
-    return this.well.sensors.map(x => x.sensorType).join(", ");
+  getSensors() {
+    return this.well.sensors;
   }
 
   getLastReadingDate() {
@@ -225,7 +235,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       return "-";
     }
 
-    const value = this.decimalPipe.transform((annualPumpedVolume.gallons / 27154) / irrigatedAcresPerYear.Acres , "1.0-2")
+    const value = this.decimalPipe.transform((annualPumpedVolume.gallons / 27154) / irrigatedAcresPerYear.Acres , "1.1-1")
     return `${value} ${this.unitsShown}`;
   }
 
@@ -295,7 +305,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         glyph: "tint",
         iconUrl: "/assets/main/continuityMeterMarker.png"
       });
-    } else if (sensorTypes.includes("Electrical Data")) {
+    } else if (sensorTypes.includes("Electrical Usage")) {
       mapIcon = icon.glyph({
         prefix: "fas",
         glyph: "tint",
@@ -362,8 +372,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this.legendColors.push("#4AAA42");
       }
 
-      if( sensorTypes.includes("Electrical Data")){
-        this.legendNames.push("Electrical Data");
+      if( sensorTypes.includes("Electrical Usage")){
+        this.legendNames.push("Electrical Usage");
         this.legendColors.push("#0076C0");
       }
 
@@ -387,7 +397,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       .map(x=> ({
         "Date": moment(x.Date).format('M/D/yyyy'),
         "FlowmeterGallons": x["Flow Meter"],
-        "ElectricalUsageGallons": x["Electrical Data"],
+        "ElectricalUsageGallons": x["Electrical Usage"],
         "ContinuityDeviceGallons": x["Continuity Meter"]
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
@@ -526,7 +536,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
                 "title": "Data Source"
               },
               "scale": {
-                // "domain": ["Flow Meter", "Continuity Meter", "Electrical Data"],
+                // "domain": ["Flow Meter", "Continuity Meter", "Electrical Usage"],
                 // "range": ["#13B5EA", "#4AAA42", "#0076C0"],
                 "domain": this.legendNames,
                 "range": this.legendColors
