@@ -106,7 +106,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "TPID",
         field: "wellTPID",
-        width: 125,
+        width: 85,
         sortable: true, filter: true, resizable: true
       },
       {
@@ -151,7 +151,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        sortable: true, filter: true, resizable: true
+        sortable: true, filter: true, resizable: true,
+        width: 136
       },
       {
         headerName: "Has Continuity Meter?",
@@ -163,7 +164,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        sortable: true, filter: true, resizable: true
+        sortable: true, filter: true, resizable: true,
+        width: 170
       },
       {
         headerName: "Has Electrical Use Meter?",
@@ -186,7 +188,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        sortable: true, filter: true, resizable: true
+        sortable: true, filter: true, resizable: true, width: 110
       },
       {
         headerName: "In GeoOptix?",
@@ -197,7 +199,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        sortable: true, filter: true, resizable: true
+        sortable: true, filter: true, resizable: true, width: 115
       },
       {
         headerName: "Last Fetched from AgHub",
