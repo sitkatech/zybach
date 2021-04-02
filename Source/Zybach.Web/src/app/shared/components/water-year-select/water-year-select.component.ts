@@ -20,10 +20,21 @@ export class WaterYearSelectComponent implements OnInit {
     this.selectedYearChange.emit(this.selectedYearValue);
   }
 
+  @Input()
+  get allYearsSelected(): boolean {
+    return this.allYearsSelectedValue;
+  }
+
+  set allYearsSelected(val: boolean){
+    this.allYearsSelectedValue = val;
+    this.allYearsSelectedChange.emit(this.allYearsSelectedValue);
+  }
+
   selectedYearValue: number;
+  allYearsSelectedValue: boolean = false;
 
   @Output() selectedYearChange: EventEmitter<number> = new EventEmitter<number>();
-  
+  @Output() allYearsSelectedChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 

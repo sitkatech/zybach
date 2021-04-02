@@ -1,13 +1,14 @@
 <div class="form-group form-inline mt-0 mb-0">
   {{selectYearLabel}}  
   <a href="#" class="nav-link water-year-dropdown dropdown-toggle font-weight-bold" role="button" data-toggle="dropdown">
-    {{selectedYear}}
+    {{selectedYear || "All Years"}}
   </a>
   <div class="dropdown-menu">
     <ng-template ngFor let-year [ngForOf]="years">
-      <a class="dropdown-item" (click)="selectedYear = year" >
+      <a class="dropdown-item" (click)="selectedYear = year; allYearsSelected = false;" >
         {{year}}
       </a>
     </ng-template>
+    <a class="dropdown-item" (click)="selectedYear = null; allYearsSelected = true;">All Years</a>
   </div>
 </div>
