@@ -62,7 +62,7 @@ export class ChartDataController extends Controller {
         }
 
         timeSeriesPoints.forEach(x => {
-            x.gallonsString = x.gallons.toLocaleString() + " gallons"
+            x.gallonsString = x.gallons != null ? x.gallons.toLocaleString() + " gallons" : "N/A";
         })
 
         return { timeSeries: timeSeriesPoints, sensors: sensors };

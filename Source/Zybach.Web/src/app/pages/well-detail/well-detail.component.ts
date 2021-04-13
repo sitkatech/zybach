@@ -344,12 +344,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       
       this.cdr.detectChanges();
 
-      const gallonsMax = this.timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
-      if (gallonsMax !== 0) {
-        this.rangeMax = gallonsMax * 1.05;
-      } else {
-        this.rangeMax = 10000;
-      }
+      this.setRangeMax(this.timeSeries);
 
       this.tooltipFields = response.sensors.map(x => ({ "field": x.sensorType, "type": "ordinal" }));
       const sensorTypes = response.sensors.map(x=>x.sensorType);
@@ -484,8 +479,21 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       return asDate.getTime() >= startDate.getTime() && asDate.getTime() <= endDate.getTime()
     });
 
+    this.setRangeMax(filteredTimeSeries);
+
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
+    debugger;
     this.vegaView.change('timeSeries', changeSet).run();
+  }
+
+  setRangeMax(timeSeries: any){
+    
+    const gallonsMax = timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
+    if (gallonsMax !== 0) {
+      this.rangeMax = gallonsMax * 1.05;
+    } else {
+      this.rangeMax = 10000;
+    }
   }
 
   getVegaSpec(): any {
@@ -514,10 +522,11 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
               "type": "quantitative",
               "axis": {
                 "title": "Gallons"
-              },
-              "scale": {
-                "domain": [0, this.rangeMax]
               }
+              // ,
+              // "scale": {
+              //   "domain": [0, this.rangeMax]
+              // }
             },
             "color": {
               "field": "dataSource",

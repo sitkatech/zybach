@@ -148,8 +148,7 @@ export class InfluxService {
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
         |> filter(fn: (r) => ${sensorIDFilter}) 
         |> group(columns: ["registration-id"])
-        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")
-        |> fill(value: 0.0)`
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")`
 
         var results: any[] = await new Promise((resolve,reject) => {
             let results: any = [];
@@ -179,8 +178,7 @@ export class InfluxService {
         const query = `from(bucket: "${this.bucket}") \
         |> range(start: ${from.toISOString()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
-        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start") \
-        |> fill(value: 0.0)`
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")`
 
         var results: any[] = await new Promise((resolve,reject) => {
             let results: any = [];
@@ -214,8 +212,7 @@ export class InfluxService {
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
         |> filter(fn: (r) => ${sensorIDFilter})
         |> group(columns: ["registration-id"])
-        |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
-        |> fill(value: 0.0)`
+        |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")`
 
         var results: AnnualPumpedVolumeDto[] = await new Promise((resolve,reject)=>{
             let results: AnnualPumpedVolumeDto[] = [];
@@ -245,8 +242,7 @@ export class InfluxService {
         const query = `from(bucket: "${this.bucket}")
         |> range(start: 2019-01-01T00:00:00.000Z)
         |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}" and r["_measurement"] == "estimated-pumped-volume")
-        |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
-        |> fill(value: 0.0)`
+        |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")`
 
         var results: AnnualPumpedVolumeDto[] = await new Promise((resolve,reject)=>{
             let results: AnnualPumpedVolumeDto[] = [];
