@@ -18,11 +18,14 @@ export class AghubWellService {
         }
     }
     
-    public async findByWellRegistrationID(wellRegistrationID: string): Promise<WellWithSensorSummaryDto> {
+    public async findByWellRegistrationID(wellRegistrationID: string): Promise<WellWithSensorSummaryDto | null> {
         try {
             const results: AghubWellInterface = await AghubWell.findOne({wellRegistrationID: wellRegistrationID});
-
-            return WellSummaryDtoFactory.fromAghubWell(results);
+            if (results){
+                return WellSummaryDtoFactory.fromAghubWell(results);
+            } else{
+                return null;
+            }
         } catch (err) {
             console.error(err);
             throw new InternalServerError(err.message);

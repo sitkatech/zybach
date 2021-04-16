@@ -16,7 +16,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
 import { SecurityType } from "../security/authentication";
-import { WellDetailDto, WellSummaryDto } from "../dtos/well-summary-dto";
+import { WellDetailDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { ApiResult, ErrorResult } from "../dtos/api-result";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InternalServerError } from "../errors/internal-server-error";
@@ -27,6 +27,7 @@ import { RoleEnum } from "../models/role";
 import { AghubWellService } from "../services/aghub-well-service";
 import { InfluxService } from "../services/influx-service";
 import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
+import { NotFoundError } from "../errors/not-found-error";
 
 const bucketName = process.env.SOURCE_BUCKET;
 
@@ -131,9 +132,15 @@ export class WellController extends Controller {
     public async getWellDetails(
         @Path() wellRegistrationID: string
     ): Promise<WellDetailDto> {
-        let well = await this.geooptixService.getWellSummary(wellRegistrationID);
+        let geooptixWell = await this.geooptixService.getWellSummary(wellRegistrationID);
         const agHubWell = await this.aghubWellService.findByWellRegistrationID(wellRegistrationID);
-        const hasElectricalData = agHubWell && agHubWell.hasElectricalData;
+        const hasElectricalData = agHubWell ? agHubWell.hasElectricalData : false;
+
+        if (!geooptixWell && !agHubWell){
+            throw new NotFoundError("Well not found");
+        }
+
+        let well: WellDetailDto = (geooptixWell || agHubWell) as WellDetailDto;
 
         const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(wellRegistrationID);
         if (firstReadingDate) {
@@ -144,7 +151,7 @@ export class WellController extends Controller {
         }
         const lastReadingDate = await this.influxService.getLastReadingDateTimeForWell(wellRegistrationID);
 
-        if (well) {
+        if (geooptixWell) {
             well.inGeoOptix = true;
             well.wellTPID = agHubWell?.wellTPID;
             if (agHubWell) {
@@ -152,7 +159,6 @@ export class WellController extends Controller {
                 well.irrigatedAcresPerYear = agHubWell.irrigatedAcresPerYear;
             }
         } else {
-            well = agHubWell
             well.inGeoOptix = false;
         }
 
@@ -161,9 +167,8 @@ export class WellController extends Controller {
         well.lastReadingDate = lastReadingDate;
 
 
-        let wellWithSensors = well as WellDetailDto
         const sensors = await this.geooptixService.getSensorsForWell(wellRegistrationID);
-        wellWithSensors.sensors = sensors;
+        well.sensors = sensors;
 
         let annualPumpedVolume: AnnualPumpedVolumeDto[] = []
 
@@ -181,9 +186,9 @@ export class WellController extends Controller {
             annualPumpedVolume = [...annualPumpedVolume, ...await this.influxService.getAnnualEstimatedPumpedVolumeForWell(wellRegistrationID)]
         }
 
-        wellWithSensors.annualPumpedVolume = annualPumpedVolume;
+        well.annualPumpedVolume = annualPumpedVolume;
 
-        return wellWithSensors;
+        return well;
     }
 
     @Get("{wellRegistrationID}/installation")

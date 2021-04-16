@@ -237,7 +237,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   displayIrrigatedAcres(): boolean {
-    if (!this.well) {
+    if (!this.well || ! this.well.irrigatedAcresPerYear) {
       return false;
     }
 
@@ -482,8 +482,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setRangeMax(filteredTimeSeries);
 
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
-    debugger;
     this.vegaView.change('timeSeries', changeSet).run();
+    window.dispatchEvent(new Event('resize'));
   }
 
   setRangeMax(timeSeries: any){

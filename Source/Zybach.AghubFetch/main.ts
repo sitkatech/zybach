@@ -32,8 +32,8 @@ async function main() {
 
 async function getWellCollection(): Promise<agHubWell[]> {
     let result;
+    const wellCollectionUrl = config.MAIN_API_BASE_URL;
     try {
-        const wellCollectionUrl = config.MAIN_API_BASE_URL;
         result = await got.get(wellCollectionUrl, {
             headers: {
                 "x-api-key": config.MAIN_API_KEY
@@ -43,6 +43,7 @@ async function getWellCollection(): Promise<agHubWell[]> {
 
     } catch (err) {
         console.error(err)
+        console.error(`Target URL: ${wellCollectionUrl}`)
         throw err;
     }
 
@@ -105,8 +106,8 @@ async function cacheWellsInDb(wells: agHubWell[]) {
 
 async function getWellIrrigatedAcresPerYear(wellRegistrationID: string): Promise<irrigatedAcresPerYear[]> {
     let result;
+    const wellCollectionUrl = `${config.MAIN_API_BASE_URL}/${wellRegistrationID}/summary-statistics`;
     try {
-        const wellCollectionUrl = `${config.MAIN_API_BASE_URL}/${wellRegistrationID}/summary-statistics`;
         result = await got.get(wellCollectionUrl, {
             headers: {
                 "x-api-key": config.MAIN_API_KEY
@@ -116,6 +117,7 @@ async function getWellIrrigatedAcresPerYear(wellRegistrationID: string): Promise
 
     } catch (err) {
         console.error(err)
+        console.error(`Target URL: ${wellCollectionUrl}`)
         throw err;
     }
 
@@ -132,7 +134,7 @@ async function processWell(well: agHubWell) {
 
     well.irrigatedAcresPerYear = await getWellIrrigatedAcresPerYear(well.wellRegistrationID);
 
-    if (well.wellConnectedMeter) {
+    if (well.wellConnectedMeter && well.wellRegistrationID !== "G-015243") {
         const pumpedVolumeResult = await getPumpedVolume(well);
         if (pumpedVolumeResult.pumpedVolumeTimeSeries.length !== 0){
             well.hasElectricalData = true;
@@ -168,6 +170,7 @@ async function getPumpedVolume(well: agHubWell) {
         })
     } catch (err) {
         console.error(err);
+        console.error(`Target URL: ${pumpedVolumeEndpoint}`);
         throw err;
     }
 
@@ -184,7 +187,7 @@ async function writePumpedVolumeIntervals(intervals: { intervaldate: string, pum
     let url = `${config.INFLUX_DB_URL}/api/v2/write?org=${config.INFLUX_DB_ORG}&bucket=${config.INFLUX_DB_BUCKET}&precision=ms`;
 
     const lineProtocolMessage = intervals.reduce((prev, interval) => {
-        const timestamp = DateTime.fromISO(interval.intervaldate).toMillis();
+        const timestamp = DateTime.fromISO(interval.intervaldate).setZone("America/Chicago", {keepLocalTime: true}).toMillis();
         
         return prev + `estimated-pumped-volume,registration-id=${wellRegistrationID} gallons=${interval.pumpedvolumegallons} ${timestamp}\n`;
     }, "");
@@ -199,6 +202,8 @@ async function writePumpedVolumeIntervals(intervals: { intervaldate: string, pum
         });
     } catch (err) {
         console.error(err);
+        console.error(`Target URL: ${url}`);
+        console.error(`Request Body: ${lineProtocolMessage}`);
     }
 }
 
