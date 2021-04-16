@@ -134,7 +134,7 @@ async function processWell(well: agHubWell) {
 
     well.irrigatedAcresPerYear = await getWellIrrigatedAcresPerYear(well.wellRegistrationID);
 
-    if (well.wellConnectedMeter && well.wellRegistrationID !== "G-015243") {
+    if (well.wellConnectedMeter) {
         const pumpedVolumeResult = await getPumpedVolume(well);
         if (pumpedVolumeResult.pumpedVolumeTimeSeries.length !== 0){
             well.hasElectricalData = true;
