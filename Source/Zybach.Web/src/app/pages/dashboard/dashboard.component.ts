@@ -154,6 +154,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       });
       
       this.streamFlowZoneLayer.addTo(this.map);
+      this.map.fitBounds(this.streamFlowZoneLayer.getBounds());
+
 
       this.streamFlowZoneLayer.on("click", (event: LeafletEvent) =>{
         this.selectedStreamflowZone = event.propagatedFrom.feature;
