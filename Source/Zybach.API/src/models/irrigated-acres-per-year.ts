@@ -10,5 +10,4 @@ const IrrigatedAcresPerYearSchema: Schema = new Schema({
     acres: {type:Number, required: false}
 })
 
-const IrrigatedAcresPerYear = mongoose.model<IrrigatedAcresPerYearInterface>("irrigatedAcresPerYear", IrrigatedAcresPerYearSchema, "irrigatedAcresPerYear");
 export default IrrigatedAcresPerYearSchema;

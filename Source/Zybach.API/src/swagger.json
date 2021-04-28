@@ -578,6 +578,20 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Pick_Omit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.Exclude_keyofOmit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_T___": {
+				"properties": {},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_Omit__LeanDocument_this_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_this__": {
+				"$ref": "#/components/schemas/Pick_Omit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.Exclude_keyofOmit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_T___"
+			},
+			"LeanDocument_this_": {
+				"$ref": "#/components/schemas/Omit_Omit__LeanDocument_this_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_this__"
+			},
+			"StreamFlowZoneInterface": {
+				"$ref": "#/components/schemas/LeanDocument_this_"
+			},
 			"UserDto": {
 				"properties": {
 					"UserID": {

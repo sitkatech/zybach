@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DistrictStatisticsDto } from '../shared/models/district-statistics-dto';
+import { StreamFlowZoneDto } from '../shared/models/stream-flow-zone-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({
@@ -12,5 +13,9 @@ export class ManagerDashboardService {
 
   getDistrictStatistics(year: number): Observable<DistrictStatisticsDto>{
     return this.apiService.getFromApi(`managerDashboard/districtStatistics/${year}`);
+  }
+
+  getStreamflowZones(): Observable<StreamFlowZoneDto[]> {
+    return this.apiService.getFromApi(`streamFlowZones`);
   }
 }

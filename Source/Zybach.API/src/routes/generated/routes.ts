@@ -21,6 +21,8 @@ import { RoleController } from './../../controllers/role.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SearchController } from './../../controllers/search.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { StreamFlowZoneController } from './../../controllers/stream-flow-zone.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../../controllers/user.controller';
 import { expressAuthentication } from './../../security/authentication';
 import { iocContainer } from './../../ioc';
@@ -291,6 +293,26 @@ const models: TsoaRoute.Models = {
             "RoleName": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Pick_Omit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.Exclude_keyofOmit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_T___": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Omit_Omit__LeanDocument_this_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_this__": {
+        "dataType": "refAlias",
+        "type": {"ref":"Pick_Omit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.Exclude_keyofOmit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_T___","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "LeanDocument_this_": {
+        "dataType": "refAlias",
+        "type": {"ref":"Omit_Omit__LeanDocument_this_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_this__","validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "StreamFlowZoneInterface": {
+        "dataType": "refAlias",
+        "type": {"ref":"LeanDocument_this_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserDto": {
@@ -884,6 +906,33 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.getSearchSuggestions.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/streamFlowZones',
+            authenticateMiddleware([{"anonymous":[]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<StreamFlowZoneController>(StreamFlowZoneController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getStreamflowZones.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

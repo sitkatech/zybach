@@ -54,7 +54,17 @@
                     Water Usage Maps
                 </div>
                 <div class="card-body">
-                    <p class="text-italic">Under construction</p>
+                    <div class="row">
+                        <div id="{{mapID}}" style="height:500px" [class]="{'col-9': selectedStreamflowZone, 'col': !selectedStreamflowZone}"></div>
+                        <div class="col-3" *ngIf = "selectedStreamflowZone">
+                            <dl>
+                                <dt>Stream Flow Zone Name:</dt>
+                                <dd>{{selectedStreamflowZone.properties.ZoneName}}</dd>
+                                <dt>Acres:</dt>
+                                <dd>{{getAcreage(selectedStreamflowZone) | number: '1.0-2'}}</dd>
+                            </dl>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
