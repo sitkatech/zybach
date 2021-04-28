@@ -105,27 +105,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
     
-    this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
-      invert: true,
-      style: function () {
-        return {
-          fillColor: "#323232",
-          fill: true,
-          fillOpacity: 0.4,
-          color: "#3388ff",
-          weight: 5,
-          stroke: true
-        };
-      }
-    } as any)
+    // this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
+    //   invert: true,
+    //   style: function () {
+    //     return {
+    //       fillColor: "#323232",
+    //       fill: true,
+    //       fillOpacity: 0.4,
+    //       color: "#3388ff",
+    //       weight: 3,
+    //       stroke: true
+    //     };
+    //   }
+    // } as any)
 
-    this.tpnrdBoundaryLayer.addTo(this.map);
+    // this.tpnrdBoundaryLayer.addTo(this.map);
 
-    this.map.fitBounds(this.tpnrdBoundaryLayer.getBounds());
+    // this.map.fitBounds(this.tpnrdBoundaryLayer.getBounds());
 
-    this.overlayLayers = {
-      "District Boundary": this.tpnrdBoundaryLayer
-    };
+    // this.overlayLayers = {
+    //   "District Boundary": this.tpnrdBoundaryLayer
+    // };
 
     this.setControl();
 
@@ -143,11 +143,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.streamFlowZoneLayer = geoJSON(this.streamFlowZones as any, {
         style: function(){
           return {
-            fillColor: "#0000ff",
+            fillColor: "#323232",
             fill: true,
             fillOpacity: 0.4,
-            color: "#ff0000",
-            weight: 5,
+            color: "#3388ff",
+            weight: 2,
             stroke: true
           };
         }
