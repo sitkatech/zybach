@@ -268,6 +268,36 @@ export class InfluxService {
         return results;
     }
 
+    public async getAnnualEstimatedPumpedVolumeByWellForYear(year: number): Promise<Map<string, number>>{
+        const startDate = DateTime.local(year);
+        const endDate = DateTime.local(year+1);
+
+        const query = `from(bucket: "${this.bucket}")
+        |> range(start: ${startDate.toISO()}, stop: ${endDate.toISO()})
+        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume")
+        |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")
+        |> group(columns: ["registration-id"], mode: "by")`
+
+        var results: Map<string,number> = await new Promise((resolve,reject)=>{
+            let results: Map<string,number> = new Map<string,number>()
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    results.set(o["registration-id"], o["_value"]);
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error);
+                },
+                complete() {
+                    resolve(results);
+                }
+            });
+        });
+
+        return results;
+    }
+
     public async getWellRegistrationIdsWithElectricalEstimateAsOfYear(year: number): Promise<string[]> {
         
         const query = `from(bucket: "${this.bucket}")

@@ -1,9 +1,14 @@
 import { inject } from "inversify";
-import { Hidden, Route, Controller, Get, Path } from "tsoa";
+import { Hidden, Route, Controller, Get, Path, Security } from "tsoa";
 import { DistrictStatisticsDto } from "../dtos/district-statistics-dto";
 import { InternalServerError } from "../errors/internal-server-error";
+import AghubWell from "../models/aghub-well";
+import { RoleEnum } from "../models/role";
+import { SecurityType } from "../security/authentication";
+import { AghubWellService } from "../services/aghub-well-service";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InfluxService } from "../services/influx-service";
+import GALLON_TO_ACRE_INCH from "../util/constants";
 import { provideSingleton } from "../util/provide-singleton";
 
 @Hidden()
@@ -12,13 +17,14 @@ import { provideSingleton } from "../util/provide-singleton";
 export class ManagerDashboardController extends Controller{
     constructor(
         @inject(GeoOptixService) private geooptixService: GeoOptixService,
-        @inject(InfluxService) private influxService: InfluxService
+        @inject(InfluxService) private influxService: InfluxService,
+        @inject(AghubWellService) private aghubWellService: AghubWellService
     ){
         super();
     }
 
     @Get("/districtStatistics/{year}")
-    
+    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
     public async getDistrictStatistics(
         @Path() year: number
     ) : Promise<DistrictStatisticsDto> {
@@ -46,5 +52,46 @@ export class ManagerDashboardController extends Controller{
             NumberOfElectricalUsageEstimates: numberOfElectricalUsageEstimates,
             NumberOfFlowMeters: numberOfFlowMeters
         }
+    }
+
+    @Get("/streamFlowZonePumpingDepths/{year}")
+    public async getStreamFlowZonePumpingDepths(
+        @Path("year") year: number
+    ){
+        // Currently, we are only accounting for electrical data when color-coding the SFZ map;
+        // hence, we can confine our attention to the aghub wells and the electrical estimate time series
+
+        // Step 1. Get a mapping from SFZs to Wells
+        const streamFlowZoneWellMap = await this.aghubWellService.getAllWellsWithStreamFlowZones();
+        
+
+        // Step 2. Get the total pumped volume for each well.
+        // This is represented as a mapping from Well Registration IDs to pumped volumes
+        let pumpedVolumes: Map<string, number> = await this.influxService.getAnnualEstimatedPumpedVolumeByWellForYear(year);
+
+        // Step 3. For each SFZ, calculate the pumping depth
+        const pumpingDepths: any[] = [];
+        for (const [zone, wells] of streamFlowZoneWellMap){
+            if (!wells?.length) {
+                pumpingDepths.push({streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: 0});
+                continue;
+            }
+
+            // Sum the irrigated acres and pumped volume for each well
+            const totals = wells.reduce((runningTotals, currentWell) => {
+                const wellAcres = currentWell.irrigatedAcresPerYear.find(x=> x.year === year)?.acres ?? 0
+                const wellPumpedVolume = pumpedVolumes.get(currentWell.wellRegistrationID) ?? 0;
+
+                return {
+                    totalAcres: runningTotals.totalAcres + wellAcres,
+                    totalVolume: runningTotals.totalVolume + wellPumpedVolume
+                }
+            }, {totalAcres: 0, totalVolume: 0})
+
+            // todo: this is reporting in gallons/acres right now and we probably want acre-inch per acre
+            pumpingDepths.push({streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: GALLON_TO_ACRE_INCH * totals.totalVolume/totals.totalAcres})
+        }
+
+        return pumpingDepths;
     }
 }

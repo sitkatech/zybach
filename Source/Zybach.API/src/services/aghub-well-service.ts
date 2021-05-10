@@ -2,6 +2,7 @@ import { SearchSummaryDto, ZybachObjectTypeEnum } from "../dtos/search-summary-d
 import { WellSummaryDtoFactory, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { InternalServerError } from "../errors/internal-server-error";
 import AghubWell, { AghubWellInterface } from "../models/aghub-well";
+import StreamFlowZone, { StreamFlowZoneInterface } from "../models/stream-flow-zone";
 import { provideSingleton } from "../util/provide-singleton";
 
 @provideSingleton(AghubWellService)
@@ -12,6 +13,31 @@ export class AghubWellService {
 
             return results.map(x => WellSummaryDtoFactory.fromAghubWell(x));
 
+        } catch (err) {
+            console.error(err);
+            throw new InternalServerError(err.message);
+        }
+    }
+
+    public async getAllWellsWithStreamFlowZones(): Promise<Map<StreamFlowZoneInterface, AghubWellInterface[]>> {
+        try {
+            const map = new Map<StreamFlowZoneInterface, AghubWellInterface[]>();
+            const zones: StreamFlowZoneInterface[] = await StreamFlowZone.find();
+
+            for (const zone of zones){
+                const wells: AghubWellInterface[] = await AghubWell.find({
+                    hasElectricalData: true,
+                    location : {
+                        $geoWithin: {
+                            $geometry: zone.geometry
+                        }
+                    }
+                })
+
+                map.set(zone, wells);
+            }
+
+            return map;
         } catch (err) {
             console.error(err);
             throw new InternalServerError(err.message);
