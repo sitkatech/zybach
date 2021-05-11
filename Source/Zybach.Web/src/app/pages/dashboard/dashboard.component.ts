@@ -16,7 +16,9 @@ import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
-import { TwinPlatteBoundaryGeoJson } from '../well-explorer/tpnrd-boundary';
+import { forkJoin } from 'rxjs';
+import { streamFlowZonePumpingDepthDto } from 'src/app/shared/models/stream-flow-zone-pumping-depth-dto';
+import { X } from 'vega-lite/build/src/channel';
 
 @Component({
   selector: 'zybach-dashboard',
@@ -45,6 +47,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public districtStatistics: DistrictStatisticsDto;
   public loadingDistrictStatistics: boolean = true;
 
+  public pumpingDepthsByYear: {year: number, streamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[]}[]
+
   constructor(
     private managerDashboardService: ManagerDashboardService,
     public cdr: ChangeDetectorRef
@@ -62,6 +66,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // (unless we in the future get some way to indicate that a well/sensor has been decommissioned)
     const yearForStatistics = this.allYearsSelected ? this.currentYear : this.yearToDisplay;
 
+    if (this.pumpingDepthsByYear){
+      this.displayStreamFlowZones();
+    }
     this.managerDashboardService.getDistrictStatistics(yearForStatistics).subscribe(stats =>{
       this.districtStatistics = stats;
       this.loadingDistrictStatistics = false;
@@ -70,6 +77,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   public getAcreage(streamFlowZone: StreamFlowZoneDto): number {
     return streamFlowZone.properties.Area * 0.000247105;
+  }
+
+  public getPumpingDepth(streamFlowZone: StreamFlowZoneDto): number{
+    const selectedYearPumpingDepths = this.pumpingDepthsByYear.find(x => x.year === this.yearToDisplay).streamFlowZonePumpingDepths;
+    return selectedYearPumpingDepths.find(x=>x.streamFlowZoneFeatureID === streamFlowZone.properties.FeatureID).pumpingDepth;
   }
 
   
@@ -105,28 +117,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
     
-    // this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
-    //   invert: true,
-    //   style: function () {
-    //     return {
-    //       fillColor: "#323232",
-    //       fill: true,
-    //       fillOpacity: 0.4,
-    //       color: "#3388ff",
-    //       weight: 3,
-    //       stroke: true
-    //     };
-    //   }
-    // } as any)
-
-    // this.tpnrdBoundaryLayer.addTo(this.map);
-
-    // this.map.fitBounds(this.tpnrdBoundaryLayer.getBounds());
-
-    // this.overlayLayers = {
-    //   "District Boundary": this.tpnrdBoundaryLayer
-    // };
-
     this.setControl();
 
     this.getAndDisplayStreamflowZones();
@@ -138,32 +128,52 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public getAndDisplayStreamflowZones(){
-    this.managerDashboardService.getStreamflowZones().subscribe(x=>{
-      this.streamFlowZones = x;
-      this.streamFlowZoneLayer = geoJSON(this.streamFlowZones as any, {
-        style: function(){
-          return {
-            fillColor: "#323232",
-            fill: true,
-            fillOpacity: 0.4,
-            color: "#3388ff",
-            weight: 2,
-            stroke: true
-          };
-        }
-      });
-      
-      this.streamFlowZoneLayer.addTo(this.map);
-      this.map.fitBounds(this.streamFlowZoneLayer.getBounds());
+    forkJoin([
+      this.managerDashboardService.getStreamflowZones(),
+      this.managerDashboardService.getStreamFlowZonePumpingDepths()
+    ]).subscribe( ([zones, pumpingDepthsByYear]) =>{
+      this.streamFlowZones = zones;
+      this.pumpingDepthsByYear = pumpingDepthsByYear;
 
+      this.displayStreamFlowZones();
+    })
+  }
 
-      this.streamFlowZoneLayer.on("click", (event: LeafletEvent) =>{
-        this.selectedStreamflowZone = event.propagatedFrom.feature;
+  displayStreamFlowZones() {
+    if (this.streamFlowZoneLayer){
+      this.map.removeLayer(this.streamFlowZoneLayer);
+      this.streamFlowZoneLayer = null;
+    }
 
-        this.cdr.detectChanges();
-        this.map.invalidateSize();
-      })
+    const pumpingDepths = this.pumpingDepthsByYear.find(x=>x.year === this.yearToDisplay).streamFlowZonePumpingDepths;
+
+    const maxPumpingDepth = pumpingDepths.map(x=>x.pumpingDepth).sort()[pumpingDepths.length - 1];
+
+    this.streamFlowZoneLayer = geoJSON(this.streamFlowZones as any, {
+      style: function(feature){
+        const pumpingDepth = pumpingDepths.find(x => x.streamFlowZoneFeatureID === feature.properties.FeatureID).pumpingDepth;
+        const opacity = .75 * pumpingDepth / maxPumpingDepth;
+        return {
+          fillColor: "#0022b8",
+          fill: true,
+          fillOpacity: opacity,
+          color: "#3388ff",
+          weight: 2,
+          stroke: true
+        };
+      }
     });
+    
+    this.streamFlowZoneLayer.addTo(this.map);
+    this.map.fitBounds(this.streamFlowZoneLayer.getBounds());
+
+    this.streamFlowZoneLayer.on("click", (event: LeafletEvent) =>{
+      this.selectedStreamflowZone = event.propagatedFrom.feature;
+
+      this.cdr.detectChanges();
+      this.map.invalidateSize();
+    })
+    
   }
 
 }

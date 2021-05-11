@@ -62,6 +62,8 @@
                                 <dd>{{selectedStreamflowZone.properties.ZoneName}}</dd>
                                 <dt>Acres:</dt>
                                 <dd>{{getAcreage(selectedStreamflowZone) | number: '1.0-2'}}</dd>
+                                <dt>Average Pumping Depth:</dt>
+                                <dd>{{getPumpingDepth(selectedStreamflowZone) | number: '1.0-2'}} ac-in/ac</dd>
                             </dl>
                         </div>
                     </div>

@@ -487,6 +487,24 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"streamFlowZonePumpingDepthDto": {
+				"properties": {
+					"streamFlowZoneFeatureID": {
+						"type": "number",
+						"format": "double"
+					},
+					"pumpingDepth": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"streamFlowZoneFeatureID",
+					"pumpingDepth"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"WellWithSensorSummaryDto": {
 				"properties": {
 					"wellRegistrationID": {

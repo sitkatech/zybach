@@ -258,6 +258,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "streamFlowZonePumpingDepthDto": {
+        "dataType": "refObject",
+        "properties": {
+            "streamFlowZoneFeatureID": {"dataType":"double","required":true},
+            "pumpingDepth": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "WellWithSensorSummaryDto": {
         "dataType": "refObject",
         "properties": {
@@ -829,10 +838,9 @@ export function RegisterRoutes(app: express.Router) {
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/managerDashboard/streamFlowZonePumpingDepths/:year',
+        app.get('/api/managerDashboard/streamFlowZonePumpingDepths',
             function (request: any, response: any, next: any) {
             const args = {
-                    year: {"in":"path","name":"year","required":true,"dataType":"double"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
