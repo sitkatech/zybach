@@ -88,6 +88,44 @@ export class WellController extends Controller {
         return this.getPumpedVolumeImpl(startDateString, wellRegistrationIDs, endDateString, interval)
     }
 
+    @Get("robustReviewJson")
+    @Hidden()
+    @Security(SecurityType.API_KEY)
+    public async getRobustReviewJsonFile(
+        @Request() req: RequestWithUserContext
+    ) {
+        const wells = await this.geooptixService.getWellsWithSensors();
+        const aghubWells = await this.aghubWellService.getAghubWells();
+
+        aghubWells.forEach(x=> {
+            const geoOptixWell = wells.get(x.wellRegistrationID);
+            if (!geoOptixWell){
+                wells.set(x.wellRegistrationID, x);
+                return;
+            }
+
+            geoOptixWell.sensors = [...geoOptixWell.sensors, ...x.sensors];
+            geoOptixWell.wellTPID = x.wellTPID;
+        })
+
+        const robustReviewStructure = [...wells.values()].map(x => new Object ({
+            "TPID" : x.wellTPID,
+            "Well Registration ID" : x.wellRegistrationID,
+            "Lat" : x.location.geometry.coordinates[1],
+            "Long" : x.location.geometry.coordinates[0]
+        }));
+        
+        if (wells) {
+            req.res?.writeHead(200, {
+                'Content-Type': 'application/octet-stream',
+                "content-disposition": "attachment; filename=\"my json file.json\""
+            });
+            req.res?.end(JSON.stringify(robustReviewStructure));
+        } else {
+            req.res?.status(204).end();
+        }
+    }
+
     /**
      * Returns Well details from GeoOptix for a given well along with an array of sensors that have been associated
      * with that Well.
