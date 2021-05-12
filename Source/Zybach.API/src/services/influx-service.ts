@@ -174,7 +174,7 @@ export class InfluxService {
         return results;
     }
 
-    public async getMonthlyPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date): Promise<any[]> {
+    public async getMonthlyPumpedVolumeForSensor(sensors: SensorSummaryDto[], registrationID: string, from: Date): Promise<any[]> {
         const sensorIDFilter = sensors.map(x=> `r["sn"] == "${x.sensorName}"`).join(" or ");
 
         const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
@@ -184,20 +184,20 @@ export class InfluxService {
         const query = `from(bucket: "${this.bucket}") 
         |> range(start: ${startDate.toISO()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
-        |> filter(fn: (r) => ${sensorIDFilter}) 
-        |> group(columns: ["registration-id"])
-        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")`
-
+        |> filter(fn: (r) => ${sensorIDFilter})
+        |> filter(fn: (r) => r["registration-id"] == "${registrationID}") 
+        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")
+        |> group(columns: ["registration-id"])`
+//hi
         var results: any[] = await new Promise((resolve,reject) => {
             let results: any = [];
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
-                    const month = new Date(o["_time"]).getMonth();
-                    const year = new Date(o["_time"]).getFullYear();
+                    const date = new Date(o["_time"]);
                     results.push({
-                        month: month,
-                        year: year,
+                        month: date.getMonth(),
+                        year: date.getFullYear(),
                         volumePumpedGallons: o["_value"]
                     })
                 },
@@ -225,11 +225,10 @@ export class InfluxService {
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
-                    const month = new Date(o["_time"]).getMonth();
-                    const year = new Date(o["_time"]).getFullYear();
+                    const date = new Date(o["_time"]);
                     results.push({
-                        month: month,
-                        year: year,
+                        month: date.getMonth(),
+                        year: date.getFullYear(),
                         volumePumpedGallons: o["_value"]
                     })
                 },
