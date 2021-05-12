@@ -13,7 +13,6 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./robust-review-scenario.component.scss']
 })
 export class RobustReviewScenarioComponent implements OnInit {
-  @ViewChild('downloadLink') private downloadLink: ElementRef;
   public richTextTypeID : number = CustomRichTextType.RobustReviewScenario;
   public fileDownloading : boolean = false;
   
