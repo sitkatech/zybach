@@ -16,7 +16,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
 import { SecurityType } from "../security/authentication";
-import { WellDetailDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { SensorTypeMap, WellDetailDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { ApiResult, ErrorResult } from "../dtos/api-result";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InternalServerError } from "../errors/internal-server-error";
@@ -27,6 +27,7 @@ import { RoleEnum } from "../models/role";
 import { AghubWellService } from "../services/aghub-well-service";
 import { InfluxService } from "../services/influx-service";
 import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
+import { RobustReviewDto, MonthlyPumpedVolumeGallonsDto} from "../dtos/robust-review-dto";
 import { NotFoundError } from "../errors/not-found-error";
 
 const bucketName = process.env.SOURCE_BUCKET;
@@ -88,7 +89,7 @@ export class WellController extends Controller {
         return this.getPumpedVolumeImpl(startDateString, wellRegistrationIDs, endDateString, interval)
     }
 
-    @Get("robustReviewJson")
+    @Get("/download/robustReviewScenarioJson")
     @Hidden()
     @Security(SecurityType.API_KEY)
     public async getRobustReviewJsonFile(
@@ -106,21 +107,60 @@ export class WellController extends Controller {
 
             geoOptixWell.sensors = [...geoOptixWell.sensors, ...x.sensors];
             geoOptixWell.wellTPID = x.wellTPID;
-        })
+        });
 
-        const robustReviewStructure = [...wells.values()].map(x => new Object ({
-            "TPID" : x.wellTPID,
-            "Well Registration ID" : x.wellRegistrationID,
-            "Lat" : x.location.geometry.coordinates[1],
-            "Long" : x.location.geometry.coordinates[0]
-        }));
+        let sensorType = "Continuity Meter";
+
+        const robustReviewStructure = await Promise.all(([...wells.values()].filter(x => x.hasElectricalData || x.sensors.some(x => x.sensorType == sensorType))).map(async x => {
+            const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(x.wellRegistrationID);
+
+            if (!firstReadingDate) {
+                return null;
+            }
+
+            let monthlyPumpedVolume:MonthlyPumpedVolumeGallonsDto[] = [];
+            let dataSource = "";
+            if (x.hasElectricalData) {
+                monthlyPumpedVolume = [...await this.influxService.getMonthlyElectricalBasedFlowEstimate(x.wellRegistrationID, firstReadingDate)];
+                dataSource = "Electrical Usage";
+            }
+            else {
+                monthlyPumpedVolume = [...await this.influxService.getMonthlyPumpedVolumeForSensor(x.sensors.filter(y => y.sensorType == sensorType), sensorType, firstReadingDate)];
+                // monthlyPumpedVolume = [...initialSensorRates.reduce((r, o) => {
+                //     const key = o.month + '-' + o.year;
+                    
+                //     const item = r.get(key) || Object.assign({}, o, {
+                //       volumePumpedGallons: 0
+                //     });
+                    
+                //     item.volumePumpedGallons += o.volumePumpedGallons
+                  
+                //     return r.set(key, item);
+                //   }, new Map).values()];
+            
+                dataSource = sensorType;
+            }
+
+            const returnObj: RobustReviewDto = {
+                wellRegistrationID: x.wellRegistrationID,
+                wellTPID: x.wellTPID,
+                lat: x.location.geometry.coordinates[1],
+                long: x.location.geometry.coordinates[0],
+                dataSource: dataSource,
+                monthlyPumpedVolumeGallons: monthlyPumpedVolume
+            }
+
+            return returnObj;
+        }))
         
-        if (wells) {
+        if (robustReviewStructure) {
             req.res?.writeHead(200, {
                 'Content-Type': 'application/octet-stream',
-                "content-disposition": "attachment; filename=\"my json file.json\""
+                "Content-disposition": "attachment; filename=\"RobustReviewScenario.json\""
             });
-            req.res?.end(JSON.stringify(robustReviewStructure));
+            //We'll have null objects if they don't have a first reading date, and I'd rather 
+            //do a second filter here than include the firstReadingDate in above filter and then have to get it a second time
+            req.res?.end(JSON.stringify(robustReviewStructure.filter(x => x != null)));
         } else {
             req.res?.status(204).end();
         }

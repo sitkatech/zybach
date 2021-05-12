@@ -174,6 +174,78 @@ export class InfluxService {
         return results;
     }
 
+    public async getMonthlyPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date): Promise<any[]> {
+        const sensorIDFilter = sensors.map(x=> `r["sn"] == "${x.sensorName}"`).join(" or ");
+
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+            millisecond: 0, minute: 0, second: 0, hour:0
+        });
+
+        const query = `from(bucket: "${this.bucket}") 
+        |> range(start: ${startDate.toISO()}) 
+        |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
+        |> filter(fn: (r) => ${sensorIDFilter}) 
+        |> group(columns: ["registration-id"])
+        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")`
+
+        var results: any[] = await new Promise((resolve,reject) => {
+            let results: any = [];
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    const month = new Date(o["_time"]).getMonth();
+                    const year = new Date(o["_time"]).getFullYear();
+                    results.push({
+                        month: month,
+                        year: year,
+                        volumePumpedGallons: o["_value"]
+                    })
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error)
+                },
+                complete() {
+                    resolve(results);
+                },
+            });
+        });
+
+        return results;
+    }
+
+    public async getMonthlyElectricalBasedFlowEstimate(wellRegistrationID: string, from: Date): Promise<any[]> {
+        const query = `from(bucket: "${this.bucket}") \
+        |> range(start: ${from.toISOString()}) \
+        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
+        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")`
+
+        var results: any[] = await new Promise((resolve,reject) => {
+            let results: any = [];
+            this.queryApi.queryRows(query, {
+                next(row, tableMeta) {
+                    const o = tableMeta.toObject(row);
+                    const month = new Date(o["_time"]).getMonth();
+                    const year = new Date(o["_time"]).getFullYear();
+                    results.push({
+                        month: month,
+                        year: year,
+                        volumePumpedGallons: o["_value"]
+                    })
+                },
+                error(error) {
+                    console.error(error);
+                    reject(error)
+                },
+                complete() {
+                    resolve(results);
+                },
+            });
+        })
+
+        return results;
+    }
+
     public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string, from: Date): Promise<any[]> {
         const query = `from(bucket: "${this.bucket}") \
         |> range(start: ${from.toISOString()}) \
