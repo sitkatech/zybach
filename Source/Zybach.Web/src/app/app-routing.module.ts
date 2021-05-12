@@ -22,13 +22,15 @@ import { WellMapComponent } from './pages/well-map/well-map.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
 import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
 
 const routes: Routes = [
   { path: "test-api", component: TestAPIComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "dashboard", component: DashboardComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:wellRegistrationID", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-  
+  { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
