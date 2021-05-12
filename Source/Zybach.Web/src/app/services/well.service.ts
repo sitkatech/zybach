@@ -46,4 +46,9 @@ export class WellService {
     const route = `https://${environment.apiHostName}/wells/${wellRegistrationID}/installation/${installationCanonicalName}/photo/${photoCanonicalName}`
     return this.httpClient.get(route, {responseType: "blob"});
   }
+
+  public getRobustReviewScenarioJson(): Observable<any> {
+    const route = `https://${environment.apiHostName}/wells/download/robustReviewScenarioJson`
+    return this.httpClient.get(route, {responseType: "blob" as "json"});
+  }
 }

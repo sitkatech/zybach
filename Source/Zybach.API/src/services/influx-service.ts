@@ -188,7 +188,7 @@ export class InfluxService {
         |> filter(fn: (r) => r["registration-id"] == "${registrationID}") 
         |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")
         |> group(columns: ["registration-id"])`
-//hi
+
         var results: any[] = await new Promise((resolve,reject) => {
             let results: any = [];
             this.queryApi.queryRows(query, {

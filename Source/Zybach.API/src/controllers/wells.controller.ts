@@ -109,9 +109,9 @@ export class WellController extends Controller {
             geoOptixWell.wellTPID = x.wellTPID;
         });
 
-        let sensorType = "Continuity Meter";
+        let continuityMeterString = "Continuity Meter";
 
-        const robustReviewStructure = await Promise.all(([...wells.values()].filter(x => x.hasElectricalData || x.sensors.some(x => x.sensorType == sensorType))).map(async x => {
+        const robustReviewStructure = await Promise.all(([...wells.values()].filter(x => x.hasElectricalData || x.sensors.some(x => x.sensorType == continuityMeterString))).map(async x => {
             const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(x.wellRegistrationID);
 
             if (!firstReadingDate) {
@@ -125,20 +125,8 @@ export class WellController extends Controller {
                 dataSource = "Electrical Usage";
             }
             else {
-                monthlyPumpedVolume = [...await this.influxService.getMonthlyPumpedVolumeForSensor(x.sensors.filter(y => y.sensorType == sensorType), x.wellRegistrationID, firstReadingDate)];
-                // monthlyPumpedVolume = [...initialSensorRates.reduce((r, o) => {
-                //     const key = o.month + '-' + o.year;
-                    
-                //     const item = r.get(key) || Object.assign({}, o, {
-                //       volumePumpedGallons: 0
-                //     });
-                    
-                //     item.volumePumpedGallons += o.volumePumpedGallons
-                  
-                //     return r.set(key, item);
-                //   }, new Map).values()];
-            
-                dataSource = sensorType;
+                monthlyPumpedVolume = [...await this.influxService.getMonthlyPumpedVolumeForSensor(x.sensors.filter(y => y.sensorType == continuityMeterString), x.wellRegistrationID, firstReadingDate)];
+                dataSource = continuityMeterString;
             }
 
             const returnObj: RobustReviewDto = {
