@@ -125,7 +125,7 @@ export class WellController extends Controller {
                 dataSource = "Electrical Usage";
             }
             else {
-                monthlyPumpedVolume = [...await this.influxService.getMonthlyPumpedVolumeForSensor(x.sensors.filter(y => y.sensorType == sensorType), sensorType, firstReadingDate)];
+                monthlyPumpedVolume = [...await this.influxService.getMonthlyPumpedVolumeForSensor(x.sensors.filter(y => y.sensorType == sensorType), x.wellRegistrationID, firstReadingDate)];
                 // monthlyPumpedVolume = [...initialSensorRates.reduce((r, o) => {
                 //     const key = o.month + '-' + o.year;
                     
@@ -156,7 +156,7 @@ export class WellController extends Controller {
         if (robustReviewStructure) {
             req.res?.writeHead(200, {
                 'Content-Type': 'application/octet-stream',
-                "Content-disposition": "attachment; filename=\"RobustReviewScenario.json\""
+                "Content-Disposition": "attachment; filename=\"RobustReviewScenario.json\""
             });
             //We'll have null objects if they don't have a first reading date, and I'd rather 
             //do a second filter here than include the firstReadingDate in above filter and then have to get it a second time
