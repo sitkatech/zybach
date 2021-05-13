@@ -5,8 +5,7 @@
     "apiHostName": [TODO],
     "createAccountUrl": [TODO],
     "createAccountRedirectUrl": [TODO],
-  
-    "keystoneSupportBaseUrl": [TODO],
+
     "geoserverMapServiceUrl": [TODO],
     
     "platformLongName": [TODO],
@@ -17,13 +16,16 @@
 
     "faviconFilename": [TODO],
     "leadOrganizationLogoFilename": [TODO],
+    "mapQuestApiUrl": [TODO],
   
     "keystoneAuthConfiguration": {
       "clientId": [TODO],
       "issuer": [TODO],
+      "responseType": "code",
+      "disablePKCE": false,
       "redirectUriRelative": [TODO],
       "scope": [TODO],
-      "sessionChecksEnabled": [TODO],
+      "sessionChecksEnabled": false,
       "logoutUrl": [TODO],
       "postLogoutRedirectUri": [TODO],
       "waitForTokenInMsec": [TODO]

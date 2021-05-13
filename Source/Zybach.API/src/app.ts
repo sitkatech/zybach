@@ -41,7 +41,7 @@ app.use(jwt({
     rateLimit: true,
     jwksRequestsPerMinute: 5,
     // TODO this needs to be set by configuration
-    jwksUri: `${process.env["KEYSTONE_BASE_URL"]}/core/.well-known/jwks`,
+    jwksUri: `${process.env["KEYSTONE_BASE_URL"]}/.well-known/openid-configuration/jwks`,
   }),
   algorithms: ['RS256'],
   requestProperty: "auth",
