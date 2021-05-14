@@ -27,6 +27,7 @@ import { RoleEnum } from "../models/role";
 import { AghubWellService } from "../services/aghub-well-service";
 import { InfluxService } from "../services/influx-service";
 import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
+import { RobustReviewDto, MonthlyPumpedVolumeGallonsDto} from "../dtos/robust-review-dto";
 import { NotFoundError } from "../errors/not-found-error";
 
 const bucketName = process.env.SOURCE_BUCKET;
@@ -86,6 +87,71 @@ export class WellController extends Controller {
         @Query() interval?: number
     ) {
         return this.getPumpedVolumeImpl(startDateString, wellRegistrationIDs, endDateString, interval)
+    }
+
+    @Get("/download/robustReviewScenarioJson")
+    @Hidden()
+    @Security(SecurityType.API_KEY)
+    public async getRobustReviewJsonFile(
+        @Request() req: RequestWithUserContext
+    ) {
+        const wells = await this.geooptixService.getWellsWithSensors();
+        const aghubWells = await this.aghubWellService.getAghubWells();
+
+        aghubWells.forEach(x=> {
+            const geoOptixWell = wells.get(x.wellRegistrationID);
+            if (!geoOptixWell){
+                wells.set(x.wellRegistrationID, x);
+                return;
+            }
+
+            geoOptixWell.sensors = [...geoOptixWell.sensors, ...x.sensors];
+            geoOptixWell.wellTPID = x.wellTPID;
+        });
+
+        let continuityMeterString = "Continuity Meter";
+
+        const robustReviewStructure = await Promise.all(([...wells.values()].filter(x => x.hasElectricalData || x.sensors.some(x => x.sensorType == continuityMeterString))).map(async x => {
+            const firstReadingDate = await this.influxService.getFirstReadingDateTimeForWell(x.wellRegistrationID);
+
+            if (!firstReadingDate) {
+                return null;
+            }
+
+            let monthlyPumpedVolume:MonthlyPumpedVolumeGallonsDto[] = [];
+            let dataSource = "";
+            if (x.hasElectricalData) {
+                monthlyPumpedVolume = [...await this.influxService.getMonthlyElectricalBasedFlowEstimate(x.wellRegistrationID, firstReadingDate)];
+                dataSource = "Electrical Usage";
+            }
+            else {
+                monthlyPumpedVolume = [...await this.influxService.getMonthlyPumpedVolumeForSensor(x.sensors.filter(y => y.sensorType == continuityMeterString), x.wellRegistrationID, firstReadingDate)];
+                dataSource = continuityMeterString;
+            }
+
+            const returnObj: RobustReviewDto = {
+                wellRegistrationID: x.wellRegistrationID,
+                wellTPID: x.wellTPID,
+                lat: x.location.geometry.coordinates[1],
+                long: x.location.geometry.coordinates[0],
+                dataSource: dataSource,
+                monthlyPumpedVolumeGallons: monthlyPumpedVolume
+            }
+
+            return returnObj;
+        }))
+        
+        if (robustReviewStructure) {
+            req.res?.writeHead(200, {
+                'Content-Type': 'application/octet-stream',
+                "Content-Disposition": "attachment; filename=\"RobustReviewScenario.json\""
+            });
+            //We'll have null objects if they don't have a first reading date, and I'd rather 
+            //do a second filter here than include the firstReadingDate in above filter and then have to get it a second time
+            req.res?.end(JSON.stringify(robustReviewStructure.filter(x => x != null)));
+        } else {
+            req.res?.status(204).end();
+        }
     }
 
     /**
