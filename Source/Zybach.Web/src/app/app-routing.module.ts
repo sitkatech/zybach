@@ -44,7 +44,7 @@ const routes: Routes = [
   { path: "help", component: HelpComponent },
   { path: "training", component: TrainingComponent},
   { path: "platform-overview", component: AboutComponent},
-  { path: "login-callback", component: LoginCallbackComponent },
+  { path: "signin-oidc", component: LoginCallbackComponent },
   { path: "create-user-callback", component: CreateUserCallbackComponent },
   { path: "not-found", component: NotFoundComponent },
   { path: 'subscription-insufficient', component: SubscriptionInsufficientComponent },

@@ -28,6 +28,8 @@ app.set('port', port);
 let server: http.Server | https.Server;
 
 if (process.env["ENVIRONMENT"] === "DEBUG") {
+  //MP 5/13 Added for communication with dockerized Keystone
+  process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = '0';
   const key = fs.readFileSync('/src/key.pem');
   const cert = fs.readFileSync('/src/cert.pem');
   server = https.createServer({ key: key, cert: cert }, app);

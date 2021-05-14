@@ -63,15 +63,15 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     }
 
     public forgotPasswordUrl() :string{
-        return `${environment.keystoneSupportBaseUrl}/ForgotPassword`;
+        return `${environment.keystoneAuthConfiguration.issuer}/Account/ForgotPassword?${this.authenticationService.getClientIDAndRedirectUrlForKeystone()}`;
     }
 
     public forgotUsernameUrl() :string{
-        return `${environment.keystoneSupportBaseUrl}/ForgotUsername`;
+        return `${environment.keystoneAuthConfiguration.issuer}/Account/ForgotUsername?${this.authenticationService.getClientIDAndRedirectUrlForKeystone()}`;
     }
 
     public keystoneSupportUrl():string{
-        return `${environment.keystoneSupportBaseUrl}/Support/20`;
+        return `${environment.keystoneAuthConfiguration.issuer}/Account/Support/20?${this.authenticationService.getClientIDAndRedirectUrlForKeystone()}`;
     }
 
     public platformLongName():string{
