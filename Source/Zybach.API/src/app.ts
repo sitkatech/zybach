@@ -35,12 +35,10 @@ app.use(cors({
 }));
 
 app.use(jwt({
-  // todo: if expired token, issue 401 so frontend redirects to login
   secret: jwksRsa.expressJwtSecret({
     cache:true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    // TODO this needs to be set by configuration
     jwksUri: `${process.env["KEYSTONE_BASE_URL"]}/.well-known/openid-configuration/jwks`,
   }),
   algorithms: ['RS256'],

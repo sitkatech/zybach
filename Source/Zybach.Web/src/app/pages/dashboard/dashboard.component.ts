@@ -10,11 +10,12 @@ import {
   MapOptions,
   tileLayer,
   geoJSON,
-  LeafletEvent} from 'leaflet';
+  LeafletEvent
+} from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
-import {GestureHandling} from 'leaflet-gesture-handling'
+import { GestureHandling } from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { forkJoin } from 'rxjs';
 import { streamFlowZonePumpingDepthDto } from 'src/app/shared/models/stream-flow-zone-pumping-depth-dto';
@@ -26,7 +27,7 @@ import { X } from 'vega-lite/build/src/channel';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  
+
   public maxZoom: number = 17;
   public map: Map;
   public boundingBox: BoundingBoxDto;
@@ -43,11 +44,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public allYearsSelected: boolean = false;
   public yearToDisplay: number;
   public currentYear: number;
-  
+
   public districtStatistics: DistrictStatisticsDto;
   public loadingDistrictStatistics: boolean = true;
 
-  public pumpingDepthsByYear: {year: number, streamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[]}[]
+  public pumpingDepthsByYear: { year: number, streamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[] }[]
+  allYearsPumpingDepths: streamFlowZonePumpingDepthDto[];
 
   constructor(
     private managerDashboardService: ManagerDashboardService,
@@ -66,10 +68,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // (unless we in the future get some way to indicate that a well/sensor has been decommissioned)
     const yearForStatistics = this.allYearsSelected ? this.currentYear : this.yearToDisplay;
 
-    if (this.pumpingDepthsByYear){
+    if (this.pumpingDepthsByYear) {
       this.displayStreamFlowZones();
     }
-    this.managerDashboardService.getDistrictStatistics(yearForStatistics).subscribe(stats =>{
+    this.managerDashboardService.getDistrictStatistics(yearForStatistics).subscribe(stats => {
       this.districtStatistics = stats;
       this.loadingDistrictStatistics = false;
     });
@@ -79,19 +81,25 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return streamFlowZone.properties.Area * 0.000247105;
   }
 
-  public getPumpingDepth(streamFlowZone: StreamFlowZoneDto): number{
-    const selectedYearPumpingDepths = this.pumpingDepthsByYear.find(x => x.year === this.yearToDisplay).streamFlowZonePumpingDepths;
-    return selectedYearPumpingDepths.find(x=>x.streamFlowZoneFeatureID === streamFlowZone.properties.FeatureID).pumpingDepth;
+  public getPumpingDepth(streamFlowZone: StreamFlowZoneDto): number {
+    let selectedYearPumpingDepths;
+    if (!this.allYearsSelected) {
+      selectedYearPumpingDepths = this.pumpingDepthsByYear.find(x => x.year === this.yearToDisplay).streamFlowZonePumpingDepths;
+    } else {
+      selectedYearPumpingDepths = this.allYearsPumpingDepths;
+    }
+
+    return selectedYearPumpingDepths.find(x => x.streamFlowZoneFeatureID === streamFlowZone.properties.FeatureID).pumpingDepth;
   }
 
-  
+
   public ngAfterViewInit(): void {
     this.boundingBox = new BoundingBoxDto();
     this.boundingBox.Left = -122.65840077734131;
     this.boundingBox.Bottom = 44.800395454281436;
     this.boundingBox.Right = -121.65139301718362;
     this.boundingBox.Top = 45.528908149000124;
-    
+
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
@@ -111,12 +119,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.tileLayers["Aerial"],
       ],
       fullscreenControl: true,
-      gestureHandling:true
+      gestureHandling: true
     } as MapOptions;
     this.map = map(this.mapID, mapOptions);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
-    
+
     this.setControl();
 
     this.getAndDisplayStreamflowZones();
@@ -127,30 +135,45 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       .addTo(this.map);
   }
 
-  public getAndDisplayStreamflowZones(){
+  public getAndDisplayStreamflowZones() {
     forkJoin([
       this.managerDashboardService.getStreamflowZones(),
       this.managerDashboardService.getStreamFlowZonePumpingDepths()
-    ]).subscribe( ([zones, pumpingDepthsByYear]) =>{
+    ]).subscribe(([zones, pumpingDepthsByYear]) => {
       this.streamFlowZones = zones;
       this.pumpingDepthsByYear = pumpingDepthsByYear;
+
+      const allPumpingDepths: streamFlowZonePumpingDepthDto[] = [].concat.apply([], this.pumpingDepthsByYear.map(x => x.streamFlowZonePumpingDepths))
+      this.allYearsPumpingDepths = this.streamFlowZones.map(zone => {
+        const allYearsPumpingDepth = allPumpingDepths.filter(depth => depth.streamFlowZoneFeatureID === zone.properties.FeatureID).map(depth => depth.pumpingDepth).reduce((x, y) => x + y, 0);
+        return { streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: allYearsPumpingDepth }
+      });
+
+      console.log(this.pumpingDepthsByYear);
 
       this.displayStreamFlowZones();
     })
   }
 
   displayStreamFlowZones() {
-    if (this.streamFlowZoneLayer){
+    if (this.streamFlowZoneLayer) {
       this.map.removeLayer(this.streamFlowZoneLayer);
       this.streamFlowZoneLayer = null;
     }
 
-    const pumpingDepths = this.pumpingDepthsByYear.find(x=>x.year === this.yearToDisplay).streamFlowZonePumpingDepths;
+    let pumpingDepths: streamFlowZonePumpingDepthDto[];
 
-    const maxPumpingDepth = pumpingDepths.map(x=>x.pumpingDepth).sort()[pumpingDepths.length - 1];
+    if (!this.allYearsSelected) {
+      pumpingDepths = this.pumpingDepthsByYear.find(x => x.year === this.yearToDisplay).streamFlowZonePumpingDepths;
+    }
+    else {
+      pumpingDepths = this.allYearsPumpingDepths;
+    }
+
+    const maxPumpingDepth = pumpingDepths.map(x => x.pumpingDepth).sort()[pumpingDepths.length - 1];
 
     this.streamFlowZoneLayer = geoJSON(this.streamFlowZones as any, {
-      style: function(feature){
+      style: function (feature) {
         const pumpingDepth = pumpingDepths.find(x => x.streamFlowZoneFeatureID === feature.properties.FeatureID).pumpingDepth;
         const opacity = .75 * pumpingDepth / maxPumpingDepth;
         return {
@@ -163,17 +186,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         };
       }
     });
-    
+
     this.streamFlowZoneLayer.addTo(this.map);
     this.map.fitBounds(this.streamFlowZoneLayer.getBounds());
 
-    this.streamFlowZoneLayer.on("click", (event: LeafletEvent) =>{
+    this.streamFlowZoneLayer.on("click", (event: LeafletEvent) => {
       this.selectedStreamflowZone = event.propagatedFrom.feature;
 
       this.cdr.detectChanges();
       this.map.invalidateSize();
     })
-    
+
   }
 
 }
