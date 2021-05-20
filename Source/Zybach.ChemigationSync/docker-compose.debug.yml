@@ -6,6 +6,8 @@ services:
     build: .
     environment: 
       - DEBUG=true
+      - GEOOPTIX_BASE_URL=https://tpnrd.api-qa.geooptix.com
+      - TS_NODE_PROJECT=/src/tsconfig.json
     secrets:
       - Chemigation_Sync_Secret
     ports:

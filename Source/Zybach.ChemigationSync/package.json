@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start-dev": "node -r ts-node/register --inspect=0.0.0.0:9230 ./main.ts",
-    "build": "tsc ./main.ts",
+    "start-dev": "node -r ts-node/register --inspect=0.0.0.0:9230 ./src/main.ts",
+    "build": "tsc -p ./src",
     "start": "node ./main.js"
   },
   "devDependencies": {
