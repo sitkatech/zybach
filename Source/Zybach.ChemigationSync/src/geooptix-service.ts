@@ -1,4 +1,4 @@
-import got from 'got';
+import axios from 'axios';
 const dockerSecrets  = require('@cloudreach/docker-secrets');
 
 const config = JSON.parse(dockerSecrets.Chemigation_Sync_Secret);
@@ -12,11 +12,11 @@ const baseUrl = process.env["GEOOPTIX_BASE_URL"];
 
 const getSites = async () =>{
     try {
-        const response = await got.get(`${baseUrl}/project-overview-web/water-data-program/sites`, {
+        const response = await axios.get(`${baseUrl}/project-overview-web/water-data-program/sites`, {
             headers
         });
 
-        return response.body;
+        return response.data;
     } catch (error) {
         console.error(error)
         throw new Error(error.message);
@@ -24,27 +24,37 @@ const getSites = async () =>{
 }
 
 const getWorkOrder = async (workOrderCName: string) => {
+    let response;
     try {
-        const response =
-        await got.get(`${baseUrl}/project-overview-web/water-data-program/workOrders/${workOrderCName}/`,{
-            headers
+        response =
+        await axios.get(`${baseUrl}/project-overview-web/water-data-program/workOrders/${workOrderCName}/`,{
+            headers,
+            validateStatus: (x: number) => true
         });
-
-        return response.body;
     } catch (error) {
         console.error(error)
         throw new Error(error.message);
     }
+    
+    if (response.status === 404){
+        return null
+    } 
+    
+    if (response.status === 200) {
+        return response.data;
+    } 
+    
+    throw new Error(response.statusText);
 }
 
 const getWorkOrderSamples = async (workOrderCName: string) => {
     try {
         const response =
-        await got.get(`${baseUrl}/project-overview-web/water-data-program/workOrders/${workOrderCName}/samples`,{
+        await axios.get(`${baseUrl}/project-overview-web/water-data-program/workOrders/${workOrderCName}/samples`,{
             headers
         });
 
-        return response.body;
+        return response.data;
     } catch (error) {
         console.error(error)
         throw new Error(error.message);
