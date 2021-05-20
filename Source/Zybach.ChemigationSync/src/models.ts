@@ -1,34 +1,35 @@
 import { Feature } from "geojson";
 
 interface InspectionManifest {
-    lastChangedDate: Date;
-    insertMissingWells: boolean;        
-    deleteOrphanedSamples: boolean;
-    fieldAssignments: FieldAssignment[];
+    LastChangedDate: Date;
+    LastProcessedDate?: Date;
+    InsertMissingWells: boolean;        
+    DeleteOrphanedSamples: boolean;
+    FieldAssignments: FieldAssignment[];
 }
 
 interface FieldAssignment {
-    cname: string;
-    name: string;
-    startDate: Date;
-    endDate: Date;
+    CanonicalName: string;
+    Name: string;
+    StartDate: Date;
+    FinishDate: Date;
 
-    protocol: Protocol,
-    sampleNameTemplate: string,
-    sites: Site[]
+    Protocol: Protocol,
+    SampleNameTemplate: string,
+    Sites: Site[]
 }
 
 interface Protocol {
-    cname: string,
-    version: number
+    CanonicalName: string,
+    Version: number
 }
 
 interface Site {
-    cname: string,
-    tags?: string[],
-    properties?: { [key: string]: [string] },
-    latitude: number,
-    longitude: number
+    CanonicalName: string,
+    Tags?: string[],
+    Properties?: { [key: string]: [string] },
+    Latitude: number,
+    Longitude: number
 }
 
 interface WorkOrder {
