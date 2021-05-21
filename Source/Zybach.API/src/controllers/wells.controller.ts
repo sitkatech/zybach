@@ -105,6 +105,7 @@ export class WellController extends Controller {
                 return;
             }
 
+            geoOptixWell.hasElectricalData = x.hasElectricalData;
             geoOptixWell.sensors = [...geoOptixWell.sensors, ...x.sensors];
             geoOptixWell.wellTPID = x.wellTPID;
         });
