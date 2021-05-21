@@ -196,8 +196,8 @@ export class InfluxService {
                     const o = tableMeta.toObject(row);
                     const date = new Date(o["_time"]);
                     results.push({
-                        month: date.getMonth(),
-                        year: date.getFullYear(),
+                        month: date.getUTCMonth() + 1,
+                        year: date.getUTCFullYear(),
                         volumePumpedGallons: o["_value"]
                     })
                 },
@@ -215,8 +215,13 @@ export class InfluxService {
     }
 
     public async getMonthlyElectricalBasedFlowEstimate(wellRegistrationID: string, from: Date): Promise<any[]> {
+
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+            millisecond: 0, minute: 0, second: 0, hour:0
+        });
+
         const query = `from(bucket: "${this.bucket}") \
-        |> range(start: ${from.toISOString()}) \
+        |> range(start: ${startDate.toISO()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
         |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")`
 
@@ -227,8 +232,8 @@ export class InfluxService {
                     const o = tableMeta.toObject(row);
                     const date = new Date(o["_time"]);
                     results.push({
-                        month: date.getMonth(),
-                        year: date.getFullYear(),
+                        month: date.getUTCMonth() + 1,
+                        year: date.getUTCFullYear(),
                         volumePumpedGallons: o["_value"]
                     })
                 },
@@ -246,8 +251,13 @@ export class InfluxService {
     }
 
     public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string, from: Date): Promise<any[]> {
+
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+            millisecond: 0, minute: 0, second: 0, hour:0
+        });
+
         const query = `from(bucket: "${this.bucket}") \
-        |> range(start: ${from.toISOString()}) \
+        |> range(start: ${startDate.toISO()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
         |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")`
 
