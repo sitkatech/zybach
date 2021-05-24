@@ -38,7 +38,7 @@ export class RobustReviewScenarioComponent implements OnInit {
       a.href = URL.createObjectURL(x);
       const date = new Date();
       const month = ("0" + (date.getMonth() + 1)).slice(-2);
-      const day = ("0" + (date.getDate() + 1)).slice(-2);
+      const day = ("0" + (date.getDate())).slice(-2);
       a.download = `RobustReviewScenario-${date.getFullYear()}${month}${day}.json`;
       document.body.appendChild(a);
       a.click();
