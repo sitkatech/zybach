@@ -10,7 +10,8 @@ import {
   MapOptions,
   tileLayer,
   geoJSON,
-  LeafletEvent
+  LeafletEvent,
+  DomUtil
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
@@ -133,6 +134,32 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public setControl(): void {
     this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: false })
       .addTo(this.map);
+
+    const PumpingDepthLegend = Control.extend({
+      onAdd: function(map) {
+        var whatever = DomUtil.create("div", "legend-control");
+        whatever.style.borderRadius = "5px";
+        whatever.style.backgroundColor = "white";
+        whatever.style.cursor = "default";
+        whatever.style.padding = "6px";
+
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #C2523C; margin-right: 30px; display: inline-block'></span> 0-3\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #DB7A25; margin-right: 30px; display: inline-block'></span> 3-6\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #F0B411; margin-right: 30px; display: inline-block'></span> 6-9\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #FCF003; margin-right: 30px; display: inline-block'></span> 9-12\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #7BED00; margin-right: 30px; display: inline-block'></span> 12-15\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #06D41B; margin-right: 30px; display: inline-block'></span> 15-18\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #1BA87C; margin-right: 30px; display: inline-block'></span> 18-21\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #18758C; margin-right: 30px; display: inline-block'></span> 21-24\"<br/>"
+        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #0B2C7A; margin-right: 30px; display: inline-block'></span> 24\"+"
+
+        return whatever;
+      }
+    });
+
+    
+
+    new PumpingDepthLegend().addTo(this.map);
   }
 
   public getAndDisplayStreamflowZones() {
@@ -170,16 +197,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       pumpingDepths = this.allYearsPumpingDepths;
     }
 
-    const maxPumpingDepth = pumpingDepths.map(x => x.pumpingDepth).sort()[pumpingDepths.length - 1];
-
     this.streamFlowZoneLayer = geoJSON(this.streamFlowZones as any, {
-      style: function (feature) {
-        const pumpingDepth = pumpingDepths.find(x => x.streamFlowZoneFeatureID === feature.properties.FeatureID).pumpingDepth;
-        const opacity = .75 * pumpingDepth / maxPumpingDepth;
+      style: (feature) => {
+        const fillColor = this.getFillColor(feature.properties.FeatureID, pumpingDepths);
         return {
-          fillColor: "#0022b8",
+          fillColor: fillColor,
           fill: true,
-          fillOpacity: opacity,
+          fillOpacity: .55,
           color: "#3388ff",
           weight: 2,
           stroke: true
@@ -197,6 +221,32 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.map.invalidateSize();
     })
 
+  }
+  getFillColor(FeatureID: number, pumpingDepths: streamFlowZonePumpingDepthDto[]) {
+
+    const pumpingDepth = pumpingDepths.find(x => x.streamFlowZoneFeatureID === FeatureID).pumpingDepth;
+
+    if (pumpingDepth === 0) {
+      return null;
+    } else if (pumpingDepth < 3) {
+      return "#C2523C";
+    } else if (pumpingDepth < 6) {
+      return "#DB7A25";
+    } else if (pumpingDepth < 9) {
+      return "#F0B411"
+    } else if (pumpingDepth < 12) {
+      return "#FCF003"
+    } else if (pumpingDepth < 15) {
+      return "#7BED00"
+    } else if (pumpingDepth < 18) {
+      return "#06D41B"
+    } else if (pumpingDepth < 21) {
+      return "#1BA87C"
+    } else if (pumpingDepth < 24) {
+      return "#18758C"
+    } else {
+      return "#0B2C7A"
+    }
   }
 
 }
