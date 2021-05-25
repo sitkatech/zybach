@@ -5,8 +5,7 @@ const config = JSON.parse(dockerSecrets.Chemigation_Sync_Secret);
 
 delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
 import * as appInsights from 'applicationinsights'
-import inspectionManifestMock from './data/inspectionManifest';
-import { GeoOptixSite, InspectionManifest, Sample, WorkOrder } from 'models';
+import { GeoOptixSite, InspectionManifest, Sample, WorkOrder } from './models';
 import { getTwoDigitMonth } from './util';
 
 appInsights.setup(config.APPINSIGHTS_INSTRUMENTATIONKEY)
