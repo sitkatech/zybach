@@ -41,6 +41,7 @@ const getInspectionManifest = async () => {
     }
 
     const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}/?authSource=${config.DATABASE_NAME}`;
+    console.log(connstring);
     const client = await MongoClient.connect(connstring);
 
     const db = client.db(config.DATABASE_NAME);
