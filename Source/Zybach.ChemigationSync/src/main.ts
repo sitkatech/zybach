@@ -36,11 +36,14 @@ const main = async () => {
 
 const getInspectionManifest = async () => {
     let srv = ""
+    let authSource = `authSource=${config.DATABASE_NAME}`;
+    
     if (!process.env["DEBUG"]) {
         srv = "+srv";
+        authSource = ""
     }
 
-    const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}/?authSource=${config.DATABASE_NAME}`;
+    const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}/?${authSource}`;
     console.log(connstring);
     const client = await MongoClient.connect(connstring);
 
