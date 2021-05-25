@@ -3,7 +3,7 @@ import {InspectionManifest} from "../models"
 const inspectionManifestMock: InspectionManifest =
 {
 	LastChangedDate: new Date("2021-05-20T19:26:29.429Z"),
-	DeleteOrphanedSamples: false,
+	DeleteOrphanedSamples: true,
 	InsertMissingWells: true,
 	FieldAssignments: [
 		{
@@ -13,11 +13,9 @@ const inspectionManifestMock: InspectionManifest =
 			FinishDate: new Date("2021-09-15T00:00:00.000Z"),
 
 			Protocol: {
-				CanonicalName: "water-level-inspection",
-				Version: 3
+				CanonicalName: "well-sensor-installation",
+				Version: 5
 			},
-
-			SampleNameTemplate: "WL-{{.Site.Properties.OwnerName}}-{{Year}}{{Month}}",
 
 			Sites: [
 				{
@@ -30,7 +28,7 @@ const inspectionManifestMock: InspectionManifest =
 					Longitude: 41.2301
 				},
 				{
-					CanonicalName: "G-0000001",
+					CanonicalName: "G-0000002",
 					Tags: ["gwmp-managed"],
 					Latitude: -113.7349,
 					Longitude: 41.2302

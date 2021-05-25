@@ -1,12 +1,13 @@
 const dockerSecrets = require('@cloudreach/docker-secrets');
-import {getSites, getWorkOrder, getWorkOrderSamples, createWorkOrder, createSite, createSample, deleteSample} from './geooptix-service';
-
+import { getSites, getWorkOrder, getWorkOrderSamples, createWorkOrder, createSite, createSample, deleteSample } from './geooptix-service';
+import { MongoClient } from 'mongodb';
 const config = JSON.parse(dockerSecrets.Chemigation_Sync_Secret);
 
 delete process.env["APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL"];
 import * as appInsights from 'applicationinsights'
-import inspectionManifestMock from 'data/inspectionManifest';
+import inspectionManifestMock from './data/inspectionManifest';
 import { GeoOptixSite, InspectionManifest, Sample, WorkOrder } from 'models';
+import { getTwoDigitMonth } from './util';
 
 appInsights.setup(config.APPINSIGHTS_INSTRUMENTATIONKEY)
     .setAutoCollectConsole(true, true)
@@ -24,8 +25,9 @@ const main = async () => {
     existingSites = await getSites();
 
     // step 0. get inspection manifests from mongo
-    const inspectionManifest = getInspectionManifest();
+    const inspectionManifest = await getInspectionManifest();
 
+    
     // step 1. process inspection manifests
     await processInspectionManifest(inspectionManifest);
 
@@ -33,15 +35,29 @@ const main = async () => {
     syncChemigationInspections();
 }
 
-const getInspectionManifest = () =>{
-    // todo
-    return inspectionManifestMock
+const getInspectionManifest = async () => {
+    let srv = ""
+    if (!process.env["DEBUG"]) {
+        srv = "+srv";
+    }
+
+    const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}/?authSource=${config.DATABASE_NAME}`;
+    const client = await MongoClient.connect(connstring);
+
+    const db = client.db(config.DATABASE_NAME);
+    const collection = db.collection("InspectionManifest");
+
+    const inspectionManifest: InspectionManifest = await collection.findOne({});
+
+    await client.close();
+
+    return inspectionManifest;
 }
 
 const processInspectionManifest = async (inspectionManifest: InspectionManifest) => {
     // presumably there should be some logic here about the lastChangedDate to determine if this manifest needs to be processed or not.
 
-    for (const fieldAssignment of inspectionManifest.FieldAssignments){
+    for (const fieldAssignment of inspectionManifest.FieldAssignments) {
         let workOrder: WorkOrder = await getWorkOrder(fieldAssignment.CanonicalName);
 
         let samples: Sample[] = [];
@@ -55,51 +71,52 @@ const processInspectionManifest = async (inspectionManifest: InspectionManifest)
                 Description: "Created by the Groundwater Management Program",
                 TeamMembers: []
             }
-            workOrdersToCreate.push()
+            workOrdersToCreate.push(workOrder)
         } else {
             samples = await getWorkOrderSamples(fieldAssignment.CanonicalName);
         }
 
         // create samples
-        for (const site of fieldAssignment.Sites){
+        for (const site of fieldAssignment.Sites) {
             // if the site doesn't already exist, and !insertMissingSites, skip it
-            const existingSite = existingSites.find(x=>x.CanonicalName === site.CanonicalName)
+            const existingSite = existingSites.find(x => x.CanonicalName === site.CanonicalName)
 
 
-            if (!existingSite && !inspectionManifest.InsertMissingWells){
+            if (!existingSite && !inspectionManifest.InsertMissingWells) {
                 continue;
             }
 
             // if the site doesn't already exist and insertMissingSites === true, create it
-            if (!existingSite && !sitesToCreate.some(x=>x.CanonicalName === site.CanonicalName)){
-                
+            if (!existingSite && !sitesToCreate.some(x => x.CanonicalName === site.CanonicalName)) {
+
                 sitesToCreate.push({
                     CanonicalName: site.CanonicalName,
                     Name: site.CanonicalName,
                     Description: "Created by the Groundwater Management Program",
                     Tags: site.Tags,
-                    Properties: site.Properties,
+                    Properties: site.Properties ?? {},
                     Location: {
                         type: "Feature",
                         properties: {},
                         geometry: {
                             type: "Point",
-                            coordinates: [site.Longitude, site.Latitude]
+                            coordinates: [site.Latitude, site.Longitude]
                         }
                     }
                 })
             }
 
             // if there's no sample for that site and the specified protocol, create it.
-            const existingSample = samples.find(x=>x.WorkOrderCanonicalName === fieldAssignment.CanonicalName &&
+            const existingSample = samples.find(x => x.WorkOrderCanonicalName === fieldAssignment.CanonicalName &&
                 x.ProtocolCanonicalName === fieldAssignment.Protocol.CanonicalName &&
-                x.ProtocolVersionNumber === fieldAssignment.Protocol.Version);
-            
-            if (existingSample){
+                x.ProtocolVersionNumber === fieldAssignment.Protocol.Version &&
+                x.SiteCanonicalName === site.CanonicalName);
+
+            if (existingSample) {
                 continue;
             }
 
-            const sampleName = `${fieldAssignment.CanonicalName}-${site.CanonicalName}-${fieldAssignment.StartDate.getFullYear()}${fieldAssignment.StartDate.getMonth() + 1}`;
+            const sampleName = `${fieldAssignment.CanonicalName}-${site.CanonicalName}-${fieldAssignment.StartDate.getFullYear()}${getTwoDigitMonth(fieldAssignment.StartDate)}`;
 
             samplesToCreate.push({
                 SiteCanonicalName: site.CanonicalName,
@@ -114,26 +131,26 @@ const processInspectionManifest = async (inspectionManifest: InspectionManifest)
             });
         }
 
-        if (inspectionManifest.DeleteOrphanedSamples){
-            samplesToDelete.push(... samples.filter(x => !fieldAssignment.Sites.some(site => site.CanonicalName === x.SiteCanonicalName)));
+        if (inspectionManifest.DeleteOrphanedSamples) {
+            samplesToDelete.push(...samples.filter(x => !fieldAssignment.Sites.some(site => site.CanonicalName === x.SiteCanonicalName)));
         }
     }
 }
 
 const syncChemigationInspections = async () => {
-    for (const workOrder of workOrdersToCreate){
+    for (const workOrder of workOrdersToCreate) {
         await createWorkOrder(workOrder);
     }
 
-    for (const site of sitesToCreate){
+    for (const site of sitesToCreate) {
         await createSite(site);
     }
 
-    for (const sample of samplesToCreate){
+    for (const sample of samplesToCreate) {
         await createSample(sample);
     }
 
-    for (const sample of samplesToDelete){
+    for (const sample of samplesToDelete) {
         await deleteSample(sample);
     }
 }

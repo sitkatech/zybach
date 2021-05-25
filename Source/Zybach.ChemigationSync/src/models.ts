@@ -1,6 +1,7 @@
 import { Feature } from "geojson";
 
 interface InspectionManifest {
+    _id?: any;
     LastChangedDate: Date;
     LastProcessedDate?: Date;
     InsertMissingWells: boolean;        
@@ -15,7 +16,6 @@ interface FieldAssignment {
     FinishDate: Date;
 
     Protocol: Protocol,
-    SampleNameTemplate: string,
     Sites: Site[]
 }
 

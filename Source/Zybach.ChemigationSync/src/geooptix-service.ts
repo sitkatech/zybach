@@ -7,7 +7,6 @@ const config = JSON.parse(dockerSecrets.Chemigation_Sync_Secret);
 const headers = {
     "x-geooptix-token": config["GEOOPTIX_API_KEY"]
 }
-console.log(headers);
 
 const baseUrl = process.env["GEOOPTIX_BASE_URL"];
 
@@ -89,9 +88,8 @@ const createSite =  async (site: GeoOptixSite) => {
 }
 
 const createSample = async (sample: Sample) => {
-
     try {
-        const url = `${baseUrl}/projects/water-data-program/workOrders/${sample.WorkOrderCanonicalName}/samples`
+        const url = `${baseUrl}/projects/water-data-program/sites/${sample.SiteCanonicalName}/samples`
         await axios.post(url, sample, {
             headers
         })
@@ -104,7 +102,7 @@ const createSample = async (sample: Sample) => {
 const deleteSample = async (sample: Sample) => {
     
     try {
-        const url = `${baseUrl}/projects/water-data-program/workOrders/${sample.WorkOrderCanonicalName}/samples/${sample.CanonicalName}`
+        const url = `${baseUrl}/projects/water-data-program/sites/${sample.SiteCanonicalName}/samples/${sample.CanonicalName}`
         await axios.delete(url, {
             headers
         })
