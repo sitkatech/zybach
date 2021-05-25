@@ -2,7 +2,7 @@
   "scripts": {
     "start-dev": "node -r ts-node/register --inspect=0.0.0.0:9230 ./src/main.ts",
     "build": "tsc -p ./src",
-    "start": "node ./main.js"
+    "start": "node ./dist/main.js"
   },
   "devDependencies": {
     "@types/assert": "^1.5.4",
