@@ -52,6 +52,7 @@ import { createCustomElement } from '@angular/elements';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
+import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -85,6 +86,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     DashboardComponent,
     WellMapPopupComponent,
     RobustReviewScenarioComponent,
+    SensorStatusComponent,
   ],
   imports: [
     AppRoutingModule,
