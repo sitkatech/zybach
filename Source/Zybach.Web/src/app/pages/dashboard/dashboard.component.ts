@@ -156,23 +156,23 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     const PumpingDepthLegend = Control.extend({
       onAdd: function(map) {
-        var whatever = DomUtil.create("div", "legend-control");
-        whatever.style.borderRadius = "5px";
-        whatever.style.backgroundColor = "white";
-        whatever.style.cursor = "default";
-        whatever.style.padding = "6px";
+        var legendElement = DomUtil.create("div", "legend-control");
+        legendElement.style.borderRadius = "5px";
+        legendElement.style.backgroundColor = "white";
+        legendElement.style.cursor = "default";
+        legendElement.style.padding = "6px";
 
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #C2523C; margin-right: 30px; display: inline-block'></span> 0-3\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #DB7A25; margin-right: 30px; display: inline-block'></span> 3-6\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #F0B411; margin-right: 30px; display: inline-block'></span> 6-9\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #FCF003; margin-right: 30px; display: inline-block'></span> 9-12\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #7BED00; margin-right: 30px; display: inline-block'></span> 12-15\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #06D41B; margin-right: 30px; display: inline-block'></span> 15-18\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #1BA87C; margin-right: 30px; display: inline-block'></span> 18-21\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #18758C; margin-right: 30px; display: inline-block'></span> 21-24\"<br/>"
-        whatever.innerHTML += "<span style='height: 10px; width: 10px; background-color: #0B2C7A; margin-right: 30px; display: inline-block'></span> 24\"+"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #C2523C; margin-right: 30px; display: inline-block'></span> 0-3\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #DB7A25; margin-right: 30px; display: inline-block'></span> 3-6\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #F0B411; margin-right: 30px; display: inline-block'></span> 6-9\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #FCF003; margin-right: 30px; display: inline-block'></span> 9-12\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #7BED00; margin-right: 30px; display: inline-block'></span> 12-15\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #06D41B; margin-right: 30px; display: inline-block'></span> 15-18\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #1BA87C; margin-right: 30px; display: inline-block'></span> 18-21\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #18758C; margin-right: 30px; display: inline-block'></span> 21-24\"<br/>"
+        legendElement.innerHTML += "<span style='height: 10px; width: 10px; background-color: #0B2C7A; margin-right: 30px; display: inline-block'></span> 24\"+"
 
-        return whatever;
+        return legendElement;
       }
     });
 
