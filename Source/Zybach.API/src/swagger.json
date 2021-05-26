@@ -496,11 +496,21 @@
 					"pumpingDepth": {
 						"type": "number",
 						"format": "double"
+					},
+					"totalIrrigatedAcres": {
+						"type": "number",
+						"format": "double"
+					},
+					"totalPumpedVolume": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
 					"streamFlowZoneFeatureID",
-					"pumpingDepth"
+					"pumpingDepth",
+					"totalIrrigatedAcres",
+					"totalPumpedVolume"
 				],
 				"type": "object",
 				"additionalProperties": false

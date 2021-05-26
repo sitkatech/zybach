@@ -263,6 +263,8 @@ const models: TsoaRoute.Models = {
         "properties": {
             "streamFlowZoneFeatureID": {"dataType":"double","required":true},
             "pumpingDepth": {"dataType":"double","required":true},
+            "totalIrrigatedAcres": {"dataType":"double","required":true},
+            "totalPumpedVolume": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },

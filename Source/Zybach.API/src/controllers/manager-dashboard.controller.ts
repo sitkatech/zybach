@@ -68,11 +68,9 @@ export class ManagerDashboardController extends Controller {
             years.push(year);
         }
 
+        // Step 1. Get a mapping from SFZs to Wells
+        const streamFlowZoneWellMap = await this.aghubWellService.getAllWellsWithStreamFlowZones();
         const results = await Promise.all(years.map(async year => {
-            // Step 1. Get a mapping from SFZs to Wells
-            const streamFlowZoneWellMap = await this.aghubWellService.getAllWellsWithStreamFlowZones();
-
-
             // Step 2. Get the total pumped volume for each well.
             // This is represented as a mapping from Well Registration IDs to pumped volumes
             let pumpedVolumes: Map<string, number> = await this.influxService.getAnnualEstimatedPumpedVolumeByWellForYear(year);
@@ -81,7 +79,7 @@ export class ManagerDashboardController extends Controller {
             const pumpingDepths: streamFlowZonePumpingDepthDto[] = [];
             for (const [zone, wells] of streamFlowZoneWellMap) {
                 if (!wells?.length) {
-                    pumpingDepths.push({ streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: 0 });
+                    pumpingDepths.push({ streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: 0, totalIrrigatedAcres: 0, totalPumpedVolume:0 });
                     continue;
                 }
 
@@ -97,10 +95,10 @@ export class ManagerDashboardController extends Controller {
                 }, { totalAcres: 0, totalVolume: 0 })
 
                 // todo: this is reporting in gallons/acres right now and we probably want acre-inch per acre
-                pumpingDepths.push({ streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: GALLON_TO_ACRE_INCH * totals.totalVolume / totals.totalAcres })
+                pumpingDepths.push({ streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: GALLON_TO_ACRE_INCH * totals.totalVolume / totals.totalAcres, totalIrrigatedAcres: totals.totalAcres, totalPumpedVolume: GALLON_TO_ACRE_INCH * totals.totalVolume })
             }
 
-            return {year, streamFlowZonePumpingDepths: pumpingDepths};
+            return { year, streamFlowZonePumpingDepths: pumpingDepths };
         }));
 
         return results;

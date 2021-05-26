@@ -82,17 +82,36 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return streamFlowZone.properties.Area * 0.000247105;
   }
 
-  public getPumpingDepth(streamFlowZone: StreamFlowZoneDto): number {
-    let selectedYearPumpingDepths;
+  public getSelectedYearPumpingDepths() {
+    let selectedYearPumpingDepths
     if (!this.allYearsSelected) {
       selectedYearPumpingDepths = this.pumpingDepthsByYear.find(x => x.year === this.yearToDisplay).streamFlowZonePumpingDepths;
     } else {
       selectedYearPumpingDepths = this.allYearsPumpingDepths;
     }
 
+    return selectedYearPumpingDepths;
+  }
+
+
+  public getPumpingDepth(streamFlowZone: StreamFlowZoneDto): number {
+    let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
+
     return selectedYearPumpingDepths.find(x => x.streamFlowZoneFeatureID === streamFlowZone.properties.FeatureID).pumpingDepth;
   }
 
+  public getTotalIrrigatedAcres(streamFlowZone: StreamFlowZoneDto) : number{
+    let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
+
+    return selectedYearPumpingDepths.find(x => x.streamFlowZoneFeatureID === streamFlowZone.properties.FeatureID).totalIrrigatedAcres;
+  }
+
+  
+  public getTotalPumpedVolume(streamFlowZone: StreamFlowZoneDto) : number{
+    let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
+
+    return selectedYearPumpingDepths.find(x => x.streamFlowZoneFeatureID === streamFlowZone.properties.FeatureID).totalPumpedVolume;
+  }
 
   public ngAfterViewInit(): void {
     this.boundingBox = new BoundingBoxDto();
@@ -172,8 +191,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       const allPumpingDepths: streamFlowZonePumpingDepthDto[] = [].concat.apply([], this.pumpingDepthsByYear.map(x => x.streamFlowZonePumpingDepths))
       this.allYearsPumpingDepths = this.streamFlowZones.map(zone => {
-        const allYearsPumpingDepth = allPumpingDepths.filter(depth => depth.streamFlowZoneFeatureID === zone.properties.FeatureID).map(depth => depth.pumpingDepth).reduce((x, y) => x + y, 0);
-        return { streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: allYearsPumpingDepth }
+        const filteredPumpingDepths = allPumpingDepths.filter(depth => depth.streamFlowZoneFeatureID === zone.properties.FeatureID)
+
+        const allYearsPumpingDepth = filteredPumpingDepths.map(depth => depth.pumpingDepth).reduce((x, y) => x + y, 0);
+        const allYearsTotalPumpedVolume = filteredPumpingDepths.map(depth => depth.totalPumpedVolume).reduce((x, y) => x + y, 0);
+        const allYearsTotalIrrigatedAcres = filteredPumpingDepths.map(depth => depth.totalIrrigatedAcres).reduce((x, y) => x + y, 0) / filteredPumpingDepths.length;
+
+        return { streamFlowZoneFeatureID: zone.properties.FeatureID, pumpingDepth: allYearsPumpingDepth, totalIrrigatedAcres: allYearsTotalIrrigatedAcres, totalPumpedVolume: allYearsTotalPumpedVolume }
       });
 
       console.log(this.pumpingDepthsByYear);
