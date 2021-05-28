@@ -19,7 +19,7 @@ import {
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
-import {GestureHandling} from 'leaflet-gesture-handling'
+import { GestureHandling } from 'leaflet-gesture-handling'
 import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
@@ -32,7 +32,6 @@ import { NominatimService } from 'src/app/services/nominatim.service';
 import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
-import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { NgElement, WithProperties } from '@angular/elements';
 import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 
@@ -74,11 +73,11 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   public maxZoom: number = 17;
 
   searchErrormessage: string = "Sorry, the address you searched is not within the NRD area. Click a well on the map or search another address.";
-  
-  showFlowMeters: boolean = true;
-  showContinuityMeters: boolean = true;
-  showElectricalData: boolean = true;
-  showNoEstimate: boolean = false;
+
+  showZeroToThirty: boolean = true;
+  showThirtyToSixty: boolean = true;
+  showSixtyPlus: boolean = true;
+  showNoData: boolean = false;
 
   constructor(
     private appRef: ApplicationRef,
@@ -111,16 +110,16 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     this.compileService.configure(this.appRef);
 
     this.dataSourceDropdownList = [
-      { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
-      { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
-      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Usage" },
-      { item_id: DataSourceFilterOption.NODATA, item_text: "No Estimate Available" }
+      { item_id: MessageAgeFilterOption.ZERO_TO_THIRTY, item_text: "0-30 Minutes" },
+      { item_id: MessageAgeFilterOption.THIRTY_TO_SIXTY, item_text: "30-60 Minutes" },
+      { item_id: MessageAgeFilterOption.SIXTY_PLUS, item_text: ">60 Minutes" },
+      { item_id: MessageAgeFilterOption.NO_DATA, item_text: "No Data" }
     ];
     this.selectedDataSources = [
-      { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
-      { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
-      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Usage" },
-    ];
+      { item_id: MessageAgeFilterOption.ZERO_TO_THIRTY, item_text: "0-30 Minutes" },
+      { item_id: MessageAgeFilterOption.THIRTY_TO_SIXTY, item_text: "30-60 Minutes" },
+      { item_id: MessageAgeFilterOption.SIXTY_PLUS, item_text: ">60 Minutes" },];
+
     this.dataSourceDropdownSettings = {
       singleSelection: false,
       idField: "item_id",
@@ -140,58 +139,60 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         this.tileLayers["Aerial"],
       ],
       fullscreenControl: true,
-      gestureHandling:true
+      gestureHandling: true
     } as MapOptions;
     this.map = map(this.mapID, mapOptions);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
-    
-    const flowMeterMarkerIcon = icon.glyph({
+
+    const blueMarkerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
-      iconUrl: "/assets/main/flowMeterMarker.png"
+      iconUrl: "/assets/main/0b2c7a.png"
     });
-    const continuityMeterMarkerIcon = icon.glyph({
+    const yellowMarkerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
-      iconUrl: "/assets/main/continuityMeterMarker.png"
+      iconUrl: "/assets/main/fcf003.png"
     });
-    const electricalDataMarkerIcon = icon.glyph({
+    const redMarkerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
-      iconUrl: "/assets/main/electricalDataMarker.png"
+      iconUrl: "/assets/main/c2523c.png"
     });
-    const noDataSourceMarkerIcon = icon.glyph({
+    const greyMarkerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
       iconUrl: "/assets/main/noDataSourceMarker.png"
     });
-    
+
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
-      pointToLayer: function (feature, latlng) {
-        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
-        if (sensorTypes.includes("Flow Meter")) {
-          var icon = flowMeterMarkerIcon
-        } else if (sensorTypes.includes("Continuity Meter")) {
-          var icon = continuityMeterMarkerIcon
-        } else if (sensorTypes.includes("Electrical Usage")) {
-          var icon = electricalDataMarkerIcon
+      pointToLayer: (feature, latlng) => {
+        var sensorMessageAges = feature.properties.sensors.map(x => x.messageAge);
+        var maxMessageAge = Math.max(...sensorMessageAges);
+
+        let icon;
+        if (!sensorMessageAges.some(x => x !== null)) {
+          icon = greyMarkerIcon;
+        } else if (maxMessageAge <= 1800) {
+          icon = blueMarkerIcon;
+        } else if (maxMessageAge <= 3600) {
+          icon = yellowMarkerIcon;
         } else {
-          var icon = noDataSourceMarkerIcon
+          icon = redMarkerIcon;
         }
-        return marker(latlng, { icon: icon})
+
+        return marker(latlng, { icon: icon })
       },
       filter: (feature) => {
-        if (feature.properties.sensors === null || feature.properties.sensors === 0) {
-          return this.showNoEstimate;
-        }
+        var sensorMessageAges = feature.properties.sensors.map(x => x.messageAge);
+        var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
 
-        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
-
-        return (this.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
-          (this.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
-          (this.showElectricalData && sensorTypes.includes("Electrical Usage"));
+        return (this.showNoData && maxMessageAge === null) ||
+          (this.showZeroToThirty && maxMessageAge <= 1800 && maxMessageAge != null) ||
+          (this.showThirtyToSixty && 1800 < maxMessageAge && maxMessageAge <= 3600) ||
+          (this.showSixtyPlus && maxMessageAge > 3600)
       }
     });
 
@@ -233,13 +234,13 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   }
 
   public onDataSourceFilterChange(event: Event) {
-    const selectedDataSourceOptions = this.selectedDataSources.map(x=>x.item_id);
+    const selectedDataSourceOptions = this.selectedDataSources.map(x => x.item_id);
 
-    this.showFlowMeters = selectedDataSourceOptions.includes(DataSourceFilterOption.FLOW)
-    this.showContinuityMeters = selectedDataSourceOptions.includes(DataSourceFilterOption.CONTINUITY)
-    this.showElectricalData = selectedDataSourceOptions.includes(DataSourceFilterOption.ELECTRICAL)
-    this.showNoEstimate = selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA)
-    
+    this.showZeroToThirty = selectedDataSourceOptions.includes(MessageAgeFilterOption.ZERO_TO_THIRTY)
+    this.showThirtyToSixty = selectedDataSourceOptions.includes(MessageAgeFilterOption.THIRTY_TO_SIXTY)
+    this.showSixtyPlus = selectedDataSourceOptions.includes(MessageAgeFilterOption.SIXTY_PLUS)
+    this.showNoData = selectedDataSourceOptions.includes(MessageAgeFilterOption.NO_DATA)
+
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
   }
@@ -260,7 +261,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   public mapSearch() {
     this.nominatimService.makeNominatimRequest(this.mapSearchQuery).subscribe(x => {
       if (!x.length) {
-        this.toastr.warning("", this.searchErrormessage, {timeOut: 10000});
+        this.toastr.warning("", this.searchErrormessage, { timeOut: 10000 });
       }
 
       const nominatimResult = x[0];
@@ -268,7 +269,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       if (this.nominatimResultWithinTpnrdBoundary(nominatimResult)) {
         this.map.setView(latLng(nominatimResult.lat, nominatimResult.lon), this.maxZoom)
       } else {
-        this.toastr.warning("", this.searchErrormessage, {timeOut: 10000});
+        this.toastr.warning("", this.searchErrormessage, { timeOut: 10000 });
       }
     })
   }
@@ -280,11 +281,11 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   }
 
   public selectWell(wellRegistrationID: string): void {
-    const wellFeature = this.wellsGeoJson.features.find(x=>x.properties.wellRegistrationID === wellRegistrationID);
+    const wellFeature = this.wellsGeoJson.features.find(x => x.properties.wellRegistrationID === wellRegistrationID);
     this.selectFeature(wellFeature);
   }
 
-  selectFeature(feature) : void {
+  selectFeature(feature): void {
     this.clearLayer(this.selectedFeatureLayer);
     const markerIcon = icon.glyph({
       prefix: "fas",
@@ -293,16 +294,17 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     });
 
     this.selectedFeatureLayer = new GeoJSON(feature, {
-      pointToLayer: (feature,latlng) =>{
-        return marker(latlng, {icon: markerIcon});
+      pointToLayer: (feature, latlng) => {
+        return marker(latlng, { icon: markerIcon });
       },
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
           const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
           popupEl.registrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
+          console.log(popupEl.sensors);
           return popupEl;
-        }, {maxWidth:500});
+        }, { maxWidth: 500 });
       }
     })
 
@@ -316,13 +318,13 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     })
   }
 
-  public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
+  public getPopupContentForWellFeature(feature: any): NgElement & WithProperties<WellMapPopupComponent> {
     const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
     popupEl.registrationID = feature.properties.wellRegistrationID;
     popupEl.sensors = feature.properties.sensors;
     return popupEl;
   }
-  
+
   public clearLayer(layer: Layer): void {
     if (layer) {
       this.map.removeLayer(layer);
@@ -332,3 +334,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
 }
 
+enum MessageAgeFilterOption {
+  ZERO_TO_THIRTY = 1,
+  THIRTY_TO_SIXTY = 2,
+  SIXTY_PLUS = 3,
+  NO_DATA = 4
+}

@@ -54,6 +54,7 @@ import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-status-map.component';
+import { SensorStatusMapPopupComponent } from './pages/sensor-status-map-popup/sensor-status-map-popup.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -89,6 +90,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     RobustReviewScenarioComponent,
     SensorStatusComponent,
     SensorStatusMapComponent,
+    SensorStatusMapPopupComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -131,7 +133,9 @@ export class AppModule {
   //https://github.com/Asymmetrik/ngx-leaflet/issues/178 for explanation
   constructor(private injector: Injector) {
     const WellMapPopupElement = createCustomElement(WellMapPopupComponent, {injector});
+    const SensorStatusMapPopupElement = createCustomElement(SensorStatusMapPopupComponent, {injector});
     // Register the custom element with the browser.
     customElements.define('well-map-popup-element', WellMapPopupElement);
+    customElements.define('sensor-status-map-popup-element', SensorStatusMapPopupElement);
   }
 }

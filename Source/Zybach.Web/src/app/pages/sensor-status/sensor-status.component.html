@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!wells">
+<div class="container" *ngIf="!wellsGeoJson">
     <div class="row">
         <div class="col text-center">
             <span class="fas fa-spinner loading-spinner"></span>
@@ -7,6 +7,6 @@
     </div>
 </div>
 
-<div class="container navCaretMargin" *ngIf="wells">
+<div class="container navCaretMargin" *ngIf="wellsGeoJson">
     <zybach-sensor-status-map #wellMap [wellsGeoJson]="wellsGeoJson"></zybach-sensor-status-map>
 </div>
