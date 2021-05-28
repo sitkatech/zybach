@@ -16,7 +16,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { InfluxDB } from '@influxdata/influxdb-client'
 import { SecurityType } from "../security/authentication";
-import { WellDetailDto, WellSummaryDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
+import { WellDetailDto, WellSummaryDto, WellWithSensorMessageAgeDto, WellWithSensorSummaryDto } from "../dtos/well-summary-dto";
 import { ApiResult, ErrorResult } from "../dtos/api-result";
 import { GeoOptixService } from "../services/geooptix-service";
 import { InternalServerError } from "../errors/internal-server-error";
@@ -45,10 +45,23 @@ export class SensorStatusController extends Controller {
 
    
     @Get("")
-    @Security(SecurityType.KEYSTONE, [RoleEnum.Adminstrator])
-    public async getSensorMessageAges(): Promise<SensorMessageAgeDto[]> {
-        return await this.influxService.getLastMessageAgeByWell();
+    @Security(SecurityType.ANONYMOUS)
+    public async getSensorMessageAges(): Promise<WellWithSensorMessageAgeDto[]> {
+        const wellSummariesWithSensors = Array.from((await this.geooptixService.getWellsWithSensors()).values()).filter(x=>x.sensors.length);
+        const sensorMessageAges = await this.influxService.getLastMessageAgeBySensor();
 
+        return wellSummariesWithSensors.map(well=>({
+                wellRegistrationID: well.wellRegistrationID,
+                location: well.location,
+                sensors: well.sensors.map(sensor => {
+                    const messageAge = sensorMessageAges.get(sensor.sensorName as string)
+                    return {
+                        sensorName: sensor.sensorName as string,
+                        messageAge: messageAge ?? null,
+                        sensorType: sensor.sensorType 
+                    }
+                })
+        }))
     }
  
 }

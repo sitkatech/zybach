@@ -408,7 +408,7 @@ export class InfluxService {
         return results;
     }
 
-    public async getLastMessageAgeByWell(): Promise<SensorMessageAgeDto[]> {
+    public async getLastMessageAgeBySensor(): Promise<Map<string, number>> {
         const query = `ageInSeconds = (x) => { 
             timeNow = uint(v:now())
             timeEvent = uint(v: x)
@@ -424,15 +424,12 @@ export class InfluxService {
               r with eventAge: ageInSeconds(x: r._time)
             }))`
 
-        var results: SensorMessageAgeDto[] = await new Promise((resolve, reject) => {
-            let results: SensorMessageAgeDto[] = [];
+        var results: Map<string,number> = await new Promise((resolve, reject) => {
+            let results: Map<string,number> = new Map();
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
-                    results.push({
-                        sensorName: o["sn"],
-                        messageAge: o["eventAge"]
-                    })
+                    results.set(o["sn"], o["eventAge"]);
                 },
                 error(error) {
                     console.error(error);

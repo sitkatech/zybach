@@ -613,12 +613,68 @@
 					},
 					"messageAge": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"nullable": true
+					},
+					"sensorType": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"sensorName",
-					"messageAge"
+					"messageAge",
+					"sensorType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"WellWithSensorMessageAgeDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"wellTPID": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {},
+					"lastReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"firstReadingDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"inGeoOptix": {
+						"type": "boolean"
+					},
+					"fetchDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"hasElectricalData": {
+						"type": "boolean"
+					},
+					"irrigatedAcresPerYear": {
+						"items": {
+							"$ref": "#/components/schemas/IrrigatedAcresPerYearDto"
+						},
+						"type": "array"
+					},
+					"sensors": {
+						"items": {
+							"$ref": "#/components/schemas/SensorMessageAgeDto"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"location",
+					"sensors"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1190,7 +1246,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/SensorMessageAgeDto"
+										"$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
 									},
 									"type": "array"
 								}
@@ -1200,9 +1256,7 @@
 				},
 				"security": [
 					{
-						"keystone": [
-							"Administrator"
-						]
+						"anonymous": []
 					}
 				],
 				"parameters": []

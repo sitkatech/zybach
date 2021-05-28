@@ -312,7 +312,26 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "sensorName": {"dataType":"string","required":true},
-            "messageAge": {"dataType":"double","required":true},
+            "messageAge": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}],"required":true},
+            "sensorType": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WellWithSensorMessageAgeDto": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "wellTPID": {"dataType":"string"},
+            "description": {"dataType":"string"},
+            "location": {"dataType":"any","required":true},
+            "lastReadingDate": {"dataType":"datetime"},
+            "firstReadingDate": {"dataType":"datetime"},
+            "inGeoOptix": {"dataType":"boolean"},
+            "fetchDate": {"dataType":"datetime"},
+            "hasElectricalData": {"dataType":"boolean"},
+            "irrigatedAcresPerYear": {"dataType":"array","array":{"ref":"IrrigatedAcresPerYearDto"}},
+            "sensors": {"dataType":"array","array":{"ref":"SensorMessageAgeDto"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -987,7 +1006,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/sensorStatus',
-            authenticateMiddleware([{"keystone":["Administrator"]}]),
+            authenticateMiddleware([{"anonymous":[]}]),
             function (request: any, response: any, next: any) {
             const args = {
             };

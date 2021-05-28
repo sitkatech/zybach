@@ -2,6 +2,7 @@ import { AghubWellInterface } from "../models/aghub-well";
 import { IrrigatedAcresPerYearInterface } from "../models/irrigated-acres-per-year";
 import { AnnualPumpedVolumeDto } from "./annual-pumped-volume-dto";
 import { IrrigatedAcresPerYearDto, IrrigatedAcresPerYearDtoFactory } from "./irrigated-acres-per-year-dto";
+import SensorMessageAgeDto from "./sensor-message-age-dto";
 
 export interface WellSummaryDto {
     wellRegistrationID: string;
@@ -28,7 +29,11 @@ export const SensorTypeMap: {[key: string]: string} = {
 }
 
 export interface WellWithSensorSummaryDto extends WellSummaryDto {
-    sensors: SensorSummaryDto[]
+    sensors: SensorSummaryDto[];
+}
+
+export interface WellWithSensorMessageAgeDto extends WellSummaryDto {
+    sensors: SensorMessageAgeDto[];
 }
 
 export interface WellDetailDto extends WellWithSensorSummaryDto{

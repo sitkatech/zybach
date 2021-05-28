@@ -1,4 +1,5 @@
 export default interface SensorMessageAgeDto {
     sensorName: string;
-    messageAge: number;
+    messageAge: number | null;
+    sensorType: string;
 }
