@@ -21,6 +21,8 @@ import { RoleController } from './../../controllers/role.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { SearchController } from './../../controllers/search.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { SensorStatusController } from './../../controllers/sensor-status.controller';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { StreamFlowZoneController } from './../../controllers/stream-flow-zone.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './../../controllers/user.controller';
@@ -302,6 +304,15 @@ const models: TsoaRoute.Models = {
             "RoleID": {"dataType":"double","required":true},
             "RoleDisplayName": {"dataType":"string","required":true},
             "RoleName": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SensorMessageAgeDto": {
+        "dataType": "refObject",
+        "properties": {
+            "sensorName": {"dataType":"string","required":true},
+            "messageAge": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -972,6 +983,33 @@ export function RegisterRoutes(app: express.Router) {
 
 
             const promise = controller.getSearchSuggestions.apply(controller, validatedArgs as any);
+            promiseHandler(controller, promise, response, next);
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/sensorStatus',
+            authenticateMiddleware([{"keystone":["Administrator"]}]),
+            function (request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+            } catch (err) {
+                return next(err);
+            }
+
+            const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+            const controller: any = container.get<SensorStatusController>(SensorStatusController);
+            if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+            }
+
+
+            const promise = controller.getSensorMessageAges.apply(controller, validatedArgs as any);
             promiseHandler(controller, promise, response, next);
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

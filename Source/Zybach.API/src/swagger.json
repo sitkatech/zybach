@@ -606,6 +606,23 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"SensorMessageAgeDto": {
+				"properties": {
+					"sensorName": {
+						"type": "string"
+					},
+					"messageAge": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"sensorName",
+					"messageAge"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Pick_Omit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.Exclude_keyofOmit__LeanDocument_T_.Exclude_keyofDocument._id-or-id-or-__v_-or-%24isSingleNested_.FunctionPropertyNames_T___": {
 				"properties": {},
 				"type": "object",
@@ -1161,6 +1178,34 @@
 						}
 					}
 				]
+			}
+		},
+		"/api/sensorStatus": {
+			"get": {
+				"operationId": "GetSensorMessageAges",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/SensorMessageAgeDto"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"keystone": [
+							"Administrator"
+						]
+					}
+				],
+				"parameters": []
 			}
 		}
 	},
