@@ -1,0 +1,13 @@
+.multiselect-dropdown {
+    display: inline-block;
+    //max-width: 650px !important;
+
+    .dropdown-btn .selected-item {
+        margin-top: 5px;
+    }
+
+    .dropdown-multiselect__caret:before{
+        color: #000 !important;
+        border-color: #000 transparent !important;
+    }
+}

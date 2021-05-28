@@ -37,12 +37,12 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 
 @Component({
-  selector: 'zybach-well-map',
-  templateUrl: './well-map.component.html',
-  styleUrls: ['./well-map.component.scss'],
+  selector: 'zybach-sensor-status-map',
+  templateUrl: './sensor-status-map.component.html',
+  styleUrls: ['./sensor-status-map.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class WellMapComponent implements OnInit, AfterViewInit {
+export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   public mapID: string = 'wellMap';
   public onEachFeatureCallback?: (feature, layer) => void;
   public zoomMapToDefaultExtent: boolean = true;
@@ -314,7 +314,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       },
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
-          const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
+          const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
           popupEl.registrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
           return popupEl;
@@ -333,7 +333,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   }
 
   public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
-    const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
+    const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
     popupEl.registrationID = feature.properties.wellRegistrationID;
     popupEl.sensors = feature.properties.sensors;
     return popupEl;
