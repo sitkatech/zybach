@@ -53,12 +53,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   @Input()
   public wellsGeoJson: any;
 
-  @Output()
-  public onWellSelected: EventEmitter<any> = new EventEmitter();
-  
-  @Output()
-  public onFilterChange: EventEmitter<any> = new EventEmitter();
-
   public map: Map;
   public featureLayer: any;
   public layerControl: Control.Layers;
@@ -205,7 +199,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer.on("click", (event: LeafletEvent) => {
       this.selectFeature(event.propagatedFrom.feature);
-      this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
     })
 
     this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
@@ -247,15 +240,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     this.showElectricalData = selectedDataSourceOptions.includes(DataSourceFilterOption.ELECTRICAL)
     this.showNoEstimate = selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA)
     
-    // todo: change this to emit an object holding the above values, then change the handler on the other side
-
-    this.onFilterChange.emit({
-      showFlowMeters: this.showFlowMeters,
-      showContinuityMeters: this.showContinuityMeters,
-      showElectricalData: this.showElectricalData,
-      showNoEstimate: this.showNoEstimate
-    });
-
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
   }

@@ -8,19 +8,5 @@
 </div>
 
 <div class="container navCaretMargin" *ngIf="wells">
-    <zybach-sensor-status-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"
-        (onFilterChange)="onFilterChange($event)">
-    </zybach-sensor-status-map>
-</div>
-
-<div class="container mt-2" *ngIf="wells">
-    <ag-grid-angular #wellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="wells"
-        [columnDefs]="columnDefs" [pagination]="false" [rowSelection]="'single'" [paginationPageSize]="100"
-        (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
-    </ag-grid-angular>
-    <div class="row mt-2">
-        <div class="col">
-            <button type="button" class="btn btn-zybach float-right" (click)="downloadCsv()"><span class="fas fa-download"></span> Download CSV</button>
-        </div>
-    </div>
+    <zybach-sensor-status-map #wellMap [wellsGeoJson]="wellsGeoJson"></zybach-sensor-status-map>
 </div>
