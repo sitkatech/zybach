@@ -224,10 +224,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.streamFlowZoneLayer = geoJSON(this.streamFlowZones as any, {
       style: (feature) => {
         const fillColor = this.getFillColor(feature.properties.FeatureID, pumpingDepths);
+        const fillOpacity = fillColor ? .55 : 0;
         return {
           fillColor: fillColor,
           fill: true,
-          fillOpacity: .55,
+          fillOpacity: fillOpacity,
           color: "#3388ff",
           weight: 2,
           stroke: true
