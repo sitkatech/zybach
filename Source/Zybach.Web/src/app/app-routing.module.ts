@@ -24,6 +24,7 @@ import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
+import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
 
 const routes: Routes = [
   { path: "test-api", component: TestAPIComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:wellRegistrationID", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+  { path: "chemigation",  component: ChemigationLandingComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
 
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },

@@ -55,6 +55,7 @@ import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/ro
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-status-map.component';
 import { SensorStatusMapPopupComponent } from './pages/sensor-status-map-popup/sensor-status-map-popup.component';
+import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -91,6 +92,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     SensorStatusComponent,
     SensorStatusMapComponent,
     SensorStatusMapPopupComponent,
+    ChemigationLandingComponent,
   ],
   imports: [
     AppRoutingModule,

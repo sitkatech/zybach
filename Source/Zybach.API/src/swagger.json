@@ -1236,6 +1236,29 @@
 				]
 			}
 		},
+		"/api/chemigation/summaries": {
+			"get": {
+				"operationId": "GetInspectionSummaries",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"keystone": [
+							"Administrator"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/api/sensorStatus": {
 			"get": {
 				"operationId": "GetSensorMessageAges",
@@ -1256,7 +1279,9 @@
 				},
 				"security": [
 					{
-						"anonymous": []
+						"keystone": [
+							"Administrator"
+						]
 					}
 				],
 				"parameters": []
