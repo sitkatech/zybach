@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GeoOptixSite, Sample, WorkOrder } from 'models';
+import { GeoOptixSite, Sample, WorkOrder } from './models';
 const dockerSecrets  = require('@cloudreach/docker-secrets');
 
 const config = JSON.parse(dockerSecrets.Chemigation_Sync_Secret);
@@ -11,28 +11,34 @@ const headers = {
 const baseUrl = process.env["GEOOPTIX_BASE_URL"];
 
 const getSites = async () =>{
+    const url = `${baseUrl}/projects/water-data-program/sites`;
     try {
-        const response = await axios.get(`${baseUrl}/projects/water-data-program/sites`, {
+        const response = await axios.get(url, {
             headers
         });
 
         return response.data;
     } catch (error) {
-        console.error(error)
+        console.error({
+            url, method: "GET", response: error.response.data
+        });
         throw new Error(error.message);
     }
 }
 
 const getWorkOrder = async (workOrderCName: string) => {
     let response;
+    const url =`${baseUrl}/projects/water-data-program/workOrders/${workOrderCName}/`;
     try {
         response =
-        await axios.get(`${baseUrl}/projects/water-data-program/workOrders/${workOrderCName}/`,{
+        await axios.get(url, {
             headers,
             validateStatus: (x: number) => true
         });
     } catch (error) {
-        console.error(error)
+        console.error({
+            url, method: "GET", response: error.response.data
+        });
         throw new Error(error.message);
     }
     
@@ -44,70 +50,87 @@ const getWorkOrder = async (workOrderCName: string) => {
         return response.data;
     } 
     
+    
+    console.error({
+        url, method: "GET", response: response.data
+    });
     throw new Error(response.statusText);
 }
 
 const getWorkOrderSamples = async (workOrderCName: string) => {
+    const url = `${baseUrl}/projects/water-data-program/workOrders/${workOrderCName}/samples`;
     try {
         const response =
-        await axios.get(`${baseUrl}/projects/water-data-program/workOrders/${workOrderCName}/samples`,{
+        await axios.get(url, {
             headers
         });
 
         return response.data;
     } catch (error) {
-        console.error(error)
+        console.error({
+            url, method: "GET", response: error.response.data
+        });
         throw new Error(error.message);
     }
 }
 
 const createWorkOrder = async (workOrder: WorkOrder) => {
+    const url = `${baseUrl}/projects/water-data-program/workOrders`
+
     try {
-        const url = `${baseUrl}/projects/water-data-program/workOrders`
         await axios.post(url, workOrder, {
             headers
         })
     } catch (error) {
-        console.error(error);
+        console.error({
+            url, requestBody: workOrder, method: "POST", response: error.response.data
+        });
         throw new Error(error.message);
     }
 }
 
 const createSite =  async (site: GeoOptixSite) => {
+    const url = `${baseUrl}/projects/water-data-program/sites`
     
     try {
-        const url = `${baseUrl}/projects/water-data-program/sites`
         await axios.post(url, site, {
             headers
         })
     } catch (error) {
-        console.error(error);
+        console.error({
+            url, requestBody: site, method: "POST", response: error.response.data
+        });
         throw new Error(error.message);
     }
 
 }
 
 const createSample = async (sample: Sample) => {
+    const url = `${baseUrl}/projects/water-data-program/sites/${sample.SiteCanonicalName}/samples`
+
     try {
-        const url = `${baseUrl}/projects/water-data-program/sites/${sample.SiteCanonicalName}/samples`
         await axios.post(url, sample, {
             headers
         })
     } catch (error) {
-        console.error(error);
+        console.error({
+            url, requestBody: sample, method: "POST", response: error.response.data
+        });
         throw new Error(error.message);
     }
 }
 
 const deleteSample = async (sample: Sample) => {
+    const url = `${baseUrl}/projects/water-data-program/sites/${sample.SiteCanonicalName}/samples/${sample.CanonicalName}`
     
     try {
-        const url = `${baseUrl}/projects/water-data-program/sites/${sample.SiteCanonicalName}/samples/${sample.CanonicalName}`
         await axios.delete(url, {
             headers
         })
     } catch (error) {
-        console.error(error);
+        console.error({
+            url, method: "DELETE", response: error.response.data
+        });
         throw new Error(error.message);
     }
 }
