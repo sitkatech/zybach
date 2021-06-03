@@ -23,7 +23,29 @@ const main = async () => {
 }
 
 const cacheInspections = async (samples) => {
-    console.log(samples);
+    let srv = ""
+    let authSource = `authSource=${config.DATABASE_NAME}`;
+    
+    if (!process.env["DEBUG"]) {
+        srv = "+srv";
+        authSource = ""
+    }
+
+    const connstring = `mongodb${srv}://${config.DATABASE_USER}:${config.DATABASE_PASSWORD}@${config.DATABASE_URI}/?${authSource}`;
+    const client = await MongoClient.connect(connstring);
+
+    const db = client.db(config.DATABASE_NAME);
+    const collection = db.collection("ChemigationInspection");
+
+    await collection.deleteMany({});
+    await collection.insertMany(samples.map(x=> ({
+        wellRegistrationID: x.Site.CanonicalName,
+        protocolCanonicalName: x.Protocol.CanonicalName,
+        status: x.Status,
+        lastUpdate: new Date(x.UpdateDate || x.CreateDate)
+    })));
+
+    await client.close();
 }
 
 
