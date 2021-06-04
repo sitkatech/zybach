@@ -1,6 +1,7 @@
 import axios from 'axios';
 const dockerSecrets  = require('@cloudreach/docker-secrets');
 
+console.log(dockerSecrets.Inspection_Fetch_Secret);
 const config = JSON.parse(dockerSecrets.Inspection_Fetch_Secret);
 
 const headers = {
