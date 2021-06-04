@@ -1,5 +1,4 @@
 import { AghubWellInterface } from "../models/aghub-well";
-import { IrrigatedAcresPerYearInterface } from "../models/irrigated-acres-per-year";
 import { AnnualPumpedVolumeDto } from "./annual-pumped-volume-dto";
 import { IrrigatedAcresPerYearDto, IrrigatedAcresPerYearDtoFactory } from "./irrigated-acres-per-year-dto";
 import SensorMessageAgeDto from "./sensor-message-age-dto";

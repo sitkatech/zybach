@@ -7,6 +7,7 @@ import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-re
 import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
 import { WellMapComponent } from '../well-map/well-map.component';
 
 @Component({
@@ -112,32 +113,14 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Last Reading Date",
         field: "lastReadingDate",
-        valueFormatter: function (params) {
-          if (params.value) {
-            const time = moment(params.value)
-            const timepiece = time.format('h:mm a');
-            return time.format('M/D/yyyy ') + timepiece;
-          }
-          else {
-            return null;
-          }
-        },
+        valueFormatter: agGridDateFormatter,
         width: 150,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "First Reading Date",
         field: "firstReadingDate",
-        valueFormatter: function (params) {
-          if (params.value) {
-            const time = moment(params.value)
-            const timepiece = time.format('h:mm a');
-            return time.format('M/D/yyyy ') + timepiece;
-          }
-          else {
-            return null;
-          }
-        },
+        valueFormatter: agGridDateFormatter,
         width: 150,
         sortable: true, filter: true, resizable: true
       },
@@ -204,16 +187,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Last Fetched from AgHub",
         field: "fetchDate",
-        valueFormatter: function (params) {
-          if (params.value) {
-            const time = moment(params.value)
-            const timepiece = time.format('h:mm a');
-            return time.format('M/D/yyyy ') + timepiece;
-          }
-          else {
-            return null;
-          }
-        },
+        valueFormatter: agGridDateFormatter,
         sortable: true, filter: true, resizable: true
       }
     ]

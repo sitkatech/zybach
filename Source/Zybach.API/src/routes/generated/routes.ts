@@ -195,6 +195,19 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "WellInspectionSummaryDto": {
+        "dataType": "refObject",
+        "properties": {
+            "wellRegistrationID": {"dataType":"string","required":true},
+            "lastChemigationDate": {"dataType":"datetime","required":true},
+            "lastNitratesDate": {"dataType":"datetime","required":true},
+            "lastWaterLevelDate": {"dataType":"datetime","required":true},
+            "lastWaterQualitydate": {"dataType":"datetime","required":true},
+            "pendingInspectionsCount": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CustomRichTextTypeDto": {
         "dataType": "refObject",
         "properties": {
@@ -732,7 +745,7 @@ export function RegisterRoutes(app: express.Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.get('/api/chemigation/summaries',
-            authenticateMiddleware([{"keystone":["Administrator"]}]),
+            authenticateMiddleware([{"anonymous":["Administrator"]}]),
             function (request: any, response: any, next: any) {
             const args = {
             };

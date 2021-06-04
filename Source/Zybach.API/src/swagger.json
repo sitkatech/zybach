@@ -371,6 +371,43 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"WellInspectionSummaryDto": {
+				"properties": {
+					"wellRegistrationID": {
+						"type": "string"
+					},
+					"lastChemigationDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"lastNitratesDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"lastWaterLevelDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"lastWaterQualitydate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"pendingInspectionsCount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"wellRegistrationID",
+					"lastChemigationDate",
+					"lastNitratesDate",
+					"lastWaterLevelDate",
+					"lastWaterQualitydate",
+					"pendingInspectionsCount"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"CustomRichTextTypeDto": {
 				"properties": {
 					"CustomRichTextTypeID": {
@@ -1244,14 +1281,19 @@
 						"description": "Ok",
 						"content": {
 							"application/json": {
-								"schema": {}
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/WellInspectionSummaryDto"
+									},
+									"type": "array"
+								}
 							}
 						}
 					}
 				},
 				"security": [
 					{
-						"keystone": [
+						"anonymous": [
 							"Administrator"
 						]
 					}
