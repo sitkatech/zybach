@@ -71,6 +71,14 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         return this.router.url === '/well-map';
     }
 
+    public isSensorStatusCurrentPage(){
+        return this.router.url === '/sensor-status';
+    }
+
+    public isChemigationCurrentPage(){
+        return this.router.url === '/chemigation';
+    }
+
     public isHomepageCurrentPage(){
         return this.router.url === '/';
     }

@@ -144,6 +144,33 @@
 
   .mapItem {
     padding-left: 7px;
+    padding-right: 7px;
+    a {
+      padding:0;
+    }
+
+    img {
+      padding-right: 7px;
+    }
+    padding-top: 10px;
+  }
+
+  .sensorStatusItem{
+    padding-right: 7px;
+    padding-left: 7px;
+    a {
+      padding:0;
+    }
+
+    img {
+      padding-right: 7px;
+    }
+    padding-top: 10px;
+  }
+
+  .chemigationItem{
+    padding-right: 7px;
+    padding-left: 7px;
     a {
       padding:0;
     }
@@ -165,7 +192,7 @@
 
   //responsive adjustments
 
-  @media screen and (min-width: 992px){
+  @media screen and (min-width: 1201px){
     .navbar-zybach-secondary {
       height:35px;
     }
@@ -179,7 +206,7 @@
       padding-left: 294px;
     }
     .mapItem, .dashboardItem{
-      width: 200px;
+      //width: 200px;
       text-align: left;
     }
     li.currentPage::after {
@@ -196,7 +223,7 @@
     }
   }
 
-  @media screen and (max-width: 992px){
+  @media screen and (max-width: 1200px){
     .navbar-logo, .navbar-brand-primary {
       display:none;
     }
