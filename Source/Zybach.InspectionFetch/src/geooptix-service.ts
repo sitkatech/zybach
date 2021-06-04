@@ -11,6 +11,7 @@ const baseUrl = process.env["GEOOPTIX_BASE_URL"];
 
 const getSamples = async () =>{
     const url = `${baseUrl}/project-overview-web/water-data-program/samples`;
+    console.log(url);
     try {
         const response = await axios.get(url, {
             headers
