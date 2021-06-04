@@ -1,7 +1,6 @@
 import axios from 'axios';
 const dockerSecrets  = require('@cloudreach/docker-secrets');
 
-console.log(dockerSecrets.Inspection_Fetch_Secret);
 const config = JSON.parse(dockerSecrets.Inspection_Fetch_Secret);
 
 const headers = {
@@ -12,7 +11,6 @@ const baseUrl = process.env["GEOOPTIX_BASE_URL"];
 
 const getSamples = async () =>{
     const url = `${baseUrl}/project-overview-web/water-data-program/samples`;
-    console.log(url);
     try {
         const response = await axios.get(url, {
             headers
