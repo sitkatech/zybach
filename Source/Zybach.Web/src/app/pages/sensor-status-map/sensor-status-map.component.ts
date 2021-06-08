@@ -14,7 +14,8 @@ import {
   Layer,
   LeafletEvent,
   layerGroup,
-  LatLng
+  LatLng,
+  DomUtil
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
@@ -110,15 +111,16 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     this.compileService.configure(this.appRef);
 
     this.dataSourceDropdownList = [
-      { item_id: MessageAgeFilterOption.ZERO_TO_THIRTY, item_text: "0-30 Minutes" },
-      { item_id: MessageAgeFilterOption.THIRTY_TO_SIXTY, item_text: "30-60 Minutes" },
-      { item_id: MessageAgeFilterOption.SIXTY_PLUS, item_text: ">60 Minutes" },
+      { item_id: MessageAgeFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
+      { item_id: MessageAgeFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
+      { item_id: MessageAgeFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
       { item_id: MessageAgeFilterOption.NO_DATA, item_text: "No Data" }
     ];
     this.selectedDataSources = [
-      { item_id: MessageAgeFilterOption.ZERO_TO_THIRTY, item_text: "0-30 Minutes" },
-      { item_id: MessageAgeFilterOption.THIRTY_TO_SIXTY, item_text: "30-60 Minutes" },
-      { item_id: MessageAgeFilterOption.SIXTY_PLUS, item_text: ">60 Minutes" },];
+      { item_id: MessageAgeFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
+      { item_id: MessageAgeFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
+      { item_id: MessageAgeFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
+    ];
 
     this.dataSourceDropdownSettings = {
       singleSelection: false,
@@ -175,9 +177,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         let icon;
         if (!sensorMessageAges.some(x => x !== null)) {
           icon = greyMarkerIcon;
-        } else if (maxMessageAge <= 1800) {
+        } else if (maxMessageAge <= 3600 * 2) {
           icon = blueMarkerIcon;
-        } else if (maxMessageAge <= 3600) {
+        } else if (maxMessageAge <= 3600 * 8) {
           icon = yellowMarkerIcon;
         } else {
           icon = redMarkerIcon;
@@ -190,9 +192,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
 
         return (this.showNoData && maxMessageAge === null) ||
-          (this.showZeroToThirty && maxMessageAge <= 1800 && maxMessageAge != null) ||
-          (this.showThirtyToSixty && 1800 < maxMessageAge && maxMessageAge <= 3600) ||
-          (this.showSixtyPlus && maxMessageAge > 3600)
+          (this.showZeroToThirty && maxMessageAge <= 3600 * 2 && maxMessageAge != null) ||
+          (this.showThirtyToSixty && 3600 * 2 < maxMessageAge && maxMessageAge <= 3600 * 8) ||
+          (this.showSixtyPlus && maxMessageAge > 3600 * 8 )
       }
     });
 
@@ -231,14 +233,33 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   public setControl(): void {
     this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: false })
       .addTo(this.map);
+
+      const SensorStatusLegend = Control.extend({
+        onAdd: function(map) {
+          var legendElement = DomUtil.create("div", "legend-control");
+          legendElement.style.borderRadius = "5px";
+          legendElement.style.backgroundColor = "white";
+          legendElement.style.cursor = "default";
+          legendElement.style.padding = "6px";
+  
+          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 0-2 Hours<br/>"
+          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/fcf003.png'/> 2-8 Hours<br/>"
+          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> >8 Hours<br/>"
+          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>"
+  
+          return legendElement;
+        }
+      });  
+  
+      new SensorStatusLegend().addTo(this.map);
   }
 
   public onDataSourceFilterChange(event: Event) {
     const selectedDataSourceOptions = this.selectedDataSources.map(x => x.item_id);
 
-    this.showZeroToThirty = selectedDataSourceOptions.includes(MessageAgeFilterOption.ZERO_TO_THIRTY)
-    this.showThirtyToSixty = selectedDataSourceOptions.includes(MessageAgeFilterOption.THIRTY_TO_SIXTY)
-    this.showSixtyPlus = selectedDataSourceOptions.includes(MessageAgeFilterOption.SIXTY_PLUS)
+    this.showZeroToThirty = selectedDataSourceOptions.includes(MessageAgeFilterOption.TWO_HOURS)
+    this.showThirtyToSixty = selectedDataSourceOptions.includes(MessageAgeFilterOption.EIGHT_HOURS)
+    this.showSixtyPlus = selectedDataSourceOptions.includes(MessageAgeFilterOption.EIGHT_PLUS_HOURS)
     this.showNoData = selectedDataSourceOptions.includes(MessageAgeFilterOption.NO_DATA)
 
     this.wellsLayer.clearLayers();
@@ -335,8 +356,8 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 }
 
 enum MessageAgeFilterOption {
-  ZERO_TO_THIRTY = 1,
-  THIRTY_TO_SIXTY = 2,
-  SIXTY_PLUS = 3,
+  TWO_HOURS = 1,
+  EIGHT_HOURS = 2,
+  EIGHT_PLUS_HOURS = 3,
   NO_DATA = 4
 }

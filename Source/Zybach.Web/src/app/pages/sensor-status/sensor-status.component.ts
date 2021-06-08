@@ -7,7 +7,7 @@ import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
-import { WellWithSensorMessageAgeDto, WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorMessageAgeDto, WellWithSensorMessageAgeDto, WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
 
 @Component({
@@ -24,11 +24,21 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   public currentUser: UserDto;
   public wellsObservable: any;
   public wellsGeoJson: any;
+  public redSensors: any[];
+  public columnDefs: any[]
 
   constructor(private authenticationService: AuthenticationService,
     private sensorStatusService: SensorStatusService) { }
 
   ngOnInit(): void {
+    this.columnDefs = [
+      { headerName: 'Well Number', field: 'wellRegistrationID', sortable: true, filter: true, resizable: true },
+      { headerName: 'Sensor Number', field: 'sensorName', sortable: true, filter: true, resizable: true},
+      { headerName: 'Last Message Age (Minutes)', field: 'messageAge', sortable: true, filter: true, resizable: true},
+      { headerName: 'Sensor Type', field: 'sensorType', sortable: true, filter: true, resizable: true},
+    ];
+
+
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.getSensorStatusByWell().subscribe(wells => {
@@ -48,6 +58,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             })
         }
 
+        this.redSensors = wells.reduce((sensors, well) => sensors.concat(well.sensors.map(sensor => ({ ...sensor, wellRegistrationID: well.wellRegistrationID }))), []).filter(sensor => sensor.messageAge > 3600 * 8);
+console.log(this.redSensors);
 
       })
     });
