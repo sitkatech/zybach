@@ -34,7 +34,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       { headerName: 'Well Number', field: 'wellRegistrationID', sortable: true, filter: true, resizable: true },
       { headerName: 'Sensor Number', field: 'sensorName', sortable: true, filter: true, resizable: true},
-      { headerName: 'Last Message Age (Minutes)', field: 'messageAge', sortable: true, filter: true, resizable: true},
+      { headerName: 'Last Message Age (Hours)', field: 'messageAge', sortable: true, filter: true, resizable: true, valueFormatter: (params) => `${Math.floor(params.value / 3600)} hours` },
       { headerName: 'Sensor Type', field: 'sensorType', sortable: true, filter: true, resizable: true},
     ];
 

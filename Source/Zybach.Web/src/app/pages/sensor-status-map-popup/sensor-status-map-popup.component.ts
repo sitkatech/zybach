@@ -33,6 +33,6 @@ export class SensorStatusMapPopupComponent implements OnInit {
       return 'N/A'
     }
 
-    return `${Math.floor(sensor.messageAge / 60)} min`;
+    return `${Math.floor(sensor.messageAge / 3600)} hours`;
   }
 }

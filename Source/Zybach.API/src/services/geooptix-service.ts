@@ -220,9 +220,9 @@ export class GeoOptixService {
                     headers: this.headers
                 });
     
-                const installation = installationResult.data;
+                const methods = installationResult.data;
     
-                const installationRecord = installation[0].MethodInstance.RecordSets[0].Records[0].Fields;
+                const installationRecord = methods[0].MethodInstance.RecordSets[0].Records[0].Fields;
                 const sensorRecord = installationRecord.sensor.Records[0]?.Fields;
                 const photoRecords = sensorRecord.photos.Records;
       
@@ -233,7 +233,7 @@ export class GeoOptixService {
       
                 const installationRecordDto = {
                     installationCanonicalName: installationCanonicalName,
-                    status: installation[0].Status.Name,
+                    status: methods[0].Status.Name,
                     date: installationRecord["install-date"],
                     lon: installationRecord["gps-location"]?.geometry.coordinates[0],
                     lat: installationRecord["gps-location"]?.geometry.coordinates[1],
