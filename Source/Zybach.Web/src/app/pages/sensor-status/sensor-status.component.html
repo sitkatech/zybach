@@ -12,8 +12,16 @@
         <h2 class="d-inline-block">Sensor Status</h2>
     </div>
     <zybach-sensor-status-map #wellMap [wellsGeoJson]="wellsGeoJson"></zybach-sensor-status-map>
-
+</div>
+<div class="container navCaretMargin">
+    <p>The following grid shows all sensors that have not sent a message in 8 or more hours.</p>
     <ag-grid-angular #redSensorsGrid style="width: 100%; height: 300px;" class="ag-theme-balham mt-2"
-        [rowData]="redSensors" [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100">
+        [rowData]="redSensors" [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100"
+        (gridReady)="onGridReady($event)">
     </ag-grid-angular>
+    <div class="row mt-2">
+        <div class="col">
+            <button type="button" class="btn btn-zybach float-right" (click)="downloadCsv()"><span class="fas fa-download"></span> Download CSV</button>
+        </div>
+    </div>
 </div>
