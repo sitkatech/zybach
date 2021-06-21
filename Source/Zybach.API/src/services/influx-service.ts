@@ -365,7 +365,7 @@ export class InfluxService {
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
-                    results.set(o["registration-id"], o["_value"]);
+                    results.set(o["registration-id"].toUpperCase(), o["_value"]);
                 },
                 error(error) {
                     console.error(error);
@@ -393,7 +393,7 @@ export class InfluxService {
             this.queryApi.queryRows(query, {
                 next(row, tableMeta) {
                     const o = tableMeta.toObject(row);
-                    results.push(o["registration-id"]);
+                    results.push(o["registration-id"].toUpperCase());
                 },
                 error(error) {
                     console.error(error);
