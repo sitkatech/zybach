@@ -77,7 +77,7 @@ export class InfluxService {
     public async getFirstReadingDateTimeForWell(wellRegistrationID: string): Promise<Date> {
         const query = `from(bucket: "${this.bucket}") 
         |> range(start: 2000-01-01T00:00:00Z) 
-        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
+        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID.toLowerCase()}" or r["registration-id"] == "${wellRegistrationID.toUpperCase()}")
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
         |> first()`
 
@@ -108,7 +108,7 @@ export class InfluxService {
     public async getLastReadingDateTimeForWell(wellRegistrationID: string): Promise<Date> {
         const query = `from(bucket: "${this.bucket}") 
         |> range(start: 2000-01-01T00:00:00Z) 
-        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
+        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID.toLowerCase()}" or r["registration-id"] == "${wellRegistrationID.toUpperCase()}")
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume" or r["_measurement"] == "estimated-pumped-volume") 
         |> last()`
 
@@ -186,7 +186,7 @@ export class InfluxService {
         |> range(start: ${startDate.toISO()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
         |> filter(fn: (r) => ${sensorIDFilter})
-        |> filter(fn: (r) => r["registration-id"] == "${registrationID}") 
+        |> filter(fn: (r) => r["registration-id"] == "${registrationID.toLowerCase()}" or r["registration-id"] == "${registrationID.toUpperCase()}") 
         |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")
         |> group(columns: ["registration-id"])`
 
@@ -223,7 +223,7 @@ export class InfluxService {
 
         const query = `from(bucket: "${this.bucket}") \
         |> range(start: ${startDate.toISO()}) \
-        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
+        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and (r["registration-id"] == "${wellRegistrationID.toLowerCase()}" or r["registration-id"] == "${wellRegistrationID.toUpperCase()}") ) 
         |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")`
 
         var results: any[] = await new Promise((resolve, reject) => {
@@ -259,7 +259,7 @@ export class InfluxService {
 
         const query = `from(bucket: "${this.bucket}") \
         |> range(start: ${startDate.toISO()}) \
-        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and r["registration-id"] == "${wellRegistrationID}" ) 
+        |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and (r["registration-id"] == "${wellRegistrationID.toLowerCase()}" or r["registration-id"] == "${wellRegistrationID.toUpperCase()}") ) 
         |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")`
 
         var results: any[] = await new Promise((resolve, reject) => {
@@ -323,7 +323,7 @@ export class InfluxService {
     public async getAnnualEstimatedPumpedVolumeForWell(wellRegistrationID: string): Promise<AnnualPumpedVolumeDto[]> {
         const query = `from(bucket: "${this.bucket}")
         |> range(start: 2019-01-01T00:00:00.000Z)
-        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}" and r["_measurement"] == "estimated-pumped-volume")
+        |> filter(fn: (r) => (r["registration-id"] == "${wellRegistrationID.toLowerCase()}" or r["registration-id"] == "${wellRegistrationID.toUpperCase()}") and r["_measurement"] == "estimated-pumped-volume")
         |> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: "_start")`
 
         var results: AnnualPumpedVolumeDto[] = await new Promise((resolve, reject) => {

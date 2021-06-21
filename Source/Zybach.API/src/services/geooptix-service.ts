@@ -33,7 +33,7 @@ export class GeoOptixService {
 
             return geoOptixRequest.data
                 .map((x: { CanonicalName: any; Description: any; Location: any; }) =>
-                    ({ wellRegistrationID: x.CanonicalName, description: x.Description, location: x.Location }));
+                    ({ wellRegistrationID: x.CanonicalName.toUpperCase(), description: x.Description, location: x.Location }));
         }
         catch (err) {
             console.error(err);
@@ -55,7 +55,7 @@ export class GeoOptixService {
 
             return filteredWells
                 .map((x: { CanonicalName: any; Description: any; Location: any; }) =>
-                    ({ wellRegistrationID: x.CanonicalName, description: x.Description, location: x.Location }));
+                    ({ wellRegistrationID: x.CanonicalName.toUpperCase(), description: x.Description, location: x.Location }));
         }
         catch (err) {
             console.error(err);
@@ -79,7 +79,7 @@ export class GeoOptixService {
 
             return {
                 location: geoOptixRequest.data.location,
-                wellRegistrationID: wellRegistrationID
+                wellRegistrationID: wellRegistrationID.toUpperCase()
             };
         }
         catch (err) {
@@ -98,7 +98,7 @@ export class GeoOptixService {
             );
 
             return geoOptixRequest.data.map((x: {SiteCanonicalName: string, Name: string, Definition: {sensorType: string}}) =>
-                ({wellRegistrationID: x.SiteCanonicalName, sensorName: x.Name, sensorType: SensorTypeMap[x.Definition.sensorType]})
+                ({wellRegistrationID: x.SiteCanonicalName.toUpperCase(), sensorName: x.Name, sensorType: SensorTypeMap[x.Definition.sensorType]})
             );
 
         } catch (err) {
@@ -119,7 +119,7 @@ export class GeoOptixService {
             const filteredSensors = geoOptixRequest.data.filter((x:any) => new Date(x.CreateDate).getFullYear() <= year);
 
             return filteredSensors.map((x: {SiteCanonicalName: string, Name: string, Definition: {sensorType: string}}) =>
-                ({wellRegistrationID: x.SiteCanonicalName, sensorName: x.Name, sensorType: SensorTypeMap[x.Definition.sensorType]})
+                ({wellRegistrationID: x.SiteCanonicalName.toUpperCase(), sensorName: x.Name, sensorType: SensorTypeMap[x.Definition.sensorType]})
             );
 
         } catch (err) {
@@ -145,7 +145,7 @@ export class GeoOptixService {
 
         if (geoOptixRequest.status === 200){
             return geoOptixRequest.data.map(( x: any) =>({
-                wellRegistrationID: wellRegistrationID,
+                wellRegistrationID: wellRegistrationID.toUpperCase(),
                 sensorName: x.CanonicalName,
                 sensorType: SensorTypeMap[x.Definition.sensorType]
             }));
@@ -164,7 +164,7 @@ export class GeoOptixService {
 
         // add a sensor array to the wells
         const wellsWithSensors: WellWithSensorSummaryDto[] = wells.map(x=> ({
-            wellRegistrationID: x.wellRegistrationID,
+            wellRegistrationID: x.wellRegistrationID.toUpperCase(),
             description: x.description,
             location: x.location,
             sensors: [],
