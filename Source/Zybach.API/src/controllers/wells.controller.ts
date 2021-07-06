@@ -415,7 +415,7 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
         wellRegistrationIDsForQuery = [wellRegistrationIDs.toLowerCase(), wellRegistrationIDs.toUpperCase()]
     }
 
-    const registrationIDQuery =`and r["registration-id"] == "` + wellRegistrationIDsForQuery.join(`" or r["registration-id"]=="`) + "\"";
+    const registrationIDQuery =`and (r["registration-id"] == "` + wellRegistrationIDsForQuery.join(`" or r["registration-id"]=="`) + "\")";
     const query = `from(bucket: "${bucketName}") 
         |> range(start: ${startDateForFlux}, stop:${endDateForFlux}) 
         |> filter(fn: (r) => 
