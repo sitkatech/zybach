@@ -357,7 +357,7 @@ export class WellController extends Controller {
         }
 
         try {
-            let results = await getFlowMeterSeries(wellRegistrationIDs as string | string[], startDate, endDate);
+            let results = await getFlowMeterSeries(wellRegistrationIDs as string | string[], startDate, endDate, interval);
             return {
                 "status": "success",
                 "result": results.length > 0 ? structureResults(results, interval) : results
@@ -391,14 +391,7 @@ function abbreviateWellSensorsResponse(wellSensors: { CanonicalName: any, Defini
     }));
 }
 
-
-class ResultFromInfluxDB {
-    endTime!: Date;
-    gallons!: number;
-    wellRegistrationID!: string;
-}
-
-async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startDate: Date, endDate: Date): Promise<ResultFromInfluxDB[]> {
+async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startDate: Date, endDate: Date, interval: number): Promise<ResultFromInfluxDB[]> {
     const token = secrets.INFLUXDB_TOKEN;
     const org = secrets.INFLUXDB_ORG;
     const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.com', token: token });
@@ -421,7 +414,8 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
         |> filter(fn: (r) => 
             r["_measurement"] == "pumped-volume" and 
             r["_field"] == "gallons" 
-            ${registrationIDQuery}) 
+            ${registrationIDQuery})
+        |> aggregateWindow(every: ${interval}m, fn: sum, column: "_value", timeSrc: "_stop", timeDst: "_time", createEmpty: false )
         |> sort(columns:["_time"])`;
 
     let results: ResultFromInfluxDB[] = [];
@@ -455,7 +449,7 @@ function structureResults(results: ResultFromInfluxDB[], interval: number): Stru
             startDate = currentWellResults[0].endTime;
         }
 
-        let aggregatedResults = aggregateResults(currentWellResults, interval);
+        let aggregatedResults = currentWellResults;
 
         if (aggregatedResults[aggregatedResults.length - 1].endTime > endDate) {
             endDate = aggregatedResults[aggregatedResults.length - 1].endTime;
@@ -486,61 +480,6 @@ function structureResults(results: ResultFromInfluxDB[], interval: number): Stru
     }
 }
 
-class VolumeByWell {
-    wellRegistrationID!: string;
-    intervalCount!: number;
-    intervalVolumes!: AggregatedResult[];
-}
-
-class StructuredResults {
-    intervalCountTotal!: number;
-    intervalWidthInMinutes!: number;
-    intervalStart!: string;
-    intervalEnd!: string;
-    durationInMinutes!: number;
-    wellCount!: number;
-    volumesByWell!: VolumeByWell[];
-}
-
-function aggregateResults(resultsToAggregate: ResultFromInfluxDB[], interval: number): AggregatedResult[] {
-    let aggregatedResults = [];
-    let sum = 0;
-    //Again, because of the 15 minute intervals the first date we get will have been over a previous 15 minute interval
-    //So, when we start aggregating, we need to have our first start time 15 minutes BEFORE our first endTime
-    let startTime = new Date(resultsToAggregate[0].endTime.getTime() - (15 * 60000));
-    let timeThreshold = interval * 60 * 1000;
-    resultsToAggregate.forEach(x => {
-        sum += Math.round(x.gallons);
-        if (x.endTime.getTime() - startTime.getTime() >= timeThreshold) {
-            aggregatedResults.push({
-                intervalEndTime: x.endTime,
-                volumePumpedGallons: sum
-            })
-            sum = 0;
-            startTime = x.endTime;
-        }
-    })
-
-    //TODO:If we have an incomplete interval, do we want to push it? 
-    //Or should we leave incomplete intervals out of the payload? 
-    //Should there be a marker stating that it's incomplete?
-    if (sum > 0) {
-        aggregatedResults.push({
-            wellRegistrationID: resultsToAggregate[resultsToAggregate.length - 1].wellRegistrationID,
-            endTime: resultsToAggregate[resultsToAggregate.length - 1].endTime,
-            gallons: sum
-        })
-    }
-
-    return aggregatedResults;
-}
-
-class AggregatedResult {
-    wellRegistrationID!: string;
-    endTime!: Date;
-    gallons!: number;
-}
-
 // todo: these types need a home
 
 class AbbreviatedWellDataResponse {
@@ -552,4 +491,27 @@ class AbbreviatedWellDataResponse {
     updateDate: any;
     sensors!: any[];
 
+}
+
+
+class ResultFromInfluxDB {
+    endTime!: Date;
+    gallons!: number;
+    wellRegistrationID!: string;
+}
+
+class VolumeByWell {
+    wellRegistrationID!: string;
+    intervalCount!: number;
+    intervalVolumes!: ResultFromInfluxDB[];
+}
+
+class StructuredResults {
+    intervalCountTotal!: number;
+    intervalWidthInMinutes!: number;
+    intervalStart!: string;
+    intervalEnd!: string;
+    durationInMinutes!: number;
+    wellCount!: number;
+    volumesByWell!: VolumeByWell[];
 }

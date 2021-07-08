@@ -6,38 +6,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"BookDto": {
-				"properties": {
-					"title": {
-						"type": "string"
-					},
-					"author": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"title",
-					"author"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"BookCreateDto": {
-				"properties": {
-					"title": {
-						"type": "string"
-					},
-					"author": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"title",
-					"author"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"IrrigatedAcresPerYearDto": {
 				"properties": {
 					"Year": {
@@ -153,28 +121,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"AggregatedResult": {
-				"properties": {
-					"wellRegistrationID": {
-						"type": "string"
-					},
-					"endTime": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"gallons": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"wellRegistrationID",
-					"endTime",
-					"gallons"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"VolumeByWell": {
 				"properties": {
 					"wellRegistrationID": {
@@ -186,7 +132,7 @@
 					},
 					"intervalVolumes": {
 						"items": {
-							"$ref": "#/components/schemas/AggregatedResult"
+							"$ref": "#/components/schemas/ResultFromInfluxDB"
 						},
 						"type": "array"
 					}
