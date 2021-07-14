@@ -7,7 +7,7 @@ import { CustomRichTextTypeDto } from './custom-rich-text-type-dto'
 export class CustomRichTextDto {
 	CustomRichTextID : number
 	CustomRichTextType : CustomRichTextTypeDto
-	CustomRichTextContent? : string
+	CustomRichTextContent : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+  zybach.api:
+    image: sitkacontainers.azurecr.io/zybach/api
+    build:
+      context: ..
+      dockerfile: Zybach.API/Dockerfile

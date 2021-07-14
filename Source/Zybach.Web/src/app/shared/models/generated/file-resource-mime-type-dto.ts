@@ -9,8 +9,8 @@ export class FileResourceMimeTypeDto {
 	FileResourceMimeTypeName : string
 	FileResourceMimeTypeDisplayName : string
 	FileResourceMimeTypeContentTypeName : string
-	FileResourceMimeTypeIconSmallFilename? : string
-	FileResourceMimeTypeIconNormalFilename? : string
+	FileResourceMimeTypeIconSmallFilename : string
+	FileResourceMimeTypeIconNormalFilename : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);
