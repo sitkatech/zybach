@@ -6,7 +6,7 @@ CREATE TABLE [dbo].[AgHubWellIrrigatedAcre](
 	[AgHubWellIrrigatedAcreID] [int] IDENTITY(1,1) NOT NULL,
 	[AgHubWellID] [int] NOT NULL,
 	[IrrigationYear] [int] NOT NULL,
-	[Acres] [decimal](8, 2) NOT NULL,
+	[Acres] [float] NOT NULL,
 	[FetchDate] [datetime] NOT NULL,
  CONSTRAINT [PK_AgHubWellIrrigatedAcre_AgHubWellIrrigatedAcreID] PRIMARY KEY CLUSTERED 
 (

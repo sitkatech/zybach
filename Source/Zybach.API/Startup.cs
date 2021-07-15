@@ -77,6 +77,8 @@ namespace Zybach.API
             services.Configure<ZybachConfiguration>(Configuration);
             var zybachConfiguration = Configuration.Get<ZybachConfiguration>();
 
+            services.AddScoped<InfluxDBService>();
+
             var keystoneHost = zybachConfiguration.KEYSTONE_HOST;
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)

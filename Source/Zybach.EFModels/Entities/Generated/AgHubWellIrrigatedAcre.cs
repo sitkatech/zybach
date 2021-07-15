@@ -16,8 +16,7 @@ namespace Zybach.EFModels.Entities
         public int AgHubWellIrrigatedAcreID { get; set; }
         public int AgHubWellID { get; set; }
         public int IrrigationYear { get; set; }
-        [Column(TypeName = "decimal(8, 2)")]
-        public decimal Acres { get; set; }
+        public double Acres { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime FetchDate { get; set; }
 

@@ -4,8 +4,6 @@
     {
         public string KEYSTONE_HOST { get; set; }
         public string DB_CONNECTION_STRING { get; set; }
-        public string BEEHIVE_DB_CONNECTION_STRING { get; set; }
-        public string BEEHIVE_SYNC_DB_CONNECTION_STRING { get; set; }
         public string SMTP_HOST { get; set; }
         public int SMTP_PORT { get; set; }
         public string SITKA_EMAIL_REDIRECT { get; set; }
@@ -18,5 +16,17 @@
         public string LeadOrganizationHomeUrl { get; set; }
         public string LeadOrganizationEmail { get; set; }
         public string APPINSIGHTS_INSTRUMENTATIONKEY { get; set; }
+        public string API_KEY_VALUE { get; set; }
+        public string INFLUXDB_URL { get; set; }
+        public string INFLUXDB_TOKEN { get; set; }
+        public string INFLUXDB_ORG { get; set; }
+        public string INFLUX_BUCKET { get; set; }
+        public string ZYBACH_CLIENT_ID { get; set; }
+        public string ZYBACH_CLIENT_SECRET { get; set; }
+        public string GEOOPTIX_API_KEY { get; set; }
+        public string GEOOPTIX_HOSTNAME { get; set; }
+        public string GEOOPTIX_SEARCH_HOSTNAME { get; set; }
+        public string APP_HOSTNAME { get; set; }
+
     }
 }

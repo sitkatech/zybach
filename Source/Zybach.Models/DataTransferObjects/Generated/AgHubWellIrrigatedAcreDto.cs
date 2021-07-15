@@ -12,7 +12,7 @@ namespace Zybach.Models.DataTransferObjects
         public int AgHubWellIrrigatedAcreID { get; set; }
         public AgHubWellDto AgHubWell { get; set; }
         public int IrrigationYear { get; set; }
-        public decimal Acres { get; set; }
+        public double Acres { get; set; }
         public DateTime FetchDate { get; set; }
     }
 }

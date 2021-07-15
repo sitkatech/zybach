@@ -18,7 +18,7 @@ create table dbo.AgHubWellIrrigatedAcre
 	AgHubWellIrrigatedAcreID int not null identity(1,1) constraint PK_AgHubWellIrrigatedAcre_AgHubWellIrrigatedAcreID primary key,
 	AgHubWellID int not null constraint FK_AgHubWellIrrigatedAcre_AgHubWell_AgHubWellID foreign key references dbo.AgHubWell(AgHubWellID),
 	IrrigationYear int not null,
-	Acres decimal(8,2) not null,
+	Acres float not null,
 	FetchDate datetime not null,
 	constraint AK_AgHubWellIrrigatedAcre_AgHubWellID_IrrigationYear unique (AgHubWellID, IrrigationYear)
 )

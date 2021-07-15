@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +27,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         public string FieldDefinitionTypeDisplayName { get; set; }
 
-        [InverseProperty(nameof(Entities.FieldDefinition.FieldDefinitionType))]
+        [InverseProperty(nameof(FieldDefinition.FieldDefinitionType))]
         public virtual ICollection<FieldDefinition> FieldDefinitions { get; set; }
     }
 }
