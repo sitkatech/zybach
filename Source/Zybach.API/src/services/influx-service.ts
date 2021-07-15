@@ -140,7 +140,7 @@ export class InfluxService {
     public async getPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date): Promise<any[]> {
         const sensorIDFilter = sensors.map(x => `r["sn"] == "${x.sensorName}"`).join(" or ");
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
         });
 
@@ -178,7 +178,7 @@ export class InfluxService {
     public async getMonthlyPumpedVolumeForSensor(sensors: SensorSummaryDto[], registrationID: string, from: Date): Promise<any[]> {
         const sensorIDFilter = sensors.map(x => `r["sn"] == "${x.sensorName}"`).join(" or ");
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
         });
 
@@ -217,7 +217,7 @@ export class InfluxService {
 
     public async getMonthlyElectricalBasedFlowEstimate(wellRegistrationID: string, from: Date): Promise<any[]> {
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
         });
 
@@ -253,7 +253,7 @@ export class InfluxService {
 
     public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string, from: Date): Promise<any[]> {
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
         });
 
