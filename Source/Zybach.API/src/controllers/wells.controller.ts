@@ -361,7 +361,7 @@ export class WellController extends Controller {
             let results = await getFlowMeterSeries(wellRegistrationIDs as string | string[], startDate, endDate, interval);
             return {
                 "status": "success",
-                "result": results.length > 0 ? structureResults(results, interval) : results
+                "result": results.length > 0 ? structureResults(results, interval, startDate, endDate) : results
             }
         }
         catch (err) {
@@ -436,10 +436,8 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
     });
 }
 
-function structureResults(results: ResultFromInfluxDB[], interval: number): StructuredResults {
+function structureResults(results: ResultFromInfluxDB[], interval: number, startDate: Date, endDate:Date): StructuredResults {
     const distinctWells = [...new Set(results.map(x => x.wellRegistrationID))];
-    let startDate = results[0].intervalEndTime;
-    let endDate = results[results.length - 1].intervalEndTime;
     let totalResults = 0;
     let volumesByWell: VolumeByWell[] = [];
     distinctWells.forEach(wellRegistrationID => {
@@ -464,10 +462,6 @@ function structureResults(results: ResultFromInfluxDB[], interval: number): Stru
         };
         volumesByWell.push(newWellObj);
     });
-
-    //Because we get the intervals back in 15 minute increments, technically our startDate is 15 minutes BEFORE our actual first time
-    //Remove this extra piece if we decide we just want the first interval's end date
-    startDate = new Date(startDate.getTime() - (15 * 60000));
 
     return {
         intervalCountTotal: totalResults,
