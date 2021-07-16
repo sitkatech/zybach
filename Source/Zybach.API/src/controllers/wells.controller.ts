@@ -424,7 +424,7 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                results.push({ endTime: new Date(o._time), gallons: o._value, wellRegistrationID: o['registration-id'].toUpperCase() });
+                results.push({ intervalEndTime: new Date(o._time), gallons: o._value, wellRegistrationID: o['registration-id'].toUpperCase() });
             },
             error(error) {
                 reject(error);
@@ -438,21 +438,21 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
 
 function structureResults(results: ResultFromInfluxDB[], interval: number): StructuredResults {
     const distinctWells = [...new Set(results.map(x => x.wellRegistrationID))];
-    let startDate = results[0].endTime;
-    let endDate = results[results.length - 1].endTime;
+    let startDate = results[0].intervalEndTime;
+    let endDate = results[results.length - 1].intervalEndTime;
     let totalResults = 0;
     let volumesByWell: VolumeByWell[] = [];
     distinctWells.forEach(wellRegistrationID => {
-        let currentWellResults = results.filter(x => x.wellRegistrationID.toUpperCase() === wellRegistrationID.toUpperCase()).sort((a, b) => a.endTime.getTime() - b.endTime.getTime());
+        let currentWellResults = results.filter(x => x.wellRegistrationID.toUpperCase() === wellRegistrationID.toUpperCase()).sort((a, b) => a.intervalEndTime.getTime() - b.intervalEndTime.getTime());
 
-        if (currentWellResults[0].endTime < startDate) {
-            startDate = currentWellResults[0].endTime;
+        if (currentWellResults[0].intervalEndTime < startDate) {
+            startDate = currentWellResults[0].intervalEndTime;
         }
 
         let aggregatedResults = currentWellResults;
 
-        if (aggregatedResults[aggregatedResults.length - 1].endTime > endDate) {
-            endDate = aggregatedResults[aggregatedResults.length - 1].endTime;
+        if (aggregatedResults[aggregatedResults.length - 1].intervalEndTime > endDate) {
+            endDate = aggregatedResults[aggregatedResults.length - 1].intervalEndTime;
         }
 
         totalResults += aggregatedResults.length;
@@ -495,7 +495,7 @@ class AbbreviatedWellDataResponse {
 
 
 class ResultFromInfluxDB {
-    endTime!: Date;
+    intervalEndTime!: Date;
     gallons!: number;
     wellRegistrationID!: string;
 }
