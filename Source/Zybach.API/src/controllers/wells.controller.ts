@@ -29,6 +29,7 @@ import { InfluxService } from "../services/influx-service";
 import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
 import { RobustReviewDto, MonthlyPumpedVolumeGallonsDto} from "../dtos/robust-review-dto";
 import { NotFoundError } from "../errors/not-found-error";
+import { DateTime } from "luxon";
 
 const bucketName = process.env.SOURCE_BUCKET;
 
@@ -398,9 +399,6 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
     const queryApi = client.getQueryApi(org);
 
     const fifteenMinutesInms = 1000 * 60 * 15;
-    const startDateForFlux = new Date((Math.round(startDate.getTime() / fifteenMinutesInms) * fifteenMinutesInms) + 1000).toISOString();
-    const endDateForFlux = new Date((Math.round(endDate.getTime() / fifteenMinutesInms) * fifteenMinutesInms) + 1000).toISOString();
-
     let wellRegistrationIDsForQuery: string[] = [];
     if (Array.isArray(wellRegistrationIDs)){
         wellRegistrationIDsForQuery = [...wellRegistrationIDs.map(x=>x.toUpperCase()), ...wellRegistrationIDs.map(x=>x.toLowerCase())];
@@ -408,14 +406,16 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
         wellRegistrationIDsForQuery = [wellRegistrationIDs.toLowerCase(), wellRegistrationIDs.toUpperCase()]
     }
 
+    const startTimeOffset = `${startDate.getUTCHours()}h${startDate.getUTCMinutes()}m${startDate.getUTCSeconds()}s${startDate.getUTCMilliseconds()}ms`;
+
     const registrationIDQuery =`and (r["registration-id"] == "` + wellRegistrationIDsForQuery.join(`" or r["registration-id"]=="`) + "\")";
     const query = `from(bucket: "${bucketName}") 
-        |> range(start: ${startDateForFlux}, stop:${endDateForFlux}) 
+        |> range(start: ${startDate.toISOString()}, stop:${endDate.toISOString()}) 
         |> filter(fn: (r) => 
             r["_measurement"] == "pumped-volume" and 
             r["_field"] == "gallons" 
             ${registrationIDQuery})
-        |> aggregateWindow(every: ${interval}m, fn: sum, column: "_value", timeSrc: "_stop", timeDst: "_time", createEmpty: false )
+        |> aggregateWindow(every: ${interval}m, fn: sum, column: "_value", timeSrc: "_stop", timeDst: "_time", createEmpty: false, offset: ${startTimeOffset} )
         |> sort(columns:["_time"])`;
 
     let results: ResultFromInfluxDB[] = [];
