@@ -76,6 +76,12 @@ namespace Zybach.API
 
             services.Configure<ZybachConfiguration>(Configuration);
             var zybachConfiguration = Configuration.Get<ZybachConfiguration>();
+            services.AddHttpClient<GeoOptixService>(c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.GEOOPTIX_HOSTNAME);
+                c.Timeout = TimeSpan.FromDays(1);
+                c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
+            });
 
             services.AddScoped<InfluxDBService>();
 

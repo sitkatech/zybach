@@ -16,11 +16,13 @@ namespace Zybach.API.Controllers
     public class ManagerDashboardController : SitkaController<ManagerDashboardController>
     {
         private readonly InfluxDBService _influxDbService;
+        private readonly GeoOptixService _geoOptixService;
         private const double GALLON_TO_ACRE_INCH = 3.68266E-5;
 
-        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _influxDbService = influxDbService;
+            _geoOptixService = geoOptixService;
         }
 
 
@@ -111,6 +113,12 @@ namespace Zybach.API.Controllers
         }
 
         // testing 
+        [HttpGet("geoOptixWells")]
+        public async Task<List<WellSummaryDto>> GetGeoOptixWells()
+        {
+            return await _geoOptixService.GetWellSummaries();
+        }
+
         //[HttpGet("firstReadingDatesForSensor")]
         //public Task<Dictionary<string, DateTime>> GetFirstReadingDateTimesForSensor()
         //{
