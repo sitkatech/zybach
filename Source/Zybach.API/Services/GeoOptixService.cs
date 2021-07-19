@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
@@ -14,13 +13,11 @@ namespace Zybach.API.Services
 {
     public class GeoOptixService
     {
-        private readonly ZybachConfiguration _zybachConfiguration;
         private readonly HttpClient _httpClient;
         private readonly ILogger<GeoOptixService> _logger;
 
-        public GeoOptixService(HttpClient httpClient, IOptions<ZybachConfiguration> zybachConfiguration, ILogger<GeoOptixService> logger)
+        public GeoOptixService(HttpClient httpClient, ILogger<GeoOptixService> logger)
         {
-            _zybachConfiguration = zybachConfiguration.Value;
             _httpClient = httpClient;
             _logger = logger;
 

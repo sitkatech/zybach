@@ -83,6 +83,13 @@ namespace Zybach.API
                 c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
             });
 
+            services.AddHttpClient<GeoOptixSearchService>(c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.GEOOPTIX_SEARCH_HOSTNAME);
+                c.Timeout = TimeSpan.FromDays(1);
+                c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
+            });
+
             services.AddScoped<InfluxDBService>();
 
             var keystoneHost = zybachConfiguration.KEYSTONE_HOST;

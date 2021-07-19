@@ -17,12 +17,14 @@ namespace Zybach.API.Controllers
     {
         private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
+        private readonly GeoOptixSearchService _geoOptixSearchService;
         private const double GALLON_TO_ACRE_INCH = 3.68266E-5;
 
-        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, GeoOptixSearchService geoOptixSearchService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
+            _geoOptixSearchService = geoOptixSearchService;
         }
 
 
@@ -117,6 +119,12 @@ namespace Zybach.API.Controllers
         public async Task<List<WellSummaryDto>> GetGeoOptixWells()
         {
             return await _geoOptixService.GetWellSummaries();
+        }
+
+        [HttpGet("search/{searchText}")]
+        public async Task<List<SearchSummaryDto>> GetSearchSuggestions([FromRoute] string searchText)
+        {
+            return await _geoOptixSearchService.GetSearchSuggestions(searchText);
         }
 
         //[HttpGet("firstReadingDatesForSensor")]
