@@ -29,35 +29,40 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("districtStatistics/{year}")]
-        [AdminFeature]
-        public IActionResult GetDistrictStatistics([FromRoute] int year)
+        public async Task<DistrictStatisticsDto> GetDistrictStatistics([FromRoute] int year)
         {
-            return new ContentResult();
-            //let numberOfWellsTracked, numberOfContinuityMeters, numberOfFlowMeters, numberOfElectricalUsageEstimates;
+            // get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year
+            var geoOptixWells = await _geoOptixService.GetWellSummariesCreatedAsOfYear(year);
+            var aghubRegistrationIds = await _influxDbService.GetWellRegistrationIDsWithElectricalEstimateAsOfYear(year);
+            // combine the registration ids as a set and count to avoid counting duplicates
+            var numberOfWellsTracked = geoOptixWells.Select(x => x.WellRegistrationID)
+                .Union(aghubRegistrationIds, StringComparer.InvariantCultureIgnoreCase).Count();
 
-            //// get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year
-            //const geoOptixWells = await this.geooptixService.getWellSummariesCreatedAsOfYear(year);
-            //const aghubRegistrationIds = await this.influxService.getWellRegistrationIdsWithElectricalEstimateAsOfYear(year);
-            //// combine the registration ids as a set and count to avoid counting duplicates
-            //numberOfWellsTracked = new Set([...geoOptixWells.map(x => x.wellRegistrationID), ...aghubRegistrationIds]).size;
+            // get all sensors that existed in GeoOptix as of the given year
+            var sensors = await _geoOptixService.GetSensorSummariesCreatedAsOfYear(year);
 
-            //// get all sensors that existed in GeoOptix as of the given year
-            //const sensors = await this.geooptixService.getSensorSummariesCreatedAsOfYear(year);
+            // filter by sensor type and count
+            var numberOfFlowMeters = sensors.Count(x => x.SensorType == "Flow Meter");
+            var numberOfContinuityMeters = sensors.Count(x => x.SensorType == "Continuity Meter");
 
-            //// filter by sensor type and count
-            //numberOfFlowMeters = sensors.filter(x => x.sensorType === 'Flow Meter').length;
-            //numberOfContinuityMeters = sensors.filter(x => x.sensorType === 'Continuity Meter').length;
+            // todo: get total number of electrical usage estimates
+            var numberOfElectricalUsageEstimates = aghubRegistrationIds.Count;
 
-            //// todo: get total number of electrical usage estimates
-            //numberOfElectricalUsageEstimates = aghubRegistrationIds.length;
+            return new DistrictStatisticsDto
+            { 
+                NumberOfWellsTracked = numberOfWellsTracked,
+                NumberOfContinuityMeters = numberOfContinuityMeters,
+                NumberOfElectricalUsageEstimates = numberOfElectricalUsageEstimates,
+                NumberOfFlowMeters = numberOfFlowMeters
+            };
+        }
 
-            //return {
-            //    NumberOfWellsTracked: numberOfWellsTracked,
-            //    NumberOfContinuityMeters: numberOfContinuityMeters,
-            //    NumberOfElectricalUsageEstimates: numberOfElectricalUsageEstimates,
-            //    NumberOfFlowMeters: numberOfFlowMeters
-            //}
-
+        public class DistrictStatisticsDto
+        {
+            public int NumberOfWellsTracked { get; set; }
+            public int NumberOfContinuityMeters { get; set; }
+            public int NumberOfElectricalUsageEstimates { get; set; }
+            public int NumberOfFlowMeters { get; set; }
         }
 
         [HttpGet("streamFlowZonePumpingDepths")]
@@ -118,7 +123,7 @@ namespace Zybach.API.Controllers
         [HttpGet("geoOptixWells")]
         public async Task<List<WellSummaryDto>> GetGeoOptixWells()
         {
-            return await _geoOptixService.GetWellSummaries();
+            return await _geoOptixService.GetWellSummariesCreatedAsOfYear(DateTime.Today.Year);
         }
 
         [HttpGet("search/{searchText}")]

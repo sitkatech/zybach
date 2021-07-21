@@ -32,11 +32,18 @@ namespace Zybach.API.Services
             return new JsonSerializer().Deserialize<TV>(jsonTextReader);
         }
 
-        public async Task<List<WellSummaryDto>> GetWellSummaries()
+        public async Task<List<WellSummaryDto>> GetWellSummariesCreatedAsOfYear(int year)
         {
             const string uri = "project-overview-web/water-data-program/sites";
             var geoOptixSites = await GetJsonFromCatalogImpl<List<GeoOptixSite>>(uri);
-            return geoOptixSites.AsParallel().Select(x => new WellSummaryDto(x)).ToList();
+            return geoOptixSites.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new WellSummaryDto(x)).ToList();
+        }
+
+        public async Task<List<SensorSummaryDto>> GetSensorSummariesCreatedAsOfYear(int year)
+        {
+            const string uri = "project-overview-web/water-data-program/stations";
+            var geoOptixStations = await GetJsonFromCatalogImpl<List<GeoOptixStation>>(uri);
+            return geoOptixStations.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new SensorSummaryDto(x)).ToList();
         }
     }
 
@@ -66,6 +73,26 @@ namespace Zybach.API.Services
         }
     }
 
+    public class SensorSummaryDto
+    {
+        private static readonly Dictionary<string, string> SensorTypeMap = new Dictionary<string, string>{{"FlowMeter", "Flow Meter"}, {"PumpMonitor", "Continuity Meter"}, {"WellPressure", "Well Pressure"}};
+
+        public SensorSummaryDto()
+        {
+        }
+
+        public string WellRegistrationID { get; set; }
+        public string SensorName { get; set; }
+        public string SensorType { get; set; }
+
+        public SensorSummaryDto(GeoOptixStation geoOptixStation)
+        {
+            WellRegistrationID = geoOptixStation.SiteCanonicalName.ToUpper();
+            SensorName = geoOptixStation.Name;
+            SensorType =  SensorTypeMap[geoOptixStation.Definition.SensorType];
+        }
+    }
+
     public class IrrigatedAcresPerYearDto
     {
         public int Year { get; set; }
@@ -77,5 +104,19 @@ namespace Zybach.API.Services
         public string CanonicalName { get; set; }
         public string Description { get; set; }
         public Feature Location { get; set; }
+        public DateTime CreateDate { get; set; }
+    }
+
+    public class GeoOptixStation
+    {
+        public string SiteCanonicalName { get; set; }
+        public string Name { get; set; }
+        public GeoOptixDefinition Definition { get; set; }
+        public DateTime CreateDate { get; set; }
+    }
+
+    public class GeoOptixDefinition
+    {
+        public string SensorType { get; set; }
     }
 }
