@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
-using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
 {
@@ -17,7 +15,7 @@ namespace Zybach.API.Controllers
         private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
 
-        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, GeoOptixSearchService geoOptixSearchService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
