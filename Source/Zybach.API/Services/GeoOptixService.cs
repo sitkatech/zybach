@@ -32,18 +32,61 @@ namespace Zybach.API.Services
             return new JsonSerializer().Deserialize<TV>(jsonTextReader);
         }
 
+        public async Task<List<WellSummaryDto>> GetWellSummaries()
+        {
+            var geoOptixSites = await GetGeoOptixSites();
+            return geoOptixSites.AsParallel().Select(x => new WellSummaryDto(x)).ToList();
+        }
+
         public async Task<List<WellSummaryDto>> GetWellSummariesCreatedAsOfYear(int year)
+        {
+            var geoOptixSites = await GetGeoOptixSites();
+            return geoOptixSites.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new WellSummaryDto(x)).ToList();
+        }
+
+        private async Task<List<GeoOptixSite>> GetGeoOptixSites()
         {
             const string uri = "project-overview-web/water-data-program/sites";
             var geoOptixSites = await GetJsonFromCatalogImpl<List<GeoOptixSite>>(uri);
-            return geoOptixSites.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new WellSummaryDto(x)).ToList();
+            return geoOptixSites;
+        }
+
+        public async Task<List<SensorSummaryDto>> GetSensorSummaries()
+        {
+            var geoOptixStations = await GetGeoOptixStations();
+            return geoOptixStations.Select(x => new SensorSummaryDto(x)).ToList();
         }
 
         public async Task<List<SensorSummaryDto>> GetSensorSummariesCreatedAsOfYear(int year)
         {
+            var geoOptixStations = await GetGeoOptixStations();
+            return geoOptixStations.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new SensorSummaryDto(x)).ToList();
+        }
+
+        private async Task<List<GeoOptixStation>> GetGeoOptixStations()
+        {
             const string uri = "project-overview-web/water-data-program/stations";
             var geoOptixStations = await GetJsonFromCatalogImpl<List<GeoOptixStation>>(uri);
-            return geoOptixStations.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new SensorSummaryDto(x)).ToList();
+            return geoOptixStations;
+        }
+
+        public async Task<Dictionary<string, WellWithSensorSummaryDto>> GetWellsWithSensors()
+        {
+            var sensors = await GetSensorSummaries();
+            var wells = await GetWellSummaries();
+
+            // add a sensor array to the wells
+            var wellsWithSensors = wells.Select(x => new WellWithSensorSummaryDto
+            {
+                WellRegistrationID = x.WellRegistrationID,
+                Description = x.Description,
+                Location = x.Location,
+                Sensors = sensors.Where(y => y.WellRegistrationID == x.WellRegistrationID).ToList(),
+                InGeoOptix = true
+            }).ToList();
+
+            // create a Map from the array of wells
+            return wellsWithSensors.ToDictionary(x => x.WellRegistrationID);
         }
     }
 
@@ -91,6 +134,23 @@ namespace Zybach.API.Services
             SensorName = geoOptixStation.Name;
             SensorType =  SensorTypeMap[geoOptixStation.Definition.SensorType];
         }
+    }
+
+    public class WellWithSensorSummaryDto : WellSummaryDto
+    {
+        public List<SensorSummaryDto> Sensors { get; set; }
+    }
+
+    public class WellWithSensorMessageAgeDto : WellSummaryDto
+    {
+        public List<SensorMessageAgeDto> Sensors { get; set; }
+    }
+
+    public class SensorMessageAgeDto
+    {
+        public string SensorName { get; set; }
+        public int? MessageAge { get; set; }
+        public string SensorType { get; set; }
     }
 
     public class IrrigatedAcresPerYearDto
