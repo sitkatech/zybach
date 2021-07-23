@@ -31,15 +31,31 @@ function getContinuityMeterSeries(well) {
             you needed without having to worry about scheduled runs not working on time, etc.
         */
 
-        const query = `from(bucket: "tpnrd") \
-            |> range(start: ${startTime}, stop: ${stopTime}) \
-            |> filter(fn: (r) => r["_measurement"] == "continuity") \
-            |> filter(fn: (r) => r["_field"] == "on") \
-            |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
-            |> filter(fn: (r) => r["sn"] == "${sn}") \
-            |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
-            |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
-            |> fill(usePrevious: true)`;
+        // const query = `from(bucket: "tpnrd") \
+        //     |> range(start: ${startTime}, stop: ${stopTime}) \
+        //     |> filter(fn: (r) => r["_measurement"] == "continuity") \
+        //     |> filter(fn: (r) => r["_field"] == "on") \
+        //     |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
+        //     |> filter(fn: (r) => r["sn"] == "${sn}") \
+        //     |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
+        //     |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
+        //     |> fill(usePrevious: true)`;
+
+        const query = 
+            `import "contrib/tomhollingworth/events"
+            from(bucket: "tpnrd")
+              |> range(start: ${startTime}, stop: ${stopTime})
+              |> filter(fn: (r) => r["_measurement"] == "continuity")
+              |> filter(fn: (r) => r["_field"] == "on")
+              |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
+              |> filter(fn: (r) => r["sn"] == "${sn}")
+              |> sort(columns: ["_time"])
+              |> events.duration(unit: 1ns, columnName: "run-time-ns", timeColumn: "_time", stopColumn: "_stop")
+              |> map(fn: (r) => ({ r with "run-time-minutes": float(v: r["run-time-ns"]) / 60000000000.0}))
+              |> map(fn: (r) => ({ r with "pumped-volume-gallons": r["run-time-minutes"] * float(v: ${gpm})))
+              |> filter(fn: (r) => r["_value"] == 1)
+              |> aggregateWindow(every: 1d, fn: sum, timeSrc: "_start", column: "pumped-volume-gallons", offset: 5h)
+              `
 
         queryApi.queryRows(query, {
             next(row, tableMeta) {
@@ -283,10 +299,6 @@ async function getWellsWithEarliestTimestamps(){
     return [...continuities, ...flows];
 }
 
-function getLatestTimestampForGivenWell(endTime = null){
-
-}
-
 function getLineFromInterval(interval) {
     // IMPORTANT: Date.parse yields a timestamp measured in milliseconds since the Unix epoch whereas the default precision for InfluxDB is
     // nanoseconds since the epoch. If you pass a Date.parse() value into a write without the "precision=ms" query parameter, InfluxDB will 
@@ -297,6 +309,10 @@ function getLineFromInterval(interval) {
 
     return `pumped-volume,registration-id=${interval.wellRegistrationID},sn=${interval.sn} gallons=${interval.gallons} ${timestamp}\n`;
 };
+
+function getOffset(startDate){
+    return `${startDate.getUTCHours()}h${startDate.getUTCMinutes()}m${startDate.getUTCSeconds()}s${startDate.getUTCMilliseconds()}ms`;
+}
 
 module.exports.getContinuityMeterSeries = getContinuityMeterSeries;
 module.exports.getFlowMeterSeries = getFlowMeterSeries;
