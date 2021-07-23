@@ -28,7 +28,8 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("districtStatistics/{year}")]
+        [HttpGet("/api/managerDashboard/districtStatistics/{year}")]
+        [AdminFeature]
         public async Task<DistrictStatisticsDto> GetDistrictStatistics([FromRoute] int year)
         {
             // get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year
@@ -65,7 +66,7 @@ namespace Zybach.API.Controllers
             public int NumberOfFlowMeters { get; set; }
         }
 
-        [HttpGet("streamFlowZonePumpingDepths")]
+        [HttpGet("/api/managerDashboard/streamFlowZonePumpingDepths")]
         public async Task<List<AnnualStreamFlowZonePumpingDepthDto>> GetStreamFlowZonePumpingDepths()
         {
             // Currently, we are only accounting for electrical data when color-coding the SFZ map;
@@ -118,71 +119,6 @@ namespace Zybach.API.Controllers
 
             return new AnnualStreamFlowZonePumpingDepthDto(year, streamFlowZonePumpingDepthDtos);
         }
-
-        // testing 
-        [HttpGet("geoOptixWells")]
-        public async Task<List<WellSummaryDto>> GetGeoOptixWells()
-        {
-            return await _geoOptixService.GetWellSummariesCreatedAsOfYear(DateTime.Today.Year);
-        }
-
-        [HttpGet("search/{searchText}")]
-        public async Task<List<SearchSummaryDto>> GetSearchSuggestions([FromRoute] string searchText)
-        {
-            return await _geoOptixSearchService.GetSearchSuggestions(searchText);
-        }
-
-        //[HttpGet("firstReadingDatesForSensor")]
-        //public Task<Dictionary<string, DateTime>> GetFirstReadingDateTimesForSensor()
-        //{
-        //    return _influxDbService.GetFirstReadingDateTimesForSensor();
-        //}
-
-        //[HttpGet("pumpedVolumesForSensors")]
-        //public Task<List<InfluxDBService.DailyPumpedVolume>> GetPumpedVolumesForSensors()
-        //{
-        //    return _influxDbService.GetPumpedVolumesForSensors(new List<string> { "PW010029", "PW010030", "PW010031" }, "Infrared", new DateTime(2000, 1, 1));
-        //}
-
-        //[HttpGet("monthlyPumpedVolumesForSensors")]
-        //public Task<List<InfluxDBService.MonthlyPumpedVolume>> GetMonthlyPumpedVolumesForSensors()
-        //{
-        //    return _influxDbService.GetMonthlyPumpedVolumesForSensors(new List<string> { "PW010029", "PW010030", "PW010031" }, "G-191921", new DateTime(2000, 1, 1));
-        //}
-
-        //[HttpGet("firstReadingDates")]
-        //public Task<Dictionary<string, DateTime>> GetFirstReadingDateTimes()
-        //{
-        //    return _influxDbService.GetFirstReadingDateTimes();
-        //}
-
-        //[HttpGet("lastReadingDates")]
-        //public Task<Dictionary<string, DateTime>> GetLastReadingDateTimes()
-        //{
-        //    return _influxDbService.GetLastReadingDateTimes();
-        //}
-
-        //[HttpGet("lastMessageAgesBySensor")]
-        //public Task<Dictionary<string, int>> GetLastMessageAgeBySensor()
-        //{
-        //    return _influxDbService.GetLastMessageAgeBySensor();
-        //}
-
-
-        //[HttpGet("firstReadingDateForWell/{wellRegistrationID}")]
-        //public Task<DateTime?> GetFirstReadingDateTimeForWell([FromRoute] string wellRegistrationID)
-        //{
-        //    return _influxDbService.GetFirstReadingDateTimeForWell(wellRegistrationID);
-        //}
-
-        //[HttpGet("districtStatistics/{year}")]
-        //public ActionResult<FieldDefinitionDto> GetDistrictStatistics([FromRoute] int year)
-        //{
-        //    var fieldDefinitionDto = FieldDefinition.GetByFieldDefinitionTypeID(_dbContext, year);
-        //    return RequireNotNullThrowNotFound(fieldDefinitionDto, "FieldDefinition", year);
-        //}
-
-
     }
 
     public class AnnualStreamFlowZonePumpingDepthDto

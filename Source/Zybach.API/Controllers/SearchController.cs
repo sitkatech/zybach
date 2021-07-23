@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
+using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API.Controllers
@@ -21,6 +22,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/search/{searchText}")]
+        [AdminFeature]
         public async Task<List<SearchSummaryDto>> GetSearchSuggestions([FromRoute] string searchText)
         {
             var searchSummaryDtos = await _geoOptixSearchService.GetSearchSuggestions(searchText);

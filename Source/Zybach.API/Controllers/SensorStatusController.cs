@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
+using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API.Controllers
@@ -23,6 +24,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/sensorStatus")]
+        [AdminFeature]
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
             var wellSummariesWithSensors = (await _geoOptixService.GetWellsWithSensors()).Values.Where(x => x.Sensors.Any()).ToList();
