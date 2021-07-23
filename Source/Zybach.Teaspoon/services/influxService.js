@@ -52,7 +52,7 @@ function getContinuityMeterSeries(well) {
               |> sort(columns: ["_time"])
               |> events.duration(unit: 1ns, columnName: "run-time-ns", timeColumn: "_time", stopColumn: "_stop")
               |> map(fn: (r) => ({ r with "run-time-minutes": float(v: r["run-time-ns"]) / 60000000000.0}))
-              |> map(fn: (r) => ({ r with "pumped-volume-gallons": r["run-time-minutes"] * float(v: ${gpm})))
+              |> map(fn: (r) => ({ r with "pumped-volume-gallons": r["run-time-minutes"] * float(v: ${gpm})}))
               |> filter(fn: (r) => r["_value"] == 1)
               |> aggregateWindow(every: 1d, fn: sum, timeSrc: "_start", column: "pumped-volume-gallons", offset: 5h)
               `
