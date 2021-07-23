@@ -32,3 +32,13 @@ create table dbo.StreamFlowZone
 	StreamFlowZoneLength float not null,
 	StreamFlowZoneArea float not null
 )
+
+
+create table dbo.ChemigationInspection
+(
+	ChemigationInspectionID int not null identity(1,1) constraint PK_ChemigationInspection_ChemigationInspectionID primary key,
+	WellRegistrationID varchar(100) not null,
+	ProtocolCanonicalName varchar(100) not null,
+	[Status] varchar(100) not null,
+	LastUpdate datetime not null
+)

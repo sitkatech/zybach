@@ -19,6 +19,7 @@ namespace Zybach.EFModels.Entities
 
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
+        public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
@@ -56,6 +57,15 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.AgHubWellIrrigatedAcres)
                     .HasForeignKey(d => d.AgHubWellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationInspection>(entity =>
+            {
+                entity.Property(e => e.ProtocolCanonicalName).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
             });
 
             modelBuilder.Entity<CustomRichText>(entity =>

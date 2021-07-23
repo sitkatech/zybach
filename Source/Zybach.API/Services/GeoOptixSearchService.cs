@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Services
 {
@@ -31,7 +32,7 @@ namespace Zybach.API.Services
 
         public async Task<List<SearchSummaryDto>> GetSearchSuggestions(string textToSearch)
         {
-            var geoOptixSearchResults = await GetJsonFromCatalogImpl<GeoOptixSearchResults>($"suggest/{textToSearch}?pageSize=1");
+            var geoOptixSearchResults = await GetJsonFromCatalogImpl<GeoOptixSearchResults>($"suggest/{textToSearch}?pageSize=-1");
             return geoOptixSearchResults.Results.AsParallel().Select(x => new SearchSummaryDto(x.Document)).ToList();
         }
     }
@@ -75,6 +76,13 @@ namespace Zybach.API.Services
             WellID = geoOptixDocument.SiteCanonicalName;
         }
 
+        public SearchSummaryDto(AgHubWellDto agHubWellDto)
+        {
+            ObjectName = agHubWellDto.WellRegistrationID;
+            ObjectType = ZybachObjectTypeEnum.Well.ToString();
+            WellID = agHubWellDto.WellRegistrationID;
+        }
+
         private string GeoOptixObjectTypeToZybachObjectType(string objectType)
         {
             var geoOptixObjectTypeEnum = Enum.Parse<GeoOptixObjectTypeEnum>(objectType);
@@ -88,6 +96,31 @@ namespace Zybach.API.Services
                     return ZybachObjectTypeEnum.Installation.ToString();
                 default:
                     return "";
+            }
+        }
+    }
+
+    public class SearchSummaryDtoComparer : IEqualityComparer<SearchSummaryDto>
+    {
+        public bool Equals(SearchSummaryDto? x, SearchSummaryDto? y)
+        {
+            if (y == null && x == null)
+                return true;
+            else if (x == null || y == null)
+                return false;
+            else if (x.ObjectName == y.ObjectName)
+                return true;
+            else
+                return false;
+        }
+
+        public int GetHashCode(SearchSummaryDto obj)
+        {
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 23 + (obj.ObjectName ?? "").GetHashCode();
+                return hash;
             }
         }
     }

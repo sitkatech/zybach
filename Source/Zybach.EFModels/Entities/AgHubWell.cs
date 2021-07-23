@@ -12,5 +12,10 @@ namespace Zybach.EFModels.Entities
             return dbContext.AgHubWells.AsNoTracking().Select(x => x.AsDto()).ToList();
         }
 
+        public static List<AgHubWellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchStrong)
+        {
+            return dbContext.AgHubWells.Where(x => x.WellRegistrationID.Contains(searchStrong)).AsNoTracking().Select(x => x.AsDto()).ToList();
+        }
+
     }
 }
