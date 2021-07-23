@@ -137,7 +137,7 @@ export class InfluxService {
         return lastReadingDate;
     }
 
-    public async getPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date): Promise<any[]> {
+    public async getPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date, wellRegistrationID: string): Promise<any[]> {
         const sensorIDFilter = sensors.map(x => `r["sn"] == "${x.sensorName}"`).join(" or ");
 
         const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
@@ -149,6 +149,7 @@ export class InfluxService {
         const query = `from(bucket: "${this.bucket}") 
         |> range(start: ${startDate.toISOString()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
+        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
         |> filter(fn: (r) => ${sensorIDFilter}) 
         |> group(columns: ["registration-id"])
         |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start", offset: ${startTimeOffset})`

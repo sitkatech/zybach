@@ -45,7 +45,7 @@ export class ChartDataController extends Controller {
                 continue;
             }
             
-            const sensorPoints = await this.influxService.getPumpedVolumeForSensor(sensorTypeSensors, sensorType, firstReadingDate)
+            const sensorPoints = await this.influxService.getPumpedVolumeForSensor(sensorTypeSensors, sensorType, firstReadingDate, wellRegistrationID)
 
             let gallons = 0;
             for (var obs of sensorPoints){
