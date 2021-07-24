@@ -10,7 +10,7 @@ const client = new InfluxDB({ url: 'https://us-west-2-1.aws.cloud2.influxdata.co
 const stopTime = normalizeISOStringTime(new Date().toISOString());
 
 // these get*MeterSeries functions have their work wrapped in promises so that we don't proceed without letting all of the rows get processed and pushed to the intervalsToWrite array later
-function getContinuityMeterSeries(well) {
+function getContinuityMeterSeries(well, latestTimestamp) {
     const wellRegistrationID = well.wellRegistrationID;
     const gpm = well.pumpingRate
     const startTime = well.startTime;
@@ -42,9 +42,10 @@ function getContinuityMeterSeries(well) {
         //     |> fill(usePrevious: true)`;
 
         const query = 
-            `import "contrib/tomhollingworth/events"
+            `import "math"
+            import "contrib/tomhollingworth/events"
             from(bucket: "tpnrd")
-              |> range(start: ${startTime}, stop: ${stopTime})
+              |> range(start: ${startTime}, stop: ${latestTimestamp})
               |> filter(fn: (r) => r["_measurement"] == "continuity")
               |> filter(fn: (r) => r["_field"] == "on")
               |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
@@ -52,15 +53,17 @@ function getContinuityMeterSeries(well) {
               |> sort(columns: ["_time"])
               |> events.duration(unit: 1ns, columnName: "run-time-ns", timeColumn: "_time", stopColumn: "_stop")
               |> map(fn: (r) => ({ r with "run-time-minutes": float(v: r["run-time-ns"]) / 60000000000.0}))
-              |> map(fn: (r) => ({ r with "pumped-volume-gallons": r["run-time-minutes"] * float(v: ${gpm})}))
+              |> map(fn: (r) => ({ r with "run-time-minutes-min": math.mMin(x: r["run-time-minutes"], y: 24.0 * 60.0)}))
+              |> map(fn: (r) => ({ r with "pumped-volume-gallons": r["run-time-minutes-min"] * float(v: ${gpm})}))
               |> filter(fn: (r) => r["_value"] == 1)
               |> aggregateWindow(every: 1d, fn: sum, timeSrc: "_start", column: "pumped-volume-gallons", offset: 5h)
+              |> fill(column: "pumped-volume-gallons", value: 0.0)
               `
 
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                const toPush = getIntervalFromReturnedRow(o, well.pumpingRate);
+                const toPush = getIntervalFromReturnedRow(o, query);
 
                 if (toPush.gallons != null) {
                     intervalsToWrite.push(toPush);
@@ -105,7 +108,7 @@ function getFlowMeterSeries(well) {
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                intervalsToWrite.push(getIntervalFromReturnedRow(o));
+                intervalsToWrite.push(getIntervalFromReturnedRow(o, query));
             },
             error(error) {
                 console.error(error);
@@ -118,13 +121,26 @@ function getFlowMeterSeries(well) {
     }));
 }
 
-function getIntervalFromReturnedRow(row) {
-    return {
+function getIntervalFromReturnedRow(row, query) {
+    let gallons;
+    if (row["pumped-volume-gallons"] === undefined){
+        gallons = row._value;
+    } else{
+        gallons = row["pumped-volume-gallons"]
+    }
+
+    const myBoi = {
         intervalEndTime: row._time,
         wellRegistrationID: row["registration-id"],
         sn: row.sn,
-        gallons: row._value
+        gallons
     }
+
+    if (myBoi.gallons === undefined){
+        console.log("whoa dude!");
+        console.log(query);
+    }
+    return myBoi;
 }
 
 function writePumpedVolumeIntervals(intervals, wellRegistrationID) {
@@ -299,6 +315,75 @@ async function getWellsWithEarliestTimestamps(){
     return [...continuities, ...flows];
 }
 
+async function getWellsWithLatestTimestamps(){
+    // todo: should there not just be one global queryApi for this swervice? 
+    const queryApi = client.getQueryApi(influxDBOrg);
+
+    const flowMeterQuery = `from(bucket: "tpnrd") \
+            |> range(start: 2000-01-01T00:00:00Z) \
+            |> filter(fn: (r) => r["_measurement"] == "gallons") \
+            |> filter(fn: (r) => r["_field"] == "pumped") \
+            |> last() \
+            |> group(columns: ["registration-id", "sn"])`;
+
+    const continuityMeterQuery = `from(bucket: "tpnrd") \
+    |> range(start: 2000-01-01T00:00:00Z) \
+    |> filter(fn: (r) => r["_measurement"] == "continuity") \
+    |> filter(fn: (r) => r["_field"] == "on") \
+    |> last() \
+    |> group(columns: ["registration-id", "sn"])`;
+
+    const continuityMeterPromise = new Promise((resolve, reject) => {
+        const wells = []
+
+        queryApi.queryRows(continuityMeterQuery, {
+            next(row, tableMeta) {
+                const o = tableMeta.toObject(row);
+                wells.push({
+                    wellRegistrationID: o["registration-id"],
+                    sensorType: "continuity",
+                    startTime: o["_time"],
+                    sn: o["sn"]
+                });
+            },
+            error(error) {
+                console.error(error);
+                reject();
+            },
+            complete() {
+                resolve(wells);
+            }
+        });
+    });
+
+    const flowMeterPromise = new Promise((resolve, reject) => {
+        const wells = []
+
+        queryApi.queryRows(flowMeterQuery, {
+            next(row, tableMeta) {
+                const o = tableMeta.toObject(row);
+                wells.push({
+                    wellRegistrationID: o["registration-id"],
+                    sensorType: "flow",
+                    startTime: o["_time"],
+                    sn: o["sn"]
+                });
+            },
+            error(error) {
+                console.error(error);
+                reject();
+            },
+            complete() {
+                resolve(wells);
+            }
+        });
+    });
+
+    const continuities = await continuityMeterPromise;
+    const flows = await flowMeterPromise;
+    return [...continuities, ...flows];
+}
+
 function getLineFromInterval(interval) {
     // IMPORTANT: Date.parse yields a timestamp measured in milliseconds since the Unix epoch whereas the default precision for InfluxDB is
     // nanoseconds since the epoch. If you pass a Date.parse() value into a write without the "precision=ms" query parameter, InfluxDB will 
@@ -319,3 +404,4 @@ module.exports.getFlowMeterSeries = getFlowMeterSeries;
 module.exports.writePumpedVolumeIntervals = writePumpedVolumeIntervals;
 module.exports.getWellsWithDataAsOf = getWellsWithDataAsOf;
 module.exports.getWellsWithEarliestTimestamps = getWellsWithEarliestTimestamps;
+module.exports.getWellsWithLatestTimestamps = getWellsWithLatestTimestamps;

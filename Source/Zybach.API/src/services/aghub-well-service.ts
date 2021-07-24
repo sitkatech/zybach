@@ -46,7 +46,8 @@ export class AghubWellService {
     
     public async findByWellRegistrationID(wellRegistrationID: string): Promise<WellWithSensorSummaryDto | null> {
         try {
-            const results: AghubWellInterface = await AghubWell.findOne({wellRegistrationID: wellRegistrationID});
+            const wellRegistrationIDUpper = wellRegistrationID.toLocaleUpperCase();
+            const results: AghubWellInterface = await AghubWell.findOne({wellRegistrationID: wellRegistrationIDUpper});
             if (results){
                 return WellSummaryDtoFactory.fromAghubWell(results);
             } else{
@@ -60,7 +61,7 @@ export class AghubWellService {
 
     public async searchByWellRegistrationID(searchString: string): Promise<SearchSummaryDto[]> {
         try {
-            const results: AghubWellInterface[] = await AghubWell.find({wellRegistrationID: new RegExp(searchString, 'i')});
+            const results: AghubWellInterface[] = await AghubWell.find({wellRegistrationID: new RegExp(searchString.toLocaleUpperCase(), 'i')});
 
             return results.map(x => 
                 ({

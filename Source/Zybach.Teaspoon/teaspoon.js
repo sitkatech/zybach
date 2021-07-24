@@ -5,25 +5,26 @@ appInsights.setup(APPINSIGHTS_INSTRUMENTATIONKEY)
     .setAutoCollectConsole(true, true)
     .start();
 
-const { getFlowMeterSeries, getContinuityMeterSeries, writePumpedVolumeIntervals, getWellsWithDataAsOf, getWellsWithEarliestTimestamps } = require('./services/influxService');
+const { getFlowMeterSeries, getContinuityMeterSeries, writePumpedVolumeIntervals, getWellsWithDataAsOf, getWellsWithEarliestTimestamps, getWellsWithLatestTimestamps } = require('./services/influxService');
 let GetOpt = require('node-getopt');
 const { getPumpingRate } = require('./services/zappaService');
 
 
-async function processWell(well) {
+async function processWell(well, latestTimestamp) {
     /* 
         the range parameter of the "get*MeterSeries()" calls is relative to right now and can be expressed in a wide variety 
         of time scales (seconds, minutes, hours, days, etc.). the ideal range choice would be long enough in duration to cover
         the time period between the last known interval processed by this code and right now. iow, if this function were to run
         once per hour, we would want a duration of -1h (plus a buffer to make sure we're not missing observations).
     */
-
+   
     let seriesProcessedPromise;
     if (well.sensorType == 'flow') {
         seriesProcessedPromise = getFlowMeterSeries(well);
     }
     else if (well.sensorType == 'continuity') {
-        seriesProcessedPromise = getContinuityMeterSeries(well);
+        // continuity meters use a duration-counting aggregation which requires knowing the time of the last available observation
+        seriesProcessedPromise = getContinuityMeterSeries(well, latestTimestamp);
     }
 
     let intervals;
@@ -84,7 +85,7 @@ async function incrementalProcessing() {
     await assignPumpingRatesAndProcessWells(wellsWithNewData);
 }
 
-async function assignPumpingRatesAndProcessWells(wellsToProcess) {
+async function assignPumpingRatesAndProcessWells(wellsToProcess, wellsWithLatestTimestamp) {
     const continuityWellsWithNewData = wellsToProcess.filter(x => x.sensorType === 'continuity');
     for (let i = 0; i < continuityWellsWithNewData.length; i++) {
         await assignPumpingRate(continuityWellsWithNewData[i]);
@@ -92,7 +93,9 @@ async function assignPumpingRatesAndProcessWells(wellsToProcess) {
 
     const results = [];
     for (let i = 0; i < wellsToProcess.length; i++) {
-        const result = await processWell(wellsToProcess[i]);
+        const well = wellsToProcess[i]
+        wellWithLatestTimestamp = wellsWithLatestTimestamp.find(x=>x.wellRegistrationID == well.wellRegistrationID && x.sn == well.sn)
+        const result = await processWell(wellsToProcess[i], wellWithLatestTimestamp.startTime);
         results.push(result);
     }
 
@@ -106,12 +109,13 @@ async function assignPumpingRatesAndProcessWells(wellsToProcess) {
 
 async function completeProcessing() {
     const wellsWithEarliestTimestamp = Array.from(await getWellsWithEarliestTimestamps());
-    await assignPumpingRatesAndProcessWells(wellsWithEarliestTimestamp);
+    const wellsWithLatestTimestamp = Array.from(await getWellsWithLatestTimestamps());
+    await assignPumpingRatesAndProcessWells(wellsWithEarliestTimestamp, wellsWithLatestTimestamp);
 }
 
 async function main() {
     // debugging isn't exactly working anymore now that I've switched over to docker-compose for parity with QA
-    // await readyDebug();
+    await readyDebug();
 
     let getopt = new GetOpt([
         ['c', 'complete', 're-run from earliest available data for all wells'],
