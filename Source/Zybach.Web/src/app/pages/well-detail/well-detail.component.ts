@@ -125,6 +125,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
       this.well = well;
+      console.log(well);
       
       this.cdr.detectChanges();
       this.addWellToMap();
