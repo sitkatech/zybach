@@ -117,6 +117,8 @@ async function main() {
     // debugging isn't exactly working anymore now that I've switched over to docker-compose for parity with QA
     await readyDebug();
 
+    console.log(`Running at ${new Date().toISOString()}...`);
+
     let getopt = new GetOpt([
         ['c', 'complete', 're-run from earliest available data for all wells'],
         ['h', 'help', 'display this help'],
