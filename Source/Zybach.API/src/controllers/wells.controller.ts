@@ -415,7 +415,7 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
             r["_measurement"] == "pumped-volume" and 
             r["_field"] == "gallons" 
             ${registrationIDQuery})
-        |> aggregateWindow(every: ${interval}m, fn: sum, column: "_value", timeSrc: "_stop", timeDst: "_time", createEmpty: false, offset: ${startTimeOffset} )
+        |> aggregateWindow(every: ${interval}m, fn: sum, column: "_value", timeSrc: "_start", timeDst: "_time", createEmpty: false, offset: ${startTimeOffset} )
         |> sort(columns:["_time"])`;
 
     let results: ResultFromInfluxDB[] = [];

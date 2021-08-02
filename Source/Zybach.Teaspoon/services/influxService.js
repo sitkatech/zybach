@@ -20,27 +20,6 @@ function getContinuityMeterSeries(well, latestTimestamp) {
         const intervalsToWrite = [];
         const queryApi = client.getQueryApi(influxDBOrg);
 
-        /*
-            the continuity meter data comes in at seemingly random intervals. this query aggregates data into 15 minute intervals and fills 
-            in the missing intervals with null. unlike the flow meters, we can't assume that null means the pump is off, since the meter 
-            may have reported on in the prior interval which would mean that the pump is on in the null interval. the rowfunction passed in
-            from the caller's job is to replace nulls in this series with the last known non-null value.
-    
-            another approach would be to query the output series (from the prior run) with a broader range, and then identify the last time
-            point in that interval. If you then calculatd the difference between now and that interval, you would know exactly what range
-            you needed without having to worry about scheduled runs not working on time, etc.
-        */
-
-        // const query = `from(bucket: "tpnrd") \
-        //     |> range(start: ${startTime}, stop: ${stopTime}) \
-        //     |> filter(fn: (r) => r["_measurement"] == "continuity") \
-        //     |> filter(fn: (r) => r["_field"] == "on") \
-        //     |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}") \
-        //     |> filter(fn: (r) => r["sn"] == "${sn}") \
-        //     |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
-        //     |> aggregateWindow(every: 15m, fn: mean, createEmpty: true) \
-        //     |> fill(usePrevious: true)`;
-
         const query = 
             `import "math"
             import "contrib/tomhollingworth/events"
@@ -129,18 +108,12 @@ function getIntervalFromReturnedRow(row, query) {
         gallons = row["pumped-volume-gallons"]
     }
 
-    const myBoi = {
+    return {
         intervalEndTime: row._time,
         wellRegistrationID: row["registration-id"],
         sn: row.sn,
         gallons
     }
-
-    if (myBoi.gallons === undefined){
-        console.log("whoa dude!");
-        console.log(query);
-    }
-    return myBoi;
 }
 
 function writePumpedVolumeIntervals(intervals, wellRegistrationID) {
