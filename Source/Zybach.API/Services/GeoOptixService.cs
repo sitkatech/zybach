@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Zybach.Models.DataTransferObjects;
+using Zybach.Models.GeoOptix;
+using Zybach.Models.GeoOptix.SampleMethod;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace Zybach.API.Services
 {
     public class GeoOptixService
     {
-        private const string GeoOptixSitesUri = "project-overview-web/water-data-program/sites";
+        private const string GeoOptixSitesProjectOverviewWebUri = "project-overview-web/water-data-program/sites";
+        private const string GeoOptixSitesProjectsUri = "projects/water-data-program/sites";
 
         private readonly HttpClient _httpClient;
         private readonly ILogger<GeoOptixService> _logger;
@@ -58,15 +61,15 @@ namespace Zybach.API.Services
             return new WellSummaryDto(geoOptixSite);
         }
 
-        private async Task<List<GeoOptixSite>> GetGeoOptixSites()
+        private async Task<List<Site>> GetGeoOptixSites()
         {
-            var geoOptixSites = await GetJsonFromCatalogImpl<List<GeoOptixSite>>(GeoOptixSitesUri);
+            var geoOptixSites = await GetJsonFromCatalogImpl<List<Site>>(GeoOptixSitesProjectOverviewWebUri);
             return geoOptixSites;
         }
 
-        public async Task<GeoOptixSite> GetGeoOptixSite(string siteID)
+        public async Task<Site> GetGeoOptixSite(string siteID)
         {
-            var geoOptixSite = await GetJsonFromCatalogImpl<GeoOptixSite>($"{GeoOptixSitesUri}/{siteID}");
+            var geoOptixSite = await GetJsonFromCatalogImpl<Site>($"{GeoOptixSitesProjectOverviewWebUri}/{siteID}");
             return geoOptixSite;
         }
 
@@ -88,50 +91,49 @@ namespace Zybach.API.Services
             return geoOptixStations.AsParallel().Select(x => new SensorSummaryDto(x)).ToList();
         }
 
-        private async Task<List<GeoOptixStation>> GetGeoOptixStations()
+        private async Task<List<Station>> GetGeoOptixStations()
         {
             const string uri = "project-overview-web/water-data-program/stations";
-            var geoOptixStations = await GetJsonFromCatalogImpl<List<GeoOptixStation>>(uri);
+            var geoOptixStations = await GetJsonFromCatalogImpl<List<Station>>(uri);
             return geoOptixStations;
         }
 
-        public async Task<List<GeoOptixStation>> GetGeoOptixStationsForSite(string siteID)
+        public async Task<List<Station>> GetGeoOptixStationsForSite(string siteID)
         {
-            var geoOptixStations = await GetJsonFromCatalogImpl<List<GeoOptixStation>>($"{GeoOptixSitesUri}/{siteID}/stations");
+            var geoOptixStations = await GetJsonFromCatalogImpl<List<Station>>($"{GeoOptixSitesProjectOverviewWebUri}/{siteID}/stations");
             return geoOptixStations;
         }
 
-        public async Task<List<GeoOptixSample>> GetGeoOptixSamplesForSite(string siteID)
+        public async Task<List<Sample>> GetGeoOptixSamplesForSite(string siteID)
         {
-            var getGeoOptixSamplesForSite = await GetJsonFromCatalogImpl<List<GeoOptixSample>>($"{GeoOptixSitesUri}/{siteID}/samples");
+            var getGeoOptixSamplesForSite = await GetJsonFromCatalogImpl<List<Sample>>($"{GeoOptixSitesProjectsUri}/{siteID}/samples");
             return getGeoOptixSamplesForSite;
         }
 
-        public async Task<List<GeoOptixMethod>> GetGeoOptixSampleMethodsForSite(string siteID, string methodID)
+        public async Task<List<SampleMethodDto>> GetGeoOptixSampleMethodsForSite(string siteID, string methodID)
         {
-            var geoOptixStations = await GetJsonFromCatalogImpl<List<GeoOptixMethod>>($"{GeoOptixSitesUri}/{siteID}/samples/{methodID}/methods");
+            var geoOptixStations = await GetJsonFromCatalogImpl<List<SampleMethodDto>>($"{GeoOptixSitesProjectsUri}/{siteID}/samples/{methodID}/methods");
             return geoOptixStations;
         }
 
         public async Task<List<InstallationRecordDto>> GetInstallationRecords(string wellRegistrationID)
         {
-            return new List<InstallationRecordDto>();
-        //    var geoOptixSamples = await GetGeoOptixSamplesForSite(wellRegistrationID);
-        //    foreach (var geoOptixSample in geoOptixSamples)
-        //    {
-        //        var installationRecordDto = new InstallationRecordDto();
-        //        var geoOptixSampleMethodsForSite = await GetGeoOptixSampleMethodsForSite(wellRegistrationID, geoOptixSample.CanonicalName);
-        //        if (!geoOptixSampleMethodsForSite.Any())
-        //        {
-        //            break;
-        //        }
+            var installationRecordDtos = new List<InstallationRecordDto>();
+            var geoOptixSamples = await GetGeoOptixSamplesForSite(wellRegistrationID);
+            foreach (var geoOptixSample in geoOptixSamples)
+            {
+                var installationRecordDto = new InstallationRecordDto();
+                var geoOptixSampleMethodsForSite = await GetGeoOptixSampleMethodsForSite(wellRegistrationID, geoOptixSample.CanonicalName);
+                if (!geoOptixSampleMethodsForSite.Any())
+                {
+                    break;
+                }
 
-        //        foreach (var geoOptixMethod in geoOptixSampleMethodsForSite)
-        //        {
-        //            var installationRecord = 
-        //        }
-        //    }
-        //
+                var geoOptixMethod = geoOptixSampleMethodsForSite.First();
+                var installationRecord = geoOptixMethod.MethodInstance.RecordSets.First().Records.First().RecordInstance;
+                var sensorRecord = installationRecord.Fields.SingleOrDefault(x => x.CanonicalName == "sensor");
+            }
+            return installationRecordDtos;
         }
 
         public async Task<Dictionary<string, WellWithSensorSummaryDto>> GetWellsWithSensors()

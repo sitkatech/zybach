@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using NetTopologySuite.Features;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Zybach.Models.GeoOptix;
 
 namespace Zybach.Models.DataTransferObjects
 {
@@ -26,14 +29,14 @@ namespace Zybach.Models.DataTransferObjects
         {
         }
 
-        public AbbreviatedWellDataResponse(GeoOptixSite geoOptixSite, List<GeoOptixStation> geoOptixStations)
+        public AbbreviatedWellDataResponse(Site site, List<Station> geoOptixStations)
         {
-            WellRegistrationID = geoOptixSite.CanonicalName;
-            Description = geoOptixSite.Description;
-            Tags = geoOptixSite.Tags;
-            Location = geoOptixSite.Location;
-            CreateDate = geoOptixSite.CreateDate;
-            UpdateDate = geoOptixSite.UpdateDate;
+            WellRegistrationID = site.CanonicalName;
+            Description = site.Description;
+            Tags = site.Tags;
+            Location = site.Location;
+            CreateDate = site.CreateDate;
+            UpdateDate = site.UpdateDate;
             var sensorSummaryDtos = geoOptixStations.Any()
                 ? geoOptixStations.Select(x => new SensorSummaryDto(x)).ToList()
                 : new List<SensorSummaryDto>();
@@ -59,17 +62,18 @@ namespace Zybach.Models.DataTransferObjects
         public List<IrrigatedAcresPerYearDto> IrrigatedAcresPerYear { get; set; }
 
 
-        public WellSummaryDto(GeoOptixSite geoOptixSite)
+        public WellSummaryDto(Site site)
         {
-            WellRegistrationID = geoOptixSite.CanonicalName.ToUpper();
-            Location = geoOptixSite.Location;
-            Description = geoOptixSite.Description;
+            WellRegistrationID = site.CanonicalName.ToUpper();
+            Location = site.Location;
+            Description = site.Description;
         }
     }
 
     public class SensorSummaryDto
     {
-        private static readonly Dictionary<string, string> SensorTypeMap = new Dictionary<string, string> { { "FlowMeter", "Flow Meter" }, { "PumpMonitor", "Continuity Meter" }, { "WellPressure", "Well Pressure" } };
+        private static readonly Dictionary<string, string> SensorTypeMap = new Dictionary<string, string>
+            {{"FlowMeter", "Flow Meter"}, {"PumpMonitor", "Continuity Meter"}, {"WellPressure", "Well Pressure"}};
 
         public SensorSummaryDto()
         {
@@ -79,11 +83,11 @@ namespace Zybach.Models.DataTransferObjects
         public string SensorName { get; set; }
         public string SensorType { get; set; }
 
-        public SensorSummaryDto(GeoOptixStation geoOptixStation)
+        public SensorSummaryDto(Station station)
         {
-            WellRegistrationID = geoOptixStation.SiteCanonicalName.ToUpper();
-            SensorName = geoOptixStation.Name;
-            SensorType = SensorTypeMap[geoOptixStation.Definition.SensorType];
+            WellRegistrationID = station.SiteCanonicalName.ToUpper();
+            SensorName = station.Name;
+            SensorType = SensorTypeMap[station.Definition.SensorType];
         }
     }
 
@@ -190,55 +194,5 @@ namespace Zybach.Models.DataTransferObjects
         public double? CableLength { get; set; }
         public double? WaterLevel { get; set; }
         public List<string> Photos { get; set; }
-    }
-
-
-    public class GeoOptixSite
-    {
-        public string CanonicalName { get; set; }
-        public string Description { get; set; }
-        public Feature Location { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime? UpdateDate { get; set; }
-        public List<string> Tags { get; set; }
-    }
-
-    public class GeoOptixStation
-    {
-        public string SiteCanonicalName { get; set; }
-        public string Name { get; set; }
-        public GeoOptixDefinition Definition { get; set; }
-        public DateTime CreateDate { get; set; }
-    }
-
-    public class GeoOptixDefinition
-    {
-        public string SensorType { get; set; }
-    }
-
-    public class GeoOptixSample
-    {
-        public string CanonicalName { get; set; }
-        public string Status { get; set; }
-        public DateTime CreateDate { get; set; }
-    }
-
-    public class GeoOptixMethod
-    {
-        public string CanonicalName { get; set; }
-        public string Status { get; set; }
-        public DateTime CreateDate { get; set; }
-    }
-
-    public class GeoOptixMethodInstance
-    {
-        public string CanonicalName { get; set; }
-        public List<GeoOptixRecord> Records { get; set; }
-    }
-
-    public class GeoOptixRecord
-    {
-        public string RecordKey { get; set; }
-        public List<object> Fields { get; set; }
     }
 }
