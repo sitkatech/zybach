@@ -102,7 +102,7 @@ namespace Zybach.API.Services
 
     public class SearchSummaryDtoComparer : IEqualityComparer<SearchSummaryDto>
     {
-        public bool Equals(SearchSummaryDto? x, SearchSummaryDto? y)
+        public bool Equals(SearchSummaryDto x, SearchSummaryDto y)
         {
             if (y == null && x == null)
                 return true;

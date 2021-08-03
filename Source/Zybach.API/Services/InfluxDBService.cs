@@ -6,6 +6,7 @@ using InfluxDB.Client;
 using InfluxDB.Client.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Services
 {
@@ -206,6 +207,21 @@ namespace Zybach.API.Services
             return fluxTables.Where(x => !string.IsNullOrWhiteSpace(x.Sensor)).ToDictionary(x => x.Sensor.ToUpper(), registration => registration.EventAge);
         }
 
+        public async Task<List<ResultFromInfluxDB>> GetFlowMeterSeries(List<string> wellRegistrationIDs, DateTime startDate, DateTime endDate, int interval)
+        {
+            var flux = FilterByDateRange(startDate, endDate) +
+                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume }) +
+                       FilterByField("gallons") +
+                       FilterByRegistrationID(wellRegistrationIDs) + 
+                       $"|> aggregateWindow(every: {interval}m, fn: sum, column: \"_value\", timeSrc: \"_stop\", timeDst: \"_time\", createEmpty: false ) " +
+                       "|> sort(columns:[\"_time\"])";
+
+            var fluxTables = await RunInfluxQueryAsync(flux);
+            return fluxTables.Select(x => new ResultFromInfluxDB(x.Time, x.Value, x.RegistrationID)).ToList();
+        }
+
+
+
         private async Task<List<MeasurementReading>> RunInfluxQueryAsync(string flux)
         {
             var fluxQuery = $"from(bucket: \"{_zybachConfiguration.INFLUX_BUCKET}\") {flux}";
@@ -252,7 +268,12 @@ namespace Zybach.API.Services
 
         private static string FilterByRegistrationID(string registrationID)
         {
-            return $"|> filter(fn: (r) => r[\"{FieldNames.RegistrationID}\"] == \"{registrationID.ToLower()}\" or r[\"{FieldNames.RegistrationID}\"] == \"{registrationID.ToUpper()}\") ";
+            return FilterByRegistrationID(new List<string>{registrationID});
+        }
+
+        private static string FilterByRegistrationID(List<string> registrationIDs)
+        {
+            return $"|> filter(fn: (r) => {string.Join(" or ", registrationIDs.Select(x => $"r[\"{FieldNames.RegistrationID}\"] == \"{x.ToLower()}\" or r[\"{FieldNames.RegistrationID}\"] == \"{x.ToUpper()}\""))} ";
         }
 
         private static string FilterBySensorName(List<string> sensorNames)
@@ -265,6 +286,11 @@ namespace Zybach.API.Services
             return FilterByListImpl(FieldNames.Measurement, measurements);
         }
 
+        private static string FilterByField(string fieldName)
+        {
+            return $"|> filter(fn: (r) => r[\"{FieldNames.Field}\"] == \"{fieldName}\" ";
+        }
+
         private static string FilterByListImpl(string fieldName, IEnumerable<string> values)
         {
             return $"|> filter(fn: (r) => {string.Join(" or ", values.Select(x => $"r[\"{fieldName}\"] == \"{x}\""))}) ";
@@ -273,6 +299,24 @@ namespace Zybach.API.Services
         private static string GroupBy(string fieldName)
         {
             return $"|> group(columns: [\"{fieldName}\"]) ";
+        }
+
+        public class ResultFromInfluxDB
+        {
+            public ResultFromInfluxDB(DateTime endTime, double gallons, string wellRegistrationID)
+            {
+                EndTime = endTime;
+                Gallons = gallons;
+                WellRegistrationID = wellRegistrationID;
+            }
+
+            public ResultFromInfluxDB()
+            {
+            }
+
+            public DateTime EndTime { get; set; }
+            public double? Gallons { get; set; }
+            public string WellRegistrationID { get; set; }
         }
 
         [Measurement("measurement")]
@@ -292,60 +336,6 @@ namespace Zybach.API.Services
             public int EventAge { get; set; }
         }
 
-        public class DailyPumpedVolume
-        {
-            public DailyPumpedVolume()
-            {
-            }
-
-            public DailyPumpedVolume(DateTime time, double gallons, string dataSource)
-            {
-                Time = time;
-                Gallons = gallons;
-                DataSource = dataSource;
-            }
-
-            public DateTime Time { get; set; }
-            public double Gallons { get; set; }
-            public string DataSource { get; set; }
-        }
-
-        public class MonthlyPumpedVolume
-        {
-            public MonthlyPumpedVolume()
-            {
-            }
-
-            public MonthlyPumpedVolume(DateTime time, double gallons)
-            {
-                Month = time.Month;
-                Year = time.Year;
-                VolumePumpedGallons = gallons;
-            }
-
-            public int Month { get; set; }
-            public int Year { get; set; }
-            public double VolumePumpedGallons { get; set; }
-        }
-
-        public class AnnualPumpedVolume
-        {
-            public AnnualPumpedVolume()
-            {
-            }
-
-            public AnnualPumpedVolume(DateTime time, double gallons, string dataSource)
-            {
-                Year = time.Year;
-                DataSource = dataSource;
-                Gallons = gallons;
-            }
-
-            public int Year { get; set; }
-            public string DataSource { get; set; }
-            public double Gallons { get; set; }
-        }
-
         private struct MeasurementNames
         {
             public const string PumpedVolume = "pumped-volume";
@@ -363,6 +353,7 @@ namespace Zybach.API.Services
             public const string RegistrationID = "registration-id";
             public const string Measurement = "_measurement";
             public const string SensorName = "sn";
+            public const string Field = "_field";
         }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
 {
