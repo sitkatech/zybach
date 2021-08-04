@@ -73,8 +73,6 @@ async function incrementalProcessing() {
     startTime.setSeconds(0);
     startTime.setMilliseconds(0);
 
-    console.log(`Running at ${startTime}`);
-
     // this is the mock collection of wells that have had data come in over since we last checked
     const wellsWithNewData = Array.from(await getWellsWithDataAsOf(startTime.toISOString()));
 
@@ -117,7 +115,7 @@ async function main() {
     // debugging isn't exactly working anymore now that I've switched over to docker-compose for parity with QA
     await readyDebug();
 
-    console.log(`Running at ${new Date().toISOString()}...`);
+    console.error(`Running at ${new Date().toISOString()}...`);
 
     let getopt = new GetOpt([
         ['c', 'complete', 're-run from earliest available data for all wells'],
