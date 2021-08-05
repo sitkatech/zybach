@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -140,13 +141,14 @@ namespace Zybach.API.Controllers
                 dataSource = continuityMeterString;
             }
 
+            var point = (Point) x.Location.Geometry;
             var robustReviewDto = new RobustReviewDto
             {
                 WellRegistrationID = x.WellRegistrationID,
                 WellTPID = x.WellTPID,
                 // TODO: lookup feature to point to lat long
-                Latitude = x.Location.Geometry.Coordinates[1].X,
-                Longitude = x.Location.Geometry.Coordinates[0].Y,
+                Latitude = point.Coordinates.Latitude,
+                Longitude = point.Coordinates.Longitude,
                 DataSource = dataSource,
                 MonthlyPumpedVolumeGallons = monthlyPumpedVolume
             };
@@ -247,7 +249,7 @@ namespace Zybach.API.Controllers
             return await _influxDbService.GetAnnualPumpedVolumesForSensor(sensorTypeSensors.Select(x => x.SensorName).ToList(), sensorType);
         }
 
-        public async Task<object> GetPumpedVolumeImpl(string startDateString, List<string> wellRegistrationIDs,
+        private async Task<object> GetPumpedVolumeImpl(string startDateString, List<string> wellRegistrationIDs,
             string endDateString, int? interval)
         {
             if (string.IsNullOrWhiteSpace(endDateString))

@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GeoJSON.Net.Feature;
+using GeoJSON.Net.Geometry;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Zybach.Models.DataTransferObjects;
 using Zybach.Models.GeoOptix;
 using Zybach.Models.GeoOptix.SampleMethod;
@@ -123,17 +127,93 @@ namespace Zybach.API.Services
             foreach (var geoOptixSample in geoOptixSamples)
             {
                 var installationRecordDto = new InstallationRecordDto();
-                var geoOptixSampleMethodsForSite = await GetGeoOptixSampleMethodsForSite(wellRegistrationID, geoOptixSample.CanonicalName);
+                var installationCanonicalName = geoOptixSample.CanonicalName;
+                var geoOptixSampleMethodsForSite = await GetGeoOptixSampleMethodsForSite(wellRegistrationID, installationCanonicalName);
                 if (!geoOptixSampleMethodsForSite.Any())
                 {
                     break;
                 }
 
                 var geoOptixMethod = geoOptixSampleMethodsForSite.First();
-                var installationRecord = geoOptixMethod.MethodInstance.RecordSets.First().Records.First().RecordInstance;
-                var sensorRecord = installationRecord.Fields.SingleOrDefault(x => x.CanonicalName == "sensor");
+                var installationRecord = GetRecordInstance(geoOptixMethod.MethodInstance.RecordSets.First());
+                var sensorRecord = GetRecordInstance(installationRecord, "sensor");
+                var photoRecords = GetRecordInstance(sensorRecord, "photos");
+                var sensorType = GetRecordSetValueAsString(sensorRecord, "sensor-type");
+                var continuitySensorModelRawValue = installationRecord.Fields.SingleOrDefault(x => x.CanonicalName == "sensor-model-continuity");
+                var continuitySensorModel = continuitySensorModelRawValue != null && continuitySensorModelRawValue.RawValue is JArray ? continuitySensorModelRawValue.RawValue.ToObject<List<string>>().First() : GetRecordSetValueAsString(sensorRecord, "sensor-model-flow");
+                var flowSensorModel = GetRecordSetValueAsString(sensorRecord, "sensor-model-flow");
+                var pressureSensorModel = GetRecordSetValueAsString(sensorRecord, "sensor-model-pressure");
+
+                installationRecordDto.InstallationCanonicalName = installationCanonicalName;
+                installationRecordDto.Status = geoOptixMethod.Status.Name;
+                installationRecordDto.Date = GetRecordSetValueAsDateTime(installationRecord, "install-date");
+                var gpsLocation = GetRecordSetValueAsPoint(installationRecord, "gps-location");
+                installationRecordDto.Longitude = gpsLocation?.Coordinates.Longitude;
+                installationRecordDto.Latitude = gpsLocation?.Coordinates.Latitude;
+                installationRecordDto.FlowMeterSerialNumber = GetRecordSetValueAsString(sensorRecord, "flow-serial-number");
+                installationRecordDto.SensorSerialNumber = GetRecordSetValueAsString(sensorRecord, "sensor-serial-number");
+                var installerAffiliationRawValue = GetRecordSetValueAsStringList(installationRecord, "installer-affiliation");
+                installationRecordDto.Affiliation = installerAffiliationRawValue.Any() ? installerAffiliationRawValue.First().ToUpper() : null;
+                installationRecordDto.Initials = GetRecordSetValueAsString(installationRecord, "installer-initials");
+                installationRecordDto.SensorType = sensorType;
+                installationRecordDto.ContinuitySensorModel = continuitySensorModel;
+                installationRecordDto.FlowSensorModel = flowSensorModel;
+                installationRecordDto.PressureSensorModel = pressureSensorModel;
+                installationRecordDto.WellDepth = GetRecordSetValueAsDouble(sensorRecord, "well-depth");
+                installationRecordDto.InstallDepth = GetRecordSetValueAsDouble(sensorRecord, "install-depth");
+                installationRecordDto.CableLength = GetRecordSetValueAsDouble(sensorRecord, "cable-length");
+                installationRecordDto.WaterLevel = GetRecordSetValueAsDouble(sensorRecord, "well-depth");
+                installationRecordDto.Photos = photoRecords.Fields.Where(x => x.CanonicalName == "photo").Select(x => x.RawValue.ToObject<string>()).ToList();
+                installationRecordDtos.Add(installationRecordDto);
             }
             return installationRecordDtos;
+        }
+
+        private static Point GetRecordSetValueAsPoint(RecordInstance recordInstance, string canonicalName)
+        {
+            var gpsLocationRawValue = recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue;
+            var gpsLocationAsFeature = gpsLocationRawValue.ToObject<Feature>();
+            return gpsLocationAsFeature != null ? (Point) gpsLocationAsFeature.Geometry : null;
+        }
+
+        private static RecordInstance GetRecordInstance(RecordInstance recordInstance, string canonicalName)
+        {
+            var recordSet = GetRecordInstanceFromFieldsByCanonicalName(recordInstance, canonicalName);
+            return GetRecordInstance(recordSet);
+        }
+
+        private static RecordInstance GetRecordInstance(RecordSet recordSet)
+        {
+            return recordSet.Records.First().RecordInstance;
+        }
+
+        private static RecordSet GetRecordInstanceFromFieldsByCanonicalName(RecordInstance recordInstance, string canonicalName)
+        {
+            return recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue.ToObject<RecordSet>();
+        }
+
+        private static string GetRecordSetValueAsString(RecordInstance recordInstance, string canonicalName)
+        {
+            var recordSetValue = recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue;
+            return recordSetValue is JArray ? recordSetValue.ToObject<RecordSet>().Records[0].RecordInstance.Fields[0].RawValue.ToObject<string>() : recordSetValue.ToObject<string>();
+        }
+
+        private static List<string> GetRecordSetValueAsStringList(RecordInstance recordInstance, string canonicalName)
+        {
+            var recordSetValue = recordInstance.Fields.SingleOrDefault(x => x.CanonicalName == canonicalName)?.RawValue;
+            return recordSetValue != null ? recordSetValue.ToObject<List<string>>() : new List<string>();
+        }
+
+        private static DateTime? GetRecordSetValueAsDateTime(RecordInstance recordInstance, string canonicalName)
+        {
+            var recordSetValue = recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue;
+            return recordSetValue.ToObject<DateTime?>();
+        }
+
+        private static double? GetRecordSetValueAsDouble(RecordInstance recordInstance, string canonicalName)
+        {
+            var recordSetValue = recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue;
+            return recordSetValue.ToObject<double?>();
         }
 
         public async Task<Dictionary<string, WellWithSensorSummaryDto>> GetWellsWithSensors()

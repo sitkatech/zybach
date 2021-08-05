@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetTopologySuite.Features;
+using GeoJSON.Net.Feature;
 
 namespace Zybach.Models.GeoOptix
 {
