@@ -6,7 +6,7 @@ COPY ["package.json", "package-lock.json*", "npm-shrinkwrap.json*", "./"]
 RUN npm install --production --silent && mv node_modules ../
 COPY . .
 
-RUN echo "0       *       *       *       *       /usr/src/app/teaspoon-cron" >> /etc/crontabs/root
+RUN echo "0       1       *       *       *       /usr/src/app/teaspoon-cron" >> /etc/crontabs/root
 
 RUN apk add dos2unix
 RUN dos2unix ./teaspoon-cron
