@@ -273,7 +273,7 @@ namespace Zybach.API.Services
 
         private static string FilterByRegistrationID(List<string> registrationIDs)
         {
-            return $"|> filter(fn: (r) => {string.Join(" or ", registrationIDs.Select(x => $"r[\"{FieldNames.RegistrationID}\"] == \"{x.ToLower()}\" or r[\"{FieldNames.RegistrationID}\"] == \"{x.ToUpper()}\""))} ";
+            return $"|> filter(fn: (r) => {string.Join(" or ",registrationIDs.Select(x =>$"r[\"{FieldNames.RegistrationID}\"] == \"{x.ToLower()}\" or r[\"{FieldNames.RegistrationID}\"] == \"{x.ToUpper()}\") "))} ";
         }
 
         private static string FilterBySensorName(List<string> sensorNames)
