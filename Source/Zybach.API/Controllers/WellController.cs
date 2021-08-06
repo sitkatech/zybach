@@ -237,6 +237,14 @@ namespace Zybach.API.Controllers
             return await _geoOptixService.GetInstallationRecords(wellRegistrationID);
         }
 
+        [HttpGet("/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
+        [AdminFeature]
+        public async Task<IActionResult> GetPhoto([FromRoute] string wellRegistrationID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
+        {
+            var photoBuffer = await _geoOptixService.GetPhoto(wellRegistrationID, installationCanonicalName, photoCanonicalName);
+            return File(photoBuffer, "image/jpeg");
+        }
+
         private async Task<List<AnnualPumpedVolume>> GetAnnualPumpedVolumeForWellAndSensorType(List<SensorSummaryDto> sensors, string sensorType)
         {
             var sensorTypeSensors = sensors.Where(x => x.SensorType == sensorType).ToList();

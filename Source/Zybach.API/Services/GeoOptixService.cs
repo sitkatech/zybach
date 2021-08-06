@@ -169,6 +169,13 @@ namespace Zybach.API.Services
             return installationRecordDtos;
         }
 
+        public async Task<Stream> GetPhoto(string wellRegistrationID, string installationCanonicalName,
+            string photoCanonicalName)
+        {
+            return await _httpClient.GetStreamAsync(
+                $"{GeoOptixSitesProjectsUri}/{wellRegistrationID}/samples/{installationCanonicalName}/folders/.methods/files/{photoCanonicalName}/view");
+        }
+
         private static Point GetRecordSetValueAsPoint(RecordInstance recordInstance, string canonicalName)
         {
             var gpsLocationRawValue = recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue;
