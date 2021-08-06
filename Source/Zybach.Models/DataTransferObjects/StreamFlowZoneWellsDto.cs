@@ -132,8 +132,9 @@ namespace Zybach.Models.DataTransferObjects
         }
 
         public DateTime Time { get; set; }
-        public double Gallons { get; set; }
+        public double? Gallons { get; set; }
         public string DataSource { get; set; }
+        public string GallonsString => Gallons != null ? $"{Gallons} gallons" : "N/A";
     }
 
     public class MonthlyPumpedVolume
