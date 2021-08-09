@@ -67,7 +67,7 @@ namespace Zybach.API.Services
                        "|> first()";
 
             var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Min(x => x.Time);
+            return fluxTables.Any() ? fluxTables.Min(x => x.Time) : (DateTime?) null;
         }
 
         public async Task<DateTime?> GetLastReadingDateTimeForWell(string registrationID)

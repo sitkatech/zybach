@@ -125,7 +125,7 @@ namespace Zybach.EFModels.Entities
             var user = dbContext.Users.Single(x => x.UserID == userID);
 
             user.UpdateDate = DateTime.UtcNow;
-            //user.DisclaimerAcknowledgedDate = DateTime.UtcNow;
+            user.DisclaimerAcknowledgedDate = DateTime.UtcNow;
 
             dbContext.SaveChanges();
             dbContext.Entry(user).Reload();
