@@ -288,7 +288,7 @@ namespace Zybach.API.Services
 
         private static string FilterByField(string fieldName)
         {
-            return $"|> filter(fn: (r) => r[\"{FieldNames.Field}\"] == \"{fieldName}\" ";
+            return $"|> filter(fn: (r) => r[\"{FieldNames.Field}\"] == \"{fieldName}\" )";
         }
 
         private static string FilterByListImpl(string fieldName, IEnumerable<string> values)
