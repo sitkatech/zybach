@@ -29,7 +29,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/managerDashboard/districtStatistics/{year}")]
-        [AdminFeature]
+        //[AdminFeature]
         public async Task<DistrictStatisticsDto> GetDistrictStatistics([FromRoute] int year)
         {
             // get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year

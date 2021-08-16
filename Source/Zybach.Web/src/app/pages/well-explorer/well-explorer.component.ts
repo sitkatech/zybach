@@ -227,11 +227,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   public onFilterChange(dataSourceOptions: any) {
     const filteredWells = this.wells.filter(x => {
-      if (x.sensors === null || x.sensors.length === 0) {
+      if (x.Sensors === null || x.Sensors.length === 0) {
         return dataSourceOptions.showNoEstimate;
       }
 
-      const sensorTypes = x.sensors.map(s => s.sensorType);
+      const sensorTypes = x.Sensors.map(s => s.SensorType);
 
       return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) ||
         (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||

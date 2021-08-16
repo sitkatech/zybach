@@ -21,18 +21,18 @@ export class SensorStatusMapPopupComponent implements OnInit {
   }
 
   getSensorDisplay(sensor: SensorSummaryDto): string {
-    if (sensor.sensorName == null || sensor.sensorName == undefined) {
-      return sensor.sensorType;
+    if (sensor.SensorName == null || sensor.SensorName == undefined) {
+      return sensor.SensorType;
     }
 
-    return `${sensor.sensorType} (${sensor.sensorName})`;
+    return `${sensor.SensorType} (${sensor.SensorName})`;
   }
 
   getLastMessageReceived(sensor: SensorMessageAgeDto){
-    if (sensor.messageAge === null){
+    if (sensor.MessageAge === null){
       return 'N/A'
     }
 
-    return `${Math.floor(sensor.messageAge / 3600)} hours`;
+    return `${Math.floor(sensor.MessageAge / 3600)} hours`;
   }
 }

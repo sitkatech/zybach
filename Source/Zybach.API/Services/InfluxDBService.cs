@@ -78,7 +78,7 @@ namespace Zybach.API.Services
                        "|> last()";
 
             var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Max(x => x.Time);
+            return fluxTables.Any() ? fluxTables.Max(x => x.Time) : (DateTime?) null;
         }
 
         public async Task<List<DailyPumpedVolume>> GetPumpedVolumesForSensors(List<string> sensorNames, string sensorType, DateTime fromDate)

@@ -11,7 +11,5 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int StreamFlowZoneID { get; set; }
         public string StreamFlowZoneName { get; set; }
-        public double StreamFlowZoneLength { get; set; }
-        public double StreamFlowZoneArea { get; set; }
     }
 }

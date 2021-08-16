@@ -24,7 +24,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/chemigation/summaries")]
-        [AdminFeature]
+        //[AdminFeature]
         public async Task<List<WellInspectionSummaryDto>> GetChemigationInspections()
         {
             var chemigationInspectionDtos = ChemigationInspection.List(_dbContext);

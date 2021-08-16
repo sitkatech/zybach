@@ -6,8 +6,6 @@ CREATE TABLE [dbo].[StreamFlowZone](
 	[StreamFlowZoneID] [int] IDENTITY(1,1) NOT NULL,
 	[StreamFlowZoneName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[StreamFlowZoneGeometry] [geometry] NOT NULL,
-	[StreamFlowZoneLength] [float] NOT NULL,
-	[StreamFlowZoneArea] [float] NOT NULL,
  CONSTRAINT [PK_StreamFlowZone_StreamFlowZoneID] PRIMARY KEY CLUSTERED 
 (
 	[StreamFlowZoneID] ASC

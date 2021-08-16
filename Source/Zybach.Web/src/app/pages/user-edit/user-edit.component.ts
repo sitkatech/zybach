@@ -84,6 +84,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
   onSubmit(editUserForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+    console.log(this.model);
 
     this.userService.updateUser(this.userID, this.model)
       .subscribe(response => {

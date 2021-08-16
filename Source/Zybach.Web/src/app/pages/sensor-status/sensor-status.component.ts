@@ -69,16 +69,18 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
           features:
 
             wells.map(x => {
-              const geoJsonPoint = x.location;
+              const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
-                wellRegistrationID: x.wellRegistrationID,
-                sensors: x.sensors
+                wellRegistrationID: x.WellRegistrationID,
+                sensors: x.Sensors
               };
               return geoJsonPoint;
             })
         }
 
-        this.redSensors = wells.reduce((sensors, well) => sensors.concat(well.sensors.map(sensor => ({ ...sensor, wellRegistrationID: well.wellRegistrationID }))), []).filter(sensor => sensor.messageAge > 3600 * 8);
+        console.log(this.wellsGeoJson);
+
+        this.redSensors = wells.reduce((sensors, well) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, wellRegistrationID: well.WellRegistrationID }))), []).filter(sensor => sensor.messageAge > 3600 * 8);
 
       })
     });

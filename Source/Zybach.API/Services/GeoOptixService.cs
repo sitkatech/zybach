@@ -202,7 +202,9 @@ namespace Zybach.API.Services
         private static string GetRecordSetValueAsString(RecordInstance recordInstance, string canonicalName)
         {
             var recordSetValue = recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue;
-            return recordSetValue is JArray ? recordSetValue.ToObject<RecordSet>().Records[0].RecordInstance.Fields[0].RawValue.ToObject<string>() : recordSetValue.ToObject<string>();
+            return recordSetValue is JObject 
+                ? recordSetValue.ToObject<RecordSet>().Records[0].RecordInstance.Fields[0].RawValue.ToObject<string>() 
+                : recordSetValue is JArray? recordSetValue.ToObject<List<string>>()[0] : recordSetValue.ToObject<string>();
         }
 
         private static List<string> GetRecordSetValueAsStringList(RecordInstance recordInstance, string canonicalName)

@@ -21,10 +21,10 @@ export class WellMapPopupComponent implements OnInit {
   }
 
   getSensorDisplay(sensor: SensorSummaryDto): string {
-    if (sensor.sensorName == null || sensor.sensorName == undefined) {
-      return sensor.sensorType;
+    if (sensor.SensorName == null || sensor.SensorName == undefined) {
+      return sensor.SensorType;
     }
 
-    return `${sensor.sensorType} (${sensor.sensorName})`;
+    return `${sensor.SensorType} (${sensor.SensorName})`;
   }
 }

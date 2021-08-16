@@ -15,15 +15,15 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("customRichText/{customRichTextTypeID}")]
+        [HttpGet("api/customRichText/{customRichTextTypeID}")]
         public ActionResult<CustomRichTextDto> GetCustomRichText([FromRoute] int customRichTextTypeID)
         {
             var customRichTextDto = CustomRichText.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);
             return RequireNotNullThrowNotFound(customRichTextDto, "CustomRichText", customRichTextTypeID);
         }
 
-        [HttpPut("customRichText/{customRichTextTypeID}")]
-        [AdminFeature]
+        [HttpPut("api/customRichText/{customRichTextTypeID}")]
+        //[AdminFeature]
         public ActionResult<CustomRichTextDto> UpdateCustomRichText([FromRoute] int customRichTextTypeID, [FromBody] CustomRichTextDto customRichTextUpdateDto)
         {
             var customRichTextDto = CustomRichText.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);

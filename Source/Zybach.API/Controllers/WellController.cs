@@ -64,6 +64,7 @@ namespace Zybach.API.Controllers
             return await GetPumpedVolumeImpl(startDate, filter, endDate, interval);
         }
 
+
         [HttpGet("/api/wells/download/robustReviewScenarioJson")]
         // todo: get apikey security
         // @Security(SecurityType.API_KEY)
@@ -101,76 +102,80 @@ namespace Zybach.API.Controllers
             }
 
             return robustReviewDtos.Where(x => x != null).ToList();
-//        if (robustReviewStructure) {
-//            req.res?.writeHead(200, {
-//            'Content-Type': 'application/octet-stream',
-//                "Content-Disposition": "attachment; filename=\"RobustReviewScenario.json\""
-//            });
-//            //We'll have null objects if they don't have a first reading date, and I'd rather 
-//            //do a second filter here than include the firstReadingDate in above filter and then have to get it a second time
-//            req.res?.end(JSON.stringify(robustReviewStructure.filter(x => x != null)));
-//        } else {
-//            req.res?.status(204).end();
-//}
         }
 
         private async Task<RobustReviewDto> CreateRobustReviewDto(WellWithSensorSummaryDto x, string continuityMeterString)
         {
-            var firstReadingDate =
-                await _influxDbService.GetFirstReadingDateTimeForWell(x.WellRegistrationID);
-
-            if (firstReadingDate == null)
+            try
             {
-                return null;
+                var firstReadingDate =
+                    await _influxDbService.GetFirstReadingDateTimeForWell(x.WellRegistrationID);
+
+                if (firstReadingDate == null)
+                {
+                    return null;
+                }
+
+                List<MonthlyPumpedVolume> monthlyPumpedVolume;
+                string dataSource;
+                if (x.HasElectricalData ?? false)
+                {
+                    monthlyPumpedVolume =
+                        await _influxDbService.GetMonthlyElectricalBasedFlowEstimate(x.WellRegistrationID,
+                            firstReadingDate.Value);
+                    dataSource = "Electrical Usage";
+                }
+                else
+                {
+                    monthlyPumpedVolume = await _influxDbService.GetMonthlyPumpedVolumesForSensors(
+                        x.Sensors.Where(y => y.SensorType == continuityMeterString).Select(y => y.SensorName)
+                            .ToList(), x.WellRegistrationID, firstReadingDate.Value);
+                    dataSource = continuityMeterString;
+                }
+
+                var point = (Point) x.Location.Geometry;
+                var robustReviewDto = new RobustReviewDto
+                {
+                    WellRegistrationID = x.WellRegistrationID,
+                    WellTPID = x.WellTPID,
+                    // TODO: lookup feature to point to lat long
+                    Latitude = point.Coordinates.Latitude,
+                    Longitude = point.Coordinates.Longitude,
+                    DataSource = dataSource,
+                    MonthlyPumpedVolumeGallons = monthlyPumpedVolume
+                };
+
+                return robustReviewDto;
             }
-
-            List<MonthlyPumpedVolume> monthlyPumpedVolume;
-            string dataSource;
-            if (x.HasElectricalData ?? false)
+            catch (Exception e)
             {
-                monthlyPumpedVolume =
-                    await _influxDbService.GetMonthlyElectricalBasedFlowEstimate(x.WellRegistrationID,
-                        firstReadingDate.Value);
-                dataSource = "Electrical Usage";
+                var i = 9;
+                throw;
             }
-            else
-            {
-                monthlyPumpedVolume = await _influxDbService.GetMonthlyPumpedVolumesForSensors(
-                    x.Sensors.Where(y => y.SensorType == continuityMeterString).Select(y => y.SensorName)
-                        .ToList(), x.WellRegistrationID, firstReadingDate.Value);
-                dataSource = continuityMeterString;
-            }
-
-            var point = (Point) x.Location.Geometry;
-            var robustReviewDto = new RobustReviewDto
-            {
-                WellRegistrationID = x.WellRegistrationID,
-                WellTPID = x.WellTPID,
-                // TODO: lookup feature to point to lat long
-                Latitude = point.Coordinates.Latitude,
-                Longitude = point.Coordinates.Longitude,
-                DataSource = dataSource,
-                MonthlyPumpedVolumeGallons = monthlyPumpedVolume
-            };
-
-            return robustReviewDto;
         }
 
-        [HttpGet("/api/wells/download/robustReviewScenarioJson")]
-        // todo: get apikey security
-        // @Security(SecurityType.API_KEY)
-        public async Task<object> GetWell([FromRoute] string wellRegistrationID)
+        //[HttpGet("/api/wells/download/robustReviewScenarioJson")]
+        //// todo: get apikey security
+        //// @Security(SecurityType.API_KEY)
+        //public async Task<object> GetWell([FromRoute] string wellRegistrationID)
+        //{
+        //    var well = await _geoOptixService.GetWellAsAbbreviatedWellDataResponse(wellRegistrationID);
+        //    return new
+        //    {
+        //        Status = "success",
+        //        Result = well
+        //    };
+        //}
+
+        [HttpGet("/api/wells/{wellRegistrationID}/pumpedVolume")]
+        public async Task<object> GetPumpedVolume([FromQuery] string startDate, [FromRoute] string wellRegistrationID, [FromQuery] string endDate, [FromQuery] int? interval)
         {
-            var well = await _geoOptixService.GetWellAsAbbreviatedWellDataResponse(wellRegistrationID);
-            return new
-            {
-                Status = "success",
-                Result = well
-            };
+            return await GetPumpedVolumeImpl(startDate, new List<string>{wellRegistrationID}, endDate, interval);
         }
+
 
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
-        [AdminFeature]
+        //[AdminFeature]
         public async Task<WellDetailDto> GetWellDetails([FromRoute] string wellRegistrationID)
         {
             var geooptixWell = await _geoOptixService.GetWellSummary(wellRegistrationID);
@@ -182,8 +187,12 @@ namespace Zybach.API.Controllers
             //}
             var hasElectricalData = agHubWell != null && (agHubWell.HasElectricalData ?? false);
 
-            var well = new WellDetailDto();
-//                (geooptixWell || agHubWell) as WellDetailDto;
+            var well = new WellDetailDto
+            {
+                WellRegistrationID = geooptixWell.WellRegistrationID,
+                WellTPID = agHubWell?.WellTPID,
+                IrrigatedAcresPerYear = agHubWell?.IrrigatedAcresPerYear
+            };
 
             var firstReadingDate = await _influxDbService.GetFirstReadingDateTimeForWell(wellRegistrationID);
             if (firstReadingDate != null)
@@ -202,6 +211,8 @@ namespace Zybach.API.Controllers
                     well.Location = agHubWell.Location;
                     well.IrrigatedAcresPerYear = agHubWell.IrrigatedAcresPerYear;
                 }
+
+                well.Location = geooptixWell.Location;
             }
             else
             {
@@ -231,18 +242,26 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation")]
-        [AdminFeature]
+        //[AdminFeature]
         public async Task<List<InstallationRecordDto>> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
         {
             return await _geoOptixService.GetInstallationRecords(wellRegistrationID);
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
-        [AdminFeature]
+        //[AdminFeature]
         public async Task<IActionResult> GetPhoto([FromRoute] string wellRegistrationID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
         {
-            var photoBuffer = await _geoOptixService.GetPhoto(wellRegistrationID, installationCanonicalName, photoCanonicalName);
-            return File(photoBuffer, "image/jpeg");
+            try
+            {
+                var photoBuffer = await _geoOptixService.GetPhoto(wellRegistrationID, installationCanonicalName,
+                    photoCanonicalName);
+                return File(photoBuffer, "image/jpeg");
+            }
+            catch
+            {
+                return NoContent();
+            }
         }
 
         private async Task<List<AnnualPumpedVolume>> GetAnnualPumpedVolumeForWellAndSensorType(List<SensorSummaryDto> sensors, string sensorType)

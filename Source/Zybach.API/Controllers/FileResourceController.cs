@@ -19,8 +19,8 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpPost("FileResource/CkEditorUpload")]
-        [AdminFeature]
+        [HttpPost("api/FileResource/CkEditorUpload")]
+        //[AdminFeature]
         public async Task<ActionResult<object>> CkEditorUpload()
         {
             byte[] bytes;
@@ -59,7 +59,7 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("FileResource/{fileResourceGuidAsString}")]
+        [HttpGet("api/FileResource/{fileResourceGuidAsString}")]
         public ActionResult DisplayResource(string fileResourceGuidAsString)
         {
             var isStringAGuid = Guid.TryParse(fileResourceGuidAsString, out var fileResourceGuid);
