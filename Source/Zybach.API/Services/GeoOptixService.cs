@@ -135,6 +135,12 @@ namespace Zybach.API.Services
                 }
 
                 var geoOptixMethod = geoOptixSampleMethodsForSite.First();
+
+                if (geoOptixMethod.MethodSchemaCanonicalName != "well-install")
+                {
+                    break;
+                }
+
                 var installationRecord = GetRecordInstance(geoOptixMethod.MethodInstance.RecordSets.First());
                 var sensorRecord = GetRecordInstance(installationRecord, "sensor");
                 var photoRecords = GetRecordInstance(sensorRecord, "photos");

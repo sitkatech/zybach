@@ -17,8 +17,6 @@ namespace Zybach.EFModels.Entities
         public int AgHubWellID { get; set; }
         public int IrrigationYear { get; set; }
         public double Acres { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime FetchDate { get; set; }
 
         [ForeignKey(nameof(AgHubWellID))]
         [InverseProperty("AgHubWellIrrigatedAcres")]

@@ -7,7 +7,6 @@ CREATE TABLE [dbo].[AgHubWellIrrigatedAcre](
 	[AgHubWellID] [int] NOT NULL,
 	[IrrigationYear] [int] NOT NULL,
 	[Acres] [float] NOT NULL,
-	[FetchDate] [datetime] NOT NULL,
  CONSTRAINT [PK_AgHubWellIrrigatedAcre_AgHubWellIrrigatedAcreID] PRIMARY KEY CLUSTERED 
 (
 	[AgHubWellIrrigatedAcreID] ASC

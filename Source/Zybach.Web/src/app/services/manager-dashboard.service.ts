@@ -20,7 +20,7 @@ export class ManagerDashboardService {
     return this.apiService.getFromApi(`streamFlowZones`);
   }
 
-  getStreamFlowZonePumpingDepths(): Observable<{year:number, streamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[]}[]> {
+  getStreamFlowZonePumpingDepths(): Observable<{Year:number, StreamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[]}[]> {
     return this.apiService.getFromApi(`managerDashboard/streamFlowZonePumpingDepths`)
   }
 }

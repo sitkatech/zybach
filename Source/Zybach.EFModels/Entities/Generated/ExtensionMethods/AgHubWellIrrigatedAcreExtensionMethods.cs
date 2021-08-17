@@ -17,7 +17,6 @@ namespace Zybach.EFModels.Entities
                 AgHubWell = agHubWellIrrigatedAcre.AgHubWell.AsDto(),
                 IrrigationYear = agHubWellIrrigatedAcre.IrrigationYear,
                 Acres = agHubWellIrrigatedAcre.Acres,
-                FetchDate = agHubWellIrrigatedAcre.FetchDate
             };
             DoCustomMappings(agHubWellIrrigatedAcre, agHubWellIrrigatedAcreDto);
             return agHubWellIrrigatedAcreDto;
