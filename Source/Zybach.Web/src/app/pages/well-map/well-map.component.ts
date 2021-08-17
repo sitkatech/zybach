@@ -176,7 +176,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
+        var sensorTypes = feature.properties.sensors.map(x => x.SensorType);
         if (sensorTypes.includes("Flow Meter")) {
           var icon = flowMeterMarkerIcon
         } else if (sensorTypes.includes("Continuity Meter")) {
@@ -189,11 +189,11 @@ export class WellMapComponent implements OnInit, AfterViewInit {
         return marker(latlng, { icon: icon})
       },
       filter: (feature) => {
-        if (feature.properties.sensors === null || feature.properties.sensors === 0) {
+        if (feature.properties.sensors === null || feature.properties.sensors.length === 0) {
           return this.showNoEstimate;
         }
 
-        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
+        var sensorTypes = feature.properties.sensors.map(x => x.SensorType);
 
         return (this.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
           (this.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
@@ -247,7 +247,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.showElectricalData = selectedDataSourceOptions.includes(DataSourceFilterOption.ELECTRICAL)
     this.showNoEstimate = selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA)
     
-    // todo: change this to emit an object holding the above values, then change the handler on the other side
 
     this.onFilterChange.emit({
       showFlowMeters: this.showFlowMeters,

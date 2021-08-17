@@ -45,7 +45,17 @@ namespace Zybach.API.Services
                        "|> first()";
 
             var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.ToDictionary(x => x.RegistrationID.ToUpper(), x => x.Time);
+            var fluxTablesInAscendingOrder = fluxTables.OrderBy(x => x.Time).ToList();
+
+            var output = new Dictionary<string, DateTime>();
+            fluxTablesInAscendingOrder.ForEach(x =>
+            {
+                if (!output.ContainsKey(x.RegistrationID))
+                {
+                    output[x.RegistrationID] = x.Time;
+                }
+            });
+            return output;
         }
 
         public async Task<Dictionary<string, DateTime>> GetLastReadingDateTimes()
@@ -56,7 +66,18 @@ namespace Zybach.API.Services
                        "|> last()";
 
             var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.ToDictionary(x => x.RegistrationID.ToUpper(), x => x.Time);
+
+            var fluxTablesInDescendingOrder = fluxTables.OrderByDescending(x=>x.Time).ToList();
+
+            var output = new Dictionary<string, DateTime>();
+            fluxTablesInDescendingOrder.ForEach(x =>
+            {
+                if (!output.ContainsKey(x.RegistrationID))
+                {
+                    output[x.RegistrationID] = x.Time;
+                }
+            });
+            return output;
         }
 
         public async Task<DateTime?> GetFirstReadingDateTimeForWell(string registrationID)

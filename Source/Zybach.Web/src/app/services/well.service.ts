@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { WellWithSensorSummaryDto } from '../shared/models/well-with-sensor-summary-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class WellService {
     return this.apiService.getFromApi("wells");
   }
 
-  public getWellsMapData(): Observable<any> {
+  public getWellsMapData(): Observable<WellWithSensorSummaryDto[]> {
     return this.apiService.getFromApi("mapData/wells")
   }
 
