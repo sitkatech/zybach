@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GeoJSON.Net.Feature;
+using GeoJSON.Net.Geometry;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
@@ -34,8 +36,8 @@ namespace Zybach.EFModels.Entities
 
             wellWithSensorSummaryDto.WellRegistrationID = agHubWell.WellRegistrationID;
             wellWithSensorSummaryDto.WellTPID = agHubWell.WellTPID;
-            // TODO: Geometry to feature
-            //Location = agHubWell.WellGeometry.ToFeature
+            wellWithSensorSummaryDto.Location = new Feature(new Point(new Position(agHubWell.WellGeometry.Coordinate.X, agHubWell.WellGeometry.Coordinate.Y)));
+
             wellWithSensorSummaryDto.Sensors = sensors;
             wellWithSensorSummaryDto.FetchDate = agHubWell.FetchDate;
             wellWithSensorSummaryDto.HasElectricalData = agHubWell.HasElectricalData;
