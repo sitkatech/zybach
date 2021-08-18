@@ -19,7 +19,5 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? AuditPumpRateUpdated { get; set; }
         public bool? HasElectricalData { get; set; }
         public DateTime FetchDate { get; set; }
-        public double Longitude { get; set; }
-        public double Latitude { get; set; }
     }
 }

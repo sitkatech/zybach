@@ -9,7 +9,6 @@ export class AgHubWellIrrigatedAcreDto {
 	AgHubWell : AgHubWellDto
 	IrrigationYear : number
 	Acres : number
-	FetchDate : Date
 
     constructor(obj?: any) {
         Object.assign(this, obj);
