@@ -25,7 +25,7 @@ namespace Zybach.API
         protected override void RunJobImplementation()
         {
             // TODO: Needs to switch to current date
-            var fromDate = new DateTime(2019, 1, 1);
+            var fromDate = new DateTime(2016, 1, 1);
 
             try
             {
@@ -43,8 +43,15 @@ namespace Zybach.API
         private void GetDailyWellContinuityMeterData(DateTime fromDate)
         {
             var wellSensorMeasurements = _influxDbService.GetContinuityMeterSeries(fromDate).Result;
-            // TODO: Get PumpingRate from Zappa service and multiply it by the value
+            // TODO: Get PumpingRate from Zappa service and multiply it by the value and 1440
             // |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
+            // 15 is minutes; should be 1440
+            var zappaRate = new Dictionary<string, double>();
+            wellSensorMeasurements.ForEach(x =>
+            {
+                var pumpingRate = zappaRate[x.WellRegistrationID];
+                x.MeasurementValue = x.MeasurementValue * pumpingRate * 1440;
+            });
             _dbContext.WellSensorMeasurements.AddRange(wellSensorMeasurements);
             _dbContext.SaveChanges();
         }

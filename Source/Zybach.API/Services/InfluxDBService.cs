@@ -110,7 +110,7 @@ namespace Zybach.API.Services
                        FilterByMeasurement(new List<string> {MeasurementNames.Gallons}) +
                        FilterByField(FieldNames.Pumped) +
                        GroupBy(new List<string> {FieldNames.RegistrationID, FieldNames.SensorName}) +
-                       AggregateSumDaily();
+                       AggregateSumDaily(false);
 
             var fluxTables = await RunInfluxQueryAsync(flux);
             return fluxTables.Select(x => new WellSensorMeasurement
@@ -125,7 +125,8 @@ namespace Zybach.API.Services
                        FilterByMeasurement(new List<string> {MeasurementNames.Continuity}) +
                        FilterByField(FieldNames.On) +
                        GroupBy(new List<string> {FieldNames.RegistrationID, FieldNames.SensorName}) +
-                       AggregateSumDaily();
+
+                       AggregateSumDaily(false);
 
             var fluxTables = await RunInfluxQueryAsync(flux);
             return fluxTables.Select(x => new WellSensorMeasurement
@@ -145,7 +146,7 @@ namespace Zybach.API.Services
                        FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume }) +
                        FilterBySensorName(sensorNames) +
                        GroupBy(FieldNames.RegistrationID) +
-                       AggregateSumDaily();
+                       AggregateSumDaily(true);
 
             var fluxTables = await RunInfluxQueryAsync(flux);
             return fluxTables.Select(x => new DailyPumpedVolume(x.Time, x.Value, sensorType)).ToList();
@@ -192,7 +193,7 @@ namespace Zybach.API.Services
             var flux = FilterByStartDate(fromDate) +
                        FilterByMeasurement(new List<string> { MeasurementNames.EstimatedPumpedVolume }) +
                        FilterByRegistrationID(registrationID) +
-                       AggregateSumDaily();
+                       AggregateSumDaily(true);
 
             var fluxTables = await RunInfluxQueryAsync(flux);
             return fluxTables.Select(x => new DailyPumpedVolume(x.Time, x.Value, SensorTypes.ElectricalUsage)).ToList();
@@ -283,9 +284,9 @@ namespace Zybach.API.Services
             return await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReading>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
         }
 
-        private static string AggregateSumDaily()
+        private static string AggregateSumDaily(bool createEmpty)
         {
-            return "|> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: \"_start\")";
+            return $"|> aggregateWindow(every: 1d, fn: sum, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\")";
         }
 
         private static string AggregateSumMonthly()
