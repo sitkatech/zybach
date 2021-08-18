@@ -3,6 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
+using Hangfire;
+using Hangfire.SqlServer;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +24,7 @@ using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Logging;
 using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
+using Zybach.API.Services.Authorization;
 using ILogger = Serilog.ILogger;
 
 namespace Zybach.API
@@ -141,6 +144,23 @@ x.UseNetTopologySuite();
 
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<ZybachDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
+
+            services.AddScoped<IInfluxDBJob, InfluxDBDailyJob>();
+
+            // Add Hangfire services.
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(zybachConfiguration.DB_CONNECTION_STRING, new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true
+                }));
+
             services.AddControllers();
         }
 
@@ -178,6 +198,18 @@ x.UseNetTopologySuite();
             {
                 endpoints.MapControllers();
             });
+
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions()
+            {
+                Authorization = new[] { new HangfireAuthorizationFilter(Configuration) }
+            });
+            app.UseHangfireServer(new BackgroundJobServerOptions()
+            {
+                WorkerCount = 1
+            });
+            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
+
+            HangfireJobScheduler.ScheduleRecurringJobs();
 
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
 

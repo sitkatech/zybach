@@ -27,9 +27,11 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
+        public virtual DbSet<MeasurementType> MeasurementTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -147,6 +149,15 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<MeasurementType>(entity =>
+            {
+                entity.Property(e => e.MeasurementTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.MeasurementTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.MeasurementTypeName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.Property(e => e.RoleID).ValueGeneratedNever();
@@ -180,6 +191,18 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<WellSensorMeasurement>(entity =>
+            {
+                entity.Property(e => e.SensorName).IsUnicode(false);
+
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+
+                entity.HasOne(d => d.MeasurementType)
+                    .WithMany(p => p.WellSensorMeasurements)
+                    .HasForeignKey(d => d.MeasurementTypeID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

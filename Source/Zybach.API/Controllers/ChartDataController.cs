@@ -43,12 +43,12 @@ namespace Zybach.API.Controllers
 
             var dailyPumpedVolumes = new List<DailyPumpedVolume>();
 
-            dailyPumpedVolumes.AddRange(await GetDailyPumpedVolumeForWellAndSensorType(sensors, "Flow Meter", firstReadingDateTimeForWell.Value));
-            dailyPumpedVolumes.AddRange(await GetDailyPumpedVolumeForWellAndSensorType(sensors, "Continuity Meter", firstReadingDateTimeForWell.Value));
+            dailyPumpedVolumes.AddRange(await GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.FlowMeter, firstReadingDateTimeForWell.Value));
+            dailyPumpedVolumes.AddRange(await GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.ContinuityMeter, firstReadingDateTimeForWell.Value));
 
             if (hasElectricalData)
             {
-                sensors.Add(new SensorSummaryDto() { WellRegistrationID = wellRegistrationID, SensorType = "Electrical Usage"});
+                sensors.Add(new SensorSummaryDto() { WellRegistrationID = wellRegistrationID, SensorType = InfluxDBService.SensorTypes.ElectricalUsage});
                 var electricalBasedFlowEstimateSeries = await _influxDbService.GetElectricalBasedFlowEstimateSeries(wellRegistrationID, firstReadingDateTimeForWell.Value);
                 dailyPumpedVolumes.AddRange(electricalBasedFlowEstimateSeries);
             }
