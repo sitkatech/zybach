@@ -22,7 +22,13 @@ namespace Zybach.API.Services
         {
             _zybachConfiguration = zybachConfiguration.Value;
             _logger = logger;
-            _influxDbClient = InfluxDBClientFactory.Create(_zybachConfiguration.INFLUXDB_URL, _zybachConfiguration.INFLUXDB_TOKEN);
+            var options = new InfluxDBClientOptions.Builder()
+                .Url(_zybachConfiguration.INFLUXDB_URL)
+                .AuthenticateToken(_zybachConfiguration.INFLUXDB_TOKEN.ToCharArray())
+                .ReadWriteTimeOut(TimeSpan.FromMinutes(10))
+                .TimeOut(TimeSpan.FromMinutes(10))
+                .Build();
+            _influxDbClient = InfluxDBClientFactory.Create(options);
             _defaultStartDate = new DateTime(2000, 1, 1);
         }
 
@@ -121,17 +127,30 @@ namespace Zybach.API.Services
 
         public async Task<List<WellSensorMeasurement>> GetContinuityMeterSeries(DateTime fromDate)
         {
-            var flux = FilterByDateRange(fromDate, DateTime.Now) +
-                       FilterByMeasurement(new List<string> {MeasurementNames.Continuity}) +
-                       FilterByField(FieldNames.On) +
-                       GroupBy(new List<string> {FieldNames.RegistrationID, FieldNames.SensorName}) +
+            var fluxQuery =
+                "import \"math\" " +
+                "import \"contrib/tomhollingworth/events\" " +
+                $"from(bucket: \"{_zybachConfiguration.INFLUX_BUCKET}\") " +
+                FilterByDateRange(fromDate, DateTime.Now) +
+                FilterByMeasurement(new List<string> {MeasurementNames.Continuity}) +
+                FilterByField(FieldNames.On) +
+                GroupBy(new List<string> { FieldNames.RegistrationID, FieldNames.SensorName }) +
+                "|> sort(columns: [\"_time\"]) " +
+                "|> events.duration(unit: 1ns, columnName: \"run-time-ns\", timeColumn: \"_time\", stopColumn: \"_stop\") " +
+                "|> filter(fn: (r) => r[\"_value\"] == 1) " +
+                "|> map(fn: (r) => ({ r with \"run-time-minutes\": float(v: r[\"run-time-ns\"]) / 60000000000.0})) " +
+                "|> map(fn: (r) => ({ r with \"run-time-minutes-min\": math.mMin(x: r[\"run-time-minutes\"], y: 24.0 * 60.0)})) " +
+                "|> aggregateWindow(every: 1d, fn: sum, createEmpty: false, timeSrc: \"_start\", column: \"run-time-minutes-min\", offset: 5h) ";
+            _logger.LogInformation($"Influx DB Query: {fluxQuery}");
+            var fluxTables = await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReading>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
 
-                       AggregateSumDaily(false);
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
             return fluxTables.Select(x => new WellSensorMeasurement
             {
-                WellRegistrationID = x.RegistrationID, ReadingDate = x.Time, MeasurementTypeID = (int) MeasurementTypeEnum.ContinuityMeter, MeasurementValue = x.Value, SensorName = x.Sensor
+                WellRegistrationID = x.RegistrationID, 
+                ReadingDate = x.Time,
+                MeasurementTypeID = (int) MeasurementTypeEnum.ContinuityMeter, 
+                MeasurementValue = x.Value,
+                SensorName = x.Sensor
             }).ToList();
         }
 
@@ -286,27 +305,32 @@ namespace Zybach.API.Services
 
         private static string AggregateSumDaily(bool createEmpty)
         {
-            return $"|> aggregateWindow(every: 1d, fn: sum, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\")";
+            return $"|> aggregateWindow(every: 1d, fn: sum, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\", offset: 5h)";
         }
 
         private static string AggregateSumMonthly()
         {
-            return "|> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: \"_start\")";
+            return "|> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: \"_start\", offset: 5h)";
         }
 
         private static string AggregateSumYearly()
         {
-            return "|> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: \"_start\")";
+            return "|> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: \"_start\", offset: 5h)";
         }
 
         private string FilterByStartDate()
         {
-            return $"|> range(start: {_defaultStartDate:yyyy-MM-ddTHH:mm:ssZ}) ";
+            return $"|> range(start: {FormatToZuluCentralTime(_defaultStartDate)}) ";
+        }
+
+        private static string FormatToZuluCentralTime(DateTime defaultStartDate)
+        {
+            return defaultStartDate.ToString("yyyy-MM-ddT05:00:00Z");
         }
 
         private static string FilterByStartDate(DateTime startDate)
         {
-            return $"|> range(start: {startDate:yyyy-MM-ddTHH:mm:ssZ}) ";
+            return $"|> range(start: {FormatToZuluCentralTime(startDate)}) ";
         }
 
         private static string FilterByYear(int year)
@@ -318,7 +342,7 @@ namespace Zybach.API.Services
 
         private static string FilterByDateRange(DateTime startDate, DateTime endDate)
         {
-            return $"|> range(start: {startDate:yyyy-MM-ddTHH:mm:ssZ}, stop: {endDate:yyyy-MM-ddTHH:mm:ssZ}) ";
+            return $"|> range(start: {FormatToZuluCentralTime(startDate)}, stop: {endDate:yyyy-MM-ddTHH:mm:ssZ}) ";
         }
 
         private static string FilterByRegistrationID(string registrationID)

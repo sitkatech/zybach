@@ -82,15 +82,22 @@ namespace Zybach.API
             services.AddHttpClient<GeoOptixService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.GEOOPTIX_HOSTNAME);
-                c.Timeout = TimeSpan.FromDays(1);
+                c.Timeout = TimeSpan.FromMinutes(30);
                 c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
             });
 
             services.AddHttpClient<GeoOptixSearchService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.GEOOPTIX_SEARCH_HOSTNAME);
-                c.Timeout = TimeSpan.FromDays(1);
+                c.Timeout = TimeSpan.FromMinutes(30);
                 c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
+            });
+
+            services.AddHttpClient<AgHubService>(c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.AGHUB_API_BASE_URL);
+                c.Timeout = TimeSpan.FromMinutes(30);
+                c.DefaultRequestHeaders.Add("x-api-key", zybachConfiguration.AGHUB_API_KEY);
             });
 
             services.AddScoped<InfluxDBService>();
@@ -145,7 +152,7 @@ x.UseNetTopologySuite();
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<ZybachDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
 
-            services.AddScoped<IInfluxDBJob, InfluxDBDailyJob>();
+            services.AddScoped<IInfluxDBJob, FlowMeterSeriesFetchDailyJob>();
 
             // Add Hangfire services.
             services.AddHangfire(configuration => configuration

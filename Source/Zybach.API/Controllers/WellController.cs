@@ -377,6 +377,14 @@ namespace Zybach.API.Controllers
             };
         }
 
+        [HttpGet("/api/getContinuityMeterSeries")]
+        //[AdminFeature]
+        public async Task<List<WellSensorMeasurement>> GetContinuityMeterSeries()
+        {
+            return await _influxDbService.GetContinuityMeterSeries(new DateTime(2016, 1, 1));
+        }
+
+
     }
 
     public class RobustReviewDto

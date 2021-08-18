@@ -27,6 +27,7 @@
         public string GEOOPTIX_HOSTNAME { get; set; }
         public string GEOOPTIX_SEARCH_HOSTNAME { get; set; }
         public string APP_HOSTNAME { get; set; }
-
+        public string AGHUB_API_BASE_URL { get; set; }
+        public string AGHUB_API_KEY { get; set; }
     }
 }

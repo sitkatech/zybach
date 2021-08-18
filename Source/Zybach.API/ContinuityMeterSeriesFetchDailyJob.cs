@@ -7,14 +7,14 @@ using Zybach.EFModels.Entities;
 
 namespace Zybach.API
 {
-    public class InfluxDBDailyJob : ScheduledBackgroundJobBase<InfluxDBDailyJob>, IInfluxDBJob
+    public class ContinuityMeterSeriesFetchDailyJob : ScheduledBackgroundJobBase<ContinuityMeterSeriesFetchDailyJob>, IInfluxDBJob
     {
         private readonly InfluxDBService _influxDbService;
-        public const string JobName = "Influx DB Daily Sync";
+        public const string JobName = "Continuity Meter Series Fetch Daily";
 
-        public InfluxDBDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<InfluxDBDailyJob> logger,
+        public ContinuityMeterSeriesFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<ContinuityMeterSeriesFetchDailyJob> logger,
             ZybachDbContext zybachDbContext, InfluxDBService influxDbService) : base(
-            "Influx DB Sync", logger, webHostEnvironment, zybachDbContext)
+            JobName, logger, webHostEnvironment, zybachDbContext)
         {
             _influxDbService = influxDbService;
         }
@@ -29,14 +29,12 @@ namespace Zybach.API
 
             try
             {
-                GetDailyWellFlowMeterData(fromDate);
-                //GetDailyWellContinuityMeterData(fromDate);
-                // TODO: Get electrical usage data
+                GetDailyWellContinuityMeterData(fromDate);
             }
             catch (Exception e)
             {
                 _logger.LogError(e.Message);
-                throw new Exception("Influx DB Daily Sync encountered an error", e);
+                throw new Exception($"{JobName} encountered an error", e);
             }
         }
 
@@ -46,19 +44,12 @@ namespace Zybach.API
             // TODO: Get PumpingRate from Zappa service and multiply it by the value and 1440
             // |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
             // 15 is minutes; should be 1440
-            var zappaRate = new Dictionary<string, double>();
-            wellSensorMeasurements.ForEach(x =>
-            {
-                var pumpingRate = zappaRate[x.WellRegistrationID];
-                x.MeasurementValue = x.MeasurementValue * pumpingRate * 1440;
-            });
-            _dbContext.WellSensorMeasurements.AddRange(wellSensorMeasurements);
-            _dbContext.SaveChanges();
-        }
-
-        private void GetDailyWellFlowMeterData(DateTime fromDate)
-        {
-            var wellSensorMeasurements = _influxDbService.GetFlowMeterSeries(fromDate).Result;
+            //var zappaRate = new Dictionary<string, double>();
+            //wellSensorMeasurements.ForEach(x =>
+            //{
+            //    var pumpingRate = zappaRate[x.WellRegistrationID];
+            //    x.MeasurementValue = x.MeasurementValue * pumpingRate * 1440;
+            //});
             _dbContext.WellSensorMeasurements.AddRange(wellSensorMeasurements);
             _dbContext.SaveChanges();
         }
