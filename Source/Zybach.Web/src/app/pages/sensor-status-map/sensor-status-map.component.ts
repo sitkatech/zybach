@@ -171,7 +171,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: (feature, latlng) => {
-        var sensorMessageAges = feature.properties.sensors.map(x => x.messageAge);
+        var sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
         var maxMessageAge = Math.max(...sensorMessageAges);
 
         let icon;
@@ -188,7 +188,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         return marker(latlng, { icon: icon })
       },
       filter: (feature) => {
-        var sensorMessageAges = feature.properties.sensors.map(x => x.messageAge);
+        var sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
         var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
 
         return (this.showNoData && maxMessageAge === null) ||

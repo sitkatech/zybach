@@ -7,7 +7,7 @@ import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
-import { SensorMessageAgeDto, WellWithSensorMessageAgeDto, WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorMessageAgeDto, SensorSummaryDto, WellWithSensorMessageAgeDto, WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
 
 @Component({
@@ -53,9 +53,9 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         resizable: true
       },
       { headerName: 'Well Number', field: 'wellRegistrationID', sortable: true, filter: true, resizable: true },
-      { headerName: 'Sensor Number', field: 'sensorName', sortable: true, filter: true, resizable: true},
+      { headerName: 'Sensor Number', field: 'SensorName', sortable: true, filter: true, resizable: true},
       { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => `${Math.floor(params.data.messageAge / 3600)} hours` },
-      { headerName: 'Sensor Type', field: 'sensorType', sortable: true, filter: true, resizable: true},
+      { headerName: 'Sensor Type', field: 'SensorType', sortable: true, filter: true, resizable: true},
     ];
 
 
@@ -80,7 +80,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
 
         console.log(this.wellsGeoJson);
 
-        this.redSensors = wells.reduce((sensors, well) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, wellRegistrationID: well.WellRegistrationID }))), []).filter(sensor => sensor.messageAge > 3600 * 8);
+        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, wellRegistrationID: well.WellRegistrationID }))), []).filter(sensor => sensor.MessageAge > 3600 * 8);
 
       })
     });
