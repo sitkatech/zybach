@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("api/customRichText/{customRichTextTypeID}")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult<CustomRichTextDto> UpdateCustomRichText([FromRoute] int customRichTextTypeID, [FromBody] CustomRichTextDto customRichTextUpdateDto)
         {
             var customRichTextDto = CustomRichText.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);

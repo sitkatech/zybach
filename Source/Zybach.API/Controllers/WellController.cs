@@ -175,7 +175,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<WellDetailDto> GetWellDetails([FromRoute] string wellRegistrationID)
         {
             var geooptixWell = await _geoOptixService.GetWellSummary(wellRegistrationID);
@@ -242,14 +242,14 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<List<InstallationRecordDto>> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
         {
             return await _geoOptixService.GetInstallationRecords(wellRegistrationID);
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<IActionResult> GetPhoto([FromRoute] string wellRegistrationID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
         {
             try
@@ -378,7 +378,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/getContinuityMeterSeries")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<List<WellSensorMeasurement>> GetContinuityMeterSeries()
         {
             return await _influxDbService.GetContinuityMeterSeries(new DateTime(2016, 1, 1));
