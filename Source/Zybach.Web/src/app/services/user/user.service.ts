@@ -26,7 +26,7 @@ export class UserService {
         return this.apiService.getFromApi(route);
     }
 
-    getUserFromUserID(userID: string): Observable<UserDetailedDto> {
+    getUserFromUserID(userID: number): Observable<UserDetailedDto> {
         let route = `/users/${userID}`;
         return this.apiService.getFromApi(route);
     }
@@ -36,7 +36,7 @@ export class UserService {
         return this.apiService.getFromApi(route);
     }
 
-    updateUser(userID: string, userUpdateDto: any): Observable<UserDetailedDto> {
+    updateUser(userID: number, userUpdateDto: any): Observable<UserDetailedDto> {
         let route = `/users/${userID}`;
         return this.apiService.putToApi(route, userUpdateDto);
     }

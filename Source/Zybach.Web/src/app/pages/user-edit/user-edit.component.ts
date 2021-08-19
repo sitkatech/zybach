@@ -23,7 +23,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
 
-  public userID: string;
+  public userID: number;
   public user: UserDetailedDto;
   public model: UserUpdateDto;
   public roles: Array<RoleDto>;
@@ -49,7 +49,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.userID = this.route.snapshot.paramMap.get("id");
+      this.userID = parseInt(this.route.snapshot.paramMap.get("id"));
 
       forkJoin(
         this.userService.getUserFromUserID(this.userID),
