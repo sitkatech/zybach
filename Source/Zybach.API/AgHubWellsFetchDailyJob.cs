@@ -130,7 +130,7 @@ namespace Zybach.API
                 TPNRDPumpRateUpdated = agHubWellRaw.TpnrdPumpRateUpdated,
                 TPNRDPumpRate = agHubWellRaw.WellTpnrdPumpRate,
                 WellConnectedMeter = agHubWellRaw.WellConnectedMeter ?? false,
-                WellGeometry = new Point(agHubWellRaw.Location.Coordinates.Latitude,agHubWellRaw.Location.Coordinates.Longitude),
+                WellGeometry = new Point(agHubWellRaw.Location.Coordinates.Longitude,agHubWellRaw.Location.Coordinates.Latitude),
                 WellTPID = agHubWellRaw.WellTPID,
                 HasElectricalData = false
             };
