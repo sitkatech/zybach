@@ -123,7 +123,6 @@ export class ApiService {
 
         if (!supressErrorMessage) {
             if (error && (error.status === 401)) {
-                document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
                 this.alertService.pushAlert(new Alert("Access token expired..."));
                 this.oauthService.initImplicitFlow();
             } else if (error && (error.status === 403)) {

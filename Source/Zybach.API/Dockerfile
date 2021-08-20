@@ -1,10 +1,15 @@
-FROM node:current-alpine3.10
-WORKDIR /
-COPY ["package.json", "yarn.lock*", "npm-shrinkwrap.json*", "./"]
-# will need to use multi-stage builds so that we can install dev deps for compiling and only prod deps for running...
-RUN yarn install --silent && mv node_modules ../
-RUN yarn add ts-node
-COPY . .
-RUN yarn run build
-EXPOSE 3000
-CMD ["yarn", "start"]
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
+WORKDIR /src
+
+COPY ./Zybach.Models ./Zybach.Models
+COPY ./Zybach.EFModels ./Zybach.EFModels
+COPY ./Zybach.API ./Zybach.API
+
+RUN dotnet publish ./Zybach.API/Zybach.API.csproj -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal AS final
+WORKDIR /app
+COPY --from=build /app /app
+RUN ls -la
+EXPOSE 80
+ENTRYPOINT ["dotnet", "Zybach.API.dll"]

@@ -123,13 +123,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getWellDetails(){
-    this.wellService.getWellDetails(this.wellRegistrationID).subscribe(well=>{
+    this.wellService.getWellDetails(this.wellRegistrationID).subscribe((well: WellDetailDto)=>{
       this.well = well;
-      console.log(well);
       
       this.cdr.detectChanges();
       this.addWellToMap();
     })
+  }
+
+  getWellIrrigatedAcresPerYear(){
+    return this.well.IrrigatedAcresPerYear.sort((a, b) => a.Year < b.Year ? 1 : a.Year === b.Year ? 0 : -1);
   }
 
   getInstallationDetails(){
@@ -138,7 +141,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
       for (const installation of installations) {
 
-        this.getPhotoRecords(installation)
+        this.getPhotoRecords(installation);
       }
     });
   }
@@ -146,20 +149,20 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getDataSourcesLabel() {
     let plural = true;
     let sensorCount = this.getSensors().length;
-    if ((sensorCount == 0 && this.well.hasElectricalData) || (sensorCount == 1 && !this.well.hasElectricalData)) {
+    if ((sensorCount == 0 && this.well.HasElectricalData) || (sensorCount == 1 && !this.well.HasElectricalData)) {
       plural = false;
     }
 
     return `Data Source${plural ? "s": ""}: `
   }
 
-  getPhotoRecords(installation){
-    installation.photoDataUrls = [];
-    installation.noPhotoAvailable = false;
-    const photos = installation.photos;
+  getPhotoRecords(installation: InstallationDto){
+    installation.PhotoDataUrls = [];
+    installation.NoPhotoAvailable = false;
+    const photos = installation.Photos;
 
     const photoObservables = photos.map(
-      photo => this.wellService.getPhoto(this.wellRegistrationID, installation.installationCanonicalName, photo)
+      photo => this.wellService.getPhoto(this.wellRegistrationID, installation.InstallationCanonicalName, photo)
     );
 
     let foundPhoto = false;
@@ -178,11 +181,11 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
           // result includes identifier 'data:image/png;base64,' plus the base64 data
-          installation.photoDataUrls.push({path: reader.result});
+          installation.PhotoDataUrls.push({path: reader.result});
         };
       }
 
-      installation.noPhotoAvailable = !foundPhoto;
+      installation.NoPhotoAvailable = !foundPhoto;
     });
   }
   
@@ -191,58 +194,58 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getSensors() {
-    return this.well.sensors;
+    return this.well.Sensors;
   }
 
   getLastReadingDate() {
-    if (!this.well.lastReadingDate) {
+    if (!this.well.LastReadingDate) {
       return ""
     }
-    const time = moment(this.well.lastReadingDate)
+    const time = moment(this.well.LastReadingDate)
     const timepiece = time.format('h:mm a');
     return time.format('M/D/yyyy ') + timepiece;
   }
 
-  getInstallationDate(installation) {
-    if (!installation.date) {
+  getInstallationDate(installation: InstallationDto) {
+    if (!installation.Date) {
       return ""
     }
-    const time = moment(installation.date)
+    const time = moment(installation.Date)
     const timepiece = time.format('h:mm a');
     return time.format('M/D/yyyy ') + timepiece;
   }
 
   getAnnualPumpedVolume(year, dataSource){
-    const annualPumpedVolume = this.well.annualPumpedVolume.find(x=> 
-      x.year === year && x.dataSource === dataSource
+    const annualPumpedVolume = this.well.AnnualPumpedVolume.find(x=> 
+      x.Year === year && x.DataSource === dataSource
     )
 
-    if (!annualPumpedVolume || ! annualPumpedVolume.gallons){
+    if (!annualPumpedVolume || ! annualPumpedVolume.Gallons){
       return "-"
     }
     
 
     if (this.unitsShown == "gal") {
-      const value = this.decimalPipe.transform(annualPumpedVolume.gallons , "1.0-0")
+      const value = this.decimalPipe.transform(annualPumpedVolume.Gallons , "1.0-0")
       return `${value} ${this.unitsShown}`; 
     }
 
-    const irrigatedAcresPerYear = this.well.irrigatedAcresPerYear.find(x => x.Year === year);
+    const irrigatedAcresPerYear = this.well.IrrigatedAcresPerYear.find(x => x.Year === year);
 
     if (!irrigatedAcresPerYear || (irrigatedAcresPerYear.Acres == null || irrigatedAcresPerYear.Acres == undefined)) {
       return "-";
     }
 
-    const value = this.decimalPipe.transform((annualPumpedVolume.gallons / 27154) / irrigatedAcresPerYear.Acres , "1.1-1")
+    const value = this.decimalPipe.transform((annualPumpedVolume.Gallons / 27154) / irrigatedAcresPerYear.Acres , "1.1-1")
     return `${value} ${this.unitsShown}`;
   }
 
   displayIrrigatedAcres(): boolean {
-    if (!this.well || ! this.well.irrigatedAcresPerYear) {
+    if (!this.well || ! this.well.IrrigatedAcresPerYear) {
       return false;
     }
 
-    return this.well.irrigatedAcresPerYear.length > 0 && !this.well.irrigatedAcresPerYear.every(x => x.Acres == null || x.Acres == undefined);
+    return this.well.IrrigatedAcresPerYear.length > 0 && !this.well.IrrigatedAcresPerYear.every(x => x.Acres == null || x.Acres == undefined);
   }
 
   public toggleUnitsShown(units : string): void {
@@ -288,7 +291,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public addWellToMap() {
-    const sensorTypes = this.well.sensors.map(x => x.sensorType);
+    const sensorTypes = this.well.Sensors.map(x => x.SensorType);
     let mapIcon;
 
     if (sensorTypes.includes("Flow Meter")) {
@@ -316,7 +319,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         iconUrl: "/assets/main/noDataSourceMarker.png"
       });
     }
-    const wellLayer = new GeoJSON(this.well.location, {
+    const wellLayer = new GeoJSON(this.well.Location, {
       pointToLayer: function (feature, latlng) {
         return marker(latlng, {icon: mapIcon});
       }
@@ -334,21 +337,22 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getChartDataAndBuildChart() {
 
     this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
-      if (!response.timeSeries) {
+      if (!response.TimeSeries) {
+        console.log("No Time Series Data");
         this.noTimeSeriesData = true;
         this.timeSeries = [];
         return;
       }
 
-      this.sensors = response.sensors;
-      this.timeSeries = response.timeSeries;
+      this.sensors = response.Sensors;
+      this.timeSeries = response.TimeSeries;
       
       this.cdr.detectChanges();
 
       this.setRangeMax(this.timeSeries);
 
-      this.tooltipFields = response.sensors.map(x => ({ "field": x.sensorType, "type": "ordinal" }));
-      const sensorTypes = response.sensors.map(x=>x.sensorType);
+      this.tooltipFields = response.Sensors.map(x => ({ "field": x.SensorType, "type": "ordinal" }));
+      const sensorTypes = response.Sensors.map(x=>x.SensorType);
 
       this.legendNames = [];
       this.legendColors = [];
@@ -375,15 +379,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   async exportChartData(){
     const pivoted = new Map();
     for (const point of this.timeSeries){
-      let pivotRow = pivoted.get(point.time);
+      let pivotRow = pivoted.get(point.Time);
       if (pivotRow){
-        pivotRow[point.dataSource] = point.gallons;
+        pivotRow[point.DataSource] = point.Gallons;
       } else{
-        pivotRow = {"Date": point.time};
-        pivotRow[point.dataSource] = point.gallons;
-        pivoted.set(point.time, pivotRow);
+        pivotRow = {"Date": point.Time};
+        pivotRow[point.DataSource] = point.Gallons;
+        pivoted.set(point.Time, pivotRow);
       }
     }
+
     const pivotedAndSorted = Array.from(pivoted.values())
       .map(x=> ({
         "Date": moment(x.Date).format('M/D/yyyy'),
@@ -392,16 +397,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         "ContinuityDeviceGallons": x["Continuity Meter"]
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
-    
+
     const fields = ['Date'];
 
-    const sensorTypes = this.well.sensors.map(x=>x.sensorType);
+    const sensorTypes = this.well.Sensors.map(x=>x.SensorType);
 
     if (sensorTypes.includes("Flow Meter")){
       fields.push('FlowmeterGallons');
     }
     
-    if (this.well.hasElectricalData){
+    if (this.well.HasElectricalData){
       fields.push('ElectricalUsageGallons');
     }
     
@@ -466,8 +471,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   useFullDateRange(){
-    const startDate = new Date(this.well.firstReadingDate) 
-    const endDate = new Date(this.well.lastReadingDate)
+    const startDate = new Date(this.well.FirstReadingDate) 
+    const endDate = new Date(this.well.LastReadingDate)
 
     this.initDateRange(startDate, endDate);
 
@@ -476,20 +481,20 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   filterChart(startDate: Date, endDate: Date){
     const filteredTimeSeries = this.timeSeries.filter(x=>{
-      const asDate =  new Date(x.time)
+      const asDate =  new Date(x.Time)
       return asDate.getTime() >= startDate.getTime() && asDate.getTime() <= endDate.getTime()
     });
 
     this.setRangeMax(filteredTimeSeries);
 
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
-    this.vegaView.change('timeSeries', changeSet).run();
+    this.vegaView.change('TimeSeries', changeSet).run();
     window.dispatchEvent(new Event('resize'));
   }
 
   setRangeMax(timeSeries: any){
     
-    const gallonsMax = timeSeries.sort((a, b) => b.gallons - a.gallons)[0].gallons;
+    const gallonsMax = timeSeries.sort((a, b) => b.Gallons - a.Gallons)[0].Gallons;
     if (gallonsMax !== 0) {
       this.rangeMax = gallonsMax * 1.05;
     } else {
@@ -500,13 +505,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getVegaSpec(): any {
     return {
       "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-      "description": "A charmt",
+      "description": "A chart",
       "width": "container",
       "height": "container",
-      "data": { "name": "timeSeries" },
+      "data": { "name": "TimeSeries" },
       "encoding": {
         "x": {
-          "field": "time",
+          "field": "Time",
           "timeUnit": "yearmonthdate",
           "type": "temporal",
           "axis": {
@@ -519,7 +524,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         {
           "encoding": {
             "y": {
-              "field": "gallons",
+              "field": "Gallons",
               "type": "quantitative",
               "axis": {
                 "title": "Gallons"
@@ -530,7 +535,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
               // }
             },
             "color": {
-              "field": "dataSource",
+              "field": "DataSource",
               "type": "nominal",
               "axis": {
                 "title": "Data Source"
@@ -549,7 +554,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
           ]
         },
         {
-          "transform": [{ "pivot": "dataSource", "value": "gallonsString", "groupby": ["time"], "op": "max" }],
+          "transform": [{ "pivot": "DataSource", "value": "GallonsString", "groupby": ["Time"], "op": "max" }],
           "mark": "rule",
           "encoding": {
             "opacity": {
@@ -557,14 +562,14 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
               "value": 0
             },
             "tooltip": [
-              { "field": "time", "type": "temporal", "title": "Date" },
+              { "field": "Time", "type": "temporal", "title": "Date" },
               ...this.tooltipFields
             ]
           },
           "selection": {
             "hover": {
               "type": "single",
-              "fields": ["time"],
+              "fields": ["Time"],
               "nearest": true,
               "on": "mouseover",
               "empty": "none",

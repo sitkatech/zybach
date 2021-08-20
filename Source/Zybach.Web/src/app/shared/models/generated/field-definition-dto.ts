@@ -7,7 +7,7 @@ import { FieldDefinitionTypeDto } from './field-definition-type-dto'
 export class FieldDefinitionDto {
 	FieldDefinitionID : number
 	FieldDefinitionType : FieldDefinitionTypeDto
-	FieldDefinitionValue? : string
+	FieldDefinitionValue : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

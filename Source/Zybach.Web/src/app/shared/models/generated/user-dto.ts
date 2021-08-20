@@ -5,21 +5,21 @@
 import { RoleDto } from './role-dto'
 
 export class UserDto {
-	UserID : string
-	UserGuid? : string
+	UserID : number
+	UserGuid : string
 	FirstName : string
 	LastName : string
 	Email : string
-	Phone? : string
+	Phone : string
 	Role : RoleDto
 	CreateDate : Date
-	UpdateDate? : Date
-	LastActivityDate? : Date
-	DisclaimerAcknowledgedDate? : Date
+	UpdateDate : Date
+	LastActivityDate : Date
 	IsActive : boolean
 	ReceiveSupportEmails : boolean
-	LoginName? : string
-	Company? : string
+	LoginName : string
+	Company : string
+	DisclaimerAcknowledgedDate : Date
 
     constructor(obj?: any) {
         Object.assign(this, obj);

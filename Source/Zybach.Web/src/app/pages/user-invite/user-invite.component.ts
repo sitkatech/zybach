@@ -42,7 +42,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
 
             this.model = new UserInviteDto();
 
-            const userID = this.route.snapshot.paramMap.get("userID");
+            const userID = parseInt(this.route.snapshot.paramMap.get("userID"));
             if (userID) {
                 forkJoin(
                     this.userService.getUserFromUserID(userID)
