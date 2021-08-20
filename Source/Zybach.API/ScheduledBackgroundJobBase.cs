@@ -19,6 +19,7 @@ namespace Zybach.API
         protected readonly ILogger<T> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
         protected readonly ZybachDbContext _dbContext;
+        protected static readonly DateTime DefaultStartDate = new DateTime(2018, 6, 1);
 
         /// <summary> 
         /// Jobs must have a proscribed environment to run in (for example, to prevent a job that makes a lot of calls to an external API from accidentally DOSing that API by running on all local boxes, QA, and Prod at the same time.

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
@@ -24,12 +27,9 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            // TODO: Needs to switch to current date
-            var fromDate = new DateTime(2016, 1, 1);
-
             try
             {
-                GetDailyWellContinuityMeterData(fromDate);
+                GetDailyWellContinuityMeterData(DefaultStartDate);
             }
             catch (Exception e)
             {
@@ -40,18 +40,22 @@ namespace Zybach.API
 
         private void GetDailyWellContinuityMeterData(DateTime fromDate)
         {
-            var wellSensorMeasurements = _influxDbService.GetContinuityMeterSeries(fromDate).Result;
-            // TODO: Get PumpingRate from Zappa service and multiply it by the value and 1440
-            // |> map(fn: (r) => ({r with _value: r._value * float(v: ${gpm * 15})})) \
-            // 15 is minutes; should be 1440
-            //var zappaRate = new Dictionary<string, double>();
-            //wellSensorMeasurements.ForEach(x =>
-            //{
-            //    var pumpingRate = zappaRate[x.WellRegistrationID];
-            //    x.MeasurementValue = x.MeasurementValue * pumpingRate * 1440;
-            //});
-            _dbContext.WellSensorMeasurements.AddRange(wellSensorMeasurements);
+            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+
+            var wellSensorMeasurementStagings = _influxDbService.GetContinuityMeterSeries(fromDate).Result;
+            var pumpingRates = _dbContext.AgHubWells.ToDictionary(x => x.WellRegistrationID, x =>
+                x.WellAuditPumpRate ?? (x.TPNRDPumpRate ?? 0), StringComparer.InvariantCultureIgnoreCase);
+
+            wellSensorMeasurementStagings.ForEach(x =>
+            {
+                var pumpingRate = pumpingRates.ContainsKey(x.WellRegistrationID) ? pumpingRates[x.WellRegistrationID] : 0;
+                x.MeasurementValue *= Convert.ToDouble(pumpingRate);
+            });
+            _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
             _dbContext.SaveChanges();
+
+            var sqlParameter = new SqlParameter("MeasurementTypeID", (int) MeasurementTypeEnum.ContinuityMeter);
+            _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishWellSensorMeasurementStaging @MeasurementTypeID", sqlParameter);
         }
     }
 }

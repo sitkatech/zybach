@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
@@ -24,12 +26,9 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            // TODO: Needs to switch to current date
-            var fromDate = new DateTime(2016, 1, 1);
-
             try
             {
-                GetDailyWellFlowMeterData(fromDate);
+                GetDailyWellFlowMeterData(DefaultStartDate);
             }
             catch (Exception e)
             {
@@ -40,9 +39,14 @@ namespace Zybach.API
 
         private void GetDailyWellFlowMeterData(DateTime fromDate)
         {
+            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+
             var wellSensorMeasurements = _influxDbService.GetFlowMeterSeries(fromDate).Result;
-            _dbContext.WellSensorMeasurements.AddRange(wellSensorMeasurements);
+            _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurements);
             _dbContext.SaveChanges();
+
+            var sqlParameter = new SqlParameter("MeasurementTypeID", (int)MeasurementTypeEnum.FlowMeter);
+            _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishWellSensorMeasurementStaging @MeasurementTypeID", sqlParameter);
         }
     }
 }

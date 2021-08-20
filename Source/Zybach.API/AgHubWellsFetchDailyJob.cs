@@ -16,7 +16,6 @@ namespace Zybach.API
         private readonly AgHubService _agHubService;
         public const string JobName = "AgHub Well Fetch Daily";
         private static readonly List<string> ProblemWellRegistrationIDs = new List<string>{ "G-012886", "G-017908", "G-018992", "G-033855", "G-052662", "G-128363" };
-        private static readonly DateTime DefaultStartDate = new DateTime(2018, 6, 1);
 
         public AgHubWellsFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<AgHubWellsFetchDailyJob> logger,
             ZybachDbContext zybachDbContext, AgHubService agHubService, InfluxDBService influxDbService) : base(

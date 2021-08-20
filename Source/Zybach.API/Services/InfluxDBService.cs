@@ -110,7 +110,7 @@ namespace Zybach.API.Services
         }
 
 
-        public async Task<List<WellSensorMeasurement>> GetFlowMeterSeries(DateTime fromDate)
+        public async Task<List<WellSensorMeasurementStaging>> GetFlowMeterSeries(DateTime fromDate)
         {
             var flux = FilterByDateRange(fromDate, DateTime.Now) +
                        FilterByMeasurement(new List<string> {MeasurementNames.Gallons}) +
@@ -119,13 +119,13 @@ namespace Zybach.API.Services
                        AggregateSumDaily(false);
 
             var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new WellSensorMeasurement
+            return fluxTables.Select(x => new WellSensorMeasurementStaging
             {
                 WellRegistrationID = x.RegistrationID, ReadingDate = x.Time, MeasurementTypeID = (int) MeasurementTypeEnum.FlowMeter, MeasurementValue = x.Value, SensorName = x.Sensor
             }).ToList();
         }
 
-        public async Task<List<WellSensorMeasurement>> GetContinuityMeterSeries(DateTime fromDate)
+        public async Task<List<WellSensorMeasurementStaging>> GetContinuityMeterSeries(DateTime fromDate)
         {
             var fluxQuery =
                 "import \"math\" " +
@@ -139,12 +139,12 @@ namespace Zybach.API.Services
                 "|> events.duration(unit: 1ns, columnName: \"run-time-ns\", timeColumn: \"_time\", stopColumn: \"_stop\") " +
                 "|> filter(fn: (r) => r[\"_value\"] == 1) " +
                 "|> map(fn: (r) => ({ r with \"run-time-minutes\": float(v: r[\"run-time-ns\"]) / 60000000000.0})) " +
-                "|> map(fn: (r) => ({ r with \"run-time-minutes-min\": math.mMin(x: r[\"run-time-minutes\"], y: 24.0 * 60.0)})) " +
-                "|> aggregateWindow(every: 1d, fn: sum, createEmpty: false, timeSrc: \"_start\", column: \"run-time-minutes-min\", offset: 5h) ";
+                "|> map(fn: (r) => ({ r with \"_value\": math.mMin(x: r[\"run-time-minutes\"], y: 24.0 * 60.0)})) " +
+                "|> aggregateWindow(every: 1d, fn: sum, createEmpty: false, timeSrc: \"_start\", column: \"_value\", offset: 5h) ";
             _logger.LogInformation($"Influx DB Query: {fluxQuery}");
             var fluxTables = await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReading>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
 
-            return fluxTables.Select(x => new WellSensorMeasurement
+            return fluxTables.Select(x => new WellSensorMeasurementStaging
             {
                 WellRegistrationID = x.RegistrationID, 
                 ReadingDate = x.Time,
