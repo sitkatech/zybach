@@ -67,7 +67,7 @@ namespace Zybach.API.Controllers
                 FetchDate = agHubWellDto.FetchDate,
                 InGeoOptix = false,
                 HasElectricalData = agHubWellDto.HasElectricalData,
-                Location = new Feature(new Point(new Position(agHubWellDto.Latitude, agHubWellDto.Longitude))),
+                Location = new Feature(new Point(new Position(agHubWellDto.Longitude, agHubWellDto.Latitude))),
                 WellRegistrationID = agHubWellDto.WellRegistrationID,
                 WellTPID = agHubWellDto.WellTPID,
                 Sensors = new List<SensorSummaryDto>{new SensorSummaryDto{SensorType = "Electrical Usage", WellRegistrationID = agHubWellDto.WellRegistrationID}}
