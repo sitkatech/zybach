@@ -60,7 +60,7 @@ namespace Zybach.API.Controllers
         // @Security(SecurityType.API_KEY)
         public object GetPumpedVolume([FromQuery] string startDate, [FromQuery] List<string> filter, [FromQuery] string endDate, [FromQuery] int? interval)
         {
-            return GetPumpedVolumeImpl(startDate, filter, endDate, interval);
+            return GetPumpedVolumeImpl(filter, startDate, endDate);
         }
 
 
@@ -165,9 +165,9 @@ namespace Zybach.API.Controllers
         //}
 
         [HttpGet("/api/wells/{wellRegistrationID}/pumpedVolume")]
-        public object GetPumpedVolume([FromQuery] string startDate, [FromRoute] string wellRegistrationID, [FromQuery] string endDate, [FromQuery] int? interval)
+        public object GetPumpedVolume([FromQuery] string startDate, [FromRoute] string wellRegistrationID, [FromQuery] string endDate)
         {
-            return GetPumpedVolumeImpl(startDate, new List<string>{wellRegistrationID}, endDate, interval);
+            return GetPumpedVolumeImpl(new List<string>{wellRegistrationID}, startDate, endDate);
         }
 
 
@@ -261,15 +261,12 @@ namespace Zybach.API.Controllers
             return annualPumpedVolumes;
         }
 
-        private object GetPumpedVolumeImpl(string startDateString, List<string> wellRegistrationIDs,
-            string endDateString, int? interval)
+        private object GetPumpedVolumeImpl(List<string> wellRegistrationIDs, string startDateString, string endDateString)
         {
             if (string.IsNullOrWhiteSpace(endDateString))
             {
                 endDateString = DateTime.Today.ToShortDateString();
             }
-
-            var intervalValue = interval ?? 60;
 
             //TODO: Validate startDateString and endDateString are valid date strings in ISO 8601 format
             if (!DateTime.TryParse(startDateString, out var startDate))
@@ -282,12 +279,6 @@ namespace Zybach.API.Controllers
             {
                 throw new ArgumentException(
                     "End date is not a valid Date string in ISO 8601 format. Please enter a valid date string ");
-            }
-
-            if (intervalValue == 0 || intervalValue % 15 != 0)
-            {
-                throw new ArgumentOutOfRangeException("interval",
-                    "Interval must be a number evenly divisible by 15 and greater than 0. Please enter a new interval.");
             }
 
             if (startDate > endDate)
@@ -308,7 +299,7 @@ namespace Zybach.API.Controllers
                 return new
                 {
                     Status = "success",
-                    Result = results.Any() ? StructureResults(results, intervalValue) : null
+                    Result = results.Any() ? StructureResults(results, startDate, endDate) : null
                 };
             }
             catch (Exception ex)
@@ -317,50 +308,29 @@ namespace Zybach.API.Controllers
             }
         }
 
-        private static StructuredResults StructureResults(List<WellSensorMeasurementDto> results, int interval)
+        private static StructuredResults StructureResults(List<WellSensorMeasurementDto> results, DateTime startDate, DateTime endDate)
         {
             var distinctWells = results.Select(x => x.WellRegistrationID).Distinct().ToList();
-            var startDate = results.First().ReadingDate;
-            var endDate = results.Last().ReadingDate;
             var totalResults = 0;
             var volumesByWell = new List<VolumeByWell>();
             foreach (var wellRegistrationID in distinctWells)
             {
-                var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID).OrderBy(x => x.ReadingDate).ToList();
-
-                if (currentWellResults.First().ReadingDate < startDate)
-                {
-                    startDate = currentWellResults.First().ReadingDate;
-                }
-
-                var aggregatedResults = currentWellResults;
-
-                if (aggregatedResults.Last().ReadingDate > endDate)
-                {
-                    endDate = aggregatedResults.Last().ReadingDate;
-                }
-
-                totalResults += aggregatedResults.Count;
-
+                var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
+                totalResults += currentWellResults.Count;
                 var volumeByWell = new VolumeByWell
                 {
                     WellRegistrationID = wellRegistrationID,
-                    IntervalCount = aggregatedResults.Count,
-                    IntervalVolumes = aggregatedResults
+                    IntervalCount = currentWellResults.Count,
+                    IntervalVolumes = currentWellResults
                 };
                 volumesByWell.Add(volumeByWell);
             }
 
-            //Because we get the intervals back in 15 minute increments, technically our startDate is 15 minutes BEFORE our actual first time
-            //Remove this extra piece if we decide we just want the first interval's end date
-            startDate = startDate.AddMinutes(-15);
             return new StructuredResults()
             {
                 IntervalCountTotal = totalResults,
-                IntervalWidthInMinutes = interval,
                 IntervalStart = startDate.ToString("yyyy-MM-ddTHH:mm:ssZ"),
                 IntervalEnd = endDate.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-                DurationInMinutes = (endDate - startDate).TotalMinutes,
                 WellCount = distinctWells.Count,
                 VolumesByWell = volumesByWell
             };
