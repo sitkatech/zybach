@@ -554,7 +554,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
           ]
         },
         {
-          "transform": [{ "pivot": "DataSource", "value": "GallonsString", "groupby": ["time"], "op": "max" }],
+          "transform": [{ "pivot": "DataSource", "value": "GallonsString", "groupby": ["Time"], "op": "max" }],
           "mark": "rule",
           "encoding": {
             "opacity": {
