@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -33,15 +34,14 @@ namespace Zybach.API.Controllers
 
             var dailyPumpedVolumes = new List<DailyPumpedVolume>();
 
-            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
-            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 
             if (hasElectricalData)
             {
                 sensors.Add(new SensorSummaryDto { WellRegistrationID = wellRegistrationID, SensorType = InfluxDBService.SensorTypes.ElectricalUsage});
-                var wellSensorMeasurementDtos =
-                    WellSensorMeasurement.GetWellSensorMeasurementsByMeasurementType(_dbContext, MeasurementTypeEnum.ElectricalUsage);
-                var electricalBasedFlowEstimateSeries = wellSensorMeasurementDtos.Select(x => new DailyPumpedVolume(x.ReadingDate, x.MeasurementValue, null)).ToList();
+                var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                var electricalBasedFlowEstimateSeries = CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, InfluxDBService.SensorTypes.ElectricalUsage);
                 dailyPumpedVolumes.AddRange(electricalBasedFlowEstimateSeries);
             }
 
@@ -51,7 +51,8 @@ namespace Zybach.API.Controllers
             return wellChartDataDto;
         }
 
-        private IEnumerable<DailyPumpedVolume> GetDailyPumpedVolumeForWellAndSensorType(IEnumerable<SensorSummaryDto> sensors, string sensorType, MeasurementTypeEnum measurementTypeEnum)
+        private IEnumerable<DailyPumpedVolume> GetDailyPumpedVolumeForWellAndSensorType(string wellRegistrationID,
+            IEnumerable<SensorSummaryDto> sensors, string sensorType, MeasurementTypeEnum measurementTypeEnum)
         {
             var sensorTypeSensors = sensors.Where(x => x.SensorType == sensorType).ToList();
 
@@ -60,8 +61,26 @@ namespace Zybach.API.Controllers
                 return new List<DailyPumpedVolume>();
             }
 
-            var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForSensorsByMeasurementType(_dbContext, measurementTypeEnum, sensorTypeSensors);
-            return wellSensorMeasurementDtos.Select(x => new DailyPumpedVolume(x.ReadingDate, x.MeasurementValue, sensorType)).ToList();
+            var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
+            return CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, sensorType);
+        }
+
+        private static IEnumerable<DailyPumpedVolume> CreateDailyPumpedVolumesAndZeroFillMissingDays(
+            List<WellSensorMeasurementDto> wellSensorMeasurementDtos, string sensorType)
+        {
+            var measurementValues = wellSensorMeasurementDtos.ToDictionary(
+                x => new DateTime(x.ReadingDate.Year, x.ReadingDate.Month, x.ReadingDate.Day), x => x.MeasurementValue);
+            var startDate = wellSensorMeasurementDtos.Min(x => x.ReadingDate);
+            var endDate = DateTime.Today;
+            var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
+                .ToList();
+            var dailyPumpedVolumes = list.Select(a =>
+            {
+                var dateTime = startDate.AddDays(a);
+                var gallons = measurementValues.ContainsKey(dateTime) ? measurementValues[dateTime] : 0;
+                return new DailyPumpedVolume(dateTime, gallons, sensorType);
+            });
+            return dailyPumpedVolumes;
         }
     }
 

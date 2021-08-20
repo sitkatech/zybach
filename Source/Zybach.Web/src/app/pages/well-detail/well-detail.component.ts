@@ -389,6 +389,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         pivoted.set(point.Time, pivotRow);
       }
     }
+    console.log(pivoted);
     const pivotedAndSorted = Array.from(pivoted.values())
       .map(x=> ({
         "Date": moment(x.Date).format('M/D/yyyy'),
@@ -397,7 +398,9 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         "ContinuityDeviceGallons": x["Continuity Meter"]
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
-    
+
+    console.log(pivotedAndSorted);
+
     const fields = ['Date'];
 
     const sensorTypes = this.well.Sensors.map(x=>x.SensorType);
