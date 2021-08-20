@@ -21,7 +21,7 @@ begin
 	where aws.AgHubWellStagingID is null
 
 	insert into dbo.AgHubWell(WellRegistrationID, WellTPID, WellGeometry, TPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, FetchDate)
-	select	aws.WellRegistrationID, 
+	select	upper(aws.WellRegistrationID) as WellRegistrationID, 
 			aws.WellTPID,
 			aws.WellGeometry,
 			aws.TPNRDPumpRate,
@@ -36,7 +36,8 @@ begin
 	where aw.AgHubWellID is null
 
 	update aw
-	set aw.WellTPID = aws.WellTPID,
+	set aw.WellRegistrationID = upper(aws.WellRegistrationID),
+		aw.WellTPID = aws.WellTPID,
 		aw.WellGeometry = aws.WellGeometry,
 		aw.TPNRDPumpRate = aws.TPNRDPumpRate,
 		aw.TPNRDPumpRateUpdated = aws.TPNRDPumpRateUpdated,
