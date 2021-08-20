@@ -155,8 +155,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Electrical Use Meter?",
         valueGetter: function (params) {
-          const sensorTypes = params.data.Sensors.map(x => x.SensorType);
-          if (sensorTypes.includes("Electrical Usage")) {
+          if (params.data.HasElectricalData) {
             return "Yes";
           } else {
             return "No";
