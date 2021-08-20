@@ -8,11 +8,13 @@ export class AgHubWellStagingDto {
 	AgHubWellStagingID : number
 	WellRegistrationID : string
 	WellTPID : string
-	TPNRDPumpRate : number
+	WellTPNRDPumpRate : number
 	TPNRDPumpRateUpdated : Date
 	WellConnectedMeter : boolean
 	WellAuditPumpRate : number
 	AuditPumpRateUpdated : Date
+	RegisteredPumpRate : number
+	RegisteredUpdated : Date
 	HasElectricalData : boolean
 
     constructor(obj?: any) {

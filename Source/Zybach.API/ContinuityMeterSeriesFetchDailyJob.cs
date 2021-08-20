@@ -44,7 +44,7 @@ namespace Zybach.API
 
             var wellSensorMeasurementStagings = _influxDbService.GetContinuityMeterSeries(fromDate).Result;
             var pumpingRates = _dbContext.AgHubWells.ToDictionary(x => x.WellRegistrationID, x =>
-                x.WellAuditPumpRate ?? (x.TPNRDPumpRate ?? 0), StringComparer.InvariantCultureIgnoreCase);
+                x.WellAuditPumpRate ?? x.RegisteredPumpRate ?? x.WellTPNRDPumpRate ?? 0, StringComparer.InvariantCultureIgnoreCase);
 
             wellSensorMeasurementStagings.ForEach(x =>
             {

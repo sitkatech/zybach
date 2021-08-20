@@ -88,7 +88,6 @@ namespace Zybach.API
                         pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.PumpedVolumeGallons > 0).ToList();
                     if (pumpedVolumeTimePoints.Any())
                     {
-                        agHubWell.HasElectricalData = true;
                         var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
                             pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
                             {
@@ -128,11 +127,13 @@ namespace Zybach.API
                 AuditPumpRateUpdated = agHubWellRaw.AuditPumpRateUpdated,
                 WellAuditPumpRate = agHubWellRaw.WellAuditPumpRate,
                 TPNRDPumpRateUpdated = agHubWellRaw.TpnrdPumpRateUpdated,
-                TPNRDPumpRate = agHubWellRaw.WellTpnrdPumpRate,
+                WellTPNRDPumpRate = agHubWellRaw.WellTpnrdPumpRate,
+                RegisteredUpdated = agHubWellRaw.RegisteredUpdated,
+                RegisteredPumpRate = agHubWellRaw.RegisteredPumpRate,
                 WellConnectedMeter = agHubWellRaw.WellConnectedMeter ?? false,
                 WellGeometry = new Point(agHubWellRaw.Location.Coordinates.Longitude,agHubWellRaw.Location.Coordinates.Latitude),
                 WellTPID = agHubWellRaw.WellTPID,
-                HasElectricalData = false
+                HasElectricalData = agHubWellRaw.HasElectricalData
             };
             return agHubWell;
         }

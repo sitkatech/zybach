@@ -22,13 +22,16 @@ namespace Zybach.EFModels.Entities
         [Required]
         [Column(TypeName = "geometry")]
         public Geometry WellGeometry { get; set; }
-        public int? TPNRDPumpRate { get; set; }
+        public int? WellTPNRDPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? TPNRDPumpRateUpdated { get; set; }
         public bool WellConnectedMeter { get; set; }
         public int? WellAuditPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? AuditPumpRateUpdated { get; set; }
+        public int? RegisteredPumpRate { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? RegisteredUpdated { get; set; }
         public bool HasElectricalData { get; set; }
     }
 }

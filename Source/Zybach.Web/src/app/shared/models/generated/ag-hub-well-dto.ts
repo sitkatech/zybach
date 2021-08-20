@@ -8,13 +8,15 @@ export class AgHubWellDto {
 	AgHubWellID : number
 	WellRegistrationID : string
 	WellTPID : string
-	TPNRDPumpRate : number
+	WellTPNRDPumpRate : number
 	TPNRDPumpRateUpdated : Date
 	WellConnectedMeter : boolean
 	WellAuditPumpRate : number
 	AuditPumpRateUpdated : Date
 	HasElectricalData : boolean
 	FetchDate : Date
+	RegisteredPumpRate : number
+	RegisteredUpdated : Date
 
     constructor(obj?: any) {
         Object.assign(this, obj);

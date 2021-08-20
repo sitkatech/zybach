@@ -16,11 +16,13 @@ namespace Zybach.EFModels.Entities
                 AgHubWellStagingID = agHubWellStaging.AgHubWellStagingID,
                 WellRegistrationID = agHubWellStaging.WellRegistrationID,
                 WellTPID = agHubWellStaging.WellTPID,
-                TPNRDPumpRate = agHubWellStaging.TPNRDPumpRate,
+                WellTPNRDPumpRate = agHubWellStaging.WellTPNRDPumpRate,
                 TPNRDPumpRateUpdated = agHubWellStaging.TPNRDPumpRateUpdated,
                 WellConnectedMeter = agHubWellStaging.WellConnectedMeter,
                 WellAuditPumpRate = agHubWellStaging.WellAuditPumpRate,
                 AuditPumpRateUpdated = agHubWellStaging.AuditPumpRateUpdated,
+                RegisteredPumpRate = agHubWellStaging.RegisteredPumpRate,
+                RegisteredUpdated = agHubWellStaging.RegisteredUpdated,
                 HasElectricalData = agHubWellStaging.HasElectricalData
             };
             DoCustomMappings(agHubWellStaging, agHubWellStagingDto);

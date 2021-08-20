@@ -7,13 +7,15 @@ CREATE TABLE [dbo].[AgHubWell](
 	[WellRegistrationID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[WellTPID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[WellGeometry] [geometry] NOT NULL,
-	[TPNRDPumpRate] [int] NULL,
+	[WellTPNRDPumpRate] [int] NULL,
 	[TPNRDPumpRateUpdated] [datetime] NULL,
 	[WellConnectedMeter] [bit] NOT NULL,
 	[WellAuditPumpRate] [int] NULL,
 	[AuditPumpRateUpdated] [datetime] NULL,
 	[HasElectricalData] [bit] NOT NULL,
 	[FetchDate] [datetime] NOT NULL,
+	[RegisteredPumpRate] [int] NULL,
+	[RegisteredUpdated] [datetime] NULL,
  CONSTRAINT [PK_AgHubWell_AgHubWellID] PRIMARY KEY CLUSTERED 
 (
 	[AgHubWellID] ASC

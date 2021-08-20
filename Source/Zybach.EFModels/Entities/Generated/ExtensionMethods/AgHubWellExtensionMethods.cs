@@ -16,13 +16,15 @@ namespace Zybach.EFModels.Entities
                 AgHubWellID = agHubWell.AgHubWellID,
                 WellRegistrationID = agHubWell.WellRegistrationID,
                 WellTPID = agHubWell.WellTPID,
-                TPNRDPumpRate = agHubWell.TPNRDPumpRate,
+                WellTPNRDPumpRate = agHubWell.WellTPNRDPumpRate,
                 TPNRDPumpRateUpdated = agHubWell.TPNRDPumpRateUpdated,
                 WellConnectedMeter = agHubWell.WellConnectedMeter,
                 WellAuditPumpRate = agHubWell.WellAuditPumpRate,
                 AuditPumpRateUpdated = agHubWell.AuditPumpRateUpdated,
                 HasElectricalData = agHubWell.HasElectricalData,
-                FetchDate = agHubWell.FetchDate
+                FetchDate = agHubWell.FetchDate,
+                RegisteredPumpRate = agHubWell.RegisteredPumpRate,
+                RegisteredUpdated = agHubWell.RegisteredUpdated
             };
             DoCustomMappings(agHubWell, agHubWellDto);
             return agHubWellDto;

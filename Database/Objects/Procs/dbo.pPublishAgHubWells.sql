@@ -20,16 +20,18 @@ begin
 	left join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
 	where aws.AgHubWellStagingID is null
 
-	insert into dbo.AgHubWell(WellRegistrationID, WellTPID, WellGeometry, TPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, FetchDate)
+	insert into dbo.AgHubWell(WellRegistrationID, WellTPID, WellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, FetchDate)
 	select	upper(aws.WellRegistrationID) as WellRegistrationID, 
 			aws.WellTPID,
 			aws.WellGeometry,
-			aws.TPNRDPumpRate,
+			aws.WellTPNRDPumpRate,
 			aws.TPNRDPumpRateUpdated,
 			aws.WellConnectedMeter,
 			aws.WellAuditPumpRate,
 			aws.AuditPumpRateUpdated,
 			aws.HasElectricalData,
+			aws.RegisteredPumpRate,
+			aws.RegisteredUpdated,
 			@fetchDate as FetchDate
 	from dbo.AgHubWellStaging aws
 	left join dbo.AgHubWell aw on aws.WellRegistrationID = aw.WellRegistrationID
@@ -39,12 +41,14 @@ begin
 	set aw.WellRegistrationID = upper(aws.WellRegistrationID),
 		aw.WellTPID = aws.WellTPID,
 		aw.WellGeometry = aws.WellGeometry,
-		aw.TPNRDPumpRate = aws.TPNRDPumpRate,
+		aw.WellTPNRDPumpRate = aws.WellTPNRDPumpRate,
 		aw.TPNRDPumpRateUpdated = aws.TPNRDPumpRateUpdated,
 		aw.WellConnectedMeter = aws.WellConnectedMeter,
 		aw.WellAuditPumpRate = aws.WellAuditPumpRate,
 		aw.AuditPumpRateUpdated = aws.AuditPumpRateUpdated,
 		aw.HasElectricalData = aws.HasElectricalData,
+		aw.RegisteredPumpRate = aws.RegisteredPumpRate,
+		aw.RegisteredUpdated =aws.RegisteredUpdated,
 		aw.FetchDate = @fetchDate
 	from dbo.AgHubWell aw
 	join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
