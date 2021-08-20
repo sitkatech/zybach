@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
@@ -318,7 +319,7 @@ namespace Zybach.API.Controllers
 
             try
             {
-                var results = _dbContext.WellSensorMeasurements.Where(x =>
+                var results = _dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking().Where(x =>
                     wellRegistrationIDs.Contains(x.WellRegistrationID) 
                     && (
                         x.MeasurementTypeID == (int) MeasurementTypeEnum.FlowMeter

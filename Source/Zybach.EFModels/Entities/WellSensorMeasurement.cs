@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
@@ -10,7 +11,7 @@ namespace Zybach.EFModels.Entities
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementType(
     ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum)
         {
-            return dbContext.WellSensorMeasurements
+            return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum).Select(x => x.AsDto())
                 .ToList();
         }
@@ -18,7 +19,7 @@ namespace Zybach.EFModels.Entities
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementTypeAndYear(
             ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum, int year)
         {
-            return dbContext.WellSensorMeasurements
+            return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum
                             && x.ReadingDate.Year == year
                 ).Select(x => x.AsDto())
@@ -30,10 +31,15 @@ namespace Zybach.EFModels.Entities
             IEnumerable<SensorSummaryDto> sensorTypeSensors)
         {
             var sensorNames = sensorTypeSensors.Select(y => y.SensorName);
-            return dbContext.WellSensorMeasurements
+            return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum &&
                             sensorNames.Contains(x.SensorName)).Select(x => x.AsDto())
                 .ToList();
+        }
+
+        private static IQueryable<WellSensorMeasurement> GetWellSensorMeasurementsImpl(ZybachDbContext dbContext)
+        {
+            return dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking();
         }
 
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(
@@ -41,7 +47,7 @@ namespace Zybach.EFModels.Entities
             IEnumerable<SensorSummaryDto> sensorTypeSensors)
         {
             var sensorNames = sensorTypeSensors.Select(y => y.SensorName);
-            return dbContext.WellSensorMeasurements
+            return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.WellRegistrationID == wellRegistrationID &&
                             x.MeasurementTypeID == (int)measurementTypeEnum &&
                             sensorNames.Contains(x.SensorName)).Select(x => x.AsDto())
@@ -54,7 +60,7 @@ namespace Zybach.EFModels.Entities
         {
             var measurementTypeIDs = measurementTypeEnums.Select(x => (int) x);
             var sensorNames = sensorTypeSensors.Select(y => y.SensorName);
-            return dbContext.WellSensorMeasurements
+            return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.WellRegistrationID == wellRegistrationID &&
                             measurementTypeIDs.Contains(x.MeasurementTypeID) &&
                             sensorNames.Contains(x.SensorName)).Select(x => x.AsDto())
@@ -64,7 +70,7 @@ namespace Zybach.EFModels.Entities
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsForWellByMeasurementType(
             ZybachDbContext dbContext, string wellRegistrationID, MeasurementTypeEnum measurementTypeEnum)
         {
-            return dbContext.WellSensorMeasurements
+            return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.WellRegistrationID == wellRegistrationID &&
                             x.MeasurementTypeID == (int)measurementTypeEnum).Select(x => x.AsDto())
                 .ToList();
