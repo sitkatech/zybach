@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
@@ -103,11 +104,14 @@ namespace Zybach.API.Controllers
                 }
                 else
                 {
-                    var wellIDs = streamFlowZoneWellsDto.AgHubWells.Select(x => x.AgHubWellID);
-                    var wellRegistrationIDs = streamFlowZoneWellsDto.AgHubWells.Select(x => x.WellRegistrationID.ToUpper());
-                    var totalIrrigatedAcres = _dbContext.AgHubWellIrrigatedAcres
-                        .Where(x => wellIDs.Contains(x.AgHubWellID) && x.IrrigationYear == year).Sum(x => x.Acres);
-                    var totalVolume = pumpedVolumes.Where(x => wellRegistrationIDs.Contains(x.Key)).Sum(x => x.Value);
+                    var wellRegistrationIDsWithinStreamFlowZone = streamFlowZoneWellsDto.AgHubWells.Select(x => x.WellRegistrationID.ToUpper());
+                    var wellRegistrationIDsWithinStreamFlowZoneWithElectricalUsageDataThisYear = WellSensorMeasurement
+                        .GetWellSensorMeasurementsByMeasurementTypeAndYear(_dbContext,
+                            MeasurementTypeEnum.ElectricalUsage, year).Where(x => wellRegistrationIDsWithinStreamFlowZone.Contains(x.WellRegistrationID)).Select(x => x.WellRegistrationID).Distinct()
+                        .ToList();
+                    var totalIrrigatedAcres = _dbContext.AgHubWellIrrigatedAcres.Include(x => x.AgHubWell)
+                        .Where(x => wellRegistrationIDsWithinStreamFlowZone.Contains(x.AgHubWell.WellRegistrationID) && x.IrrigationYear == year).Sum(x => x.Acres);
+                    var totalVolume = pumpedVolumes.Where(x => wellRegistrationIDsWithinStreamFlowZoneWithElectricalUsageDataThisYear.Contains(x.Key)).Sum(x => x.Value);
 
                     // todo: this is reporting in gallons/acres right now and we probably want acre-inch per acre
                     streamFlowZonePumpingDepthDtos.Add(new StreamFlowZonePumpingDepthDto(
