@@ -17,15 +17,12 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class MapDataController : SitkaController<MapDataController>
     {
-        private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
 
         public MapDataController(ZybachDbContext dbContext, ILogger<MapDataController> logger,
-            KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration,
-            InfluxDBService influxDbService, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService,
+            KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService,
             zybachConfiguration)
         {
-            _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
         }
 
@@ -33,8 +30,8 @@ namespace Zybach.API.Controllers
         public async Task<List<WellWithSensorSummaryDto>> GetWellsWithSensors()
         {
             var geoOptixWellDictionary = await _geoOptixService.GetWellsWithSensors();
-            var lastReadingDateTimes = await this._influxDbService.GetLastReadingDateTimes();
-            var firstReadingDateTimes = await this._influxDbService.GetFirstReadingDateTimes();
+            var lastReadingDateTimes = WellSensorMeasurement.GetLastReadingDateTimes(_dbContext);
+            var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
             var agHubWellDtos = AgHubWell.List(_dbContext);
 
             agHubWellDtos.ForEach(x =>

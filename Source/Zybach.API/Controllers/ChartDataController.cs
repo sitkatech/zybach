@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,12 +14,10 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class ChartDataController : SitkaController<ChartDataController>
     {
-        private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
 
-        public ChartDataController(ZybachDbContext dbContext, ILogger<ChartDataController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ChartDataController(ZybachDbContext dbContext, ILogger<ChartDataController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
         }
 
@@ -31,25 +27,21 @@ namespace Zybach.API.Controllers
         public async Task<WellChartDataDto> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
         {
             var wellChartDataDto = new WellChartDataDto();
-            var firstReadingDateTimeForWell = await _influxDbService.GetFirstReadingDateTimeForWell(wellRegistrationID);
-            if (firstReadingDateTimeForWell == null)
-            {
-                return wellChartDataDto;
-            }
-
             var sensors = await _geoOptixService.GetSensorSummariesForWell(wellRegistrationID);
             var agHubWell = AgHubWell.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
             var hasElectricalData = agHubWell?.HasElectricalData ?? false;
 
             var dailyPumpedVolumes = new List<DailyPumpedVolume>();
 
-            dailyPumpedVolumes.AddRange(await GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.FlowMeter, firstReadingDateTimeForWell.Value));
-            dailyPumpedVolumes.AddRange(await GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.ContinuityMeter, firstReadingDateTimeForWell.Value));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(sensors, InfluxDBService.SensorTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 
             if (hasElectricalData)
             {
-                sensors.Add(new SensorSummaryDto() { WellRegistrationID = wellRegistrationID, SensorType = InfluxDBService.SensorTypes.ElectricalUsage});
-                var electricalBasedFlowEstimateSeries = await _influxDbService.GetElectricalBasedFlowEstimateSeries(wellRegistrationID, firstReadingDateTimeForWell.Value);
+                sensors.Add(new SensorSummaryDto { WellRegistrationID = wellRegistrationID, SensorType = InfluxDBService.SensorTypes.ElectricalUsage});
+                var wellSensorMeasurementDtos =
+                    WellSensorMeasurement.GetWellSensorMeasurementsByMeasurementType(_dbContext, MeasurementTypeEnum.ElectricalUsage);
+                var electricalBasedFlowEstimateSeries = wellSensorMeasurementDtos.Select(x => new DailyPumpedVolume(x.ReadingDate, x.MeasurementValue, null)).ToList();
                 dailyPumpedVolumes.AddRange(electricalBasedFlowEstimateSeries);
             }
 
@@ -59,8 +51,7 @@ namespace Zybach.API.Controllers
             return wellChartDataDto;
         }
 
-        private async Task<List<DailyPumpedVolume>> GetDailyPumpedVolumeForWellAndSensorType(
-            List<SensorSummaryDto> sensors, string sensorType, DateTime fromDate)
+        private IEnumerable<DailyPumpedVolume> GetDailyPumpedVolumeForWellAndSensorType(IEnumerable<SensorSummaryDto> sensors, string sensorType, MeasurementTypeEnum measurementTypeEnum)
         {
             var sensorTypeSensors = sensors.Where(x => x.SensorType == sensorType).ToList();
 
@@ -69,9 +60,9 @@ namespace Zybach.API.Controllers
                 return new List<DailyPumpedVolume>();
             }
 
-            return await _influxDbService.GetPumpedVolumesForSensors(sensorTypeSensors.Select(x => x.SensorName).ToList(), sensorType, fromDate);
+            var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForSensorsByMeasurementType(_dbContext, measurementTypeEnum, sensorTypeSensors);
+            return wellSensorMeasurementDtos.Select(x => new DailyPumpedVolume(x.ReadingDate, x.MeasurementValue, sensorType)).ToList();
         }
-
     }
 
     public class WellChartDataDto

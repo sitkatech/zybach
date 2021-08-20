@@ -15,16 +15,12 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class ManagerDashboardController : SitkaController<ManagerDashboardController>
     {
-        private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
-        private readonly GeoOptixSearchService _geoOptixSearchService;
         private const double GALLON_TO_ACRE_INCH = 3.68266E-5;
 
-        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, GeoOptixSearchService geoOptixSearchService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
-            _geoOptixSearchService = geoOptixSearchService;
         }
 
 
@@ -34,7 +30,9 @@ namespace Zybach.API.Controllers
         {
             // get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year
             var geoOptixWells = await _geoOptixService.GetWellSummariesCreatedAsOfYear(year);
-            var aghubRegistrationIds = await _influxDbService.GetWellRegistrationIDsWithElectricalEstimateAsOfYear(year);
+            var aghubRegistrationIds = _dbContext.WellSensorMeasurements
+                .Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.ElectricalUsage &&
+                            x.ReadingDate.Year == year).Select(x => x.WellRegistrationID).ToList();
             // combine the registration ids as a set and count to avoid counting duplicates
             var numberOfWellsTracked = geoOptixWells.Select(x => x.WellRegistrationID)
                 .Union(aghubRegistrationIds, StringComparer.InvariantCultureIgnoreCase).Count();
@@ -67,7 +65,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/managerDashboard/streamFlowZonePumpingDepths")]
-        public async Task<List<AnnualStreamFlowZonePumpingDepthDto>> GetStreamFlowZonePumpingDepths()
+        public List<AnnualStreamFlowZonePumpingDepthDto> GetStreamFlowZonePumpingDepths()
         {
             // Currently, we are only accounting for electrical data when color-coding the SFZ map;
             // hence, we can confine our attention to the aghub wells and the electrical estimate time series
@@ -80,17 +78,19 @@ namespace Zybach.API.Controllers
             var annualStreamFlowZonePumpingDepths = new List<AnnualStreamFlowZonePumpingDepthDto>();
             foreach (var year in years)
             {
-                annualStreamFlowZonePumpingDepths.Add(await CreateAnnualStreamFlowZonePumpingDepthDto(year, streamFlowZoneWellMap));
+                annualStreamFlowZonePumpingDepths.Add(CreateAnnualStreamFlowZonePumpingDepthDto(year, streamFlowZoneWellMap));
             }
             return annualStreamFlowZonePumpingDepths;
 
         }
 
-        private async Task<AnnualStreamFlowZonePumpingDepthDto> CreateAnnualStreamFlowZonePumpingDepthDto(int year, List<StreamFlowZoneWellsDto> streamFlowZoneWellMap)
+        private AnnualStreamFlowZonePumpingDepthDto CreateAnnualStreamFlowZonePumpingDepthDto(int year, List<StreamFlowZoneWellsDto> streamFlowZoneWellMap)
         {
             // Step 2. Get the total pumped volume for each well.
             // This is represented as a mapping from Well Registration IDs to pumped volumes
-            var pumpedVolumes = await _influxDbService.GetAnnualEstimatedPumpedVolumeByWellForYear(year);
+            var pumpedVolumes = WellSensorMeasurement
+                .GetWellSensorMeasurementsByMeasurementTypeAndYear(_dbContext, MeasurementTypeEnum.ElectricalUsage, year)
+                .GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Sum(y => y.MeasurementValue));
 
             // Step 3. For each StreamFlowZone, calculate the pumping depth
             var streamFlowZonePumpingDepthDtos = new List<StreamFlowZonePumpingDepthDto>();

@@ -7,7 +7,6 @@ using InfluxDB.Client.Core;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.EFModels.Entities;
-using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Services
 {
@@ -31,84 +30,6 @@ namespace Zybach.API.Services
             _influxDbClient = InfluxDBClientFactory.Create(options);
             _defaultStartDate = new DateTime(2000, 1, 1);
         }
-
-        public async Task<Dictionary<string, DateTime>> GetFirstReadingDateTimesForSensor()
-        {
-            var flux = FilterByStartDate() +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume, MeasurementNames.EstimatedPumpedVolume }) +
-                       GroupBy(FieldNames.SensorName) +
-                       "|> first()";
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Where(x => !string.IsNullOrWhiteSpace(x.Sensor))
-                .ToDictionary(x => x.Sensor.ToUpper(), x => x.Time);
-        }
-
-        public async Task<Dictionary<string, DateTime>> GetFirstReadingDateTimes()
-        {
-            var flux = FilterByStartDate() +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume, MeasurementNames.EstimatedPumpedVolume }) +
-                       GroupBy(FieldNames.RegistrationID) +
-                       "|> first()";
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            var fluxTablesInAscendingOrder = fluxTables.OrderBy(x => x.Time).ToList();
-
-            var output = new Dictionary<string, DateTime>();
-            fluxTablesInAscendingOrder.ForEach(x =>
-            {
-                if (!output.ContainsKey(x.RegistrationID))
-                {
-                    output[x.RegistrationID] = x.Time;
-                }
-            });
-            return output;
-        }
-
-        public async Task<Dictionary<string, DateTime>> GetLastReadingDateTimes()
-        {
-            var flux = FilterByStartDate() +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume, MeasurementNames.EstimatedPumpedVolume }) +
-                       GroupBy(FieldNames.RegistrationID) +
-                       "|> last()";
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-
-            var fluxTablesInDescendingOrder = fluxTables.OrderByDescending(x=>x.Time).ToList();
-
-            var output = new Dictionary<string, DateTime>();
-            fluxTablesInDescendingOrder.ForEach(x =>
-            {
-                if (!output.ContainsKey(x.RegistrationID))
-                {
-                    output[x.RegistrationID] = x.Time;
-                }
-            });
-            return output;
-        }
-
-        public async Task<DateTime?> GetFirstReadingDateTimeForWell(string registrationID)
-        {
-            var flux = FilterByStartDate() +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume, MeasurementNames.EstimatedPumpedVolume }) +
-                       FilterByRegistrationID(registrationID) +
-                       "|> first()";
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Any() ? fluxTables.Min(x => x.Time) : (DateTime?) null;
-        }
-
-        public async Task<DateTime?> GetLastReadingDateTimeForWell(string registrationID)
-        {
-            var flux = FilterByStartDate() +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume, MeasurementNames.EstimatedPumpedVolume }) +
-                       FilterByRegistrationID(registrationID) +
-                       "|> last()";
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Any() ? fluxTables.Max(x => x.Time) : (DateTime?) null;
-        }
-
 
         public async Task<List<WellSensorMeasurementStaging>> GetFlowMeterSeries(DateTime fromDate)
         {
@@ -155,114 +76,6 @@ namespace Zybach.API.Services
         }
 
 
-        public async Task<List<DailyPumpedVolume>> GetPumpedVolumesForSensors(List<string> sensorNames, string sensorType, DateTime fromDate)
-        {
-            //TODO: talk with Nick on the offset
-            //const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
-            //    millisecond: 0, minute: 0, second: 0, hour: 0
-            //});
-            var flux = FilterByStartDate(fromDate) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume }) +
-                       FilterBySensorName(sensorNames) +
-                       GroupBy(FieldNames.RegistrationID) +
-                       AggregateSumDaily(true);
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new DailyPumpedVolume(x.Time, x.Value, sensorType)).ToList();
-        }
-
-        public async Task<List<MonthlyPumpedVolume>> GetMonthlyPumpedVolumesForSensors(List<string> sensorNames, string registrationID, DateTime fromDate)
-        {
-            //TODO: talk with Nick on the offset
-            //const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
-            //    millisecond: 0, minute: 0, second: 0, hour: 0
-            //});
-            var flux = FilterByStartDate(fromDate) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume }) +
-                       FilterBySensorName(sensorNames) +
-                       FilterByRegistrationID(registrationID) +
-                       GroupBy(FieldNames.RegistrationID) +
-                       AggregateSumMonthly();
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new MonthlyPumpedVolume(x.Time, x.Value)).ToList();
-        }
-
-        public async Task<List<MonthlyPumpedVolume>> GetMonthlyElectricalBasedFlowEstimate(string registrationID, DateTime fromDate)
-        {
-            //TODO: talk with Nick on the offset
-            //const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
-            //    millisecond: 0, minute: 0, second: 0, hour: 0
-            //});
-            var flux = FilterByStartDate(fromDate) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.EstimatedPumpedVolume }) +
-                       FilterByRegistrationID(registrationID) +
-                       AggregateSumMonthly();
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new MonthlyPumpedVolume(x.Time, x.Value)).ToList();
-        }
-
-        public async Task<List<DailyPumpedVolume>> GetElectricalBasedFlowEstimateSeries(string registrationID, DateTime fromDate)
-        {
-            //TODO: talk with Nick on the offset
-            //const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
-            //    millisecond: 0, minute: 0, second: 0, hour: 0
-            //});
-            var flux = FilterByStartDate(fromDate) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.EstimatedPumpedVolume }) +
-                       FilterByRegistrationID(registrationID) +
-                       AggregateSumDaily(true);
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new DailyPumpedVolume(x.Time, x.Value, SensorTypes.ElectricalUsage)).ToList();
-        }
-
-        public async Task<List<AnnualPumpedVolume>> GetAnnualPumpedVolumesForSensor(List<string> sensorNames, string sensorType)
-        {
-            var flux = FilterByStartDate(new DateTime(2019, 1, 1)) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume }) +
-                       FilterBySensorName(sensorNames) +
-                       GroupBy(FieldNames.RegistrationID) +
-                       AggregateSumYearly();
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new AnnualPumpedVolume(x.Time, x.Value, sensorType)).ToList();
-        }
-
-        public async Task<List<AnnualPumpedVolume>> GetAnnualEstimatedPumpedVolumeForWell(string registrationID)
-        {
-            var flux = FilterByStartDate(new DateTime(2019, 1, 1)) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.EstimatedPumpedVolume }) +
-                       FilterByRegistrationID(registrationID) +
-                       AggregateSumYearly();
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new AnnualPumpedVolume(x.Time, x.Value, SensorTypes.ElectricalUsage)).ToList();
-        }
-
-        public async Task<Dictionary<string, double>> GetAnnualEstimatedPumpedVolumeByWellForYear(int year)
-        {
-            var flux = FilterByYear(year) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.EstimatedPumpedVolume }) +
-                       GroupBy(FieldNames.RegistrationID) +
-                       AggregateSumYearly();
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.ToDictionary(x => x.RegistrationID.ToUpper(), x => x.Value);
-        }
-
-        public async Task<List<string>> GetWellRegistrationIDsWithElectricalEstimateAsOfYear(int year)
-        {
-            var flux = FilterByDateRange(new DateTime(2019, 1, 1), new DateTime(year + 1, 1, 1).AddMilliseconds(-1)) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.EstimatedPumpedVolume }) +
-                       GroupBy(FieldNames.RegistrationID) +
-                       "|> last()";
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => x.RegistrationID.ToUpper()).ToList();
-        }
-
         public async Task<Dictionary<string, int>> GetLastMessageAgeBySensor()
         {
             var fluxQuery = "ageInSeconds = (x) => { " +
@@ -281,6 +94,7 @@ namespace Zybach.API.Services
             return fluxTables.Where(x => !string.IsNullOrWhiteSpace(x.Sensor)).ToDictionary(x => x.Sensor.ToUpper(), registration => registration.EventAge);
         }
 
+        // TODO: ported this but do we need this?
         public async Task<List<ResultFromInfluxDB>> GetFlowMeterSeries(List<string> wellRegistrationIDs, DateTime startDate, DateTime endDate, int interval)
         {
             var flux = FilterByDateRange(startDate, endDate) +
@@ -306,16 +120,6 @@ namespace Zybach.API.Services
         private static string AggregateSumDaily(bool createEmpty)
         {
             return $"|> aggregateWindow(every: 1d, fn: sum, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\", offset: 5h)";
-        }
-
-        private static string AggregateSumMonthly()
-        {
-            return "|> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: \"_start\", offset: 5h)";
-        }
-
-        private static string AggregateSumYearly()
-        {
-            return "|> aggregateWindow(every: 1y, fn: sum, createEmpty: true, timeSrc: \"_start\", offset: 5h)";
         }
 
         private string FilterByStartDate()

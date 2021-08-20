@@ -143,10 +143,10 @@ namespace Zybach.Models.DataTransferObjects
         {
         }
 
-        public MonthlyPumpedVolume(DateTime time, double gallons)
+        public MonthlyPumpedVolume(int year, int month, double gallons)
         {
-            Month = time.Month;
-            Year = time.Year;
+            Month = month;
+            Year = year;
             VolumePumpedGallons = gallons;
         }
 
@@ -161,9 +161,9 @@ namespace Zybach.Models.DataTransferObjects
         {
         }
 
-        public AnnualPumpedVolume(DateTime time, double gallons, string dataSource)
+        public AnnualPumpedVolume(int year, double gallons, string dataSource)
         {
-            Year = time.Year;
+            Year = year;
             DataSource = dataSource;
             Gallons = gallons;
         }

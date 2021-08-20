@@ -16,15 +16,11 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class WellController : SitkaController<WellController>
     {
-        private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
-        private readonly AgHubService _agHubService;
 
-        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, AgHubService agHubService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
-            _agHubService = agHubService;
         }
 
 
@@ -61,9 +57,9 @@ namespace Zybach.API.Controllers
         [HttpGet("/api/wells/pumpedVolume")]
         // todo: get apikey security
         // @Security(SecurityType.API_KEY)
-        public async Task<object> GetPumpedVolume([FromQuery] string startDate, [FromQuery] List<string> filter, [FromQuery] string endDate, [FromQuery] int? interval)
+        public object GetPumpedVolume([FromQuery] string startDate, [FromQuery] List<string> filter, [FromQuery] string endDate, [FromQuery] int? interval)
         {
-            return await GetPumpedVolumeImpl(startDate, filter, endDate, interval);
+            return GetPumpedVolumeImpl(startDate, filter, endDate, interval);
         }
 
 
@@ -93,54 +89,52 @@ namespace Zybach.API.Controllers
                 geoOptixWell.Sensors = sensors;
             });
 
-            const string continuityMeterString = "Continuity Meter";
-
             var wellWithSensorSummaryDtos = wells.Values
-                .Where(x => (x.HasElectricalData ?? false) || x.Sensors.Any(y => y.SensorType == continuityMeterString)).ToList();
-            var robustReviewDtos = new List<RobustReviewDto>();
-            foreach (var wellWithSensorSummaryDto in wellWithSensorSummaryDtos)
-            {
-                robustReviewDtos.Add(await CreateRobustReviewDto(wellWithSensorSummaryDto, continuityMeterString));
-            }
-
+                .Where(x => (x.HasElectricalData ?? false) || x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ContinuityMeter))
+                .ToList();
+            var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
+            var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();
         }
 
-        private async Task<RobustReviewDto> CreateRobustReviewDto(WellWithSensorSummaryDto x, string continuityMeterString)
+        private RobustReviewDto CreateRobustReviewDto(WellWithSensorSummaryDto wellWithSensorSummaryDto,
+            Dictionary<string, DateTime> firstReadingDateTimes)
         {
             try
             {
-                var firstReadingDate =
-                    await _influxDbService.GetFirstReadingDateTimeForWell(x.WellRegistrationID);
-
-                if (firstReadingDate == null)
+                var wellRegistrationID = wellWithSensorSummaryDto.WellRegistrationID;
+                if (!firstReadingDateTimes.ContainsKey(wellRegistrationID))
                 {
                     return null;
                 }
 
-                List<MonthlyPumpedVolume> monthlyPumpedVolume;
                 string dataSource;
-                if (x.HasElectricalData ?? false)
+                List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
+                if (wellWithSensorSummaryDto.HasElectricalData ?? false)
                 {
-                    monthlyPumpedVolume =
-                        await _influxDbService.GetMonthlyElectricalBasedFlowEstimate(x.WellRegistrationID,
-                            firstReadingDate.Value);
-                    dataSource = "Electrical Usage";
+                    wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext,
+                        wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                    dataSource = InfluxDBService.SensorTypes.ElectricalUsage;
                 }
                 else
                 {
-                    monthlyPumpedVolume = await _influxDbService.GetMonthlyPumpedVolumesForSensors(
-                        x.Sensors.Where(y => y.SensorType == continuityMeterString).Select(y => y.SensorName)
-                            .ToList(), x.WellRegistrationID, firstReadingDate.Value);
-                    dataSource = continuityMeterString;
+                    const string continuityMeter = InfluxDBService.SensorTypes.ContinuityMeter;
+                    wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
+                        wellRegistrationID, new List<MeasurementTypeEnum>{ MeasurementTypeEnum.ContinuityMeter, MeasurementTypeEnum.FlowMeter },
+                        wellWithSensorSummaryDto.Sensors.Where(y => y.SensorType == continuityMeter));
+                    dataSource = continuityMeter;
                 }
 
-                var point = (Point) x.Location.Geometry;
+                var monthlyPumpedVolume = wellSensorMeasurementDtos.GroupBy(x => x.ReadingDate.ToString("yyyyMM"))
+                    .Select(x =>
+                        new MonthlyPumpedVolume(x.First().ReadingDate.Year, x.First().ReadingDate.Month,
+                            x.Sum(y => y.MeasurementValue))).ToList();
+
+                var point = (Point) wellWithSensorSummaryDto.Location.Geometry;
                 var robustReviewDto = new RobustReviewDto
                 {
-                    WellRegistrationID = x.WellRegistrationID,
-                    WellTPID = x.WellTPID,
-                    // TODO: lookup feature to point to lat long
+                    WellRegistrationID = wellRegistrationID,
+                    WellTPID = wellWithSensorSummaryDto.WellTPID,
                     Latitude = point.Coordinates.Latitude,
                     Longitude = point.Coordinates.Longitude,
                     DataSource = dataSource,
@@ -170,9 +164,9 @@ namespace Zybach.API.Controllers
         //}
 
         [HttpGet("/api/wells/{wellRegistrationID}/pumpedVolume")]
-        public async Task<object> GetPumpedVolume([FromQuery] string startDate, [FromRoute] string wellRegistrationID, [FromQuery] string endDate, [FromQuery] int? interval)
+        public object GetPumpedVolume([FromQuery] string startDate, [FromRoute] string wellRegistrationID, [FromQuery] string endDate, [FromQuery] int? interval)
         {
-            return await GetPumpedVolumeImpl(startDate, new List<string>{wellRegistrationID}, endDate, interval);
+            return GetPumpedVolumeImpl(startDate, new List<string>{wellRegistrationID}, endDate, interval);
         }
 
 
@@ -196,13 +190,13 @@ namespace Zybach.API.Controllers
                 IrrigatedAcresPerYear = agHubWell?.IrrigatedAcresPerYear
             };
 
-            var firstReadingDate = await _influxDbService.GetFirstReadingDateTimeForWell(wellRegistrationID);
+            var firstReadingDate = WellSensorMeasurement.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
             if (firstReadingDate != null)
             {
                 var readingDate = firstReadingDate.Value;
                 firstReadingDate = new DateTime(readingDate.Year, readingDate.Month, readingDate.Day);
             }
-            var lastReadingDate = await _influxDbService.GetLastReadingDateTimeForWell(wellRegistrationID);
+            var lastReadingDate = WellSensorMeasurement.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
 
             if (geooptixWell != null)
             {
@@ -229,17 +223,21 @@ namespace Zybach.API.Controllers
             var sensors = await _geoOptixService.GetSensorSummariesForWell(wellRegistrationID);
             well.Sensors = sensors;
 
-            var annualPumpedVolume = new List<AnnualPumpedVolume>();
+            var annualPumpedVolumes = new List<AnnualPumpedVolume>();
 
-            annualPumpedVolume.AddRange(await GetAnnualPumpedVolumeForWellAndSensorType(sensors, "Flow Meter"));
-            annualPumpedVolume.AddRange(await GetAnnualPumpedVolumeForWellAndSensorType(sensors, "Continuity Meter"));
+            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
+            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 
             if (hasElectricalData)
             {
-                var annualEstimatedPumpedVolumeForWell = await _influxDbService.GetAnnualEstimatedPumpedVolumeForWell(wellRegistrationID);
-                annualPumpedVolume.AddRange(annualEstimatedPumpedVolumeForWell);
+                var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingDate.Year)
+                    .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue),
+                        InfluxDBService.SensorTypes.ElectricalUsage)).ToList();
+
+                annualPumpedVolumes.AddRange(pumpedVolumes);
             }
-            well.AnnualPumpedVolume = annualPumpedVolume;
+            well.AnnualPumpedVolume = annualPumpedVolumes;
             return well;
         }
 
@@ -266,7 +264,7 @@ namespace Zybach.API.Controllers
             }
         }
 
-        private async Task<List<AnnualPumpedVolume>> GetAnnualPumpedVolumeForWellAndSensorType(List<SensorSummaryDto> sensors, string sensorType)
+        private List<AnnualPumpedVolume> GetAnnualPumpedVolumeForWellAndSensorType(string wellRegistrationID, List<SensorSummaryDto> sensors, string sensorType, MeasurementTypeEnum measurementTypeEnum)
         {
             var sensorTypeSensors = sensors.Where(x => x.SensorType == sensorType).ToList();
 
@@ -275,10 +273,15 @@ namespace Zybach.API.Controllers
                 return new List<AnnualPumpedVolume>();
             }
 
-            return await _influxDbService.GetAnnualPumpedVolumesForSensor(sensorTypeSensors.Select(x => x.SensorName).ToList(), sensorType);
+            var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
+
+            var annualPumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingDate.Year)
+                .Select(x => new AnnualPumpedVolume(x.Key,x.Sum(y => y.MeasurementValue), sensorType)).ToList();
+
+            return annualPumpedVolumes;
         }
 
-        private async Task<object> GetPumpedVolumeImpl(string startDateString, List<string> wellRegistrationIDs,
+        private object GetPumpedVolumeImpl(string startDateString, List<string> wellRegistrationIDs,
             string endDateString, int? interval)
         {
             if (string.IsNullOrWhiteSpace(endDateString))
@@ -315,9 +318,13 @@ namespace Zybach.API.Controllers
 
             try
             {
-                var results =
-                    await this._influxDbService.GetFlowMeterSeries(wellRegistrationIDs, startDate, endDate,
-                        intervalValue);
+                var results = _dbContext.WellSensorMeasurements.Where(x =>
+                    wellRegistrationIDs.Contains(x.WellRegistrationID) 
+                    && (
+                        x.MeasurementTypeID == (int) MeasurementTypeEnum.FlowMeter
+                        || x.MeasurementTypeID == (int)MeasurementTypeEnum.ContinuityMeter)
+                    && x.ReadingDate >= startDate && x.ReadingDate <= endDate
+                    ).OrderBy(x => x.ReadingDate).Select(x => x.AsDto()).ToList();
                 return new
                 {
                     Status = "success",
@@ -330,27 +337,27 @@ namespace Zybach.API.Controllers
             }
         }
 
-        private static StructuredResults StructureResults(List<InfluxDBService.ResultFromInfluxDB> results, int interval)
+        private static StructuredResults StructureResults(List<WellSensorMeasurementDto> results, int interval)
         {
             var distinctWells = results.Select(x => x.WellRegistrationID).Distinct().ToList();
-            var startDate = results.First().EndTime;
-            var endDate = results.Last().EndTime;
+            var startDate = results.First().ReadingDate;
+            var endDate = results.Last().ReadingDate;
             var totalResults = 0;
             var volumesByWell = new List<VolumeByWell>();
             foreach (var wellRegistrationID in distinctWells)
             {
-                var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID).OrderBy(x => x.EndTime).ToList();
+                var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID).OrderBy(x => x.ReadingDate).ToList();
 
-                if (currentWellResults.First().EndTime < startDate)
+                if (currentWellResults.First().ReadingDate < startDate)
                 {
-                    startDate = currentWellResults.First().EndTime;
+                    startDate = currentWellResults.First().ReadingDate;
                 }
 
                 var aggregatedResults = currentWellResults;
 
-                if (aggregatedResults.Last().EndTime > endDate)
+                if (aggregatedResults.Last().ReadingDate > endDate)
                 {
-                    endDate = aggregatedResults.Last().EndTime;
+                    endDate = aggregatedResults.Last().ReadingDate;
                 }
 
                 totalResults += aggregatedResults.Count;
@@ -405,6 +412,6 @@ namespace Zybach.API.Controllers
     {
         public string WellRegistrationID { get; set; }
         public int IntervalCount { get; set; }
-        public List<InfluxDBService.ResultFromInfluxDB> IntervalVolumes { get; set; }
+        public List<WellSensorMeasurementDto> IntervalVolumes { get; set; }
     }
 }
