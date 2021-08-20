@@ -62,7 +62,11 @@ namespace Zybach.API.Services
         public async Task<WellSummaryDto> GetWellSummary(string wellRegistrationID)
         {
             var geoOptixSite = await GetGeoOptixSite(wellRegistrationID);
-            return new WellSummaryDto(geoOptixSite);
+            if (geoOptixSite != null)
+            {
+                return new WellSummaryDto(geoOptixSite);
+            }
+            return null;
         }
 
         private async Task<List<Site>> GetGeoOptixSites()

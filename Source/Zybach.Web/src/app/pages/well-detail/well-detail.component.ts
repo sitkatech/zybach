@@ -131,6 +131,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
+  getWellIrrigatedAcresPerYear(){
+    return this.well.IrrigatedAcresPerYear.sort((a, b) => a.Year < b.Year ? 1 : a.Year === b.Year ? 0 : -1);
+  }
+
   getInstallationDetails(){
     this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installations => {
       this.installations = installations;
@@ -376,13 +380,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   async exportChartData(){
     const pivoted = new Map();
     for (const point of this.timeSeries){
-      let pivotRow = pivoted.get(point.time);
+      let pivotRow = pivoted.get(point.Time);
       if (pivotRow){
-        pivotRow[point.dataSource] = point.gallons;
+        pivotRow[point.DataSource] = point.Gallons;
       } else{
-        pivotRow = {"Date": point.time};
-        pivotRow[point.dataSource] = point.gallons;
-        pivoted.set(point.time, pivotRow);
+        pivotRow = {"Date": point.Time};
+        pivotRow[point.DataSource] = point.Gallons;
+        pivoted.set(point.Time, pivotRow);
       }
     }
     const pivotedAndSorted = Array.from(pivoted.values())

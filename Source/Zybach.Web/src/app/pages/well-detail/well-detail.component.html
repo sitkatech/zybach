@@ -36,7 +36,7 @@
                                 <div class="col-12  col-sm-6 label"><strong>Irrigated Acres: </strong></div>
                                 <div class="col-12  col-sm-6">
                                     <ng-container *ngIf="displayIrrigatedAcres(); else irrigatedAcresPerYearEmpty">
-                                        <p *ngFor="let result of well.IrrigatedAcresPerYear" class="m-0">
+                                        <p *ngFor="let result of getWellIrrigatedAcresPerYear()" class="m-0">
                                             {{result.Acres}} ac in {{result.Year}}
                                         </p>
                                     </ng-container>

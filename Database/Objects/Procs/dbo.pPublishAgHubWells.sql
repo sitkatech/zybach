@@ -48,12 +48,23 @@ begin
 	from dbo.AgHubWell aw
 	join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
 
+	update dbo.AgHubWell
+	Set WellGeometry.STSrid = 4326
+
 	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres)
 	select	aw.AgHubWellID, 
 			awias.IrrigationYear,
-			awias.Acres
+			avg(awias.Acres) as Acres
 	from dbo.AgHubWellIrrigatedAcreStaging awias
-	join dbo.AgHubWell aw on awias.WellRegistrationID = awias.WellRegistrationID
+	join dbo.AgHubWell aw on awias.WellRegistrationID = aw.WellRegistrationID
+	group by aw.AgHubWellID, awias.IrrigationYear
+
+
+	--select	aw.AgHubWellID, 
+	--		awias.IrrigationYear,
+	--		awias.Acres
+	--from dbo.AgHubWellIrrigatedAcreStaging awias
+	--join dbo.AgHubWell aw on awias.WellRegistrationID = awias.WellRegistrationID
 
 	exec dbo.pPublishWellSensorMeasurementStaging 3 -- Electrical Usage
 

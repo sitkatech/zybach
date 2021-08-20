@@ -172,50 +172,29 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
-        [AdminFeature]
         public async Task<WellDetailDto> GetWellDetails([FromRoute] string wellRegistrationID)
         {
             var geooptixWell = await _geoOptixService.GetWellSummary(wellRegistrationID);
             var agHubWell = AgHubWell.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
 
-            //if (geooptixWell == null && agHubWell == null)
-            //{
-            //    return NotFound($"Well with {wellRegistrationID} not found!");
-            //}
+            if (geooptixWell == null && agHubWell == null)
+            {
+                throw new Exception($"Well with {wellRegistrationID} not found!");
+            }
             var hasElectricalData = agHubWell != null && (agHubWell.HasElectricalData ?? false);
 
             var well = new WellDetailDto
             {
-                WellRegistrationID = geooptixWell.WellRegistrationID,
+                WellRegistrationID = agHubWell?.WellRegistrationID ?? geooptixWell?.WellRegistrationID,
                 WellTPID = agHubWell?.WellTPID,
-                IrrigatedAcresPerYear = agHubWell?.IrrigatedAcresPerYear
+                IrrigatedAcresPerYear = agHubWell?.IrrigatedAcresPerYear,
+                Location = agHubWell?.Location ?? geooptixWell?.Location
             };
 
             var firstReadingDate = WellSensorMeasurement.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
-            if (firstReadingDate != null)
-            {
-                var readingDate = firstReadingDate.Value;
-                firstReadingDate = new DateTime(readingDate.Year, readingDate.Month, readingDate.Day);
-            }
             var lastReadingDate = WellSensorMeasurement.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
 
-            if (geooptixWell != null)
-            {
-                well.InGeoOptix = true;
-                if (agHubWell != null)
-                {
-                    well.WellTPID = agHubWell.WellTPID;
-                    well.Location = agHubWell.Location;
-                    well.IrrigatedAcresPerYear = agHubWell.IrrigatedAcresPerYear;
-                }
-
-                well.Location = geooptixWell.Location;
-            }
-            else
-            {
-                well.InGeoOptix = false;
-            }
-
+            well.InGeoOptix = geooptixWell != null;
             well.HasElectricalData = hasElectricalData;
             well.FirstReadingDate = firstReadingDate;
             well.LastReadingDate = lastReadingDate;
