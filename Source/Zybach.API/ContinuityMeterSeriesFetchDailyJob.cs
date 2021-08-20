@@ -7,7 +7,7 @@ using Zybach.EFModels.Entities;
 
 namespace Zybach.API
 {
-    public class ContinuityMeterSeriesFetchDailyJob : ScheduledBackgroundJobBase<ContinuityMeterSeriesFetchDailyJob>, IInfluxDBJob
+    public class ContinuityMeterSeriesFetchDailyJob : ScheduledBackgroundJobBase<ContinuityMeterSeriesFetchDailyJob>
     {
         private readonly InfluxDBService _influxDbService;
         public const string JobName = "Continuity Meter Series Fetch Daily";

@@ -77,11 +77,6 @@ namespace Zybach.API
         protected abstract void RunJobImplementation();
     }
 
-    public interface IInfluxDBJob
-    {
-        void RunJob(IJobCancellationToken token);
-    }
-
     public class ScheduledBackgroundJobException : Exception
     {
         public ScheduledBackgroundJobException(string jobName, Exception innerException)

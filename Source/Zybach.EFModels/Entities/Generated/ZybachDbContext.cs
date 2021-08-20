@@ -19,6 +19,8 @@ namespace Zybach.EFModels.Entities
 
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
+        public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
+        public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
@@ -32,6 +34,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
+        public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -59,6 +62,18 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.AgHubWellIrrigatedAcres)
                     .HasForeignKey(d => d.AgHubWellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<AgHubWellIrrigatedAcreStaging>(entity =>
+            {
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<AgHubWellStaging>(entity =>
+            {
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+
+                entity.Property(e => e.WellTPID).IsUnicode(false);
             });
 
             modelBuilder.Entity<ChemigationInspection>(entity =>
@@ -202,6 +217,18 @@ namespace Zybach.EFModels.Entities
 
                 entity.HasOne(d => d.MeasurementType)
                     .WithMany(p => p.WellSensorMeasurements)
+                    .HasForeignKey(d => d.MeasurementTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<WellSensorMeasurementStaging>(entity =>
+            {
+                entity.Property(e => e.SensorName).IsUnicode(false);
+
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+
+                entity.HasOne(d => d.MeasurementType)
+                    .WithMany(p => p.WellSensorMeasurementStagings)
                     .HasForeignKey(d => d.MeasurementTypeID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });

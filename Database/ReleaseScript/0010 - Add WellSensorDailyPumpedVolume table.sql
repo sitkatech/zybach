@@ -11,6 +11,6 @@ create table WellSensorMeasurement
 	WellRegistrationID varchar(100) not null,
 	MeasurementTypeID int not null constraint FK_WellSensorMeasurement_MeasurementType_MeasurementTypeID foreign key references dbo.MeasurementType(MeasurementTypeID),
 	ReadingDate datetime not null,
-	SensorName varchar(100) not null,
+	SensorName varchar(100) null,
 	MeasurementValue float not null
 )

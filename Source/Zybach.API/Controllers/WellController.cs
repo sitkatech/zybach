@@ -18,11 +18,13 @@ namespace Zybach.API.Controllers
     {
         private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
+        private readonly AgHubService _agHubService;
 
-        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, AgHubService agHubService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
+            _agHubService = agHubService;
         }
 
 
@@ -382,6 +384,27 @@ namespace Zybach.API.Controllers
         public async Task<List<WellSensorMeasurement>> GetContinuityMeterSeries()
         {
             return await _influxDbService.GetContinuityMeterSeries(new DateTime(2016, 1, 1));
+        }
+
+        [HttpGet("/api/getAghubWells")]
+        //[AdminFeature]
+        public async Task<List<AgHubService.AgHubWellRaw>> GetAghubWells()
+        {
+            return await _agHubService.GetWellCollection();
+        }
+
+        [HttpGet("/api/getAghubWells/{wellRegistrationID}")]
+        //[AdminFeature]
+        public async Task<AgHubService.AgHubWellRawWithAcreYears> GetAghubWells([FromRoute] string wellRegistrationID)
+        {
+            return await _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID);
+        }
+
+        [HttpGet("/api/getAghubWells/{wellRegistrationID}/pumpedVolume")]
+        //[AdminFeature]
+        public async Task<AgHubService.PumpedVolumeDaily> GetAghubWellsPumpedVolume([FromRoute] string wellRegistrationID)
+        {
+            return await _agHubService.GetPumpedVolume(wellRegistrationID, new DateTime(2016, 1, 1));
         }
 
 

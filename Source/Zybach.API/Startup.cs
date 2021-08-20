@@ -132,10 +132,10 @@ namespace Zybach.API
             services.AddDbContext<ZybachDbContext>(c =>
             {
                 c.UseSqlServer(zybachConfiguration.DB_CONNECTION_STRING, x =>
-{
-x.CommandTimeout((int)TimeSpan.FromMinutes(3).TotalSeconds);
-x.UseNetTopologySuite();
-});
+                {
+                    x.CommandTimeout((int) TimeSpan.FromMinutes(3).TotalSeconds);
+                    x.UseNetTopologySuite();
+                });
             });
 
             services.AddSingleton(Configuration);
@@ -151,8 +151,6 @@ x.UseNetTopologySuite();
 
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<ZybachDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
-
-            services.AddScoped<IInfluxDBJob, FlowMeterSeriesFetchDailyJob>();
 
             // Add Hangfire services.
             services.AddHangfire(configuration => configuration

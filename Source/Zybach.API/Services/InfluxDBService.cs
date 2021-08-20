@@ -323,9 +323,9 @@ namespace Zybach.API.Services
             return $"|> range(start: {FormatToZuluCentralTime(_defaultStartDate)}) ";
         }
 
-        private static string FormatToZuluCentralTime(DateTime defaultStartDate)
+        private static string FormatToZuluCentralTime(DateTime dateTime)
         {
-            return defaultStartDate.ToString("yyyy-MM-ddT05:00:00Z");
+            return dateTime.ToString("yyyy-MM-ddT05:00:00Z");
         }
 
         private static string FilterByStartDate(DateTime startDate)

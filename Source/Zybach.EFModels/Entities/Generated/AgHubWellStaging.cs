@@ -9,16 +9,11 @@ using NetTopologySuite.Geometries;
 
 namespace Zybach.EFModels.Entities
 {
-    [Table("AgHubWell")]
-    public partial class AgHubWell
+    [Table("AgHubWellStaging")]
+    public partial class AgHubWellStaging
     {
-        public AgHubWell()
-        {
-            AgHubWellIrrigatedAcres = new HashSet<AgHubWellIrrigatedAcre>();
-        }
-
         [Key]
-        public int AgHubWellID { get; set; }
+        public int AgHubWellStagingID { get; set; }
         [Required]
         [StringLength(100)]
         public string WellRegistrationID { get; set; }
@@ -37,8 +32,5 @@ namespace Zybach.EFModels.Entities
         public bool? HasElectricalData { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime FetchDate { get; set; }
-
-        [InverseProperty(nameof(AgHubWellIrrigatedAcre.AgHubWell))]
-        public virtual ICollection<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
     }
 }

@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    [Table("WellSensorMeasurement")]
-    public partial class WellSensorMeasurement
+    [Table("WellSensorMeasurementStaging")]
+    public partial class WellSensorMeasurementStaging
     {
         [Key]
-        public int WellSensorMeasurementID { get; set; }
+        public int WellSensorMeasurementStagingID { get; set; }
         [Required]
         [StringLength(100)]
         public string WellRegistrationID { get; set; }
@@ -24,7 +24,7 @@ namespace Zybach.EFModels.Entities
         public double MeasurementValue { get; set; }
 
         [ForeignKey(nameof(MeasurementTypeID))]
-        [InverseProperty("WellSensorMeasurements")]
+        [InverseProperty("WellSensorMeasurementStagings")]
         public virtual MeasurementType MeasurementType { get; set; }
     }
 }

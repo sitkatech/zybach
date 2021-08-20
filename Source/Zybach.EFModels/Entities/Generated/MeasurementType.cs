@@ -15,6 +15,7 @@ namespace Zybach.EFModels.Entities
     {
         public MeasurementType()
         {
+            WellSensorMeasurementStagings = new HashSet<WellSensorMeasurementStaging>();
             WellSensorMeasurements = new HashSet<WellSensorMeasurement>();
         }
 
@@ -27,6 +28,8 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         public string MeasurementTypeDisplayName { get; set; }
 
+        [InverseProperty(nameof(WellSensorMeasurementStaging.MeasurementType))]
+        public virtual ICollection<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
         [InverseProperty(nameof(WellSensorMeasurement.MeasurementType))]
         public virtual ICollection<WellSensorMeasurement> WellSensorMeasurements { get; set; }
     }
