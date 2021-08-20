@@ -14,7 +14,7 @@ function getPumpingRate(wellRegistrationID) {
             if (response.statusCode == 200) {
                 const data = body.data;
                 const pumpingRate = data.wellAuditPumpRate ? data.wellAuditPumpRate :
-                    (data.wellRegisteredPumpRate ? data.wellRegisteredPumpRate :
+                    (data.registeredPumpRate ? data.registeredPumpRate :
                         (data.wellTpnrdPumpRate ? data.wellTpnrdPumpRate : 0)
                     );
                 if (!pumpingRate) {

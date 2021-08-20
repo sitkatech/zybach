@@ -137,19 +137,22 @@ export class InfluxService {
         return lastReadingDate;
     }
 
-    public async getPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date): Promise<any[]> {
+    public async getPumpedVolumeForSensor(sensors: SensorSummaryDto[], sensorType: string, from: Date, wellRegistrationID: string): Promise<any[]> {
         const sensorIDFilter = sensors.map(x => `r["sn"] == "${x.sensorName}"`).join(" or ");
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
-        });
+        }).toJSDate();
+
+        const startTimeOffset = this.getOffset(startDate);
 
         const query = `from(bucket: "${this.bucket}") 
-        |> range(start: ${startDate.toISO()}) 
+        |> range(start: ${startDate.toISOString()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
+        |> filter(fn: (r) => r["registration-id"] == "${wellRegistrationID}")
         |> filter(fn: (r) => ${sensorIDFilter}) 
         |> group(columns: ["registration-id"])
-        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")`
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start", offset: ${startTimeOffset})`
 
         var results: any[] = await new Promise((resolve, reject) => {
             let results: any = [];
@@ -178,16 +181,18 @@ export class InfluxService {
     public async getMonthlyPumpedVolumeForSensor(sensors: SensorSummaryDto[], registrationID: string, from: Date): Promise<any[]> {
         const sensorIDFilter = sensors.map(x => `r["sn"] == "${x.sensorName}"`).join(" or ");
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
-        });
+        }).toJSDate();
+
+        const startDateOffset = this.getOffset(startDate);
 
         const query = `from(bucket: "${this.bucket}") 
-        |> range(start: ${startDate.toISO()}) 
+        |> range(start: ${startDate.toISOString()}) 
         |> filter(fn: (r) => r["_measurement"] == "pumped-volume")
         |> filter(fn: (r) => ${sensorIDFilter})
         |> filter(fn: (r) => r["registration-id"] == "${registrationID.toLowerCase()}" or r["registration-id"] == "${registrationID.toUpperCase()}") 
-        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")
+        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start", offset: ${startDateOffset})
         |> group(columns: ["registration-id"])`
 
         var results: any[] = await new Promise((resolve, reject) => {
@@ -217,14 +222,16 @@ export class InfluxService {
 
     public async getMonthlyElectricalBasedFlowEstimate(wellRegistrationID: string, from: Date): Promise<any[]> {
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
-        });
+        }).toJSDate();
+
+        const startDateOffset = this.getOffset(startDate);
 
         const query = `from(bucket: "${this.bucket}") \
-        |> range(start: ${startDate.toISO()}) \
+        |> range(start: ${startDate.toISOString()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and (r["registration-id"] == "${wellRegistrationID.toLowerCase()}" or r["registration-id"] == "${wellRegistrationID.toUpperCase()}") ) 
-        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start")`
+        |> aggregateWindow(every: 1mo, fn: sum, createEmpty: true, timeSrc: "_start", offset: ${startDateOffset})`
 
         var results: any[] = await new Promise((resolve, reject) => {
             let results: any = [];
@@ -253,14 +260,14 @@ export class InfluxService {
 
     public async getElectricalBasedFlowEstimateSeries(wellRegistrationID: string, from: Date): Promise<any[]> {
 
-        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago").set({
+        const startDate = DateTime.fromJSDate(from).setZone("America/Chicago", {keepLocalTime: true}).set({
             millisecond: 0, minute: 0, second: 0, hour: 0
-        });
-
+        }).toJSDate();
+        const startDateOffset = this.getOffset(startDate)
         const query = `from(bucket: "${this.bucket}") \
-        |> range(start: ${startDate.toISO()}) \
+        |> range(start: ${startDate.toISOString()}) \
         |> filter(fn: (r) => r["_measurement"] == "estimated-pumped-volume" and (r["registration-id"] == "${wellRegistrationID.toLowerCase()}" or r["registration-id"] == "${wellRegistrationID.toUpperCase()}") ) 
-        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start")`
+        |> aggregateWindow(every: 1d, fn: sum, createEmpty: true, timeSrc: "_start", offset: ${startDateOffset})`
 
         var results: any[] = await new Promise((resolve, reject) => {
             let results: any = [];
@@ -442,5 +449,9 @@ export class InfluxService {
         });
 
         return results;
+    }
+
+    private getOffset(startDate: Date){
+        return `${startDate.getUTCHours()}h${startDate.getUTCMinutes()}m${startDate.getUTCSeconds()}s${startDate.getUTCMilliseconds()}ms`;
     }
 }

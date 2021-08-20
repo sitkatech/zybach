@@ -29,6 +29,7 @@ import { InfluxService } from "../services/influx-service";
 import { AnnualPumpedVolumeDto } from "../dtos/annual-pumped-volume-dto";
 import { RobustReviewDto, MonthlyPumpedVolumeGallonsDto} from "../dtos/robust-review-dto";
 import { NotFoundError } from "../errors/not-found-error";
+import { DateTime } from "luxon";
 
 const bucketName = process.env.SOURCE_BUCKET;
 
@@ -360,7 +361,7 @@ export class WellController extends Controller {
             let results = await getFlowMeterSeries(wellRegistrationIDs as string | string[], startDate, endDate, interval);
             return {
                 "status": "success",
-                "result": results.length > 0 ? structureResults(results, interval) : results
+                "result": results.length > 0 ? structureResults(results, interval, startDate, endDate) : results
             }
         }
         catch (err) {
@@ -398,9 +399,6 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
     const queryApi = client.getQueryApi(org);
 
     const fifteenMinutesInms = 1000 * 60 * 15;
-    const startDateForFlux = new Date((Math.round(startDate.getTime() / fifteenMinutesInms) * fifteenMinutesInms) + 1000).toISOString();
-    const endDateForFlux = new Date((Math.round(endDate.getTime() / fifteenMinutesInms) * fifteenMinutesInms) + 1000).toISOString();
-
     let wellRegistrationIDsForQuery: string[] = [];
     if (Array.isArray(wellRegistrationIDs)){
         wellRegistrationIDsForQuery = [...wellRegistrationIDs.map(x=>x.toUpperCase()), ...wellRegistrationIDs.map(x=>x.toLowerCase())];
@@ -408,14 +406,16 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
         wellRegistrationIDsForQuery = [wellRegistrationIDs.toLowerCase(), wellRegistrationIDs.toUpperCase()]
     }
 
+    const startTimeOffset = `${startDate.getUTCHours()}h${startDate.getUTCMinutes()}m${startDate.getUTCSeconds()}s${startDate.getUTCMilliseconds()}ms`;
+
     const registrationIDQuery =`and (r["registration-id"] == "` + wellRegistrationIDsForQuery.join(`" or r["registration-id"]=="`) + "\")";
     const query = `from(bucket: "${bucketName}") 
-        |> range(start: ${startDateForFlux}, stop:${endDateForFlux}) 
+        |> range(start: ${startDate.toISOString()}, stop:${endDate.toISOString()}) 
         |> filter(fn: (r) => 
             r["_measurement"] == "pumped-volume" and 
             r["_field"] == "gallons" 
             ${registrationIDQuery})
-        |> aggregateWindow(every: ${interval}m, fn: sum, column: "_value", timeSrc: "_stop", timeDst: "_time", createEmpty: false )
+        |> aggregateWindow(every: ${interval}m, fn: sum, column: "_value", timeSrc: "_start", timeDst: "_time", createEmpty: false, offset: ${startTimeOffset} )
         |> sort(columns:["_time"])`;
 
     let results: ResultFromInfluxDB[] = [];
@@ -424,7 +424,7 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
         queryApi.queryRows(query, {
             next(row, tableMeta) {
                 const o = tableMeta.toObject(row);
-                results.push({ endTime: new Date(o._time), gallons: o._value, wellRegistrationID: o['registration-id'].toUpperCase() });
+                results.push({ intervalEndTime: new Date(o._time), gallons: o._value, wellRegistrationID: o['registration-id'].toUpperCase() });
             },
             error(error) {
                 reject(error);
@@ -436,23 +436,21 @@ async function getFlowMeterSeries(wellRegistrationIDs: string | string[], startD
     });
 }
 
-function structureResults(results: ResultFromInfluxDB[], interval: number): StructuredResults {
+function structureResults(results: ResultFromInfluxDB[], interval: number, startDate: Date, endDate:Date): StructuredResults {
     const distinctWells = [...new Set(results.map(x => x.wellRegistrationID))];
-    let startDate = results[0].endTime;
-    let endDate = results[results.length - 1].endTime;
     let totalResults = 0;
     let volumesByWell: VolumeByWell[] = [];
     distinctWells.forEach(wellRegistrationID => {
-        let currentWellResults = results.filter(x => x.wellRegistrationID.toUpperCase() === wellRegistrationID.toUpperCase()).sort((a, b) => a.endTime.getTime() - b.endTime.getTime());
+        let currentWellResults = results.filter(x => x.wellRegistrationID.toUpperCase() === wellRegistrationID.toUpperCase()).sort((a, b) => a.intervalEndTime.getTime() - b.intervalEndTime.getTime());
 
-        if (currentWellResults[0].endTime < startDate) {
-            startDate = currentWellResults[0].endTime;
+        if (currentWellResults[0].intervalEndTime < startDate) {
+            startDate = currentWellResults[0].intervalEndTime;
         }
 
         let aggregatedResults = currentWellResults;
 
-        if (aggregatedResults[aggregatedResults.length - 1].endTime > endDate) {
-            endDate = aggregatedResults[aggregatedResults.length - 1].endTime;
+        if (aggregatedResults[aggregatedResults.length - 1].intervalEndTime > endDate) {
+            endDate = aggregatedResults[aggregatedResults.length - 1].intervalEndTime;
         }
 
         totalResults += aggregatedResults.length;
@@ -464,10 +462,6 @@ function structureResults(results: ResultFromInfluxDB[], interval: number): Stru
         };
         volumesByWell.push(newWellObj);
     });
-
-    //Because we get the intervals back in 15 minute increments, technically our startDate is 15 minutes BEFORE our actual first time
-    //Remove this extra piece if we decide we just want the first interval's end date
-    startDate = new Date(startDate.getTime() - (15 * 60000));
 
     return {
         intervalCountTotal: totalResults,
@@ -495,7 +489,7 @@ class AbbreviatedWellDataResponse {
 
 
 class ResultFromInfluxDB {
-    endTime!: Date;
+    intervalEndTime!: Date;
     gallons!: number;
     wellRegistrationID!: string;
 }

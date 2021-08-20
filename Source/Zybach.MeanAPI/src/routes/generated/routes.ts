@@ -81,7 +81,7 @@ const models: TsoaRoute.Models = {
     "ResultFromInfluxDB": {
         "dataType": "refObject",
         "properties": {
-            "endTime": {"dataType":"datetime","required":true},
+            "intervalEndTime": {"dataType":"datetime","required":true},
             "gallons": {"dataType":"double","required":true},
             "wellRegistrationID": {"dataType":"string","required":true},
         },

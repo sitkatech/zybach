@@ -101,7 +101,7 @@
 			},
 			"ResultFromInfluxDB": {
 				"properties": {
-					"endTime": {
+					"intervalEndTime": {
 						"type": "string",
 						"format": "date-time"
 					},
@@ -114,7 +114,7 @@
 					}
 				},
 				"required": [
-					"endTime",
+					"intervalEndTime",
 					"gallons",
 					"wellRegistrationID"
 				],
