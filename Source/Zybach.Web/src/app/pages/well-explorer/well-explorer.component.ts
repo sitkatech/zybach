@@ -54,10 +54,6 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
               return geoJsonPoint;
             })
         }
-
-        console.log(this.wellsGeoJson)
-
-
       })
     });
   }

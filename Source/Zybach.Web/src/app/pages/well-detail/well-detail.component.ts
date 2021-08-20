@@ -493,11 +493,17 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   setRangeMax(timeSeries: any){
-    
-    const gallonsMax = timeSeries.sort((a, b) => b.Gallons - a.Gallons)[0].Gallons;
-    if (gallonsMax !== 0) {
-      this.rangeMax = gallonsMax * 1.05;
-    } else {
+    if(timeSeries && timeSeries.length > 0)
+    {
+      const gallonsMax = timeSeries.sort((a, b) => b.Gallons - a.Gallons)[0].Gallons;
+      if (gallonsMax !== 0) {
+        this.rangeMax = gallonsMax * 1.05;
+      } else {
+        this.rangeMax = 10000;
+      }
+    }
+    else
+    {
       this.rangeMax = 10000;
     }
   }
