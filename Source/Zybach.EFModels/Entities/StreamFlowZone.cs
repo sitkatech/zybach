@@ -15,7 +15,7 @@ namespace Zybach.EFModels.Entities
         public static List<StreamFlowZoneWellsDto> ListStreamFlowZonesAndWellsWithinZone(ZybachDbContext dbContext)
         {
             var streamFlowZones = dbContext.StreamFlowZones.AsNoTracking().ToList();
-            var aghubWells = dbContext.AgHubWells.AsNoTracking().Where(x => x.HasElectricalData ?? false).ToList();
+            var aghubWells = dbContext.AgHubWells.AsNoTracking().Where(x => x.HasElectricalData).ToList();
             var streamFlowZoneWellsDtos = streamFlowZones.Select(streamFlowZone => new StreamFlowZoneWellsDto
                 {
                     StreamFlowZone = streamFlowZone.AsDto(),

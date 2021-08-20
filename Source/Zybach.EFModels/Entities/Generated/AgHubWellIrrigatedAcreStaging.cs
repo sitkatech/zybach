@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Zybach.EFModels.Entities
 {
     [Table("AgHubWellIrrigatedAcreStaging")]
-    [Index(nameof(WellRegistrationID), nameof(IrrigationYear), Name = "AK_AgHubWellIrrigatedAcreStaging_WellRegistrationID_IrrigationYear", IsUnique = true)]
     public partial class AgHubWellIrrigatedAcreStaging
     {
         [Key]

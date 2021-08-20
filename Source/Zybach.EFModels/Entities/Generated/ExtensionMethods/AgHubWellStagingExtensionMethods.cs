@@ -21,8 +21,7 @@ namespace Zybach.EFModels.Entities
                 WellConnectedMeter = agHubWellStaging.WellConnectedMeter,
                 WellAuditPumpRate = agHubWellStaging.WellAuditPumpRate,
                 AuditPumpRateUpdated = agHubWellStaging.AuditPumpRateUpdated,
-                HasElectricalData = agHubWellStaging.HasElectricalData,
-                FetchDate = agHubWellStaging.FetchDate
+                HasElectricalData = agHubWellStaging.HasElectricalData
             };
             DoCustomMappings(agHubWellStaging, agHubWellStagingDto);
             return agHubWellStagingDto;

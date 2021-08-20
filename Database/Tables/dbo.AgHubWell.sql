@@ -9,10 +9,10 @@ CREATE TABLE [dbo].[AgHubWell](
 	[WellGeometry] [geometry] NOT NULL,
 	[TPNRDPumpRate] [int] NULL,
 	[TPNRDPumpRateUpdated] [datetime] NULL,
-	[WellConnectedMeter] [bit] NULL,
+	[WellConnectedMeter] [bit] NOT NULL,
 	[WellAuditPumpRate] [int] NULL,
 	[AuditPumpRateUpdated] [datetime] NULL,
-	[HasElectricalData] [bit] NULL,
+	[HasElectricalData] [bit] NOT NULL,
 	[FetchDate] [datetime] NOT NULL,
  CONSTRAINT [PK_AgHubWell_AgHubWellID] PRIMARY KEY CLUSTERED 
 (

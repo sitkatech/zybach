@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
@@ -62,62 +63,61 @@ namespace Zybach.API
                     var wellRegistrationID = agHubWell.WellRegistrationID;
                     if (!ProblemWellRegistrationIDs.Contains(wellRegistrationID))
                     {
-                        var agHubWellRawWithAcreYears =
-                            _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID).Result;
-                        if (agHubWellRawWithAcreYears != null)
-                        {
-                            var agHubWellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
-                                .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
-                                {
-                                    Acres = x.Acres.Value,
-                                    WellRegistrationID = wellRegistrationID,
-                                    IrrigationYear = x.Year
-                                }).ToList();
-                            _dbContext.AgHubWellIrrigatedAcreStagings.AddRange(agHubWellIrrigatedAcreStagings);
-                        }
-
-                        if (agHubWell.WellConnectedMeter ?? false)
-                        {
-                            var startDate = lastReadingDates.ContainsKey(wellRegistrationID)
-                                ? lastReadingDates[wellRegistrationID]
-                                : DefaultStartDate;
-                            var pumpedVolumeResult =
-                                _agHubService.GetPumpedVolume(wellRegistrationID, startDate).Result;
-                            if (pumpedVolumeResult != null)
-                            {
-                                var pumpedVolumeTimePoints = pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.PumpedVolumeGallons > 0).ToList();
-                                if (pumpedVolumeTimePoints.Any())
-                                {
-                                    agHubWell.HasElectricalData = true;
-                                    var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
-                                        pumpedVolumeTimeSeries => new WellSensorMeasurementStaging()
-                                        {
-                                            MeasurementTypeID = (int) MeasurementTypeEnum.ElectricalUsage,
-                                            ReadingDate = pumpedVolumeTimeSeries.ReadingDate,
-                                            MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
-                                            WellRegistrationID = wellRegistrationID
-                                        }).ToList();
-                                    _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
-                                }
-                                else
-                                {
-                                    agHubWell.HasElectricalData = false;
-                                }
-                            }
-                            else
-                            {
-                                agHubWell.HasElectricalData = false;
-                            }
-                        }
-                        else
-                        {
-                            agHubWell.HasElectricalData = false;
-                        }
+                        PopulateIrrigatedAcresPerYearForWell(wellRegistrationID);
+                        PopulateWellSensorMeasurementsForWell(agHubWell, lastReadingDates, wellRegistrationID);
                     }
                     _dbContext.AgHubWellStagings.Add(agHubWell);
                     _dbContext.SaveChanges();
                 }
 
+                // only publish if we actually got any AgHubWells from Zappa
+                _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishAgHubWells");
+            }
+        }
+
+        private void PopulateWellSensorMeasurementsForWell(AgHubWellStaging agHubWell, Dictionary<string, DateTime> lastReadingDates,
+            string wellRegistrationID)
+        {
+            if (agHubWell.WellConnectedMeter)
+            {
+                var startDate = lastReadingDates.ContainsKey(wellRegistrationID) ? lastReadingDates[wellRegistrationID] : DefaultStartDate;
+                var pumpedVolumeResult =
+                    _agHubService.GetPumpedVolume(wellRegistrationID, startDate).Result;
+                if (pumpedVolumeResult != null)
+                {
+                    var pumpedVolumeTimePoints =
+                        pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.PumpedVolumeGallons > 0).ToList();
+                    if (pumpedVolumeTimePoints.Any())
+                    {
+                        agHubWell.HasElectricalData = true;
+                        var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
+                            pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
+                            {
+                                MeasurementTypeID = (int) MeasurementTypeEnum.ElectricalUsage,
+                                ReadingDate = pumpedVolumeTimeSeries.ReadingDate,
+                                MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
+                                WellRegistrationID = wellRegistrationID
+                            }).ToList();
+                        _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
+                    }
+                }
+            }
+        }
+
+        private void PopulateIrrigatedAcresPerYearForWell(string wellRegistrationID)
+        {
+            var agHubWellRawWithAcreYears =
+                _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID).Result;
+            if (agHubWellRawWithAcreYears != null)
+            {
+                var agHubWellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
+                    .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
+                    {
+                        Acres = x.Acres.Value,
+                        WellRegistrationID = wellRegistrationID,
+                        IrrigationYear = x.Year
+                    }).ToList();
+                _dbContext.AgHubWellIrrigatedAcreStagings.AddRange(agHubWellIrrigatedAcreStagings);
             }
         }
 
@@ -130,10 +130,10 @@ namespace Zybach.API
                 WellAuditPumpRate = agHubWellRaw.WellAuditPumpRate,
                 TPNRDPumpRateUpdated = agHubWellRaw.TpnrdPumpRateUpdated,
                 TPNRDPumpRate = agHubWellRaw.WellTpnrdPumpRate,
-                WellConnectedMeter = agHubWellRaw.WellConnectedMeter,
+                WellConnectedMeter = agHubWellRaw.WellConnectedMeter ?? false,
                 WellGeometry = new Point(agHubWellRaw.Location.Coordinates.Latitude,agHubWellRaw.Location.Coordinates.Longitude),
                 WellTPID = agHubWellRaw.WellTPID,
-                FetchDate = DateTime.UtcNow
+                HasElectricalData = false
             };
             return agHubWell;
         }

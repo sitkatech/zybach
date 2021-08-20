@@ -25,7 +25,7 @@ namespace Zybach.EFModels.Entities
         {
             var wellWithSensorSummaryDto = new WellWithSensorSummaryDto();
             var sensors = new List<SensorSummaryDto>();
-            if (agHubWell.HasElectricalData ?? false)
+            if (agHubWell.HasElectricalData)
             {
                 sensors.Add(new SensorSummaryDto()
                 {

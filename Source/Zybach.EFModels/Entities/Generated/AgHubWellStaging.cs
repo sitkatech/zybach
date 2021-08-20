@@ -25,12 +25,10 @@ namespace Zybach.EFModels.Entities
         public int? TPNRDPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? TPNRDPumpRateUpdated { get; set; }
-        public bool? WellConnectedMeter { get; set; }
+        public bool WellConnectedMeter { get; set; }
         public int? WellAuditPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? AuditPumpRateUpdated { get; set; }
-        public bool? HasElectricalData { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime FetchDate { get; set; }
+        public bool HasElectricalData { get; set; }
     }
 }

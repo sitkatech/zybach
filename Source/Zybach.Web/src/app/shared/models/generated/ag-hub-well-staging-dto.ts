@@ -14,7 +14,6 @@ export class AgHubWellStagingDto {
 	WellAuditPumpRate : number
 	AuditPumpRateUpdated : Date
 	HasElectricalData : boolean
-	FetchDate : Date
 
     constructor(obj?: any) {
         Object.assign(this, obj);

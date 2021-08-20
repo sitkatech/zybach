@@ -1,3 +1,5 @@
+alter table dbo.AghubWell alter column WellConnectedMeter bit not null
+alter table dbo.AghubWell alter column HasElectricalData bit not null
 alter table dbo.AghubWell alter column WellTPID varchar(100) null
 alter table dbo.Aghubwell drop constraint AK_AgHubWell_WellTPID
 alter table dbo.Aghubwell drop constraint AK_AgHubWell_WellRegistrationID
@@ -9,11 +11,10 @@ CREATE TABLE [dbo].[AgHubWellStaging](
 	[WellGeometry] [geometry] NOT NULL,
 	[TPNRDPumpRate] [int] NULL,
 	[TPNRDPumpRateUpdated] [datetime] NULL,
-	[WellConnectedMeter] [bit] NULL,
+	[WellConnectedMeter] [bit] not NULL,
 	[WellAuditPumpRate] [int] NULL,
 	[AuditPumpRateUpdated] [datetime] NULL,
-	[HasElectricalData] [bit] NULL,
-	[FetchDate] [datetime] NOT NULL
+	[HasElectricalData] [bit] not NULL
 )
 
 
