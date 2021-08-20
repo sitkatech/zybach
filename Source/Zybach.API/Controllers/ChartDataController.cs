@@ -69,7 +69,7 @@ namespace Zybach.API.Controllers
             List<WellSensorMeasurementDto> wellSensorMeasurementDtos, string sensorType)
         {
             var measurementValues = wellSensorMeasurementDtos.ToDictionary(
-                x => new DateTime(x.ReadingDate.Year, x.ReadingDate.Month, x.ReadingDate.Day), x => x.MeasurementValue);
+                x => new DateTime(x.ReadingDate.Year, x.ReadingDate.Month, x.ReadingDate.Day).ToShortDateString(), x => x.MeasurementValue);
             var startDate = wellSensorMeasurementDtos.Min(x => x.ReadingDate);
             var endDate = DateTime.Today;
             var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
@@ -77,7 +77,7 @@ namespace Zybach.API.Controllers
             var dailyPumpedVolumes = list.Select(a =>
             {
                 var dateTime = startDate.AddDays(a);
-                var gallons = measurementValues.ContainsKey(dateTime) ? measurementValues[dateTime] : 0;
+                var gallons = measurementValues.ContainsKey(dateTime.ToShortDateString()) ? measurementValues[dateTime.ToShortDateString()] : 0;
                 return new DailyPumpedVolume(dateTime, gallons, sensorType);
             });
             return dailyPumpedVolumes;

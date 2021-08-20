@@ -343,7 +343,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         this.timeSeries = [];
         return;
       }
-      console.log("Time Series Data!")
 
       this.sensors = response.Sensors;
       this.timeSeries = response.TimeSeries;
@@ -389,7 +388,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         pivoted.set(point.Time, pivotRow);
       }
     }
-    console.log(pivoted);
+
     const pivotedAndSorted = Array.from(pivoted.values())
       .map(x=> ({
         "Date": moment(x.Date).format('M/D/yyyy'),
@@ -398,8 +397,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         "ContinuityDeviceGallons": x["Continuity Meter"]
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
-
-    console.log(pivotedAndSorted);
 
     const fields = ['Date'];
 
@@ -557,7 +554,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
           ]
         },
         {
-          "transform": [{ "pivot": "dataSource", "value": "DallonsString", "groupby": ["time"], "op": "max" }],
+          "transform": [{ "pivot": "DataSource", "value": "GallonsString", "groupby": ["time"], "op": "max" }],
           "mark": "rule",
           "encoding": {
             "opacity": {
