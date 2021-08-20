@@ -20,7 +20,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("api/FileResource/CkEditorUpload")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<ActionResult<object>> CkEditorUpload()
         {
             byte[] bytes;

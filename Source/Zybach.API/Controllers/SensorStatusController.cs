@@ -25,7 +25,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/sensorStatus")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
             var wellSummariesWithSensors = (await _geoOptixService.GetWellsWithSensors()).Values.Where(x => x.Sensors.Any()).ToList();

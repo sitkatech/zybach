@@ -22,7 +22,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/search/{searchText}")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<List<SearchSummaryDto>> GetSearchSuggestions([FromRoute] string searchText)
         {
             var searchSummaryDtos = await _geoOptixSearchService.GetSearchSuggestions(searchText);

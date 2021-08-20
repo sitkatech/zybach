@@ -24,7 +24,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/users/invite")]
-        //[AdminFeature]
+        [AdminFeature]
         public async Task<IActionResult> InviteUser([FromBody] UserInviteDto inviteDto)
         {
             if (inviteDto.RoleID.HasValue)
@@ -115,7 +115,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/users")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult<IEnumerable<UserDto>> List()
         {
             var userDtos = EFModels.Entities.User.List(_dbContext);
@@ -123,7 +123,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/users/unassigned-report")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult<UnassignedUserReportDto> GetUnassignedUserReport()
         {
             var report = new UnassignedUserReportDto
@@ -160,7 +160,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/users/{userID}")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult<UserDto> UpdateUser([FromRoute] int userID, [FromBody] UserUpsertDto userUpsertDto)
         {
             var userDto = EFModels.Entities.User.GetByUserID(_dbContext, userID);
