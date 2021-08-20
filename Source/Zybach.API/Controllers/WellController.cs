@@ -378,36 +378,6 @@ namespace Zybach.API.Controllers
                 VolumesByWell = volumesByWell
             };
         }
-
-        [HttpGet("/api/getContinuityMeterSeries")]
-        [AdminFeature]
-        public async Task<List<WellSensorMeasurement>> GetContinuityMeterSeries()
-        {
-            return await _influxDbService.GetContinuityMeterSeries(new DateTime(2016, 1, 1));
-        }
-
-        [HttpGet("/api/getAghubWells")]
-        //[AdminFeature]
-        public async Task<List<AgHubService.AgHubWellRaw>> GetAghubWells()
-        {
-            return await _agHubService.GetWellCollection();
-        }
-
-        [HttpGet("/api/getAghubWells/{wellRegistrationID}")]
-        //[AdminFeature]
-        public async Task<AgHubService.AgHubWellRawWithAcreYears> GetAghubWells([FromRoute] string wellRegistrationID)
-        {
-            return await _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID);
-        }
-
-        [HttpGet("/api/getAghubWells/{wellRegistrationID}/pumpedVolume")]
-        //[AdminFeature]
-        public async Task<AgHubService.PumpedVolumeDaily> GetAghubWellsPumpedVolume([FromRoute] string wellRegistrationID)
-        {
-            return await _agHubService.GetPumpedVolume(wellRegistrationID, new DateTime(2016, 1, 1));
-        }
-
-
     }
 
     public class RobustReviewDto
