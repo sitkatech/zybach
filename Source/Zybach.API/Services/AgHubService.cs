@@ -97,11 +97,6 @@ namespace Zybach.API.Services
             public int? WellAuditPumpRate { get; set; }
             public bool? WellConnectedMeter { get; set; }
             public string WellTPID { get; set; }
-            [JsonProperty("electric")]
-            public int HasElectricalData { get; set; }
-
-            public DateTime? RegisteredUpdated { get; set; }
-            public int? RegisteredPumpRate { get; set; }
         }
 
         public class AgHubWellWithAcreYearsResponse
@@ -124,6 +119,11 @@ namespace Zybach.API.Services
             public int? WellAuditPumpRate { get; set; }
             public bool? WellConnectedMeter { get; set; }
             public string WellTPID { get; set; }
+            [JsonProperty("electric")]
+            public bool HasElectricalData { get; set; }
+
+            public DateTime? RegisteredUpdated { get; set; }
+            public int? RegisteredPumpRate { get; set; }
             public List<IrrigatedAcresPerYear> AcresYear { get; set; }
         }
 

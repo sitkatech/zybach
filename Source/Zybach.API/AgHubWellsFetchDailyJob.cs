@@ -62,7 +62,7 @@ namespace Zybach.API
                     var wellRegistrationID = agHubWell.WellRegistrationID;
                     if (!ProblemWellRegistrationIDs.Contains(wellRegistrationID))
                     {
-                        PopulateIrrigatedAcresPerYearForWell(wellRegistrationID);
+                        PopulateIrrigatedAcresPerYearForWell(agHubWell, wellRegistrationID);
                         PopulateWellSensorMeasurementsForWell(agHubWell, lastReadingDates, wellRegistrationID);
                     }
                     _dbContext.AgHubWellStagings.Add(agHubWell);
@@ -102,12 +102,16 @@ namespace Zybach.API
             }
         }
 
-        private void PopulateIrrigatedAcresPerYearForWell(string wellRegistrationID)
+        private void PopulateIrrigatedAcresPerYearForWell(AgHubWellStaging agHubWell, string wellRegistrationID)
         {
             var agHubWellRawWithAcreYears =
                 _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID).Result;
             if (agHubWellRawWithAcreYears != null)
             {
+                agHubWell.RegisteredUpdated = agHubWellRawWithAcreYears.RegisteredUpdated;
+                agHubWell.RegisteredPumpRate = agHubWellRawWithAcreYears.RegisteredPumpRate;
+                agHubWell.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
+
                 var agHubWellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
                     .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
                     {
@@ -128,12 +132,10 @@ namespace Zybach.API
                 WellAuditPumpRate = agHubWellRaw.WellAuditPumpRate,
                 TPNRDPumpRateUpdated = agHubWellRaw.TpnrdPumpRateUpdated,
                 WellTPNRDPumpRate = agHubWellRaw.WellTpnrdPumpRate,
-                RegisteredUpdated = agHubWellRaw.RegisteredUpdated,
-                RegisteredPumpRate = agHubWellRaw.RegisteredPumpRate,
                 WellConnectedMeter = agHubWellRaw.WellConnectedMeter ?? false,
                 WellGeometry = new Point(agHubWellRaw.Location.Coordinates.Longitude,agHubWellRaw.Location.Coordinates.Latitude),
                 WellTPID = agHubWellRaw.WellTPID,
-                HasElectricalData = agHubWellRaw.HasElectricalData == 1
+                HasElectricalData = false
             };
             return agHubWell;
         }
