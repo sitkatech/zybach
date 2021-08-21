@@ -133,7 +133,7 @@ namespace Zybach.API
                 WellConnectedMeter = agHubWellRaw.WellConnectedMeter ?? false,
                 WellGeometry = new Point(agHubWellRaw.Location.Coordinates.Longitude,agHubWellRaw.Location.Coordinates.Latitude),
                 WellTPID = agHubWellRaw.WellTPID,
-                HasElectricalData = agHubWellRaw.HasElectricalData
+                HasElectricalData = agHubWellRaw.HasElectricalData == 1
             };
             return agHubWell;
         }

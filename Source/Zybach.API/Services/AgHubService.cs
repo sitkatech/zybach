@@ -98,7 +98,7 @@ namespace Zybach.API.Services
             public bool? WellConnectedMeter { get; set; }
             public string WellTPID { get; set; }
             [JsonProperty("electric")]
-            public bool HasElectricalData { get; set; }
+            public int HasElectricalData { get; set; }
 
             public DateTime? RegisteredUpdated { get; set; }
             public int? RegisteredPumpRate { get; set; }
