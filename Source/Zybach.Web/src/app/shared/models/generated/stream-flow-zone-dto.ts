@@ -7,6 +7,7 @@
 export class StreamFlowZoneDto {
 	StreamFlowZoneID : number
 	StreamFlowZoneName : string
+	StreamFlowZoneArea : number
 
     constructor(obj?: any) {
         Object.assign(this, obj);

@@ -21,5 +21,6 @@ namespace Zybach.EFModels.Entities
         [Required]
         [Column(TypeName = "geometry")]
         public Geometry StreamFlowZoneGeometry { get; set; }
+        public double StreamFlowZoneArea { get; set; }
     }
 }

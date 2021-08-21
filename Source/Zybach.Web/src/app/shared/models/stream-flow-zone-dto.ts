@@ -1,8 +1,8 @@
-import {Feature, Geometry} from "geojson"
+import {Feature} from "geojson"
 
 export class StreamFlowZoneDto {
     StreamFlowZoneID: number;
     StreamFlowZoneName: string;
     StreamFlowZoneFeature: Feature;
-    Area;
+    StreamFlowZoneArea: number;
 }

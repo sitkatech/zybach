@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public getAcreage(streamFlowZone: StreamFlowZoneDto): number {
-    return (streamFlowZone.Area * 0.000247105) || 0;
+    return (streamFlowZone.StreamFlowZoneArea * 0.000247105) || 0;
   }
 
   public getSelectedYearPumpingDepths(): streamFlowZonePumpingDepthDto[] {

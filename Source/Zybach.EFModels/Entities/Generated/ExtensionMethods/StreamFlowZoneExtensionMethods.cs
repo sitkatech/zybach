@@ -14,7 +14,8 @@ namespace Zybach.EFModels.Entities
             var streamFlowZoneDto = new StreamFlowZoneDto()
             {
                 StreamFlowZoneID = streamFlowZone.StreamFlowZoneID,
-                StreamFlowZoneName = streamFlowZone.StreamFlowZoneName
+                StreamFlowZoneName = streamFlowZone.StreamFlowZoneName,
+                StreamFlowZoneArea = streamFlowZone.StreamFlowZoneArea
             };
             DoCustomMappings(streamFlowZone, streamFlowZoneDto);
             return streamFlowZoneDto;
