@@ -8,12 +8,8 @@ begin
 	declare @fetchDate datetime
 	set @fetchDate = GETUTCDATE()
 
+	-- we are always getting all the yearly irrigated acres for a well so we can just truncate and rebuild
 	truncate table dbo.AgHubWellIrrigatedAcre
-
-	delete aw 
-	from dbo.AgHubWell aw
-	left join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
-	where aws.AgHubWellStagingID is null
 
 	delete aw 
 	from dbo.AgHubWell aw
@@ -71,7 +67,7 @@ begin
 	--from dbo.AgHubWellIrrigatedAcreStaging awias
 	--join dbo.AgHubWell aw on awias.WellRegistrationID = awias.WellRegistrationID
 
-	exec dbo.pPublishWellSensorMeasurementStaging 3 -- Electrical Usage
+	exec dbo.pPublishWellSensorMeasurementStaging
 
 end
 

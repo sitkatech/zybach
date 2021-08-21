@@ -3,19 +3,27 @@ IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pPublishWe
 go
 
 create procedure dbo.pPublishWellSensorMeasurementStaging
-(
-	@MeasurementTypeID int
-)
 as
 begin
 
-	delete from dbo.WellSensorMeasurement where MeasurementTypeID = @MeasurementTypeID
-
 	insert into dbo.WellSensorMeasurement(WellRegistrationID, MeasurementTypeID, ReadingDate, MeasurementValue, SensorName)
-	select WellRegistrationID, MeasurementTypeID, ReadingDate, MeasurementValue, SensorName
-	from dbo.WellSensorMeasurementStaging wms
-	where wms.MeasurementTypeID = @MeasurementTypeID
+	select wsms.WellRegistrationID, wsms.MeasurementTypeID, wsms.ReadingDate, wsms.MeasurementValue, wsms.SensorName
+	from dbo.WellSensorMeasurementStaging wsms
+	left join dbo.WellSensorMeasurement wsm 
+		on wsms.WellRegistrationID = wsm.WellRegistrationID 
+		and wsms.MeasurementTypeID = wsm.MeasurementTypeID
+		and wsms.ReadingDate = wsm.ReadingDate 		
+		and isnull(wsms.SensorName, '') = isnull(wsm.SensorName, '')
+	where wsm.WellSensorMeasurementID is null
 
+	update wsm
+	set wsm.MeasurementValue = wsms.MeasurementValue		
+	from dbo.WellSensorMeasurement wsm
+	join dbo.WellSensorMeasurementStaging wsms 
+		on wsm.WellRegistrationID = wsms.WellRegistrationID 
+		and wsm.MeasurementTypeID = wsms.MeasurementTypeID
+		and wsm.ReadingDate = wsms.ReadingDate 		
+		and isnull(wsm.SensorName, '') = isnull(wsms.SensorName, '')
 end
 
 GO

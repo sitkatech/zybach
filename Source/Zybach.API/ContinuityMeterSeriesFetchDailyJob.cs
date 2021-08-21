@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zybach.API.Services;
@@ -54,8 +53,7 @@ namespace Zybach.API
             _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
             _dbContext.SaveChanges();
 
-            var sqlParameter = new SqlParameter("MeasurementTypeID", (int) MeasurementTypeEnum.ContinuityMeter);
-            _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishWellSensorMeasurementStaging @MeasurementTypeID", sqlParameter);
+            _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
         }
     }
 }
