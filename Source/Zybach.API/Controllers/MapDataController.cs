@@ -47,6 +47,7 @@ namespace Zybach.API.Controllers
                 geoOptixWell.Sensors.Add(new SensorSummaryDto{SensorType = "Electrical Usage", WellRegistrationID = geoOptixWell.WellRegistrationID});
                 geoOptixWell.WellTPID = x.WellTPID;
                 geoOptixWell.FetchDate = x.FetchDate;
+                geoOptixWell.HasElectricalData = x.HasElectricalData;
             });
 
             var wellWithSensorSummaryDtos = geoOptixWellDictionary.Values.ToList();
