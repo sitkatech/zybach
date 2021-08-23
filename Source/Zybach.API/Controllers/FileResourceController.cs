@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 namespace Zybach.API.Controllers
 {
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class FileResourceController : SitkaController<FileResourceController>
     {
         public FileResourceController(ZybachDbContext dbContext, ILogger<FileResourceController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)

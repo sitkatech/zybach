@@ -29,6 +29,7 @@ namespace Zybach.API.Controllers
         * Returns an array of all Wells in the Water Data Program registered in GeoOptix
         */
         [HttpGet("/api/wells")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         // todo: get apikey security
         // @Security(SecurityType.API_KEY)
         public async Task<object> GetWells()
@@ -58,13 +59,14 @@ namespace Zybach.API.Controllers
         [HttpGet("/api/wells/pumpedVolume")]
         // todo: get apikey security
         // @Security(SecurityType.API_KEY)
-        public object GetPumpedVolume([FromQuery] string startDate, [FromQuery] List<string> filter, [FromQuery] string endDate, [FromQuery] int? interval)
+        public ApiResult<StructuredResults> GetPumpedVolume([FromQuery] string startDate, [FromQuery] List<string> filter, [FromQuery] string endDate, [FromQuery] int? interval)
         {
             return GetPumpedVolumeImpl(filter, startDate, endDate);
         }
 
 
         [HttpGet("/api/wells/download/robustReviewScenarioJson")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         // todo: get apikey security
         // @Security(SecurityType.API_KEY)
         public async Task<List<RobustReviewDto>> GetRobustReviewJsonFile()
@@ -222,6 +224,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [AdminFeature]
         public async Task<List<InstallationRecordDto>> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
         {
@@ -229,6 +232,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [AdminFeature]
         public async Task<IActionResult> GetPhoto([FromRoute] string wellRegistrationID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
         {
@@ -261,14 +265,13 @@ namespace Zybach.API.Controllers
             return annualPumpedVolumes;
         }
 
-        private object GetPumpedVolumeImpl(List<string> wellRegistrationIDs, string startDateString, string endDateString)
+        private ApiResult<StructuredResults> GetPumpedVolumeImpl(List<string> wellRegistrationIDs, string startDateString, string endDateString)
         {
             if (string.IsNullOrWhiteSpace(endDateString))
             {
                 endDateString = DateTime.Today.ToShortDateString();
             }
 
-            //TODO: Validate startDateString and endDateString are valid date strings in ISO 8601 format
             if (!DateTime.TryParse(startDateString, out var startDate))
             {
                 throw new ArgumentException(
@@ -296,7 +299,7 @@ namespace Zybach.API.Controllers
                         || x.MeasurementTypeID == (int)MeasurementTypeEnum.ContinuityMeter)
                     && x.ReadingDate >= startDate && x.ReadingDate <= endDate
                     ).OrderBy(x => x.ReadingDate).Select(x => x.AsDto()).ToList();
-                return new
+                return new ApiResult<StructuredResults>
                 {
                     Status = "success",
                     Result = results.Any() ? StructureResults(results, startDate, endDate) : null
@@ -335,6 +338,13 @@ namespace Zybach.API.Controllers
                 VolumesByWell = volumesByWell
             };
         }
+    }
+
+    public class ApiResult<T>
+    {
+        public string Status { get; set; }
+
+        public T Result { get; set; }
     }
 
     public class RobustReviewDto

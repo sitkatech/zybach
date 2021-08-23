@@ -8,6 +8,7 @@ using Zybach.EFModels.Entities;
 namespace Zybach.API.Controllers
 {
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class RoleController : SitkaController<RoleController>
     {
         public RoleController(ZybachDbContext dbContext, ILogger<RoleController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)

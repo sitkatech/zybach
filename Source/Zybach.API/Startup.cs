@@ -23,6 +23,7 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
 using Zybach.API.Services.Authorization;
 using ILogger = Serilog.ILogger;
@@ -167,6 +168,12 @@ namespace Zybach.API
                 }));
 
             services.AddControllers();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.CustomSchemaIds(type => type.ToString());
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zybach", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -227,6 +234,10 @@ namespace Zybach.API
                 domains.Add("core.windows.net");
                 domains.Add("10.0.75.1");
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
         }
         private void OnShutdown()
         {

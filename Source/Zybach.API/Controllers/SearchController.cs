@@ -11,6 +11,7 @@ using Zybach.EFModels.Entities;
 namespace Zybach.API.Controllers
 {
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class SearchController : SitkaController<SearchController>
     {
         private readonly GeoOptixSearchService _geoOptixSearchService;
