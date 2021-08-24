@@ -9,9 +9,9 @@ namespace Zybach.EFModels.Entities
 {
     public partial class AgHubWell
     {
-        public static List<AgHubWellDto> List(ZybachDbContext dbContext)
+        public static List<AgHubWell> List(ZybachDbContext dbContext)
         {
-            return dbContext.AgHubWells.AsNoTracking().Select(x => x.AsDto()).ToList();
+            return dbContext.AgHubWells.AsNoTracking().ToList();
         }
 
         public static List<WellWithSensorSummaryDto> GetAgHubWellsAsWellWithSensorSummaryDtos(ZybachDbContext dbContext)

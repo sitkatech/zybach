@@ -33,9 +33,9 @@ namespace Zybach.API.Controllers
             var geoOptixWellDictionary = await _geoOptixService.GetWellsWithSensors();
             var lastReadingDateTimes = WellSensorMeasurement.GetLastReadingDateTimes(_dbContext);
             var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
-            var agHubWellDtos = AgHubWell.List(_dbContext);
+            var agHubWells = AgHubWell.List(_dbContext);
 
-            agHubWellDtos.ForEach(x =>
+            agHubWells.ForEach(x =>
             {
                 if (!geoOptixWellDictionary.ContainsKey(x.WellRegistrationID))
                 {
@@ -62,17 +62,17 @@ namespace Zybach.API.Controllers
             return wellWithSensorSummaryDtos;
         }
 
-        private WellWithSensorSummaryDto GetWellWithSensorSummaryDtoFromAgHubWell(AgHubWellDto agHubWellDto)
+        private WellWithSensorSummaryDto GetWellWithSensorSummaryDtoFromAgHubWell(AgHubWell agHubWell)
         {
             return new WellWithSensorSummaryDto
             {
-                FetchDate = agHubWellDto.FetchDate,
+                FetchDate = agHubWell.FetchDate,
                 InGeoOptix = false,
-                HasElectricalData = agHubWellDto.HasElectricalData,
-                Location = new Feature(new Point(new Position(agHubWellDto.Longitude, agHubWellDto.Latitude))),
-                WellRegistrationID = agHubWellDto.WellRegistrationID,
-                WellTPID = agHubWellDto.WellTPID,
-                Sensors = new List<SensorSummaryDto>{new SensorSummaryDto{SensorType = "Electrical Usage", WellRegistrationID = agHubWellDto.WellRegistrationID}}
+                HasElectricalData = agHubWell.HasElectricalData,
+                Location = new Feature(new Point(new Position(agHubWell.WellGeometry.Coordinate.Y, agHubWell.WellGeometry.Coordinate.X))),
+                WellRegistrationID = agHubWell.WellRegistrationID,
+                WellTPID = agHubWell.WellTPID,
+                Sensors = new List<SensorSummaryDto>{new SensorSummaryDto{SensorType = "Electrical Usage", WellRegistrationID = agHubWell.WellRegistrationID}}
             };
         }
     }
