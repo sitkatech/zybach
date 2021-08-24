@@ -163,7 +163,7 @@ namespace Zybach.API.Services
                 installationRecordDto.FlowMeterSerialNumber = GetRecordSetValueAsString(sensorRecord, "flow-serial-number");
                 installationRecordDto.SensorSerialNumber = GetRecordSetValueAsString(sensorRecord, "sensor-serial-number");
                 var installerAffiliationRawValue = GetRecordSetValueAsStringList(installationRecord, "installer-affiliation");
-                installationRecordDto.Affiliation = installerAffiliationRawValue.Any() ? installerAffiliationRawValue.First().ToUpper() : null;
+                installationRecordDto.Affiliation = installerAffiliationRawValue != null && installerAffiliationRawValue.Any() ? installerAffiliationRawValue.First().ToUpper() : null;
                 installationRecordDto.Initials = GetRecordSetValueAsString(installationRecord, "installer-initials");
                 installationRecordDto.SensorType = sensorType;
                 installationRecordDto.ContinuitySensorModel = continuitySensorModel;

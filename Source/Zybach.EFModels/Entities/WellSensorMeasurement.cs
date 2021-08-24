@@ -78,12 +78,14 @@ namespace Zybach.EFModels.Entities
 
         public static DateTime? GetFirstReadingDateTimeForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
-            return dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).Min(x => x.ReadingDate);
+            var wellSensorMeasurements = dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
+            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.ReadingDate) : (DateTime?) null;
         }
 
         public static DateTime? GetLastReadingDateTimeForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
-            return dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).Max(x => x.ReadingDate);
+            var wellSensorMeasurements = dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
+            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.ReadingDate) : (DateTime?)null;
         }
 
         public static Dictionary<string, DateTime> GetFirstReadingDateTimes(ZybachDbContext dbContext)
