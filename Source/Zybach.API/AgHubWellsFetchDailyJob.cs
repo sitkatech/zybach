@@ -92,7 +92,7 @@ namespace Zybach.API
                             pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
                             {
                                 MeasurementTypeID = (int) MeasurementTypeEnum.ElectricalUsage,
-                                ReadingDate = pumpedVolumeTimeSeries.ReadingDate,
+                                ReadingDate = pumpedVolumeTimeSeries.ReadingDate.AddHours(5), // need to be in central time
                                 MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
                                 WellRegistrationID = wellRegistrationID
                             }).ToList();
