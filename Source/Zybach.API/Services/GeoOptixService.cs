@@ -114,8 +114,16 @@ namespace Zybach.API.Services
 
         public async Task<List<Sample>> GetGeoOptixSamplesForSite(string siteID)
         {
-            var getGeoOptixSamplesForSite = await GetJsonFromCatalogImpl<List<Sample>>($"{GeoOptixSitesProjectsUri}/{siteID}/samples");
-            return getGeoOptixSamplesForSite;
+            try
+            {
+                var getGeoOptixSamplesForSite = await GetJsonFromCatalogImpl<List<Sample>>($"{GeoOptixSitesProjectsUri}/{siteID}/samples");
+                return getGeoOptixSamplesForSite;
+            }
+            catch (HttpRequestException e)
+            {
+                _logger.LogError($"Well {siteID} not found in GeoOptix!  {e.Message}");
+                return new List<Sample>();
+            }
         }
 
         public async Task<List<SampleMethodDto>> GetGeoOptixSampleMethodsForSite(string siteID, string methodID)
