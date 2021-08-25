@@ -361,10 +361,8 @@ namespace Zybach.API.Controllers
     public class StructuredResults
     {
         public int IntervalCountTotal { get; set; }
-        public int IntervalWidthInMinutes { get; set; }
         public string IntervalStart { get; set; }
         public string IntervalEnd { get; set; }
-        public double DurationInMinutes { get; set; }
         public int WellCount { get; set; }
         public List<VolumeByWell> VolumesByWell { get; set; }
     }
