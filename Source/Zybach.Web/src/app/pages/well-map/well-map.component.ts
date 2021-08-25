@@ -7,20 +7,15 @@ import {
   Map,
   MapOptions,
   tileLayer,
-  Icon,
   geoJSON,
   icon,
   latLng,
   Layer,
-  LeafletEvent,
-  layerGroup,
-  LatLng
-} from 'leaflet';
+  LeafletEvent} from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling'
-import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
@@ -32,7 +27,7 @@ import { NominatimService } from 'src/app/services/nominatim.service';
 import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
-import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
+import { DataSourceFilterOption } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { NgElement, WithProperties } from '@angular/elements';
 import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 
@@ -181,7 +176,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
           var icon = flowMeterMarkerIcon
         } else if (sensorTypes.includes("Continuity Meter")) {
           var icon = continuityMeterMarkerIcon
-        } else if (sensorTypes.includes("Electrical Usage")) {
+        } else if (feature.properties.hasElectricData) {
           var icon = electricalDataMarkerIcon
         } else {
           var icon = noDataSourceMarkerIcon
@@ -197,7 +192,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
         return (this.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
           (this.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
-          (this.showElectricalData && sensorTypes.includes("Electrical Usage"));
+          (this.showElectricalData);
       }
     });
 

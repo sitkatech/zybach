@@ -8,6 +8,8 @@ namespace Zybach.EFModels.Entities
 {
     public partial class WellSensorMeasurement
     {
+        public DateTime ReadingDate => new DateTime(ReadingYear, ReadingMonth, ReadingDay);
+
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementType(
     ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum)
         {
@@ -21,7 +23,7 @@ namespace Zybach.EFModels.Entities
         {
             return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum
-                            && x.ReadingDate.Year == year
+                            && x.ReadingYear == year
                 ).Select(x => x.AsDto())
                 .ToList();
         }

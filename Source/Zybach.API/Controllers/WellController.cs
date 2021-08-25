@@ -130,7 +130,7 @@ namespace Zybach.API.Controllers
 
                 var monthlyPumpedVolume = wellSensorMeasurementDtos.GroupBy(x => x.ReadingDate.ToString("yyyyMM"))
                     .Select(x =>
-                        new MonthlyPumpedVolume(x.First().ReadingDate.Year, x.First().ReadingDate.Month,
+                        new MonthlyPumpedVolume(x.First().ReadingYear, x.First().ReadingMonth,
                             x.Sum(y => y.MeasurementValue))).ToList();
 
                 var point = (Point) wellWithSensorSummaryDto.Location.Geometry;
@@ -213,7 +213,7 @@ namespace Zybach.API.Controllers
             if (hasElectricalData)
             {
                 var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
-                var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingDate.Year)
+                var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                     .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue),
                         InfluxDBService.SensorTypes.ElectricalUsage)).ToList();
 
@@ -259,7 +259,7 @@ namespace Zybach.API.Controllers
 
             var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
 
-            var annualPumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingDate.Year)
+            var annualPumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                 .Select(x => new AnnualPumpedVolume(x.Key,x.Sum(y => y.MeasurementValue), sensorType)).ToList();
 
             return annualPumpedVolumes;
@@ -297,8 +297,9 @@ namespace Zybach.API.Controllers
                     && (
                         x.MeasurementTypeID == (int) MeasurementTypeEnum.FlowMeter
                         || x.MeasurementTypeID == (int)MeasurementTypeEnum.ContinuityMeter)
-                    && x.ReadingDate >= startDate && x.ReadingDate <= endDate
-                    ).OrderBy(x => x.ReadingDate).Select(x => x.AsDto()).ToList();
+                    && x.ReadingYear >= startDate.Year && x.ReadingMonth >= startDate.Month && x.ReadingDay >= startDate.Day
+                    && x.ReadingYear <= endDate.Year && x.ReadingMonth <= endDate.Month && x.ReadingDay <= endDate.Day
+                    ).OrderBy(x => x.ReadingYear).ThenBy(x => x.ReadingMonth).ThenBy(x => x.ReadingDay).Select(x => x.AsDto()).ToList();
                 return new ApiResult<StructuredResults>
                 {
                     Status = "success",

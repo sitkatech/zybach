@@ -33,7 +33,9 @@ CREATE TABLE dbo.WellSensorMeasurementStaging(
 	WellSensorMeasurementStagingID int IDENTITY(1,1) NOT NULL CONSTRAINT PK_WellSensorMeasurementStaging_WellSensorMeasurementStagingID PRIMARY KEY,
 	WellRegistrationID varchar(100) NOT NULL,
 	MeasurementTypeID int NOT NULL CONSTRAINT FK_WellSensorMeasurementStaging_MeasurementType_MeasurementTypeID FOREIGN KEY REFERENCES dbo.MeasurementType (MeasurementTypeID),
-	ReadingDate datetime NOT NULL,
+	ReadingYear int not null,
+	ReadingMonth int not null,
+	ReadingDay int not null,
 	SensorName varchar(100) NULL,
 	MeasurementValue float NOT NULL
 )

@@ -8,7 +8,9 @@ export class WellSensorMeasurementDto {
 	WellSensorMeasurementID : number
 	WellRegistrationID : string
 	MeasurementType : MeasurementTypeDto
-	ReadingDate : Date
+	ReadingYear : number
+	ReadingMonth : number
+	ReadingDay : number
 	SensorName : string
 	MeasurementValue : number
 

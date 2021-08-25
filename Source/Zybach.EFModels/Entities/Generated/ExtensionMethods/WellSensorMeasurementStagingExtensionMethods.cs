@@ -16,7 +16,9 @@ namespace Zybach.EFModels.Entities
                 WellSensorMeasurementStagingID = wellSensorMeasurementStaging.WellSensorMeasurementStagingID,
                 WellRegistrationID = wellSensorMeasurementStaging.WellRegistrationID,
                 MeasurementType = wellSensorMeasurementStaging.MeasurementType.AsDto(),
-                ReadingDate = wellSensorMeasurementStaging.ReadingDate,
+                ReadingYear = wellSensorMeasurementStaging.ReadingYear,
+                ReadingMonth = wellSensorMeasurementStaging.ReadingMonth,
+                ReadingDay = wellSensorMeasurementStaging.ReadingDay,
                 SensorName = wellSensorMeasurementStaging.SensorName,
                 MeasurementValue = wellSensorMeasurementStaging.MeasurementValue
             };

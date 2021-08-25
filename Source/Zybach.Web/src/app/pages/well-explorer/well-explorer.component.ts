@@ -1,10 +1,7 @@
-import { literalMap } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import * as moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
@@ -49,7 +46,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
-                sensors: x.Sensors || []
+                sensors: x.Sensors || [],
+                hasElectricData: x.HasElectricalData
               };
               return geoJsonPoint;
             })

@@ -17,8 +17,9 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         public string WellRegistrationID { get; set; }
         public int MeasurementTypeID { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime ReadingDate { get; set; }
+        public int ReadingYear { get; set; }
+        public int ReadingMonth { get; set; }
+        public int ReadingDay { get; set; }
         [StringLength(100)]
         public string SensorName { get; set; }
         public double MeasurementValue { get; set; }

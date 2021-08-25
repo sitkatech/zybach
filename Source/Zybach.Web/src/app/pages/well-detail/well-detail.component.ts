@@ -202,8 +202,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       return ""
     }
     const time = moment(this.well.LastReadingDate)
-    const timepiece = time.format('h:mm a');
-    return time.format('M/D/yyyy ') + timepiece;
+    //const timepiece = time.format('h:mm a');
+    return time.format('M/D/yyyy');// + timepiece;
   }
 
   getInstallationDate(installation: InstallationDto) {

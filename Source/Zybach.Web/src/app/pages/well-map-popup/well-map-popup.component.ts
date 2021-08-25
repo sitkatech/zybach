@@ -17,7 +17,7 @@ export class WellMapPopupComponent implements OnInit {
   }
 
   getDataSourceDisplay(): string {
-    return `Data Source${this.sensors.length != 1 ? "s":""}:`;
+    return `Data Source${this.sensors.length > 1 ? "s":""}:`;
   }
 
   getSensorDisplay(sensor: SensorSummaryDto): string {

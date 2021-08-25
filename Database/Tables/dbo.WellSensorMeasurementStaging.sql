@@ -6,7 +6,9 @@ CREATE TABLE [dbo].[WellSensorMeasurementStaging](
 	[WellSensorMeasurementStagingID] [int] IDENTITY(1,1) NOT NULL,
 	[WellRegistrationID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[MeasurementTypeID] [int] NOT NULL,
-	[ReadingDate] [datetime] NOT NULL,
+	[ReadingYear] [int] NOT NULL,
+	[ReadingMonth] [int] NOT NULL,
+	[ReadingDay] [int] NOT NULL,
 	[SensorName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[MeasurementValue] [float] NOT NULL,
  CONSTRAINT [PK_WellSensorMeasurementStaging_WellSensorMeasurementStagingID] PRIMARY KEY CLUSTERED 

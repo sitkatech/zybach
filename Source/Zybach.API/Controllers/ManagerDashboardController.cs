@@ -34,7 +34,7 @@ namespace Zybach.API.Controllers
             var geoOptixWells = await _geoOptixService.GetWellSummariesCreatedAsOfYear(year);
             var aghubRegistrationIds = _dbContext.WellSensorMeasurements
                 .Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.ElectricalUsage &&
-                            x.ReadingDate.Year == year).Select(x => x.WellRegistrationID).Distinct().ToList();
+                            x.ReadingYear == year).Select(x => x.WellRegistrationID).Distinct().ToList();
             // combine the registration ids as a set and count to avoid counting duplicates
             var numberOfWellsTracked = geoOptixWells.Select(x => x.WellRegistrationID)
                 .Union(aghubRegistrationIds, StringComparer.InvariantCultureIgnoreCase).Count();

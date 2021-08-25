@@ -12,7 +12,9 @@ namespace Zybach.Models.DataTransferObjects
         public int WellSensorMeasurementStagingID { get; set; }
         public string WellRegistrationID { get; set; }
         public MeasurementTypeDto MeasurementType { get; set; }
-        public DateTime ReadingDate { get; set; }
+        public int ReadingYear { get; set; }
+        public int ReadingMonth { get; set; }
+        public int ReadingDay { get; set; }
         public string SensorName { get; set; }
         public double MeasurementValue { get; set; }
     }

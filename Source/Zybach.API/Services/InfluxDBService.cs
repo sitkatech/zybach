@@ -42,7 +42,11 @@ namespace Zybach.API.Services
             var fluxTables = await RunInfluxQueryAsync(flux);
             return fluxTables.Select(x => new WellSensorMeasurementStaging
             {
-                WellRegistrationID = x.RegistrationID, ReadingDate = x.Time, MeasurementTypeID = (int) MeasurementTypeEnum.FlowMeter, MeasurementValue = x.Value, SensorName = x.Sensor
+                WellRegistrationID = x.RegistrationID,
+                ReadingYear = x.Time.Year,
+                ReadingMonth = x.Time.Month,
+                ReadingDay = x.Time.Day,
+                MeasurementTypeID = (int) MeasurementTypeEnum.FlowMeter, MeasurementValue = x.Value, SensorName = x.Sensor
             }).ToList();
         }
 
@@ -67,8 +71,10 @@ namespace Zybach.API.Services
 
             return fluxTables.Select(x => new WellSensorMeasurementStaging
             {
-                WellRegistrationID = x.RegistrationID, 
-                ReadingDate = x.Time,
+                WellRegistrationID = x.RegistrationID,
+                ReadingYear = x.Time.Year,
+                ReadingMonth = x.Time.Month,
+                ReadingDay = x.Time.Day,
                 MeasurementTypeID = (int) MeasurementTypeEnum.ContinuityMeter, 
                 MeasurementValue = x.Value,
                 SensorName = x.Sensor

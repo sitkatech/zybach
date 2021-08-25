@@ -70,7 +70,7 @@ namespace Zybach.API.Controllers
             List<WellSensorMeasurementDto> wellSensorMeasurementDtos, string sensorType)
         {
             var measurementValues = wellSensorMeasurementDtos.ToDictionary(
-                x => new DateTime(x.ReadingDate.Year, x.ReadingDate.Month, x.ReadingDate.Day).ToShortDateString(), x => x.MeasurementValue);
+                x => new DateTime(x.ReadingYear, x.ReadingMonth, x.ReadingDay).ToShortDateString(), x => x.MeasurementValue);
             var startDate = wellSensorMeasurementDtos.Min(x => x.ReadingDate);
             var endDate = DateTime.Today;
             var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
