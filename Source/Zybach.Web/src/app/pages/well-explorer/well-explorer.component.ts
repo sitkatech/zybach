@@ -36,7 +36,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
         this.wells = wells;
-
+        
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
@@ -209,7 +209,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   public onFilterChange(dataSourceOptions: any) {
     const filteredWells = this.wells.filter(x => {
-      if (x.Sensors === null || x.Sensors.length === 0) {
+      if (x.Sensors === null || x.Sensors.length === 0 || (x.Sensors.length === 1 && x.Sensors[0].SensorType === "Well Pressure")) {
         return dataSourceOptions.showNoEstimate;
       }
 

@@ -176,15 +176,16 @@ export class WellMapComponent implements OnInit, AfterViewInit {
           var icon = flowMeterMarkerIcon
         } else if (sensorTypes.includes("Continuity Meter")) {
           var icon = continuityMeterMarkerIcon
-        } else if (feature.properties.hasElectricData) {
+        } else if (sensorTypes.includes("Electrical Usage")) {
           var icon = electricalDataMarkerIcon
         } else {
+          debugger;
           var icon = noDataSourceMarkerIcon
         }
         return marker(latlng, { icon: icon})
       },
       filter: (feature) => {
-        if (feature.properties.sensors === null || feature.properties.sensors.length === 0) {
+        if (feature.properties.sensors === null || feature.properties.sensors.length === 0 || (feature.properties.sensors.length === 1 && feature.properties.sensors[0].SensorType === "Well Pressure")) {
           return this.showNoEstimate;
         }
 
