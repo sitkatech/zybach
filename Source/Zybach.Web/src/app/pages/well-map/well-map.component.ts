@@ -179,7 +179,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
         } else if (sensorTypes.includes("Electrical Usage")) {
           var icon = electricalDataMarkerIcon
         } else {
-          debugger;
           var icon = noDataSourceMarkerIcon
         }
         return marker(latlng, { icon: icon})

@@ -33,7 +33,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("api/fieldDefinitions/{fieldDefinitionTypeID}")]
-        [AdminFeature]
+        [ZybachViewFeature]
         public ActionResult<FieldDefinitionDto> UpdateFieldDefinition([FromRoute] int fieldDefinitionTypeID,
             [FromBody] FieldDefinitionDto fieldDefinitionUpdateDto)
         {

@@ -1,5 +1,6 @@
 export enum RoleEnum {
   Admin = 1,
-  Disabled = 2,
+  Normal = 2,
   Unassigned = 3,
+  Disabled= 4,
 }

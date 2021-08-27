@@ -225,7 +225,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        [AdminFeature]
+        [ZybachViewFeature]
         public async Task<List<InstallationRecordDto>> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
         {
             return await _geoOptixService.GetInstallationRecords(wellRegistrationID);
@@ -233,7 +233,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
         [ApiExplorerSettings(IgnoreApi = true)]
-        [AdminFeature]
+        [ZybachViewFeature]
         public async Task<IActionResult> GetPhoto([FromRoute] string wellRegistrationID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
         {
             try

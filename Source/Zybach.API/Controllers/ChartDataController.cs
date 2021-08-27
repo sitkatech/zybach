@@ -25,7 +25,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("/api/chartData/{wellRegistrationID}")]
-        [AdminFeature]
+        [ZybachViewFeature]
         public async Task<WellChartDataDto> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
         {
             var wellChartDataDto = new WellChartDataDto();

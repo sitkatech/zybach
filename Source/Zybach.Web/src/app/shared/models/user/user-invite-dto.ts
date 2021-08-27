@@ -1,5 +1,5 @@
 export class UserInviteDto {
-    Role: string;
+    RoleID: number;
     FirstName: string;
     LastName: string;
     Email: string;

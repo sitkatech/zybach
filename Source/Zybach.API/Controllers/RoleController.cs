@@ -16,7 +16,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("api/roles")]
-        [AdminFeature]
+        [ZybachViewFeature]
         public IActionResult Get()
         {
             var roleDtos = Role.List(_dbContext);
