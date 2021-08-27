@@ -59,13 +59,13 @@ namespace Zybach.API.Services
                 FilterByDateRange(fromDate, DateTime.Now) +
                 FilterByMeasurement(new List<string> {MeasurementNames.Continuity}) +
                 FilterByField(FieldNames.On) +
-                GroupBy(new List<string> { FieldNames.RegistrationID, FieldNames.SensorName }) +
+                GroupBy(new List<string> {FieldNames.RegistrationID, FieldNames.SensorName}) +
                 "|> sort(columns: [\"_time\"]) " +
                 "|> events.duration(unit: 1ns, columnName: \"run-time-ns\", timeColumn: \"_time\", stopColumn: \"_stop\") " +
                 "|> filter(fn: (r) => r[\"_value\"] == 1) " +
-                "|> map(fn: (r) => ({ r with \"run-time-minutes\": float(v: r[\"run-time-ns\"]) / 60000000000.0})) " +                
+                "|> map(fn: (r) => ({ r with \"run-time-minutes\": float(v: r[\"run-time-ns\"]) / 60000000000.0})) " +
                 "|> aggregateWindow(every: 1d, fn: sum, createEmpty: false, timeSrc: \"_start\", column: \"run-time-minutes\", offset: 5h) " +
-				"|> map(fn: (r) => ({ r with \"_value\": math.mMin(x: r[\"run-time-minutes\"], y: 24.0 * 60.0)}))"
+                "|> map(fn: (r) => ({ r with \"_value\": math.mMin(x: r[\"run-time-minutes\"], y: 24.0 * 60.0)}))";
             _logger.LogInformation($"Influx DB Query: {fluxQuery}");
             var fluxTables = await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReading>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
 
