@@ -6,9 +6,15 @@ create procedure dbo.pPublishWellSensorMeasurementStaging
 as
 begin
 
+	-- we need to group by and sum because of case sensitive issues with influx data
+	select wsms.WellRegistrationID, wsms.MeasurementTypeID, wsms.ReadingYear, wsms.ReadingMonth, wsms.ReadingDay, wsms.SensorName, sum(wsms.MeasurementValue) as MeasurementValue
+	into #wms
+	from dbo.WellSensorMeasurementStaging wsms
+	group by wsms.WellRegistrationID, wsms.MeasurementTypeID, wsms.ReadingYear, wsms.ReadingMonth, wsms.ReadingDay, wsms.SensorName
+
 	insert into dbo.WellSensorMeasurement(WellRegistrationID, MeasurementTypeID, ReadingYear, ReadingMonth, ReadingDay, MeasurementValue, SensorName)
 	select wsms.WellRegistrationID, wsms.MeasurementTypeID, wsms.ReadingYear, wsms.ReadingMonth, wsms.ReadingDay, wsms.MeasurementValue, wsms.SensorName
-	from dbo.WellSensorMeasurementStaging wsms
+	from #wms wsms
 	left join dbo.WellSensorMeasurement wsm 
 		on wsms.WellRegistrationID = wsm.WellRegistrationID 
 		and wsms.MeasurementTypeID = wsm.MeasurementTypeID
@@ -21,7 +27,7 @@ begin
 	update wsm
 	set wsm.MeasurementValue = wsms.MeasurementValue		
 	from dbo.WellSensorMeasurement wsm
-	join dbo.WellSensorMeasurementStaging wsms 
+	join #wms wsms 
 		on wsm.WellRegistrationID = wsms.WellRegistrationID 
 		and wsm.MeasurementTypeID = wsms.MeasurementTypeID
 		and wsm.ReadingYear = wsms.ReadingYear
