@@ -69,6 +69,10 @@ namespace Zybach.API.Controllers
         private static IEnumerable<DailyPumpedVolume> CreateDailyPumpedVolumesAndZeroFillMissingDays(
             List<WellSensorMeasurementDto> wellSensorMeasurementDtos, string sensorType)
         {
+            if (!wellSensorMeasurementDtos.Any())
+            {
+                return new List<DailyPumpedVolume>();
+            }
             var measurementValues = wellSensorMeasurementDtos.ToDictionary(
                 x => new DateTime(x.ReadingYear, x.ReadingMonth, x.ReadingDay).ToShortDateString(), x => x.MeasurementValue);
             var startDate = wellSensorMeasurementDtos.Min(x => x.ReadingDate);
