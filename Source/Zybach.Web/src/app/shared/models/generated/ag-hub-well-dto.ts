@@ -2,7 +2,7 @@
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
 //  Source Table: [dbo].[AgHubWell]
-
+import { StreamFlowZoneDto } from './stream-flow-zone-dto'
 
 export class AgHubWellDto {
 	AgHubWellID : number
@@ -17,6 +17,7 @@ export class AgHubWellDto {
 	FetchDate : Date
 	RegisteredPumpRate : number
 	RegisteredUpdated : Date
+	StreamflowZone : StreamFlowZoneDto
 
     constructor(obj?: any) {
         Object.assign(this, obj);

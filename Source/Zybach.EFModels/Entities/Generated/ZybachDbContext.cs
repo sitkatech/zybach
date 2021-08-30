@@ -54,6 +54,11 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 
                 entity.Property(e => e.WellTPID).IsUnicode(false);
+
+                entity.HasOne(d => d.StreamflowZone)
+                    .WithMany(p => p.AgHubWells)
+                    .HasForeignKey(d => d.StreamflowZoneID)
+                    .HasConstraintName("FK_AghubWell_StreamFlowZone_StreamFlowZoneID");
             });
 
             modelBuilder.Entity<AgHubWellIrrigatedAcre>(entity =>

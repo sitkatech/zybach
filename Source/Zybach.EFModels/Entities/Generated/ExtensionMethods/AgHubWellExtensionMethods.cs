@@ -24,7 +24,8 @@ namespace Zybach.EFModels.Entities
                 HasElectricalData = agHubWell.HasElectricalData,
                 FetchDate = agHubWell.FetchDate,
                 RegisteredPumpRate = agHubWell.RegisteredPumpRate,
-                RegisteredUpdated = agHubWell.RegisteredUpdated
+                RegisteredUpdated = agHubWell.RegisteredUpdated,
+                StreamflowZone = agHubWell.StreamflowZone?.AsDto()
             };
             DoCustomMappings(agHubWell, agHubWellDto);
             return agHubWellDto;

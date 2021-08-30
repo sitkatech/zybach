@@ -14,6 +14,15 @@ CREATE TABLE [dbo].[WellSensorMeasurement](
  CONSTRAINT [PK_WellSensorMeasurement_WellSensorMeasurementID] PRIMARY KEY CLUSTERED 
 (
 	[WellSensorMeasurementID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [AK_WellSensorMeasurement_WellRegistrationID_MeasurementTypeID_SensorName_ReadingDate] UNIQUE NONCLUSTERED 
+(
+	[WellRegistrationID] ASC,
+	[MeasurementTypeID] ASC,
+	[SensorName] ASC,
+	[ReadingYear] ASC,
+	[ReadingMonth] ASC,
+	[ReadingDay] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 

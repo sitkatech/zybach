@@ -60,6 +60,15 @@ begin
 	join dbo.AgHubWell aw on awias.WellRegistrationID = aw.WellRegistrationID
 	group by aw.AgHubWellID, awias.IrrigationYear
 
+	-- Set StreamflowZoneID; first "reset" it to null; then actually calculate matching ones
+	update dbo.AgHubWell
+	Set StreamflowZoneID = null
+
+	update aw
+	set StreamflowZoneID = sfz.StreamFlowZoneID
+	from dbo.StreamFlowZone sfz
+	join dbo.AgHubWell aw on aw.WellGeometry.STWithin(sfz.StreamFlowZoneGeometry) = 1
+
 
 	--select	aw.AgHubWellID, 
 	--		awias.IrrigationYear,

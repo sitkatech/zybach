@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Zybach.EFModels.Entities
 {
     [Table("WellSensorMeasurement")]
+    [Index(nameof(WellRegistrationID), nameof(MeasurementTypeID), nameof(SensorName), nameof(ReadingYear), nameof(ReadingMonth), nameof(ReadingDay), Name = "AK_WellSensorMeasurement_WellRegistrationID_MeasurementTypeID_SensorName_ReadingDate", IsUnique = true)]
     public partial class WellSensorMeasurement
     {
         [Key]

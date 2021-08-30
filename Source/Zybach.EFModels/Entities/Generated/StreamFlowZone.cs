@@ -13,6 +13,11 @@ namespace Zybach.EFModels.Entities
     [Index(nameof(StreamFlowZoneName), Name = "AK_StreamFlowZone_StreamFlowZoneName", IsUnique = true)]
     public partial class StreamFlowZone
     {
+        public StreamFlowZone()
+        {
+            AgHubWells = new HashSet<AgHubWell>();
+        }
+
         [Key]
         public int StreamFlowZoneID { get; set; }
         [Required]
@@ -22,5 +27,8 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "geometry")]
         public Geometry StreamFlowZoneGeometry { get; set; }
         public double StreamFlowZoneArea { get; set; }
+
+        [InverseProperty(nameof(AgHubWell.StreamflowZone))]
+        public virtual ICollection<AgHubWell> AgHubWells { get; set; }
     }
 }

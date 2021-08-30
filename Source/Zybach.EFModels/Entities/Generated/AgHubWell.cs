@@ -40,7 +40,11 @@ namespace Zybach.EFModels.Entities
         public int? RegisteredPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? RegisteredUpdated { get; set; }
+        public int? StreamflowZoneID { get; set; }
 
+        [ForeignKey(nameof(StreamflowZoneID))]
+        [InverseProperty(nameof(StreamFlowZone.AgHubWells))]
+        public virtual StreamFlowZone StreamflowZone { get; set; }
         [InverseProperty(nameof(AgHubWellIrrigatedAcre.AgHubWell))]
         public virtual ICollection<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
     }
