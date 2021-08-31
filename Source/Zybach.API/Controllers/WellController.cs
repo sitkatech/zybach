@@ -48,6 +48,15 @@ namespace Zybach.API.Controllers
         /// Returns a time series representing pumped volume at a well or series of wells, summed daily for a given date range.
         /// Each point in the output time series represents the total pumped volume for the given day.
         /// </summary>
+        /// <remarks>
+        /// Sample requests:
+        ///
+        ///     Returns data for ALL wells from 8/1/2021 to 8/31/2021
+        ///     GET /api/wells/pumpedVolume?startDate=2021-08-01&amp;endDate=2021-08-31
+        ///
+        ///     Returns data for Well Registration IDs G-056157, G-097457, G-110920 from 8/1/2021 to 8/31/2021
+        ///     GET /api/wells/pumpedVolume?startDate=2021-08-01&amp;endDate=2021-08-31&amp;wellRegistrationID=G-056157&amp;wellRegistrationID=G-097457&amp;wellRegistrationID=G-110920
+        /// </remarks>
         /// <param name="wellRegistrationID">The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data for every Well that has reported data within the time range.</param>
         /// <param name="startDate">The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
         /// <param name="endDate">The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
@@ -62,6 +71,11 @@ namespace Zybach.API.Controllers
         /// Returns a time series representing pumped volume at a well, summed daily for a given date range.
         /// Each point in the output time series represents the total pumped volume for the given day.
         /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     GET /api/wells/G-110920/pumpedVolume?startDate=2021-08-01&amp;endDate=2021-08-31
+        /// </remarks>
         /// <param name="wellRegistrationID">The Well Registration ID for the requested Well.</param>
         /// <param name="startDate">The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
         /// <param name="endDate">The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
