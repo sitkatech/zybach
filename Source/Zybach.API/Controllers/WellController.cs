@@ -44,24 +44,33 @@ namespace Zybach.API.Controllers
             };
         }
 
-        /**
-         * Returns a time series representing pumped volume at a well or series of wells, summed on a chosen reporting interval,
-         * for a given date range. Each point in the output time series represents the total pumped volume over the previous
-         * reporting interval.
-         * @param wellRegistrationIDs The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data
-         * for every Well that has reported data within the time range.
-         * @param startDateString The start date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific
-         * time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00)
-         * @param endDateString The end date for the report, formatted as an ISO date string (eg. 2020-06-23). If a specific
-         * time is requested, must contain a timezone (eg. 2020-06-23T17:24:56+00:00). Default's to today's date.
-         * @param interval The reporting interval, in minutes. Defaults to 60.
-         */
+        /// <summary>
+        /// Returns a time series representing pumped volume at a well or series of wells, summed daily for a given date range.
+        /// Each point in the output time series represents the total pumped volume for the given day.
+        /// </summary>
+        /// <param name="wellRegistrationID">The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data for every Well that has reported data within the time range.</param>
+        /// <param name="startDate">The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
+        /// <param name="endDate">The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
+        [Produces("application/json")]
         [HttpGet("/api/wells/pumpedVolume")]
-        // todo: get apikey security
-        // @Security(SecurityType.API_KEY)
-        public ApiResult<StructuredResults> GetPumpedVolume([FromQuery] string startDate, [FromQuery] List<string> filter, [FromQuery] string endDate, [FromQuery] int? interval)
+        public ApiResult<StructuredResults> GetPumpedVolume([FromQuery] List<string> wellRegistrationID, [FromQuery] string startDate, [FromQuery] string endDate)
         {
-            return GetPumpedVolumeImpl(filter, startDate, endDate);
+            return GetPumpedVolumeImpl(wellRegistrationID, startDate, endDate);
+        }
+
+        /// <summary>
+        /// Returns a time series representing pumped volume at a well, summed daily for a given date range.
+        /// Each point in the output time series represents the total pumped volume for the given day.
+        /// </summary>
+        /// <param name="wellRegistrationID">The Well Registration ID for the requested Well.</param>
+        /// <param name="startDate">The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
+        /// <param name="endDate">The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
+        /// <returns></returns>
+        [Produces("application/json")]
+        [HttpGet("/api/wells/{wellRegistrationID}/pumpedVolume")]
+        public ApiResult<StructuredResults> GetPumpedVolume([FromRoute] string wellRegistrationID, [FromQuery] string startDate, [FromQuery] string endDate)
+        {
+            return GetPumpedVolumeImpl(new List<string> { wellRegistrationID }, startDate, endDate);
         }
 
 
@@ -153,27 +162,9 @@ namespace Zybach.API.Controllers
             }
         }
 
-        //[HttpGet("/api/wells/download/robustReviewScenarioJson")]
-        //// todo: get apikey security
-        //// @Security(SecurityType.API_KEY)
-        //public async Task<object> GetWell([FromRoute] string wellRegistrationID)
-        //{
-        //    var well = await _geoOptixService.GetWellAsAbbreviatedWellDataResponse(wellRegistrationID);
-        //    return new
-        //    {
-        //        Status = "success",
-        //        Result = well
-        //    };
-        //}
-
-        [HttpGet("/api/wells/{wellRegistrationID}/pumpedVolume")]
-        public object GetPumpedVolume([FromQuery] string startDate, [FromRoute] string wellRegistrationID, [FromQuery] string endDate)
-        {
-            return GetPumpedVolumeImpl(new List<string>{wellRegistrationID}, startDate, endDate);
-        }
-
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
+        [AdminFeature]
         public async Task<WellDetailDto> GetWellDetails([FromRoute] string wellRegistrationID)
         {
             var geooptixWell = await _geoOptixService.GetWellSummary(wellRegistrationID);
@@ -292,16 +283,23 @@ namespace Zybach.API.Controllers
 
             try
             {
-                var results = _dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking().Where(
-                        x =>
-                            wellRegistrationIDs.Contains(x.WellRegistrationID)
-                            && x.MeasurementTypeID == (int) MeasurementTypeEnum.ContinuityMeter
-                            && x.ReadingYear >= startDate.Year && x.ReadingMonth >= startDate.Month &&
-                            x.ReadingDay >= startDate.Day
-                            && x.ReadingYear <= endDate.Year && x.ReadingMonth <= endDate.Month &&
-                            x.ReadingDay <= endDate.Day
-                    ).OrderBy(x => x.ReadingYear).ThenBy(x => x.ReadingMonth).ThenBy(x => x.ReadingDay)
-                    .Select(x => x.AsDto()).ToList();
+                var query = _dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking().Where(
+                    x =>
+                        x.MeasurementTypeID == (int) MeasurementTypeEnum.ContinuityMeter
+                        && x.ReadingYear >= startDate.Year && x.ReadingMonth >= startDate.Month &&
+                        x.ReadingDay >= startDate.Day
+                        && x.ReadingYear <= endDate.Year && x.ReadingMonth <= endDate.Month &&
+                        x.ReadingDay <= endDate.Day
+                );
+                List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
+                if (wellRegistrationIDs != null && wellRegistrationIDs.Any())
+                {
+                    wellSensorMeasurementDtos = query.Where(x => wellRegistrationIDs.Contains(x.WellRegistrationID)).Select(x => x.AsDto()).ToList();
+                }
+                else
+                {
+                    wellSensorMeasurementDtos = query.Select(x => x.AsDto()).ToList();
+                }
 
                 var aghubWells = _dbContext.AgHubWells.AsNoTracking().Where(x =>
                         wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList()
@@ -310,7 +308,7 @@ namespace Zybach.API.Controllers
                 return new ApiResult<StructuredResults>
                 {
                     Status = "success",
-                    Result = results.Any() ? StructureResults(results, aghubWells, startDate, endDate) : null
+                    Result = query.Any() ? StructureResults(wellSensorMeasurementDtos, aghubWells, startDate, endDate) : null
                 };
             }
             catch (Exception ex)
@@ -326,7 +324,8 @@ namespace Zybach.API.Controllers
             var volumesByWell = new List<VolumeByWell>();
             foreach (var wellRegistrationID in distinctWells)
             {
-                var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
+                var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID)
+                    .OrderBy(x => x.MeasurementDate).ToList();
                 var volumeByWell = new VolumeByWell
                 {
                     WellRegistrationID = wellRegistrationID,
