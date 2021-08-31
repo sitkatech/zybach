@@ -1,5 +1,3 @@
-using System;
-
 namespace Zybach.API.Models
 {
     public class ErrorViewModel
