@@ -145,7 +145,7 @@ namespace Zybach.API.Services
         public class PumpedVolumeTimePoint
         {
             [JsonProperty("intervalDate")]
-            public DateTime ReadingDate { get; set; }
+            public DateTime MeasurementDate { get; set; }
             public double PumpedVolumeGallons { get; set; }
         }
 

@@ -9,6 +9,8 @@ namespace Zybach.EFModels.Entities
 {
     public partial class AgHubWell
     {
+        public int PumpingRateGallonsPerMinute => WellAuditPumpRate ?? RegisteredPumpRate ?? WellTPNRDPumpRate ?? 0;
+
         public static List<AgHubWell> List(ZybachDbContext dbContext)
         {
             return dbContext.AgHubWells.AsNoTracking().ToList();

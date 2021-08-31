@@ -56,7 +56,7 @@ namespace Zybach.API
                 // TODO: get last reading dates gets pumped volume dates too; original code is only looking at estimated pumped volume;
                 var lastReadingDates = _dbContext.WellSensorMeasurements
                     .Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.ElectricalUsage).ToList()
-                    .GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Max(y => y.ReadingDate));
+                    .GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Max(y => y.MeasurementDate));
                 foreach (var agHubWell in agHubWells)
                 {
                     var wellRegistrationID = agHubWell.WellRegistrationID;
@@ -92,9 +92,9 @@ namespace Zybach.API
                             pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
                             {
                                 MeasurementTypeID = (int) MeasurementTypeEnum.ElectricalUsage,
-                                ReadingYear = pumpedVolumeTimeSeries.ReadingDate.Year, 
-                                ReadingMonth = pumpedVolumeTimeSeries.ReadingDate.Month, 
-                                ReadingDay = pumpedVolumeTimeSeries.ReadingDate.Day,
+                                ReadingYear = pumpedVolumeTimeSeries.MeasurementDate.Year, 
+                                ReadingMonth = pumpedVolumeTimeSeries.MeasurementDate.Month, 
+                                ReadingDay = pumpedVolumeTimeSeries.MeasurementDate.Day,
                                 MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
                                 WellRegistrationID = wellRegistrationID
                             }).ToList();

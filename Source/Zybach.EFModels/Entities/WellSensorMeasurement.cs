@@ -8,7 +8,7 @@ namespace Zybach.EFModels.Entities
 {
     public partial class WellSensorMeasurement
     {
-        public DateTime ReadingDate => new DateTimeOffset(ReadingYear, ReadingMonth, ReadingDay, 0, 0, 0, new TimeSpan(-7, 0, 0)).UtcDateTime;
+        public DateTime MeasurementDate => new DateTimeOffset(ReadingYear, ReadingMonth, ReadingDay, 0, 0, 0, new TimeSpan(-7, 0, 0)).UtcDateTime;
 
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementType(
     ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum)
@@ -81,23 +81,23 @@ namespace Zybach.EFModels.Entities
         public static DateTime? GetFirstReadingDateTimeForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
             var wellSensorMeasurements = dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
-            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.ReadingDate) : (DateTime?) null;
+            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : (DateTime?) null;
         }
 
         public static DateTime? GetLastReadingDateTimeForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
             var wellSensorMeasurements = dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
-            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.ReadingDate) : (DateTime?)null;
+            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : (DateTime?)null;
         }
 
         public static Dictionary<string, DateTime> GetFirstReadingDateTimes(ZybachDbContext dbContext)
         {
-            return dbContext.WellSensorMeasurements.ToList().GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Min(y => y.ReadingDate));
+            return dbContext.WellSensorMeasurements.ToList().GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Min(y => y.MeasurementDate));
         }
 
         public static Dictionary<string, DateTime> GetLastReadingDateTimes(ZybachDbContext dbContext)
         {
-            return dbContext.WellSensorMeasurements.ToList().GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Max(y => y.ReadingDate));
+            return dbContext.WellSensorMeasurements.ToList().GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Max(y => y.MeasurementDate));
         }
     }
 }
