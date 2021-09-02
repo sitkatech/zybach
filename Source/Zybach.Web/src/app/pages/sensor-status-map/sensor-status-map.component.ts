@@ -331,8 +331,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.selectedFeatureLayer
       .addTo(this.map);
-    let target = (this.map as any)._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
-    this.map.setView(target.center, 16, null);
 
     this.selectedFeatureLayer.eachLayer(function (layer) {
       layer.openPopup();
