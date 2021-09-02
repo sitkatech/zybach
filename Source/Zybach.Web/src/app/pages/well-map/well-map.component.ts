@@ -184,7 +184,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
         return marker(latlng, { icon: icon})
       },
       filter: (feature) => {
-        if (feature.properties.sensors === null || feature.properties.sensors.length === 0 || (feature.properties.sensors.length === 1 && feature.properties.sensors[0].SensorType === "Well Pressure")) {
+        if (feature.properties.sensors === null || feature.properties.sensors.length === 0 || (feature.properties.sensors.length === 1 && feature.properties.sensors[0].SensorType === "Well Pressure") || (feature.properties.sensors.length === 2 && feature.properties.sensors[0].SensorType === "Well Pressure" && feature.properties.sensors[1].SensorType === "Well Pressure")) {
           return this.showNoEstimate;
         }
 
