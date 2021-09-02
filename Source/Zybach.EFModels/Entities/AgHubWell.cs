@@ -18,8 +18,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<WellWithSensorSummaryDto> GetAgHubWellsAsWellWithSensorSummaryDtos(ZybachDbContext dbContext)
         {
-            return dbContext.AgHubWells.Include(x => x.AgHubWellIrrigatedAcres)
-                .AsNoTracking().ToList()
+            return dbContext.AgHubWells.AsNoTracking().ToList()
                 .Select(WellWithSensorSummaryDtoFromAgHubWell).ToList();
         }
 
@@ -43,8 +42,6 @@ namespace Zybach.EFModels.Entities
             wellWithSensorSummaryDto.Sensors = sensors;
             wellWithSensorSummaryDto.FetchDate = agHubWell.FetchDate;
             wellWithSensorSummaryDto.HasElectricalData = agHubWell.HasElectricalData;
-            wellWithSensorSummaryDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres.Select(x =>
-                new IrrigatedAcresPerYearDto{Acres = x.Acres, Year = x.IrrigationYear}).ToList();
 
             return wellWithSensorSummaryDto;
         }
@@ -57,7 +54,12 @@ namespace Zybach.EFModels.Entities
             {
                 return null;
             }
-            return WellWithSensorSummaryDtoFromAgHubWell(agHubWell);
+
+            var wellWithSensorSummaryDto = WellWithSensorSummaryDtoFromAgHubWell(agHubWell);
+            wellWithSensorSummaryDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres.Select(x =>
+                new IrrigatedAcresPerYearDto { Acres = x.Acres, Year = x.IrrigationYear }).ToList();
+
+            return wellWithSensorSummaryDto;
         }
 
         public static List<AgHubWellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchStrong)
