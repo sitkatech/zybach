@@ -29,7 +29,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
-            var wellSummariesWithSensors = (await _geoOptixService.GetWellsWithSensors()).Values.Where(x => x.Sensors.Any()).ToList();
+            var wellSummariesWithSensors = (await _geoOptixService.GetWellsWithSensors()).Where(x => x.Sensors.Any()).ToList();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
             return wellSummariesWithSensors.Select(well => new WellWithSensorMessageAgeDto

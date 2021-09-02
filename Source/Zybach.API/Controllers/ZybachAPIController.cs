@@ -19,11 +19,11 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class ZybachAPIController : SitkaController<ZybachAPIController>
     {
-        private readonly GeoOptixService _geoOptixService;
+        private readonly WellService _wellService;
 
-        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _geoOptixService = geoOptixService;
+            _wellService = wellService;
         }
 
         /// <summary>
@@ -138,30 +138,7 @@ namespace Zybach.API.Controllers
         [HttpGet("/api/wells/download/robustReviewScenarioJson")]
         public async Task<List<RobustReviewDto>> GetRobustReviewJsonFile()
         {
-            var wells = await _geoOptixService.GetWellsWithSensors();
-            var aghubWells = AgHubWell.GetAgHubWellsAsWellWithSensorSummaryDtos(_dbContext);
-
-            aghubWells.ForEach(x =>
-            {
-                if (!wells.ContainsKey(x.WellRegistrationID))
-                {
-                    wells.Add(x.WellRegistrationID, x);
-                    return;
-
-                }
-
-                var geoOptixWell = wells[x.WellRegistrationID];
-                geoOptixWell.HasElectricalData = x.HasElectricalData;
-                geoOptixWell.WellTPID = x.WellTPID;
-                var sensors = new List<SensorSummaryDto>();
-                sensors.AddRange(x.Sensors);
-                sensors.AddRange(geoOptixWell.Sensors);
-                geoOptixWell.Sensors = sensors;
-            });
-
-            var wellWithSensorSummaryDtos = wells.Values
-                .Where(x => (x.HasElectricalData ?? false) || x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ContinuityMeter))
-                .ToList();
+            var wellWithSensorSummaryDtos = await _wellService.GetAghubAndGeoOptixWells();
             var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
             var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();

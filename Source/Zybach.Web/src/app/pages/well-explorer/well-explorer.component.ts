@@ -46,8 +46,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
-                sensors: x.Sensors || [],
-                hasElectricData: x.HasElectricalData
+                sensors: x.Sensors || []
               };
               return geoJsonPoint;
             })

@@ -104,6 +104,7 @@ namespace Zybach.API
             });
 
             services.AddScoped<InfluxDBService>();
+            services.AddScoped<WellService>();
 
             var keystoneHost = zybachConfiguration.KEYSTONE_HOST;
 

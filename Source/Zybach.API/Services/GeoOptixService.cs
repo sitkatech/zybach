@@ -243,7 +243,7 @@ namespace Zybach.API.Services
             return recordSetValue.ToObject<double?>();
         }
 
-        public async Task<Dictionary<string, WellWithSensorSummaryDto>> GetWellsWithSensors()
+        public async Task<List<WellWithSensorSummaryDto>> GetWellsWithSensors()
         {
             var sensors = await GetSensorSummaries();
             var wells = await GetWellSummaries();
@@ -258,8 +258,7 @@ namespace Zybach.API.Services
                 InGeoOptix = true
             }).ToList();
 
-            // create a Map from the array of wells
-            return wellsWithSensors.ToDictionary(x => x.WellRegistrationID);
+            return wellsWithSensors;
         }
     }
 }
