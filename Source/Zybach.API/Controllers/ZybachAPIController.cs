@@ -96,9 +96,10 @@ namespace Zybach.API.Controllers
 
             try
             {
+                var measurementTypeEnum = MeasurementTypeEnum.ContinuityMeter;
                 var query = _dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking().Where(
                     x =>
-                        x.MeasurementTypeID == (int)MeasurementTypeEnum.ContinuityMeter
+                        x.MeasurementTypeID == (int)measurementTypeEnum
                         && x.ReadingYear >= startDate.Year && x.ReadingMonth >= startDate.Month &&
                         x.ReadingDay >= startDate.Day
                         && x.ReadingYear <= endDate.Year && x.ReadingMonth <= endDate.Month &&
@@ -118,11 +119,14 @@ namespace Zybach.API.Controllers
                         wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList()
                     .ToDictionary(x => x.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
 
-                return new ApiResult<StructuredResults>
+                var apiResult = new ApiResult<StructuredResults>
                 {
-                    Status = "success",
-                    Result = query.Any() ? StructureResults(wellSensorMeasurementDtos, aghubWells, startDate, endDate) : null
+                    Status = "success"
                 };
+
+                var firstReadingDates = WellSensorMeasurement.GetFirstReadingDateTimesPerSensorForWells(_dbContext, measurementTypeEnum, wellRegistrationIDs);
+                apiResult.Result = StructureResults(wellSensorMeasurementDtos, aghubWells, startDate, endDate, firstReadingDates, wellRegistrationIDs);
+                return apiResult;
             }
             catch (Exception ex)
             {
@@ -194,21 +198,23 @@ namespace Zybach.API.Controllers
 
 
         private static StructuredResults StructureResults(List<WellSensorMeasurementDto> results,
-            Dictionary<string, int> aghubWells, DateTime startDate, DateTime endDate)
+            Dictionary<string, int> aghubWells, DateTime startDate, DateTime endDate,
+            List<WellSensorReadingDateDto> firstReadingDates, List<string> wellRegistrationIDs)
         {
-            var distinctWells = results.Select(x => x.WellRegistrationID).Distinct().ToList();
             var volumesByWell = new List<VolumeByWell>();
-            foreach (var wellRegistrationID in distinctWells)
+            foreach (var wellRegistrationID in wellRegistrationIDs)
             {
                 var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID)
                     .OrderBy(x => x.MeasurementDate).ToList();
                 var volumeByWell = new VolumeByWell
                 {
-                    WellRegistrationID = wellRegistrationID,
-                    IntervalVolumes = CreateIntervalVolumesAndZeroFillMissingDays(wellRegistrationID,
-                        currentWellResults, startDate, endDate,
-                        aghubWells.ContainsKey(wellRegistrationID) ? aghubWells[wellRegistrationID] : 0)
+                    WellRegistrationID = wellRegistrationID
                 };
+                var pumpingRateGallonsPerMinute = aghubWells.ContainsKey(wellRegistrationID) ? aghubWells[wellRegistrationID] : 0;
+                volumeByWell.IntervalVolumes = CreateIntervalVolumesAndZeroFillMissingDays(wellRegistrationID,
+                    currentWellResults, startDate, endDate,
+                    pumpingRateGallonsPerMinute,
+                    firstReadingDates.Where(x => x.WellRegistrationID == wellRegistrationID));
                 volumesByWell.Add(volumeByWell);
             }
 
@@ -217,35 +223,37 @@ namespace Zybach.API.Controllers
                 IntervalCountTotal = volumesByWell.Sum(x => x.IntervalCount),
                 IntervalStart = startDate.ToString("yyyy-MM-dd"),
                 IntervalEnd = endDate.ToString("yyyy-MM-dd"),
-                WellCount = distinctWells.Count,
+                WellCount = volumesByWell.Select(x => x.WellRegistrationID).Distinct().Count(),
                 VolumesByWell = volumesByWell
             };
         }
 
-        private static List<IntervalVolumeDto> CreateIntervalVolumesAndZeroFillMissingDays(
-            string wellRegistrationID, List<WellSensorMeasurementDto> wellSensorMeasurementDtos, DateTime startDate,
-            DateTime endDate, int pumpingRateGallonsPerMinute)
+        private static List<IntervalVolumeDto> CreateIntervalVolumesAndZeroFillMissingDays(string wellRegistrationID,
+            List<WellSensorMeasurementDto> wellSensorMeasurementDtos, DateTime startDate,
+            DateTime endDate, int pumpingRateGallonsPerMinute, IEnumerable<WellSensorReadingDateDto> wellSensorReadingDates)
         {
             var intervalVolumeDtos = new List<IntervalVolumeDto>();
-            if (!wellSensorMeasurementDtos.Any())
-            {
-                return intervalVolumeDtos;
-            }
-
             var dateRange = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
 
-            var sensorNames = wellSensorMeasurementDtos.Select(x => x.SensorName).Distinct().ToList();
-            foreach (var sensorName in sensorNames)
+            foreach (var wellSensorReadingDate in wellSensorReadingDates.OrderBy(x => x.WellRegistrationID).ThenBy(x => x.SensorName))
             {
-                var measurementValues = wellSensorMeasurementDtos.Where(x => x.SensorName == sensorName).ToDictionary(
-                    x => x.MeasurementDate.ToShortDateString(), x => x.MeasurementValue);
-                var dtos = dateRange.Select(a =>
+                if (wellSensorReadingDate.FirstReadingDate <= startDate)
                 {
-                    var dateTime = startDate.AddDays(a);
-                    var gallons = measurementValues.ContainsKey(dateTime.ToShortDateString()) ? measurementValues[dateTime.ToShortDateString()] : 0;
-                    return new IntervalVolumeDto(wellRegistrationID, dateTime, gallons, InfluxDBService.SensorTypes.ContinuityMeter, sensorName, pumpingRateGallonsPerMinute);
-                });
-                intervalVolumeDtos.AddRange(dtos);
+                    var sensorName = wellSensorReadingDate.SensorName;
+                    var measurementValues = wellSensorMeasurementDtos
+                        .Where(x => x.SensorName == sensorName).ToDictionary(
+                            x => x.MeasurementDate.ToShortDateString(), x => x.MeasurementValue);
+                    var dtos = dateRange.Select(a =>
+                    {
+                        var dateTime = startDate.AddDays(a);
+                        var gallons = measurementValues.ContainsKey(dateTime.ToShortDateString())
+                            ? measurementValues[dateTime.ToShortDateString()]
+                            : 0;
+                        return new IntervalVolumeDto(wellRegistrationID, dateTime, gallons,
+                            InfluxDBService.SensorTypes.ContinuityMeter, sensorName, pumpingRateGallonsPerMinute);
+                    });
+                    intervalVolumeDtos.AddRange(dtos);
+                }
             }
 
             return intervalVolumeDtos;

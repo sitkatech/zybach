@@ -99,5 +99,18 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.WellSensorMeasurements.ToList().GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Max(y => y.MeasurementDate));
         }
+
+        public static List<WellSensorReadingDateDto> GetFirstReadingDateTimesPerSensorForWells(ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum, List<string> wellRegistrationIDs)
+        {
+            var firstReadingDateTimesPerSensorForWells = dbContext.WellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) measurementTypeEnum && wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList()
+                .GroupBy(x => new { x.WellRegistrationID, x.SensorName});
+
+            var wellSensorReadingDates = firstReadingDateTimesPerSensorForWells.Select(x =>
+                    new WellSensorReadingDateDto(x.Key.WellRegistrationID, x.Key.SensorName,
+                        x.Min(y => y.MeasurementDate)))
+                .ToList();
+            return wellSensorReadingDates;
+        }
+
     }
 }
