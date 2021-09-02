@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Zybach.EFModels.Entities;
@@ -32,6 +33,11 @@ namespace Zybach.API.Services
                 if (wellWithSensorSummaryDto == null)
                 {
                     agHubWells.Add(geoOptixWell);
+                }
+                else
+                {
+                    wellWithSensorSummaryDto.InGeoOptix = true;
+                    wellWithSensorSummaryDto.Sensors.AddRange(geoOptixWell.Sensors);
                 }
             }
 
