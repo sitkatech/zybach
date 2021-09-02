@@ -1,13 +1,9 @@
-import { literalMap } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import * as moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
-import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
-import { SensorMessageAgeDto, SensorSummaryDto, WellWithSensorMessageAgeDto, WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorMessageAgeDto, WellWithSensorMessageAgeDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
 
 @Component({
