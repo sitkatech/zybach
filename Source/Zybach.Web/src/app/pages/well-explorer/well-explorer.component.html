@@ -14,13 +14,13 @@
 </div>
 
 <div class="container mt-2" *ngIf="wells">
-    <ag-grid-angular #wellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="wells"
-        [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'" [paginationPageSize]="100"
-        (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
-    </ag-grid-angular>
-    <div class="row mt-2">
+    <div class="row my-2">
         <div class="col">
             <button type="button" class="btn btn-zybach float-right" (click)="downloadCsv()"><span class="fas fa-download"></span> Download CSV</button>
         </div>
     </div>
+    <ag-grid-angular #wellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="wells"
+        [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'" [paginationPageSize]="100"
+        (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
+    </ag-grid-angular>
 </div>
