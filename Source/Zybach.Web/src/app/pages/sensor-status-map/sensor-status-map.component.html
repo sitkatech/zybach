@@ -1,0 +1,21 @@
+<div class="row mb-2">
+    <div class="col-12 col-lg-6">
+        <ng-multiselect-dropdown  [placeholder]="'No Data Source Selected'" [(ngModel)]="selectedDataSources"
+            [settings]="dataSourceDropdownSettings" [data]="dataSourceDropdownList" name="dataSourceFilter"
+            (onSelect)="onDataSourceFilterChange($event)" (onDeSelect)="onDataSourceFilterChange($event)"
+            (onSelectAll)="onDataSourceFilterSelectAll($event)" (onDeSelectAll)="onDataSourceFilterDeselectAll($event)">
+        </ng-multiselect-dropdown>
+    </div>
+    <div class="col-12 col-lg-6 py-1">
+        <div class="input-group">
+            <input type="text" style="width:100%;" name="mapSearchQuery" class="form-control" placeholder="Search map by address..." [(ngModel)]="mapSearchQuery" (keyup.enter)="mapSearch()"/>
+            <div class="input-group-append">
+                <button class="btn btn-zybach" type="button" (click)="mapSearch()" >Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="{{mapID}}" [style.height]="mapHeight">
+    
+</div>

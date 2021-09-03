@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+  inspection-fetch:
+    image: inspection-fetch
+    build: .
+    environment: 
+      - DEBUG=true
+      - GEOOPTIX_BASE_URL=https://tpnrd.api-qa.geooptix.com
+      - TS_NODE_PROJECT=/src/tsconfig.json
+    secrets:
+      - Inspection_Fetch_Secret
+    ports:
+      - 3001:3001
+      - 9230:9230
+    command: yarn start-dev
+    # command: crond -f -l 8
+secrets:
+  Inspection_Fetch_Secret: 
+    file: secrets.json

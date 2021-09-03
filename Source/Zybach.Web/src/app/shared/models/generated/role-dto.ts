@@ -8,7 +8,7 @@ export class RoleDto {
 	RoleID : number
 	RoleName : string
 	RoleDisplayName : string
-	RoleDescription? : string
+	RoleDescription : string
 	SortOrder : number
 
     constructor(obj?: any) {

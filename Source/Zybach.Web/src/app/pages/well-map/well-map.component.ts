@@ -7,24 +7,19 @@ import {
   Map,
   MapOptions,
   tileLayer,
-  Icon,
   geoJSON,
   icon,
   latLng,
   Layer,
-  LeafletEvent,
-  layerGroup,
-  LatLng
-} from 'leaflet';
+  LeafletEvent} from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling'
-import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
-import { TwinPlatteBoundaryGeoJson } from '../well-explorer/tpnrd-boundary';
+import { TwinPlatteBoundaryGeoJson } from '../../shared/models/tpnrd-boundary';
 
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NominatimService } from 'src/app/services/nominatim.service';
@@ -32,7 +27,7 @@ import { NominatimService } from 'src/app/services/nominatim.service';
 import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
-import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
+import { DataSourceFilterOption } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { NgElement, WithProperties } from '@angular/elements';
 import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 
@@ -176,7 +171,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
+        var sensorTypes = feature.properties.sensors.map(x => x.SensorType);
         if (sensorTypes.includes("Flow Meter")) {
           var icon = flowMeterMarkerIcon
         } else if (sensorTypes.includes("Continuity Meter")) {
@@ -189,15 +184,15 @@ export class WellMapComponent implements OnInit, AfterViewInit {
         return marker(latlng, { icon: icon})
       },
       filter: (feature) => {
-        if (feature.properties.sensors === null || feature.properties.sensors === 0) {
+        if (feature.properties.sensors === null || feature.properties.sensors.length === 0 || (feature.properties.sensors.length === 1 && feature.properties.sensors[0].SensorType === "Well Pressure") || (feature.properties.sensors.length === 2 && feature.properties.sensors[0].SensorType === "Well Pressure" && feature.properties.sensors[1].SensorType === "Well Pressure")) {
           return this.showNoEstimate;
         }
 
-        var sensorTypes = feature.properties.sensors.map(x => x.sensorType);
+        var sensorTypes = feature.properties.sensors.map(x => x.SensorType);
 
         return (this.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
           (this.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
-          (this.showElectricalData && sensorTypes.includes("Electrical Usage"));
+          (this.showElectricalData);
       }
     });
 
@@ -247,7 +242,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.showElectricalData = selectedDataSourceOptions.includes(DataSourceFilterOption.ELECTRICAL)
     this.showNoEstimate = selectedDataSourceOptions.includes(DataSourceFilterOption.NODATA)
     
-    // todo: change this to emit an object holding the above values, then change the handler on the other side
 
     this.onFilterChange.emit({
       showFlowMeters: this.showFlowMeters,
@@ -324,8 +318,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.selectedFeatureLayer
       .addTo(this.map);
-    let target = (this.map as any)._getBoundsCenterZoom(this.selectedFeatureLayer.getBounds(), null);
-    this.map.setView(target.center, 16, null);
 
     this.selectedFeatureLayer.eachLayer(function (layer) {
       layer.openPopup();

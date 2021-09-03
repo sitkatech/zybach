@@ -1,12 +1,14 @@
 import { ExecOptionsWithStringEncoding } from "child_process";
 
 export class InstallationDto {
-    status: string;
-    date: string;
-    lon: number
-    lat: number;
-    flowmeterSerialNumber: string;
-    sensorSerialNumber: string;
-    installationCanonicalName: string;
-    photos: string[];
+    Status: string;
+    Date: string;
+    Lon: number
+    Lat: number;
+    FlowmeterSerialNumber: string;
+    SensorSerialNumber: string;
+    InstallationCanonicalName: string;
+    Photos: string[];
+  PhotoDataUrls: any[];
+  NoPhotoAvailable: boolean;
 }

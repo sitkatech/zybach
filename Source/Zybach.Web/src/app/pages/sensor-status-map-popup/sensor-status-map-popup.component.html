@@ -1,0 +1,7 @@
+<label class="rowHeader">Registration #:</label> <a routerLink="/wells/{{registrationID}}">{{registrationID}}</a><br/>
+
+
+<div *ngFor="let sensor of sensors">
+    <label class="rowHeader">{{getSensorDisplay(sensor)}}</label><br />
+    <label class="rowHeader">Last Message Received:</label> {{getLastMessageReceived(sensor)}}
+</div>

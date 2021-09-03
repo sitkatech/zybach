@@ -153,7 +153,7 @@ async function getPumpedVolume(well: agHubWell) {
     if (lastReadingDate){
         startDateISO = DateTime.fromJSDate(lastReadingDates[well.wellRegistrationID]).toISODate();
     } else{
-        startDateISO = "2019-07-01";
+        startDateISO = "2016-07-01";
     }
     const endDateISO = DateTime.local().toISODate();
 

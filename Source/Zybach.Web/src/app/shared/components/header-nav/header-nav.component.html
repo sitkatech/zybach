@@ -1,5 +1,5 @@
 <nav
-    class="navbar navbar-expand-lg justify-content-start navbar-zybach logoPadding navbar-dark navbar-responsive-header">
+    class="navbar navbar-expand-xl justify-content-start navbar-zybach logoPadding navbar-dark navbar-responsive-header">
 
     <a routerLink="/" routerLinkActive="active" class="navbar-brand nav-link">
         {{platformShortName()}}
@@ -11,7 +11,7 @@
 </nav>
 
 
-<nav class="navbar navbar-expand-lg justify-content-start navbar-zybach-secondary logoPadding">
+<nav class="navbar navbar-expand-xl justify-content-start navbar-zybach-secondary logoPadding">
     <a href="{{leadOrganizationHomeUrl()}}" class="navbar-logo pt-0" target="_blank"
         style="float:left; position:absolute; z-index:1025; left:0; top: 0">
         <img src="{{leadOrganizationLogoSrc()}}" />
@@ -80,7 +80,7 @@
         </ul>
     </div>
 </nav>
-<nav class="navbar navbar-expand-lg  navbar-zybach logoPadding">
+<nav class="navbar navbar-expand-xl  navbar-zybach logoPadding">
     <a routerLink="/" routerLinkActive="active" class="navbar-brand navbar-brand-primary nav-link"
         *ngIf="!isAuthenticated() || isUnassigned()">
         {{platformShortName()}}
@@ -89,14 +89,24 @@
     <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2" *ngIf="isAuthenticated() && !isUnassigned()">
         <ul class="navbar-nav">
             <li class="nav-item dashboardItem" [ngClass]="{'currentPage': isDashboardCurrentPage()}">
-                <a class="nav-link" routerLinkActive="active" *ngIf="isAdministrator()" routerLink="/dashboard"
+                <a class="nav-link" routerLinkActive="active" routerLink="/dashboard"
                     style="padding-top: 0;">
                     <img src="/assets/main/nav/dashboard.png" /> Dashboard
                 </a>
             </li>
             <li class="nav-item mapItem" [ngClass]="{'currentPage': isMapCurrentPage()}">
-                <a class="nav-link" routerLinkActive="active" *ngIf="isAdministrator()" routerLink="/well-map">
+                <a class="nav-link" routerLinkActive="active" routerLink="/well-map">
                     <img src="/assets/main/nav/map.png" /> Well Map
+                </a>
+            </li>
+            <li class="nav-item sensorStatusItem" [ngClass]="{'currentPage': isSensorStatusCurrentPage()}">
+                <a class="nav-link" routerLinkActive="active" routerLink="/sensor-status">
+                    <img src="/assets/main/nav/sensor_status.png" /> Sensor Status
+                </a>
+            </li>
+            <li class="nav-item chemigationItem" [ngClass]="{'currentPage': isChemigationCurrentPage()}">
+                <a class="nav-link" routerLinkActive="active" routerLink="/chemigation">
+                    <img src="/assets/main/nav/chemigation.png" /> Chemigation
                 </a>
             </li>
             <li class="nav-item searchItem">
@@ -120,16 +130,5 @@
                 </p-autoComplete>
             </li>
         </ul>
-    </div>
-</nav>
-
-<nav *ngIf="showCurrentPageHeader && (isDashboardCurrentPage() || isMapCurrentPage())"
-    class="navbar navbar-expand-lg justify-content-start navbar-responsive-current-page">
-
-    <div *ngIf="isDashboardCurrentPage()" class="dashboardItem">
-        <img src="/assets/main/nav/dashboard.png" style="height:71px;" /> Dashboard
-    </div>
-    <div *ngIf="isMapCurrentPage()" class="mapItem">
-        <img src="/assets/main/nav/map.png" style="height:56px;" /> Well Map
     </div>
 </nav>

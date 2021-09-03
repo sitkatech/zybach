@@ -19,13 +19,13 @@
                         <div class="card-body">
                             <div class="row" *ngIf="well">
                                 <div class="col-12  col-sm-6 label"><strong>Registration ID: </strong> </div>
-                                <div class="col-12  col-sm-6">{{well.wellRegistrationID}}</div>
+                                <div class="col-12  col-sm-6">{{well.WellRegistrationID}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>TPID: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.wellTPID}}</div>
+                                <div class="col-12  col-sm-6">{{well.WellTPID}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>{{getDataSourcesLabel()}}</strong></div>
                                 <div class="col-12  col-sm-6">
                                     <p *ngFor="let sensor of getSensors()" class="m-0">
-                                        {{sensor.sensorType}} ({{sensor.sensorName}})
+                                        {{sensor.SensorType}} ({{sensor.SensorName}})
                                     </p>
                                     <p *ngIf="well.hasElectricalData" class="m-0">
                                         Electrical Usage
@@ -36,7 +36,7 @@
                                 <div class="col-12  col-sm-6 label"><strong>Irrigated Acres: </strong></div>
                                 <div class="col-12  col-sm-6">
                                     <ng-container *ngIf="displayIrrigatedAcres(); else irrigatedAcresPerYearEmpty">
-                                        <p *ngFor="let result of well.irrigatedAcresPerYear" class="m-0">
+                                        <p *ngFor="let result of getWellIrrigatedAcresPerYear()" class="m-0">
                                             {{result.Acres}} ac in {{result.Year}}
                                         </p>
                                     </ng-container>
@@ -146,6 +146,7 @@
 
                     </div>
                     <div *ngIf="!noTimeSeriesData" id="{{chartID}}" style="width:100%; min-height: 340px;"></div>
+                    <em *ngIf="!noTimeSeriesData">All data are displayed in Central Daylight Time</em>
                     <em *ngIf="noTimeSeriesData">No time series data available for this well.</em>
                 </div>
             </div>
@@ -156,7 +157,7 @@
             <div class="card">
                 <div class="card-header">
                     Installation Details
-                    <a *ngIf="well?.inGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
+                    <a *ngIf="well?.InGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
                         View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
                     </a>
                 </div>
@@ -166,35 +167,35 @@
                             <div class="col-12 col-md-6">
                                 <div class="row">
                                     <div class="col-12  col-sm-6 label"><strong>Installation Name: </strong> </div>
-                                    <div class="col-12  col-sm-6">{{installation.installationCanonicalName}}</div>
+                                    <div class="col-12  col-sm-6">{{installation.InstallationCanonicalName}}</div>
                                     <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
-                                    <div class="col-12  col-sm-6">{{installation.status}}</div>
+                                    <div class="col-12  col-sm-6">{{installation.Status}}</div>
                                     <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
                                     <div class="col-12  col-sm-6">{{getInstallationDate(installation)}}</div>
                                     <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
-                                    <div class="col-12  col-sm-6">lat: {{installation.lat | number: '1.0-3'}}, lng:
-                                        {{installation.lon | number: '1.0-3'}}</div>
+                                    <div class="col-12  col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
+                                        {{installation.Longitude | number: '1.0-3'}}</div>
                                     <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
-                                    <div class="col-12  col-sm-6">{{installation.flowmeterSerialNumber}}</div>
+                                    <div class="col-12  col-sm-6">{{installation.FlowmeterSerialNumber}}</div>
                                     <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
-                                    <div class="col-12  col-sm-6">{{installation.sensorSerialNumber}}</div>
+                                    <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 text-center">
-                                <carousel *ngIf="installation.photoDataUrls?.length > 1"
-                                    [images]="installation.photoDataUrls" [height]="300" [cellsToShow]="1"
+                                <carousel *ngIf="installation.PhotoDataUrls?.length > 1"
+                                    [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1"
                                     [objectFit]="contain" [dots]="true">
                                 </carousel>
 
-                                <img *ngIf="installation.photoDataUrls?.length === 1" class="img img-fluid" src="{{installation.photoDataUrls[0].path}}"
+                                <img *ngIf="installation.PhotoDataUrls?.length === 1" class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}"
                                     style="height: 300px" />
 
-                                <ng-container *ngIf="!installation.photoDataUrls?.length && !installation.noPhotoAvailable">
+                                <ng-container *ngIf="!installation.PhotoDataUrls?.length && !installation.NoPhotoAvailable">
                                     <span class="fas fa-spinner loading-spinner"></span>
                                     <p>Loading...</p>
                                 </ng-container>
 
-                                <img *ngIf="installation.noPhotoAvailable" class="img img-fluid" style="height:300px"
+                                <img *ngIf="installation.NoPhotoAvailable" class="img img-fluid" style="height:300px"
                                     src="/assets/main/no-photo-available.jpg" />
                             </div>
                         </div>

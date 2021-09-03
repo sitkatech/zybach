@@ -59,11 +59,16 @@
                         <div class="col-3" *ngIf = "selectedStreamflowZone">
                             <dl>
                                 <dt>Stream Flow Zone Name:</dt>
-                                <dd>{{selectedStreamflowZone.properties.ZoneName}}</dd>
+                                <dd>{{selectedStreamflowZone.StreamFlowZoneName}}</dd>
                                 <dt>Acres:</dt>
                                 <dd>{{getAcreage(selectedStreamflowZone) | number: '1.0-2'}}</dd>
                                 <dt>Average Pumping Depth:</dt>
                                 <dd>{{getPumpingDepth(selectedStreamflowZone) | number: '1.0-2'}} ac-in/ac</dd>
+                                <dt>Total Irrigated Acres:</dt>
+                                <dd>{{getTotalIrrigatedAcres(selectedStreamflowZone) | number: '1.0-2'}} ac</dd>
+                                <dt>Total Pumped Volume:</dt>
+                                <dd>{{getTotalPumpedVolume(selectedStreamflowZone) | number: '1.0-2'}} ac-in</dd>
+
                             </dl>
                         </div>
                     </div>

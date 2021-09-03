@@ -42,7 +42,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
 
             this.model = new UserInviteDto();
 
-            const userID = this.route.snapshot.paramMap.get("userID");
+            const userID = parseInt(this.route.snapshot.paramMap.get("userID"));
             if (userID) {
                 forkJoin(
                     this.userService.getUserFromUserID(userID)
@@ -55,7 +55,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
                         this.model.Email = userToInvite.Email;
                         this.model.FirstName = userToInvite.FirstName;
                         this.model.LastName = userToInvite.LastName;
-                        this.model.Role = userToInvite.Role.RoleName;
+                        this.model.RoleID = userToInvite.Role.RoleID;
                         this.cdr.detectChanges();
                     }
                 });
@@ -70,7 +70,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
     }
 
     canInviteUser(): boolean {
-        return this.model.FirstName && this.model.LastName && this.model.Role && this.model.Email && this.model.Email.indexOf("@") != -1;
+        return this.model.FirstName && this.model.LastName && this.model.RoleID && this.model.Email && this.model.Email.indexOf("@") != -1;
     }
 
     onSubmit(inviteUserForm: HTMLFormElement): void {

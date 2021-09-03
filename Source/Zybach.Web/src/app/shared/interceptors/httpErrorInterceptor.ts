@@ -30,7 +30,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 else {
                     // The backend returned an unsuccessful response code.
                     // The response body may contain clues as to what went wrong,
-                    console.error(`Backend returned code ${error.status}, body was: ${error.error.message}`);
+                    console.error(`Backend returned code ${error.status}, body was: ${error.message}`);
 
                     if (error instanceof HttpErrorResponse) {
                         if (error.status == 401) {
@@ -48,7 +48,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                             });
                         }
                         if (error.status == 404) {
-                            if(error.error.message === "User Not Found")
+                            if(error.error.includes("User with GUID "))
                             {
                                 // we want the login-callback to create the user to trigger so we just let it pass through and have authentication-service handle it
                                 return throwError(error);

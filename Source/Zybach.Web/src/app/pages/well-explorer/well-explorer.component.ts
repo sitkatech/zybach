@@ -1,12 +1,10 @@
-import { literalMap } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import * as moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { DataSourceFilterOption, DataSourceSensorTypeMap } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
 import { WellMapComponent } from '../well-map/well-map.component';
 
 @Component({
@@ -37,24 +35,22 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
-        this.wells = wells.result;
-
+        this.wells = wells;
+        
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
           features:
 
-            wells.result.map(x => {
-              const geoJsonPoint = x.location;
+            wells.map(x => {
+              const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
-                wellRegistrationID: x.wellRegistrationID,
-                sensors: x.sensors
+                wellRegistrationID: x.WellRegistrationID,
+                sensors: x.Sensors || []
               };
               return geoJsonPoint;
             })
         }
-
-
       })
     });
   }
@@ -79,7 +75,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.wellRegistrationID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellRegistrationID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
@@ -98,53 +94,35 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "Registration #",
-        field: "wellRegistrationID",
+        field: "WellRegistrationID",
         width: 125,
         sortable: true, filter: true, resizable: true,
         
       },
       {
         headerName: "TPID",
-        field: "wellTPID",
+        field: "WellTPID",
         width: 85,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Last Reading Date",
-        field: "lastReadingDate",
-        valueFormatter: function (params) {
-          if (params.value) {
-            const time = moment(params.value)
-            const timepiece = time.format('h:mm a');
-            return time.format('M/D/yyyy ') + timepiece;
-          }
-          else {
-            return null;
-          }
-        },
+        field: "LastReadingDate",
+        valueFormatter: agGridDateFormatter,
         width: 150,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "First Reading Date",
-        field: "firstReadingDate",
-        valueFormatter: function (params) {
-          if (params.value) {
-            const time = moment(params.value)
-            const timepiece = time.format('h:mm a');
-            return time.format('M/D/yyyy ') + timepiece;
-          }
-          else {
-            return null;
-          }
-        },
+        field: "FirstReadingDate",
+        valueFormatter: agGridDateFormatter,
         width: 150,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Has Flow Meter?",
         valueGetter: function (params) {
-          const flowMeters = params.data.sensors.filter(x => x.sensorType == "Flow Meter").map(x => x.sensorName);
+          const flowMeters = params.data.Sensors.filter(x => x.SensorType == "Flow Meter").map(x => x.SensorName);
           if (flowMeters.length > 0) {
             return `Yes (${flowMeters.join('; ')})`;
           } else {
@@ -157,7 +135,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Continuity Meter?",
         valueGetter: function (params) {
-          const continuityMeters = params.data.sensors.filter(x => x.sensorType == "Continuity Meter").map(x => x.sensorName);
+          const continuityMeters = params.data.Sensors.filter(x => x.SensorType == "Continuity Meter").map(x => x.SensorName);
           if (continuityMeters.length > 0) {
             return `Yes (${continuityMeters.join('; ')})`;
           } else {
@@ -170,8 +148,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Electrical Use Meter?",
         valueGetter: function (params) {
-          const sensorTypes = params.data.sensors.map(x => x.sensorType);
-          if (sensorTypes.includes("Electrical Usage")) {
+          if (params.data.HasElectricalData) {
             return "Yes";
           } else {
             return "No";
@@ -182,7 +159,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "In AgHub?",
         valueGetter: function (params) {
-          if (params.data.wellTPID) {
+          if (params.data.WellTPID) {
             return "Yes"
           } else {
             return "No"
@@ -193,7 +170,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "In GeoOptix?",
         valueGetter: function (params) {
-          if (params.data.inGeoOptix) {
+          if (params.data.InGeoOptix) {
             return "Yes"
           } else {
             return "No"
@@ -203,33 +180,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "Last Fetched from AgHub",
-        field: "fetchDate",
-        valueFormatter: function (params) {
-          if (params.value) {
-            const time = moment(params.value)
-            const timepiece = time.format('h:mm a');
-            return time.format('M/D/yyyy ') + timepiece;
-          }
-          else {
-            return null;
-          }
-        },
+        field: "FetchDate",
+        valueFormatter: agGridDateFormatter,
         sortable: true, filter: true, resizable: true
       }
     ]
-    // this.columnDefs = [
-    //   {
-    //     headerName: "Sensor Name",
-    //     field: "Sensor.CanonicalName",
-    //     sortable: true, filter: true, width: 120
-    //   },
-    //   {
-    //     headerName: "Last Reading",
-    //     field: "LastReading",
-    //     sortable: true, filter: true, width: 170,
-    //     
-    //   }
-    // ];
   }
 
   public onSelectionChanged(event: Event) {
@@ -238,13 +193,13 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       // event was fired automatically when we updated the grid after a map click
       return;
     }
-    this.wellMap.selectWell(selectedNode.data.wellRegistrationID);
+    this.wellMap.selectWell(selectedNode.data.WellRegistrationID);
   }
 
   public onMapSelection(wellRegistrationID: string) {
     this.gridApi.deselectAll();
     this.gridApi.forEachNode(node => {
-      if (node.data.wellRegistrationID === wellRegistrationID) {
+      if (node.data.WellRegistrationID === wellRegistrationID) {
         node.setSelected(true);
         this.gridApi.ensureIndexVisible(node.rowIndex, "top")
       }
@@ -253,11 +208,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   public onFilterChange(dataSourceOptions: any) {
     const filteredWells = this.wells.filter(x => {
-      if (x.sensors === null || x.sensors.length === 0) {
+      if (x.Sensors === null || x.Sensors.length === 0 || (x.Sensors.length === 1 && x.Sensors[0].SensorType === "Well Pressure")) {
         return dataSourceOptions.showNoEstimate;
       }
 
-      const sensorTypes = x.sensors.map(s => s.sensorType);
+      const sensorTypes = x.Sensors.map(s => s.SensorType);
 
       return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) ||
         (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||

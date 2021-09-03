@@ -1,4 +1,6 @@
 export class streamFlowZonePumpingDepthDto{
-    streamFlowZoneFeatureID: number;
-    pumpingDepth: number;
+    StreamFlowZoneFeatureID: number;
+    PumpingDepth: number;
+    TotalIrrigatedAcres: number;
+    TotalPumpedVolume: number;
 }
