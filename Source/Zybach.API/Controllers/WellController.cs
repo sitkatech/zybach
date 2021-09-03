@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Zybach.API.Models;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -17,10 +19,12 @@ namespace Zybach.API.Controllers
     public class WellController : SitkaController<WellController>
     {
         private readonly GeoOptixService _geoOptixService;
+        private readonly WellService _wellService;
 
-        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _geoOptixService = geoOptixService;
+            _wellService = wellService;
         }
 
 
@@ -132,5 +136,69 @@ namespace Zybach.API.Controllers
 
             return annualPumpedVolumes;
         }
+
+        /// <summary>
+        /// Comprehensive data download to support Robust Review processes
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/api/wells/download/robustReviewScenarioJson")]
+        public async Task<List<RobustReviewDto>> GetRobustReviewJsonFile()
+        {
+            var wellWithSensorSummaryDtos = await _wellService.GetAghubAndGeoOptixWells();
+            var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
+            var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
+            return robustReviewDtos.Where(x => x != null).ToList();
+
+        }
+
+        private RobustReviewDto CreateRobustReviewDto(WellWithSensorSummaryDto wellWithSensorSummaryDto, Dictionary<string, DateTime> firstReadingDateTimes)
+        {
+            var wellRegistrationID = wellWithSensorSummaryDto.WellRegistrationID;
+            if (!firstReadingDateTimes.ContainsKey(wellRegistrationID))
+            {
+                return null;
+            }
+
+            string dataSource;
+            List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
+            if (wellWithSensorSummaryDto.HasElectricalData ?? false)
+            {
+                wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(
+                    _dbContext,
+                    wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                dataSource = InfluxDBService.SensorTypes.ElectricalUsage;
+            }
+            else
+            {
+                const string continuityMeter = InfluxDBService.SensorTypes.ContinuityMeter;
+                wellSensorMeasurementDtos =
+                    WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
+                        wellRegistrationID,
+                        new List<MeasurementTypeEnum>
+                            {MeasurementTypeEnum.ContinuityMeter, MeasurementTypeEnum.FlowMeter},
+                        wellWithSensorSummaryDto.Sensors.Where(y => y.SensorType == continuityMeter));
+                dataSource = continuityMeter;
+            }
+
+            var monthlyPumpedVolume = wellSensorMeasurementDtos.GroupBy(x => x.MeasurementDate.ToString("yyyyMM"))
+                .Select(x =>
+                    new MonthlyPumpedVolume(x.First().ReadingYear, x.First().ReadingMonth,
+                        x.Sum(y => y.MeasurementValue))).ToList();
+
+            var point = (Point)wellWithSensorSummaryDto.Location.Geometry;
+            var robustReviewDto = new RobustReviewDto
+            {
+                WellRegistrationID = wellRegistrationID,
+                WellTPID = wellWithSensorSummaryDto.WellTPID,
+                Latitude = point.Coordinates.Latitude,
+                Longitude = point.Coordinates.Longitude,
+                DataSource = dataSource,
+                MonthlyPumpedVolumeGallons = monthlyPumpedVolume
+            };
+
+            return robustReviewDto;
+        }
+
+
     }
 }
