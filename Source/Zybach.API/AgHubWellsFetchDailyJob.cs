@@ -15,7 +15,7 @@ namespace Zybach.API
         private readonly InfluxDBService _influxDbService;
         private readonly AgHubService _agHubService;
         public const string JobName = "AgHub Well Fetch Daily";
-        private static readonly List<string> ProblemWellRegistrationIDs = new List<string>{ "G-012886", "G-017908", "G-018992", "G-033855", "G-052662", "G-128363" };
+//        private static readonly List<string> ProblemWellRegistrationIDs = new List<string>{ "G-012886", "G-017908", "G-018992", "G-033855", "G-052662", "G-128363" };
 
         public AgHubWellsFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<AgHubWellsFetchDailyJob> logger,
             ZybachDbContext zybachDbContext, AgHubService agHubService, InfluxDBService influxDbService) : base(
@@ -60,11 +60,9 @@ namespace Zybach.API
                 foreach (var agHubWell in agHubWells)
                 {
                     var wellRegistrationID = agHubWell.WellRegistrationID;
-                    if (!ProblemWellRegistrationIDs.Contains(wellRegistrationID))
-                    {
-                        PopulateIrrigatedAcresPerYearForWell(agHubWell, wellRegistrationID);
-                        PopulateWellSensorMeasurementsForWell(agHubWell, lastReadingDates, wellRegistrationID);
-                    }
+                    //if (!ProblemWellRegistrationIDs.Contains(wellRegistrationID))
+                    PopulateIrrigatedAcresPerYearForWell(agHubWell, wellRegistrationID);
+                    PopulateWellSensorMeasurementsForWell(agHubWell, lastReadingDates, wellRegistrationID);
                     _dbContext.AgHubWellStagings.Add(agHubWell);
                     _dbContext.SaveChanges();
                 }
