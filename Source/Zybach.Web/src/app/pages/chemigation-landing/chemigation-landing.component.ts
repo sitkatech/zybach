@@ -33,6 +33,18 @@ export class ChemigationLandingComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.columnDefs = [
       { headerName: 'Well Number', field: 'wellRegistrationID', sortable: true, filter: true, resizable: true },
+      {
+        headerName: "Landowner",
+        field: "LandownerName",
+        width: 125,
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Field Name",
+        field: "FieldName",
+        width: 115,
+        sortable: true, filter: true, resizable: true
+      },
       { headerName: 'Last Chemigation Date', field: 'lastChemigationDate', sortable: true, filter: true, resizable: true, valueFormatter: agGridDateFormatter },
       { headerName: 'Last Water Quality Date', field: 'lastWaterQualityDate', sortable: true, filter: true, resizable: true, valueFormatter: agGridDateFormatter },
       { headerName: 'Last Nitrates Date', field: 'lastNitratesDate', sortable: true, filter: true, resizable: true, valueFormatter: agGridDateFormatter },

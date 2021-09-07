@@ -42,7 +42,8 @@ namespace Zybach.EFModels.Entities
             wellWithSensorSummaryDto.Sensors = sensors;
             wellWithSensorSummaryDto.FetchDate = agHubWell.FetchDate;
             wellWithSensorSummaryDto.HasElectricalData = agHubWell.HasElectricalData;
-
+            wellWithSensorSummaryDto.LandownerName = agHubWell.LandownerName;
+            wellWithSensorSummaryDto.FieldName = agHubWell.FieldName;
             return wellWithSensorSummaryDto;
         }
 
@@ -62,10 +63,19 @@ namespace Zybach.EFModels.Entities
             return wellWithSensorSummaryDto;
         }
 
-        public static List<AgHubWellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchStrong)
+        public static List<AgHubWellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchStrong)).Select(x => x.AsDto()).ToList();
+            return dbContext.AgHubWells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText)).Select(x => x.AsDto()).ToList();
         }
 
+        public static List<AgHubWellDto> SearchByLandowner(ZybachDbContext dbContext, string searchText)
+        {
+            return dbContext.AgHubWells.AsNoTracking().Where(x => x.LandownerName.Contains(searchText)).Select(x => x.AsDto()).ToList();
+        }
+
+        public static List<AgHubWellDto> SearchByField(ZybachDbContext dbContext, string searchText)
+        {
+            return dbContext.AgHubWells.AsNoTracking().Where(x => x.FieldName.Contains(searchText)).Select(x => x.AsDto()).ToList();
+        }
     }
 }

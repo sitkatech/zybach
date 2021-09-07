@@ -1,5 +1,12 @@
 <label class="rowHeader">Registration #:</label> <a routerLink="/wells/{{registrationID}}">{{registrationID}}</a><br/>
 
+<ng-container *ngIf="landownerName">
+    <label class="rowHeader">Landowner:</label>{{landownerName}}
+</ng-container>
+<br/>
+<ng-container *ngIf="fieldName">
+    <label class="rowHeader">Field Name:</label>{{fieldName}}
+</ng-container>
 
 <div *ngFor="let sensor of sensors">
     <label class="rowHeader">{{getSensorDisplay(sensor)}}</label><br />

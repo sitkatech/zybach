@@ -10,6 +10,8 @@ export class SensorStatusMapPopupComponent implements OnInit {
 
   @Input() registrationID: string;
   @Input() sensors: SensorMessageAgeDto[];
+  @Input() landownerName: string;
+  @Input() fieldName: string;
 
   constructor() { }
 

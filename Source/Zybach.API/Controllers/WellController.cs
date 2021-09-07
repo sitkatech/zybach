@@ -64,7 +64,10 @@ namespace Zybach.API.Controllers
                 WellRegistrationID = agHubWell?.WellRegistrationID ?? geooptixWell?.WellRegistrationID,
                 WellTPID = agHubWell?.WellTPID,
                 IrrigatedAcresPerYear = agHubWell?.IrrigatedAcresPerYear,
-                Location = agHubWell?.Location ?? geooptixWell?.Location
+                Location = agHubWell?.Location ?? geooptixWell?.Location,
+                LandownerName = agHubWell?.LandownerName,
+                FieldName = agHubWell?.FieldName
+
             };
 
             var firstReadingDate = WellSensorMeasurement.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);

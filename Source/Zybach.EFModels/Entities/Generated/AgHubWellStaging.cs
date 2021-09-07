@@ -33,5 +33,9 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime? RegisteredUpdated { get; set; }
         public bool HasElectricalData { get; set; }
+        [StringLength(100)]
+        public string LandownerName { get; set; }
+        [StringLength(100)]
+        public string FieldName { get; set; }
     }
 }

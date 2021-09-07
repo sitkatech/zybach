@@ -58,6 +58,8 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? FetchDate { get; set; }
         public bool? HasElectricalData { get; set; }
         public List<IrrigatedAcresPerYearDto> IrrigatedAcresPerYear { get; set; }
+        public string LandownerName { get; set; }
+        public string FieldName { get; set; }
 
 
         public WellSummaryDto(Site site)

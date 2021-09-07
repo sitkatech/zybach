@@ -35,6 +35,7 @@ import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
 import { NgElement, WithProperties } from '@angular/elements';
 import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
+import { SensorStatusMapPopupComponent } from '../sensor-status-map-popup/sensor-status-map-popup.component';
 
 @Component({
   selector: 'zybach-sensor-status-map',
@@ -320,12 +321,16 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       },
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
-          const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
+          const popupEl: NgElement & WithProperties<SensorStatusMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
           popupEl.registrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
-          console.log(popupEl.sensors);
+          popupEl.landownerName = feature.properties.landownerName;
+          popupEl.fieldName = feature.properties.fieldName;
           return popupEl;
         }, { maxWidth: 500 });
+      },
+      filter: (feature) =>{
+        return feature.properties.landownerName;
       }
     })
 
@@ -335,13 +340,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     this.selectedFeatureLayer.eachLayer(function (layer) {
       layer.openPopup();
     })
-  }
-
-  public getPopupContentForWellFeature(feature: any): NgElement & WithProperties<WellMapPopupComponent> {
-    const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
-    popupEl.registrationID = feature.properties.wellRegistrationID;
-    popupEl.sensors = feature.properties.sensors;
-    return popupEl;
   }
 
   public clearLayer(layer: Layer): void {
