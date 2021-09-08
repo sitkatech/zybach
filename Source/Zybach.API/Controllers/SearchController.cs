@@ -27,8 +27,8 @@ namespace Zybach.API.Controllers
         public async Task<List<SearchSummaryDto>> GetSearchSuggestions([FromRoute] string searchText)
         {
             var searchSummaryDtos = await _geoOptixSearchService.GetSearchSuggestions(searchText);
-            var agHubResultsByLandowner = AgHubWell.SearchByLandowner(_dbContext, searchText).Select(x => new SearchSummaryDto(x));
-            var agHubResultsByField = AgHubWell.SearchByField(_dbContext, searchText).Select(x => new SearchSummaryDto(x));
+            var agHubResultsByLandowner = AgHubWell.SearchByLandowner(_dbContext, searchText).Select(x => new SearchSummaryDto(x){ObjectType = "Landowner"});
+            var agHubResultsByField = AgHubWell.SearchByField(_dbContext, searchText).Select(x => new SearchSummaryDto(x){ObjectType = "Field"});
             var aghubResults = AgHubWell.SearchByWellRegistrationID(_dbContext, searchText).Select(x => new SearchSummaryDto(x));
             return aghubResults
                 .Union(searchSummaryDtos, new SearchSummaryDtoComparer())
