@@ -65,17 +65,17 @@ namespace Zybach.EFModels.Entities
 
         public static List<AgHubWellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText)).Select(x => x.AsDto()).ToList();
+            return dbContext.AgHubWells.AsNoTracking().Where(x => x.WellRegistrationID.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
         }
 
         public static List<AgHubWellDto> SearchByLandowner(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.AsNoTracking().Where(x => x.LandownerName.Contains(searchText)).Select(x => x.AsDto()).ToList();
+            return dbContext.AgHubWells.AsNoTracking().Where(x => x.LandownerName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
         }
 
         public static List<AgHubWellDto> SearchByField(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.AsNoTracking().Where(x => x.FieldName.Contains(searchText)).Select(x => x.AsDto()).ToList();
+            return dbContext.AgHubWells.AsNoTracking().Where(x => x.FieldName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
         }
     }
 }
