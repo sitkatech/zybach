@@ -47,7 +47,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
-        [AdminFeature]
+        [ZybachViewFeature]
         public async Task<WellDetailDto> GetWellDetails([FromRoute] string wellRegistrationID)
         {
             var geooptixWell = await _geoOptixService.GetWellSummary(wellRegistrationID);
