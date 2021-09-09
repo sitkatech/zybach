@@ -6,6 +6,14 @@
                     routerLink="/wells/{{registrationID}}">{{registrationID}}</a>
             </td>
         </tr>
+        <tr *ngIf="landownerName">
+            <td class="rowHeader">Landowner:</td>
+            <td>{{landownerName}}</td>
+        </tr>
+        <tr *ngIf="fieldName">
+            <td class="rowHeader">Field Name:</td>
+            <td>{{fieldName}}</td>
+        </tr>
         <tr>
             <td class="rowHeader">{{getDataSourceDisplay()}}</td>
             <td class="rowValue">

@@ -41,6 +41,10 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime? RegisteredUpdated { get; set; }
         public int? StreamflowZoneID { get; set; }
+        [StringLength(100)]
+        public string LandownerName { get; set; }
+        [StringLength(100)]
+        public string FieldName { get; set; }
 
         [ForeignKey(nameof(StreamflowZoneID))]
         [InverseProperty(nameof(StreamFlowZone.AgHubWells))]

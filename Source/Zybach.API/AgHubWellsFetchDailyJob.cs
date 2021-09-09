@@ -111,6 +111,8 @@ namespace Zybach.API
                 agHubWell.RegisteredUpdated = agHubWellRawWithAcreYears.RegisteredUpdated;
                 agHubWell.RegisteredPumpRate = agHubWellRawWithAcreYears.RegisteredPumpRate;
                 agHubWell.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
+                agHubWell.LandownerName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
+                agHubWell.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
 
                 var agHubWellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
                     .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()

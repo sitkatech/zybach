@@ -25,7 +25,11 @@ namespace Zybach.API.Services
             using var httpResponse = await _httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
             try
             {
+                
                 httpResponse.EnsureSuccessStatusCode(); // throws if not 200-299
+
+                var readAsStringAsync = httpResponse.Content.ReadAsStringAsync().Result;
+
                 using var streamReader = new StreamReader(httpResponse.Content.ReadAsStreamAsync().Result);
                 using var jsonTextReader = new JsonTextReader(streamReader);
                 return new JsonSerializer().Deserialize<TV>(jsonTextReader);
@@ -96,6 +100,7 @@ namespace Zybach.API.Services
             public int? WellAuditPumpRate { get; set; }
             public bool? WellConnectedMeter { get; set; }
             public string WellTPID { get; set; }
+
         }
 
         public class AgHubWellWithAcreYearsResponse
@@ -124,6 +129,14 @@ namespace Zybach.API.Services
             public DateTime? RegisteredUpdated { get; set; }
             public int? RegisteredPumpRate { get; set; }
             public List<IrrigatedAcresPerYear> AcresYear { get; set; }
+
+            public RegisteredUserDetails RegisteredUserDetails { get; set; }
+        }
+
+        public class RegisteredUserDetails
+        {
+            public string RegisteredUser { get; set; }
+            public string RegisteredFieldName { get; set; }
         }
 
         public class PumpedVolumeDailyForWellResponse

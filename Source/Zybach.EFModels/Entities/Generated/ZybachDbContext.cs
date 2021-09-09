@@ -51,6 +51,10 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<AgHubWell>(entity =>
             {
+                entity.Property(e => e.FieldName).IsUnicode(false);
+
+                entity.Property(e => e.LandownerName).IsUnicode(false);
+
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 
                 entity.Property(e => e.WellTPID).IsUnicode(false);
@@ -76,6 +80,10 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<AgHubWellStaging>(entity =>
             {
+                entity.Property(e => e.FieldName).IsUnicode(false);
+
+                entity.Property(e => e.LandownerName).IsUnicode(false);
+
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 
                 entity.Property(e => e.WellTPID).IsUnicode(false);

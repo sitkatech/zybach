@@ -17,11 +17,14 @@ namespace Zybach.API.Controllers
     {
         private readonly InfluxDBService _influxDbService;
         private readonly GeoOptixService _geoOptixService;
+        private readonly WellService _wellService;
 
-        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+
+        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _influxDbService = influxDbService;
             _geoOptixService = geoOptixService;
+            _wellService = wellService;
         }
 
 
@@ -29,22 +32,34 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
-            var wellSummariesWithSensors = (await _geoOptixService.GetWellsWithSensors()).Where(x => x.Sensors.Any()).ToList();
+            var wellSummariesWithSensors = (await _wellService.GetAghubAndGeoOptixWells()).Where(x => x.Sensors.Any(x=>x.SensorType != "Electrical Usage")).ToList();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
             return wellSummariesWithSensors.Select(well => new WellWithSensorMessageAgeDto
             {
+                LandownerName = well.LandownerName,
+                FieldName = well.FieldName,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
-                Sensors = well.Sensors.Select(sensor =>
+                Sensors = well.Sensors.Where(x=>x.SensorType != "Electrical Usage").Select(sensor =>
                 {
-                    var messageAge = sensorMessageAges.ContainsKey(sensor.SensorName) ? sensorMessageAges[sensor.SensorName] : (int?) null;
-                    return new SensorMessageAgeDto
+                    try
                     {
-                        SensorName = sensor.SensorName,
-                        MessageAge = messageAge,
-                        SensorType = sensor.SensorType
-                    };
+                        var messageAge = sensorMessageAges.ContainsKey(sensor.SensorName)
+                            ? sensorMessageAges[sensor.SensorName]
+                            : (int?) null;
+                        return new SensorMessageAgeDto
+                        {
+                            SensorName = sensor.SensorName,
+                            MessageAge = messageAge,
+                            SensorType = sensor.SensorType
+                        };
+                    }
+                    catch
+                    {
+                        var fart = 0;
+                        return null;
+                    }
                 }).ToList()
             }).ToList();
         }

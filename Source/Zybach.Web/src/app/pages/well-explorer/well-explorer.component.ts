@@ -46,7 +46,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
-                sensors: x.Sensors || []
+                sensors: x.Sensors || [],
+                landownerName: x.LandownerName,
+                fieldName: x.FieldName
               };
               return geoJsonPoint;
             })
@@ -103,6 +105,18 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerName: "TPID",
         field: "WellTPID",
         width: 85,
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Landowner",
+        field: "LandownerName",
+        width: 125,
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Field Name",
+        field: "FieldName",
+        width: 115,
         sortable: true, filter: true, resizable: true
       },
       {

@@ -49,6 +49,18 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         resizable: true
       },
       { headerName: 'Well Number', field: 'wellRegistrationID', sortable: true, filter: true, resizable: true },
+      {
+        headerName: "Landowner",
+        field: "LandownerName",
+        width: 125,
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Field Name",
+        field: "FieldName",
+        width: 115,
+        sortable: true, filter: true, resizable: true
+      },
       { headerName: 'Sensor Number', field: 'SensorName', sortable: true, filter: true, resizable: true},
       { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => `${Math.floor(params.data.messageAge / 3600)} hours` },
       { headerName: 'Sensor Type', field: 'SensorType', sortable: true, filter: true, resizable: true},
@@ -58,7 +70,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.getSensorStatusByWell().subscribe(wells => {
-
+console.log(wells);
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
@@ -68,7 +80,9 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
-                sensors: x.Sensors
+                sensors: x.Sensors || [],
+                landownerName: x.LandownerName,
+                fieldName: x.FieldName
               };
               return geoJsonPoint;
             })
