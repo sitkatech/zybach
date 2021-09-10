@@ -147,7 +147,7 @@ namespace Zybach.API.Controllers
                 volumeByWell.IntervalVolumes = CreateIntervalVolumesAndZeroFillMissingDays(wellRegistrationID,
                     currentWellResults, startDate, endDate,
                     pumpingRateGallonsPerMinute,
-                    firstReadingDates.Where(x => x.WellRegistrationID == wellRegistrationID));
+                    firstReadingDates.Where(x => x.WellRegistrationID == wellRegistrationID).ToList());
                 volumesByWell.Add(volumeByWell);
             }
 
@@ -163,29 +163,37 @@ namespace Zybach.API.Controllers
 
         private static List<IntervalVolumeDto> CreateIntervalVolumesAndZeroFillMissingDays(string wellRegistrationID,
             List<WellSensorMeasurementDto> wellSensorMeasurementDtos, DateTime startDate,
-            DateTime endDate, int pumpingRateGallonsPerMinute, IEnumerable<WellSensorReadingDateDto> wellSensorReadingDates)
+            DateTime endDate, int pumpingRateGallonsPerMinute, List<WellSensorReadingDateDto> wellSensorReadingDates)
         {
             var intervalVolumeDtos = new List<IntervalVolumeDto>();
             var dateRange = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
 
-            foreach (var wellSensorReadingDate in wellSensorReadingDates.OrderBy(x => x.WellRegistrationID).ThenBy(x => x.SensorName))
+            if (wellSensorReadingDates.Any(x => x.FirstReadingDate <= startDate))
             {
-                if (wellSensorReadingDate.FirstReadingDate <= startDate)
+                foreach (var i in dateRange)
                 {
-                    var sensorName = wellSensorReadingDate.SensorName;
-                    var measurementValues = wellSensorMeasurementDtos
-                        .Where(x => x.SensorName == sensorName).ToDictionary(
-                            x => x.MeasurementDate.ToShortDateString(), x => x.MeasurementValue);
-                    var dtos = dateRange.Select(a =>
+                    var dateTime = startDate.AddDays(i);
+                    var intervalVolumeDto = new IntervalVolumeDto(wellRegistrationID, dateTime,
+                        wellSensorMeasurementDtos
+                            .Where(x => x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString()).ToList(),
+                        InfluxDBService.SensorTypes.ContinuityMeter);
+                    var dailySensorVolumeDtos = new List<DailySensorVolumeDto>();
+                    foreach (var wellSensorReadingDate in wellSensorReadingDates.OrderBy(x => x.SensorName))
                     {
-                        var dateTime = startDate.AddDays(a);
-                        var gallons = measurementValues.ContainsKey(dateTime.ToShortDateString())
-                            ? measurementValues[dateTime.ToShortDateString()]
-                            : 0;
-                        return new IntervalVolumeDto(wellRegistrationID, dateTime, gallons,
-                            InfluxDBService.SensorTypes.ContinuityMeter, sensorName, pumpingRateGallonsPerMinute);
-                    });
-                    intervalVolumeDtos.AddRange(dtos);
+                        if (wellSensorReadingDate.FirstReadingDate <= startDate)
+                        {
+                            var sensorName = wellSensorReadingDate.SensorName;
+                            var wellSensorMeasurementDto = wellSensorMeasurementDtos.SingleOrDefault(x =>
+                                x.SensorName == sensorName &&
+                                x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString());
+                            var gallons = wellSensorMeasurementDto?.MeasurementValue ?? 0;
+                            dailySensorVolumeDtos.Add(new DailySensorVolumeDto(gallons, sensorName,
+                                pumpingRateGallonsPerMinute));
+                        }
+                    }
+
+                    intervalVolumeDto.SensorVolumes = dailySensorVolumeDtos;
+                    intervalVolumeDtos.Add(intervalVolumeDto);
                 }
             }
 

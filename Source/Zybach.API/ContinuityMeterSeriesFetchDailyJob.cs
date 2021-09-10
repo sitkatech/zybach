@@ -22,7 +22,7 @@ namespace Zybach.API
         }
 
         public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-            {RunEnvironment.Development, RunEnvironment.Staging, RunEnvironment.Production};
+            {RunEnvironment.Production};
 
         protected override void RunJobImplementation()
         {
