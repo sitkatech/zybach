@@ -123,6 +123,20 @@ console.log(wells);
     this.gridApi = params.api;
   }
 
+  public onSelectionChanged(event: Event) {
+    const selectedNode = this.gridApi.getSelectedNodes()[0];
+    if (!selectedNode) {
+      // event was fired automatically when we updated the grid after a map click
+      return;
+    }
+    this.gridApi.forEachNode(node => {
+      if (node.data.WellRegistrationID === selectedNode.data.WellRegistrationID) {
+        node.setSelected(true);
+      }
+    })
+    this.wellMap.selectWell(selectedNode.data.WellRegistrationID);
+  }
+
   public onMapSelection(wellRegistrationID: string) {
     this.gridApi.deselectAll();
     let firstRecordMadeVisible = false;
