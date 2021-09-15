@@ -54,6 +54,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   @Input()
   public wellsGeoJson: any;
 
+  @Output()
+  public onWellSelected: EventEmitter<any> = new EventEmitter();
+
   public map: Map;
   public featureLayer: any;
   public layerControl: Control.Layers;
@@ -203,6 +206,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer.on("click", (event: LeafletEvent) => {
       this.selectFeature(event.propagatedFrom.feature);
+      this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
     })
 
     this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
@@ -328,9 +332,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
           popupEl.fieldName = feature.properties.fieldName;
           return popupEl;
         }, { maxWidth: 500 });
-      },
-      filter: (feature) =>{
-        return feature.properties.landownerName;
       }
     })
 
