@@ -62,7 +62,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         sortable: true, filter: true, resizable: true
       },
       { headerName: 'Sensor Number', field: 'SensorName', sortable: true, filter: true, resizable: true},
-      { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => `${Math.floor(params.data.messageAge / 3600)} hours` },
+      { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => `${Math.floor(params.data.MessageAge / 3600)} hours`},
       { headerName: 'Sensor Type', field: 'SensorType', sortable: true, filter: true, resizable: true},
     ];
 
