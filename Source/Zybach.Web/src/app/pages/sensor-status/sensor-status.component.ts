@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { PropertiesPlugin } from '@microsoft/applicationinsights-properties-js';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
@@ -31,7 +32,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.wellRegistrationID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellRegistrationID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
@@ -48,21 +49,21 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         width: 160,
         resizable: true
       },
-      { headerName: 'Well Number', field: 'wellRegistrationID', sortable: true, filter: true, resizable: true },
+      { headerName: 'Well Number', field: 'WellRegistrationID', sortable: true, filter: true, resizable: true },
       {
         headerName: "Landowner",
-        field: "LandownerName",
+        field: "landownerName",
         width: 125,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Field Name",
-        field: "FieldName",
+        field: "fieldName",
         width: 115,
         sortable: true, filter: true, resizable: true
       },
       { headerName: 'Sensor Number', field: 'SensorName', sortable: true, filter: true, resizable: true},
-      { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => `${Math.floor(params.data.messageAge / 3600)} hours` },
+      { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => Math.floor(params.data.MessageAge / 3600)},
       { headerName: 'Sensor Type', field: 'SensorType', sortable: true, filter: true, resizable: true},
     ];
 
@@ -90,8 +91,8 @@ console.log(wells);
 
         console.log(this.wellsGeoJson);
 
-        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, wellRegistrationID: well.WellRegistrationID }))), []).filter(sensor => sensor.MessageAge > 3600 * 8);
-
+        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellRegistrationID: well.WellRegistrationID, landownerName: well.LandownerName, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8);
+        console.log(this.redSensors);
       })
     });
   }
@@ -120,6 +121,34 @@ console.log(wells);
   
   public onGridReady(params) {
     this.gridApi = params.api;
+  }
+
+  public onSelectionChanged(event: Event) {
+    const selectedNode = this.gridApi.getSelectedNodes()[0];
+    if (!selectedNode) {
+      // event was fired automatically when we updated the grid after a map click
+      return;
+    }
+    this.gridApi.forEachNode(node => {
+      if (node.data.WellRegistrationID === selectedNode.data.WellRegistrationID) {
+        node.setSelected(true);
+      }
+    })
+    this.wellMap.selectWell(selectedNode.data.WellRegistrationID);
+  }
+
+  public onMapSelection(wellRegistrationID: string) {
+    this.gridApi.deselectAll();
+    let firstRecordMadeVisible = false;
+    this.gridApi.forEachNode(node => {
+      if (node.data.WellRegistrationID === wellRegistrationID) {
+        node.setSelected(true);
+        if (!firstRecordMadeVisible) {
+          this.gridApi.ensureIndexVisible(node.rowIndex, "top");
+          firstRecordMadeVisible = true;
+        }
+      }
+    })
   }
 }
 
