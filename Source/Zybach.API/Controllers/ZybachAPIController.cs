@@ -92,18 +92,20 @@ namespace Zybach.API.Controllers
             try
             {
                 var measurementTypeEnum = MeasurementTypeEnum.ContinuityMeter;
+                var startDateAsInteger = int.Parse(startDate.ToString("yyyyMMdd"));
+                var endDateAsInteger = int.Parse(endDate.ToString("yyyyMMdd"));
                 var query = _dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking().Where(
-                    x =>
-                        x.MeasurementTypeID == (int)measurementTypeEnum
-                        && x.ReadingYear >= startDate.Year && x.ReadingMonth >= startDate.Month &&
-                        x.ReadingDay >= startDate.Day
-                        && x.ReadingYear <= endDate.Year && x.ReadingMonth <= endDate.Month &&
-                        x.ReadingDay <= endDate.Day
+                    x => x.MeasurementTypeID == (int)measurementTypeEnum
+                         && 10000 * x.ReadingYear + 100 * x.ReadingMonth + x.ReadingDay >=
+                         startDateAsInteger
+                         && 10000 * x.ReadingYear + 100 * x.ReadingMonth + x.ReadingDay <=
+                         endDateAsInteger
                 );
                 List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
                 if (wellRegistrationIDs != null && wellRegistrationIDs.Any())
                 {
-                    wellSensorMeasurementDtos = query.Where(x => wellRegistrationIDs.Contains(x.WellRegistrationID)).Select(x => x.AsDto()).ToList();
+                    var wellSensorMeasurements = query.Where(x => wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList();
+                    wellSensorMeasurementDtos = wellSensorMeasurements.Select(x => x.AsDto()).ToList();
                 }
                 else
                 {
@@ -168,34 +170,35 @@ namespace Zybach.API.Controllers
             var intervalVolumeDtos = new List<IntervalVolumeDto>();
             var dateRange = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
 
-            if (wellSensorReadingDates.Any(x => x.FirstReadingDate <= startDate))
-            {
                 foreach (var i in dateRange)
                 {
                     var dateTime = startDate.AddDays(i);
-                    var intervalVolumeDto = new IntervalVolumeDto(wellRegistrationID, dateTime,
-                        wellSensorMeasurementDtos
-                            .Where(x => x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString()).ToList(),
-                        InfluxDBService.SensorTypes.ContinuityMeter);
-                    var dailySensorVolumeDtos = new List<DailySensorVolumeDto>();
-                    foreach (var wellSensorReadingDate in wellSensorReadingDates.OrderBy(x => x.SensorName))
+                    if (wellSensorReadingDates.Any(x => x.FirstReadingDate <= dateTime))
                     {
-                        if (wellSensorReadingDate.FirstReadingDate <= startDate)
+                        var intervalVolumeDto = new IntervalVolumeDto(wellRegistrationID, dateTime,
+                            wellSensorMeasurementDtos
+                                .Where(x => x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString())
+                                .ToList(),
+                            InfluxDBService.SensorTypes.ContinuityMeter);
+                        var dailySensorVolumeDtos = new List<DailySensorVolumeDto>();
+                        foreach (var wellSensorReadingDate in wellSensorReadingDates.OrderBy(x => x.SensorName))
                         {
-                            var sensorName = wellSensorReadingDate.SensorName;
-                            var wellSensorMeasurementDto = wellSensorMeasurementDtos.SingleOrDefault(x =>
-                                x.SensorName == sensorName &&
-                                x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString());
-                            var gallons = wellSensorMeasurementDto?.MeasurementValue ?? 0;
-                            dailySensorVolumeDtos.Add(new DailySensorVolumeDto(gallons, sensorName,
-                                pumpingRateGallonsPerMinute));
+                            if (wellSensorReadingDate.FirstReadingDate <= dateTime)
+                            {
+                                var sensorName = wellSensorReadingDate.SensorName;
+                                var wellSensorMeasurementDto = wellSensorMeasurementDtos.SingleOrDefault(x =>
+                                    x.SensorName.Equals(sensorName, StringComparison.InvariantCultureIgnoreCase) &&
+                                    x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString());
+                                var gallons = wellSensorMeasurementDto?.MeasurementValue ?? 0;
+                                dailySensorVolumeDtos.Add(new DailySensorVolumeDto(gallons, sensorName,
+                                    pumpingRateGallonsPerMinute));
+                            }
                         }
-                    }
 
-                    intervalVolumeDto.SensorVolumes = dailySensorVolumeDtos;
-                    intervalVolumeDtos.Add(intervalVolumeDto);
+                        intervalVolumeDto.SensorVolumes = dailySensorVolumeDtos;
+                        intervalVolumeDtos.Add(intervalVolumeDto);
+                    }
                 }
-            }
 
             return intervalVolumeDtos;
         }

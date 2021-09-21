@@ -8,7 +8,8 @@ namespace Zybach.EFModels.Entities
 {
     public partial class WellSensorMeasurement
     {
-        public DateTime MeasurementDate => new DateTimeOffset(ReadingYear, ReadingMonth, ReadingDay, 0, 0, 0, new TimeSpan(-7, 0, 0)).UtcDateTime;
+        public DateTime MeasurementDateInPacificTime => new DateTimeOffset(ReadingYear, ReadingMonth, ReadingDay, 0, 0, 0, new TimeSpan(-7, 0, 0)).UtcDateTime;
+        public DateTime MeasurementDate => new(ReadingYear, ReadingMonth, ReadingDay);
 
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementType(
     ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum)
@@ -81,13 +82,13 @@ namespace Zybach.EFModels.Entities
         public static DateTime? GetFirstReadingDateTimeForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
             var wellSensorMeasurements = dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
-            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : (DateTime?) null;
+            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : null;
         }
 
         public static DateTime? GetLastReadingDateTimeForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
             var wellSensorMeasurements = dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
-            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : (DateTime?)null;
+            return wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : null;
         }
 
         public static Dictionary<string, DateTime> GetFirstReadingDateTimes(ZybachDbContext dbContext)

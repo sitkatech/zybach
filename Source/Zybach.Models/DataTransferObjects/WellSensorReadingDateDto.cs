@@ -16,7 +16,7 @@ namespace Zybach.Models.DataTransferObjects
         {
             WellRegistrationID = wellRegistrationID;
             SensorName = sensorName;
-            FirstReadingDate = firstReadingDate;
+            FirstReadingDate = new DateTime(firstReadingDate.Year, firstReadingDate.Month, firstReadingDate.Day); // we need to strip the time component from this
         }
     }
 }
