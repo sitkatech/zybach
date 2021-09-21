@@ -74,8 +74,8 @@ namespace Zybach.API.Controllers
                 return new List<DailyPumpedVolume>();
             }
             var measurementValues = wellSensorMeasurementDtos.ToLookup(
-                x => new DateTime(x.ReadingYear, x.ReadingMonth, x.ReadingDay).ToShortDateString());
-            var startDate = wellSensorMeasurementDtos.Min(x => x.MeasurementDate);
+                x => x.MeasurementDate.ToShortDateString());
+            var startDate = wellSensorMeasurementDtos.Min(x => x.MeasurementDateInPacificTime);
             var endDate = DateTime.Today;
             var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
                 .ToList();
