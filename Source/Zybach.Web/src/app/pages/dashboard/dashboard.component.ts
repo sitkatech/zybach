@@ -246,6 +246,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.streamFlowZoneLayer.on("click", (event: LeafletEvent) => {
       const selectedFeatureID = event.propagatedFrom.feature.properties.FeatureID
       this.selectedStreamflowZone = this.streamFlowZones.find(x=>x.StreamFlowZoneID === selectedFeatureID );
+      this.streamFlowZoneLayer.eachLayer(function(layer) {
+        if (layer.feature.properties.FeatureID == selectedFeatureID) {
+          layer.setStyle({color: "#00FFFF"});
+          layer.bringToFront();
+          return;
+        }
+        layer.setStyle({color: "#3388ff"});
+      })
 
       this.cdr.detectChanges();
       this.map.invalidateSize();

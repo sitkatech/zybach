@@ -11,43 +11,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    District-Wide Statistics
-                </div>
-                <div class="card-body">
-                    
-                    <div class="row" *ngIf="loadingDistrictStatistics">
-                        <div class="col text-center">
-                            <span class="fas fa-spinner loading-spinner"></span>
-                            <p>Loading...</p>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="!loadingDistrictStatistics">
-                        <div class="col-12  col-sm-6 label"><strong>Wells with Flow Meters: </strong> </div>
-                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfFlowMeters}}</div>
-                        <div class="col-12  col-sm-6 label"><strong>Wells with Continuity Meters: </strong> </div>
-                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfContinuityMeters}}</div>
-                        <div class="col-12  col-sm-6 label"><strong>Wells with Electrical Usage Estimates: </strong> </div>
-                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfElectricalUsageEstimates}}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Usage Charts
-                </div>
-                <div class="card-body">
-                    <p class="text-italic">Under construction</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-2">
+    <div class="row mb-2">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -75,5 +39,42 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    District-Wide Statistics
+                </div>
+                <div class="card-body">
+                    
+                    <div class="row" *ngIf="loadingDistrictStatistics">
+                        <div class="col text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="!loadingDistrictStatistics">
+                        <div class="col-12  col-sm-6 label"><strong>Wells with Flow Meters: </strong> </div>
+                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfFlowMeters}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>Wells with Continuity Meters: </strong> </div>
+                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfContinuityMeters}}</div>
+                        <div class="col-12  col-sm-6 label"><strong>Wells with Electrical Usage Estimates: </strong> </div>
+                        <div class="col-12  col-sm-6">{{districtStatistics.NumberOfElectricalUsageEstimates}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- MP 9/22/21 Temporarily removing, but will likely reintroduce later -->
+        <!-- <div class="col-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Usage Charts
+                </div>
+                <div class="card-body">
+                    <p class="text-italic">Under construction</p>
+                </div>
+            </div>
+        </div> -->
     </div>
 </div>
