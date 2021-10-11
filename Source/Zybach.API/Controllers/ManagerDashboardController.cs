@@ -17,43 +17,28 @@ namespace Zybach.API.Controllers
     public class ManagerDashboardController : SitkaController<ManagerDashboardController>
     {
         private readonly GeoOptixService _geoOptixService;
+        private readonly WellService _wellService;
         private const double GALLON_TO_ACRE_INCH = 3.68266E-5;
 
-        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _geoOptixService = geoOptixService;
+            _wellService = wellService;
         }
 
 
-        [HttpGet("/api/managerDashboard/districtStatistics/{year}")]
+        [HttpGet("/api/managerDashboard/districtStatistics")]
         [ZybachViewFeature]
-        public async Task<DistrictStatisticsDto> GetDistrictStatistics([FromRoute] int year)
+        public async Task<DistrictStatisticsDto> GetDistrictStatistics()
         {
-            // get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year
-            var geoOptixWells = await _geoOptixService.GetWellSummariesCreatedAsOfYear(year);
-            var aghubRegistrationIds = _dbContext.WellSensorMeasurements
-                .Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.ElectricalUsage &&
-                            x.ReadingYear == year).Select(x => x.WellRegistrationID).Distinct().ToList();
-            // combine the registration ids as a set and count to avoid counting duplicates
-            var numberOfWellsTracked = geoOptixWells.Select(x => x.WellRegistrationID)
-                .Union(aghubRegistrationIds, StringComparer.InvariantCultureIgnoreCase).Count();
-
-            // get all sensors that existed in GeoOptix as of the given year
-            var sensors = await _geoOptixService.GetSensorSummariesCreatedAsOfYear(year);
-
-            // filter by sensor type and count
-            var numberOfFlowMeters = sensors.Count(x => x.SensorType == InfluxDBService.SensorTypes.FlowMeter);
-            var numberOfContinuityMeters = sensors.Count(x => x.SensorType == InfluxDBService.SensorTypes.ContinuityMeter);
-
-            // todo: get total number of electrical usage estimates
-            var numberOfElectricalUsageEstimates = aghubRegistrationIds.Count;
+            var allWells = await _wellService.GetAghubAndGeoOptixWells();
 
             return new DistrictStatisticsDto
             { 
-                NumberOfWellsTracked = numberOfWellsTracked,
-                NumberOfContinuityMeters = numberOfContinuityMeters,
-                NumberOfElectricalUsageEstimates = numberOfElectricalUsageEstimates,
-                NumberOfFlowMeters = numberOfFlowMeters
+                NumberOfWellsTracked = allWells.Count(),
+                NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ContinuityMeter)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfElectricalUsageEstimates = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ElectricalUsage)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.FlowMeter)).Select(x => x.WellRegistrationID).Distinct().Count()
             };
         }
 

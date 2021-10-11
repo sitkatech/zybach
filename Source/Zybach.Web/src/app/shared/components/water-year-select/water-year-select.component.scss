@@ -19,3 +19,7 @@
     background-color: $select-and-nav-dropdown-hover;
     cursor: pointer;
 }
+
+.dropdown-menu {
+    z-index:1001;
+}

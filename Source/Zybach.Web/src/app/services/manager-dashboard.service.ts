@@ -12,8 +12,8 @@ export class ManagerDashboardService {
 
   constructor(private apiService: ApiService) { }
 
-  getDistrictStatistics(year: number): Observable<DistrictStatisticsDto>{
-    return this.apiService.getFromApi(`managerDashboard/districtStatistics/${year}`);
+  getDistrictStatistics(): Observable<DistrictStatisticsDto>{
+    return this.apiService.getFromApi(`managerDashboard/districtStatistics`);
   }
 
   getStreamflowZones(): Observable<StreamFlowZoneDto[]> {

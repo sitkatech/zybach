@@ -60,6 +60,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear();
+
+    this.managerDashboardService.getDistrictStatistics().subscribe(stats => {
+      this.districtStatistics = stats;
+      this.loadingDistrictStatistics = false;
+    });
   }
 
   public updateAnnualData(): void {
@@ -72,10 +77,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.pumpingDepthsByYear) {
       this.displayStreamFlowZones();
     }
-    this.managerDashboardService.getDistrictStatistics(yearForStatistics).subscribe(stats => {
-      this.districtStatistics = stats;
-      this.loadingDistrictStatistics = false;
-    });
   }
 
   public getAcreage(streamFlowZone: StreamFlowZoneDto): number {

@@ -71,7 +71,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.getSensorStatusByWell().subscribe(wells => {
-console.log(wells);
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
@@ -89,10 +88,8 @@ console.log(wells);
             })
         }
 
-        console.log(this.wellsGeoJson);
 
         this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellRegistrationID: well.WellRegistrationID, landownerName: well.LandownerName, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8);
-        console.log(this.redSensors);
       })
     });
   }
