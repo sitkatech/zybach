@@ -51,13 +51,8 @@ export class AuthenticationService {
 
   public checkAuthentication() {
     if (this.isAuthenticated() && !this.currentUser) {
-      var claims = this.oauthService.getIdentityClaims();
-      var globalID = claims["sub"];
       console.log("Authenticated but no user found...");
-      this.getUserObservable = this.userService.getUserFromGlobalID(globalID).subscribe(user => {
-        this.currentUser = user;
-        this._currentUserSetSubject.next(this.currentUser);
-      });
+      this.getGlobalIDFromClaimsAndAttemptToSetUserObservableAndCreateUserIfNecessary();
     }
   }
 
