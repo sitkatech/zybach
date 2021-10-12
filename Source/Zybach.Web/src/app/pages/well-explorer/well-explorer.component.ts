@@ -36,13 +36,13 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
         this.wells = wells;
-        
+        wells.filter(x => x.Location == null || x.Location ==  undefined).forEach(x => console.log(x));
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
           features:
 
-            wells.map(x => {
+            wells.filter(x => x.Location != null && x.Location != undefined).map(x => {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,

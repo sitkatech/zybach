@@ -26,6 +26,8 @@ import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydat
 import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { Alert } from 'src/app/shared/models/alert';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -77,7 +79,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private alertService: AlertService
   ) { }
 
   initDateRange(startDate: Date, endDate: Date) {
@@ -127,7 +130,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.well = well;
       
       this.cdr.detectChanges();
-      this.addWellToMap();
+      
+      if (well.Location != null && well.Location != undefined) {
+        this.addWellToMap();
+      }
+      else {
+        this.alertService.pushAlert(new Alert(`No location was provided for ${well.WellRegistrationID}.`))
+      }
     })
   }
 
