@@ -16,6 +16,8 @@ export class AgHubWellStagingDto {
 	RegisteredPumpRate : number
 	RegisteredUpdated : Date
 	HasElectricalData : boolean
+	LandownerName : string
+	FieldName : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

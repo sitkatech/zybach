@@ -23,7 +23,9 @@ namespace Zybach.EFModels.Entities
                 AuditPumpRateUpdated = agHubWellStaging.AuditPumpRateUpdated,
                 RegisteredPumpRate = agHubWellStaging.RegisteredPumpRate,
                 RegisteredUpdated = agHubWellStaging.RegisteredUpdated,
-                HasElectricalData = agHubWellStaging.HasElectricalData
+                HasElectricalData = agHubWellStaging.HasElectricalData,
+                LandownerName = agHubWellStaging.LandownerName,
+                FieldName = agHubWellStaging.FieldName
             };
             DoCustomMappings(agHubWellStaging, agHubWellStagingDto);
             return agHubWellStagingDto;

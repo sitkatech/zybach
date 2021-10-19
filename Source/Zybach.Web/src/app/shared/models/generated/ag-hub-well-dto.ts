@@ -18,6 +18,8 @@ export class AgHubWellDto {
 	RegisteredPumpRate : number
 	RegisteredUpdated : Date
 	StreamflowZone : StreamFlowZoneDto
+	LandownerName : string
+	FieldName : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

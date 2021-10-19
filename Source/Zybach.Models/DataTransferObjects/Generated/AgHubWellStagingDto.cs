@@ -20,5 +20,7 @@ namespace Zybach.Models.DataTransferObjects
         public int? RegisteredPumpRate { get; set; }
         public DateTime? RegisteredUpdated { get; set; }
         public bool HasElectricalData { get; set; }
+        public string LandownerName { get; set; }
+        public string FieldName { get; set; }
     }
 }
