@@ -12,6 +12,11 @@ namespace Zybach.EFModels.Entities
     [Table("Well")]
     public partial class Well
     {
+        public Well()
+        {
+            Sensors = new HashSet<Sensor>();
+        }
+
         [Key]
         public int WellID { get; set; }
         [Required]
@@ -31,5 +36,9 @@ namespace Zybach.EFModels.Entities
         public virtual StreamFlowZone StreamflowZone { get; set; }
         [InverseProperty("Well")]
         public virtual AgHubWell AgHubWell { get; set; }
+        [InverseProperty("Well")]
+        public virtual GeoOptixWell GeoOptixWell { get; set; }
+        [InverseProperty(nameof(Sensor.Well))]
+        public virtual ICollection<Sensor> Sensors { get; set; }
     }
 }

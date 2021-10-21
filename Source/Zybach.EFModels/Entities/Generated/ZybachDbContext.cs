@@ -29,8 +29,13 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
+        public virtual DbSet<GeoOptixSensorStaging> GeoOptixSensorStagings { get; set; }
+        public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
+        public virtual DbSet<GeoOptixWellStaging> GeoOptixWellStagings { get; set; }
         public virtual DbSet<MeasurementType> MeasurementTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Sensor> Sensors { get; set; }
+        public virtual DbSet<SensorType> SensorTypes { get; set; }
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
@@ -176,6 +181,28 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<GeoOptixSensorStaging>(entity =>
+            {
+                entity.Property(e => e.SensorName).IsUnicode(false);
+
+                entity.Property(e => e.SensorType).IsUnicode(false);
+
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<GeoOptixWell>(entity =>
+            {
+                entity.HasOne(d => d.Well)
+                    .WithOne(p => p.GeoOptixWell)
+                    .HasForeignKey<GeoOptixWell>(d => d.WellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<GeoOptixWellStaging>(entity =>
+            {
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
             modelBuilder.Entity<MeasurementType>(entity =>
             {
                 entity.Property(e => e.MeasurementTypeID).ValueGeneratedNever();
@@ -194,6 +221,20 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.RoleDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.RoleName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Sensor>(entity =>
+            {
+                entity.Property(e => e.SensorName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SensorType>(entity =>
+            {
+                entity.Property(e => e.SensorTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.SensorTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.SensorTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<StreamFlowZone>(entity =>

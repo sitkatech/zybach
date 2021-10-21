@@ -14,7 +14,6 @@ export class AgHubWellDto {
 	WellAuditPumpRate : number
 	AuditPumpRateUpdated : Date
 	HasElectricalData : boolean
-	FetchDate : Date
 	RegisteredPumpRate : number
 	RegisteredUpdated : Date
 	AgHubRegisteredUser : string

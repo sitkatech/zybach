@@ -9,7 +9,6 @@ CREATE TABLE dbo.AgHubWell(
 	WellAuditPumpRate int NULL,
 	AuditPumpRateUpdated datetime NULL,
 	HasElectricalData bit NOT NULL,
-	FetchDate datetime NOT NULL,
 	RegisteredPumpRate int NULL,
 	RegisteredUpdated datetime NULL,
 	AgHubRegisteredUser varchar(100) NULL,
@@ -18,8 +17,8 @@ CREATE TABLE dbo.AgHubWell(
 GO
 
 set identity_insert dbo.AgHubWell on
-insert into dbo.AgHubWell(AgHubWellID, WellID, WellTPID, AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, FetchDate, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName)
-select WellID as AgHubWellID, WellID, WellTPID, WellGeometry as AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, FetchDate, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName
+insert into dbo.AgHubWell(AgHubWellID, WellID, WellTPID, AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName)
+select WellID as AgHubWellID, WellID, WellTPID, WellGeometry as AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName
 from dbo.Well
 order by WellID
 

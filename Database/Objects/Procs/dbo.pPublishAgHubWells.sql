@@ -27,8 +27,9 @@ begin
 	where aw.WellID is null
 
 
-	insert into dbo.AgHubWell(WellTPID, AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, FetchDate, AgHubRegisteredUser, FieldName)
-	select	aws.WellTPID,
+	insert into dbo.AgHubWell(WellID, WellTPID, AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName)
+	select	w.WellID,
+			aws.WellTPID,
 			aws.WellGeometry as AgHubWellGeometry,
 			aws.WellTPNRDPumpRate,
 			aws.TPNRDPumpRateUpdated,
@@ -38,11 +39,10 @@ begin
 			aws.HasElectricalData,
 			aws.RegisteredPumpRate,
 			aws.RegisteredUpdated,
-			@fetchDate as FetchDate,
 			aws.AgHubRegisteredUser,
 			aws.FieldName
 	from dbo.AgHubWellStaging aws
-	left join dbo.Well w on aws.WellRegistrationID = w.WellRegistrationID
+	join dbo.Well w on aws.WellRegistrationID = w.WellRegistrationID
 	left join dbo.AgHubWell aw on w.WellID = aw.WellID
 	where aw.AgHubWellID is null
 
@@ -57,15 +57,16 @@ begin
 		aw.HasElectricalData = aws.HasElectricalData,
 		aw.RegisteredPumpRate = aws.RegisteredPumpRate,
 		aw.RegisteredUpdated =aws.RegisteredUpdated,
-		aw.FetchDate = @fetchDate,
 		aw.AgHubRegisteredUser = aws.AgHubRegisteredUser,
 		aw.FieldName = aws.FieldName
 	from dbo.AgHubWell aw
 	join dbo.Well w on aw.WellID = w.WellID
 	join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 
-	update dbo.Well
-	Set WellGeometry.STSrid = 4326
+	update w
+	set LastUpdateDate = @fetchDate, WellGeometry.STSrid = 4326
+	from dbo.Well w
+	join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 
 	update dbo.AgHubWell
 	Set AgHubWellGeometry.STSrid = 4326

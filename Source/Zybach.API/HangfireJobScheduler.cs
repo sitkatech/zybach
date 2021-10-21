@@ -14,6 +14,7 @@ namespace Zybach.API
         {
             var recurringJobIds = new List<string>();
 
+            AddRecurringJob<GeoOptixSyncDailyJob>(GeoOptixSyncDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(7, 5), recurringJobIds);
             AddRecurringJob<AgHubWellsFetchDailyJob>(AgHubWellsFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(7, 15), recurringJobIds);
             AddRecurringJob<FlowMeterSeriesFetchDailyJob>(FlowMeterSeriesFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(9, 15), recurringJobIds);
             AddRecurringJob<ContinuityMeterSeriesFetchDailyJob>(ContinuityMeterSeriesFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(10, 15), recurringJobIds);

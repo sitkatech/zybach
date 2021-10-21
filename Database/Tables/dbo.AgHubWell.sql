@@ -13,7 +13,6 @@ CREATE TABLE [dbo].[AgHubWell](
 	[WellAuditPumpRate] [int] NULL,
 	[AuditPumpRateUpdated] [datetime] NULL,
 	[HasElectricalData] [bit] NOT NULL,
-	[FetchDate] [datetime] NOT NULL,
 	[RegisteredPumpRate] [int] NULL,
 	[RegisteredUpdated] [datetime] NULL,
 	[AgHubRegisteredUser] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,

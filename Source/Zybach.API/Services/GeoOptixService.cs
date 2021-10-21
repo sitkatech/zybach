@@ -69,7 +69,7 @@ namespace Zybach.API.Services
             return null;
         }
 
-        private async Task<List<Site>> GetGeoOptixSites()
+        public async Task<List<Site>> GetGeoOptixSites()
         {
             var geoOptixSites = await GetJsonFromCatalogImpl<List<Site>>(GeoOptixSitesProjectOverviewWebUri);
             return geoOptixSites;
@@ -99,7 +99,7 @@ namespace Zybach.API.Services
             return geoOptixStations.AsParallel().Select(x => new SensorSummaryDto(x)).ToList();
         }
 
-        private async Task<List<Station>> GetGeoOptixStations()
+        public async Task<List<Station>> GetGeoOptixStations()
         {
             const string uri = "project-overview-web/water-data-program/stations";
             var geoOptixStations = await GetJsonFromCatalogImpl<List<Station>>(uri);

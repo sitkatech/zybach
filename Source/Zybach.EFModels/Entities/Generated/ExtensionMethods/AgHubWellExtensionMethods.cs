@@ -22,7 +22,6 @@ namespace Zybach.EFModels.Entities
                 WellAuditPumpRate = agHubWell.WellAuditPumpRate,
                 AuditPumpRateUpdated = agHubWell.AuditPumpRateUpdated,
                 HasElectricalData = agHubWell.HasElectricalData,
-                FetchDate = agHubWell.FetchDate,
                 RegisteredPumpRate = agHubWell.RegisteredPumpRate,
                 RegisteredUpdated = agHubWell.RegisteredUpdated,
                 AgHubRegisteredUser = agHubWell.AgHubRegisteredUser,

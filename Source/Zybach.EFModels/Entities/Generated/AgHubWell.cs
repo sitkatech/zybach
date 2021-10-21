@@ -34,8 +34,6 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime? AuditPumpRateUpdated { get; set; }
         public bool HasElectricalData { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime FetchDate { get; set; }
         public int? RegisteredPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? RegisteredUpdated { get; set; }
