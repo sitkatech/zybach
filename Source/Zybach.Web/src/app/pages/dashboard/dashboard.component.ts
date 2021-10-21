@@ -19,7 +19,7 @@ import 'leaflet.fullscreen';
 import { GestureHandling } from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { forkJoin } from 'rxjs';
-import { streamFlowZonePumpingDepthDto } from 'src/app/shared/models/stream-flow-zone-pumping-depth-dto';
+import { StreamFlowZonePumpingDepthDto } from 'src/app/shared/models/stream-flow-zone-pumping-depth-dto';
 import { X } from 'vega-lite/build/src/channel';
 
 @Component({
@@ -49,8 +49,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public districtStatistics: DistrictStatisticsDto;
   public loadingDistrictStatistics: boolean = true;
 
-  public pumpingDepthsByYear: { Year: number, StreamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[] }[]
-  allYearsPumpingDepths: streamFlowZonePumpingDepthDto[];
+  public pumpingDepthsByYear: { Year: number, StreamFlowZonePumpingDepths: StreamFlowZonePumpingDepthDto[] }[]
+  allYearsPumpingDepths: StreamFlowZonePumpingDepthDto[];
 
   constructor(
     private managerDashboardService: ManagerDashboardService,
@@ -83,8 +83,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return (streamFlowZone.StreamFlowZoneArea * 0.000247105) || 0;
   }
 
-  public getSelectedYearPumpingDepths(): streamFlowZonePumpingDepthDto[] {
-    let selectedYearPumpingDepths : streamFlowZonePumpingDepthDto[]
+  public getSelectedYearPumpingDepths(): StreamFlowZonePumpingDepthDto[] {
+    let selectedYearPumpingDepths : StreamFlowZonePumpingDepthDto[]
     if (!this.allYearsSelected) {
       selectedYearPumpingDepths = this.pumpingDepthsByYear.find(x => x.Year === this.yearToDisplay).StreamFlowZonePumpingDepths;
     } else {
@@ -97,21 +97,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   public getPumpingDepth(streamFlowZone: StreamFlowZoneDto): number {
     let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
-
-    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneFeatureID === streamFlowZone.StreamFlowZoneID).PumpingDepth;
+    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZone.StreamFlowZoneID).PumpingDepth;
   }
 
   public getTotalIrrigatedAcres(streamFlowZone: StreamFlowZoneDto) : number{
     let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
 
-    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneFeatureID === streamFlowZone.StreamFlowZoneID).TotalIrrigatedAcres;
+    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZone.StreamFlowZoneID).TotalIrrigatedAcres;
   }
 
   
   public getTotalPumpedVolume(streamFlowZone: StreamFlowZoneDto) : number{
     let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
 
-    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneFeatureID === streamFlowZone.StreamFlowZoneID).TotalPumpedVolume;
+    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZone.StreamFlowZoneID).TotalPumpedVolume;
   }
 
   public ngAfterViewInit(): void {
@@ -190,15 +189,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.streamFlowZones = zones;
       this.pumpingDepthsByYear = pumpingDepthsByYear;
 
-      const allPumpingDepths: streamFlowZonePumpingDepthDto[] = [].concat.apply([], this.pumpingDepthsByYear.map(x => x.StreamFlowZonePumpingDepths))
+      const allPumpingDepths: StreamFlowZonePumpingDepthDto[] = [].concat.apply([], this.pumpingDepthsByYear.map(x => x.StreamFlowZonePumpingDepths))
       this.allYearsPumpingDepths = this.streamFlowZones.map(zone => {
-        const filteredPumpingDepths = allPumpingDepths.filter(depth => depth.StreamFlowZoneFeatureID === zone.StreamFlowZoneID)
+        const filteredPumpingDepths = allPumpingDepths.filter(depth => depth.StreamFlowZoneID === zone.StreamFlowZoneID);
 
         const allYearsPumpingDepth = filteredPumpingDepths.map(depth => depth.PumpingDepth).reduce((x, y) => x + y, 0);
         const allYearsTotalPumpedVolume = filteredPumpingDepths.map(depth => depth.TotalPumpedVolume).reduce((x, y) => x + y, 0);
         const allYearsTotalIrrigatedAcres = filteredPumpingDepths.map(depth => depth.TotalIrrigatedAcres).reduce((x, y) => x + y, 0) / filteredPumpingDepths.length;
 
-        return { StreamFlowZoneFeatureID: zone.StreamFlowZoneID, PumpingDepth: allYearsPumpingDepth, TotalIrrigatedAcres: allYearsTotalIrrigatedAcres, TotalPumpedVolume: allYearsTotalPumpedVolume }
+        return { StreamFlowZoneID: zone.StreamFlowZoneID, PumpingDepth: allYearsPumpingDepth, TotalIrrigatedAcres: allYearsTotalIrrigatedAcres, TotalPumpedVolume: allYearsTotalPumpedVolume }
       });
 
       console.log(this.pumpingDepthsByYear);
@@ -213,7 +212,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.streamFlowZoneLayer = null;
     }
 
-    let pumpingDepths: streamFlowZonePumpingDepthDto[];
+    let pumpingDepths: StreamFlowZonePumpingDepthDto[];
 
     if (!this.allYearsSelected) {
       pumpingDepths = this.pumpingDepthsByYear.find(x => x.Year === this.yearToDisplay).StreamFlowZonePumpingDepths;
@@ -246,7 +245,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.streamFlowZoneLayer.on("click", (event: LeafletEvent) => {
       const selectedFeatureID = event.propagatedFrom.feature.properties.FeatureID
-      this.selectedStreamflowZone = this.streamFlowZones.find(x=>x.StreamFlowZoneID === selectedFeatureID );
+      this.selectedStreamflowZone = this.streamFlowZones.find(x => x.StreamFlowZoneID === selectedFeatureID );
       this.streamFlowZoneLayer.eachLayer(function(layer) {
         if (layer.feature.properties.FeatureID == selectedFeatureID) {
           layer.setStyle({color: "#00FFFF"});
@@ -261,9 +260,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     })
 
   }
-  getFillColor(FeatureID: number, pumpingDepths: streamFlowZonePumpingDepthDto[]) {
+  getFillColor(streamFlowZoneID: number, pumpingDepths: StreamFlowZonePumpingDepthDto[]) {
 
-    const pumpingDepth = pumpingDepths.find(x => x.StreamFlowZoneFeatureID === FeatureID).PumpingDepth;
+    const pumpingDepth = pumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZoneID).PumpingDepth;
 
     if (pumpingDepth === 0) {
       return null;

@@ -10,7 +10,7 @@ export class WellWithSensorSummaryDto {
     Sensors: SensorSummaryDto[];
     HasElectricalData: any;
     IrrigatedAcresPerYear: IrrigatedAcresPerYearDto[];
-    LandownerName: string;
+    AgHubRegisteredUser: string;
     FieldName: string;
 }
 
@@ -18,7 +18,7 @@ export class WellWithSensorMessageAgeDto {
     WellRegistrationID: string;
     Location: any;
     Sensors: SensorMessageAgeDto[];
-    LandownerName: string;
+    AgHubRegisteredUser: string;
     FieldName: string;
 }
 

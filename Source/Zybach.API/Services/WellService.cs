@@ -23,7 +23,7 @@ namespace Zybach.API.Services
 
         public async Task<List<WellWithSensorSummaryDto>> GetAghubAndGeoOptixWells()
         {
-            var wells = Well.GetWellsAsWellWithSensorSummaryDtos(_dbContext);
+            var wells = AgHubWell.GetWellsAsWellWithSensorSummaryDtos(_dbContext);
             var wellsWithSensorSummaryFromGeoOptix = await _geoOptixService.GetWellsWithSensors();
             foreach (var geoOptixWell in wellsWithSensorSummaryFromGeoOptix)
             {

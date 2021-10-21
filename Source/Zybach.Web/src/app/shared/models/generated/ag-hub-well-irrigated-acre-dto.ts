@@ -1,12 +1,12 @@
 //  IMPORTANT:
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
-//  Source Table: [dbo].[WellIrrigatedAcre]
-import { WellDto } from './well-dto'
+//  Source Table: [dbo].[AgHubWellIrrigatedAcre]
+import { AgHubWellDto } from './ag-hub-well-dto'
 
-export class WellIrrigatedAcreDto {
-	WellIrrigatedAcreID : number
-	Well : WellDto
+export class AgHubWellIrrigatedAcreDto {
+	AgHubWellIrrigatedAcreID : number
+	AgHubWell : AgHubWellDto
 	IrrigationYear : number
 	Acres : number
 

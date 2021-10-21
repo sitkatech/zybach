@@ -10,7 +10,7 @@ export class WellMapPopupComponent implements OnInit {
 
   @Input() registrationID: string;
   @Input() sensors: SensorSummaryDto[];
-  @Input() landownerName: string;
+  @Input() AgHubRegisteredUser: string;
   @Input() fieldName: string;
 
 

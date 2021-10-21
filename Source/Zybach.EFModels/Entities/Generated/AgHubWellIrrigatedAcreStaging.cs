@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    [Table("WellIrrigatedAcreStaging")]
-    public partial class WellIrrigatedAcreStaging
+    [Table("AgHubWellIrrigatedAcreStaging")]
+    public partial class AgHubWellIrrigatedAcreStaging
     {
         [Key]
-        public int WellIrrigatedAcreStagingID { get; set; }
+        public int AgHubWellIrrigatedAcreStagingID { get; set; }
         [Required]
         [StringLength(100)]
         public string WellRegistrationID { get; set; }

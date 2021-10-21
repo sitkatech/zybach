@@ -30,7 +30,7 @@ namespace Zybach.API.Controllers
         {
             var wellChartDataDto = new WellChartDataDto();
             var sensors = await _geoOptixService.GetSensorSummariesForWell(wellRegistrationID);
-            var agHubWell = Well.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
+            var agHubWell = AgHubWell.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
             var hasElectricalData = agHubWell?.HasElectricalData ?? false;
 
             var dailyPumpedVolumes = new List<DailyPumpedVolume>();

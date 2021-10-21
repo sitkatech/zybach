@@ -15,19 +15,9 @@ namespace Zybach.EFModels.Entities
             {
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
-                WellTPID = well.WellTPID,
-                WellTPNRDPumpRate = well.WellTPNRDPumpRate,
-                TPNRDPumpRateUpdated = well.TPNRDPumpRateUpdated,
-                WellConnectedMeter = well.WellConnectedMeter,
-                WellAuditPumpRate = well.WellAuditPumpRate,
-                AuditPumpRateUpdated = well.AuditPumpRateUpdated,
-                HasElectricalData = well.HasElectricalData,
-                FetchDate = well.FetchDate,
-                RegisteredPumpRate = well.RegisteredPumpRate,
-                RegisteredUpdated = well.RegisteredUpdated,
                 StreamflowZone = well.StreamflowZone?.AsDto(),
-                AgHubRegisteredUser = well.AgHubRegisteredUser,
-                FieldName = well.FieldName
+                CreateDate = well.CreateDate,
+                LastUpdateDate = well.LastUpdateDate
             };
             DoCustomMappings(well, wellDto);
             return wellDto;

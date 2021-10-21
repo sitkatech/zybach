@@ -17,6 +17,10 @@ namespace Zybach.EFModels.Entities
         {
         }
 
+        public virtual DbSet<AgHubWell> AgHubWells { get; set; }
+        public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
+        public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
+        public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
@@ -30,11 +34,8 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
-        public virtual DbSet<WellIrrigatedAcre> WellIrrigatedAcres { get; set; }
-        public virtual DbSet<WellIrrigatedAcreStaging> WellIrrigatedAcreStagings { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
-        public virtual DbSet<WellStaging> WellStagings { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -48,6 +49,44 @@ namespace Zybach.EFModels.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<AgHubWell>(entity =>
+            {
+                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
+
+                entity.Property(e => e.FieldName).IsUnicode(false);
+
+                entity.Property(e => e.WellTPID).IsUnicode(false);
+
+                entity.HasOne(d => d.Well)
+                    .WithOne(p => p.AgHubWell)
+                    .HasForeignKey<AgHubWell>(d => d.WellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<AgHubWellIrrigatedAcre>(entity =>
+            {
+                entity.HasOne(d => d.AgHubWell)
+                    .WithMany(p => p.AgHubWellIrrigatedAcres)
+                    .HasForeignKey(d => d.AgHubWellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<AgHubWellIrrigatedAcreStaging>(entity =>
+            {
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<AgHubWellStaging>(entity =>
+            {
+                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
+
+                entity.Property(e => e.FieldName).IsUnicode(false);
+
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+
+                entity.Property(e => e.WellTPID).IsUnicode(false);
+            });
 
             modelBuilder.Entity<ChemigationInspection>(entity =>
             {
@@ -184,31 +223,12 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<Well>(entity =>
             {
-                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
-
-                entity.Property(e => e.FieldName).IsUnicode(false);
-
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
-
-                entity.Property(e => e.WellTPID).IsUnicode(false);
 
                 entity.HasOne(d => d.StreamflowZone)
                     .WithMany(p => p.Wells)
                     .HasForeignKey(d => d.StreamflowZoneID)
                     .HasConstraintName("FK_Well_StreamFlowZone_StreamFlowZoneID");
-            });
-
-            modelBuilder.Entity<WellIrrigatedAcre>(entity =>
-            {
-                entity.HasOne(d => d.Well)
-                    .WithMany(p => p.WellIrrigatedAcres)
-                    .HasForeignKey(d => d.WellID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<WellIrrigatedAcreStaging>(entity =>
-            {
-                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
             });
 
             modelBuilder.Entity<WellSensorMeasurement>(entity =>
@@ -233,17 +253,6 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.WellSensorMeasurementStagings)
                     .HasForeignKey(d => d.MeasurementTypeID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<WellStaging>(entity =>
-            {
-                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
-
-                entity.Property(e => e.FieldName).IsUnicode(false);
-
-                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
-
-                entity.Property(e => e.WellTPID).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

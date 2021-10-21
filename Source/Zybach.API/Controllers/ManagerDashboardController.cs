@@ -35,7 +35,7 @@ namespace Zybach.API.Controllers
 
             return new DistrictStatisticsDto
             { 
-                NumberOfWellsTracked = allWells.Count(),
+                NumberOfWellsTracked = allWells.Count,
                 NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ContinuityMeter)).Select(x => x.WellRegistrationID).Distinct().Count(),
                 NumberOfElectricalUsageEstimates = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ElectricalUsage)).Select(x => x.WellRegistrationID).Distinct().Count(),
                 NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.FlowMeter)).Select(x => x.WellRegistrationID).Distinct().Count()
@@ -128,15 +128,15 @@ namespace Zybach.API.Controllers
         {
         }
 
-        public StreamFlowZonePumpingDepthDto(int streamFlowZoneFeatureID, double pumpingDepth, double totalIrrigatedAcres, double totalPumpedVolume)
+        public StreamFlowZonePumpingDepthDto(int streamFlowZoneID, double pumpingDepth, double totalIrrigatedAcres, double totalPumpedVolume)
         {
-            StreamFlowZoneFeatureID = streamFlowZoneFeatureID;
+            StreamFlowZoneID = streamFlowZoneID;
             PumpingDepth = pumpingDepth;
             TotalIrrigatedAcres = totalIrrigatedAcres;
             TotalPumpedVolume = totalPumpedVolume;
         }
 
-        public int StreamFlowZoneFeatureID { get; set; }
+        public int StreamFlowZoneID { get; set; }
         public double PumpingDepth { get; set; }
         public double TotalIrrigatedAcres { get; set; }
         public double TotalPumpedVolume { get; set; }

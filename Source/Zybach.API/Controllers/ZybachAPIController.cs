@@ -112,9 +112,9 @@ namespace Zybach.API.Controllers
                     wellSensorMeasurementDtos = query.Select(x => x.AsDto()).ToList();
                 }
 
-                var wells = _dbContext.Wells.AsNoTracking().Where(x =>
-                        wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList()
-                    .ToDictionary(x => x.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
+                var wells = _dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x =>
+                        wellRegistrationIDs.Contains(x.Well.WellRegistrationID)).ToList()
+                    .ToDictionary(x => x.Well.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
 
                 var apiResult = new ApiResult<StructuredResults>
                 {
