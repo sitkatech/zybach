@@ -9,7 +9,7 @@ namespace Zybach.Models.DataTransferObjects
     public class StreamFlowZoneWellsDto
     {
         public StreamFlowZoneDto StreamFlowZone { get; set; }
-        public List<AgHubWellWithIrrigatedAcresDto> AgHubWells { get; set; }
+        public List<WellWithIrrigatedAcresDto> Wells { get; set; }
     }
 
 

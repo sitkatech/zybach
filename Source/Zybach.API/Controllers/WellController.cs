@@ -51,7 +51,7 @@ namespace Zybach.API.Controllers
         public async Task<WellDetailDto> GetWellDetails([FromRoute] string wellRegistrationID)
         {
             var geooptixWell = await _geoOptixService.GetWellSummary(wellRegistrationID);
-            var agHubWell = AgHubWell.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
+            var agHubWell = Well.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
 
             if (geooptixWell == null && agHubWell == null)
             {

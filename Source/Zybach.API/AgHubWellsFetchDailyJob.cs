@@ -44,26 +44,26 @@ namespace Zybach.API
         private void GetDailyWellFlowMeterData()
         {
             // first delete all from the tables
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.AgHubWellStaging");
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.AgHubWellIrrigatedAcreStaging");
+            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellStaging");
+            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellIrrigatedAcreStaging");
             _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
 
             var agHubWellRaws = _agHubService.GetWellCollection().Result;
             if (agHubWellRaws.Any())
             {
-                var agHubWells = agHubWellRaws.Select(CreateAgHubWell).ToList();
+                var wellStagings = agHubWellRaws.Select(CreateWellStaging).ToList();
                 // TODO: get last reading dates gets pumped volume dates too; original code is only looking at estimated pumped volume;
                 var lastReadingDates = _dbContext.WellSensorMeasurements
                     .Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.ElectricalUsage).ToList()
                     .GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Max(y => y.MeasurementDate));
-                foreach (var agHubWell in agHubWells)
+                foreach (var wellStaging in wellStagings)
                 {
-                    var wellRegistrationID = agHubWell.WellRegistrationID;
+                    var wellRegistrationID = wellStaging.WellRegistrationID;
                     //if (!ProblemWellRegistrationIDs.Contains(wellRegistrationID))
-                    PopulateIrrigatedAcresPerYearForWell(agHubWell, wellRegistrationID);
-                    PopulateWellSensorMeasurementsForWell(agHubWell, lastReadingDates, wellRegistrationID);
-                    _dbContext.AgHubWellStagings.Add(agHubWell);
+                    PopulateIrrigatedAcresPerYearForWell(wellStaging, wellRegistrationID);
+                    PopulateWellSensorMeasurementsForWell(wellStaging, lastReadingDates, wellRegistrationID);
+                    _dbContext.WellStagings.Add(wellStaging);
                     _dbContext.SaveChanges();
                 }
 
@@ -72,10 +72,10 @@ namespace Zybach.API
             }
         }
 
-        private void PopulateWellSensorMeasurementsForWell(AgHubWellStaging agHubWell, Dictionary<string, DateTime> lastReadingDates,
+        private void PopulateWellSensorMeasurementsForWell(WellStaging wellStaging, Dictionary<string, DateTime> lastReadingDates,
             string wellRegistrationID)
         {
-            if (agHubWell.WellConnectedMeter)
+            if (wellStaging.WellConnectedMeter)
             {
                 var startDate = lastReadingDates.ContainsKey(wellRegistrationID) ? lastReadingDates[wellRegistrationID] : DefaultStartDate;
                 var pumpedVolumeResult =
@@ -102,32 +102,32 @@ namespace Zybach.API
             }
         }
 
-        private void PopulateIrrigatedAcresPerYearForWell(AgHubWellStaging agHubWell, string wellRegistrationID)
+        private void PopulateIrrigatedAcresPerYearForWell(WellStaging wellStaging, string wellRegistrationID)
         {
             var agHubWellRawWithAcreYears =
                 _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID).Result;
             if (agHubWellRawWithAcreYears != null)
             {
-                agHubWell.RegisteredUpdated = agHubWellRawWithAcreYears.RegisteredUpdated;
-                agHubWell.RegisteredPumpRate = agHubWellRawWithAcreYears.RegisteredPumpRate;
-                agHubWell.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
-                agHubWell.LandownerName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
-                agHubWell.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
+                wellStaging.RegisteredUpdated = agHubWellRawWithAcreYears.RegisteredUpdated;
+                wellStaging.RegisteredPumpRate = agHubWellRawWithAcreYears.RegisteredPumpRate;
+                wellStaging.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
+                wellStaging.LandownerName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
+                wellStaging.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
 
-                var agHubWellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
-                    .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
+                var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
+                    .Where(x => x.Acres.HasValue).Select(x => new WellIrrigatedAcreStaging()
                     {
                         Acres = x.Acres.Value,
                         WellRegistrationID = wellRegistrationID,
                         IrrigationYear = x.Year
                     }).ToList();
-                _dbContext.AgHubWellIrrigatedAcreStagings.AddRange(agHubWellIrrigatedAcreStagings);
+                _dbContext.WellIrrigatedAcreStagings.AddRange(wellIrrigatedAcreStagings);
             }
         }
 
-        private static AgHubWellStaging CreateAgHubWell(AgHubService.AgHubWellRaw agHubWellRaw)
+        private static WellStaging CreateWellStaging(AgHubService.AgHubWellRaw agHubWellRaw)
         {
-            var agHubWell = new AgHubWellStaging
+            var wellStaging = new WellStaging
             {
                 WellRegistrationID = agHubWellRaw.WellRegistrationID,
                 AuditPumpRateUpdated = agHubWellRaw.AuditPumpRateUpdated,
@@ -139,7 +139,7 @@ namespace Zybach.API
                 WellTPID = agHubWellRaw.WellTPID,
                 HasElectricalData = false
             };
-            return agHubWell;
+            return wellStaging;
         }
     }
 }

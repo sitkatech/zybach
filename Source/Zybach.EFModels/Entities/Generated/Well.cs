@@ -9,11 +9,16 @@ using NetTopologySuite.Geometries;
 
 namespace Zybach.EFModels.Entities
 {
-    [Table("AgHubWellStaging")]
-    public partial class AgHubWellStaging
+    [Table("Well")]
+    public partial class Well
     {
+        public Well()
+        {
+            WellIrrigatedAcres = new HashSet<WellIrrigatedAcre>();
+        }
+
         [Key]
-        public int AgHubWellStagingID { get; set; }
+        public int WellID { get; set; }
         [Required]
         [StringLength(100)]
         public string WellRegistrationID { get; set; }
@@ -29,13 +34,22 @@ namespace Zybach.EFModels.Entities
         public int? WellAuditPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? AuditPumpRateUpdated { get; set; }
+        public bool HasElectricalData { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime FetchDate { get; set; }
         public int? RegisteredPumpRate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? RegisteredUpdated { get; set; }
-        public bool HasElectricalData { get; set; }
+        public int? StreamflowZoneID { get; set; }
         [StringLength(100)]
         public string LandownerName { get; set; }
         [StringLength(100)]
         public string FieldName { get; set; }
+
+        [ForeignKey(nameof(StreamflowZoneID))]
+        [InverseProperty(nameof(StreamFlowZone.Wells))]
+        public virtual StreamFlowZone StreamflowZone { get; set; }
+        [InverseProperty(nameof(WellIrrigatedAcre.Well))]
+        public virtual ICollection<WellIrrigatedAcre> WellIrrigatedAcres { get; set; }
     }
 }

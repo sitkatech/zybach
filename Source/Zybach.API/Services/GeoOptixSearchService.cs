@@ -76,11 +76,11 @@ namespace Zybach.API.Services
             WellID = geoOptixDocument.SiteCanonicalName;
         }
 
-        public SearchSummaryDto(AgHubWellDto agHubWellDto)
+        public SearchSummaryDto(WellDto wellDto)
         {
-            ObjectName = agHubWellDto.WellRegistrationID;
+            ObjectName = wellDto.WellRegistrationID;
             ObjectType = ZybachObjectTypeEnum.Well.ToString();
-            WellID = agHubWellDto.WellRegistrationID;
+            WellID = wellDto.WellRegistrationID;
         }
 
         private string GeoOptixObjectTypeToZybachObjectType(string objectType)

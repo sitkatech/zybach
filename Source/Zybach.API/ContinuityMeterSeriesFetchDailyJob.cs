@@ -42,7 +42,7 @@ namespace Zybach.API
             _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
             var wellSensorMeasurementStagings = _influxDbService.GetContinuityMeterSeries(fromDate).Result;
-            var pumpingRates = _dbContext.AgHubWells.ToList().ToDictionary(x => x.WellRegistrationID, x =>
+            var pumpingRates = _dbContext.Wells.ToList().ToDictionary(x => x.WellRegistrationID, x =>
                 x.PumpingRateGallonsPerMinute, StringComparer.InvariantCultureIgnoreCase);
 
             wellSensorMeasurementStagings.ForEach(x =>

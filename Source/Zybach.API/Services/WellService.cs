@@ -23,15 +23,15 @@ namespace Zybach.API.Services
 
         public async Task<List<WellWithSensorSummaryDto>> GetAghubAndGeoOptixWells()
         {
-            var agHubWells = AgHubWell.GetAgHubWellsAsWellWithSensorSummaryDtos(_dbContext);
+            var wells = Well.GetWellsAsWellWithSensorSummaryDtos(_dbContext);
             var wellsWithSensorSummaryFromGeoOptix = await _geoOptixService.GetWellsWithSensors();
             foreach (var geoOptixWell in wellsWithSensorSummaryFromGeoOptix)
             {
                 var wellWithSensorSummaryDto =
-                    agHubWells.SingleOrDefault(x => x.WellRegistrationID == geoOptixWell.WellRegistrationID);
+                    wells.SingleOrDefault(x => x.WellRegistrationID == geoOptixWell.WellRegistrationID);
                 if (wellWithSensorSummaryDto == null)
                 {
-                    agHubWells.Add(geoOptixWell);
+                    wells.Add(geoOptixWell);
                 }
                 else
                 {
@@ -42,7 +42,7 @@ namespace Zybach.API.Services
 
             var lastReadingDateTimes = WellSensorMeasurement.GetLastReadingDateTimes(_dbContext);
             var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
-            agHubWells.ForEach(x =>
+            wells.ForEach(x =>
             {
                 x.LastReadingDate = lastReadingDateTimes.ContainsKey(x.WellRegistrationID)
                     ? lastReadingDateTimes[x.WellRegistrationID]
@@ -52,7 +52,7 @@ namespace Zybach.API.Services
                     : (DateTime?)null;
             });
 
-            return agHubWells;
+            return wells;
         }
     }
 }

@@ -57,7 +57,6 @@ namespace Zybach.API.Controllers
                     }
                     catch
                     {
-                        var fart = 0;
                         return null;
                     }
                 }).ToList()

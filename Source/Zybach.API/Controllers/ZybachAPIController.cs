@@ -112,7 +112,7 @@ namespace Zybach.API.Controllers
                     wellSensorMeasurementDtos = query.Select(x => x.AsDto()).ToList();
                 }
 
-                var aghubWells = _dbContext.AgHubWells.AsNoTracking().Where(x =>
+                var wells = _dbContext.Wells.AsNoTracking().Where(x =>
                         wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList()
                     .ToDictionary(x => x.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
 
@@ -122,7 +122,7 @@ namespace Zybach.API.Controllers
                 };
 
                 var firstReadingDates = WellSensorMeasurement.GetFirstReadingDateTimesPerSensorForWells(_dbContext, measurementTypeEnum, wellRegistrationIDs);
-                apiResult.Result = StructureResults(wellSensorMeasurementDtos, aghubWells, startDate, endDate, firstReadingDates, wellRegistrationIDs);
+                apiResult.Result = StructureResults(wellSensorMeasurementDtos, wells, startDate, endDate, firstReadingDates, wellRegistrationIDs);
                 return apiResult;
             }
             catch (Exception ex)
@@ -133,7 +133,7 @@ namespace Zybach.API.Controllers
 
 
         private static StructuredResults StructureResults(List<WellSensorMeasurementDto> results,
-            Dictionary<string, int> aghubWells, DateTime startDate, DateTime endDate,
+            Dictionary<string, int> wells, DateTime startDate, DateTime endDate,
             List<WellSensorReadingDateDto> firstReadingDates, List<string> wellRegistrationIDs)
         {
             var volumesByWell = new List<VolumeByWell>();
@@ -145,7 +145,7 @@ namespace Zybach.API.Controllers
                 {
                     WellRegistrationID = wellRegistrationID
                 };
-                var pumpingRateGallonsPerMinute = aghubWells.ContainsKey(wellRegistrationID) ? aghubWells[wellRegistrationID] : 0;
+                var pumpingRateGallonsPerMinute = wells.ContainsKey(wellRegistrationID) ? wells[wellRegistrationID] : 0;
                 volumeByWell.IntervalVolumes = CreateIntervalVolumesAndZeroFillMissingDays(wellRegistrationID,
                     currentWellResults, startDate, endDate,
                     pumpingRateGallonsPerMinute,

@@ -1,11 +1,11 @@
 //  IMPORTANT:
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
-//  Source Table: [dbo].[AgHubWell]
+//  Source Table: [dbo].[Well]
 import { StreamFlowZoneDto } from './stream-flow-zone-dto'
 
-export class AgHubWellDto {
-	AgHubWellID : number
+export class WellDto {
+	WellID : number
 	WellRegistrationID : string
 	WellTPID : string
 	WellTPNRDPumpRate : number

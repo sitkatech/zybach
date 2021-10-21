@@ -1,11 +1,11 @@
 //  IMPORTANT:
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
-//  Source Table: [dbo].[AgHubWellIrrigatedAcreStaging]
+//  Source Table: [dbo].[WellIrrigatedAcreStaging]
 
 
-export class AgHubWellIrrigatedAcreStagingDto {
-	AgHubWellIrrigatedAcreStagingID : number
+export class WellIrrigatedAcreStagingDto {
+	WellIrrigatedAcreStagingID : number
 	WellRegistrationID : string
 	IrrigationYear : number
 	Acres : number

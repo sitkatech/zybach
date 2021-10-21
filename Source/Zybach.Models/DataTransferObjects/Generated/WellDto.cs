@@ -1,15 +1,15 @@
 //  IMPORTANT:
 //  This file is generated. Your changes will be lost.
 //  Use the corresponding partial class for customizations.
-//  Source Table: [dbo].[AgHubWell]
+//  Source Table: [dbo].[Well]
 using System;
 
 
 namespace Zybach.Models.DataTransferObjects
 {
-    public partial class AgHubWellDto
+    public partial class WellDto
     {
-        public int AgHubWellID { get; set; }
+        public int WellID { get; set; }
         public string WellRegistrationID { get; set; }
         public string WellTPID { get; set; }
         public int? WellTPNRDPumpRate { get; set; }

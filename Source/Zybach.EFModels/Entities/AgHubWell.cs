@@ -7,75 +7,75 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class AgHubWell
+    public partial class Well
     {
         public int PumpingRateGallonsPerMinute => WellAuditPumpRate ?? RegisteredPumpRate ?? WellTPNRDPumpRate ?? 0;
 
-        public static List<AgHubWell> List(ZybachDbContext dbContext)
+        public static List<Well> List(ZybachDbContext dbContext)
         {
-            return dbContext.AgHubWells.AsNoTracking().ToList();
+            return dbContext.Wells.AsNoTracking().ToList();
         }
 
-        public static List<WellWithSensorSummaryDto> GetAgHubWellsAsWellWithSensorSummaryDtos(ZybachDbContext dbContext)
+        public static List<WellWithSensorSummaryDto> GetWellsAsWellWithSensorSummaryDtos(ZybachDbContext dbContext)
         {
-            return dbContext.AgHubWells.AsNoTracking().ToList()
-                .Select(WellWithSensorSummaryDtoFromAgHubWell).ToList();
+            return dbContext.Wells.AsNoTracking().ToList()
+                .Select(WellWithSensorSummaryDtoFromWell).ToList();
         }
 
-        private static WellWithSensorSummaryDto WellWithSensorSummaryDtoFromAgHubWell(AgHubWell agHubWell)
+        private static WellWithSensorSummaryDto WellWithSensorSummaryDtoFromWell(Well well)
         {
             var wellWithSensorSummaryDto = new WellWithSensorSummaryDto();
             var sensors = new List<SensorSummaryDto>();
-            if (agHubWell.HasElectricalData)
+            if (well.HasElectricalData)
             {
                 sensors.Add(new SensorSummaryDto()
                 {
-                    WellRegistrationID = agHubWell.WellRegistrationID,
+                    WellRegistrationID = well.WellRegistrationID,
                     SensorType = "Electrical Usage"
                 });
             }
 
-            wellWithSensorSummaryDto.WellRegistrationID = agHubWell.WellRegistrationID;
-            wellWithSensorSummaryDto.WellTPID = agHubWell.WellTPID;
-            wellWithSensorSummaryDto.Location = new Feature(new Point(new Position(agHubWell.WellGeometry.Coordinate.Y, agHubWell.WellGeometry.Coordinate.X)));
+            wellWithSensorSummaryDto.WellRegistrationID = well.WellRegistrationID;
+            wellWithSensorSummaryDto.WellTPID = well.WellTPID;
+            wellWithSensorSummaryDto.Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X)));
             wellWithSensorSummaryDto.InGeoOptix = false;
             wellWithSensorSummaryDto.Sensors = sensors;
-            wellWithSensorSummaryDto.FetchDate = agHubWell.FetchDate;
-            wellWithSensorSummaryDto.HasElectricalData = agHubWell.HasElectricalData;
-            wellWithSensorSummaryDto.LandownerName = agHubWell.LandownerName;
-            wellWithSensorSummaryDto.FieldName = agHubWell.FieldName;
+            wellWithSensorSummaryDto.FetchDate = well.FetchDate;
+            wellWithSensorSummaryDto.HasElectricalData = well.HasElectricalData;
+            wellWithSensorSummaryDto.LandownerName = well.LandownerName;
+            wellWithSensorSummaryDto.FieldName = well.FieldName;
             return wellWithSensorSummaryDto;
         }
 
         public static WellWithSensorSummaryDto FindByWellRegistrationIDAsWellWithSensorSummaryDto(ZybachDbContext dbContext, string wellRegistrationID)
         {
-            var agHubWell = dbContext.AgHubWells.Include(x => x.AgHubWellIrrigatedAcres).AsNoTracking()
+            var well = dbContext.Wells.Include(x => x.WellIrrigatedAcres).AsNoTracking()
                 .SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
-            if (agHubWell == null)
+            if (well == null)
             {
                 return null;
             }
 
-            var wellWithSensorSummaryDto = WellWithSensorSummaryDtoFromAgHubWell(agHubWell);
-            wellWithSensorSummaryDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres.Select(x =>
+            var wellWithSensorSummaryDto = WellWithSensorSummaryDtoFromWell(well);
+            wellWithSensorSummaryDto.IrrigatedAcresPerYear = well.WellIrrigatedAcres.Select(x =>
                 new IrrigatedAcresPerYearDto { Acres = x.Acres, Year = x.IrrigationYear }).ToList();
 
             return wellWithSensorSummaryDto;
         }
 
-        public static List<AgHubWellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
+        public static List<WellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.AsNoTracking().Where(x => x.WellRegistrationID.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
+            return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
         }
 
-        public static List<AgHubWellDto> SearchByLandowner(ZybachDbContext dbContext, string searchText)
+        public static List<WellDto> SearchByLandowner(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.AsNoTracking().Where(x => x.LandownerName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
+            return dbContext.Wells.AsNoTracking().Where(x => x.LandownerName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
         }
 
-        public static List<AgHubWellDto> SearchByField(ZybachDbContext dbContext, string searchText)
+        public static List<WellDto> SearchByField(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.AsNoTracking().Where(x => x.FieldName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
+            return dbContext.Wells.AsNoTracking().Where(x => x.FieldName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
         }
     }
 }

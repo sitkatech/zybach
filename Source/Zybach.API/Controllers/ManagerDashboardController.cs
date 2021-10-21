@@ -82,15 +82,15 @@ namespace Zybach.API.Controllers
             var streamFlowZonePumpingDepthDtos = new List<StreamFlowZonePumpingDepthDto>();
             foreach (var streamFlowZoneWellsDto in streamFlowZoneWellMap)
             {
-                if (!streamFlowZoneWellsDto.AgHubWells.Any())
+                if (!streamFlowZoneWellsDto.Wells.Any())
                 {
                     streamFlowZonePumpingDepthDtos.Add(
                         new StreamFlowZonePumpingDepthDto(streamFlowZoneWellsDto.StreamFlowZone.StreamFlowZoneID, 0, 0, 0));
                 }
                 else
                 {
-                    var wellRegistrationIDsWithinStreamFlowZone = streamFlowZoneWellsDto.AgHubWells.Select(x => x.WellRegistrationID.ToUpper());
-                    var totalIrrigatedAcres = streamFlowZoneWellsDto.AgHubWells
+                    var wellRegistrationIDsWithinStreamFlowZone = streamFlowZoneWellsDto.Wells.Select(x => x.WellRegistrationID.ToUpper());
+                    var totalIrrigatedAcres = streamFlowZoneWellsDto.Wells
                         .Where(x => wellRegistrationIDsWithinStreamFlowZone.Contains(x.WellRegistrationID))
                         .SelectMany(x => x.IrrigatedAcresPerYear).Where(x => x.Year == year).Sum(x => x.Acres);
                     var totalVolume = pumpedVolumes.Where(x => wellRegistrationIDsWithinStreamFlowZone.Contains(x.Key)).Sum(x => x.Value);

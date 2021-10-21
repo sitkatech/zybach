@@ -9,14 +9,14 @@ begin
 	set @fetchDate = GETUTCDATE()
 
 	-- we are always getting all the yearly irrigated acres for a well so we can just truncate and rebuild
-	truncate table dbo.AgHubWellIrrigatedAcre
+	truncate table dbo.WellIrrigatedAcre
 
 	delete aw 
-	from dbo.AgHubWell aw
-	left join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
-	where aws.AgHubWellStagingID is null
+	from dbo.Well aw
+	left join dbo.WellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
+	where aws.WellStagingID is null
 
-	insert into dbo.AgHubWell(WellRegistrationID, WellTPID, WellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, FetchDate, LandownerName, FieldName)
+	insert into dbo.Well(WellRegistrationID, WellTPID, WellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, FetchDate, LandownerName, FieldName)
 	select	upper(aws.WellRegistrationID) as WellRegistrationID, 
 			aws.WellTPID,
 			aws.WellGeometry,
@@ -31,9 +31,9 @@ begin
 			@fetchDate as FetchDate,
 			aws.LandownerName,
 			aws.FieldName
-	from dbo.AgHubWellStaging aws
-	left join dbo.AgHubWell aw on aws.WellRegistrationID = aw.WellRegistrationID
-	where aw.AgHubWellID is null
+	from dbo.WellStaging aws
+	left join dbo.Well aw on aws.WellRegistrationID = aw.WellRegistrationID
+	where aw.WellID is null
 
 	update aw
 	set aw.WellRegistrationID = upper(aws.WellRegistrationID),
@@ -50,35 +50,28 @@ begin
 		aw.FetchDate = @fetchDate,
 		aw.LandownerName = aws.LandownerName,
 		aw.FieldName = aws.FieldName
-	from dbo.AgHubWell aw
-	join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
+	from dbo.Well aw
+	join dbo.WellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
 
-	update dbo.AgHubWell
+	update dbo.Well
 	Set WellGeometry.STSrid = 4326
 
-	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres)
-	select	aw.AgHubWellID, 
+	insert into dbo.WellIrrigatedAcre(WellID, IrrigationYear, Acres)
+	select	aw.WellID, 
 			awias.IrrigationYear,
 			avg(awias.Acres) as Acres
-	from dbo.AgHubWellIrrigatedAcreStaging awias
-	join dbo.AgHubWell aw on awias.WellRegistrationID = aw.WellRegistrationID
-	group by aw.AgHubWellID, awias.IrrigationYear
+	from dbo.WellIrrigatedAcreStaging awias
+	join dbo.Well aw on awias.WellRegistrationID = aw.WellRegistrationID
+	group by aw.WellID, awias.IrrigationYear
 
 	-- Set StreamflowZoneID; first "reset" it to null; then actually calculate matching ones
-	update dbo.AgHubWell
+	update dbo.Well
 	Set StreamflowZoneID = null
 
 	update aw
 	set StreamflowZoneID = sfz.StreamFlowZoneID
 	from dbo.StreamFlowZone sfz
-	join dbo.AgHubWell aw on aw.WellGeometry.STWithin(sfz.StreamFlowZoneGeometry) = 1
-
-
-	--select	aw.AgHubWellID, 
-	--		awias.IrrigationYear,
-	--		awias.Acres
-	--from dbo.AgHubWellIrrigatedAcreStaging awias
-	--join dbo.AgHubWell aw on awias.WellRegistrationID = awias.WellRegistrationID
+	join dbo.Well aw on aw.WellGeometry.STWithin(sfz.StreamFlowZoneGeometry) = 1
 
 	exec dbo.pPublishWellSensorMeasurementStaging
 

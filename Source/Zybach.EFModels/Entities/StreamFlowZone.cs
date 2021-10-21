@@ -15,20 +15,20 @@ namespace Zybach.EFModels.Entities
         public static List<StreamFlowZoneWellsDto> ListStreamFlowZonesAndWellsWithinZone(ZybachDbContext dbContext)
         {
             var streamFlowZones = dbContext.StreamFlowZones.AsNoTracking().ToList();
-            var aghubWells = dbContext.AgHubWells.Include(x => x.AgHubWellIrrigatedAcres).AsNoTracking().Where(x => x.HasElectricalData).ToList();
+            var wells = dbContext.Wells.Include(x => x.WellIrrigatedAcres).AsNoTracking().Where(x => x.HasElectricalData).ToList();
             var streamFlowZoneWellsDtos = streamFlowZones.Select(streamFlowZone => new StreamFlowZoneWellsDto
                 {
                     StreamFlowZone = streamFlowZone.AsDto(),
-                    AgHubWells = aghubWells.Where(x => x.StreamflowZoneID == streamFlowZone.StreamFlowZoneID)
+                    Wells = wells.Where(x => x.StreamflowZoneID == streamFlowZone.StreamFlowZoneID)
                         .Select(x =>
                         {
-                            var agHubWellWithIrrigatedAcresDto = new AgHubWellWithIrrigatedAcresDto
+                            var wellWithIrrigatedAcresDto = new WellWithIrrigatedAcresDto
                             {
                                 WellRegistrationID = x.WellRegistrationID,
-                                IrrigatedAcresPerYear = x.AgHubWellIrrigatedAcres.Select(y =>
+                                IrrigatedAcresPerYear = x.WellIrrigatedAcres.Select(y =>
                                     new IrrigatedAcresPerYearDto {Year = y.IrrigationYear, Acres = y.Acres}).ToList()
                             };
-                            return agHubWellWithIrrigatedAcresDto;
+                            return wellWithIrrigatedAcresDto;
                         })
                         .ToList()
                 })
