@@ -34,9 +34,9 @@ export class ChemigationLandingComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       { headerName: 'Well Number', field: 'wellRegistrationID', sortable: true, filter: true, resizable: true },
       {
-        headerName: "Landowner",
-        field: "LandownerName",
-        width: 125,
+        headerName: "AgHub Registered User",
+        field: "AgHubRegisteredUser",
+        width: 120,
         sortable: true, filter: true, resizable: true
       },
       {

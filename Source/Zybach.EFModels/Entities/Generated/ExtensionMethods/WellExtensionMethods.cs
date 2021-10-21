@@ -26,7 +26,7 @@ namespace Zybach.EFModels.Entities
                 RegisteredPumpRate = well.RegisteredPumpRate,
                 RegisteredUpdated = well.RegisteredUpdated,
                 StreamflowZone = well.StreamflowZone?.AsDto(),
-                LandownerName = well.LandownerName,
+                AgHubRegisteredUser = well.AgHubRegisteredUser,
                 FieldName = well.FieldName
             };
             DoCustomMappings(well, wellDto);

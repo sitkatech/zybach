@@ -22,7 +22,7 @@ namespace Zybach.Models.DataTransferObjects
         public int? RegisteredPumpRate { get; set; }
         public DateTime? RegisteredUpdated { get; set; }
         public StreamFlowZoneDto StreamflowZone { get; set; }
-        public string LandownerName { get; set; }
+        public string AgHubRegisteredUser { get; set; }
         public string FieldName { get; set; }
     }
 }

@@ -49,11 +49,11 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         width: 160,
         resizable: true
       },
-      { headerName: 'Well Number', field: 'WellRegistrationID', sortable: true, filter: true, resizable: true },
+      { headerName: 'Well Number', field: 'WellRegistrationID', width: 120, sortable: true, filter: true, resizable: true },
       {
-        headerName: "Landowner",
-        field: "landownerName",
-        width: 125,
+        headerName: "AgHub Registered User",
+        field: "AgHubRegisteredUser",
+        width: 170,
         sortable: true, filter: true, resizable: true
       },
       {
@@ -81,7 +81,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
                 sensors: x.Sensors || [],
-                landownerName: x.LandownerName,
+                AgHubRegisteredUser: x.AgHubRegisteredUser,
                 fieldName: x.FieldName
               };
               return geoJsonPoint;
@@ -89,7 +89,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }
 
 
-        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellRegistrationID: well.WellRegistrationID, landownerName: well.LandownerName, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8);
+        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8);
       })
     });
   }

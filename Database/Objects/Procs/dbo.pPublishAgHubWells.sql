@@ -16,7 +16,7 @@ begin
 	left join dbo.WellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
 	where aws.WellStagingID is null
 
-	insert into dbo.Well(WellRegistrationID, WellTPID, WellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, FetchDate, LandownerName, FieldName)
+	insert into dbo.Well(WellRegistrationID, WellTPID, WellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, FetchDate, AgHubRegisteredUser, FieldName)
 	select	upper(aws.WellRegistrationID) as WellRegistrationID, 
 			aws.WellTPID,
 			aws.WellGeometry,
@@ -29,7 +29,7 @@ begin
 			aws.RegisteredPumpRate,
 			aws.RegisteredUpdated,
 			@fetchDate as FetchDate,
-			aws.LandownerName,
+			aws.AgHubRegisteredUser,
 			aws.FieldName
 	from dbo.WellStaging aws
 	left join dbo.Well aw on aws.WellRegistrationID = aw.WellRegistrationID
@@ -48,7 +48,7 @@ begin
 		aw.RegisteredPumpRate = aws.RegisteredPumpRate,
 		aw.RegisteredUpdated =aws.RegisteredUpdated,
 		aw.FetchDate = @fetchDate,
-		aw.LandownerName = aws.LandownerName,
+		aw.AgHubRegisteredUser = aws.AgHubRegisteredUser,
 		aw.FieldName = aws.FieldName
 	from dbo.Well aw
 	join dbo.WellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID

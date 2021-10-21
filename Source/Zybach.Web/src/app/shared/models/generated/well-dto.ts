@@ -18,7 +18,7 @@ export class WellDto {
 	RegisteredPumpRate : number
 	RegisteredUpdated : Date
 	StreamflowZone : StreamFlowZoneDto
-	LandownerName : string
+	AgHubRegisteredUser : string
 	FieldName : string
 
     constructor(obj?: any) {

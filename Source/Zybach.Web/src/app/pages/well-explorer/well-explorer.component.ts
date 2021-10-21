@@ -47,7 +47,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
                 sensors: x.Sensors || [],
-                landownerName: x.LandownerName,
+                AgHubRegisteredUser: x.AgHubRegisteredUser,
                 fieldName: x.FieldName
               };
               return geoJsonPoint;
@@ -108,9 +108,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, filter: true, resizable: true
       },
       {
-        headerName: "Landowner",
-        field: "LandownerName",
-        width: 125,
+        headerName: "AgHub Registered User",
+        field: "AgHubRegisteredUser",
+        width: 170,
         sortable: true, filter: true, resizable: true
       },
       {

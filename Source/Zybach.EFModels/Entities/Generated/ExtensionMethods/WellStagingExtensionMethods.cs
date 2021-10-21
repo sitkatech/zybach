@@ -24,7 +24,7 @@ namespace Zybach.EFModels.Entities
                 RegisteredPumpRate = wellStaging.RegisteredPumpRate,
                 RegisteredUpdated = wellStaging.RegisteredUpdated,
                 HasElectricalData = wellStaging.HasElectricalData,
-                LandownerName = wellStaging.LandownerName,
+                AgHubRegisteredUser = wellStaging.AgHubRegisteredUser,
                 FieldName = wellStaging.FieldName
             };
             DoCustomMappings(wellStaging, wellStagingDto);

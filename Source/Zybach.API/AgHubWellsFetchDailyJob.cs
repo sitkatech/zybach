@@ -111,7 +111,7 @@ namespace Zybach.API
                 wellStaging.RegisteredUpdated = agHubWellRawWithAcreYears.RegisteredUpdated;
                 wellStaging.RegisteredPumpRate = agHubWellRawWithAcreYears.RegisteredPumpRate;
                 wellStaging.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
-                wellStaging.LandownerName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
+                wellStaging.AgHubRegisteredUser = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
                 wellStaging.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
 
                 var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear

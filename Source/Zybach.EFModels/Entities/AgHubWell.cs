@@ -42,7 +42,7 @@ namespace Zybach.EFModels.Entities
             wellWithSensorSummaryDto.Sensors = sensors;
             wellWithSensorSummaryDto.FetchDate = well.FetchDate;
             wellWithSensorSummaryDto.HasElectricalData = well.HasElectricalData;
-            wellWithSensorSummaryDto.LandownerName = well.LandownerName;
+            wellWithSensorSummaryDto.AgHubRegisteredUser = well.AgHubRegisteredUser;
             wellWithSensorSummaryDto.FieldName = well.FieldName;
             return wellWithSensorSummaryDto;
         }
@@ -70,7 +70,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<WellDto> SearchByLandowner(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.Wells.AsNoTracking().Where(x => x.LandownerName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
+            return dbContext.Wells.AsNoTracking().Where(x => x.AgHubRegisteredUser.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
         }
 
         public static List<WellDto> SearchByField(ZybachDbContext dbContext, string searchText)

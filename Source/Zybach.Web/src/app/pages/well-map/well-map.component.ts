@@ -311,7 +311,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
           const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
           popupEl.registrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
-          popupEl.landownerName = feature.properties.landownerName;
+          popupEl.AgHubRegisteredUser = feature.properties.AgHubRegisteredUser;
           popupEl.fieldName = feature.properties.fieldName;
           
           return popupEl;

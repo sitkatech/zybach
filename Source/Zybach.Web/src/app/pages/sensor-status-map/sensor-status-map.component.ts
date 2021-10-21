@@ -328,7 +328,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
           const popupEl: NgElement & WithProperties<SensorStatusMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
           popupEl.registrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
-          popupEl.landownerName = feature.properties.landownerName;
+          popupEl.AgHubRegisteredUser = feature.properties.AgHubRegisteredUser;
           popupEl.fieldName = feature.properties.fieldName;
           return popupEl;
         }, { maxWidth: 500 });

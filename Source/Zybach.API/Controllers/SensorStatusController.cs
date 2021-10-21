@@ -37,7 +37,7 @@ namespace Zybach.API.Controllers
 
             return wellSummariesWithSensors.Select(well => new WellWithSensorMessageAgeDto
             {
-                LandownerName = well.LandownerName,
+                AgHubRegisteredUser = well.AgHubRegisteredUser,
                 FieldName = well.FieldName,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,

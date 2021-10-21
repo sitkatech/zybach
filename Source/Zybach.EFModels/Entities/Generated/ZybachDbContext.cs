@@ -184,9 +184,9 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<Well>(entity =>
             {
-                entity.Property(e => e.FieldName).IsUnicode(false);
+                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
 
-                entity.Property(e => e.LandownerName).IsUnicode(false);
+                entity.Property(e => e.FieldName).IsUnicode(false);
 
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 
@@ -237,9 +237,9 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<WellStaging>(entity =>
             {
-                entity.Property(e => e.FieldName).IsUnicode(false);
+                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
 
-                entity.Property(e => e.LandownerName).IsUnicode(false);
+                entity.Property(e => e.FieldName).IsUnicode(false);
 
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 

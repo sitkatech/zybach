@@ -65,7 +65,7 @@ namespace Zybach.API.Controllers
                 WellTPID = agHubWell?.WellTPID,
                 IrrigatedAcresPerYear = agHubWell?.IrrigatedAcresPerYear,
                 Location = agHubWell?.Location ?? geooptixWell?.Location,
-                LandownerName = agHubWell?.LandownerName,
+                AgHubRegisteredUser = agHubWell?.AgHubRegisteredUser,
                 FieldName = agHubWell?.FieldName
 
             };

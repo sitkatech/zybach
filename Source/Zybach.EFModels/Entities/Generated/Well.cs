@@ -42,7 +42,7 @@ namespace Zybach.EFModels.Entities
         public DateTime? RegisteredUpdated { get; set; }
         public int? StreamflowZoneID { get; set; }
         [StringLength(100)]
-        public string LandownerName { get; set; }
+        public string AgHubRegisteredUser { get; set; }
         [StringLength(100)]
         public string FieldName { get; set; }
 

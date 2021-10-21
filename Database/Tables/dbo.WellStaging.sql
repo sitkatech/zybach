@@ -15,7 +15,7 @@ CREATE TABLE [dbo].[WellStaging](
 	[RegisteredPumpRate] [int] NULL,
 	[RegisteredUpdated] [datetime] NULL,
 	[HasElectricalData] [bit] NOT NULL,
-	[LandownerName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AgHubRegisteredUser] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[FieldName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_WellStaging_WellStagingID] PRIMARY KEY CLUSTERED 
 (

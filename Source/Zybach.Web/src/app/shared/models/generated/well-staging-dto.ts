@@ -16,7 +16,7 @@ export class WellStagingDto {
 	RegisteredPumpRate : number
 	RegisteredUpdated : Date
 	HasElectricalData : boolean
-	LandownerName : string
+	AgHubRegisteredUser : string
 	FieldName : string
 
     constructor(obj?: any) {
