@@ -16,14 +16,12 @@ namespace Zybach.API.Controllers
     public class SensorStatusController : SitkaController<SensorStatusController>
     {
         private readonly InfluxDBService _influxDbService;
-        private readonly GeoOptixService _geoOptixService;
         private readonly WellService _wellService;
 
 
-        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _influxDbService = influxDbService;
-            _geoOptixService = geoOptixService;
             _wellService = wellService;
         }
 
@@ -32,7 +30,8 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
-            var wellSummariesWithSensors = (await _wellService.GetAghubAndGeoOptixWells()).Where(x => x.Sensors.Any(x=>x.SensorType != "Electrical Usage")).ToList();
+            var wellSummariesWithSensors = _wellService.GetAghubAndGeoOptixWells()
+                .Where(x => x.Sensors.Any(y => y.SensorType != MeasurementTypes.ElectricalUsage)).ToList();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
             return wellSummariesWithSensors.Select(well => new WellWithSensorMessageAgeDto
@@ -41,7 +40,7 @@ namespace Zybach.API.Controllers
                 FieldName = well.FieldName,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
-                Sensors = well.Sensors.Where(x=>x.SensorType != "Electrical Usage").Select(sensor =>
+                Sensors = well.Sensors.Where(x=>x.SensorType != MeasurementTypes.ElectricalUsage).Select(sensor =>
                 {
                     try
                     {

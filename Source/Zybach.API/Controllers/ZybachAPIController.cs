@@ -179,7 +179,7 @@ namespace Zybach.API.Controllers
                             wellSensorMeasurementDtos
                                 .Where(x => x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString())
                                 .ToList(),
-                            InfluxDBService.SensorTypes.ContinuityMeter);
+                            MeasurementTypes.ContinuityMeter);
                         var dailySensorVolumeDtos = new List<DailySensorVolumeDto>();
                         foreach (var wellSensorReadingDate in wellSensorReadingDates.OrderBy(x => x.SensorName))
                         {

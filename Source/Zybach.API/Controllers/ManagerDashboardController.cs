@@ -16,29 +16,27 @@ namespace Zybach.API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ManagerDashboardController : SitkaController<ManagerDashboardController>
     {
-        private readonly GeoOptixService _geoOptixService;
         private readonly WellService _wellService;
         private const double GALLON_TO_ACRE_INCH = 3.68266E-5;
 
-        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _geoOptixService = geoOptixService;
             _wellService = wellService;
         }
 
 
         [HttpGet("/api/managerDashboard/districtStatistics")]
         [ZybachViewFeature]
-        public async Task<DistrictStatisticsDto> GetDistrictStatistics()
+        public DistrictStatisticsDto GetDistrictStatistics()
         {
-            var allWells = await _wellService.GetAghubAndGeoOptixWells();
+            var allWells = _wellService.GetAghubAndGeoOptixWells();
 
             return new DistrictStatisticsDto
             { 
                 NumberOfWellsTracked = allWells.Count,
-                NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ContinuityMeter)).Select(x => x.WellRegistrationID).Distinct().Count(),
-                NumberOfElectricalUsageEstimates = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.ElectricalUsage)).Select(x => x.WellRegistrationID).Distinct().Count(),
-                NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == InfluxDBService.SensorTypes.FlowMeter)).Select(x => x.WellRegistrationID).Distinct().Count()
+                NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.ContinuityMeter)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfElectricalUsageEstimates = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.ElectricalUsage)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.FlowMeter)).Select(x => x.WellRegistrationID).Distinct().Count()
             };
         }
 

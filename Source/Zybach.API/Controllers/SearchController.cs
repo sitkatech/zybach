@@ -16,7 +16,7 @@ namespace Zybach.API.Controllers
     {
         private readonly GeoOptixSearchService _geoOptixSearchService;
 
-        public SearchController(ZybachDbContext dbContext, ILogger<SearchController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, GeoOptixService geoOptixService, GeoOptixSearchService geoOptixSearchService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public SearchController(ZybachDbContext dbContext, ILogger<SearchController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixSearchService geoOptixSearchService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _geoOptixSearchService = geoOptixSearchService;
         }
@@ -27,9 +27,9 @@ namespace Zybach.API.Controllers
         public async Task<List<SearchSummaryDto>> GetSearchSuggestions([FromRoute] string searchText)
         {
             var searchSummaryDtos = await _geoOptixSearchService.GetSearchSuggestions(searchText);
-            var wellResultsByLandowner = AgHubWell.SearchByLandowner(_dbContext, searchText).Select(x => new SearchSummaryDto(x){ObjectType = "Landowner"});
-            var wellResultsByField = AgHubWell.SearchByField(_dbContext, searchText).Select(x => new SearchSummaryDto(x){ObjectType = "Field"});
-            var wellResults = AgHubWell.SearchByWellRegistrationID(_dbContext, searchText).Select(x => new SearchSummaryDto(x));
+            var wellResultsByLandowner = Wells.SearchByLandowner(_dbContext, searchText).Select(x => new SearchSummaryDto(x){ObjectType = "Landowner"});
+            var wellResultsByField = Wells.SearchByField(_dbContext, searchText).Select(x => new SearchSummaryDto(x){ObjectType = "Field"});
+            var wellResults = Wells.SearchByWellRegistrationID(_dbContext, searchText).Select(x => new SearchSummaryDto(x));
             return wellResults
                 .Union(searchSummaryDtos, new SearchSummaryDtoComparer())
                 .Union(wellResultsByField, new SearchSummaryDtoComparer())

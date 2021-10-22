@@ -249,15 +249,5 @@ namespace Zybach.API.Services
             public const string Field = "_field";
             public const string Pumped = "pumped";
         }
-
-        /// <summary>
-        /// SensorTypes and DataSources are synonymous
-        /// </summary>
-        public struct SensorTypes
-        {
-            public const string ContinuityMeter = "Continuity Meter";
-            public const string FlowMeter = "Flow Meter";
-            public const string ElectricalUsage = "Electrical Usage";
-        }
     }
 }

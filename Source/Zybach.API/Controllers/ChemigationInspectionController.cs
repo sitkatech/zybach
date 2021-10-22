@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,34 +15,16 @@ namespace Zybach.API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ChemigationInspectionController : SitkaController<ChemigationInspectionController>
     {
-        private readonly GeoOptixService _geoOptixService;
-
-        public ChemigationInspectionController(ZybachDbContext dbContext, ILogger<ChemigationInspectionController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ChemigationInspectionController(ZybachDbContext dbContext, ILogger<ChemigationInspectionController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _geoOptixService = geoOptixService;
         }
 
 
         [HttpGet("/api/chemigation/summaries")]
         [ZybachViewFeature]
-        public async Task<List<WellInspectionSummaryDto>> GetChemigationInspections()
+        public List<WellInspectionSummaryDto> GetChemigationInspections()
         {
-            var chemigationInspectionDtos = ChemigationInspection.List(_dbContext);
-            var wells = await _geoOptixService.GetWellSummaries();
-            return wells.Select(x =>
-
-                new WellInspectionSummaryDto
-                {
-                    WellRegistrationID = x.WellRegistrationID,
-                    LastChemigationDate = GetMaxLastUpdatDateForProtocolName(x, chemigationInspectionDtos, "chemigation-inspection"),
-                    LastNitratesDate = GetMaxLastUpdatDateForProtocolName(x, chemigationInspectionDtos, "nitrates-inspection"),
-                    LastWaterLevelDate = GetMaxLastUpdatDateForProtocolName(x, chemigationInspectionDtos, "water-level-inspection"),
-                    LastWaterQualityDate = GetMaxLastUpdatDateForProtocolName(x, chemigationInspectionDtos, "water-quality-inspection"),
-                    PendingInspectionsCount = chemigationInspectionDtos.Count(y =>
-                        x.WellRegistrationID == y.WellRegistrationID &&
-                        y.Status != "Approved")
-                }
-            ).ToList();
+            return new List<WellInspectionSummaryDto>();
         }
 
         private static DateTime GetMaxLastUpdatDateForProtocolName(WellSummaryDto wellSummaryDto, IEnumerable<ChemigationInspectionDto> chemigationInspectionDtos, string protocolName)

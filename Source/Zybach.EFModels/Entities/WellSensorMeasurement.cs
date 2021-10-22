@@ -29,17 +29,6 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
-        public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsForSensorsByMeasurementType(
-            ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum,
-            IEnumerable<SensorSummaryDto> sensorTypeSensors)
-        {
-            var sensorNames = sensorTypeSensors.Select(y => y.SensorName);
-            return GetWellSensorMeasurementsImpl(dbContext)
-                .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum &&
-                            sensorNames.Contains(x.SensorName)).Select(x => x.AsDto())
-                .ToList();
-        }
-
         private static IQueryable<WellSensorMeasurement> GetWellSensorMeasurementsImpl(ZybachDbContext dbContext)
         {
             return dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking();

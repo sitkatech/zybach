@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,9 +22,9 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("api/mapData/wells")]
-        public async Task<List<WellWithSensorSummaryDto>> GetWellsWithSensors()
+        public List<WellWithSensorSummaryDto> GetWellsWithSensors()
         {
-            return await _wellService.GetAghubAndGeoOptixWells();
+            return _wellService.GetAghubAndGeoOptixWells();
         }
     }
 }

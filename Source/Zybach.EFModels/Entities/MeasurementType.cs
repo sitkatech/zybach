@@ -32,4 +32,14 @@ namespace Zybach.EFModels.Entities
         ContinuityMeter = 2,
         ElectricalUsage = 3
     }
+
+    /// <summary>
+    /// MeasurementTypes and DataSources are synonymous
+    /// </summary>
+    public struct MeasurementTypes
+    {
+        public const string ContinuityMeter = "Continuity Meter";
+        public const string FlowMeter = "Flow Meter";
+        public const string ElectricalUsage = "Electrical Usage";
+    }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GeoJSON.Net.Feature;
-using Zybach.Models.GeoOptix;
 
 namespace Zybach.Models.DataTransferObjects
 {
@@ -13,41 +11,8 @@ namespace Zybach.Models.DataTransferObjects
     }
 
 
-    public class AbbreviatedWellDataResponse
-    {
-        public string WellRegistrationID { get; set; }
-        public string Description { get; set; }
-        public List<string> Tags { get; set; }
-        public Feature Location { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime? UpdateDate { get; set; }
-        public List<SensorSummaryDto> Sensors { get; set; }
-
-        public AbbreviatedWellDataResponse()
-        {
-        }
-
-        public AbbreviatedWellDataResponse(Site site, List<Station> geoOptixStations)
-        {
-            WellRegistrationID = site.CanonicalName;
-            Description = site.Description;
-            Tags = site.Tags;
-            Location = site.Location;
-            CreateDate = site.CreateDate;
-            UpdateDate = site.UpdateDate;
-            var sensorSummaryDtos = geoOptixStations.Any()
-                ? geoOptixStations.Select(x => new SensorSummaryDto(x)).ToList()
-                : new List<SensorSummaryDto>();
-            Sensors = sensorSummaryDtos;
-        }
-    }
-
     public class WellSummaryDto
     {
-        public WellSummaryDto()
-        {
-        }
-
         public string WellRegistrationID { get; set; }
         public string WellTPID { get; set; }
         public string Description { get; set; }
@@ -56,39 +21,17 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? FirstReadingDate { get; set; }
         public bool? InGeoOptix { get; set; }
         public DateTime? FetchDate { get; set; }
-        public bool? HasElectricalData { get; set; }
+        public bool HasElectricalData { get; set; }
         public List<IrrigatedAcresPerYearDto> IrrigatedAcresPerYear { get; set; }
         public string AgHubRegisteredUser { get; set; }
         public string FieldName { get; set; }
-
-
-        public WellSummaryDto(Site site)
-        {
-            WellRegistrationID = site.CanonicalName.ToUpper();
-            Location = site.Location;
-            Description = site.Description;
-        }
     }
 
     public class SensorSummaryDto
     {
-        private static readonly Dictionary<string, string> SensorTypeMap = new Dictionary<string, string>
-            {{"FlowMeter", "Flow Meter"}, {"PumpMonitor", "Continuity Meter"}, {"WellPressure", "Well Pressure"}};
-
-        public SensorSummaryDto()
-        {
-        }
-
         public string WellRegistrationID { get; set; }
         public string SensorName { get; set; }
         public string SensorType { get; set; }
-
-        public SensorSummaryDto(Station station)
-        {
-            WellRegistrationID = station.SiteCanonicalName.ToUpper();
-            SensorName = station.Name;
-            SensorType = SensorTypeMap[station.Definition.SensorType];
-        }
     }
 
     public class WellWithSensorSummaryDto : WellSummaryDto

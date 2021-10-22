@@ -40,63 +40,10 @@ namespace Zybach.API.Services
             return new JsonSerializer().Deserialize<TV>(jsonTextReader);
         }
 
-        public async Task<List<WellSummaryDto>> GetWellSummaries()
-        {
-            var geoOptixSites = await GetGeoOptixSites();
-            return geoOptixSites.AsParallel().Select(x => new WellSummaryDto(x)).ToList();
-        }
-
-        public async Task<List<WellSummaryDto>> GetWellSummariesCreatedAsOfYear(int year)
-        {
-            var geoOptixSites = await GetGeoOptixSites();
-            return geoOptixSites.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new WellSummaryDto(x)).ToList();
-        }
-
-        public async Task<AbbreviatedWellDataResponse> GetWellAsAbbreviatedWellDataResponse(string wellRegistrationID)
-        {
-            var geoOptixSite = await GetGeoOptixSite(wellRegistrationID);
-            var geoOptixStations = await GetGeoOptixStationsForSite(wellRegistrationID);
-            return new AbbreviatedWellDataResponse(geoOptixSite, geoOptixStations);
-        }
-
-        public async Task<WellSummaryDto> GetWellSummary(string wellRegistrationID)
-        {
-            var geoOptixSite = await GetGeoOptixSite(wellRegistrationID);
-            if (geoOptixSite != null)
-            {
-                return new WellSummaryDto(geoOptixSite);
-            }
-            return null;
-        }
-
         public async Task<List<Site>> GetGeoOptixSites()
         {
             var geoOptixSites = await GetJsonFromCatalogImpl<List<Site>>(GeoOptixSitesProjectOverviewWebUri);
             return geoOptixSites;
-        }
-
-        public async Task<Site> GetGeoOptixSite(string siteID)
-        {
-            var geoOptixSite = await GetJsonFromCatalogImpl<Site>($"{GeoOptixSitesProjectOverviewWebUri}/{siteID}");
-            return geoOptixSite;
-        }
-
-        public async Task<List<SensorSummaryDto>> GetSensorSummaries()
-        {
-            var geoOptixStations = await GetGeoOptixStations();
-            return geoOptixStations.Select(x => new SensorSummaryDto(x)).ToList();
-        }
-
-        public async Task<List<SensorSummaryDto>> GetSensorSummariesCreatedAsOfYear(int year)
-        {
-            var geoOptixStations = await GetGeoOptixStations();
-            return geoOptixStations.Where(x => x.CreateDate.Year <= year).AsParallel().Select(x => new SensorSummaryDto(x)).ToList();
-        }
-
-        public async Task<List<SensorSummaryDto>> GetSensorSummariesForWell(string wellRegistrationID)
-        {
-            var geoOptixStations = await GetGeoOptixStationsForSite(wellRegistrationID);
-            return geoOptixStations.AsParallel().Select(x => new SensorSummaryDto(x)).ToList();
         }
 
         public async Task<List<Station>> GetGeoOptixStations()
@@ -106,13 +53,7 @@ namespace Zybach.API.Services
             return geoOptixStations;
         }
 
-        public async Task<List<Station>> GetGeoOptixStationsForSite(string siteID)
-        {
-            var geoOptixStations = await GetJsonFromCatalogImpl<List<Station>>($"{GeoOptixSitesProjectOverviewWebUri}/{siteID}/stations");
-            return geoOptixStations;
-        }
-
-        public async Task<List<Sample>> GetGeoOptixSamplesForSite(string siteID)
+        private async Task<List<Sample>> GetGeoOptixSamplesForSite(string siteID)
         {
             try
             {
@@ -126,7 +67,7 @@ namespace Zybach.API.Services
             }
         }
 
-        public async Task<List<SampleMethodDto>> GetGeoOptixSampleMethodsForSite(string siteID, string methodID)
+        private async Task<List<SampleMethodDto>> GetGeoOptixSampleMethodsForSite(string siteID, string methodID)
         {
             var geoOptixStations = await GetJsonFromCatalogImpl<List<SampleMethodDto>>($"{GeoOptixSitesProjectsUri}/{siteID}/samples/{methodID}/methods");
             return geoOptixStations;
@@ -241,24 +182,6 @@ namespace Zybach.API.Services
         {
             var recordSetValue = recordInstance.Fields.Single(x => x.CanonicalName == canonicalName).RawValue;
             return recordSetValue.ToObject<double?>();
-        }
-
-        public async Task<List<WellWithSensorSummaryDto>> GetWellsWithSensors()
-        {
-            var sensors = await GetSensorSummaries();
-            var wells = await GetWellSummaries();
-
-            // add a sensor array to the wells
-            var wellsWithSensors = wells.Select(x => new WellWithSensorSummaryDto
-            {
-                WellRegistrationID = x.WellRegistrationID,
-                Description = x.Description,
-                Location = x.Location,
-                Sensors = sensors.Where(y => y.WellRegistrationID == x.WellRegistrationID).ToList(),
-                InGeoOptix = true
-            }).ToList();
-
-            return wellsWithSensors;
         }
     }
 }

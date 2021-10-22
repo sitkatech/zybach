@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
@@ -12,34 +10,16 @@ namespace Zybach.API.Services
     {
         private readonly ZybachDbContext _dbContext;
         private readonly ILogger<WellService> _logger;
-        private readonly GeoOptixService _geoOptixService;
 
-        public WellService(ZybachDbContext dbContext, ILogger<WellService> logger, GeoOptixService geoOptixService)
+        public WellService(ZybachDbContext dbContext, ILogger<WellService> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
-            _geoOptixService = geoOptixService;
         }
 
-        public async Task<List<WellWithSensorSummaryDto>> GetAghubAndGeoOptixWells()
+        public List<WellWithSensorSummaryDto> GetAghubAndGeoOptixWells()
         {
-            var wells = AgHubWell.GetWellsAsWellWithSensorSummaryDtos(_dbContext);
-            var wellsWithSensorSummaryFromGeoOptix = await _geoOptixService.GetWellsWithSensors();
-            foreach (var geoOptixWell in wellsWithSensorSummaryFromGeoOptix)
-            {
-                var wellWithSensorSummaryDto =
-                    wells.SingleOrDefault(x => x.WellRegistrationID == geoOptixWell.WellRegistrationID);
-                if (wellWithSensorSummaryDto == null)
-                {
-                    wells.Add(geoOptixWell);
-                }
-                else
-                {
-                    wellWithSensorSummaryDto.InGeoOptix = true;
-                    wellWithSensorSummaryDto.Sensors.AddRange(geoOptixWell.Sensors);
-                }
-            }
-
+            var wells = Wells.ListAsWellWithSensorSummaryDto(_dbContext);
             var lastReadingDateTimes = WellSensorMeasurement.GetLastReadingDateTimes(_dbContext);
             var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
             wells.ForEach(x =>

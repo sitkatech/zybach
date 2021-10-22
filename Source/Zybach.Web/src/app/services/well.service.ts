@@ -23,10 +23,6 @@ export class WellService {
     return this.apiService.getFromApi("mapData/wells")
   }
 
-  public getWell(id: string): Observable<any> {
-    return this.apiService.getFromApi(`wells/${id}`);
-  }
-
   public getChartData(id: string): Observable<any> {
     return this.apiService.getFromApi(`chartData/${id}`);
   }

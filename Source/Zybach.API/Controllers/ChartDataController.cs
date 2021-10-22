@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,33 +15,29 @@ namespace Zybach.API.Controllers
     [ApiExplorerSettings(IgnoreApi = true)]
     public class ChartDataController : SitkaController<ChartDataController>
     {
-        private readonly GeoOptixService _geoOptixService;
-
-        public ChartDataController(ZybachDbContext dbContext, ILogger<ChartDataController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ChartDataController(ZybachDbContext dbContext, ILogger<ChartDataController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _geoOptixService = geoOptixService;
         }
 
 
         [HttpGet("/api/chartData/{wellRegistrationID}")]
         [ZybachViewFeature]
-        public async Task<WellChartDataDto> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
+        public WellChartDataDto GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
         {
             var wellChartDataDto = new WellChartDataDto();
-            var sensors = await _geoOptixService.GetSensorSummariesForWell(wellRegistrationID);
-            var agHubWell = AgHubWell.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
-            var hasElectricalData = agHubWell?.HasElectricalData ?? false;
+            var well = Wells.GetAsWellWithSensorSummaryDtoByWellRegistrationID(_dbContext, wellRegistrationID);
+            var sensors = well.Sensors;
+            var hasElectricalData = well.HasElectricalData;
 
             var dailyPumpedVolumes = new List<DailyPumpedVolume>();
 
-            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
-            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 
             if (hasElectricalData)
             {
-                sensors.Add(new SensorSummaryDto { WellRegistrationID = wellRegistrationID, SensorType = InfluxDBService.SensorTypes.ElectricalUsage});
                 var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
-                var electricalBasedFlowEstimateSeries = CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, InfluxDBService.SensorTypes.ElectricalUsage);
+                var electricalBasedFlowEstimateSeries = CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, MeasurementTypes.ElectricalUsage);
                 dailyPumpedVolumes.AddRange(electricalBasedFlowEstimateSeries);
             }
 
