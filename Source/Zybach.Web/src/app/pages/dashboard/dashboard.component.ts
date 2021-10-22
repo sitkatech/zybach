@@ -68,8 +68,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public updateAnnualData(): void {
-    this.loadingDistrictStatistics = true;
-
     // the "district statistics" panel will show the same information for all years as for the current year
     // (unless we in the future get some way to indicate that a well/sensor has been decommissioned)
     const yearForStatistics = this.allYearsSelected ? this.currentYear : this.yearToDisplay;
