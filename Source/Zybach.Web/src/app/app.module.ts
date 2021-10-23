@@ -35,7 +35,6 @@ import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { HttpErrorInterceptor } from './shared/interceptors/httpErrorInterceptor';
 import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
 import { AppInsightsService } from './shared/services/app-insights.service';
@@ -56,6 +55,7 @@ import { SensorStatusComponent } from './pages/sensor-status/sensor-status.compo
 import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-status-map.component';
 import { SensorStatusMapPopupComponent } from './pages/sensor-status-map-popup/sensor-status-map-popup.component';
 import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
+import { WellNewComponent } from './pages/well-new/well-new.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -93,6 +93,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     SensorStatusMapComponent,
     SensorStatusMapPopupComponent,
     ChemigationLandingComponent,
+    WellNewComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -121,7 +122,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     AppInitService,
     { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandlerService

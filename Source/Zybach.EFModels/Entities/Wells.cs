@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite.Geometries;
 using Zybach.Models.DataTransferObjects;
+using Point = GeoJSON.Net.Geometry.Point;
 
 namespace Zybach.EFModels.Entities
 {
@@ -12,6 +15,12 @@ namespace Zybach.EFModels.Entities
         public static List<WellDto> ListAsDtos(ZybachDbContext dbContext)
         {
             return dbContext.Wells.AsNoTracking().Select(x => x.AsDto()).ToList();
+        }
+
+        public static WellDto GetByWellIDAsDto(ZybachDbContext dbContext, int wellID)
+        {
+            var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
+            return well?.AsDto();
         }
 
         public static List<WellWithSensorSummaryDto> ListAsWellWithSensorSummaryDto(ZybachDbContext dbContext)
@@ -99,6 +108,32 @@ namespace Zybach.EFModels.Entities
         public static List<WellDto> SearchByField(ZybachDbContext dbContext, string searchText)
         {
             return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.FieldName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.Well.AsDto()).ToList();
+        }
+
+        public static WellDto CreateNew(ZybachDbContext dbContext, WellNewDto wellNewDto)
+        {
+            var well = new Well
+            {
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                WellRegistrationID = wellNewDto.WellRegistrationID,
+                WellGeometry = CreateWellGeometryFromLatLong(wellNewDto.Latitude, wellNewDto.Longitude)
+            };
+            well.StreamflowZoneID = dbContext.StreamFlowZones
+                .FirstOrDefault(x => x.StreamFlowZoneGeometry.Intersects(well.WellGeometry))?.StreamFlowZoneID;
+            dbContext.Wells.Add(well);
+            dbContext.SaveChanges();
+            dbContext.Entry(well).Reload();
+            return GetByWellIDAsDto(dbContext, well.WellID);
+        }
+
+        private static Geometry CreateWellGeometryFromLatLong(double latitude, double longitude)
+        {
+            var point = new NetTopologySuite.Geometries.Point(longitude, latitude)
+            {
+                SRID = 4326
+            };
+            return point;
         }
     }
 }

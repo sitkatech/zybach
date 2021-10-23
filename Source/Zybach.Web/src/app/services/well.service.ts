@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { WellNewDto } from '../shared/models/well-new-dto';
 import { WellWithSensorSummaryDto } from '../shared/models/well-with-sensor-summary-dto';
 import { ApiService } from '../shared/services';
 
@@ -9,11 +10,10 @@ import { ApiService } from '../shared/services';
   providedIn: 'root'
 })
 export class WellService {
-
   constructor(
     private apiService: ApiService,
     private httpClient: HttpClient
-    ) { }
+  ) { }
 
   public getWells(): Observable<any> {
     return this.apiService.getFromApi("wells");
@@ -41,11 +41,16 @@ export class WellService {
     photoCanonicalName: any
   ): Observable<any> {
     const route = `https://${environment.apiHostName}/wells/${wellRegistrationID}/installation/${installationCanonicalName}/photo/${photoCanonicalName}`
-    return this.httpClient.get(route, {responseType: "blob"});
+    return this.httpClient.get(route, { responseType: "blob" });
   }
 
   public getRobustReviewScenarioJson(): Observable<any> {
     const route = `https://${environment.apiHostName}/wells/download/robustReviewScenarioJson`
-    return this.httpClient.get(route, {responseType: "blob" as "json"});
+    return this.httpClient.get(route, { responseType: "blob" as "json" });
+  }
+
+  public newWell(wellNewDto: WellNewDto) {
+    let route = `/wells/new`;
+    return this.apiService.postToApi(route, wellNewDto);
   }
 }

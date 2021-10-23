@@ -161,7 +161,6 @@ namespace Zybach.API.Controllers
             var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
             var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();
-
         }
 
         private RobustReviewDto CreateRobustReviewDto(WellWithSensorSummaryDto wellWithSensorSummaryDto, Dictionary<string, DateTime> firstReadingDateTimes)
@@ -212,6 +211,22 @@ namespace Zybach.API.Controllers
             return robustReviewDto;
         }
 
+        [HttpPost("/api/wells/new")]
+        [AdminFeature]
+        public IActionResult NewWell([FromBody] WellNewDto wellNewDto)
+        {
+            var existingWell = Wells.GetByWellRegistrationID(_dbContext, wellNewDto.WellRegistrationID);
+            if (existingWell != null)
+            {
+                ModelState.AddModelError("Well Registration ID", $"'{wellNewDto.WellRegistrationID}' already exists!");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            var wellDto = Wells.CreateNew(_dbContext, wellNewDto);
+            return Ok(wellDto);
+        }
     }
 }
