@@ -346,8 +346,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getChartDataAndBuildChart() {
 
     this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
-      if (!response.TimeSeries) {
-        console.log("No Time Series Data");
+      if (!response.TimeSeries || response.TimeSeries.length == 0) {
         this.noTimeSeriesData = true;
         this.timeSeries = [];
         return;
