@@ -7,21 +7,17 @@ import {
   Map,
   MapOptions,
   tileLayer,
-  Icon,
   geoJSON,
   icon,
   latLng,
   Layer,
   LeafletEvent,
-  layerGroup,
-  LatLng,
   DomUtil
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import { GestureHandling } from 'leaflet-gesture-handling'
-import { Observable } from 'rxjs';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
@@ -34,8 +30,8 @@ import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
 import { NgElement, WithProperties } from '@angular/elements';
-import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 import { SensorStatusMapPopupComponent } from '../sensor-status-map-popup/sensor-status-map-popup.component';
+import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 
 @Component({
   selector: 'zybach-sensor-status-map',
@@ -93,12 +89,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
 
   public ngOnInit(): void {
-    // Default bounding box
-    this.boundingBox = new BoundingBoxDto();
-    this.boundingBox.Left = -122.65840077734131;
-    this.boundingBox.Bottom = 44.800395454281436;
-    this.boundingBox.Right = -121.65139301718362;
-    this.boundingBox.Top = 45.528908149000124;
+    this.boundingBox = DefaultBoundingBox;
 
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {

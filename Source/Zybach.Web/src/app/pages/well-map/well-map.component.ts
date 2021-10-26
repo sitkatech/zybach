@@ -30,6 +30,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DataSourceFilterOption } from 'src/app/shared/models/enums/data-source-filter-option.enum';
 import { NgElement, WithProperties } from '@angular/elements';
 import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
+import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 
 @Component({
   selector: 'zybach-well-map',
@@ -90,12 +91,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
 
   public ngOnInit(): void {
-    // Default bounding box
-    this.boundingBox = new BoundingBoxDto();
-    this.boundingBox.Left = -122.65840077734131;
-    this.boundingBox.Bottom = 44.800395454281436;
-    this.boundingBox.Right = -121.65139301718362;
-    this.boundingBox.Top = 45.528908149000124;
+    this.boundingBox = DefaultBoundingBox;
 
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {

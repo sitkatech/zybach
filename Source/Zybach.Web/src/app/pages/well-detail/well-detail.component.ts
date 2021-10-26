@@ -20,7 +20,6 @@ import {
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';
-import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { InstallationDto } from 'src/app/shared/models/installation-dto';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
 import { DecimalPipe } from '@angular/common';
@@ -28,6 +27,8 @@ import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
+import { NominatimService } from 'src/app/services/nominatim.service';
+import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -280,11 +281,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public initMapConstants() {
-    this.boundingBox = new BoundingBoxDto();
-    this.boundingBox.Left = -122.65840077734131;
-    this.boundingBox.Bottom = 44.800395454281436;
-    this.boundingBox.Right = -121.65139301718362;
-    this.boundingBox.Top = 45.528908149000124;
+    this.boundingBox = DefaultBoundingBox;
 
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {

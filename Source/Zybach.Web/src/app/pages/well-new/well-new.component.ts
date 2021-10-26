@@ -1,12 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import {
-  GeoJSON,
-  marker,
   map,
   Map as LeafletMap,
   MapOptions,
   tileLayer,
-  icon
+  icon,
+  geoJSON
 } from 'leaflet';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
@@ -18,9 +17,9 @@ import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import L from 'leaflet';
 import { WellNewDto } from 'src/app/shared/models/well-new-dto';
+import { TwinPlatteBoundaryGeoJson } from 'src/app/shared/models/tpnrd-boundary';
 
 @Component({
   selector: 'zybach-well-new',
@@ -37,7 +36,6 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
   public isLoadingSubmit: boolean = false;
 
   public currentMarker: any;
-  private boundingBox: BoundingBoxDto;
   private tileLayers: any;
   public map: LeafletMap;
   public mapID = "wellNewLocation";
@@ -86,7 +84,24 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
     } as MapOptions;
     this.map = map(this.mapID, mapOptions);
 
-    this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], null);
+    const tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
+      invert: true,
+      style: function () {
+        return {
+          fillColor: "#323232",
+          fill: true,
+          fillOpacity: 0.4,
+          color: "#3388ff",
+          weight: 5,
+          stroke: true
+        };
+      }
+    } as any)
+
+    tpnrdBoundaryLayer.addTo(this.map);
+
+    this.map.fitBounds(tpnrdBoundaryLayer.getBounds());
+
     this.map.on("click", e => {
       this.changeMarkerOnMap(e);
     });
@@ -125,12 +140,6 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private initMapConstants() {
-    this.boundingBox = new BoundingBoxDto();
-    this.boundingBox.Left = -122.65840077734131;
-    this.boundingBox.Bottom = 44.800395454281436;
-    this.boundingBox.Right = -121.65139301718362;
-    this.boundingBox.Top = 45.528908149000124;
-
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',

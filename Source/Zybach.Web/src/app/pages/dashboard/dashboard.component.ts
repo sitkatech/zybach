@@ -20,7 +20,7 @@ import { GestureHandling } from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { forkJoin } from 'rxjs';
 import { StreamFlowZonePumpingDepthDto } from 'src/app/shared/models/stream-flow-zone-pumping-depth-dto';
-import { X } from 'vega-lite/build/src/channel';
+import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 
 @Component({
   selector: 'zybach-dashboard',
@@ -112,11 +112,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this.boundingBox = new BoundingBoxDto();
-    this.boundingBox.Left = -122.65840077734131;
-    this.boundingBox.Bottom = 44.800395454281436;
-    this.boundingBox.Right = -121.65139301718362;
-    this.boundingBox.Top = 45.528908149000124;
+    this.boundingBox = DefaultBoundingBox;
 
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
