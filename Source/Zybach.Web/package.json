@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host 0.0.0.0 --disableHostCheck true --port 8113",
-    "start-ssl": "ng serve --host 0.0.0.0 --disableHostCheck true --port 8114 --ssl --ssl-cert dev_cert.pfx --ssl-key password#1",
+    "start": "ng serve --host 0.0.0.0 --disableHostCheck true --port 8713",
+    "start-ssl": "ng serve --host 0.0.0.0 --disableHostCheck true --port 8714 --ssl --ssl-cert dev_cert.pfx --ssl-key password#1",
     "build": "ng build",
     "build-dev": "ng build",
     "build-qa": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng build --configuration=qa --prod",
