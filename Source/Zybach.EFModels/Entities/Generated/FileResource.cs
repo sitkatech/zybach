@@ -12,6 +12,11 @@ namespace Zybach.EFModels.Entities
     [Index(nameof(FileResourceGUID), Name = "AK_FileResource_FileResourceGUID", IsUnique = true)]
     public partial class FileResource
     {
+        public FileResource()
+        {
+            ReportTemplates = new HashSet<ReportTemplate>();
+        }
+
         [Key]
         public int FileResourceID { get; set; }
         public int FileResourceMimeTypeID { get; set; }
@@ -34,5 +39,7 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(FileResourceMimeTypeID))]
         [InverseProperty("FileResources")]
         public virtual FileResourceMimeType FileResourceMimeType { get; set; }
+        [InverseProperty(nameof(ReportTemplate.FileResource))]
+        public virtual ICollection<ReportTemplate> ReportTemplates { get; set; }
     }
 }

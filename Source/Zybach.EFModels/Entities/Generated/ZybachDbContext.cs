@@ -33,6 +33,9 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
         public virtual DbSet<GeoOptixWellStaging> GeoOptixWellStagings { get; set; }
         public virtual DbSet<MeasurementType> MeasurementTypes { get; set; }
+        public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
+        public virtual DbSet<ReportTemplateModel> ReportTemplateModels { get; set; }
+        public virtual DbSet<ReportTemplateModelType> ReportTemplateModelTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
         public virtual DbSet<SensorType> SensorTypes { get; set; }
@@ -210,6 +213,50 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.MeasurementTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.MeasurementTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ReportTemplate>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.DisplayName).IsUnicode(false);
+
+                entity.HasOne(d => d.FileResource)
+                    .WithMany(p => p.ReportTemplates)
+                    .HasForeignKey(d => d.FileResourceID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ReportTemplateModel)
+                    .WithMany(p => p.ReportTemplates)
+                    .HasForeignKey(d => d.ReportTemplateModelID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ReportTemplateModelType)
+                    .WithMany(p => p.ReportTemplates)
+                    .HasForeignKey(d => d.ReportTemplateModelTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ReportTemplateModel>(entity =>
+            {
+                entity.Property(e => e.ReportTemplateModelID).ValueGeneratedNever();
+
+                entity.Property(e => e.ReportTemplateModelDescription).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ReportTemplateModelType>(entity =>
+            {
+                entity.Property(e => e.ReportTemplateModelTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.ReportTemplateModelTypeDescription).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Role>(entity =>
