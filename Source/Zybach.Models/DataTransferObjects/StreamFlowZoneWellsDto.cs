@@ -19,7 +19,8 @@ namespace Zybach.Models.DataTransferObjects
         public Feature Location { get; set; }
         public DateTime? LastReadingDate { get; set; }
         public DateTime? FirstReadingDate { get; set; }
-        public bool? InGeoOptix { get; set; }
+        public bool InAgHub { get; set; }
+        public bool InGeoOptix { get; set; }
         public DateTime? FetchDate { get; set; }
         public bool HasElectricalData { get; set; }
         public List<IrrigatedAcresPerYearDto> IrrigatedAcresPerYear { get; set; }

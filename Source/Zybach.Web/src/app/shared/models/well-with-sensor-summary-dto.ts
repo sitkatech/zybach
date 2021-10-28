@@ -12,6 +12,8 @@ export class WellWithSensorSummaryDto {
     IrrigatedAcresPerYear: IrrigatedAcresPerYearDto[];
     AgHubRegisteredUser: string;
     FieldName: string;
+    InAgHub: boolean;
+    InGeoOptix: boolean;
 }
 
 export class WellWithSensorMessageAgeDto {
@@ -24,7 +26,6 @@ export class WellWithSensorMessageAgeDto {
 
 export class WellDetailDto extends WellWithSensorSummaryDto {
     AnnualPumpedVolume?: any[];
-    InGeoOptix?: boolean;
 }
 
 

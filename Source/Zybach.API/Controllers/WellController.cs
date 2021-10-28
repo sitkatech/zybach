@@ -60,7 +60,9 @@ namespace Zybach.API.Controllers
             var wellDetailDto = new WellDetailDto
             {
                 WellRegistrationID = well.WellRegistrationID,
-                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X)))
+                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
+                InAgHub = well.AgHubWell != null,
+                InGeoOptix = well.GeoOptixWell != null
             };
 
             var agHubWell = well.AgHubWell;
@@ -71,16 +73,17 @@ namespace Zybach.API.Controllers
                 wellDetailDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
+                wellDetailDto.InAgHub = true;
             }
             else
             {
                 wellDetailDto.HasElectricalData = false;
+                wellDetailDto.InAgHub = false;
             }
 
             var firstReadingDate = WellSensorMeasurement.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
             var lastReadingDate = WellSensorMeasurement.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
 
-            wellDetailDto.InGeoOptix = well.GeoOptixWell != null;
             wellDetailDto.FirstReadingDate = firstReadingDate;
             wellDetailDto.LastReadingDate = lastReadingDate;
 

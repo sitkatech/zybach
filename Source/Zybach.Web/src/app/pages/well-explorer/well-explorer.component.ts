@@ -173,7 +173,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "In AgHub?",
         valueGetter: function (params) {
-          if (params.data.WellTPID) {
+          if (params.data.InAgHub) {
             return "Yes"
           } else {
             return "No"

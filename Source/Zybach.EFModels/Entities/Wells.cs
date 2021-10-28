@@ -61,6 +61,7 @@ namespace Zybach.EFModels.Entities
             wellWithSensorSummaryDto.Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X)));
             wellWithSensorSummaryDto.FetchDate = well.LastUpdateDate;
             wellWithSensorSummaryDto.InGeoOptix = well.GeoOptixWell != null;
+            wellWithSensorSummaryDto.InAgHub = well.AgHubWell != null;
 
             var sensors = well.Sensors.Select(x => new SensorSummaryDto()
             {
