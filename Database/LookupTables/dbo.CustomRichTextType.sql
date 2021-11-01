@@ -6,7 +6,8 @@ USING (VALUES
 (4, 'Help', 'Help'),
 (5, 'LabelsAndDefinitionsList', 'Labels and Definitions List'),
 (6, 'Training', 'Training'),
-(7, 'RobustReviewScenario', 'Robust Review Scenario')
+(7, 'RobustReviewScenario', 'Robust Review Scenario'),
+(8, 'ReportsList', 'Reports List')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

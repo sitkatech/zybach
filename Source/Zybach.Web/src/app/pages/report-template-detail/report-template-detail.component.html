@@ -1,0 +1,57 @@
+<nav aria-label="breadcrumb" *ngIf="reportTemplate">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">
+            <a routerLink="/reports" *ngIf="currentUserIsAdmin()">Report Center</a>
+            <span *ngIf="!currentUserIsAdmin()">Report Center</span>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {{reportTemplate?.DisplayName}}
+        </li>
+    </ol>
+</nav>
+<div class="container mt-sm-4" *ngIf="reportTemplate">  
+    <h2 class="d-inline-block">
+        {{reportTemplate?.DisaplayName}}
+    </h2>
+    <app-alert-display></app-alert-display>
+    <div class="row mt-4">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <a *ngIf="currentUserIsAdmin()" class="btn btn-zybach btn-sm float-right"
+                        routerLink="/reports/{{reportTemplate?.ReportTemplateID}}/edit">
+                        <span class="fas fa-edit"></span> Edit
+                    </a>
+                    Basics
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="text-sm-right col-sm-5 col-xs-12">Name</dt>
+                        <dd class="col-sm-7 col-xs-12">
+                            {{reportTemplate?.DisplayName}}
+                            <em *ngIf="!reportTemplate?.DisplayName" class="text-muted">Not Available</em>
+                        </dd>
+
+                        <dt class="text-sm-right col-sm-5 col-xs-12">Description</dt>
+                        <dd class="col-sm-7 col-xs-12">
+                            {{reportTemplate?.Description}}
+                            <em *ngIf="!reportTemplate?.Description" class="text-muted">Not Available</em>
+                        </dd>
+
+                        <dt class="text-sm-right col-sm-5 col-xs-12">Model</dt>
+                        <dd class="col-sm-7 col-xs-12">
+                            {{reportTemplate?.ReportTemplateModel.ReportTemplateModelDisplayName}}
+                            <em *ngIf="!reportTemplate?.ReportTemplateModel.ReportTemplateModelDisplayName" class="text-muted">Not Available</em>
+                        </dd>
+
+                        <dt class="text-sm-right col-sm-5 col-xs-12">Template File</dt>
+                        <dd class="col-sm-7 col-xs-12">
+                            <a href={{reportTemplateFileLinkValue}} >{{reportTemplate?.FileResource.OriginalBaseFilename}}</a>
+                            <em *ngIf="!reportTemplate?.FileResource" class="text-muted">Not Available</em>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -89,4 +89,6 @@ GO
 
 
 
-
+insert into dbo.CustomRichTextType values (8, 'ReportsList', 'Reports List')
+insert into dbo.CustomRichText (CustomRichTextTypeID, CustomRichTextContent)
+values (8, 'Reports List')

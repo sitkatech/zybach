@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { FieldDefinitionDto } from 'src/app/shared/models/generated/field-definition-dto';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -13,7 +13,7 @@ import { AgGridAngular } from 'ag-grid-angular';
   templateUrl: './field-definition-list.component.html',
   styleUrls: ['./field-definition-list.component.scss']
 })
-export class FieldDefinitionListComponent implements OnInit {
+export class FieldDefinitionListComponent implements OnInit, OnDestroy {
 
   @ViewChild("fieldDefinitionsGrid") fieldDefinitionsGrid: AgGridAngular;
   private watchUserChangeSubscription: any;

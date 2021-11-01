@@ -1,0 +1,80 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/reports">Report Templates</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">New Report Template</li>
+    </ol>
+</nav>
+<div class="container">
+    <app-alert-display></app-alert-display>
+    <form (ngSubmit)="onSubmit(newReportTemplateForm)" #newReportTemplateForm="ngForm">
+        <div class="row">
+            <div class="col">
+                
+                <div class="form-group mt-4">
+                    <div class="col-sm-5 control-label">
+                        <label class="required">Display Name</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="DisplayName"
+                            placeholder="Display Name" required [(ngModel)]="model.DisplayName" />
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-sm-5 control-label">
+                        <label>Description</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="Description" [(ngModel)]="model.Description" />
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-sm-5 control-label">
+                        <label class="required">Report Template Model ID</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <select name="ReportTemplateModelID" class="form-control" [(ngModel)]="model.ReportTemplateModelID" required>
+                            <option value=""></option>
+                            <option *ngFor="let reportTemplateModel of reportTemplateModels" [value]="reportTemplateModel.ReportTemplateModelID">
+                                {{reportTemplateModel.ReportTemplateModelDisplayName}}
+                            </option>
+                        </select>    
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-sm-5 control-label">
+                        <label>File</label>
+                    </div>
+                    <div class="input-group ml-3 p-0 col-sm-7">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input"
+                                id="fileResource"
+                                #fileUpload (change)="fileEvent()">
+                            <label class="custom-file-label"
+                                for="fileResource">{{getFileName()}}</label>
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-zybach" type="button"
+                                (click)="openFileUpload()"><i
+                                    class="fas fa-folder-open"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-sm">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
+            <div class="col-sm text-right">
+                <button type="submit" class="btn btn-zybach" [disabled]="!newReportTemplateForm.form.valid || isLoadingSubmit">
+                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                    Submit
+                </button>
+                <a class="btn btn-secondary ml-1" routerLink="/reports">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>

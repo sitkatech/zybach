@@ -56,6 +56,10 @@ import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-statu
 import { SensorStatusMapPopupComponent } from './pages/sensor-status-map-popup/sensor-status-map-popup.component';
 import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
 import { WellNewComponent } from './pages/well-new/well-new.component';
+import { ReportsListComponent } from './pages/reports-list/reports-list.component';
+import { ReportTemplateNewComponent } from './pages/report-template-new/report-template-new.component';
+import { ReportTemplateDetailComponent } from './pages/report-template-detail/report-template-detail.component';
+import { ReportTemplateEditComponent } from './pages/report-template-edit/report-template-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -94,6 +98,10 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     SensorStatusMapPopupComponent,
     ChemigationLandingComponent,
     WellNewComponent,
+    ReportsListComponent,
+    ReportTemplateNewComponent,
+    ReportTemplateDetailComponent,
+    ReportTemplateEditComponent,
   ],
   imports: [
     AppRoutingModule,
