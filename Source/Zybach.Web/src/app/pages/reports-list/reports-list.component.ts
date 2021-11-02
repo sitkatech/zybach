@@ -1,12 +1,17 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { UserDetailedDto } from 'src/app/shared/models';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { GenerateReportsDto } from 'src/app/shared/models/generate-reports-dto';
 import { ReportTemplateDto } from 'src/app/shared/models/generated/report-template-dto';
-import { ReportTemplateService } from 'src/app/shared/services/report-template-service';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -26,9 +31,13 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   public rowData = [];
   public columnDefs: ColDef[];
 
+  public isLoadingSubmit: boolean = false;
+
   constructor(
     private reportTemplateService: ReportTemplateService,
     private authenticationService: AuthenticationService,
+    private router: Router,
+    private alertService: AlertService,
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
@@ -99,5 +108,36 @@ export class ReportsListComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription.unsubscribe();
     this.authenticationService.dispose();
     this.cdr.detach();
+  }
+
+  public generateReport(reportTemplateID?: number): void {
+    // TODO assumes the test report is uploaded with display name 'Test Report'
+    if(this.reportTemplates.length > 0){
+      this.isLoadingSubmit = true;
+      var reportTemplate = this.reportTemplates.find(x => x.DisplayName === "Test Report");
+      reportTemplateID = reportTemplate.ReportTemplateID;
+      var generateReportsDto = new GenerateReportsDto();
+      generateReportsDto.ReportTemplateID = reportTemplateID;
+      this.reportTemplateService.generateReport(generateReportsDto)
+        .subscribe(response => {
+          this.isLoadingSubmit = false;
+  
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(response);
+          a.download = "TEST report";
+          // start download
+          a.click();
+  
+          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + reportTemplate.DisplayName + "'", AlertContext.Success));
+        }
+          ,
+          error => {
+            this.isLoadingSubmit = false;
+            this.cdr.detectChanges();
+          }
+        );
+    } else {
+      this.alertService.pushAlert(new Alert("No report templates to generate reports.", AlertContext.Warning));
+    }
   }
 }

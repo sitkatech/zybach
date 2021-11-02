@@ -6,7 +6,7 @@ import { UserService } from 'src/app/services/user/user.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { ReportTemplateDto } from 'src/app/shared/models/generated/report-template-dto';
-import { ReportTemplateService } from 'src/app/shared/services/report-template-service';
+import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

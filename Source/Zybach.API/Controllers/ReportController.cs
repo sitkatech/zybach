@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Zybach.API.ReportTemplates;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -24,7 +27,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<List<ReportTemplateDto>> ListAllReports()
         {
-            var reportTemplateDtos = ReportTemplates.ListAsDtos(_dbContext);
+            var reportTemplateDtos = EFModels.Entities.ReportTemplates.ListAsDtos(_dbContext);
             return reportTemplateDtos;
         }
 
@@ -42,7 +45,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<ReportTemplateDto> GetReport([FromRoute] int reportTemplateID)
         {
-            var reportTemplateDto = ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
             return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateID);
         }
 
@@ -70,7 +73,7 @@ namespace Zybach.API.Controllers
         public async Task<ActionResult<ReportTemplateDto>> UpdateReport([FromRoute] int reportTemplateID,
             [FromForm] ReportTemplateUpdateDto reportUpdateDto)
         {
-            var reportTemplateDto = ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
             if (ThrowNotFound(reportTemplateDto, "Report", reportTemplateID, out var actionResult))
             {
                 return actionResult;
@@ -109,7 +112,7 @@ namespace Zybach.API.Controllers
             dbContext.ReportTemplates.Add(reportTemplate);
             dbContext.SaveChanges();
             dbContext.Entry(reportTemplate).Reload();
-            return ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
+            return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
         private ReportTemplateDto UpdateReportTemplate(ZybachDbContext dbContext, int reportTemplateID, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
@@ -135,6 +138,27 @@ namespace Zybach.API.Controllers
             dbContext.SaveChanges();
 
             return reportTemplate.AsDto();
+        }
+
+        [HttpPut("/api/reportTemplates/generateReports")]
+        [AdminFeature]
+        public ActionResult GenerateReportsFromSelectedProjects([FromBody] GenerateReportsDto generateReportsDto)
+        {
+            var reportTemplateID = generateReportsDto.ReportTemplateID;
+            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
+
+            var selectedModelIDs = generateReportsDto.WellIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
+            
+            var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
+            return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
+        }
+
+        private ActionResult GenerateAndDownload(ReportTemplateGenerator reportTemplateGenerator, ReportTemplate reportTemplate)
+        {
+            reportTemplateGenerator.Generate(_dbContext);
+            var fileData = System.IO.File.ReadAllBytes(reportTemplateGenerator.GetCompilePath());
+            var stream = new MemoryStream(fileData);
+            return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"{reportTemplate.DisplayName} Report");
         }
     }
 }

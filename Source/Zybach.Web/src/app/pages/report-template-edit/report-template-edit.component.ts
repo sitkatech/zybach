@@ -9,7 +9,7 @@ import { ReportTemplateDto } from 'src/app/shared/models/generated/report-templa
 import { ReportTemplateModelDto } from 'src/app/shared/models/generated/report-template-model-dto';
 import { ReportTemplateNewDto } from 'src/app/shared/models/report-template-new-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { ReportTemplateService } from 'src/app/shared/services/report-template-service';
+import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
 
 @Component({
   selector: 'zybach-report-template-edit',

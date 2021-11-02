@@ -19,6 +19,10 @@
 </div>
 <div class="container">
     <a class="btn btn-zybach btn-sm mr-3 float-right" routerLink="/reports/new"><span class="fas fa-plus"></span> New Report Template</a>
+    <button (click)="generateReport()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-sm mr-3 float-right">
+        <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+        Generate Test Report
+    </button>
 
     <div class="table-responsive">
         <ag-grid-angular #reportTemplatesGrid style="width: 100%; height: 800px;" class="ag-theme-balham" [rowData]="rowData"

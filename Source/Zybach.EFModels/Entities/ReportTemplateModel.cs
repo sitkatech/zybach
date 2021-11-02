@@ -25,4 +25,9 @@ namespace Zybach.EFModels.Entities
             return reportTemplateModel?.AsDto();
         }
     }
+
+    public enum ReportTemplateModelEnum
+    {
+        Well = 1
+    }
 }
