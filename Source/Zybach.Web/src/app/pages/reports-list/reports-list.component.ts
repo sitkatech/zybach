@@ -31,6 +31,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   public rowData = [];
   public columnDefs: ColDef[];
 
+  public selectedReportTemplateID: string;
   public isLoadingSubmit: boolean = false;
 
   constructor(
@@ -110,12 +111,13 @@ export class ReportsListComponent implements OnInit, OnDestroy {
     this.cdr.detach();
   }
 
-  public generateReport(reportTemplateID?: number): void {
-    // TODO assumes the test report is uploaded with display name 'Test Report'
-    if(this.reportTemplates.length > 0){
+  public generateReport(): void {
+    if(this.selectedReportTemplateID === undefined){
+      this.alertService.pushAlert(new Alert("No report template selected.", AlertContext.Warning));
+    } else {
       this.isLoadingSubmit = true;
-      var reportTemplate = this.reportTemplates.find(x => x.DisplayName === "Test Report");
-      reportTemplateID = reportTemplate.ReportTemplateID;
+      var reportTemplateID = parseInt(this.selectedReportTemplateID);
+      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateID === reportTemplateID);
       var generateReportsDto = new GenerateReportsDto();
       generateReportsDto.ReportTemplateID = reportTemplateID;
       this.reportTemplateService.generateReport(generateReportsDto)
@@ -124,7 +126,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   
           var a = document.createElement("a");
           a.href = URL.createObjectURL(response);
-          a.download = "TEST report";
+          a.download = reportTemplate.DisplayName + " Generated Report";
           // start download
           a.click();
   
@@ -136,8 +138,6 @@ export class ReportsListComponent implements OnInit, OnDestroy {
             this.cdr.detectChanges();
           }
         );
-    } else {
-      this.alertService.pushAlert(new Alert("No report templates to generate reports.", AlertContext.Warning));
     }
   }
 }
