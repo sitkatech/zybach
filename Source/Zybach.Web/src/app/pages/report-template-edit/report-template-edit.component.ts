@@ -1,13 +1,12 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ReportTemplateDto } from 'src/app/shared/models/generated/report-template-dto';
 import { ReportTemplateModelDto } from 'src/app/shared/models/generated/report-template-model-dto';
-import { ReportTemplateNewDto } from 'src/app/shared/models/report-template-new-dto';
+import { ReportTemplateUpdateDto } from 'src/app/shared/models/report-template-update-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
 
@@ -25,7 +24,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
 
   public reportTemplateID: number;
   public reportTemplate: ReportTemplateDto;
-  public model: ReportTemplateNewDto;
+  public model: ReportTemplateUpdateDto;
   public reportTemplateModels: Array<ReportTemplateModelDto>;
   public isLoadingSubmit: boolean = false;
 
@@ -45,7 +44,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.model = new ReportTemplateNewDto();
+    this.model = new ReportTemplateUpdateDto();
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -55,13 +54,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.reportTemplateID = parseInt(this.route.snapshot.paramMap.get("id"));
-
-      forkJoin(
-        this.reportTemplateService.getReportTemplate(this.reportTemplateID),
-        this.reportTemplateService.getReportTemplateModels()
-      ).subscribe(([reportTemplate, reportTemplateModels]) => {
-        this.reportTemplate = reportTemplate as ReportTemplateDto;
+      this.reportTemplateService.getReportTemplateModels().subscribe(reportTemplateModels => {
         this.reportTemplateModels = reportTemplateModels.sort((a: ReportTemplateModelDto, b: ReportTemplateModelDto) => {
           if (a.ReportTemplateModelDisplayName > b.ReportTemplateModelDisplayName)
             return 1;
@@ -69,14 +62,19 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
             return -1;
           return 0;
         });
-
-        this.model = new ReportTemplateNewDto();
-        this.model.ReportTemplateID = reportTemplate.ReportTemplateID;
-        this.model.DisplayName = reportTemplate.DisplayName;
-        this.model.Description = reportTemplate.Description;
-        this.model.ReportTemplateModelID = reportTemplate.ReportTemplateModel.ReportTemplateModelID;
-        this.cdr.detectChanges();
       });
+
+      if(!(this.route.snapshot.paramMap.get("id") === null || this.route.snapshot.paramMap.get("id") === undefined)){
+        this.reportTemplateID = parseInt(this.route.snapshot.paramMap.get("id"));
+        this.reportTemplateService.getReportTemplate(this.reportTemplateID).subscribe(reportTemplate => {
+          this.reportTemplate = reportTemplate as ReportTemplateDto;
+          this.model.ReportTemplateID = reportTemplate.ReportTemplateID;
+          this.model.DisplayName = reportTemplate.DisplayName;
+          this.model.Description = reportTemplate.Description;
+          this.model.ReportTemplateModelID = reportTemplate.ReportTemplateModel.ReportTemplateModelID;
+          this.cdr.detectChanges();
+        });
+      }
     });
   }
 
@@ -104,7 +102,6 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
     if (!this.fileUpload) {
       return null;
     }
-    console.log(this.fileUpload);
     return this.fileUpload.nativeElement.files[0];
   }
 
@@ -123,7 +120,8 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
 
   public onSubmit(newReportTemplateForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.reportTemplateService.updateReportTemplate(this.reportTemplateID, this.model)
+    if(this.reportTemplateID !== undefined){
+      this.reportTemplateService.updateReportTemplate(this.reportTemplateID, this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         this.router.navigateByUrl("/reports/" + this.reportTemplateID).then(x => {
@@ -136,5 +134,22 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         }
       );
+    }else {
+      this.reportTemplateService.newReportTemplate(this.model)
+      .subscribe(response => {
+        this.isLoadingSubmit = false;
+        newReportTemplateForm.reset();
+        this.router.navigateByUrl("/reports").then(x => {
+          this.alertService.pushAlert(new Alert("Report Template '" + response.DisplayName + "' successfully created.", AlertContext.Success));
+        });
+      }
+        ,
+        error => {
+          this.isLoadingSubmit = false;
+          this.cdr.detectChanges();
+        }
+      );
+    }
+
   }
 }

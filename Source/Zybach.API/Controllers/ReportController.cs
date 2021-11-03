@@ -73,8 +73,8 @@ namespace Zybach.API.Controllers
         public async Task<ActionResult<ReportTemplateDto>> UpdateReport([FromRoute] int reportTemplateID,
             [FromForm] ReportTemplateUpdateDto reportUpdateDto)
         {
-            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
-            if (ThrowNotFound(reportTemplateDto, "Report", reportTemplateID, out var actionResult))
+            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
+            if (ThrowNotFound(reportTemplate, "ReportTemplate", reportTemplateID, out var actionResult))
             {
                 return actionResult;
             }
@@ -92,7 +92,7 @@ namespace Zybach.API.Controllers
                 _dbContext.FileResources.Add(fileResource);
             }
         
-            var updatedReportTemplateDto = UpdateReportTemplate(_dbContext, reportTemplateID, reportUpdateDto, fileResource);
+            var updatedReportTemplateDto = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
             return Ok(updatedReportTemplateDto);
         }
 
@@ -115,17 +115,8 @@ namespace Zybach.API.Controllers
             return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
-        private ReportTemplateDto UpdateReportTemplate(ZybachDbContext dbContext, int reportTemplateID, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
+        private ReportTemplateDto UpdateReportTemplate(ZybachDbContext dbContext, ReportTemplate reportTemplate, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
         {
-            var reportTemplate = dbContext.ReportTemplates
-                .Include(x => x.ReportTemplateModel)
-                .Include(x => x.ReportTemplateModelType)
-                .Include(x => x.FileResource)
-                .Include(x => x.FileResource).ThenInclude(x => x.FileResourceMimeType)
-                .Include(x => x.FileResource).ThenInclude(x => x.CreateUser)
-                .Include(x => x.FileResource).ThenInclude(x => x.CreateUser).ThenInclude(x => x.Role)
-                .SingleOrDefault(x => x.ReportTemplateID == reportTemplateID);
-
             // null check occurs in calling endpoint method.
             reportTemplate.DisplayName = reportTemplateUpdateDto.DisplayName;
             reportTemplate.Description = reportTemplateUpdateDto.Description;

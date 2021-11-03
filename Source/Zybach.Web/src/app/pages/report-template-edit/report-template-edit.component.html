@@ -3,10 +3,11 @@
         <li class="breadcrumb-item">
             <a routerLink="/reports">Report Templates</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">New Report Template</li>
+        <li *ngIf="reportTemplateID === undefined" class="breadcrumb-item active" aria-current="page">New Report Template</li>
+        <li *ngIf="reportTemplateID !== undefined" class="breadcrumb-item active" aria-current="page">{{model.DisplayName}}</li>
     </ol>
 </nav>
-<div class="container">
+<div class="container"  *ngIf="model">
     <app-alert-display></app-alert-display>
     <form (ngSubmit)="onSubmit(newReportTemplateForm)" #newReportTemplateForm="ngForm">
         <div class="row">
@@ -31,7 +32,7 @@
                 </div>
                 <div class="form-group mt-4">
                     <div class="col-sm-5 control-label">
-                        <label class="required">Report Template Model ID</label>
+                        <label class="required">Report Template Model</label>
                     </div>
                     <div class="col-sm-7">
                         <select name="ReportTemplateModelID" class="form-control" [(ngModel)]="model.ReportTemplateModelID" required>
