@@ -96,6 +96,9 @@ namespace Zybach.API.Controllers
                 case "JPEG":
                 case "PJPEG":
                     return File(fileResource.FileResourceData, fileResource.FileResourceMimeType.FileResourceMimeTypeContentTypeName);
+                case "Word (DOCX)":
+                case "Word (DOC)":
+                    return File(fileResource.FileResourceData, fileResource.FileResourceMimeType.FileResourceMimeTypeContentTypeName, fileResource.OriginalBaseFilename);
                 default:
                     throw new NotSupportedException("Only image uploads are supported at this time.");
             }

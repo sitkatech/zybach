@@ -25,6 +25,9 @@ import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/ro
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
 import { WellNewComponent } from './pages/well-new/well-new.component';
+import { ReportsListComponent } from './pages/reports-list/reports-list.component';
+import { ReportTemplateDetailComponent } from './pages/report-template-detail/report-template-detail.component';
+import { ReportTemplateEditComponent } from './pages/report-template-edit/report-template-edit.component';
 
 const routes: Routes = [
   { path: "test-api", component: TestAPIComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -35,6 +38,10 @@ const routes: Routes = [
   { path: "wells/:wellRegistrationID", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard,AcknowledgedDisclaimerGuard]},
   { path: "chemigation",  component: ChemigationLandingComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports",  component: ReportsListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/new",  component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "reports/:id/edit", component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
 
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
