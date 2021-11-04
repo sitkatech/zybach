@@ -14,3 +14,13 @@ create table dbo.ChemigationPermit
 	DateReceived datetime not null,
 	TownshipRangeSection varchar(100) not null
 )
+
+Insert into dbo.CustomRichTextType (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
+values
+
+(8, 'Chemigation', 'Chemigation')
+
+Insert into dbo.CustomRichText(CustomRichTextTypeID, CustomRichTextContent)
+values
+
+(8, 'Default content for: Chemigation')

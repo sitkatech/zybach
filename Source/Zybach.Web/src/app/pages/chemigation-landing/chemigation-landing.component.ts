@@ -4,6 +4,7 @@ import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
 import { UserDetailedDto } from 'src/app/shared/models';
+import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
 
 @Component({
@@ -20,6 +21,7 @@ export class ChemigationLandingComponent implements OnInit, OnDestroy {
 
   private currentUser: UserDetailedDto;
 
+  public richTextTypeID : number = CustomRichTextType.Chemigation;
   public inspectionSummaries = [];
   columnDefs: ColDef[];
   users: UserDetailedDto[];
