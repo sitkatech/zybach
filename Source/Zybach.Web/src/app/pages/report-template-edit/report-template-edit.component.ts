@@ -27,6 +27,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   public model: ReportTemplateUpdateDto;
   public reportTemplateModels: Array<ReportTemplateModelDto>;
   public isLoadingSubmit: boolean = false;
+  public requiredFileIsUploaded: boolean = false;
 
   public displayErrors: any = {};
   public displayFileErrors: any = {};
@@ -72,6 +73,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
           this.model.DisplayName = reportTemplate.DisplayName;
           this.model.Description = reportTemplate.Description;
           this.model.ReportTemplateModelID = reportTemplate.ReportTemplateModel.ReportTemplateModelID;
+          this.requiredFileIsUploaded = true;
           this.cdr.detectChanges();
         });
       }
@@ -88,6 +90,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
     let file = this.getFile();
     this.model.FileResource = file;
     this.displayErrors = false;
+    this.requiredFileIsUploaded = true;
 
     // if (file && file.name.split(".").pop().toUpperCase() != "DOCX") {
     //   this.displayFileErrors = true;
@@ -134,7 +137,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         }
       );
-    }else {
+    } else {
       this.reportTemplateService.newReportTemplate(this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
@@ -146,6 +149,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
         ,
         error => {
           this.isLoadingSubmit = false;
+          this.alertService.pushAlert(new Alert(error.error, AlertContext.Danger));
           this.cdr.detectChanges();
         }
       );
