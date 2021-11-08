@@ -21,15 +21,31 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/chemigationPermits")]
-        [ZybachViewFeature]
-        public IEnumerable<ChemigationPermitDto> GetAllChemigationPermits()
+        //[ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationPermitDto>> GetAllChemigationPermits()
         {
             var chemigationPermitsDto = ChemigationPermit.List(_dbContext);
-            return chemigationPermitsDto;
+            return Ok(chemigationPermitsDto);
+        }
+
+        [HttpGet("/api/chemigationPermits/getByID/{chemigationPermitID}")]
+        //[ZybachViewFeature]
+        public ActionResult<ChemigationPermitDto> GetChemigationPermitByID([FromRoute] int chemigationPermitID)
+        {
+            var chemigationPermitDto = ChemigationPermit.GetChemigationPermitByID(_dbContext, chemigationPermitID);
+            return RequireNotNullThrowNotFound(chemigationPermitDto, "ChemigationPermit", chemigationPermitID);
+        }
+
+        [HttpGet("/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}")]
+        //[ZybachViewFeature]
+        public ActionResult<ChemigationPermitDto> GetChemigationPermitByPermitNumber([FromRoute] int chemigationPermitNumber)
+        {
+            var chemigationPermitDto = ChemigationPermit.GetChemigationPermitByNumber(_dbContext, chemigationPermitNumber);
+            return RequireNotNullThrowNotFound(chemigationPermitDto, "ChemigationPermit", chemigationPermitNumber);
         }
 
         [HttpPost("/api/chemigationPermits")]
-        [ZybachViewFeature]
+        //[AdminFeature]
         public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
             RunChemigationPermitUpsertValidation(_dbContext, chemigationPermitUpsertDto);
@@ -43,6 +59,45 @@ namespace Zybach.API.Controllers
                 ChemigationPermit.CreateNewChemigationPermit(_dbContext, chemigationPermitUpsertDto);
 
             return Ok(chemigationPermit);
+        }
+
+        [HttpPut("api/chemigationPermits/{chemigationPermitID}")]
+        //[AdminFeature]
+        public ActionResult<ChemigationPermitDto> UpdateChemigationPermit([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
+        {
+            var chemigationPermit = _dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
+
+            if (ThrowNotFound(chemigationPermit, "ChemigationPermit", chemigationPermitID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            RunChemigationPermitUpsertValidation(_dbContext, chemigationPermitUpsertDto);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedChemigationPermitDto = ChemigationPermit.UpdateChemigationPermit(_dbContext, chemigationPermit, chemigationPermitUpsertDto);
+
+            return Ok(updatedChemigationPermitDto);
+        }
+
+        [HttpDelete("/api/chemigationPermits/{chemigationPermitID}")]
+        //[AdminFeature]
+        public ActionResult DeleteChemigationPermitByID([FromRoute] int chemigationPermitID)
+        {
+            var chemigationPermitDto = ChemigationPermit.GetChemigationPermitByID(_dbContext, chemigationPermitID);
+
+            if (ThrowNotFound(chemigationPermitDto, "ChemigationPermit", chemigationPermitID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            ChemigationPermit.DeleteByChemigationPermitID(_dbContext, chemigationPermitID);
+
+            return Ok();
         }
 
         private void RunChemigationPermitUpsertValidation(ZybachDbContext dbContext, ChemigationPermitUpsertDto chemigationPermitUpsertDto)

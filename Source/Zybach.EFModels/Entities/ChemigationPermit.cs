@@ -51,11 +51,43 @@ namespace Zybach.EFModels.Entities
             return chemigationPermit?.AsDto();
         }
 
+        public static ChemigationPermitDto GetChemigationPermitByNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
+        {
+            var chemigationPermit = GetChemigationPermitImpl(dbContext)
+                .SingleOrDefault(x => x.ChemigationPermitNumber == chemigationPermitNumber);
+
+            return chemigationPermit?.AsDto();
+        }
+
         private static IQueryable<ChemigationPermit> GetChemigationPermitImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermits
                 .Include(x => x.ChemigationPermitStatus)
                 .AsNoTracking();
+        }
+
+        public static ChemigationPermitDto UpdateChemigationPermit(ZybachDbContext dbContext, ChemigationPermit chemigationPermit, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
+        {
+            // null check occurs in calling endpoint method.
+            chemigationPermit.ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber;
+            chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
+            chemigationPermit.DateReceived = chemigationPermitUpsertDto.DateReceived;
+            chemigationPermit.TownshipRangeSection = chemigationPermitUpsertDto.TownshipRangeSection;
+
+            dbContext.SaveChanges();
+            dbContext.Entry(chemigationPermit).Reload();
+            return GetChemigationPermitByID(dbContext, chemigationPermit.ChemigationPermitID);
+        }
+
+        public static void DeleteByChemigationPermitID(ZybachDbContext dbContext, int chemigationPermitID)
+        {
+            var chemigationPermitToRemove = dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
+
+            if (chemigationPermitToRemove != null)
+            {
+                dbContext.ChemigationPermits.Remove(chemigationPermitToRemove);
+                dbContext.SaveChanges();
+            }
         }
 
     }

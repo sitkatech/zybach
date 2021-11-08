@@ -24,3 +24,10 @@ Insert into dbo.CustomRichText(CustomRichTextTypeID, CustomRichTextContent)
 values
 
 (8, 'Default content for: Chemigation')
+
+INSERT INTO dbo.ChemigationPermitStatus(ChemigationPermitStatusName, ChemigationPermitStatusDisplayName)
+VALUES
+(
+'Active', 'Active',
+'Inactive', 'Inactive'
+)
