@@ -59,6 +59,11 @@ namespace Zybach.API.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            if (_dbContext.ReportTemplates.Any(x => x.DisplayName.Equals(reportTemplateNewDto.DisplayName)))
+            {
+                return BadRequest($"Report Template with Name '{reportTemplateNewDto.DisplayName}' already exists.");
+            }
             var fileResource = await HttpUtilities.MakeFileResourceFromFormFile(reportTemplateNewDto.FileResource, _dbContext, HttpContext);
 
             _dbContext.FileResources.Add(fileResource);
@@ -127,8 +132,7 @@ namespace Zybach.API.Controllers
             }
 
             dbContext.SaveChanges();
-
-            return reportTemplate.AsDto();
+            return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
         [HttpPut("/api/reportTemplates/generateReports")]

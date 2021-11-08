@@ -72,10 +72,10 @@ export class ReportsListComponent implements OnInit, OnDestroy {
             }
             return 0;
           },
-          sortable: true, filter: true, width: 170
+          sortable: true, filter: true, width: 500
         },
-        { headerName: 'Description', field: 'Description', sortable: true, filter: true },
-        { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', sortable: true, filter: true },
+        { headerName: 'Description', field: 'Description', sortable: true, filter: true, width: 500 },
+        { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', sortable: true, filter: true, width: 268 },
         {
           headerName: 'Template File', valueGetter: function (params: any) {
             return { LinkValue: `https://${apiHostName}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
@@ -95,7 +95,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
             }
             return 0;
           },
-          sortable: true, filter: true, width: 170
+          sortable: true, filter: true, width: 500
         },
       ];
 
@@ -112,7 +112,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   }
 
   public generateReport(): void {
-    if(this.selectedReportTemplateID === undefined){
+    if(!this.selectedReportTemplateID){
       this.alertService.pushAlert(new Alert("No report template selected.", AlertContext.Warning));
     } else {
       this.isLoadingSubmit = true;
