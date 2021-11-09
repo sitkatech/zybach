@@ -27,7 +27,5 @@ values
 
 INSERT INTO dbo.ChemigationPermitStatus(ChemigationPermitStatusName, ChemigationPermitStatusDisplayName)
 VALUES
-(
-'Active', 'Active',
-'Inactive', 'Inactive'
-)
+('Active', 'Active'),
+('Inactive', 'Inactive')
