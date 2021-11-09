@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   zybach.api:
-    image: sitkacontainers.azurecr.io/zybach/api
+    image: zybach/api
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
     build:
