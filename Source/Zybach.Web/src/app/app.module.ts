@@ -21,8 +21,6 @@ import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer
 
 
 import { FormsModule } from '@angular/forms';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ComboSeriesVerticalComponent } from './shared/components/combo-chart/combo-series-vertical.component'
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
@@ -78,7 +76,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     UserInviteComponent,
     UserDetailComponent,
     UserEditComponent,
-    ComboSeriesVerticalComponent,
     LoginCallbackComponent,
     HelpComponent,
     CreateUserCallbackComponent,
@@ -115,7 +112,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     OAuthModule.forRoot(),
     SharedModule.forRoot(),
     FormsModule,
-    NgxChartsModule,
     BrowserAnimationsModule,
     AgGridModule.withComponents([]),
     SelectDropDownModule,
