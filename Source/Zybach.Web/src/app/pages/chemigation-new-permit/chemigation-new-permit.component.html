@@ -1,0 +1,73 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/chemigation-permits">Chemigation Permits</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">New Chemigation Permit</li>
+    </ol>
+</nav>
+<div class="container">
+    <app-alert-display></app-alert-display>
+    <form (ngSubmit)="onSubmit(newChemigationPermitForm)" #newChemigationPermitForm="ngForm">
+        <!-- <div class="row">
+            <div class="col">
+                <div class="form-group mt-4">
+                    <div class="col-sm-5 control-label">
+                        <label class="required">Well Registration ID</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" name="WellRegistrationID"
+                            placeholder="Well Registration ID" required [(ngModel)]="model.WellRegistrationID" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    To set the location of the Well:
+                    <ul>
+                        <li>Click on the location of the Well on the map <strong>OR</strong></li>
+                        <li>Directly type in the latitude and longitude</li>
+                    </ul>
+                </div>
+
+                <div class="form-group mt-4">
+                    <div class="col-sm-5 control-label">
+                        <label class="required">Latitude</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="number" class="form-control" name="Latitude" required (change)="onLatLngChange()"
+                            [(ngModel)]="model.Latitude" step=".001" />
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-sm-5 control-label">
+                        <label class="required">Longitude</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <input type="number" class="form-control" name="Longitude" required (change)="onLatLngChange()"
+                            [(ngModel)]="model.Longitude" step=".001" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div id="{{mapID}}" style="height:500px;"></div>
+            </div>
+        </div>
+        <hr />
+        <div class="row mt-4">
+            <div class="col-sm">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
+            <div class="col-sm text-right">
+                <button type="submit" class="btn btn-zybach" [disabled]="!newWellForm.form.valid || isLoadingSubmit">
+                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                    Submit
+                </button>
+                <a class="btn btn-secondary ml-1" routerLink="/well-map">Cancel</a>
+            </div>
+        </div> -->
+    </form>
+</div>

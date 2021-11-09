@@ -56,6 +56,9 @@ import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-statu
 import { SensorStatusMapPopupComponent } from './pages/sensor-status-map-popup/sensor-status-map-popup.component';
 import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
 import { WellNewComponent } from './pages/well-new/well-new.component';
+import { ChemigationNewPermitComponent } from './pages/chemigation-new-permit/chemigation-new-permit.component';
+import { ChemigationPermitListComponent } from './pages/chemigation-permit-list/chemigation-permit-list.component';
+import { ChemigationPermitDetailComponent } from './pages/chemigation-permit-detail/chemigation-permit-detail.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -94,6 +97,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     SensorStatusMapPopupComponent,
     ChemigationLandingComponent,
     WellNewComponent,
+    ChemigationNewPermitComponent,
+    ChemigationPermitListComponent,
+    ChemigationPermitDetailComponent,
   ],
   imports: [
     AppRoutingModule,
