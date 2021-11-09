@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { ChemigationPermitUpsertDto } from 'src/app/shared/models/chemigation-permit-upsert-dto';
@@ -9,6 +8,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -29,7 +29,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   constructor(
     private cdr: ChangeDetectorRef,
     private router: Router, 
-    private chemigationPermitService: ChemigationInspectionService,
+    private chemigationPermitService: ChemigationPermitService,
     private authenticationService: AuthenticationService, 
     private alertService: AlertService
   ) { }

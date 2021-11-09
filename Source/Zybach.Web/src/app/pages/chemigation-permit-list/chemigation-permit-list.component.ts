@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
+import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
@@ -31,7 +31,7 @@ export class ChemigationPermitListComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private chemigationPermitService: ChemigationInspectionService,
+    private chemigationPermitService: ChemigationPermitService,
     private cdr: ChangeDetectorRef
   ) { }
 

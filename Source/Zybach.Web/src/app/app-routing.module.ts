@@ -30,6 +30,7 @@ import { ReportTemplateDetailComponent } from './pages/report-template-detail/re
 import { ReportTemplateEditComponent } from './pages/report-template-edit/report-template-edit.component';
 import { ChemigationPermitListComponent } from './pages/chemigation-permit-list/chemigation-permit-list.component';
 import { ChemigationNewPermitComponent } from './pages/chemigation-new-permit/chemigation-new-permit.component';
+import { ChemigationPermitDetailComponent } from './pages/chemigation-permit-detail/chemigation-permit-detail.component';
 
 const routes: Routes = [
   { path: "test-api", component: TestAPIComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "reports/:id/edit", component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "chemigation-permits",  component: ChemigationPermitListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "chemigation-permits/:permit-number",  component: ChemigationPermitDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/new",  component: ChemigationNewPermitComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
