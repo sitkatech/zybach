@@ -16,3 +16,4 @@ Source/old/Zybach.Web/wwwroot/assets/config.json
 *.pem
 /Source/Zybach.API/appsecrets.json
 Source/Zybach.Web/.vscode/
+/Source/Zybach.Web/package-lock.json
