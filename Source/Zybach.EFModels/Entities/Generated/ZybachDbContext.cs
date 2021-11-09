@@ -22,6 +22,8 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
         public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
+        public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
+        public virtual DbSet<ChemigationPermitStatus> ChemigationPermitStatuses { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
@@ -103,6 +105,23 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.Status).IsUnicode(false);
 
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemigationPermit>(entity =>
+            {
+                entity.Property(e => e.TownshipRangeSection).IsUnicode(false);
+
+                entity.HasOne(d => d.ChemigationPermitStatus)
+                    .WithMany(p => p.ChemigationPermits)
+                    .HasForeignKey(d => d.ChemigationPermitStatusID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitStatus>(entity =>
+            {
+                entity.Property(e => e.ChemigationPermitStatusDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationPermitStatusName).IsUnicode(false);
             });
 
             modelBuilder.Entity<CustomRichText>(entity =>

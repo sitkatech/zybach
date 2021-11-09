@@ -28,6 +28,8 @@ import { WellNewComponent } from './pages/well-new/well-new.component';
 import { ReportsListComponent } from './pages/reports-list/reports-list.component';
 import { ReportTemplateDetailComponent } from './pages/report-template-detail/report-template-detail.component';
 import { ReportTemplateEditComponent } from './pages/report-template-edit/report-template-edit.component';
+import { ChemigationPermitListComponent } from './pages/chemigation-permit-list/chemigation-permit-list.component';
+import { ChemigationNewPermitComponent } from './pages/chemigation-new-permit/chemigation-new-permit.component';
 
 const routes: Routes = [
   { path: "test-api", component: TestAPIComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -42,7 +44,8 @@ const routes: Routes = [
   { path: "reports/new",  component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "reports/:id/edit", component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-
+  { path: "chemigation-permits",  component: ChemigationPermitListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "chemigation-permits/new",  component: ChemigationNewPermitComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},

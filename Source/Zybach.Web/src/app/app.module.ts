@@ -59,6 +59,9 @@ import { WellNewComponent } from './pages/well-new/well-new.component';
 import { ReportsListComponent } from './pages/reports-list/reports-list.component';
 import { ReportTemplateDetailComponent } from './pages/report-template-detail/report-template-detail.component';
 import { ReportTemplateEditComponent } from './pages/report-template-edit/report-template-edit.component';
+import { ChemigationNewPermitComponent } from './pages/chemigation-new-permit/chemigation-new-permit.component';
+import { ChemigationPermitListComponent } from './pages/chemigation-permit-list/chemigation-permit-list.component';
+import { ChemigationPermitDetailComponent } from './pages/chemigation-permit-detail/chemigation-permit-detail.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -100,6 +103,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ReportsListComponent,
     ReportTemplateDetailComponent,
     ReportTemplateEditComponent,
+    ChemigationNewPermitComponent,
+    ChemigationPermitListComponent,
+    ChemigationPermitDetailComponent,
   ],
   imports: [
     AppRoutingModule,

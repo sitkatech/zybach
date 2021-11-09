@@ -65,6 +65,10 @@
         height: 100%;
       }
     }
+
+    .dropdown-item{
+      padding: 0.25rem 0.75rem;
+    }
         
     a.nav-link
     {
@@ -113,7 +117,7 @@
       padding-right: 16px;
     }
   }
-  
+
   // title bar and current page header
   .navbar-responsive-current-page{
     color: white;

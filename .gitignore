@@ -15,3 +15,4 @@ Source/Zybach.NodeAPI/src/bucket/key.pem
 Source/old/Zybach.Web/wwwroot/assets/config.json
 *.pem
 /Source/Zybach.API/appsecrets.json
+Source/Zybach.Web/.vscode/

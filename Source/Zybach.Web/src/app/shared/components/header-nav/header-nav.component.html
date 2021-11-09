@@ -115,10 +115,28 @@
                     <img src="/assets/main/nav/sensor_status.png" /> Sensor Status
                 </a>
             </li>
-            <li class="nav-item chemigationItem" [ngClass]="{'currentPage': isChemigationCurrentPage()}">
+            <!-- <li class="nav-item chemigationItem" [ngClass]="{'currentPage': isChemigationCurrentPage()}">
                 <a class="nav-link" routerLinkActive="active" routerLink="/chemigation">
                     <img src="/assets/main/nav/chemigation.png" /> Chemigation
                 </a>
+            </li> -->
+            <li class="nav-item dropdown chemigationItem" routerLinkActive="active" [ngClass]="{'currentPage': isChemigationCurrentPage()}">
+                <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    <img src="/assets/main/nav/chemigation.png" />
+                    Permits and Inspections
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a routerLink="/chemigation-permits" class="dropdown-item">
+                        Chemigation Permits
+                    </a>
+                    <a routerLink="/" class="dropdown-item disabled">
+                        Water Quality Inspections
+                    </a>
+                    <a routerLink="/" class="dropdown-item disabled">
+                        Water Level Inspections
+                    </a>
+                </div>
             </li>
             <li class="nav-item searchItem">
                 <img src="/assets/main/nav/search.png">
