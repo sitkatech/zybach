@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.7'
 
 services:
   zybach.web:
@@ -7,5 +7,5 @@ services:
         source: ${DOCKER_BUILD_SOURCE}
     image: sitkacontainers.azurecr.io/zybach/web
     ports:
-      - "8113:80"
-      - "8114:443"
+      - "8713:80"
+      - "8714:443"
