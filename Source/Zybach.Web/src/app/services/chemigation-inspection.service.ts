@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ChemigationPermitUpsertDto } from '../shared/models/chemigation-permit-upsert-dto';
 import { ChemigationPermitDto } from '../shared/models/generated/chemigation-permit-dto';
+import { ChemigationPermitStatusDto } from '../shared/models/generated/chemigation-permit-status-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({
@@ -27,6 +28,11 @@ export class ChemigationInspectionService {
   
   public getAllChemigationPermits(): Observable<Array<ChemigationPermitDto>> {
     let route = `/chemigationPermits`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getAllChemigationPermitStatuses(): Observable<Array<ChemigationPermitStatusDto>> {
+    let route = `/chemigationPermits/permitStatuses`;
     return this.apiService.getFromApi(route);
   }
   

@@ -6,6 +6,7 @@ import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { ChemigationPermitUpsertDto } from 'src/app/shared/models/chemigation-permit-upsert-dto';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -18,6 +19,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   
+  public permitStatuses: Array<ChemigationPermitStatusDto>;
   public model: ChemigationPermitUpsertDto;
   
   public isLoadingSubmit: boolean = false;
@@ -40,6 +42,9 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
           .then();
         return;
       }
+      this.chemigationPermitService.getAllChemigationPermitStatuses().subscribe(permitStatuses => {
+        this.permitStatuses = permitStatuses;
+      })
     });
 
   }
