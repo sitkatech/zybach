@@ -20,14 +20,40 @@
                             placeholder="Well Registration ID" required [(ngModel)]="model.WellRegistrationID" />
                     </div>
                 </div> -->
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group mt-4">
+                            <div class="col-sm-3 control-label text-left">
+                                <label class="required"><strong>Chemigation Permit Number</strong></label>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="ChemigationPermitNumber"
+                                    placeholder="Permit Number" required [(ngModel)]="model.ChemigationPermitNumber" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group mt-4">
+                            <div class="col-sm-3 control-label text-left">
+                                <label class="required"><strong>Township-Range-Section</strong></label>
+                            </div>
+                            <div class="col-sm-5">
+                                <input type="text" class="form-control" name="TownshipRangeSection"
+                                    placeholder="Township-Range-Section" required [(ngModel)]="model.TownshipRangeSection" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-right">
+                    <div class="col-sm-3 control-label text-left">
                         <p class="mb-0"> <label class="required"><strong>Permit Status</strong></label></p>
                     </div>
                     <div class="col-sm-5">
                         <select name="PermitStatusID" class="form-control" [(ngModel)]="model.ChemigationPermitStatusID"
                             required>
-                            <option selected disabled value=""></option>
+                            <option selected disabled [value]=0></option>
                             <option *ngFor="let permitStatus of permitStatuses"
                                 [value]="permitStatus.ChemigationPermitStatusID">
                                 {{permitStatus.ChemigationPermitStatusDisplayName}}
@@ -36,7 +62,7 @@
                     </div>
                 </div>
                 <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-right">
+                    <div class="col-sm-3 control-label text-left">
                         <p class="mb-0"> <label class="required"><strong>Date Received</strong></label></p>
                     </div>
                     <div class="col-sm-5">

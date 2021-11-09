@@ -8,11 +8,13 @@ import { ChemigationPermitUpsertDto } from 'src/app/shared/models/chemigation-pe
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
   templateUrl: './chemigation-new-permit.component.html',
-  styleUrls: ['./chemigation-new-permit.component.scss']
+  styleUrls: ['./chemigation-new-permit.component.scss'],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
 })
 
 export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
@@ -61,7 +63,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         newChemigationPermitForm.reset();
-        this.router.navigateByUrl("/chemigation-permits/" + response.ChemigationPermitNumber).then(() => {
+        this.router.navigateByUrl("/chemigation-permits").then(() => {
           this.alertService.pushAlert(new Alert("Chemigation Permit '" + response.ChemigationPermitNumber + "' successfully created.", AlertContext.Success));
         });
       },
