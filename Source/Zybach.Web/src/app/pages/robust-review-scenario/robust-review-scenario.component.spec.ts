@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RobustReviewScenarioComponent } from './robust-review-scenario.component';
 
@@ -6,7 +6,7 @@ describe('RobustReviewScenarioComponent', () => {
   let component: RobustReviewScenarioComponent;
   let fixture: ComponentFixture<RobustReviewScenarioComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ RobustReviewScenarioComponent ]
     })

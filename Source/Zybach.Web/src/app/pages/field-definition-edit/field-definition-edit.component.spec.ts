@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OAuthModule } from 'angular-oauth2-oidc';
 
@@ -9,7 +9,7 @@ describe('FieldDefinitionEditComponent', () => {
   let component: FieldDefinitionEditComponent;
   let fixture: ComponentFixture<FieldDefinitionEditComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FieldDefinitionEditComponent ],
       imports: [ RouterTestingModule, OAuthModule.forRoot(), HttpClientModule ],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SensorStatusMapComponent } from './sensor-status-map.component';
 
@@ -6,7 +6,7 @@ describe('SensorStatusMapComponent', () => {
   let component: SensorStatusMapComponent;
   let fixture: ComponentFixture<SensorStatusMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SensorStatusMapComponent ]
     })

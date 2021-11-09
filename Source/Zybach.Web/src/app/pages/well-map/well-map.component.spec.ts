@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { IndividualConfig, ToastrService } from 'ngx-toastr';
@@ -23,7 +23,7 @@ describe('WellMapComponent', () => {
   let component: WellMapComponent;
   let fixture: ComponentFixture<WellMapComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [ {provide: ToastrService, useValue: toastrService} ],
       declarations: [ WellMapComponent ],

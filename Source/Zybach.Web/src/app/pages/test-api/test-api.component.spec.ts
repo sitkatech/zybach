@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OAuthModule } from 'angular-oauth2-oidc';
 
@@ -12,7 +12,7 @@ describe('TestAPIComponent', () => {
   let component: TestAPIComponent;
   let fixture: ComponentFixture<TestAPIComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     window.config = config;
     TestBed.configureTestingModule({
       declarations: [ TestAPIComponent ],
