@@ -49,7 +49,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WellMapPopupComponent } from './pages/well-map-popup/well-map-popup.component';
 import { createCustomElement } from '@angular/elements';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
-import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-status-map.component';
@@ -126,8 +125,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ToastrModule.forRoot({
       positionClass: "toast-top-right"
     }),
-    AngularMyDatePickerModule,
-    IvyCarouselModule
+    AngularMyDatePickerModule
   ],  
   providers: [
     CookieService,
