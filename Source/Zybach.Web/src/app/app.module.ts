@@ -61,6 +61,7 @@ import { ReportTemplateEditComponent } from './pages/report-template-edit/report
 import { ChemigationNewPermitComponent } from './pages/chemigation-new-permit/chemigation-new-permit.component';
 import { ChemigationPermitListComponent } from './pages/chemigation-permit-list/chemigation-permit-list.component';
 import { ChemigationPermitDetailComponent } from './pages/chemigation-permit-detail/chemigation-permit-detail.component';
+import { ChemigationPermitEditComponent } from './pages/chemigation-permit-edit/chemigation-permit-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -105,6 +106,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationNewPermitComponent,
     ChemigationPermitListComponent,
     ChemigationPermitDetailComponent,
+    ChemigationPermitEditComponent,
   ],
   imports: [
     AppRoutingModule,

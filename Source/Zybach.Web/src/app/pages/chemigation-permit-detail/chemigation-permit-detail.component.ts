@@ -36,6 +36,8 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
+    this.authenticationService.dispose();
+    this.cdr.detach();
   }
 
   public currentUserIsAdmin(): boolean {

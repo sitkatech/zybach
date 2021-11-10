@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-header">
                     <a *ngIf="currentUserIsAdmin() && chemigationPermit" class="btn btn-rio btn-sm float-right"
-                    routerLink="/chemigation-permits/<{{chemigationPermit.ChemigationPermitNumber}}>/edit">
+                    routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}/edit">
                     <span class="fas fa-edit"></span> Edit
                 </a>
                     Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}

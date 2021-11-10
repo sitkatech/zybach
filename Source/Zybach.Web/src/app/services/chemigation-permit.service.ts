@@ -38,9 +38,9 @@ export class ChemigationPermitService {
     return this.apiService.postToApi(route, chemigationPermitToCreate);
   }
   
-  public updateChemigationPermitByID(chemigationPermitID: number, chemigationPermitUpdateDto: ChemigationPermitUpsertDto): Observable<ChemigationPermitDto> {
-    let route = `/customPages/${chemigationPermitID}`;
-    return this.apiService.putToApi(route, chemigationPermitUpdateDto);
+  public updateChemigationPermitByID(chemigationPermitID: number, chemigationPermitUpsertDto: ChemigationPermitUpsertDto): Observable<ChemigationPermitDto> {
+    let route = `/chemigationPermits/${chemigationPermitID}`;
+    return this.apiService.putToApi(route, chemigationPermitUpsertDto);
   }
 
   public deleteChemigationPermitByID(chemigationPermitID: number): Observable<any> {
