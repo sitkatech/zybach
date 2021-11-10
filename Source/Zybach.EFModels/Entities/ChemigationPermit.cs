@@ -13,11 +13,20 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
-        public static bool DoesStatusExist(ZybachDbContext dbContext, int chemigationPermitStatusID)
+        public static bool IsChemigationPermitNumberUnique(ZybachDbContext dbContext, int chemigationPermitNumber, int? currentID)
         {
-            return dbContext.ChemigationPermitStatuses
-                .Select(x => x.ChemigationPermitStatusID)
-                .Contains(chemigationPermitStatusID);
+            return dbContext.ChemigationPermits
+                .Any(x => x.ChemigationPermitNumber == chemigationPermitNumber &&
+                          (currentID == null || (
+                              currentID != null && x.ChemigationPermitID != currentID)));
+        }
+
+        public static bool IsTownshipRangeSectionUnique(ZybachDbContext dbContext, string townshipRangeSection, int? currentID)
+        {
+            return dbContext.ChemigationPermits
+                .Any(x => x.TownshipRangeSection == townshipRangeSection &&
+                          (currentID == null || (
+                              currentID != null && x.ChemigationPermitID != currentID)));
         }
 
         public static ChemigationPermitDto CreateNewChemigationPermit(ZybachDbContext dbContext, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
