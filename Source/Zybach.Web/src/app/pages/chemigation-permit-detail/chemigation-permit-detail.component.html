@@ -20,12 +20,12 @@
                 </div>
                 <div class="card-body">
                     <div class="row" *ngIf="chemigationPermit">
-                        <div class="col-12  col-sm-6 label"><strong>Permit Status: </strong></div>
-                        <div class="col-12  col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</div>
-                        <div class="col-12  col-sm-6 label"><strong>Township, Range, Section: </strong></div>
-                        <div class="col-12  col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
-                        <div class="col-12  col-sm-6 label"><strong>Date Received: </strong></div>
-                        <div class="col-12  col-sm-6">{{chemigationPermit.DateReceived | date:'shortDate'}}</div>
+                        <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
+                        <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</div>
+                        <div class="col-12 col-sm-6 label"><strong>Township, Range, Section: </strong></div>
+                        <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
+                        <div class="col-12 col-sm-6 label"><strong>Date Received: </strong></div>
+                        <div class="col-12 col-sm-6">{{chemigationPermit.DateReceived | date:'shortDate'}}</div>
                     </div>
                     <div class="row" *ngIf="!chemigationPermit">
                         <div class="col text-center">

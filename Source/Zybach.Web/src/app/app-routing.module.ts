@@ -23,7 +23,6 @@ import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
-import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
 import { WellNewComponent } from './pages/well-new/well-new.component';
 import { ReportsListComponent } from './pages/reports-list/reports-list.component';
 import { ReportTemplateDetailComponent } from './pages/report-template-detail/report-template-detail.component';
@@ -41,7 +40,6 @@ const routes: Routes = [
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:wellRegistrationID", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard,AcknowledgedDisclaimerGuard]},
-  { path: "chemigation",  component: ChemigationLandingComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports",  component: ReportsListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/new",  component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
