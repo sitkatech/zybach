@@ -51,7 +51,6 @@ import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/ro
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-status-map.component';
 import { SensorStatusMapPopupComponent } from './pages/sensor-status-map-popup/sensor-status-map-popup.component';
-import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
 import { WellNewComponent } from './pages/well-new/well-new.component';
 import { ReportsListComponent } from './pages/reports-list/reports-list.component';
 import { ReportTemplateDetailComponent } from './pages/report-template-detail/report-template-detail.component';
@@ -59,6 +58,7 @@ import { ReportTemplateEditComponent } from './pages/report-template-edit/report
 import { ChemigationNewPermitComponent } from './pages/chemigation-new-permit/chemigation-new-permit.component';
 import { ChemigationPermitListComponent } from './pages/chemigation-permit-list/chemigation-permit-list.component';
 import { ChemigationPermitDetailComponent } from './pages/chemigation-permit-detail/chemigation-permit-detail.component';
+import { ChemigationPermitEditComponent } from './pages/chemigation-permit-edit/chemigation-permit-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -94,7 +94,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     SensorStatusComponent,
     SensorStatusMapComponent,
     SensorStatusMapPopupComponent,
-    ChemigationLandingComponent,
     WellNewComponent,
     ReportsListComponent,
     ReportTemplateDetailComponent,
@@ -102,6 +101,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationNewPermitComponent,
     ChemigationPermitListComponent,
     ChemigationPermitDetailComponent,
+    ChemigationPermitEditComponent,
   ],
   imports: [
     AppRoutingModule,

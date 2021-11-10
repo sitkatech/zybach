@@ -1,20 +1,21 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
+import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
-import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
   templateUrl: './chemigation-permit-list.component.html',
   styleUrls: ['./chemigation-permit-list.component.scss']
 })
-export class ChemigationPermitListComponent implements OnInit {
+export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   @ViewChild('permitGrid') permitGrid: AgGridAngular;
 
   private watchUserChangeSubscription: any;
@@ -31,7 +32,7 @@ export class ChemigationPermitListComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private chemigationPermitService: ChemigationInspectionService,
+    private chemigationPermitService: ChemigationPermitService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -71,32 +72,54 @@ export class ChemigationPermitListComponent implements OnInit {
         filter: true,
         filterValueGetter: function (params: any) {
           return params.data.ChemigationPermitNumber;
-        }
+        },
+        resizable: true,
+        sort: 'asc'
       },
-      { headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName' },
-      { headerName: 'Date Received', field: 'DateReceived', valueFormatter: agGridDateFormatter },
-      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection' }
+      { 
+        headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName'
+        },
+        resizable: true,
+        sortable: true
+      },
+      this.createDateColumnDef('Date Received', 'DateReceived', 'M/d/yyyy'),
+      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true }
     ];
 
-    this.columnDefs.forEach(x => {
-      x.filter = true;
-      x.resizable = true;
-      x.sortable = true;
-    });
   }
 
+  private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+    const cellDate = Date.parse(cellValue);
+    if (cellDate == filterLocalDateAtMidnight) {
+      return 0;
+    }
+    return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
+  }
+  
+  private createDateColumnDef(headerName: string, fieldName: string, dateFormat: string): ColDef {
+    let datePipe = new DatePipe('en-US');
+  
+    return {
+      headerName: headerName, valueGetter: function (params: any) {
+        return datePipe.transform(params.data[fieldName], dateFormat);
+      },
+      comparator: this.dateFilterComparator,
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        filterOptions: ['inRange'],
+        comparator: this.dateFilterComparator
+      }, 
+      resizable: true,
+      sortable: true
+    };
+  }
+  
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
-    this.updateGridData();
-  }
-
-  public updateGridData(): void {
-    this.chemigationPermitService.getAllChemigationPermits().subscribe(chemigationPermits => {
-      this.chemigationPermits = chemigationPermits;
-      this.cdr.detectChanges();
-    });
-    this.permitGrid.api.hideOverlay();
   }
 
   ngOnDestroy(): void {

@@ -8,7 +8,6 @@ import { Alert } from '../../models/alert';
 import { environment } from 'src/environments/environment';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { Router } from '@angular/router';
-import { WellService } from 'src/app/services/well.service';
 import { SearchService } from 'src/app/services/search.service';
 
 @Component({
