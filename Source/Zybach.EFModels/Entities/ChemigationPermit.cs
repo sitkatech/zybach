@@ -21,14 +21,6 @@ namespace Zybach.EFModels.Entities
                               currentID != null && x.ChemigationPermitID != currentID)));
         }
 
-        public static bool IsTownshipRangeSectionUnique(ZybachDbContext dbContext, string townshipRangeSection, int? currentID)
-        {
-            return dbContext.ChemigationPermits
-                .Any(x => x.TownshipRangeSection == townshipRangeSection &&
-                          (currentID == null || (
-                              currentID != null && x.ChemigationPermitID != currentID)));
-        }
-
         public static ChemigationPermitDto CreateNewChemigationPermit(ZybachDbContext dbContext, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
             if (chemigationPermitUpsertDto == null)

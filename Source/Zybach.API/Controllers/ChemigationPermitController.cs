@@ -117,11 +117,6 @@ namespace Zybach.API.Controllers
                 ModelState.AddModelError("ChemigationPermitNumber", "Permit Number must be unique");
             }
 
-            if (ChemigationPermit.IsTownshipRangeSectionUnique(_dbContext, chemigationPermitUpsertDto.TownshipRangeSection, currentID))
-            {
-                ModelState.AddModelError("TownshipRangeSection", "Township-Range-Section must be unique");
-            }
-
         }
 
     }
