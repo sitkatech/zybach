@@ -64,7 +64,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
         this.isLoadingSubmit = false;
         newChemigationPermitForm.reset();
         this.router.navigateByUrl("/chemigation-permits/" + response.ChemigationPermitNumber).then(() => {
-          this.alertService.pushAlert(new Alert("Chemigation Permit '" + response.ChemigationPermitNumber + "' successfully created.", AlertContext.Success));
+          this.alertService.pushAlert(new Alert("Chemigation Permit " + response.ChemigationPermitNumber + " successfully created.", AlertContext.Success));
         });
       },
         error => {

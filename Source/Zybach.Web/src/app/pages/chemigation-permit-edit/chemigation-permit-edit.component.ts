@@ -79,8 +79,9 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
     this.chemigationPermitService.updateChemigationPermitByID(this.chemigationPermit.ChemigationPermitID, this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
-        this.router.navigateByUrl("/chemigation-permits/" + this.chemigationPermitNumber).then(() => {
-          this.alertService.pushAlert(new Alert(`The chemigation permit ${this.model.ChemigationPermitNumber} was successfully updated.`, AlertContext.Success));
+        editChemigationPermitForm.reset();
+        this.router.navigateByUrl("/chemigation-permits/" + response.ChemigationPermitNumber).then(() => {
+          this.alertService.pushAlert(new Alert(`Chemigation Permit ${response.ChemigationPermitNumber} was successfully updated.`, AlertContext.Success));
         });
       }
         ,
