@@ -12,6 +12,11 @@ namespace Zybach.EFModels.Entities
     [Index(nameof(ChemigationPermitNumber), Name = "AK_ChemigationPermit_ChemigationPermitNumber", IsUnique = true)]
     public partial class ChemigationPermit
     {
+        public ChemigationPermit()
+        {
+            ChemigationPermitAnnualRecords = new HashSet<ChemigationPermitAnnualRecord>();
+        }
+
         [Key]
         public int ChemigationPermitID { get; set; }
         public int ChemigationPermitNumber { get; set; }
@@ -25,5 +30,7 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(ChemigationPermitStatusID))]
         [InverseProperty("ChemigationPermits")]
         public virtual ChemigationPermitStatus ChemigationPermitStatus { get; set; }
+        [InverseProperty(nameof(ChemigationPermitAnnualRecord.ChemigationPermit))]
+        public virtual ICollection<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
     }
 }

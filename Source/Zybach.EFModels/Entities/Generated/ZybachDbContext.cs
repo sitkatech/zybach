@@ -23,6 +23,8 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecordStatus> ChemigationPermitAnnualRecordStatuses { get; set; }
         public virtual DbSet<ChemigationPermitStatus> ChemigationPermitStatuses { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
@@ -115,6 +117,32 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.ChemigationPermits)
                     .HasForeignKey(d => d.ChemigationPermitStatusID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecord>(entity =>
+            {
+                entity.Property(e => e.ApplicantFirstName).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantLastName).IsUnicode(false);
+
+                entity.Property(e => e.PivotName).IsUnicode(false);
+
+                entity.HasOne(d => d.ChemigationPermitAnnualRecordStatus)
+                    .WithMany(p => p.ChemigationPermitAnnualRecords)
+                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordStatusID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemigationPermit)
+                    .WithMany(p => p.ChemigationPermitAnnualRecords)
+                    .HasForeignKey(d => d.ChemigationPermitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecordStatus>(entity =>
+            {
+                entity.Property(e => e.ChemigationPermitAnnualRecordStatusDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationPermitAnnualRecordStatusName).IsUnicode(false);
             });
 
             modelBuilder.Entity<ChemigationPermitStatus>(entity =>
