@@ -73,23 +73,22 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         filterValueGetter: function (params: any) {
           return params.data.ChemigationPermitNumber;
         },
+        resizable: true,
         sort: 'asc'
       },
-      { headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
+      { 
+        headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'ChemigationPermitStatus'
-        }
+          field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName'
+        },
+        resizable: true,
+        sortable: true
       },
       this.createDateColumnDef('Date Received', 'DateReceived', 'M/d/yyyy'),
-      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection' }
+      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true }
     ];
 
-    this.columnDefs.forEach(x => {
-      x.filter = true;
-      x.resizable = true;
-      x.sortable = true;
-    });
   }
 
   private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
@@ -107,27 +106,20 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       headerName: headerName, valueGetter: function (params: any) {
         return datePipe.transform(params.data[fieldName], dateFormat);
       },
-      comparator: this.dateFilterComparator, sortable: true, filter: 'agDateColumnFilter',
+      comparator: this.dateFilterComparator,
+      filter: 'agDateColumnFilter',
       filterParams: {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
-      }
+      }, 
+      resizable: true,
+      sortable: true
     };
   }
   
-
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
-    this.updateGridData();
-  }
-
-  public updateGridData(): void {
-    this.chemigationPermitService.getAllChemigationPermits().subscribe(chemigationPermits => {
-      this.chemigationPermits = chemigationPermits;
-      this.cdr.detectChanges();
-    });
-    this.permitGrid.api.hideOverlay();
   }
 
   ngOnDestroy(): void {
