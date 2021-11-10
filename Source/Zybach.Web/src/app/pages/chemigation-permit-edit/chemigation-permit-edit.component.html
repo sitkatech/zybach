@@ -65,17 +65,19 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-sm">
-                <i class="fas fa-bolt"></i> Required field
-            </div>
-            <div class="col-sm text-right">
-                <button type="submit" class="btn btn-zybach" [disabled]="!editChemigationPermitForm.form.valid || isLoadingSubmit">
-                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                    Save
-                </button>
-                <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
-                    Cancel
-                </a>
+            <div class="col-sm-5">
+                <div class="col-sm">
+                    <i class="fas fa-bolt"></i> Required field
+                </div>
+                <div class="col-sm text-right">
+                    <button type="submit" class="btn btn-zybach" [disabled]="!editChemigationPermitForm.form.valid || isLoadingSubmit">
+                        <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                        Save
+                    </button>
+                    <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
+                        Cancel
+                    </a>
+                </div>
             </div>
         </div>
     </form>
