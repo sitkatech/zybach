@@ -14,6 +14,13 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
+        public static List<ChemigationPermitAnnualRecordDto> GetChemigationPermitAnnualRecordsByChemigationPermitNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Where(x => x.ChemigationPermit.ChemigationPermitNumber == chemigationPermitNumber)
+                .Select(x => x.AsDto()).ToList();
+        }
+
         private static IQueryable<ChemigationPermitAnnualRecord> GetChemigationPermitAnnualRecordsImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermitAnnualRecords
@@ -68,5 +75,7 @@ namespace Zybach.EFModels.Entities
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
         }
+
+
     }
 }

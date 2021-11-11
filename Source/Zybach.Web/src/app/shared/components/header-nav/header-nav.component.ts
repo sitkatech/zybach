@@ -75,7 +75,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     }
 
     public isChemigationCurrentPage(){
-        return this.router.url === '/chemigation-permits';
+        return this.router.url === '/chemigation-permits' || this.router.url.startsWith('/chemigation-permits');
     }
 
     public isHomepageCurrentPage(){
