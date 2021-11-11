@@ -7,18 +7,66 @@ namespace Zybach.EFModels.Entities
 {
     public partial class ChemigationPermitAnnualRecord
     {
-        public static List<ChemigationPermitAnnualRecordDto> GetChemigationPermitAnnualRecordsByID(ZybachDbContext dbContext, int chemigationPermitID)
+        public static List<ChemigationPermitAnnualRecordDto> GetChemigationPermitAnnualRecordsByChemigationPermitID(ZybachDbContext dbContext, int chemigationPermitID)
         {
-            return dbContext.ChemigationPermitAnnualRecords
-                .Include(x => x.ChemigationPermitAnnualRecordStatus)
-                .AsNoTracking()
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
                 .Where(x => x.ChemigationPermitID == chemigationPermitID)
                 .Select(x => x.AsDto()).ToList();
         }
 
-        public static ChemigationPermitAnnualRecordDto CreateAnnualRecord(ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        private static IQueryable<ChemigationPermitAnnualRecord> GetChemigationPermitAnnualRecordsImpl(ZybachDbContext dbContext)
         {
-            throw new System.NotImplementedException();
+            return dbContext.ChemigationPermitAnnualRecords
+                .Include(x => x.ChemigationPermit)
+                .ThenInclude(x => x.ChemigationPermitStatus)
+                .Include(x => x.ChemigationPermitAnnualRecordStatus)
+                .AsNoTracking();
+        }
+
+        public static ChemigationPermitAnnualRecordDto GetChemigationPermitAnnualRecordByID(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
+        {
+            var chemigationPermitAnnualRecord = GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .SingleOrDefault(x => x.ChemigationPermitAnnualRecordID == chemigationPermitAnnualRecordID);
+            return chemigationPermitAnnualRecord?.AsDto();
+        }
+
+        public static ChemigationPermitAnnualRecordDto CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        {
+            if (chemigationPermitAnnualRecordUpsertDto == null)
+            {
+                return null;
+            }
+
+            var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord()
+            {
+                ChemigationPermitID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitID,
+                ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID,
+                ApplicantFirstName = chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName,
+                ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName,
+                PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName,
+                RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear
+            };
+
+            dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
+            dbContext.SaveChanges();
+            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
+
+            return GetChemigationPermitAnnualRecordByID(dbContext,
+                chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
+        }
+
+        public static ChemigationPermitAnnualRecordDto UpdateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        {
+            chemigationPermitAnnualRecord.ChemigationPermitID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitID;
+            chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
+            chemigationPermitAnnualRecord.ApplicantFirstName = chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName;
+            chemigationPermitAnnualRecord.ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName;
+            chemigationPermitAnnualRecord.PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName;
+            chemigationPermitAnnualRecord.RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear;
+
+            dbContext.SaveChanges();
+            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
+            return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
         }
     }
 }

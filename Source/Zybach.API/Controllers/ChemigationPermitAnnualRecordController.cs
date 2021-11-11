@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using DocumentFormat.OpenXml.Drawing.Charts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -24,19 +22,47 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/chemigationPermitAnnualRecords/getByPermitID/{chemigationPermitID}")]
         //[ZybachViewFeature]
-        public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordsByID([FromRoute] int chemigationPermitID)
+        public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordsByPermitID([FromRoute] int chemigationPermitID)
         {
-            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsByID(_dbContext, chemigationPermitID);
+            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsByChemigationPermitID(_dbContext, chemigationPermitID);
             return Ok(chemigationPermitAnnualRecords);
         }
 
+
+        [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
+        //[ZybachAdminFeature]
+        public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
+            [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        {
+            // TODO: figure out validation
+
+            var chemigationPermitAnnualRecord = _dbContext.ChemigationPermitAnnualRecords.SingleOrDefault(x =>
+                    x.ChemigationPermitAnnualRecordID == chemigationPermitAnnualRecordID);
+
+            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord", chemigationPermitAnnualRecordID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+            var updatedChemigationPermitAnnualRecordDto =
+                ChemigationPermitAnnualRecord.UpdateAnnualRecord(_dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+
+            return Ok(updatedChemigationPermitAnnualRecordDto);
+        }
+
         [HttpPost("/api/chemigationPermitAnnualRecords")]
+        //[ZybachAdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
             // TODO: figure out validation
 
             var chemigationPermitAnnualRecordDto =
-                ChemigationPermitAnnualRecord.CreateAnnualRecord(chemigationPermitAnnualRecordUpsertDto);
+                ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto);
             return Ok(chemigationPermitAnnualRecordDto);
         }
 

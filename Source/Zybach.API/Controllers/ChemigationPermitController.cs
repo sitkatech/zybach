@@ -53,17 +53,17 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/api/chemigationPermits")]
         //[AdminFeature]
-        public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
+        public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitNewDto chemigationPermitNewDto)
         {
-            RunChemigationPermitUpsertValidation(chemigationPermitUpsertDto, null);
+            //RunChemigationPermitUpsertValidation(chemigationPermitNewDto, null);
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
 
             var chemigationPermit =
-                ChemigationPermit.CreateNewChemigationPermit(_dbContext, chemigationPermitUpsertDto);
+                ChemigationPermit.CreateNewChemigationPermit(_dbContext, chemigationPermitNewDto);
 
             return Ok(chemigationPermit);
         }

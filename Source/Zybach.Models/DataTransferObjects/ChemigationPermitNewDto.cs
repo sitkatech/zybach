@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Zybach.Models.DataTransferObjects
 {
-    public class ChemigationPermitAnnualRecordUpsertDto
+    public class ChemigationPermitNewDto
     {
-        [Required] 
-        public int ChemigationPermitID { get; set; }
         [Required]
-        public int ChemigationPermitAnnualRecordStatusID { get; set; }
+        public int ChemigationPermitNumber { get; set; }
+        [Required]
+        public int ChemigationPermitStatusID { get; set; }
+        [Required]
+        public string TownshipRangeSection { get; set; }
         [Required]
         public string ApplicantFirstName { get; set; }
         [Required]
@@ -16,7 +22,6 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public string PivotName { get; set; }
         [Required]
-        public int RecordYear { get; set; }
         public DateTime DateReceived { get; set; }
         public DateTime DatePaid { get; set; }
     }

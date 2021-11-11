@@ -9,6 +9,7 @@ import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chem
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationPermitNewDto } from 'src/app/shared/models/chemigation-permit-new-dto';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -22,7 +23,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   private currentUser: UserDetailedDto;
   
   public permitStatuses: Array<ChemigationPermitStatusDto>;
-  public model: ChemigationPermitUpsertDto;
+  public model: ChemigationPermitNewDto;
   
   public isLoadingSubmit: boolean = false;
 
@@ -35,7 +36,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.model = new ChemigationPermitUpsertDto();
+    this.model = new ChemigationPermitNewDto();
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;

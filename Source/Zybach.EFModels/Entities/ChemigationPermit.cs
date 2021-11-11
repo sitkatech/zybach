@@ -21,22 +21,37 @@ namespace Zybach.EFModels.Entities
                               currentID != null && x.ChemigationPermitID != currentID)));
         }
 
-        public static ChemigationPermitDto CreateNewChemigationPermit(ZybachDbContext dbContext, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
+        public static ChemigationPermitDto CreateNewChemigationPermit(ZybachDbContext dbContext, ChemigationPermitNewDto chemigationPermitNewDto)
         {
-            if (chemigationPermitUpsertDto == null)
+            if (chemigationPermitNewDto == null)
             {
                 return null;
             }
 
             var chemigationPermit = new ChemigationPermit()
             {
-                ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber,
-                ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID,
-                DateReceived = chemigationPermitUpsertDto.DateReceived,
-                TownshipRangeSection = chemigationPermitUpsertDto.TownshipRangeSection
+                ChemigationPermitNumber = chemigationPermitNewDto.ChemigationPermitNumber,
+                ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
+                DateReceived = chemigationPermitNewDto.DateReceived,
+                TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection
+            };
+
+            // when creating new permit, always create a default annual record as well
+            var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord()
+            {
+                ChemigationPermit = chemigationPermit,
+                // default to pending payment status on new permits
+                ChemigationPermitAnnualRecordStatusID = (int)ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
+                ApplicantFirstName = chemigationPermitNewDto.ApplicantFirstName,
+                ApplicantLastName = chemigationPermitNewDto.ApplicantLastName,
+                PivotName = chemigationPermitNewDto.PivotName,
+                // TODO: determine what default behavior should be here: are we creating a record for the year in which the permit was received, or for the upcoming year?
+                RecordYear = chemigationPermitNewDto.DateReceived.Year,
+                DateReceived = chemigationPermitNewDto.DateReceived
             };
 
             dbContext.ChemigationPermits.Add(chemigationPermit);
+            dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
             dbContext.SaveChanges();
 
             dbContext.Entry(chemigationPermit).Reload();

@@ -31,6 +31,33 @@
                 </div>
                 <div class="form-group mt-4">
                     <div class="col-sm-3 control-label text-left">
+                        <label class="required"><strong>Applicant First Name: </strong></label>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="ApplicantFirstName"
+                            placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-sm-3 control-label text-left">
+                        <label class="required"><strong>Applicant Last Name: </strong></label>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="ApplicantLastName"
+                            placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-sm-3 control-label text-left">
+                        <label class="required"><strong>Pivot Name: </strong></label>
+                    </div>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" name="PivotName"
+                            placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
+                    </div>
+                </div>
+                <div class="form-group mt-4">
+                    <div class="col-sm-3 control-label text-left">
                         <p class="mb-0"> <label class="required"><strong>Permit Status: </strong></label></p>
                     </div>
                     <div class="col-sm-5">
@@ -53,7 +80,7 @@
                             <input class="form-control" placeholder="yyyy-mm-dd" name="dp" 
                             [(ngModel)]="model.DateReceived" ngbDatepicker #d="ngbDatepicker" required>
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary far fa-calendar" (click)="d.toggle()" type="button"></button>
+                                <button class="btn btn-zybach far fa-calendar" (click)="d.toggle()" type="button"></button>
                             </div>
                         </div>
                     </div>

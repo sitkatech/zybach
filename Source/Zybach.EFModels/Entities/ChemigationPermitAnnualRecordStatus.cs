@@ -5,7 +5,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class ChemigationPermitAnnualRecord
+    public partial class ChemigationPermitAnnualRecordStatus
     {
         public enum ChemigationPermitAnnualRecordStatusEnum
         {
@@ -21,5 +21,6 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking()
                 .Select(x => x.AsDto()).ToList();
         }
+
     }
 }

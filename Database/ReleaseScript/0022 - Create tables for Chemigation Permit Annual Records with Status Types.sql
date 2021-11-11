@@ -10,12 +10,12 @@ create table dbo.ChemigationPermitAnnualRecord
 	ChemigationPermitAnnualRecordID int not null identity (1,1) constraint PK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID primary key,
 	ChemigationPermitID int not null constraint FK_ChemigationPermitAnnualRecord_ChemigationPermit_ChemigationPermitID foreign key 
 		references dbo.ChemigationPermit(ChemigationPermitID),
+	RecordYear int not null,
 	ChemigationPermitAnnualRecordStatusID int not null constraint FK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordStatus_ChemigationPermitAnnualRecordStatusID foreign key
 		references dbo.ChemigationPermitAnnualRecordStatus(ChemigationPermitAnnualRecordStatusID),
 	ApplicantFirstName varchar(100) not null,
 	ApplicantLastName varchar(100) not null,
 	PivotName varchar(100) not null,
-	RecordYear int not null,
 	DateReceived datetime null,
 	DatePaid datetime null
 )
