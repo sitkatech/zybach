@@ -11,7 +11,7 @@
   }
   .hoverEmptySpace {
     width: 100%;
-    height: 30px;
+    height: 100%;
   }
   .customRichTextContent {
     background-color: inherit;
@@ -19,6 +19,7 @@
     -o-transition: all 100ms ease-out;
     -webkit-transition: all 100ms ease-out;
     transition: all 100ms ease-out;
+    overflow: auto;
   }
   .customRichTextContent:hover {
     background-color: #d3d3d3;

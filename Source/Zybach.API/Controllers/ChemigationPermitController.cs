@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -18,6 +17,14 @@ namespace Zybach.API.Controllers
     {
         public ChemigationPermitController(ZybachDbContext dbContext, ILogger<ChemigationPermitController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
+        }
+
+        [HttpGet("/api/chemigationPermits/permitStatuses")]
+        //[ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationPermitStatusDto>> GetChemigationPermitStatuses()
+        {
+            var chemigationPermitStatusesDto = ChemigationPermitStatus.List(_dbContext);
+            return Ok(chemigationPermitStatusesDto);
         }
 
         [HttpGet("/api/chemigationPermits")]
@@ -48,7 +55,7 @@ namespace Zybach.API.Controllers
         //[AdminFeature]
         public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
-            RunChemigationPermitUpsertValidation(_dbContext, chemigationPermitUpsertDto);
+            RunChemigationPermitUpsertValidation(chemigationPermitUpsertDto, null);
 
             if (!ModelState.IsValid)
             {
@@ -72,7 +79,9 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            RunChemigationPermitUpsertValidation(_dbContext, chemigationPermitUpsertDto);
+            var currentID = chemigationPermit.ChemigationPermitID;
+
+            RunChemigationPermitUpsertValidation(chemigationPermitUpsertDto, currentID);
 
             if (!ModelState.IsValid)
             {
@@ -100,12 +109,13 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        private void RunChemigationPermitUpsertValidation(ZybachDbContext dbContext, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
+        private void RunChemigationPermitUpsertValidation(ChemigationPermitUpsertDto chemigationPermitUpsertDto, int? currentID)
         {
-            if (ChemigationPermit.DoesStatusExist(dbContext, chemigationPermitUpsertDto.ChemigationPermitStatusID))
+            if (ChemigationPermit.IsChemigationPermitNumberUnique(_dbContext, chemigationPermitUpsertDto.ChemigationPermitNumber, currentID))
             {
-                ModelState.AddModelError("ChemigationPermitStatusID", "Status with that ID not found. Please enter a valid status ID.");
+                ModelState.AddModelError("ChemigationPermitNumber", "Permit Number must be unique");
             }
+
         }
 
     }
