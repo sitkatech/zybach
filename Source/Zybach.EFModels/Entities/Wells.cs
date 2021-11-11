@@ -67,7 +67,8 @@ namespace Zybach.EFModels.Entities
             {
                 SensorName = x.SensorName,
                 SensorType = x.SensorType.SensorTypeDisplayName,
-                WellRegistrationID = well.WellRegistrationID
+                WellRegistrationID = well.WellRegistrationID,
+                IsActive = x.IsActive
             }).ToList();
 
             var agHubWell = well.AgHubWell;

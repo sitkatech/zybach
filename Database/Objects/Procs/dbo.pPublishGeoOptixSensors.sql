@@ -14,12 +14,13 @@ begin
 	left join dbo.GeoOptixSensorStaging aws on s.SensorName = aws.SensorName
 	where aws.GeoOptixSensorStagingID is null
 
-	insert into dbo.Sensor(SensorName, SensorTypeID, CreateDate, LastUpdateDate, InGeoOptix)
+	insert into dbo.Sensor(SensorName, SensorTypeID, CreateDate, LastUpdateDate, InGeoOptix, IsActive)
 	select	upper(aws.SensorName) as SensorName, 
 			st.SensorTypeID,
 			@fetchDate as CreateDate,
 			@fetchDate as LastUpdateDate,
-			1 as InGeoOptix
+			1 as InGeoOptix,
+			1 as IsActive
 	from dbo.GeoOptixSensorStaging aws
 	left join dbo.Sensor aw on aws.SensorName = aw.SensorName
 	left join dbo.SensorType st on aws.SensorType = st.SensorTypeName

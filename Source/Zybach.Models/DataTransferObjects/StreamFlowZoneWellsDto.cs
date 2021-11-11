@@ -33,6 +33,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellRegistrationID { get; set; }
         public string SensorName { get; set; }
         public string SensorType { get; set; }
+        public bool IsActive{ get; set; }
     }
 
     public class WellWithSensorSummaryDto : WellSummaryDto
@@ -56,6 +57,7 @@ namespace Zybach.Models.DataTransferObjects
         public string SensorName { get; set; }
         public int? MessageAge { get; set; }
         public string SensorType { get; set; }
+        public bool IsActive { get; set; }
     }
 
     public class IrrigatedAcresPerYearDto

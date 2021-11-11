@@ -14,6 +14,7 @@ export class WellWithSensorSummaryDto {
     FieldName: string;
     InAgHub: boolean;
     InGeoOptix: boolean;
+    IsActive: boolean;
 }
 
 export class WellWithSensorMessageAgeDto {
@@ -33,10 +34,12 @@ export class SensorSummaryDto {
     WellRegistrationID: string;
     SensorName: string;
     SensorType: string;
+    IsActive: boolean;
 }
 
 export class SensorMessageAgeDto {
     WellRegistrationID: string;
     MessageAge: number;
     SensorType: string;
+    IsActive: boolean;
 }

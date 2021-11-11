@@ -13,6 +13,7 @@ export class SensorDto {
 	InGeoOptix : boolean
 	CreateDate : Date
 	LastUpdateDate : Date
+	IsActive : boolean
 
     constructor(obj?: any) {
         Object.assign(this, obj);

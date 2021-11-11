@@ -91,7 +91,8 @@ namespace Zybach.API.Controllers
             {
                 SensorName = x.SensorName,
                 SensorType = x.SensorType.SensorTypeDisplayName,
-                WellRegistrationID = wellRegistrationID
+                WellRegistrationID = wellRegistrationID,
+                IsActive = x.IsActive
             }).ToList();
             wellDetailDto.Sensors = sensors;
 

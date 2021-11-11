@@ -24,6 +24,7 @@ namespace Zybach.EFModels.Entities
         public DateTime CreateDate { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime LastUpdateDate { get; set; }
+        public bool IsActive { get; set; }
 
         [ForeignKey(nameof(SensorTypeID))]
         [InverseProperty("Sensors")]
