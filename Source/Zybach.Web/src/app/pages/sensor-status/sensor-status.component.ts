@@ -80,7 +80,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
-                sensors: x.Sensors || [],
+                sensors: x.Sensors.filter(y => y.IsActive) || [],
                 AgHubRegisteredUser: x.AgHubRegisteredUser,
                 fieldName: x.FieldName
               };
@@ -89,7 +89,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }
 
 
-        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8);
+        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8 && sensor.IsActive);
       })
     });
   }

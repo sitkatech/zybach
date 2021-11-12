@@ -33,7 +33,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("api/reportTemplateModels")]
-        [ZybachViewFeature]
+        [AdminFeature]
         public IActionResult GetReportTemplateModels()
         {
             var reportTemplateModelDtos = ReportTemplateModel.List(_dbContext);
@@ -53,7 +53,7 @@ namespace Zybach.API.Controllers
         [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
         [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]
         [AdminFeature]
-        public async Task<IActionResult> NewReportTemplate([FromForm] ReportTemplateNewDto reportTemplateNewDto)
+        public async Task<ActionResult<ReportTemplateDto>> NewReportTemplate([FromForm] ReportTemplateNewDto reportTemplateNewDto)
         {
             if (!ModelState.IsValid)
             {
@@ -70,11 +70,11 @@ namespace Zybach.API.Controllers
             // _dbContext.SaveChanges();
 
             var reportTemplateDto = CreateNew(_dbContext, reportTemplateNewDto, fileResource);
-            return Ok();
+            return Ok(reportTemplateDto);
         }
 
         [HttpPut("api/reportTemplates/{reportTemplateID}")]
-        [ZybachViewFeature]
+        [AdminFeature]
         public async Task<ActionResult<ReportTemplateDto>> UpdateReport([FromRoute] int reportTemplateID,
             [FromForm] ReportTemplateUpdateDto reportUpdateDto)
         {

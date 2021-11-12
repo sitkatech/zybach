@@ -76,7 +76,7 @@
                                 <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="[unitsShown === 'in' ? 'active' : '', displayIrrigatedAcres() ? '' : 'disabled']" style="width:100px">
                                   <input type="radio" name="units" id="in" (click)="toggleUnitsShown('in')" [disabled]="!displayIrrigatedAcres()"> Depth&nbsp;(in)
                                 </label>
-                              </div>
+                            </div>
                         </div>
                         <div class="card-body text-center">
                             <table class="table table-responsive table-striped" *ngIf="well">
@@ -107,12 +107,59 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Location
+            <div class=row>
+                <div class=col>
+                    <div class="card">
+                        <div class="card-header">
+                            Location
+                        </div>
+                        <div class="card-body">
+                            <div id="{{mapID}}" style="height:300px;"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div id="{{mapID}}" style="height:300px;"></div>
+                
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Sensors
+                        </div>
+                        <div class="card-body text-center">
+                            <table class="table table-responsive table-striped" *ngIf="well">
+                                <thead>
+                                    <tr>
+                                        <th>Sensor Name</th>
+                                        <th>Sensor Type</th>
+                                        <th>Last Message Age (Hours)</th>
+                                        <th>Enable/Disable</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let sensor of sensorsWithStatus">
+                                        <td>{{sensor.SensorName}}</td>
+                                        <td>{{sensor.SensorType}}</td>
+                                        <td>{{sensor.MessageAge}}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-toggle float-right">
+                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
+                                                  <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, true)" [disabled]="sensor.IsActive"> Enabled
+                                                </label>
+                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''" style="width:100px">
+                                                  <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, false)" [disabled]="!sensor.IsActive"> Disabled
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-container *ngIf="!well">
+                                <span class="fas fa-spinner loading-spinner"></span>
+                                <p>Loading...</p>
+                            </ng-container>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

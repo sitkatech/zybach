@@ -16,5 +16,6 @@ namespace Zybach.Models.DataTransferObjects
         public bool InGeoOptix { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime LastUpdateDate { get; set; }
+        public bool IsActive { get; set; }
     }
 }

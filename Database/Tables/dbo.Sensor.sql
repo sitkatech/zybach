@@ -10,6 +10,7 @@ CREATE TABLE [dbo].[Sensor](
 	[InGeoOptix] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
 	[LastUpdateDate] [datetime] NOT NULL,
+	[IsActive] [bit] NOT NULL,
  CONSTRAINT [PK_Sensor_SensorID] PRIMARY KEY CLUSTERED 
 (
 	[SensorID] ASC

@@ -19,7 +19,8 @@ namespace Zybach.EFModels.Entities
                 Well = sensor.Well?.AsDto(),
                 InGeoOptix = sensor.InGeoOptix,
                 CreateDate = sensor.CreateDate,
-                LastUpdateDate = sensor.LastUpdateDate
+                LastUpdateDate = sensor.LastUpdateDate,
+                IsActive = sensor.IsActive
             };
             DoCustomMappings(sensor, sensorDto);
             return sensorDto;

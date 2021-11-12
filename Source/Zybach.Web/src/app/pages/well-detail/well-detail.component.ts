@@ -4,7 +4,7 @@ import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { UserDetailedDto } from 'src/app/shared/models';
-import { WellDetailDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorSummaryDto, WellDetailDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { AsyncParser } from 'json2csv';
@@ -29,6 +29,8 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { NominatimService } from 'src/app/services/nominatim.service';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
+import { SensorStatusService } from 'src/app/services/sensor-status.service';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -48,6 +50,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   currentUser: UserDetailedDto;
   chartSubscription: any;
   well: WellDetailDto;
+  sensorsWithStatus: any;
   installations: InstallationDto[] = [];
   rawResults: string;
   timeSeries: any[];
@@ -55,7 +58,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   rangeMax: number;
   wellRegistrationID: string;
   tooltipFields: any;
-  noTimeSeriesData: boolean = false; sensors: any;
+  noTimeSeriesData: boolean = false;
+  sensors: any;
   boundingBox: any;
   tileLayers: any;
   map: LeafletMap;
@@ -75,8 +79,11 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   dateRange: any;
   public unitsShown: string = "gal";
 
+  public isLoadingSubmit: boolean = false;
+
   constructor(
     private wellService: WellService,
+    private sensorService: SensorStatusService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
@@ -117,6 +124,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
       this.getWellDetails();
       this.getInstallationDetails();
+      this.getSenorsWithAgeMessages();
       this.getChartDataAndBuildChart();
     })
   }
@@ -124,6 +132,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
     this.chartSubscription.unsubscribe();
+    // this.sensorsWithStatus.unsubscribe();
   }
 
   getWellDetails(){
@@ -152,6 +161,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       for (const installation of installations) {
 
         this.getPhotoRecords(installation);
+      }
+    });
+  }
+
+  getSenorsWithAgeMessages(){
+    this.sensorService.getSensorStatusForWell(this.wellRegistrationID).subscribe(wellWithSensorMessageAge => {
+      this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
+
+      for (var sensor of this.sensorsWithStatus){
+        sensor.MessageAge = Math.floor(sensor.MessageAge / 3600)
       }
     });
   }
@@ -260,6 +279,28 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public toggleUnitsShown(units : string): void {
     this.unitsShown = units;
+  }
+
+  public toggleIsActive(sensorName : string, isActive : boolean): void{
+    var sensor = this.sensorsWithStatus.find(x => x.SensorName === sensorName);
+    if(sensor) {
+      this.isLoadingSubmit = true;
+      var sensorSummaryDto = new SensorSummaryDto();
+      sensorSummaryDto.SensorName = sensorName;
+      sensorSummaryDto.IsActive = isActive
+      this.sensorService.updateSensorIsActive(sensorSummaryDto)
+        .subscribe(response => {
+          this.isLoadingSubmit = false;
+          sensor.IsActive = isActive;
+          // this.alertService.pushAlert(new Alert(`Sensor '${sensorName}' now ${isActive ? "enabled" : "disabled"}`, AlertContext.Success));
+        }
+          ,
+          error => {
+            this.isLoadingSubmit = false;
+            this.cdr.detectChanges();
+          }
+        );
+    }
   }
 
   // Begin section: location map
