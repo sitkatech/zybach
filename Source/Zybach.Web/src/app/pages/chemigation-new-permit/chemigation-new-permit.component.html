@@ -8,9 +8,20 @@
 </nav>
 <div class="container">
     <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">New Chemigation Permit</h2>
+        </div>
+
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+            <p>Add a new Chemigation Permit using the form below</p>
+        </div>
+    </div>
     <form (ngSubmit)="onSubmit(newChemigationPermitForm)" #newChemigationPermitForm="ngForm">
-        <div class="row">
-            <div class="col-6">
+        <div class="row align-items-center">
+            <div class="col-12">
                 <div class="card">
                     <div class="form-group mt-4">
                         <div class="col-sm-6 control-label text-left">
@@ -62,8 +73,8 @@
                             <p class="mb-0"> <label class="required"><strong>Permit Status: </strong></label></p>
                         </div>
                         <div class="col-sm-6">
-                            <select name="PermitStatusID" class="form-control" [(ngModel)]="model.ChemigationPermitStatusID"
-                                required>
+                            <select name="PermitStatusID" class="form-control" 
+                                [(ngModel)]="model.ChemigationPermitStatusID" required>
                                 <option *ngFor="let permitStatus of permitStatuses"
                                     [value]="permitStatus.ChemigationPermitStatusID">
                                     {{permitStatus.ChemigationPermitStatusDisplayName}}
