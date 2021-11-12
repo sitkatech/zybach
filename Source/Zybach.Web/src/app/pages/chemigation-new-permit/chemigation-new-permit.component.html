@@ -10,92 +10,93 @@
     <app-alert-display></app-alert-display>
     <form (ngSubmit)="onSubmit(newChemigationPermitForm)" #newChemigationPermitForm="ngForm">
         <div class="row">
-            <div class="col">
-                <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-left">
-                        <label class="required"><strong>Chemigation Permit Number: </strong></label>
+            <div class="col-6">
+                <div class="card">
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6 control-label text-left">
+                            <label class="required"><strong>Chemigation Permit Number: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="ChemigationPermitNumber"
+                                placeholder="Permit Number" required [(ngModel)]="model.ChemigationPermitNumber" />
+                        </div>
                     </div>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="ChemigationPermitNumber"
-                            placeholder="Permit Number" required [(ngModel)]="model.ChemigationPermitNumber" />
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6 control-label text-left">
+                            <label class="required"><strong>Township-Range-Section: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="TownshipRangeSection"
+                                placeholder="Township-Range-Section" required [(ngModel)]="model.TownshipRangeSection" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-left">
-                        <label class="required"><strong>Township-Range-Section: </strong></label>
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6 control-label text-left">
+                            <label class="required"><strong>Applicant First Name: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="ApplicantFirstName"
+                                placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
+                        </div>
                     </div>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="TownshipRangeSection"
-                            placeholder="Township-Range-Section" required [(ngModel)]="model.TownshipRangeSection" />
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6 control-label text-left">
+                            <label class="required"><strong>Applicant Last Name: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="ApplicantLastName"
+                                placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-left">
-                        <label class="required"><strong>Applicant First Name: </strong></label>
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6 control-label text-left">
+                            <label class="required"><strong>Pivot Name: </strong></label>
+                        </div>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" name="PivotName"
+                                placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
+                        </div>
                     </div>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="ApplicantFirstName"
-                            placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6 control-label text-left">
+                            <p class="mb-0"> <label class="required"><strong>Permit Status: </strong></label></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <select name="PermitStatusID" class="form-control" [(ngModel)]="model.ChemigationPermitStatusID"
+                                required>
+                                <option *ngFor="let permitStatus of permitStatuses"
+                                    [value]="permitStatus.ChemigationPermitStatusID">
+                                    {{permitStatus.ChemigationPermitStatusDisplayName}}
+                                </option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-left">
-                        <label class="required"><strong>Applicant Last Name: </strong></label>
-                    </div>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="ApplicantLastName"
-                            placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
-                    </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-left">
-                        <label class="required"><strong>Pivot Name: </strong></label>
-                    </div>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" name="PivotName"
-                            placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
-                    </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-left">
-                        <p class="mb-0"> <label class="required"><strong>Permit Status: </strong></label></p>
-                    </div>
-                    <div class="col-sm-5">
-                        <select name="PermitStatusID" class="form-control" [(ngModel)]="model.ChemigationPermitStatusID"
-                            required>
-                            <option selected disabled></option>
-                            <option *ngFor="let permitStatus of permitStatuses"
-                                [value]="permitStatus.ChemigationPermitStatusID">
-                                {{permitStatus.ChemigationPermitStatusDisplayName}}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-3 control-label text-left">
-                        <p class="mb-0"> <label class="required"><strong>Date Received: </strong></label></p>
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" 
-                            [(ngModel)]="model.DateReceived" ngbDatepicker #d="ngbDatepicker" required>
-                            <div class="input-group-append">
-                                <button class="btn btn-zybach far fa-calendar" (click)="d.toggle()" type="button"></button>
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6 control-label text-left">
+                            <p class="mb-0"> <label class="required"><strong>Date Received: </strong></label></p>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" 
+                                [(ngModel)]="model.DateReceived" ngbDatepicker #d="ngbDatepicker" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-zybach far fa-calendar" (click)="d.toggle()" type="button"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-5">
-                        <div class="col-sm">
-                            <i class="fas fa-bolt"></i> Required field
-                        </div>
-                        <div class="col-sm text-right">
-                            <button type="submit" class="btn btn-zybach" [disabled]="!newChemigationPermitForm.form.valid || isLoadingSubmit">
-                                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                                Submit
-                            </button>
-                            <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits">Cancel</a>
+                    <div class="form-group mt-4">
+                        <div class="col-sm-6">
+                            <div class="col-sm">
+                                <i class="fas fa-bolt"></i> Required field
+                            </div>
+                            <div class="col-sm text-right">
+                                <button type="submit" class="btn btn-zybach" [disabled]="!newChemigationPermitForm.form.valid || isLoadingSubmit">
+                                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                                    Submit
+                                </button>
+                                <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits">Cancel</a>
+                            </div>
                         </div>
                     </div>
                 </div>

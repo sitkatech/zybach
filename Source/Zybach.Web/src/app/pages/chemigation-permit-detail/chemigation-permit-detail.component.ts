@@ -72,8 +72,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   }
   
   public updateAnnualData(): void {
-    //const yearForStatistics = this.allYearsSelected ? this.currentYear : this.yearToDisplay;
-    this.currentYearAnnualRecord = this.annualRecords.find(x => x.RecordYear == this.yearToDisplay);
+    this.currentYearAnnualRecord = this.annualRecords?.find(x => x.RecordYear == this.yearToDisplay);
   }
 
 }
