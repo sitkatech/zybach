@@ -4,7 +4,7 @@ import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { UserDetailedDto } from 'src/app/shared/models';
-import { SensorSummaryDto, WellDetailDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorMessageAgeDto, SensorSummaryDto, WellDetailDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { AsyncParser } from 'json2csv';
@@ -50,7 +50,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   currentUser: UserDetailedDto;
   chartSubscription: any;
   well: WellDetailDto;
-  sensorsWithStatus: any;
+  sensorsWithStatus: SensorMessageAgeDto[];
   installations: InstallationDto[] = [];
   rawResults: string;
   timeSeries: any[];
@@ -132,7 +132,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
     this.chartSubscription.unsubscribe();
-    // this.sensorsWithStatus.unsubscribe();
   }
 
   getWellDetails(){
@@ -177,7 +176,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getDataSourcesLabel() {
     let plural = true;
-    let sensorCount = this.getSensors().length;
+    let sensorCount = this.getSensorTypes().size;
     if ((sensorCount == 0 && this.well.HasElectricalData) || (sensorCount == 1 && !this.well.HasElectricalData)) {
       plural = false;
     }
@@ -222,8 +221,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellRegistrationID}`;
   }
 
-  getSensors() {
-    return this.well.Sensors;
+  getSensorTypes() {
+    return new Set(this.well.Sensors.map(sensor => {return sensor.SensorType}));
   }
 
   getLastReadingDate() {

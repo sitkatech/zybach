@@ -40,6 +40,7 @@ export class SensorSummaryDto {
 export class SensorMessageAgeDto {
     WellRegistrationID: string;
     MessageAge: number;
+    SensorName: string;
     SensorType: string;
     IsActive: boolean;
 }
