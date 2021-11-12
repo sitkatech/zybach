@@ -20,6 +20,7 @@ import { AlertDisplayComponent } from './components/alert-display/alert-display.
 import { FieldDefinitionGridHeaderComponent } from './components/field-definition-grid-header/field-definition-grid-header.component';
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { WaterYearSelectComponent } from './components/water-year-select/water-year-select.component'
+import { CustomDropdownFilterComponent } from './components/custom-dropdown-filter/custom-dropdown-filter.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { WaterYearSelectComponent } from './components/water-year-select/water-y
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
+        CustomDropdownFilterComponent,
     ],
     imports: [
         CommonModule,
@@ -45,7 +47,7 @@ import { WaterYearSelectComponent } from './components/water-year-select/water-y
         SelectDropDownModule,
         CKEditorModule,
         NgbModule,
-        AutoCompleteModule
+        AutoCompleteModule,
     ],
     exports: [
         AlertDisplayComponent,
