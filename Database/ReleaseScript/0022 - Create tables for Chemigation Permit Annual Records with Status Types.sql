@@ -13,9 +13,13 @@ create table dbo.ChemigationPermitAnnualRecord
 	RecordYear int not null,
 	ChemigationPermitAnnualRecordStatusID int not null constraint FK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordStatus_ChemigationPermitAnnualRecordStatusID foreign key
 		references dbo.ChemigationPermitAnnualRecordStatus(ChemigationPermitAnnualRecordStatusID),
+	PivotName varchar(100) not null,
 	ApplicantFirstName varchar(100) not null,
 	ApplicantLastName varchar(100) not null,
-	PivotName varchar(100) not null,
+	ApplicantMailingAddress varchar(100) not null,
+	ApplicantCity varchar(50) not null,
+	ApplicantState varchar(10) not null,
+	ApplicantZipCode int not null,
 	DateReceived datetime null,
 	DatePaid datetime null
 )
