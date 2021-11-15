@@ -8,11 +8,15 @@ import { ChemigationPermitAnnualRecordStatusDto } from './chemigation-permit-ann
 export class ChemigationPermitAnnualRecordDto {
 	ChemigationPermitAnnualRecordID : number
 	ChemigationPermit : ChemigationPermitDto
+	RecordYear : number
 	ChemigationPermitAnnualRecordStatus : ChemigationPermitAnnualRecordStatusDto
+	PivotName : string
 	ApplicantFirstName : string
 	ApplicantLastName : string
-	PivotName : string
-	RecordYear : number
+	ApplicantMailingAddress : string
+	ApplicantCity : string
+	ApplicantState : string
+	ApplicantZipCode : number
 	DateReceived : Date
 	DatePaid : Date
 

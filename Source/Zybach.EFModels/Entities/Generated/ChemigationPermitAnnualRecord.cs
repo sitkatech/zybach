@@ -14,7 +14,11 @@ namespace Zybach.EFModels.Entities
         [Key]
         public int ChemigationPermitAnnualRecordID { get; set; }
         public int ChemigationPermitID { get; set; }
+        public int RecordYear { get; set; }
         public int ChemigationPermitAnnualRecordStatusID { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string PivotName { get; set; }
         [Required]
         [StringLength(100)]
         public string ApplicantFirstName { get; set; }
@@ -23,8 +27,14 @@ namespace Zybach.EFModels.Entities
         public string ApplicantLastName { get; set; }
         [Required]
         [StringLength(100)]
-        public string PivotName { get; set; }
-        public int RecordYear { get; set; }
+        public string ApplicantMailingAddress { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string ApplicantCity { get; set; }
+        [Required]
+        [StringLength(10)]
+        public string ApplicantState { get; set; }
+        public int ApplicantZipCode { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DateReceived { get; set; }
         [Column(TypeName = "datetime")]

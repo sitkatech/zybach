@@ -5,11 +5,15 @@ GO
 CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 	[ChemigationPermitAnnualRecordID] [int] IDENTITY(1,1) NOT NULL,
 	[ChemigationPermitID] [int] NOT NULL,
+	[RecordYear] [int] NOT NULL,
 	[ChemigationPermitAnnualRecordStatusID] [int] NOT NULL,
+	[PivotName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantFirstName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantLastName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[PivotName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[RecordYear] [int] NOT NULL,
+	[ApplicantMailingAddress] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ApplicantCity] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ApplicantState] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ApplicantZipCode] [int] NOT NULL,
 	[DateReceived] [datetime] NULL,
 	[DatePaid] [datetime] NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID] PRIMARY KEY CLUSTERED 

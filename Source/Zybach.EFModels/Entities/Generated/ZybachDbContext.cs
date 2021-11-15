@@ -21,6 +21,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
         public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
+        public virtual DbSet<ChemigationCounty> ChemigationCounties { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
@@ -100,6 +101,13 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.WellTPID).IsUnicode(false);
             });
 
+            modelBuilder.Entity<ChemigationCounty>(entity =>
+            {
+                entity.Property(e => e.ChemigationCountyDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationCountyName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<ChemigationInspection>(entity =>
             {
                 entity.Property(e => e.ProtocolCanonicalName).IsUnicode(false);
@@ -113,6 +121,12 @@ namespace Zybach.EFModels.Entities
             {
                 entity.Property(e => e.TownshipRangeSection).IsUnicode(false);
 
+                entity.HasOne(d => d.ChemigationCountyNavigation)
+                    .WithMany(p => p.ChemigationPermits)
+                    .HasForeignKey(d => d.ChemigationCounty)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID");
+
                 entity.HasOne(d => d.ChemigationPermitStatus)
                     .WithMany(p => p.ChemigationPermits)
                     .HasForeignKey(d => d.ChemigationPermitStatusID)
@@ -121,9 +135,15 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<ChemigationPermitAnnualRecord>(entity =>
             {
+                entity.Property(e => e.ApplicantCity).IsUnicode(false);
+
                 entity.Property(e => e.ApplicantFirstName).IsUnicode(false);
 
                 entity.Property(e => e.ApplicantLastName).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantMailingAddress).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantState).IsUnicode(false);
 
                 entity.Property(e => e.PivotName).IsUnicode(false);
 
