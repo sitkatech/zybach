@@ -16,13 +16,20 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public string TownshipRangeSection { get; set; }
         [Required]
+        public int ChemigationCountyID { get; set; }
+        [Required]
         public string ApplicantFirstName { get; set; }
         [Required]
         public string ApplicantLastName { get; set; }
         [Required]
-        public string PivotName { get; set; }
+        public string ApplicantMailingAddress { get; set; }
         [Required]
-        public DateTime DateReceived { get; set; }
-        public DateTime DatePaid { get; set; }
+        public string ApplicantCity { get; set; }
+        [Required]
+        public string AppplicantState { get; set; }
+        [Required]
+        public int ApplicantZipCode { get; set; }
+        [Required] 
+        public string PivotName { get; set; }
     }
 }

@@ -8,7 +8,7 @@ CREATE TABLE [dbo].[ChemigationPermit](
 	[ChemigationPermitStatusID] [int] NOT NULL,
 	[DateCreated] [datetime] NOT NULL,
 	[TownshipRangeSection] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ChemigationCounty] [int] NOT NULL,
+	[ChemigationCountyID] [int] NOT NULL,
  CONSTRAINT [PK_ChemigationPermit_ChemigationPermitID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationPermitID] ASC
@@ -20,7 +20,7 @@ CREATE TABLE [dbo].[ChemigationPermit](
 ) ON [PRIMARY]
 
 GO
-ALTER TABLE [dbo].[ChemigationPermit]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID] FOREIGN KEY([ChemigationCounty])
+ALTER TABLE [dbo].[ChemigationPermit]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID] FOREIGN KEY([ChemigationCountyID])
 REFERENCES [dbo].[ChemigationCounty] ([ChemigationCountyID])
 GO
 ALTER TABLE [dbo].[ChemigationPermit] CHECK CONSTRAINT [FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID]

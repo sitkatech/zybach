@@ -20,7 +20,7 @@ create table dbo.ChemigationPermit
 		references dbo.ChemigationPermitStatus(ChemigationPermitStatusID),
 	DateCreated datetime not null,
 	TownshipRangeSection varchar(100) not null,
-	ChemigationCounty int not null constraint FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID foreign key
+	ChemigationCountyID int not null constraint FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID foreign key
 		references dbo.ChemigationCounty(ChemigationCountyID),
 )
 

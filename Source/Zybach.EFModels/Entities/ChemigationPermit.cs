@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Zybach.Models.DataTransferObjects;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +33,9 @@ namespace Zybach.EFModels.Entities
             {
                 ChemigationPermitNumber = chemigationPermitNewDto.ChemigationPermitNumber,
                 ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
-                DateReceived = chemigationPermitNewDto.DateReceived,
-                TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection
+                DateCreated = DateTime.Now.Date,
+                TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection,
+                ChemigationCounty = chemigationPermitNewDto.ChemigationCountyID
             };
 
             // when creating new permit, always create a default annual record as well
@@ -44,10 +46,14 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitAnnualRecordStatusID = (int)ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
                 ApplicantFirstName = chemigationPermitNewDto.ApplicantFirstName,
                 ApplicantLastName = chemigationPermitNewDto.ApplicantLastName,
+                ApplicantMailingAddress = chemigationPermitNewDto.ApplicantMailingAddress,
+                ApplicantCity = chemigationPermitNewDto.ApplicantCity,
+                ApplicantState = chemigationPermitNewDto.AppplicantState, 
+                ApplicantZipCode = chemigationPermitNewDto.ApplicantZipCode,
                 PivotName = chemigationPermitNewDto.PivotName,
                 // TODO: determine what default behavior should be here: are we creating a record for the year in which the permit was received, or for the upcoming year?
-                RecordYear = chemigationPermitNewDto.DateReceived.Year,
-                DateReceived = chemigationPermitNewDto.DateReceived
+                RecordYear = chemigationPermit.DateCreated.Year,
+                DateReceived = chemigationPermit.DateCreated
             };
 
             dbContext.ChemigationPermits.Add(chemigationPermit);
@@ -87,8 +93,8 @@ namespace Zybach.EFModels.Entities
             // null check occurs in calling endpoint method.
             chemigationPermit.ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber;
             chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
-            chemigationPermit.DateReceived = chemigationPermitUpsertDto.DateReceived;
             chemigationPermit.TownshipRangeSection = chemigationPermitUpsertDto.TownshipRangeSection;
+            chemigationPermit.ChemigationCounty = chemigationPermitUpsertDto.ChemigationCountyID;
 
             dbContext.SaveChanges();
             dbContext.Entry(chemigationPermit).Reload();
