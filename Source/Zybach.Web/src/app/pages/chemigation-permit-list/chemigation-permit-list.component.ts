@@ -49,15 +49,33 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       this.permitGrid.api.hideOverlay();
     });
   }
+
   
   private initializeGrid(): void {
     this.columnDefs = [
       {
-        headerName: 'Permit Number', valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermitNumber };
-        },
-        cellRendererFramework: LinkRendererComponent,
+        headerName: '', valueGetter: function (params: any) {
+          return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
+        }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkValue;
+          let link2 = id2.LinkValue;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        width: 60,
+        resizable: true,
+        sort: 'asc'
+      },
+      {
+        headerName: 'Permit Number',
+        field: 'ChemigationPermitNumber',
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkDisplay;
           let link2 = id2.LinkDisplay;
@@ -69,12 +87,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
-        filter: true,
-        filterValueGetter: function (params: any) {
-          return params.data.ChemigationPermitNumber;
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemigationPermitStatus.ChemigationPermitNumber'
         },
         resizable: true,
-        sort: 'asc'
+        sort: 'asc',
       },
       { 
         headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
