@@ -32,8 +32,8 @@
                                 <div class="col-12  col-sm-6">{{well.FieldName}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>{{getDataSourcesLabel()}}</strong></div>
                                 <div class="col-12  col-sm-6">
-                                    <p *ngFor="let sensor of getSensors()" class="m-0">
-                                        {{sensor.SensorType}} ({{sensor.SensorName}})
+                                    <p *ngFor="let sensorType of getSensorTypes()" class="m-0">
+                                        {{sensorType}}
                                     </p>
                                     <p *ngIf="well.hasElectricalData" class="m-0">
                                         Electrical Usage
@@ -133,7 +133,7 @@
                                         <th>Sensor Name</th>
                                         <th>Sensor Type</th>
                                         <th>Last Message Age (Hours)</th>
-                                        <th>Enable/Disable</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,7 +146,7 @@
                                                 <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
                                                   <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, true)" [disabled]="sensor.IsActive"> Enabled
                                                 </label>
-                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''" style="width:100px">
+                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''">
                                                   <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, false)" [disabled]="!sensor.IsActive"> Disabled
                                                 </label>
                                             </div>
