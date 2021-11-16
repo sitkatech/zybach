@@ -57,7 +57,8 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       {
         headerName: '', valueGetter: function (params: any) {
           return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
-        }, cellRendererFramework: LinkRendererComponent,
+        }, 
+        cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkValue;

@@ -51,12 +51,14 @@
                     <div class="row col-12">
                         <div class="row col-6">
                             <div class="col-6 text-right">
+                                <p><strong>Annual Record Status: </strong></p>
                                 <p><strong>Date Received: </strong></p>
                                 <p><strong>Date Paid: </strong></p>
                                 <p><strong>Pivot Name: </strong></p>
                                 <p><strong>Injection Unit Type: </strong></p>
                             </div>
                             <div class="col-6 text-left">
+                                <p>{{currentYearAnnualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}</p>
                                 <p>{{currentYearAnnualRecord.DateReceived | date:'shortDate'}}
                                     <em *ngIf="!currentYearAnnualRecord.DateReceived" class="text-muted">N/A</em>
                                 </p>
@@ -122,14 +124,6 @@
                     </div>
 
                     <hr class="w-100" />
-
-                    <div class="row col-12">
-                        <div class="col-6">
-                            <p><strong>Annual Record Status: </strong>
-                                {{currentYearAnnualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}
-                            </p>
-                        </div>
-                    </div>
 
                 </div>
                 <div class="row" *ngIf="!chemigationPermit">
