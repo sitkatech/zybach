@@ -27,6 +27,14 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitStatusesDto);
         }
 
+        [HttpGet("/api/chemigationPermits/chemigationCounties")]
+        //[ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationCountyDto>> GetChemigationCounties()
+        {
+            var chemigationCounties = ChemigationCounty.List(_dbContext);
+            return Ok(chemigationCounties);
+        }
+
         [HttpGet("/api/chemigationPermits")]
         //[ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitDto>> GetAllChemigationPermits()

@@ -18,12 +18,15 @@ namespace Zybach.EFModels.Entities
                 RecordYear = chemigationPermitAnnualRecord.RecordYear,
                 ChemigationPermitAnnualRecordStatus = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatus.AsDto(),
                 PivotName = chemigationPermitAnnualRecord.PivotName,
+                ChemigationInjectionUnitType = chemigationPermitAnnualRecord.ChemigationInjectionUnitType.AsDto(),
                 ApplicantFirstName = chemigationPermitAnnualRecord.ApplicantFirstName,
                 ApplicantLastName = chemigationPermitAnnualRecord.ApplicantLastName,
                 ApplicantMailingAddress = chemigationPermitAnnualRecord.ApplicantMailingAddress,
                 ApplicantCity = chemigationPermitAnnualRecord.ApplicantCity,
                 ApplicantState = chemigationPermitAnnualRecord.ApplicantState,
                 ApplicantZipCode = chemigationPermitAnnualRecord.ApplicantZipCode,
+                ApplicantPhone = chemigationPermitAnnualRecord.ApplicantPhone,
+                ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone,
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid
             };

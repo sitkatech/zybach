@@ -7,6 +7,8 @@ import { ChemigationPermitStatusDto } from '../shared/models/generated/chemigati
 import { ChemigationPermitAnnualRecordDto } from '../shared/models/generated/chemigation-permit-annual-record-dto';
 import { ChemigationPermitAnnualRecordUpsertDto } from '../shared/models/chemigation-permit-annual-record-upsert-dto';
 import { ChemigationPermitNewDto } from '../shared/models/chemigation-permit-new-dto';
+import { ChemigationCountyDto } from '../shared/models/generated/chemigation-county-dto';
+import { ChemigationInjectionUnitTypeDto } from '../shared/models/generated/chemigation-injection-unit-type-dto';
 
 
 @Injectable({
@@ -35,6 +37,11 @@ export class ChemigationPermitService {
     let route = `/chemigationPermits/permitStatuses`;
     return this.apiService.getFromApi(route);
   }
+
+  public getAllChemigationCounties(): Observable<Array<ChemigationCountyDto>> {
+    let route = `/chemigationPermits/chemigationCounties`;
+    return this.apiService.getFromApi(route);
+  }
   
   public createNewChemigationPermit(chemigationPermitToCreate: ChemigationPermitNewDto): Observable<ChemigationPermitDto> {
     let route = `/chemigationPermits`;
@@ -58,6 +65,11 @@ export class ChemigationPermitService {
 
   public getChemigationPermitAnnualRecordsByPermitNumber(chemigationPermitNumber: number): Observable<Array<ChemigationPermitAnnualRecordDto>> {
     let route = `/chemigationPermitAnnualRecords/getByPermitNumber/${chemigationPermitNumber}`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getAllChemigationInjectionUnitTypes(): Observable<Array<ChemigationInjectionUnitTypeDto>> {
+    let route = `/chemigationPermitAnnualRecords/injectionUnitTypes`;
     return this.apiService.getFromApi(route);
   }
 

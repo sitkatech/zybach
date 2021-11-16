@@ -19,6 +19,7 @@ namespace Zybach.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string PivotName { get; set; }
+        public int ChemigationInjectionUnitTypeID { get; set; }
         [Required]
         [StringLength(100)]
         public string ApplicantFirstName { get; set; }
@@ -35,11 +36,18 @@ namespace Zybach.EFModels.Entities
         [StringLength(10)]
         public string ApplicantState { get; set; }
         public int ApplicantZipCode { get; set; }
+        [StringLength(30)]
+        public string ApplicantPhone { get; set; }
+        [StringLength(30)]
+        public string ApplicantMobilePhone { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DateReceived { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DatePaid { get; set; }
 
+        [ForeignKey(nameof(ChemigationInjectionUnitTypeID))]
+        [InverseProperty("ChemigationPermitAnnualRecords")]
+        public virtual ChemigationInjectionUnitType ChemigationInjectionUnitType { get; set; }
         [ForeignKey(nameof(ChemigationPermitID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]
         public virtual ChemigationPermit ChemigationPermit { get; set; }

@@ -2,8 +2,8 @@
 export class ChemigationPermitUpsertDto {
 	ChemigationPermitNumber : number
 	ChemigationPermitStatusID : number
-	DateReceived : Date
 	TownshipRangeSection : string
+	ChemigationCountyID : number
 
     constructor(obj?: any) {
         Object.assign(this, obj);

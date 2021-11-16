@@ -8,12 +8,15 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 	[RecordYear] [int] NOT NULL,
 	[ChemigationPermitAnnualRecordStatusID] [int] NOT NULL,
 	[PivotName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ChemigationInjectionUnitTypeID] [int] NOT NULL,
 	[ApplicantFirstName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantLastName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantMailingAddress] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantCity] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantState] [varchar](10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantZipCode] [int] NOT NULL,
+	[ApplicantPhone] [varchar](30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ApplicantMobilePhone] [varchar](30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[DateReceived] [datetime] NULL,
 	[DatePaid] [datetime] NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID] PRIMARY KEY CLUSTERED 
@@ -22,6 +25,11 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+ALTER TABLE [dbo].[ChemigationPermitAnnualRecord]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermitAnnualRecord_ChemigationInjectionUnitType_ChemigationInjectionUnitTypeID] FOREIGN KEY([ChemigationInjectionUnitTypeID])
+REFERENCES [dbo].[ChemigationInjectionUnitType] ([ChemigationInjectionUnitTypeID])
+GO
+ALTER TABLE [dbo].[ChemigationPermitAnnualRecord] CHECK CONSTRAINT [FK_ChemigationPermitAnnualRecord_ChemigationInjectionUnitType_ChemigationInjectionUnitTypeID]
 GO
 ALTER TABLE [dbo].[ChemigationPermitAnnualRecord]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermitAnnualRecord_ChemigationPermit_ChemigationPermitID] FOREIGN KEY([ChemigationPermitID])
 REFERENCES [dbo].[ChemigationPermit] ([ChemigationPermitID])

@@ -23,96 +23,182 @@
         <div class="row align-items-center">
             <div class="col-12">
                 <div class="card">
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6 control-label text-left">
-                            <label class="required"><strong>Chemigation Permit Number: </strong></label>
+                    <div class="card-body">
+                        <div class="row col-12">
+                            <div class="row col-6 mt-4">
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Permit Status: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <select name="PermitStatusID" class="form-control" 
+                                        [(ngModel)]="model.ChemigationPermitStatusID" required>
+                                        <option *ngFor="let permitStatus of permitStatuses"
+                                            [value]="permitStatus.ChemigationPermitStatusID">
+                                            {{permitStatus.ChemigationPermitStatusDisplayName}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Chemigation Permit Number: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ChemigationPermitNumber"
+                                        placeholder="Permit Number" required [(ngModel)]="model.ChemigationPermitNumber" />
+                                </div>
+
+                            </div>
+    
+                            <div class="row col-6 mt-4">
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Township-Range-Section: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="TownshipRangeSection"
+                                        placeholder="Township-Range-Section" required [(ngModel)]="model.TownshipRangeSection" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>County: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <select name="ChemigationCountyID" class="form-control" 
+                                        [(ngModel)]="model.ChemigationCountyID" required>
+                                        <option selected disabled [value]="">Choose One</option>
+                                        <option *ngFor="let chemigationCounty of chemigationCounties"
+                                            [value]="chemigationCounty.ChemigationCountyID">
+                                            {{chemigationCounty.ChemigationCountyDisplayName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            
+                            </div>
+
                         </div>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" name="ChemigationPermitNumber"
-                                placeholder="Permit Number" required [(ngModel)]="model.ChemigationPermitNumber" />
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6 control-label text-left">
-                            <label class="required"><strong>Township-Range-Section: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" name="TownshipRangeSection"
-                                placeholder="Township-Range-Section" required [(ngModel)]="model.TownshipRangeSection" />
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6 control-label text-left">
-                            <label class="required"><strong>Applicant First Name: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" name="ApplicantFirstName"
-                                placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6 control-label text-left">
-                            <label class="required"><strong>Applicant Last Name: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" name="ApplicantLastName"
-                                placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6 control-label text-left">
-                            <label class="required"><strong>Pivot Name: </strong></label>
-                        </div>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" name="PivotName"
-                                placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6 control-label text-left">
-                            <p class="mb-0"> <label class="required"><strong>Permit Status: </strong></label></p>
-                        </div>
-                        <div class="col-sm-6">
-                            <select name="PermitStatusID" class="form-control" 
-                                [(ngModel)]="model.ChemigationPermitStatusID" required>
-                                <option *ngFor="let permitStatus of permitStatuses"
-                                    [value]="permitStatus.ChemigationPermitStatusID">
-                                    {{permitStatus.ChemigationPermitStatusDisplayName}}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6 control-label text-left">
-                            <p class="mb-0"> <label class="required"><strong>Date Received: </strong></label></p>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" 
-                                [(ngModel)]="model.DateReceived" ngbDatepicker #d="ngbDatepicker" required>
-                                <div class="input-group-append">
-                                    <button class="btn btn-zybach far fa-calendar" (click)="d.toggle()" type="button"></button>
+
+                        <hr class="w-90" />
+
+                        <div class="row col-12">
+                            <div class="row col-6 mt-4">
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Pivot Name: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="PivotName"
+                                        placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Injection Unit Type: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <select name="ChemigationInjectionUnitTypeID" class="form-control" 
+                                        [(ngModel)]="model.ChemigationInjectionUnitTypeID" required>
+                                        <option selected disabled [value]="">Choose One</option>
+                                        <option *ngFor="let injectionUnitType of injectionUnitTypes"
+                                            [value]="injectionUnitType.ChemigationInjectionUnitTypeID">
+                                            {{injectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
+                                        </option>
+                                    </select>
+                                </div>
+                            
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Total Acres Treated: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="TotalAcresTreated"
+                                        placeholder="Total Acres Treated" required [(ngModel)]="model.TotalAcresTreated" />
+                                </div>
+      
+                            </div>
+
+                            <div class="row col-6 mt-4">
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Applicant First Name: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantFirstName"
+                                        placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Applicant Last Name: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantLastName"
+                                        placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Address: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantMailingAddress"
+                                        placeholder="Street Address" required [(ngModel)]="model.ApplicantMailingAddress" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>City: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantCity"
+                                            placeholder="City" required [(ngModel)]="model.ApplicantCity" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>State: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantState"
+                                        placeholder="State" required [(ngModel)]="model.ApplicantState" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Zip: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantZipCode"
+                                            placeholder="Zip Code" required [(ngModel)]="model.ApplicantZipCode" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Phone: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantPhone"
+                                        placeholder="Phone Number" [(ngModel)]="model.ApplicantPhone" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Mobile Phone: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantMobilePhone"
+                                        placeholder="Mobile Number" [(ngModel)]="model.ApplicantMobilePhone" />
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group mt-4">
-                        <div class="col-sm-6">
-                            <div class="col-sm">
-                                <i class="fas fa-bolt"></i> Required field
-                            </div>
-                            <div class="col-sm text-right">
-                                <button type="submit" class="btn btn-zybach" [disabled]="!newChemigationPermitForm.form.valid || isLoadingSubmit">
-                                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
-                                    Save
-                                </button>
-                                <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits">Cancel</a>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
+
+                <div class="row col-12 mt-4">
+                    <div class="col-sm text-left">
+                        <i class="fas fa-bolt"></i> Required field
+                    </div>
+                    <div class="col-sm text-right">
+                        <button type="submit" class="btn btn-zybach" [disabled]="!newChemigationPermitForm.form.valid || isLoadingSubmit">
+                            <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                            Save
+                        </button>
+                        <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits">Cancel</a>
+                    </div>
+                </div>
+            
             </div>
         </div>
-
     </form>
 </div>

@@ -22,6 +22,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
         public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
         public virtual DbSet<ChemigationCounty> ChemigationCounties { get; set; }
+        public virtual DbSet<ChemigationInjectionUnitType> ChemigationInjectionUnitTypes { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
@@ -108,6 +109,13 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.ChemigationCountyName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<ChemigationInjectionUnitType>(entity =>
+            {
+                entity.Property(e => e.ChemigationInjectionUnitTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationInjectionUnitTypeName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<ChemigationInspection>(entity =>
             {
                 entity.Property(e => e.ProtocolCanonicalName).IsUnicode(false);
@@ -121,11 +129,10 @@ namespace Zybach.EFModels.Entities
             {
                 entity.Property(e => e.TownshipRangeSection).IsUnicode(false);
 
-                entity.HasOne(d => d.ChemigationCountyNavigation)
+                entity.HasOne(d => d.ChemigationCounty)
                     .WithMany(p => p.ChemigationPermits)
-                    .HasForeignKey(d => d.ChemigationCounty)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID");
+                    .HasForeignKey(d => d.ChemigationCountyID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.ChemigationPermitStatus)
                     .WithMany(p => p.ChemigationPermits)
@@ -143,9 +150,18 @@ namespace Zybach.EFModels.Entities
 
                 entity.Property(e => e.ApplicantMailingAddress).IsUnicode(false);
 
+                entity.Property(e => e.ApplicantMobilePhone).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantPhone).IsUnicode(false);
+
                 entity.Property(e => e.ApplicantState).IsUnicode(false);
 
                 entity.Property(e => e.PivotName).IsUnicode(false);
+
+                entity.HasOne(d => d.ChemigationInjectionUnitType)
+                    .WithMany(p => p.ChemigationPermitAnnualRecords)
+                    .HasForeignKey(d => d.ChemigationInjectionUnitTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.ChemigationPermitAnnualRecordStatus)
                     .WithMany(p => p.ChemigationPermitAnnualRecords)

@@ -7,6 +7,12 @@ namespace Zybach.EFModels.Entities
 {
     public partial class ChemigationPermitAnnualRecord
     {
+        public static List<ChemigationInjectionUnitTypeDto> GetChemigationInjectionUnitTypes(ZybachDbContext dbContext)
+        {
+            return dbContext.ChemigationInjectionUnitTypes
+                .Select(x => x.AsDto()).ToList();
+        }
+
         public static List<ChemigationPermitAnnualRecordDto> GetChemigationPermitAnnualRecordsByChemigationPermitID(ZybachDbContext dbContext, int chemigationPermitID)
         {
             return GetChemigationPermitAnnualRecordsImpl(dbContext)
@@ -25,8 +31,11 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.ChemigationPermitAnnualRecords
                 .Include(x => x.ChemigationPermit)
-                .ThenInclude(x => x.ChemigationPermitStatus)
+                    .ThenInclude(x => x.ChemigationPermitStatus)
+                .Include(x => x.ChemigationPermit)
+                    .ThenInclude(x => x.ChemigationCounty)
                 .Include(x => x.ChemigationPermitAnnualRecordStatus)
+                .Include(x => x.ChemigationInjectionUnitType)
                 .AsNoTracking();
         }
 
@@ -75,7 +84,5 @@ namespace Zybach.EFModels.Entities
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
         }
-
-
     }
 }

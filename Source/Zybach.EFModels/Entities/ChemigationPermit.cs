@@ -33,9 +33,10 @@ namespace Zybach.EFModels.Entities
             {
                 ChemigationPermitNumber = chemigationPermitNewDto.ChemigationPermitNumber,
                 ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
+                TotalAcresTreated = chemigationPermitNewDto.TotalAcresTreated,
                 DateCreated = DateTime.Now.Date,
                 TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection,
-                ChemigationCounty = chemigationPermitNewDto.ChemigationCountyID
+                ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
             };
 
             // when creating new permit, always create a default annual record as well
@@ -44,11 +45,14 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermit = chemigationPermit,
                 // default to pending payment status on new permits
                 ChemigationPermitAnnualRecordStatusID = (int)ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
+                ChemigationInjectionUnitTypeID = chemigationPermitNewDto.ChemigationInjectionUnitTypeID,
                 ApplicantFirstName = chemigationPermitNewDto.ApplicantFirstName,
                 ApplicantLastName = chemigationPermitNewDto.ApplicantLastName,
+                ApplicantPhone = chemigationPermitNewDto.ApplicantPhone,
+                ApplicantMobilePhone = chemigationPermitNewDto.ApplicantMobilePhone,
                 ApplicantMailingAddress = chemigationPermitNewDto.ApplicantMailingAddress,
                 ApplicantCity = chemigationPermitNewDto.ApplicantCity,
-                ApplicantState = chemigationPermitNewDto.AppplicantState, 
+                ApplicantState = chemigationPermitNewDto.ApplicantState, 
                 ApplicantZipCode = chemigationPermitNewDto.ApplicantZipCode,
                 PivotName = chemigationPermitNewDto.PivotName,
                 // TODO: determine what default behavior should be here: are we creating a record for the year in which the permit was received, or for the upcoming year?
@@ -85,6 +89,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.ChemigationPermits
                 .Include(x => x.ChemigationPermitStatus)
+                .Include(x => x.ChemigationCounty)
                 .AsNoTracking();
         }
 
@@ -94,7 +99,7 @@ namespace Zybach.EFModels.Entities
             chemigationPermit.ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber;
             chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
             chemigationPermit.TownshipRangeSection = chemigationPermitUpsertDto.TownshipRangeSection;
-            chemigationPermit.ChemigationCounty = chemigationPermitUpsertDto.ChemigationCountyID;
+            chemigationPermit.ChemigationCountyID = chemigationPermitUpsertDto.ChemigationCountyID;
 
             dbContext.SaveChanges();
             dbContext.Entry(chemigationPermit).Reload();

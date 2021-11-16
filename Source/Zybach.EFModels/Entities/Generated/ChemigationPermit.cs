@@ -21,16 +21,18 @@ namespace Zybach.EFModels.Entities
         public int ChemigationPermitID { get; set; }
         public int ChemigationPermitNumber { get; set; }
         public int ChemigationPermitStatusID { get; set; }
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal TotalAcresTreated { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DateCreated { get; set; }
         [Required]
         [StringLength(100)]
         public string TownshipRangeSection { get; set; }
-        public int ChemigationCounty { get; set; }
+        public int ChemigationCountyID { get; set; }
 
-        [ForeignKey(nameof(ChemigationCounty))]
+        [ForeignKey(nameof(ChemigationCountyID))]
         [InverseProperty("ChemigationPermits")]
-        public virtual ChemigationCounty ChemigationCountyNavigation { get; set; }
+        public virtual ChemigationCounty ChemigationCounty { get; set; }
         [ForeignKey(nameof(ChemigationPermitStatusID))]
         [InverseProperty("ChemigationPermits")]
         public virtual ChemigationPermitStatus ChemigationPermitStatus { get; set; }

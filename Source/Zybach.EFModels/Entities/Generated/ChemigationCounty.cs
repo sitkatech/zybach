@@ -27,7 +27,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(50)]
         public string ChemigationCountyDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationPermit.ChemigationCountyNavigation))]
+        [InverseProperty(nameof(ChemigationPermit.ChemigationCounty))]
         public virtual ICollection<ChemigationPermit> ChemigationPermits { get; set; }
     }
 }

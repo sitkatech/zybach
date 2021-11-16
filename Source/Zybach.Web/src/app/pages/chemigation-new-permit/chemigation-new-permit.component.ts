@@ -10,6 +10,8 @@ import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootst
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationPermitNewDto } from 'src/app/shared/models/chemigation-permit-new-dto';
 import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
+import { ChemigationCountyDto } from 'src/app/shared/models/generated/chemigation-county-dto';
+import { ChemigationInjectionUnitTypeDto } from 'src/app/shared/models/generated/chemigation-injection-unit-type-dto';
 @Component({
   selector: 'zybach-chemigation-new-permit',
   templateUrl: './chemigation-new-permit.component.html',
@@ -22,6 +24,8 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   private currentUser: UserDetailedDto;
   
   public permitStatuses: Array<ChemigationPermitStatusDto>;
+  public chemigationCounties: Array<ChemigationCountyDto>;
+  public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
   public model: ChemigationPermitNewDto;
   
   public isLoadingSubmit: boolean = false;
@@ -48,7 +52,14 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       }
       this.chemigationPermitService.getAllChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
-      })
+      });
+      this.chemigationPermitService.getAllChemigationCounties().subscribe(chemigationCounties => {
+        this.chemigationCounties = chemigationCounties;
+      });
+      this.chemigationPermitService.getAllChemigationInjectionUnitTypes().subscribe(injectionUnitTypes => {
+        this.injectionUnitTypes = injectionUnitTypes;
+      });
+
     });
 
   }

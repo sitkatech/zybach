@@ -18,15 +18,23 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public int ChemigationCountyID { get; set; }
         [Required]
+        public decimal TotalAcresTreated { get; set; }
+        [Required]
+        public int ChemigationInjectionUnitTypeID { get; set; }
+        [Required]
         public string ApplicantFirstName { get; set; }
         [Required]
         public string ApplicantLastName { get; set; }
+        [Required]
+        public string ApplicantPhone { get; set; }
+        [Required]
+        public string ApplicantMobilePhone { get; set; }
         [Required]
         public string ApplicantMailingAddress { get; set; }
         [Required]
         public string ApplicantCity { get; set; }
         [Required]
-        public string AppplicantState { get; set; }
+        public string ApplicantState { get; set; }
         [Required]
         public int ApplicantZipCode { get; set; }
         [Required] 

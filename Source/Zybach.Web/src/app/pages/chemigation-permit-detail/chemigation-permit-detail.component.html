@@ -19,7 +19,7 @@
         <div class="col-12 col-sm-6 label"><strong>Township, Range, Section: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
-        <div class="col-12 col-sm-6">TBD</div>
+        <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}</div>
     </div>
 </div>
 <div class="row mt-4 container">
@@ -28,11 +28,11 @@
             <div class="card-header d-flex align-items-center">
                 <div class="col-4 float-left pl-2">
                     <div class="row align-items-center">
-                    <span class="far fa-calendar mr-2"></span>
+                    <span class="far fa-calendar mr-2"> </span>
                     <zybach-water-year-select 
                     [(selectedYear)]="yearToDisplay" (selectedYearChange)="updateAnnualData()"
                     [(allYearsSelected)]="allYearsSelected" (allYearsSelectedChange)="updateAnnualData()">
-                    </zybach-water-year-select>
+                </zybach-water-year-select>
                     </div>
                 </div>
                 <div class="col-4 text-center pl-2">Annual Record</div>                       
@@ -54,6 +54,7 @@
                                 <p><strong>Date Received: </strong></p>
                                 <p><strong>Date Paid: </strong></p>
                                 <p><strong>Pivot Name: </strong></p>
+                                <p><strong>Injection Unit Type: </strong></p>
                             </div>
                             <div class="col-6 text-left">
                                 <p>{{currentYearAnnualRecord.DateReceived | date:'shortDate'}}
@@ -62,22 +63,17 @@
                                 <p>{{currentYearAnnualRecord.DatePaid | date:'shortDate'}}
                                     <em *ngIf="!currentYearAnnualRecord.DatePaid" class="text-muted">N/A</em>
                                 </p>
-                                <p>{{currentYearAnnualRecord.PivotName}}
-                                    <em *ngIf="!currentYearAnnualRecord.PivotName" class="text-muted">N/A</em>
+                                <p>
+                                    {{currentYearAnnualRecord.PivotName}}
+                                </p>
+                                <p>
+                                    {{currentYearAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
                                 </p>
                             </div>
                             
                         </div>
 
                         <div class="row col-6">
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Company: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <p>TBA</p>
-                                </div>
-                            </div>
 
                             <div class="row col-12">
                                 <div class="col-6 text-right">
@@ -95,8 +91,8 @@
                                     <p><strong>Mailing Address: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <p>123 Fake Street</p>
-                                    <p>North Platte, NE 69101</p>
+                                    <p>{{currentYearAnnualRecord.ApplicantMailingAddress}}</p>
+                                    <p>{{currentYearAnnualRecord.ApplicantCity}}, {{currentYearAnnualRecord.ApplicantState}} {{currentYearAnnualRecord.ApplicantZipCode}}</p>
                                 </div>
                             </div>
 
@@ -105,7 +101,9 @@
                                     <p><strong>Phone: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <p>303-289-0313</p>
+                                    <p>{{currentYearAnnualRecord.ApplicantPhone}}
+                                        <em *ngIf="!currentYearAnnualRecord.ApplicantPhone" class="text-muted">N/A</em>
+                                    </p>
                                 </div>
                             </div>
 
@@ -114,16 +112,9 @@
                                     <p><strong>Mobile: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <p><em class="text-muted">N/A</em></p>
-                                </div>
-                            </div>
-
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Email: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <p>frodo@theonering.net</p>
+                                    <p>{{currentYearAnnualRecord.ApplicantMobilePhone}}
+                                        <em *ngIf="!currentYearAnnualRecord.ApplicantMobilePhone" class="text-muted">N/A</em>
+                                    </p>
                                 </div>
                             </div>
 
