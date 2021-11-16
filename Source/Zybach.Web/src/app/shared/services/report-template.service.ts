@@ -53,7 +53,7 @@ export class ReportTemplateService {
      // we need to do it this way because the apiService.postToApi does a json.stringify, which won't work for input type="file"
      let formData = new FormData();
      formData.append("DisplayName", reportTemplateUpdateDto.DisplayName);
-     if(reportTemplateUpdateDto.Description !== undefined){
+     if(reportTemplateUpdateDto.Description){
       formData.append("Description", reportTemplateUpdateDto.Description);
      }
      formData.append("ReportTemplateModelID", reportTemplateUpdateDto.ReportTemplateModelID.toString());
