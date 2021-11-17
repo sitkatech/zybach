@@ -58,6 +58,11 @@ export class ChemigationPermitService {
     return this.apiService.deleteToApi(route);
   }
 
+  public getLatestAnnualRecordByPermitNumber(chemigationPermitNumber: number): Observable<ChemigationPermitAnnualRecordDto> {
+    let route = `/chemigationPermits/${chemigationPermitNumber}/annualRecords/getLatestRecordYear`;
+    return this.apiService.getFromApi(route);
+  }
+
   public getChemigationPermitAnnualRecordsByPermitID(chemigationPermitID: number): Observable<Array<ChemigationPermitAnnualRecordDto>> {
     let route = `/chemigationPermitAnnualRecords/getByPermitID/${chemigationPermitID}`;
     return this.apiService.getFromApi(route);

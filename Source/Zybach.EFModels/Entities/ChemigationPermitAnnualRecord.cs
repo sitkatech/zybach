@@ -68,8 +68,10 @@ namespace Zybach.EFModels.Entities
                 ApplicantState = newChemigationPermitAnnualRecordDto.ApplicantState,
                 ApplicantZipCode = newChemigationPermitAnnualRecordDto.ApplicantZipCode,
                 PivotName = newChemigationPermitAnnualRecordDto.PivotName,
-                RecordYear = newChemigationPermitAnnualRecordDto.RecordYear
-            };
+                RecordYear = newChemigationPermitAnnualRecordDto.RecordYear,
+                DatePaid = newChemigationPermitAnnualRecordDto.DatePaid,
+                DateReceived = newChemigationPermitAnnualRecordDto.DateReceived
+        };
 
             dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
             dbContext.SaveChanges();
@@ -94,6 +96,8 @@ namespace Zybach.EFModels.Entities
             chemigationPermitAnnualRecord.ApplicantZipCode = chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode;
             chemigationPermitAnnualRecord.PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName;
             chemigationPermitAnnualRecord.RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear;
+            chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid;
+            chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived;
 
             dbContext.SaveChanges();
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();

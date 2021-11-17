@@ -27,6 +27,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
 
   public model: ChemigationPermitAnnualRecordDto;
+  public newRecordYear: number;
   
   public isLoadingSubmit: boolean = false;
 
@@ -42,6 +43,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
+      this.newRecordYear = new Date().getFullYear();
   
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
         this.router.navigateByUrl("/not-found")
@@ -63,8 +65,10 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
         this.chemigationPermit = chemigationPermit;
       });
 
-      this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber).subscribe(annualRecords => {
-        this.model = annualRecords.find(x => x.RecordYear == 2021)
+      this.chemigationPermitService.getLatestAnnualRecordByPermitNumber(this.chemigationPermitNumber).subscribe(annualRecord => {
+        this.model = annualRecord;
+        // update to new record year
+        this.model.RecordYear = this.newRecordYear;
         this.cdr.detectChanges();
       });
   
