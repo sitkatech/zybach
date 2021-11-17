@@ -3,13 +3,15 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
-import { ChemigationPermitUpsertDto } from 'src/app/shared/models/chemigation-permit-upsert-dto';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
-
+import { ChemigationPermitNewDto } from 'src/app/shared/models/chemigation-permit-new-dto';
+import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
+import { ChemigationCountyDto } from 'src/app/shared/models/generated/chemigation-county-dto';
+import { ChemigationInjectionUnitTypeDto } from 'src/app/shared/models/generated/chemigation-injection-unit-type-dto';
 @Component({
   selector: 'zybach-chemigation-new-permit',
   templateUrl: './chemigation-new-permit.component.html',
@@ -22,7 +24,9 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   private currentUser: UserDetailedDto;
   
   public permitStatuses: Array<ChemigationPermitStatusDto>;
-  public model: ChemigationPermitUpsertDto;
+  public chemigationCounties: Array<ChemigationCountyDto>;
+  public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
+  public model: ChemigationPermitNewDto;
   
   public isLoadingSubmit: boolean = false;
 
@@ -35,7 +39,9 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.model = new ChemigationPermitUpsertDto();
+    this.model = new ChemigationPermitNewDto();
+    // default to active for new permits
+    this.model.ChemigationPermitStatusID = ChemigationPermitStatusEnum.Active;
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -46,7 +52,14 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       }
       this.chemigationPermitService.getAllChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
-      })
+      });
+      this.chemigationPermitService.getAllChemigationCounties().subscribe(chemigationCounties => {
+        this.chemigationCounties = chemigationCounties;
+      });
+      this.chemigationPermitService.getAllChemigationInjectionUnitTypes().subscribe(injectionUnitTypes => {
+        this.injectionUnitTypes = injectionUnitTypes;
+      });
+
     });
 
   }

@@ -6,32 +6,134 @@
         <li class="breadcrumb-item active" aria-current="page">Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}</li>
     </ol>
 </nav>
-<div class="container">
-    <app-alert-display></app-alert-display>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-header">
-                    <a *ngIf="currentUserIsAdmin() && chemigationPermit" class="btn btn-rio btn-sm float-right"
-                    routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}/edit">
-                    <span class="fas fa-edit"></span> Edit
-                </a>
-                    Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}
-                </div>
-                <div class="card-body">
-                    <div class="row" *ngIf="chemigationPermit">
-                        <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
-                        <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</div>
-                        <div class="col-12 col-sm-6 label"><strong>Township, Range, Section: </strong></div>
-                        <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
-                        <div class="col-12 col-sm-6 label"><strong>Date Received: </strong></div>
-                        <div class="col-12 col-sm-6">{{chemigationPermit.DateReceived | date:'shortDate'}}</div>
+<app-alert-display></app-alert-display>
+<div class="row container">
+    <div class="col-12">
+        <h2 class="d-inline-block">Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}</h2>
+        <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Approve Annual Renewal </a>
+        <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Schedule Inspection </a>
+    </div>
+    <div class="row" *ngIf="chemigationPermit">
+        <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
+        <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</div>
+        <div class="col-12 col-sm-6 label"><strong>Township, Range, Section: </strong></div>
+        <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
+        <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
+        <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}</div>
+    </div>
+    <div class="col-12">
+        <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+            <span class="fas fa-plus"></span> Create Renewal </a>
+    </div>
+</div>
+<div class="row mt-4 container">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <div class="col-4 float-left pl-2">
+                    <div class="row align-items-center">
+                    <span class="far fa-calendar mr-2"> </span>
+                    <zybach-water-year-select 
+                    [(selectedYear)]="yearToDisplay" (selectedYearChange)="updateAnnualData()"
+                    [(allYearsSelected)]="allYearsSelected" (allYearsSelectedChange)="updateAnnualData()">
+                </zybach-water-year-select>
                     </div>
-                    <div class="row" *ngIf="!chemigationPermit">
-                        <div class="col text-center">
-                            <span class="fas fa-spinner loading-spinner"></span>
-                            <p>Loading...</p>
+                </div>
+                <div class="col-4 text-center pl-2">Annual Record</div>                       
+                <div class="col-4 float-right">
+                    <a *ngIf="currentUserIsAdmin() && chemigationPermit" class="btn btn-zybach btn-sm float-right"
+                    routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}/edit">
+                        <span class="fas fa-edit"></span> Edit Record
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row col-12 text-center" *ngIf="!currentYearAnnualRecord">
+                    <p><strong>No Annual Record available for this year</strong></p>
+                </div>
+                <div class="row" *ngIf="currentYearAnnualRecord">
+                    <div class="row col-12">
+                        <div class="row col-6">
+                            <div class="col-6 text-right">
+                                <p><strong>Annual Record Status: </strong></p>
+                                <p><strong>Date Received: </strong></p>
+                                <p><strong>Date Paid: </strong></p>
+                                <p><strong>Pivot Name: </strong></p>
+                                <p><strong>Injection Unit Type: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{currentYearAnnualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}</p>
+                                <p>{{currentYearAnnualRecord.DateReceived | date:'shortDate'}}
+                                    <em *ngIf="!currentYearAnnualRecord.DateReceived" class="text-muted">N/A</em>
+                                </p>
+                                <p>{{currentYearAnnualRecord.DatePaid | date:'shortDate'}}
+                                    <em *ngIf="!currentYearAnnualRecord.DatePaid" class="text-muted">N/A</em>
+                                </p>
+                                <p>
+                                    {{currentYearAnnualRecord.PivotName}}
+                                </p>
+                                <p>
+                                    {{currentYearAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
+                                </p>
+                            </div>
+                            
                         </div>
+
+                        <div class="row col-6">
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Applicant Name: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>
+                                        {{currentYearAnnualRecord.ApplicantFirstName}} {{currentYearAnnualRecord.ApplicantLastName}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Mailing Address: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.ApplicantMailingAddress}}</p>
+                                    <p>{{currentYearAnnualRecord.ApplicantCity}}, {{currentYearAnnualRecord.ApplicantState}} {{currentYearAnnualRecord.ApplicantZipCode}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Phone: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.ApplicantPhone}}
+                                        <em *ngIf="!currentYearAnnualRecord.ApplicantPhone" class="text-muted">N/A</em>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Mobile: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.ApplicantMobilePhone}}
+                                        <em *ngIf="!currentYearAnnualRecord.ApplicantMobilePhone" class="text-muted">N/A</em>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr class="w-90" />
+
+                </div>
+                <div class="row" *ngIf="!chemigationPermit">
+                    <div class="col text-center">
+                        <span class="fas fa-spinner loading-spinner"></span>
+                        <p>Loading...</p>
                     </div>
                 </div>
             </div>

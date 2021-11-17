@@ -21,6 +21,7 @@ import { FieldDefinitionGridHeaderComponent } from './components/field-definitio
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { WaterYearSelectComponent } from './components/water-year-select/water-year-select.component'
 import { CustomDropdownFilterComponent } from './components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { CustomDropdownFilterComponent } from './components/custom-dropdown-filt
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
         CustomDropdownFilterComponent,
+        ClearGridFiltersButtonComponent
     ],
     imports: [
         CommonModule,
@@ -58,7 +60,8 @@ import { CustomDropdownFilterComponent } from './components/custom-dropdown-filt
         CustomRichTextComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
-        WaterYearSelectComponent
+        WaterYearSelectComponent,
+        ClearGridFiltersButtonComponent
     ]
 })
 export class SharedModule {

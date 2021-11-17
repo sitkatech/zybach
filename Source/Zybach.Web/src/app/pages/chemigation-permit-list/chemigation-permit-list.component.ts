@@ -9,6 +9,7 @@ import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { transpileModule } from 'typescript';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
@@ -49,15 +50,34 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       this.permitGrid.api.hideOverlay();
     });
   }
+
   
   private initializeGrid(): void {
     this.columnDefs = [
       {
-        headerName: 'Permit Number', valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermitNumber };
-        },
+        headerName: '', valueGetter: function (params: any) {
+          return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
+        }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkValue;
+          let link2 = id2.LinkValue;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        width: 60,
+        resizable: true,
+        sort: 'asc'
+      },
+      {
+        headerName: 'Permit Number',
+        field: 'ChemigationPermitNumber',
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkDisplay;
           let link2 = id2.LinkDisplay;
@@ -70,11 +90,8 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           return 0;
         },
         filter: true,
-        filterValueGetter: function (params: any) {
-          return params.data.ChemigationPermitNumber;
-        },
         resizable: true,
-        sort: 'asc'
+        sort: 'asc',
       },
       { 
         headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
@@ -85,7 +102,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
-      this.createDateColumnDef('Date Received', 'DateReceived', 'M/d/yyyy'),
+      this.createDateColumnDef('Date Created', 'DateCreated', 'M/d/yyyy'),
       { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true }
     ];
 

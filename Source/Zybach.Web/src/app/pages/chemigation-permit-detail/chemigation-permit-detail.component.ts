@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { UserDetailedDto } from 'src/app/shared/models';
+import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/models/generated/chemigation-permit-annual-record-dto';
 import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
@@ -17,6 +18,12 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public currentUser: UserDetailedDto;
   public chemigationPermitNumber: number;
   public chemigationPermit: ChemigationPermitDto;
+  public annualRecords: Array<ChemigationPermitAnnualRecordDto>;
+
+  public allYearsSelected: boolean = false;
+  public yearToDisplay: number;
+  public currentYear: number;
+  public currentYearAnnualRecord: ChemigationPermitAnnualRecordDto;
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
@@ -27,10 +34,14 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.currentYear = new Date().getFullYear();
+    this.yearToDisplay = new Date().getFullYear();    
+
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       this.getPermitDetails();
+      this.getPermitAnnualRecords();
     })
   }
 
@@ -42,13 +53,26 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
 
   public currentUserIsAdmin(): boolean {
     return this.authenticationService.isUserAnAdministrator(this.currentUser);
-}
+  }
 
   private getPermitDetails(): void {
     this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber).subscribe((permit: ChemigationPermitDto) => {
       this.chemigationPermit = permit;
-      
       this.cdr.detectChanges();
     });
   }
+
+  private getPermitAnnualRecords(): void {
+    this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber)
+      .subscribe((annualRecords: Array<ChemigationPermitAnnualRecordDto>) => {
+        this.annualRecords = annualRecords;
+        this.cdr.detectChanges();
+        this.updateAnnualData();
+    });
+  }
+  
+  public updateAnnualData(): void {
+    this.currentYearAnnualRecord = this.annualRecords?.find(x => x.RecordYear == this.yearToDisplay);
+  }
+
 }

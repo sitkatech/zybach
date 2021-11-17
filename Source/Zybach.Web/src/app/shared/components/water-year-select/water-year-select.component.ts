@@ -8,7 +8,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 export class WaterYearSelectComponent implements OnInit {
   years: Array<number> = new Array<number>();
   @Input() disabled: Boolean;
-  @Input() selectYearLabel: string = "Viewing year";
+  @Input() selectYearLabel: string = "Viewing year ";
 
   @Input()
   get selectedYear(): number {
