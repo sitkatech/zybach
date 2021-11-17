@@ -99,5 +99,19 @@ namespace Zybach.EFModels.Entities
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
         }
+
+        public static ChemigationPermitAnnualRecordDto GetLatestAnnualRecordByChemigationPermitNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
+        {
+            var annualRecords =
+                GetChemigationPermitAnnualRecordsByChemigationPermitNumber(dbContext, chemigationPermitNumber);
+
+            var maximumRecordYear = annualRecords
+                .Select(x => x.RecordYear)
+                .ToList()
+                .Max();
+
+            return annualRecords
+                .SingleOrDefault(x => x.RecordYear == maximumRecordYear);
+        }
     }
 }

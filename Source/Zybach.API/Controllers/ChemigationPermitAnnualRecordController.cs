@@ -44,6 +44,15 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
+        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords/getLatestRecordYear")]
+        //[ZybachViewFeature]
+        public ActionResult<ChemigationPermitAnnualRecordDto> GetLatestRecordYearChemigationPermitAnnualRecord([FromRoute] int chemigationPermitNumber)
+        {
+            var latestAnnualRecordDto =
+                ChemigationPermitAnnualRecord.GetLatestAnnualRecordByChemigationPermitNumber(_dbContext, chemigationPermitNumber);
+            return Ok(latestAnnualRecordDto);
+        }
+
         [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
         //[ZybachAdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
