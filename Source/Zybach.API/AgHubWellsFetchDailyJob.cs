@@ -73,7 +73,7 @@ namespace Zybach.API
         private void PopulateWellSensorMeasurementsForWell(AgHubWellStaging agHubWellStaging, Dictionary<string, DateTime> lastReadingDates,
             string wellRegistrationID)
         {
-            if (agHubWellStaging.WellConnectedMeter)
+            if (agHubWellStaging.HasElectricalData)
             {
                 var startDate = lastReadingDates.ContainsKey(wellRegistrationID) ? lastReadingDates[wellRegistrationID] : DefaultStartDate;
                 var pumpedVolumeResult =
