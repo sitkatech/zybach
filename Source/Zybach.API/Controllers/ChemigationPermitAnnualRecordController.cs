@@ -36,7 +36,6 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
-
         [HttpGet("/api/chemigationPermitAnnualRecords/getByPermitNumber/{chemigationPermitNumber}")]
         //[ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordsByPermitNumber([FromRoute] int chemigationPermitNumber)
@@ -45,11 +44,10 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
-
         [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
         //[ZybachAdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
-            [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+            [FromBody] ChemigationPermitAnnualRecordDto chemigationPermitAnnualRecordUpsertDto)
         {
             // TODO: figure out validation
 
@@ -74,12 +72,12 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/api/chemigationPermitAnnualRecords")]
         //[ZybachAdminFeature]
-        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromBody] ChemigationPermitAnnualRecordDto newChemigationPermitAnnualRecordDto)
         {
             // TODO: figure out validation
 
             var chemigationPermitAnnualRecordDto =
-                ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto);
+                ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, newChemigationPermitAnnualRecordDto);
             return Ok(chemigationPermitAnnualRecordDto);
         }
 

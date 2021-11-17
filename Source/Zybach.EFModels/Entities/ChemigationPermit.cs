@@ -39,6 +39,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
             };
 
+            // TODO: ChemigationPermitAnnualRecord.CreateAnnualRecord()
+
             // when creating new permit, always create a default annual record as well
             var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord()
             {

@@ -73,7 +73,7 @@ export class ChemigationPermitService {
     return this.apiService.getFromApi(route);
   }
 
-  public createChemigationPermitAnnualRecord(chemigationPermitAnnualRecord: ChemigationPermitAnnualRecordUpsertDto): Observable<ChemigationPermitAnnualRecordDto> {
+  public createChemigationPermitAnnualRecord(chemigationPermitAnnualRecord: ChemigationPermitAnnualRecordDto): Observable<ChemigationPermitAnnualRecordDto> {
     let route = `/chemigationPermitAnnualRecords`;
     return this.apiService.postToApi(route, chemigationPermitAnnualRecord);
   }

@@ -21,6 +21,10 @@
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}</div>
     </div>
+    <div class="col-12">
+        <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+            <span class="fas fa-plus"></span> New Annual Record </a>
+    </div>
 </div>
 <div class="row mt-4 container">
     <div class="col-sm-12">
@@ -123,7 +127,7 @@
                         </div>
                     </div>
 
-                    <hr class="w-100" />
+                    <hr class="w-90" />
 
                 </div>
                 <div class="row" *ngIf="!chemigationPermit">
