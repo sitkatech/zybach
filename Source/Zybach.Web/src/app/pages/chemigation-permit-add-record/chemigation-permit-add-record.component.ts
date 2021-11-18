@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { UserDetailedDto } from 'src/app/shared/models';
@@ -16,7 +17,8 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 @Component({
   selector: 'zybach-chemigation-permit-add-record',
   templateUrl: './chemigation-permit-add-record.component.html',
-  styleUrls: ['./chemigation-permit-add-record.component.scss']
+  styleUrls: ['./chemigation-permit-add-record.component.scss'],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
 })
 export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;

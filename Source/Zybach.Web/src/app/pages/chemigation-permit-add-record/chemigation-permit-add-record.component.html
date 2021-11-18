@@ -129,6 +129,29 @@
                                     <input type="text" class="form-control" name="TotalAcresTreated" readonly
                                         [(ngModel)]="model.ChemigationPermit.TotalAcresTreated" />
                                 </div>
+                                
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Date Received: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                            <input class="form-control" name="dp"
+                                            [(ngModel)]="model.DateReceived" ngbDatepicker #d="ngbDatepicker">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-zybach far fa-calendar" (click)="d.toggle()" type="button"></button>
+                                            </div>
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Date Paid: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                            <input class="form-control" name="dp"
+                                            [(ngModel)]="model.DatePaid" ngbDatepicker #d="ngbDatepicker">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-zybach far fa-calendar" (click)="d.toggle()" type="button"></button>
+                                            </div>
+                                </div>
+      
       
                             </div>
 
@@ -195,6 +218,14 @@
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantMobilePhone"
                                         placeholder="Mobile Number" [(ngModel)]="model.ApplicantMobilePhone" />
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Email: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="ApplicantEmail"
+                                        placeholder="Email Address" [(ngModel)]="model.ApplicantEmail" />
                                 </div>
                             </div>
                             

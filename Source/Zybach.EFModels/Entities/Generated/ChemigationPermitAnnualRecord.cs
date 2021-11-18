@@ -44,6 +44,8 @@ namespace Zybach.EFModels.Entities
         public DateTime? DateReceived { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DatePaid { get; set; }
+        [StringLength(255)]
+        public string ApplicantEmail { get; set; }
 
         [ForeignKey(nameof(ChemigationInjectionUnitTypeID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]

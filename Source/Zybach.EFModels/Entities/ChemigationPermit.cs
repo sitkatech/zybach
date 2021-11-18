@@ -53,6 +53,7 @@ namespace Zybach.EFModels.Entities
                 ApplicantPhone = chemigationPermitNewDto.ApplicantPhone,
                 ApplicantMobilePhone = chemigationPermitNewDto.ApplicantMobilePhone,
                 ApplicantMailingAddress = chemigationPermitNewDto.ApplicantMailingAddress,
+                ApplicantEmail = chemigationPermitNewDto.ApplicantEmail,
                 ApplicantCity = chemigationPermitNewDto.ApplicantCity,
                 ApplicantState = chemigationPermitNewDto.ApplicantState, 
                 ApplicantZipCode = chemigationPermitNewDto.ApplicantZipCode,

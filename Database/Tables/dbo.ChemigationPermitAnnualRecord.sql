@@ -19,6 +19,7 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 	[ApplicantMobilePhone] [varchar](30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[DateReceived] [datetime] NULL,
 	[DatePaid] [datetime] NULL,
+	[ApplicantEmail] [varchar](255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationPermitAnnualRecordID] ASC

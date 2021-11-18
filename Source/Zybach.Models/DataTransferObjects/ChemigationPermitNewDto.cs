@@ -27,6 +27,7 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantLastName { get; set; }
         public string ApplicantPhone { get; set; }
         public string ApplicantMobilePhone { get; set; }
+        public string ApplicantEmail { get; set; }
         [Required]
         public string ApplicantMailingAddress { get; set; }
         [Required]

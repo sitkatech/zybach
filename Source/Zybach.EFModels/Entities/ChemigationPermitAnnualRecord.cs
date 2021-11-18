@@ -56,14 +56,14 @@ namespace Zybach.EFModels.Entities
             var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord()
             {
                 ChemigationPermitID = newChemigationPermitAnnualRecordDto.ChemigationPermit.ChemigationPermitID,
-                // default to pending payment status on new records
-                ChemigationPermitAnnualRecordStatusID = (int)ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
+                ChemigationPermitAnnualRecordStatusID = newChemigationPermitAnnualRecordDto.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusID,
                 ChemigationInjectionUnitTypeID = newChemigationPermitAnnualRecordDto.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeID,
                 ApplicantFirstName = newChemigationPermitAnnualRecordDto.ApplicantFirstName,
                 ApplicantLastName = newChemigationPermitAnnualRecordDto.ApplicantLastName,
                 ApplicantPhone = newChemigationPermitAnnualRecordDto.ApplicantPhone,
                 ApplicantMobilePhone = newChemigationPermitAnnualRecordDto.ApplicantMobilePhone,
                 ApplicantMailingAddress = newChemigationPermitAnnualRecordDto.ApplicantMailingAddress,
+                ApplicantEmail = newChemigationPermitAnnualRecordDto.ApplicantEmail,
                 ApplicantCity = newChemigationPermitAnnualRecordDto.ApplicantCity,
                 ApplicantState = newChemigationPermitAnnualRecordDto.ApplicantState,
                 ApplicantZipCode = newChemigationPermitAnnualRecordDto.ApplicantZipCode,
@@ -71,7 +71,7 @@ namespace Zybach.EFModels.Entities
                 RecordYear = newChemigationPermitAnnualRecordDto.RecordYear,
                 DatePaid = newChemigationPermitAnnualRecordDto.DatePaid,
                 DateReceived = newChemigationPermitAnnualRecordDto.DateReceived
-        };
+            };
 
             dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
             dbContext.SaveChanges();

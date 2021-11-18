@@ -144,6 +144,8 @@ namespace Zybach.EFModels.Entities
             {
                 entity.Property(e => e.ApplicantCity).IsUnicode(false);
 
+                entity.Property(e => e.ApplicantEmail).IsUnicode(false);
+
                 entity.Property(e => e.ApplicantFirstName).IsUnicode(false);
 
                 entity.Property(e => e.ApplicantLastName).IsUnicode(false);
