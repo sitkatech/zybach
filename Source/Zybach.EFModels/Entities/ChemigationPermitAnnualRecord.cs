@@ -117,5 +117,19 @@ namespace Zybach.EFModels.Entities
             return annualRecords
                 .SingleOrDefault(x => x.RecordYear == maximumRecordYear);
         }
+
+        public static ChemigationPermitAnnualRecordDto GetLatestAnnualRecordByChemigationPermitID(ZybachDbContext dbContext, int chemigationPermitID)
+        {
+            var annualRecords =
+                GetChemigationPermitAnnualRecordsByChemigationPermitID(dbContext, chemigationPermitID);
+
+            var maximumRecordYear = annualRecords
+                .Select(x => x.RecordYear)
+                .ToList()
+                .Max();
+
+            return annualRecords
+                .SingleOrDefault(x => x.RecordYear == maximumRecordYear);
+        }
     }
 }

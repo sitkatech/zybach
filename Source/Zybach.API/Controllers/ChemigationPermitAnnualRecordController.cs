@@ -20,7 +20,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/chemigationPermitAnnualRecords/injectionUnitTypes")]
+        [HttpGet("/api/chemigationPermits/injectionUnitTypes")]
         //[ZybachViewFeature]
         public ActionResult<List<ChemigationInjectionUnitTypeDto>> GetChemigationInjectionUnitTypes()
         {
@@ -28,7 +28,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInjectionUnitTypes);
         }
 
-        [HttpGet("/api/chemigationPermitAnnualRecords/getByPermitID/{chemigationPermitID}")]
+        [HttpGet("/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords")]
         //[ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordsByPermitID([FromRoute] int chemigationPermitID)
         {
@@ -36,7 +36,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
-        [HttpGet("/api/chemigationPermitAnnualRecords/getByPermitNumber/{chemigationPermitNumber}")]
+        [HttpGet("/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords")]
         //[ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordsByPermitNumber([FromRoute] int chemigationPermitNumber)
         {
@@ -44,16 +44,25 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
-        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords/getLatestRecordYear")]
+        [HttpGet("/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords/getLatestRecordYear")]
         //[ZybachViewFeature]
-        public ActionResult<ChemigationPermitAnnualRecordDto> GetLatestRecordYearChemigationPermitAnnualRecord([FromRoute] int chemigationPermitNumber)
+        public ActionResult<ChemigationPermitAnnualRecordDto> GetLatestAnnualRecordByChemigationPermitNumber([FromRoute] int chemigationPermitNumber)
         {
             var latestAnnualRecordDto =
                 ChemigationPermitAnnualRecord.GetLatestAnnualRecordByChemigationPermitNumber(_dbContext, chemigationPermitNumber);
             return Ok(latestAnnualRecordDto);
         }
 
-        [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
+        [HttpGet("/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords/getLatestRecordYear")]
+        //[ZybachViewFeature]
+        public ActionResult<ChemigationPermitAnnualRecordDto> GetLatestAnnualRecordByChemigationPermitID([FromRoute] int chemigationPermitID)
+        {
+            var latestAnnualRecordDto =
+                ChemigationPermitAnnualRecord.GetLatestAnnualRecordByChemigationPermitID(_dbContext, chemigationPermitID);
+            return Ok(latestAnnualRecordDto);
+        }
+
+        [HttpPut("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}")]
         //[ZybachAdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
             [FromBody] ChemigationPermitAnnualRecordDto chemigationPermitAnnualRecordUpsertDto)
@@ -79,7 +88,7 @@ namespace Zybach.API.Controllers
             return Ok(updatedChemigationPermitAnnualRecordDto);
         }
 
-        [HttpPost("/api/chemigationPermitAnnualRecords")]
+        [HttpPost("/api/chemigationPermits/annualRecords")]
         //[ZybachAdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromBody] ChemigationPermitAnnualRecordDto newChemigationPermitAnnualRecordDto)
         {

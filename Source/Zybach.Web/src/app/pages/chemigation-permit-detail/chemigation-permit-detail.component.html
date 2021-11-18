@@ -20,6 +20,8 @@
         <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}</div>
+        <!-- <div class="col-12 col-sm-6 label"><strong>Total Acres Treated: </strong></div>
+        <div class="col-12 col-sm-6">{{chemigationPermit.TotalAcresTreated | number: '1.0-1'}}</div> -->
     </div>
     <div class="col-12">
         <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
