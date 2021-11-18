@@ -40,11 +40,11 @@
             <div class="card-header d-flex align-items-center">
                 <div class="col-4 float-left pl-2">
                     <div class="row align-items-center">
-                    <span class="far fa-calendar mr-2"> </span>
-                    <zybach-water-year-select 
-                    [(selectedYear)]="yearToDisplay" (selectedYearChange)="updateAnnualData()"
-                    [(allYearsSelected)]="allYearsSelected" (allYearsSelectedChange)="updateAnnualData()">
-                </zybach-water-year-select>
+                        <span class="far fa-calendar mr-2"> </span>
+                        <zybach-water-year-select 
+                        [(selectedYear)]="yearToDisplay" (selectedYearChange)="updateAnnualData()"
+                        [(allYearsSelected)]="allYearsSelected" (allYearsSelectedChange)="updateAnnualData()">
+                        </zybach-water-year-select>
                     </div>
                 </div>
                 <div class="col-4 text-center pl-2">Annual Record</div>                       
@@ -62,27 +62,58 @@
                 <div class="row" *ngIf="currentYearAnnualRecord">
                     <div class="row col-12">
                         <div class="row col-6">
-                            <div class="col-6 text-right">
-                                <p><strong>Annual Record Status: </strong></p>
-                                <p><strong>Date Received: </strong></p>
-                                <p><strong>Date Paid: </strong></p>
-                                <p><strong>Pivot Name: </strong></p>
-                                <p><strong>Injection Unit Type: </strong></p>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Annual Record Status: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}</p>
+                                </div>
                             </div>
-                            <div class="col-6 text-left">
-                                <p>{{currentYearAnnualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}</p>
-                                <p>{{currentYearAnnualRecord.DateReceived | date:'shortDate'}}
-                                    <em *ngIf="!currentYearAnnualRecord.DateReceived" class="text-muted">N/A</em>
-                                </p>
-                                <p>{{currentYearAnnualRecord.DatePaid | date:'shortDate'}}
-                                    <em *ngIf="!currentYearAnnualRecord.DatePaid" class="text-muted">N/A</em>
-                                </p>
-                                <p>
-                                    {{currentYearAnnualRecord.PivotName}}
-                                </p>
-                                <p>
-                                    {{currentYearAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
-                                </p>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Date Received: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.DateReceived | date:'shortDate'}}
+                                        <em *ngIf="!currentYearAnnualRecord.DateReceived" class="text-muted">N/A</em>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Date Paid: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.DatePaid | date:'shortDate'}}
+                                        <em *ngIf="!currentYearAnnualRecord.DatePaid" class="text-muted">N/A</em>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Pivot Name: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>
+                                        {{currentYearAnnualRecord.PivotName}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Injection Unit Type: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>
+                                        {{currentYearAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
+                                    </p>
+                                </div>
                             </div>
                             
                         </div>
