@@ -80,6 +80,27 @@
                             <div class="row col-6 mt-4">
 
                                 <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Renewal Year: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="RecordYear" readonly
+                                        [(ngModel)]="model.RecordYear" />
+                                </div>
+                                
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Annual Renewal Status: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <select name="ChemigationPermitAnnualRecordStatusID" class="form-control" 
+                                        [(ngModel)]="model.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusID" required>
+                                        <option *ngFor="let annualRecordStatus of annualRecordStatuses"
+                                            [value]="annualRecordStatus.ChemigationPermitAnnualRecordStatusID">
+                                            {{annualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
                                     <label class="required"><strong>Pivot Name: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">

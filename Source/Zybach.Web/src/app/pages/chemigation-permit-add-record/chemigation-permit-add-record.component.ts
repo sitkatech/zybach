@@ -5,8 +5,10 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 import { ChemigationInjectionUnitTypeDto } from 'src/app/shared/models/generated/chemigation-injection-unit-type-dto';
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/models/generated/chemigation-permit-annual-record-dto';
+import { ChemigationPermitAnnualRecordStatusDto } from 'src/app/shared/models/generated/chemigation-permit-annual-record-status-dto';
 import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -25,7 +27,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
 
   public permitStatuses: Array<ChemigationPermitStatusDto>;
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
-
+  public annualRecordStatuses: Array<ChemigationPermitAnnualRecordStatusDto>;
   public model: ChemigationPermitAnnualRecordDto;
   public newRecordYear: number;
   
@@ -54,6 +56,10 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
       this.chemigationPermitService.getAllChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
       });
+
+      this.chemigationPermitService.getAnnualRecordStatusTypes().subscribe(annualRecordStatuses => {
+        this.annualRecordStatuses = annualRecordStatuses;
+      });
       
       this.chemigationPermitService.getAllChemigationInjectionUnitTypes().subscribe(injectionUnitTypes => {
         this.injectionUnitTypes = injectionUnitTypes;
@@ -69,6 +75,8 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
         this.model = annualRecord;
         // update to new record year
         this.model.RecordYear = this.newRecordYear;
+        // default to PendingPayment
+        this.model.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusID = ChemigationPermitAnnualRecordStatusEnum.PendingPayment;
         this.cdr.detectChanges();
       });
   

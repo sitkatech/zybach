@@ -28,6 +28,14 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInjectionUnitTypes);
         }
 
+        [HttpGet("/api/chemigationPermits/annualRecords/annualRecordStatuses")]
+        //[ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationPermitAnnualRecordStatusDto>> GetChemigationPermitAnnualRecordStatuses()
+        {
+            var chemigationPermitAnnualRecordStatusesDto = ChemigationPermitAnnualRecordStatus.List(_dbContext);
+            return Ok(chemigationPermitAnnualRecordStatusesDto);
+        }
+
         [HttpGet("/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords")]
         //[ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordsByPermitID([FromRoute] int chemigationPermitID)

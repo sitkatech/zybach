@@ -1,0 +1,1 @@
+ALTER TABLE dbo.ChemigationPermitAnnualRecord add ApplicantEmail varchar(255) NULL

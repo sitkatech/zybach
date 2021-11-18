@@ -9,6 +9,7 @@ import { ChemigationPermitAnnualRecordUpsertDto } from '../shared/models/chemiga
 import { ChemigationPermitNewDto } from '../shared/models/chemigation-permit-new-dto';
 import { ChemigationCountyDto } from '../shared/models/generated/chemigation-county-dto';
 import { ChemigationInjectionUnitTypeDto } from '../shared/models/generated/chemigation-injection-unit-type-dto';
+import { ChemigationPermitAnnualRecordStatusDto } from '../shared/models/generated/chemigation-permit-annual-record-status-dto';
 
 
 @Injectable({
@@ -83,6 +84,11 @@ export class ChemigationPermitService {
     return this.apiService.getFromApi(route);
   }
 
+  public getAnnualRecordStatusTypes(): Observable<Array<ChemigationPermitAnnualRecordStatusDto>> {
+    let route = `/chemigationPermits/annualRecords/annualRecordStatuses`;
+    return this.apiService.getFromApi(route);
+  }
+  
   public createChemigationPermitAnnualRecord(chemigationPermitAnnualRecord: ChemigationPermitAnnualRecordDto): Observable<ChemigationPermitAnnualRecordDto> {
     let route = `/chemigationPermits/annualRecords`;
     return this.apiService.postToApi(route, chemigationPermitAnnualRecord);
