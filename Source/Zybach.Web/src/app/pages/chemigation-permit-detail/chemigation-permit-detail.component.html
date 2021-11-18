@@ -23,9 +23,15 @@
         <!-- <div class="col-12 col-sm-6 label"><strong>Total Acres Treated: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.TotalAcresTreated | number: '1.0-1'}}</div> -->
     </div>
-    <div class="col-12">
-        <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
-            <span class="fas fa-plus"></span> Create Renewal </a>
+    <div class="row col-12 mt-3">
+        <div class="col-6">
+            <a class="btn btn-zybach btn-md float-left" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
+                <span class="fas fa-edit"></span> Edit Permit </a>
+        </div>
+        <div class="col-6">
+            <a class="btn btn-zybach btn-md float-right" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+                <span class="fas fa-plus"></span> Create Renewal </a>
+        </div>
     </div>
 </div>
 <div class="row mt-4 container">
@@ -43,8 +49,8 @@
                 </div>
                 <div class="col-4 text-center pl-2">Annual Record</div>                       
                 <div class="col-4 float-right">
-                    <a *ngIf="currentUserIsAdmin() && chemigationPermit" class="btn btn-zybach btn-sm float-right"
-                    routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}/edit">
+                    <a class="btn btn-zybach btn-sm float-right"
+                    routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit-record">
                         <span class="fas fa-edit"></span> Edit Record
                     </a>
                 </div>
