@@ -48,9 +48,14 @@
                     </div>
                 </div>
                 <div class="col-4 text-center pl-2">Annual Record</div>                       
-                <div class="col-4 float-right">
+                <div class="col-4 float-right" *ngIf="!currentYearAnnualRecord">
+                    <a class="btn btn-zybach btn-sm float-right disabled">
+                        <span class="fas fa-edit"></span> Edit Record
+                    </a>
+                </div>
+                <div class="col-4 float-right" *ngIf="currentYearAnnualRecord">
                     <a class="btn btn-zybach btn-sm float-right"
-                    routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit-record">
+                    routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/{{yearToDisplay}}/edit">
                         <span class="fas fa-edit"></span> Edit Record
                     </a>
                 </div>

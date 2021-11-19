@@ -69,6 +69,16 @@ export class ChemigationPermitService {
     return this.apiService.getFromApi(route);
   }
 
+  public getAnnualRecordByPermitNumberAndRecordYear(chemigationPermitNumber: number, recordYear: number): Observable<ChemigationPermitAnnualRecordDto> {
+    let route = `/chemigationPermits/getByPermitNumber/${chemigationPermitNumber}/annualRecords/${recordYear}`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getAnnualRecordByPermitIDAndRecordYear(chemigationPermitID: number, recordYear: number): Observable<ChemigationPermitAnnualRecordDto> {
+    let route = `/chemigationPermits/getByPermitNumber/${chemigationPermitID}/annualRecords/${recordYear}`;
+    return this.apiService.getFromApi(route);
+  }
+
   public getChemigationPermitAnnualRecordsByPermitID(chemigationPermitID: number): Observable<Array<ChemigationPermitAnnualRecordDto>> {
     let route = `/chemigationPermits/getByID/${chemigationPermitID}/annualRecords`;
     return this.apiService.getFromApi(route);

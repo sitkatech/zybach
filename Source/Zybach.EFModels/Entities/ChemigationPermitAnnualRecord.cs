@@ -104,6 +104,13 @@ namespace Zybach.EFModels.Entities
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
         }
 
+        public static bool DoesChemigationPermitAnnualRecordExistForYear(ZybachDbContext dbContext, int chemigationPermitID, int year)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Where(x => x.ChemigationPermitID == chemigationPermitID)
+                .Any(x => x.RecordYear == year);
+        }
+
         public static ChemigationPermitAnnualRecordDto GetLatestAnnualRecordByChemigationPermitNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
         {
             var annualRecords =
@@ -131,5 +138,37 @@ namespace Zybach.EFModels.Entities
             return annualRecords
                 .SingleOrDefault(x => x.RecordYear == maximumRecordYear);
         }
+
+        public static ChemigationPermitAnnualRecordDto GetAnnualRecordByPermitNumberAndRecordYear(ZybachDbContext dbContext, int chemigationPermitNumber, int recordYear)
+        {
+            var chemigationPermit =
+                dbContext.ChemigationPermits.SingleOrDefault(x =>
+                    x.ChemigationPermitNumber == chemigationPermitNumber);
+            var chemigationPermitID = chemigationPermit.ChemigationPermitID;
+
+            if (!DoesChemigationPermitAnnualRecordExistForYear(dbContext, chemigationPermitID, recordYear))
+            {
+                return null;
+            }
+
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Where(x => x.ChemigationPermitID == chemigationPermitID)
+                .SingleOrDefault(x => x.RecordYear == recordYear)
+                .AsDto();
+        }
+
+        public static ChemigationPermitAnnualRecordDto GetAnnualRecordByPermitIDAndRecordYear(ZybachDbContext dbContext, int chemigationPermitID, int recordYear)
+        {
+            if (!DoesChemigationPermitAnnualRecordExistForYear(dbContext, chemigationPermitID, recordYear))
+            {
+                return null;
+            }
+
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Where(x => x.ChemigationPermitID == chemigationPermitID)
+                .SingleOrDefault(x => x.RecordYear == recordYear)
+                .AsDto();
+        }
+
     }
 }

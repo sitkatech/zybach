@@ -58,6 +58,12 @@ namespace Zybach.API.Controllers
         {
             var latestAnnualRecordDto =
                 ChemigationPermitAnnualRecord.GetLatestAnnualRecordByChemigationPermitNumber(_dbContext, chemigationPermitNumber);
+
+            if (ThrowNotFound(latestAnnualRecordDto, "ChemigationPermitAnnualRecord", chemigationPermitNumber, out var actionResult))
+            {
+                return actionResult;
+            }
+
             return Ok(latestAnnualRecordDto);
         }
 
@@ -67,7 +73,41 @@ namespace Zybach.API.Controllers
         {
             var latestAnnualRecordDto =
                 ChemigationPermitAnnualRecord.GetLatestAnnualRecordByChemigationPermitID(_dbContext, chemigationPermitID);
+
+            if (ThrowNotFound(latestAnnualRecordDto, "ChemigationPermitAnnualRecord", chemigationPermitID, out var actionResult))
+            {
+                return actionResult;
+            }
+
             return Ok(latestAnnualRecordDto);
+        }
+
+        [HttpGet("/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords/{recordYear}")]
+        //[ZybachViewFeature]
+        public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordByPermitNumberAndRecordYear([FromRoute] int chemigationPermitNumber, [FromRoute] int recordYear)
+        {
+            var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.GetAnnualRecordByPermitNumberAndRecordYear(_dbContext, chemigationPermitNumber, recordYear);
+
+            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord", chemigationPermitNumber, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            return Ok(chemigationPermitAnnualRecord);
+        }
+
+        [HttpGet("/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords/{recordYear}")]
+        //[ZybachViewFeature]
+        public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetChemigationPermitAnnualRecordByPermitIDAndRecordYear([FromRoute] int chemigationPermitID, [FromRoute] int recordYear)
+        {
+            var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.GetAnnualRecordByPermitIDAndRecordYear(_dbContext, chemigationPermitID, recordYear);
+
+            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord", chemigationPermitID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            return Ok(chemigationPermitAnnualRecord);
         }
 
         [HttpPut("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}")]
@@ -100,7 +140,17 @@ namespace Zybach.API.Controllers
         //[ZybachAdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromBody] ChemigationPermitAnnualRecordDto newChemigationPermitAnnualRecordDto)
         {
-            // TODO: figure out validation
+            if (ChemigationPermitAnnualRecord.DoesChemigationPermitAnnualRecordExistForYear(_dbContext,
+                newChemigationPermitAnnualRecordDto.ChemigationPermit.ChemigationPermitID,
+                newChemigationPermitAnnualRecordDto.RecordYear))
+            {
+                ModelState.AddModelError("ChemigationPermitAnnualRecord", "Annual record already exists for this year");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var chemigationPermitAnnualRecordDto =
                 ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, newChemigationPermitAnnualRecordDto);
