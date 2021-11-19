@@ -163,6 +163,17 @@
                                 </div>
                             </div>
 
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Email: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.ApplicantEmail}}
+                                        <em *ngIf="!currentYearAnnualRecord.ApplicantEmail" class="text-muted">N/A</em>
+                                    </p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
