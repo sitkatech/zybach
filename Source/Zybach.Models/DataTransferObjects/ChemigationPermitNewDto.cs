@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Zybach.Models.DataTransferObjects
 {
@@ -22,21 +17,6 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public int ChemigationInjectionUnitTypeID { get; set; }
         [Required]
-        public string ApplicantFirstName { get; set; }
-        [Required]
-        public string ApplicantLastName { get; set; }
-        public string ApplicantPhone { get; set; }
-        public string ApplicantMobilePhone { get; set; }
-        public string ApplicantEmail { get; set; }
-        [Required]
-        public string ApplicantMailingAddress { get; set; }
-        [Required]
-        public string ApplicantCity { get; set; }
-        [Required]
-        public string ApplicantState { get; set; }
-        [Required]
-        public int ApplicantZipCode { get; set; }
-        [Required] 
-        public string PivotName { get; set; }
+        public ChemigationPermitAnnualRecordUpsertDto ChemigationPermitAnnualRecord { get; set; }
     }
 }

@@ -43,6 +43,14 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitsDto);
         }
 
+        //[HttpGet("/api/chemigationPermits/withCurrentDetails")]
+        //[ZybachViewFeature]
+        //public ActionResult<IEnumerable<ChemigationPermitCurrentDetailsDto>> GetAllChemigationPermitsWithCurrentDetails()
+        //{
+        //    var chemigationPermitsWithCurrentDetails = ChemigationPermit.ListWithCurrentDetails(_dbContext);
+        //    return Ok(chemigationPermitsWithCurrentDetails);
+        //}
+
         [HttpGet("/api/chemigationPermits/getByID/{chemigationPermitID}")]
         [ZybachViewFeature]
         public ActionResult<ChemigationPermitDto> GetChemigationPermitByID([FromRoute] int chemigationPermitID)

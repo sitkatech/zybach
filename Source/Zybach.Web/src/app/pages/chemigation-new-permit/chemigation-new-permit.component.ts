@@ -12,6 +12,9 @@ import { ChemigationPermitNewDto } from 'src/app/shared/models/chemigation-permi
 import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
 import { ChemigationCountyDto } from 'src/app/shared/models/generated/chemigation-county-dto';
 import { ChemigationInjectionUnitTypeDto } from 'src/app/shared/models/generated/chemigation-injection-unit-type-dto';
+import { runInThisContext } from 'vm';
+import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/models/chemigation-permit-annual-record-upsert-dto';
+import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 @Component({
   selector: 'zybach-chemigation-new-permit',
   templateUrl: './chemigation-new-permit.component.html',
@@ -42,6 +45,25 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.model = new ChemigationPermitNewDto();
     // default to active for new permits
     this.model.ChemigationPermitStatusID = ChemigationPermitStatusEnum.Active;
+    this.model.ChemigationPermitAnnualRecord = new ChemigationPermitAnnualRecordUpsertDto(null, null, null); 
+    // {
+    //   ChemigationPermitID : null,
+    //   ChemigationPermitAnnualRecordStatusID: ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
+    //   ChemigationInjectionUnitTypeID : null,
+    //   PivotName : null,
+    //   RecordYear: new Date().getFullYear(),
+    //   ApplicantFirstName : null,
+    //   ApplicantLastName : null,
+    //   ApplicantMailingAddress : null,
+    //   ApplicantCity : null,
+    //   ApplicantState : null,
+    //   ApplicantZipCode : null,
+    //   ApplicantPhone : null,
+    //   ApplicantMobilePhone : null,
+    //   ApplicantEmail : null,
+    //   DateReceived : null,
+    //   DatePaid : null,  
+    // };
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;

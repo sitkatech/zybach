@@ -38,16 +38,21 @@
                                     <label><strong>Permit Status: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationPermitStatus" readonly
-                                        [(ngModel)]="model.ChemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName" />
+                                    {{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Chemigation Permit Number: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationPermitNumber" readonly
-                                        [(ngModel)]="model.ChemigationPermit.ChemigationPermitNumber" />
+                                    {{chemigationPermit.ChemigationPermitNumber}}
+                                </div>
+                                
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Renewal Year: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    {{model.RecordYear}}
                                 </div>
 
                             </div>
@@ -58,18 +63,22 @@
                                     <label><strong>Township-Range-Section: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="TownshipRangeSection" readonly
-                                        [(ngModel)]="model.ChemigationPermit.TownshipRangeSection" />
+                                    {{chemigationPermit.TownshipRangeSection}}
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>County: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationCounty" readonly
-                                        [(ngModel)]="model.ChemigationPermit.ChemigationCounty.ChemigationCountyDisplayName" />
+                                    {{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}
                                 </div>
-                            
+                                
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Total Acres Treated: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    {{chemigationPermit.TotalAcresTreated}}
+                                </div>
                             </div>
 
                         </div>
@@ -79,20 +88,13 @@
                         <div class="row col-12">
                             <div class="row col-6 mt-4">
 
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Renewal Year: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="RecordYear" readonly
-                                        [(ngModel)]="model.RecordYear" />
-                                </div>
                                 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label class="required"><strong>Annual Renewal Status: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <select name="ChemigationPermitAnnualRecordStatusID" class="form-control" 
-                                        [(ngModel)]="model.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusID" required>
+                                        [(ngModel)]="model.ChemigationPermitAnnualRecordStatusID" required>
                                         <option *ngFor="let annualRecordStatus of annualRecordStatuses"
                                             [value]="annualRecordStatus.ChemigationPermitAnnualRecordStatusID">
                                             {{annualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}
@@ -113,7 +115,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <select name="ChemigationInjectionUnitTypeID" class="form-control" 
-                                        [(ngModel)]="model.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeID" required>
+                                        [(ngModel)]="model.ChemigationInjectionUnitTypeID" required>
                                         <option selected disabled [value]="">Choose One</option>
                                         <option *ngFor="let injectionUnitType of injectionUnitTypes"
                                             [value]="injectionUnitType.ChemigationInjectionUnitTypeID">
@@ -122,13 +124,7 @@
                                     </select>
                                 </div>
                             
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Total Acres Treated: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="TotalAcresTreated" readonly
-                                        [(ngModel)]="model.ChemigationPermit.TotalAcresTreated" />
-                                </div>
+
                                 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Date Received: </strong></label>

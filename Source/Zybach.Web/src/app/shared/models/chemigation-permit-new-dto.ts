@@ -1,3 +1,4 @@
+import { ChemigationPermitAnnualRecordUpsertDto } from "./chemigation-permit-annual-record-upsert-dto"
 
 export class ChemigationPermitNewDto {
 	ChemigationPermitNumber : number
@@ -5,17 +6,7 @@ export class ChemigationPermitNewDto {
     TownshipRangeSection : string
     ChemigationCountyID: number
     TotalAcresTreated: number
-    ChemigationInjectionUnitTypeID: number
-    ApplicantFirstName : string
-    ApplicantLastName : string
-    ApplicantPhone : string
-    ApplicantMobilePhone : string
-    ApplicantEmail: string
-    ApplicantMailingAddress : string
-    ApplicantCity : string
-    ApplicantState : string
-    ApplicantZipCode : number
-    PivotName : string
+    ChemigationPermitAnnualRecord: ChemigationPermitAnnualRecordUpsertDto
     
     constructor(obj?: any) {
         Object.assign(this, obj);

@@ -88,7 +88,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="PivotName"
-                                        placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
+                                        placeholder="Pivot Name" required [(ngModel)]="model.ChemigationPermitAnnualRecord.PivotName" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <select name="ChemigationInjectionUnitTypeID" class="form-control" 
-                                        [(ngModel)]="model.ChemigationInjectionUnitTypeID" required>
+                                        [(ngModel)]="model.ChemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID" required>
                                         <option selected disabled [value]="">Choose One</option>
                                         <option *ngFor="let injectionUnitType of injectionUnitTypes"
                                             [value]="injectionUnitType.ChemigationInjectionUnitTypeID">
@@ -121,7 +121,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantFirstName"
-                                        placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
+                                        placeholder="First Name" required [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantFirstName" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -129,7 +129,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantLastName"
-                                        placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
+                                        placeholder="Last Name" required [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantLastName" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -137,7 +137,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantMailingAddress"
-                                        placeholder="Street Address" required [(ngModel)]="model.ApplicantMailingAddress" />
+                                        placeholder="Street Address" required [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantMailingAddress" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantCity"
-                                            placeholder="City" required [(ngModel)]="model.ApplicantCity" />
+                                            placeholder="City" required [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantCity" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantState"
-                                        placeholder="State" required [(ngModel)]="model.ApplicantState" />
+                                        placeholder="State" required [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantState" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -161,7 +161,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantZipCode"
-                                            placeholder="Zip Code" required [(ngModel)]="model.ApplicantZipCode" />
+                                            placeholder="Zip Code" required [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantZipCode" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -169,7 +169,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantPhone"
-                                        placeholder="Phone Number" [(ngModel)]="model.ApplicantPhone" />
+                                        placeholder="Phone Number" [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantPhone" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -177,7 +177,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantMobilePhone"
-                                        placeholder="Mobile Number" [(ngModel)]="model.ApplicantMobilePhone" />
+                                        placeholder="Mobile Number" [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantMobilePhone" />
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -185,7 +185,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <input type="text" class="form-control" name="ApplicantEmail"
-                                        placeholder="Email Address" [(ngModel)]="model.ApplicantEmail" />
+                                        placeholder="Email Address" [(ngModel)]="model.ChemigationPermitAnnualRecord.ApplicantEmail" />
                                 </div>
                             </div>
                             

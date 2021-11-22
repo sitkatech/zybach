@@ -5,6 +5,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
+import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/models/chemigation-permit-annual-record-upsert-dto';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 import { ChemigationInjectionUnitTypeDto } from 'src/app/shared/models/generated/chemigation-injection-unit-type-dto';
@@ -30,7 +31,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   public permitStatuses: Array<ChemigationPermitStatusDto>;
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
   public annualRecordStatuses: Array<ChemigationPermitAnnualRecordStatusDto>;
-  public model: ChemigationPermitAnnualRecordDto;
+  public model: ChemigationPermitAnnualRecordUpsertDto;
   public newRecordYear: number;
   
   public isLoadingSubmit: boolean = false;
@@ -69,22 +70,17 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
       
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
 
-      this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber).subscribe(chemigationPermit => {
-        this.chemigationPermit = chemigationPermit;
-      });
-
       this.chemigationPermitService.getLatestAnnualRecordByPermitNumber(this.chemigationPermitNumber).subscribe(annualRecord => {
-        this.model = annualRecord;
-        // update to new record year
-        this.model.RecordYear = this.newRecordYear;
-        // default to PendingPayment
-        this.model.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusID = ChemigationPermitAnnualRecordStatusEnum.PendingPayment;
+        this.chemigationPermit = annualRecord.ChemigationPermit;
+        var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto(annualRecord, this.newRecordYear, ChemigationPermitAnnualRecordStatusEnum.PendingPayment);
+        this.model = chemigationPermitAnnualRecordUpsertDto;
         this.cdr.detectChanges();
       });
   
     });
   }
   
+
   ngOnDestroy() {
     this.watchUserChangeSubscription.unsubscribe();
     this.authenticationService.dispose();
