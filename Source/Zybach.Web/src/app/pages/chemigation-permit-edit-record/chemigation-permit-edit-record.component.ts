@@ -22,7 +22,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 
 export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
-  @ViewChild('cparUpsert') private chemigationPermitAnnualRecordUpsertComponent : ChemigationPermitAnnualRecordUpsertComponent;
+  @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent : ChemigationPermitAnnualRecordUpsertComponent;
 
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
@@ -36,7 +36,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   public recordYear: number;
   
   public isLoadingSubmit: boolean = false;
-  public isCPARFormValidCheck: boolean;
+  public isAnnualRecordFormValidCheck: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,7 +66,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
         this.initializeModel(annualRecord);
         this.cdr.detectChanges();
       });
-      this.chemigationPermitAnnualRecordUpsertComponent?.validateCPARForm();
+      this.chemigationPermitAnnualRecordUpsertComponent?.validateForm();
     
     });
   }
@@ -84,12 +84,12 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.cdr.detach();
   }
 
-  private isCPARFormValid(formValid: any) : void {
-    this.isCPARFormValidCheck = formValid;
+  private isAnnualRecordFormValid(formValid: any) : void {
+    this.isAnnualRecordFormValidCheck = formValid;
   }
 
   public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
-    return this.isLoadingSubmit || !this.isCPARFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
+    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
   }
 
   onSubmit(editChemigationPermitAnnualRecordForm: HTMLFormElement): void {

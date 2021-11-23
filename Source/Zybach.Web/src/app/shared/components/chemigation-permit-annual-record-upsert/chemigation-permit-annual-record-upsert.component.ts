@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ControlContainer, NgForm } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
@@ -15,16 +15,12 @@ import { ChemigationPermitAnnualRecordStatusDto } from '../../models/generated/c
 })
 
 export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
-
   @Input() model: ChemigationPermitAnnualRecordUpsertDto;
-
+  @Output() isFormValid: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('annualRecordForm',  {static: true}) public annualRecordForm: NgForm;
+  
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
   public annualRecordStatuses: Array<ChemigationPermitAnnualRecordStatusDto>;
-
-  @Output() isCPARUpsertFormValid: EventEmitter<any> = new EventEmitter<any>();
-  
-  formChangesSubscription: any;
-  @ViewChild('cparUpsert',  {static:true}) public annualRecordForm: NgForm;
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
@@ -41,17 +37,17 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
       this.cdr.detectChanges();
     });
     this.populateDates();
-    this.validateCPARForm();
+    this.validateForm();
     this.annualRecordForm.valueChanges.subscribe(() => {
-      this.validateCPARForm();
+      this.validateForm();
     });
   }
 
-  public validateCPARForm(): void {
+  public validateForm(): void {
     if (this.annualRecordForm.valid == true) {
-        this.isCPARUpsertFormValid.emit(true);
+        this.isFormValid.emit(true);
     } else {
-        this.isCPARUpsertFormValid.emit(false);
+        this.isFormValid.emit(false);
     }
   }
 

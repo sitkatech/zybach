@@ -23,10 +23,12 @@
     </div>
     <div class="row mt-2">
         <div class="col-12">
-            <p>Edit the annual record for {{model?.RecordYear}} for the selected Chemigation Permit using the form below</p>
+            <p>Edit the annual record for {{model?.RecordYear}} for the selected Chemigation Permit using the form below
+            </p>
         </div>
     </div>
-    <form (ngSubmit)="onSubmit(editChemigationPermitAnnualRecordForm)" #editChemigationPermitAnnualRecordForm="ngForm">        <div class="row align-items-center">
+    <form (ngSubmit)="onSubmit(editChemigationPermitAnnualRecordForm)" #editChemigationPermitAnnualRecordForm="ngForm">
+        <div class="row align-items-center">
             <div class="col-12">
                 <div class="card" *ngIf="model">
                     <div class="card-body">
@@ -46,7 +48,7 @@
                                 <div class="col-6 text-left mb-2">
                                     {{chemigationPermit.ChemigationPermitNumber}}
                                 </div>
-                                
+
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Renewal Year: </strong></label>
                                 </div>
@@ -55,7 +57,7 @@
                                 </div>
 
                             </div>
-    
+
                             <div class="row col-6 mt-4">
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -71,7 +73,7 @@
                                 <div class="col-6 text-left mb-2">
                                     {{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}
                                 </div>
-                                
+
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Total Acres Treated: </strong></label>
                                 </div>
@@ -85,10 +87,8 @@
 
                         <hr class="w-90" />
 
-                        <zybach-chemigation-permit-annual-record-upsert
-                            #cparUpsert
-                            (isCPARUpsertFormValid)="isCPARFormValid($event)"
-                            [(model)]="model">
+                        <zybach-chemigation-permit-annual-record-upsert #annualRecordForm
+                            (isFormValid)="isAnnualRecordFormValid($event)" [(model)]="model">
                         </zybach-chemigation-permit-annual-record-upsert>
 
                     </div>
@@ -99,20 +99,19 @@
                         <i class="fas fa-bolt"></i> Required field
                     </div>
                     <div class="col-sm text-right">
-                        <button type="submit" class="btn btn-zybach" 
+                        <button type="submit" class="btn btn-zybach"
                             [disabled]="isFormValid(editChemigationPermitAnnualRecordForm)">
                             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                             Save
                         </button>
-                        <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
+                        <a class="btn btn-secondary ml-1"
+                            routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
                             Cancel
                         </a>
                     </div>
                 </div>
-            
+
             </div>
         </div>
     </form>
 </div>
-
-<!--   -->
