@@ -1,16 +1,15 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/models/chemigation-permit-annual-record-upsert-dto';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ChemigationInjectionUnitTypeDto } from 'src/app/shared/models/generated/chemigation-injection-unit-type-dto';
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/models/generated/chemigation-permit-annual-record-dto';
-import { ChemigationPermitAnnualRecordStatusDto } from 'src/app/shared/models/generated/chemigation-permit-annual-record-status-dto';
 import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -19,24 +18,26 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   selector: 'zybach-chemigation-permit-edit-record',
   templateUrl: './chemigation-permit-edit-record.component.html',
   styleUrls: ['./chemigation-permit-edit-record.component.scss'],
-  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
 })
 
 export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
+  @ViewChild('cparUpsert') private chemigationPermitAnnualRecordUpsertComponent : ChemigationPermitAnnualRecordUpsertComponent;
+
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
   
   public chemigationPermitNumber: number;
   public chemigationPermit: ChemigationPermitDto;
-  public chemigationPermitAnnualRecordID: number;
-
   public permitStatuses: Array<ChemigationPermitStatusDto>;
-  public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
-  public annualRecordStatuses: Array<ChemigationPermitAnnualRecordStatusDto>;
+  
+  public chemigationPermitAnnualRecordID: number;
   public model: ChemigationPermitAnnualRecordUpsertDto;
   public recordYear: number;
   
   public isLoadingSubmit: boolean = false;
+  public isCPARFormValidCheck: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -60,15 +61,12 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
       this.recordYear = parseInt(this.route.snapshot.paramMap.get("record-year"));
 
       forkJoin({
-        annualRecordStatuses: this.chemigationPermitService.getAnnualRecordStatusTypes(),
-        injectionUnitTypes: this.chemigationPermitService.getAllChemigationInjectionUnitTypes(),
         annualRecord: this.chemigationPermitService.getAnnualRecordByPermitNumberAndRecordYear(this.chemigationPermitNumber, this.recordYear)
-      }).subscribe(({ annualRecordStatuses, injectionUnitTypes, annualRecord }) => {
-        this.annualRecordStatuses = annualRecordStatuses;
-        this.injectionUnitTypes = injectionUnitTypes;
+      }).subscribe(({ annualRecord }) => {
         this.initializeModel(annualRecord);
         this.cdr.detectChanges();
       });
+      this.chemigationPermitAnnualRecordUpsertComponent?.validateCPARForm();
     
     });
   }
@@ -84,6 +82,10 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription.unsubscribe();
     this.authenticationService.dispose();
     this.cdr.detach();
+  }
+
+  private isCPARFormValid(formValid: any) {
+    this.isCPARFormValidCheck = formValid;
   }
 
   onSubmit(editChemigationPermitAnnualRecordForm: HTMLFormElement): void {

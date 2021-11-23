@@ -62,15 +62,16 @@ namespace Zybach.EFModels.Entities
                 ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName,
                 ApplicantPhone = chemigationPermitAnnualRecordUpsertDto.ApplicantPhone,
                 ApplicantMobilePhone = chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone,
-                ApplicantMailingAddress = chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress,
                 ApplicantEmail = chemigationPermitAnnualRecordUpsertDto.ApplicantEmail,
+                ApplicantMailingAddress = chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress,
                 ApplicantCity = chemigationPermitAnnualRecordUpsertDto.ApplicantCity,
                 ApplicantState = chemigationPermitAnnualRecordUpsertDto.ApplicantState,
                 ApplicantZipCode = chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode,
                 PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName,
                 RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear,
-                DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid,
-                DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived
+                DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid.AddHours(8),
+                DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived.AddHours(8)
+                //TODO: find a better solution to correct date assignment
             };
 
             dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
@@ -83,6 +84,7 @@ namespace Zybach.EFModels.Entities
 
         public static ChemigationPermitAnnualRecordDto UpdateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
+            //null check in endpoint method
             chemigationPermitAnnualRecord.ChemigationPermitID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitID;
             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
             chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID;
@@ -97,8 +99,9 @@ namespace Zybach.EFModels.Entities
             chemigationPermitAnnualRecord.ApplicantZipCode = chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode;
             chemigationPermitAnnualRecord.PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName;
             chemigationPermitAnnualRecord.RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear;
-            chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid;
-            chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived;
+            chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid.AddHours(8);
+            chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived.AddHours(8);
+            //TODO: find a better solution to correct date assignment
 
             dbContext.SaveChanges();
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
