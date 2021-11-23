@@ -84,8 +84,12 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.cdr.detach();
   }
 
-  private isCPARFormValid(formValid: any) {
+  private isCPARFormValid(formValid: any) : void {
     this.isCPARFormValidCheck = formValid;
+  }
+
+  public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
+    return this.isLoadingSubmit || !this.isCPARFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
   }
 
   onSubmit(editChemigationPermitAnnualRecordForm: HTMLFormElement): void {
@@ -108,6 +112,3 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   }
 
 }
-
-
-

@@ -26,8 +26,7 @@
             <p>Edit the annual record for {{model?.RecordYear}} for the selected Chemigation Permit using the form below</p>
         </div>
     </div>
-    <form (ngSubmit)="onSubmit(editChemigationPermitAnnualRecordForm)" #editChemigationPermitAnnualRecordForm="ngForm">
-        <div class="row align-items-center">
+    <form (ngSubmit)="onSubmit(editChemigationPermitAnnualRecordForm)" #editChemigationPermitAnnualRecordForm="ngForm">        <div class="row align-items-center">
             <div class="col-12">
                 <div class="card" *ngIf="model">
                     <div class="card-body">
@@ -88,7 +87,7 @@
 
                         <zybach-chemigation-permit-annual-record-upsert
                             #cparUpsert
-                            (isCPARFormValid)="isCPARFormValid($event)"
+                            (isCPARUpsertFormValid)="isCPARFormValid($event)"
                             [(model)]="model">
                         </zybach-chemigation-permit-annual-record-upsert>
 
@@ -101,7 +100,7 @@
                     </div>
                     <div class="col-sm text-right">
                         <button type="submit" class="btn btn-zybach" 
-                            [disabled]="!editChemigationPermitAnnualRecordForm.form.valid || isLoadingSubmit || !isCPARFormValidCheck">
+                            [disabled]="isFormValid(editChemigationPermitAnnualRecordForm)">
                             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                             Save
                         </button>
@@ -116,3 +115,4 @@
     </form>
 </div>
 
+<!--   -->

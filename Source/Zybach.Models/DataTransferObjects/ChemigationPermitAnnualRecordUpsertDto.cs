@@ -17,8 +17,9 @@ namespace Zybach.Models.DataTransferObjects
         public string PivotName { get; set; }
         [Required]
         public int RecordYear { get; set; }
-        public DateTime DateReceived { get; set; }
-        public DateTime DatePaid { get; set; }
+        public DateTime? DateReceived { get; set; }
+        public DateTime? DatePaid { get; set; }
+        [Required]
         public int ChemigationInjectionUnitTypeID { get; set; }
         public string ApplicantPhone { get; set; }
         public string ApplicantMobilePhone { get; set; }

@@ -53,26 +53,9 @@ namespace Zybach.EFModels.Entities
                 return null;
             }
 
-            var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord()
-            {
-                ChemigationPermitID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitID,
-                ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID,
-                ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID,
-                ApplicantFirstName = chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName,
-                ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName,
-                ApplicantPhone = chemigationPermitAnnualRecordUpsertDto.ApplicantPhone,
-                ApplicantMobilePhone = chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone,
-                ApplicantEmail = chemigationPermitAnnualRecordUpsertDto.ApplicantEmail,
-                ApplicantMailingAddress = chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress,
-                ApplicantCity = chemigationPermitAnnualRecordUpsertDto.ApplicantCity,
-                ApplicantState = chemigationPermitAnnualRecordUpsertDto.ApplicantState,
-                ApplicantZipCode = chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode,
-                PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName,
-                RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear,
-                DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid.AddHours(8),
-                DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived.AddHours(8)
-                //TODO: find a better solution to correct date assignment
-            };
+            var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord();
+            MapUpsertDtoToPOCO(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            
 
             dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
             dbContext.SaveChanges();
@@ -85,27 +68,35 @@ namespace Zybach.EFModels.Entities
         public static ChemigationPermitAnnualRecordDto UpdateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
             //null check in endpoint method
+            MapUpsertDtoToPOCO(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            dbContext.SaveChanges();
+            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
+            return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
+        }
+
+        private static void MapUpsertDtoToPOCO(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
+            ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        {
             chemigationPermitAnnualRecord.ChemigationPermitID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitID;
-            chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
-            chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID;
+            chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID =
+                chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
+            chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID =
+                chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID;
             chemigationPermitAnnualRecord.ApplicantFirstName = chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName;
             chemigationPermitAnnualRecord.ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName;
             chemigationPermitAnnualRecord.ApplicantPhone = chemigationPermitAnnualRecordUpsertDto.ApplicantPhone;
             chemigationPermitAnnualRecord.ApplicantMobilePhone = chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone;
             chemigationPermitAnnualRecord.ApplicantEmail = chemigationPermitAnnualRecordUpsertDto.ApplicantEmail;
-            chemigationPermitAnnualRecord.ApplicantMailingAddress = chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress;
+            chemigationPermitAnnualRecord.ApplicantMailingAddress =
+                chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress;
             chemigationPermitAnnualRecord.ApplicantCity = chemigationPermitAnnualRecordUpsertDto.ApplicantCity;
             chemigationPermitAnnualRecord.ApplicantState = chemigationPermitAnnualRecordUpsertDto.ApplicantState;
             chemigationPermitAnnualRecord.ApplicantZipCode = chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode;
             chemigationPermitAnnualRecord.PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName;
             chemigationPermitAnnualRecord.RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear;
-            chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid.AddHours(8);
-            chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived.AddHours(8);
             //TODO: find a better solution to correct date assignment
-
-            dbContext.SaveChanges();
-            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
-            return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
+            chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid?.AddHours(8);
+            chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived?.AddHours(8);
         }
 
         public static bool DoesChemigationPermitAnnualRecordExistForYear(ZybachDbContext dbContext, int chemigationPermitID, int year)
