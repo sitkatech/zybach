@@ -9,7 +9,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Feature } from '././feature';
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 import { SensorMessageAgeDto } from '././sensor-message-age-dto';
 
@@ -18,7 +17,7 @@ export class WellWithSensorMessageAgeDto {
     WellRegistrationID?: string;
     WellTPID?: string;
     Description?: string;
-    Location?: Feature;
+    Location?: any;
     LastReadingDate?: string;
     FirstReadingDate?: string;
     InAgHub?: boolean;

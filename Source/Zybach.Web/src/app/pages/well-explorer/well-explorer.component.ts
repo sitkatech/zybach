@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@ang
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { UserDto } from 'src/app/shared/models/generated/user-dto';
-import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
 import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
 import { WellMapComponent } from '../well-map/well-map.component';
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UserService } from './user/user.service';
-import { UserDetailedDto } from '../shared/models';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CookieStorageService } from '../shared/services/cookies/cookie-storage.service';
@@ -10,18 +9,19 @@ import { RoleEnum } from '../shared/models/enums/role.enum';
 import { AlertService } from '../shared/services/alert.service';
 import { Alert } from '../shared/models/alert';
 import { AlertContext } from '../shared/models/enums/alert-context.enum';
-import { UserCreateDto } from '../shared/models/user/user-create-dto';
 import { environment } from 'src/environments/environment';
+import { UserCreateDto } from '../shared/generated/model/user-create-dto';
+import { UserDto } from '../shared/generated/model/user-dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   private getUserObservable: any;
 
-  private _currentUserSetSubject = new Subject<UserDetailedDto>();
+  private _currentUserSetSubject = new Subject<UserDto>();
   public currentUserSetObservable = this._currentUserSetSubject.asObservable();
 
 
@@ -85,12 +85,12 @@ export class AuthenticationService {
     });
   }
 
-  private getUserCallback(user: UserDetailedDto) {
+  private getUserCallback(user: UserDto) {
     this.currentUser = user;
     this._currentUserSetSubject.next(this.currentUser);
   }
 
-  public refreshUserInfo(user: UserDetailedDto) {
+  public refreshUserInfo(user: UserDto) {
     this.getUserCallback(user);
   }
 
@@ -132,7 +132,7 @@ export class AuthenticationService {
     });
   }
 
-  public isUserAnAdministrator(user: UserDetailedDto): boolean {
+  public isUserAnAdministrator(user: UserDto): boolean {
     const role = user && user.Role
       ? user.Role.RoleID
       : null;
@@ -147,14 +147,14 @@ export class AuthenticationService {
     return this.isUserRoleDisabled(this.currentUser);
   }
 
-  public isUserUnassigned(user: UserDetailedDto): boolean {
+  public isUserUnassigned(user: UserDto): boolean {
     const role = user && user.Role
       ? user.Role.RoleID
       : null;
     return role === RoleEnum.Unassigned;
   }
 
-  public isUserRoleDisabled(user: UserDetailedDto): boolean {
+  public isUserRoleDisabled(user: UserDto): boolean {
     const role = user && user.Role
       ? user.Role.RoleID
       : null;

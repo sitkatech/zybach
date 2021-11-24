@@ -1,17 +1,18 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
-import { ChemigationPermitAnnualRecordUpsertDto } from '../../models/chemigation-permit-annual-record-upsert-dto';
-import { ChemigationInjectionUnitTypeDto } from '../../models/generated/chemigation-injection-unit-type-dto';
-import { ChemigationPermitAnnualRecordStatusDto } from '../../models/generated/chemigation-permit-annual-record-status-dto';
+import { ChemigationInjectionUnitTypeDto } from '../../generated/model/chemigation-injection-unit-type-dto';
+import { ChemigationPermitAnnualRecordStatusDto } from '../../generated/model/chemigation-permit-annual-record-status-dto';
+import { ChemigationPermitAnnualRecordUpsertDto } from '../../generated/model/chemigation-permit-annual-record-upsert-dto';
+import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 
 @Component({
   selector: 'zybach-chemigation-permit-annual-record-upsert',
   templateUrl: './chemigation-permit-annual-record-upsert.component.html',
   styleUrls: ['./chemigation-permit-annual-record-upsert.component.scss'],
-  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter}]
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateAdapterFromString}]
 })
 
 export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
@@ -36,7 +37,6 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
       this.injectionUnitTypes = injectionUnitTypes;
       this.cdr.detectChanges();
     });
-    this.populateDates();
     this.validateForm();
     this.annualRecordForm.valueChanges.subscribe(() => {
       this.validateForm();
@@ -50,14 +50,4 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
         this.isFormValid.emit(false);
     }
   }
-
-  private populateDates(): void {
-    if (this.model.DatePaid != null) {
-      this.model.DatePaid = new Date(this.model.DatePaid);
-    }
-    if (this.model.DateReceived != null) {
-      this.model.DateReceived = new Date(this.model.DateReceived);
-    }
-  }
-
 }

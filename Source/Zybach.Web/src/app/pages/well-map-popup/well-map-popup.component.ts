@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
 
 @Component({
   selector: 'zybach-well-map-popup',

@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserDetailedDto } from 'src/app/shared/models';
+import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
+import { ReportTemplateModelDto } from 'src/app/shared/generated/model/report-template-model-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ReportTemplateDto } from 'src/app/shared/models/generated/report-template-dto';
-import { ReportTemplateModelDto } from 'src/app/shared/models/generated/report-template-model-dto';
 import { ReportTemplateUpdateDto } from 'src/app/shared/models/report-template-update-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
@@ -20,7 +20,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
 
 
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   public reportTemplateID: number;
   public reportTemplate: ReportTemplateDto;
@@ -69,7 +69,6 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
         this.reportTemplateID = parseInt(this.route.snapshot.paramMap.get("id"));
         this.reportTemplateService.getReportTemplate(this.reportTemplateID).subscribe(reportTemplate => {
           this.reportTemplate = reportTemplate as ReportTemplateDto;
-          this.model.ReportTemplateID = reportTemplate.ReportTemplateID;
           this.model.DisplayName = reportTemplate.DisplayName;
           this.model.Description = reportTemplate.Description;
           this.model.ReportTemplateModelID = reportTemplate.ReportTemplateModel.ReportTemplateModelID;

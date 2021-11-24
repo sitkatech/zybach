@@ -1,7 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ManagerDashboardService } from 'src/app/services/manager-dashboard.service';
-import { DistrictStatisticsDto } from 'src/app/shared/models/district-statistics-dto';
-import { StreamFlowZoneDto } from 'src/app/shared/models/stream-flow-zone-dto';
 import {
   Control, FitBoundsOptions,
   GeoJSON,
@@ -19,8 +17,10 @@ import 'leaflet.fullscreen';
 import { GestureHandling } from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { forkJoin } from 'rxjs';
-import { StreamFlowZonePumpingDepthDto } from 'src/app/shared/models/stream-flow-zone-pumping-depth-dto';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
+import { DistrictStatisticsDto } from 'src/app/shared/generated/model/district-statistics-dto';
+import { StreamFlowZoneDto } from 'src/app/shared/generated/model/stream-flow-zone-dto';
+import { StreamFlowZonePumpingDepthDto } from 'src/app/shared/generated/model/stream-flow-zone-pumping-depth-dto';
 
 @Component({
   selector: 'zybach-dashboard',

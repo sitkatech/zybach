@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { PropertiesPlugin } from '@microsoft/applicationinsights-properties-js';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { UserDto } from 'src/app/shared/models/generated/user-dto';
-import { SensorMessageAgeDto, WellWithSensorMessageAgeDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { WellWithSensorMessageAgeDto } from 'src/app/shared/generated/model/well-with-sensor-message-age-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
 
 @Component({

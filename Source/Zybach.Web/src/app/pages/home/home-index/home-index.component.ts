@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserDetailedDto } from 'src/app/shared/models';
-import { error } from 'protractor';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
 import { environment } from 'src/environments/environment';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 
 @Component({
     selector: 'app-home-index',
@@ -13,7 +12,7 @@ import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text
 })
 export class HomeIndexComponent implements OnInit, OnDestroy {
     public watchUserChangeSubscription: any;
-    public currentUser: UserDetailedDto;
+    public currentUser: UserDto;
 
     public richTextTypeID : number = CustomRichTextType.Homepage;
 

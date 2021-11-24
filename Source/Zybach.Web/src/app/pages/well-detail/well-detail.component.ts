@@ -3,8 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
-import { UserDetailedDto } from 'src/app/shared/models';
-import { SensorMessageAgeDto, SensorSummaryDto, WellDetailDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { AsyncParser } from 'json2csv';
@@ -20,17 +18,19 @@ import {
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';
-import { InstallationDto } from 'src/app/shared/models/installation-dto';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
 import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
-import { NominatimService } from 'src/app/services/nominatim.service';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
-import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
+import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
+import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -47,11 +47,12 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   maxZoom = 17;
 
-  currentUser: UserDetailedDto;
+  currentUser: UserDto;
   chartSubscription: any;
   well: WellDetailDto;
   sensorsWithStatus: SensorMessageAgeDto[];
-  installations: InstallationDto[] = [];
+  installations: InstallationRecordDto[] = [];
+  installationPhotos: Map<string, any[]>; 
   rawResults: string;
   timeSeries: any[];
   vegaView: any;
@@ -156,10 +157,11 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getInstallationDetails(){
     this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installations => {
       this.installations = installations;
-
+      this.installationPhotos = new Map();
       for (const installation of installations) {
 
-        this.getPhotoRecords(installation);
+        const installationPhotoDataUrls = this.getPhotoRecords(installation);
+        this.installationPhotos.set(installation.InstallationCanonicalName, installationPhotoDataUrls);
       }
     });
   }
@@ -184,9 +186,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return `Data Source${plural ? "s": ""}: `
   }
 
-  getPhotoRecords(installation: InstallationDto){
-    installation.PhotoDataUrls = [];
-    installation.NoPhotoAvailable = false;
+  getPhotoRecords(installation: InstallationRecordDto) : any[]{
+    const installationPhotoDataUrls = [];
     const photos = installation.Photos;
 
     const photoObservables = photos.map(
@@ -209,12 +210,11 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
           // result includes identifier 'data:image/png;base64,' plus the base64 data
-          installation.PhotoDataUrls.push({path: reader.result});
+          installationPhotoDataUrls.push({path: reader.result});
         };
       }
-
-      installation.NoPhotoAvailable = !foundPhoto;
     });
+    return installationPhotoDataUrls;
   }
   
   wellInGeoOptixUrl(): string {
@@ -234,7 +234,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return time.format('M/D/yyyy');// + timepiece;
   }
 
-  getInstallationDate(installation: InstallationDto) {
+  getInstallationDate(installation: InstallationRecordDto) {
     if (!installation.Date) {
       return ""
     }

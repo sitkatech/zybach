@@ -11,7 +11,6 @@
  */
 import { AnnualPumpedVolume } from '././annual-pumped-volume';
 import { SensorSummaryDto } from '././sensor-summary-dto';
-import { Feature } from '././feature';
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 
 export class WellDetailDto { 
@@ -20,7 +19,7 @@ export class WellDetailDto {
     WellRegistrationID?: string;
     WellTPID?: string;
     Description?: string;
-    Location?: Feature;
+    Location?: any;
     LastReadingDate?: string;
     FirstReadingDate?: string;
     InAgHub?: boolean;

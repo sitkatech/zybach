@@ -1401,15 +1401,10 @@
               "schema": {
                 "required": [
                   "DisplayName",
-                  "ReportTemplateID",
                   "ReportTemplateModelID"
                 ],
                 "type": "object",
                 "properties": {
-                  "ReportTemplateID": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "FileResource": {
                     "type": "string",
                     "format": "binary"
@@ -1427,9 +1422,6 @@
                 }
               },
               "encoding": {
-                "ReportTemplateID": {
-                  "style": "form"
-                },
                 "FileResource": {
                   "style": "form"
                 },
@@ -1486,10 +1478,6 @@
                 ],
                 "type": "object",
                 "properties": {
-                  "ReportTemplateID": {
-                    "type": "integer",
-                    "format": "int32"
-                  },
                   "FileResource": {
                     "type": "string",
                     "format": "binary"
@@ -1507,9 +1495,6 @@
                 }
               },
               "encoding": {
-                "ReportTemplateID": {
-                  "style": "form"
-                },
                 "FileResource": {
                   "style": "form"
                 },
@@ -3792,7 +3777,7 @@
             "nullable": true
           },
           "Location": {
-            "$ref": "#/components/schemas/Feature"
+            "nullable": true
           },
           "LastReadingDate": {
             "type": "string",
@@ -3916,7 +3901,7 @@
             "nullable": true
           },
           "Location": {
-            "$ref": "#/components/schemas/Feature"
+            "nullable": true
           },
           "LastReadingDate": {
             "type": "string",
@@ -3983,7 +3968,7 @@
             "nullable": true
           },
           "Location": {
-            "$ref": "#/components/schemas/Feature"
+            "nullable": true
           },
           "LastReadingDate": {
             "type": "string",

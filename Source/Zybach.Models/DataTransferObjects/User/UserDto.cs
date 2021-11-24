@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Zybach.Models.DataTransferObjects
+﻿namespace Zybach.Models.DataTransferObjects
 {
     public partial class UserDto
     {

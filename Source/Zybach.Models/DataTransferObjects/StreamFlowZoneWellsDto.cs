@@ -16,7 +16,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellRegistrationID { get; set; }
         public string WellTPID { get; set; }
         public string Description { get; set; }
-        public Feature Location { get; set; }
+        public object Location { get; set; }
         public DateTime? LastReadingDate { get; set; }
         public DateTime? FirstReadingDate { get; set; }
         public bool InAgHub { get; set; }

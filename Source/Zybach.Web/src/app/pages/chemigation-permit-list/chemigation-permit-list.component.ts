@@ -5,10 +5,10 @@ import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { UserDetailedDto } from 'src/app/shared/models';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
-import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
@@ -19,14 +19,14 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   @ViewChild('permitGrid') permitGrid: AgGridAngular;
 
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   public richTextTypeID : number = CustomRichTextType.Chemigation;
 
   public columnDefs: ColDef[];
   public chemigationPermits: Array<ChemigationPermitDto>;
-  public users: UserDetailedDto[];
-  public unassignedUsers: UserDetailedDto[];
+  public users: UserDto[];
+  public unassignedUsers: UserDto[];
 
   public gridApi: any;
 

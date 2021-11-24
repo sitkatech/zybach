@@ -183,7 +183,7 @@ namespace Zybach.API.Controllers
                     new MonthlyPumpedVolume(x.First().ReadingYear, x.First().ReadingMonth,
                         x.Sum(y => y.MeasurementValue))).ToList();
 
-            var point = (Point)wellWithSensorSummaryDto.Location.Geometry;
+            var point = (Point)((Feature)wellWithSensorSummaryDto.Location).Geometry;
             var robustReviewDto = new RobustReviewDto
             {
                 WellRegistrationID = wellRegistrationID,

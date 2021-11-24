@@ -13,13 +13,13 @@ import { GestureHandling } from 'leaflet-gesture-handling';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
-import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import L from 'leaflet';
-import { WellNewDto } from 'src/app/shared/models/well-new-dto';
 import { TwinPlatteBoundaryGeoJson } from 'src/app/shared/models/tpnrd-boundary';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { WellNewDto } from 'src/app/shared/generated/model/well-new-dto';
 
 @Component({
   selector: 'zybach-well-new',
@@ -28,7 +28,7 @@ import { TwinPlatteBoundaryGeoJson } from 'src/app/shared/models/tpnrd-boundary'
 })
 export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   private maxZoom: number = 17;
 

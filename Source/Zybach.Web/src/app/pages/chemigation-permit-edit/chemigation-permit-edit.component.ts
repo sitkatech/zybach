@@ -1,26 +1,24 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
-import { UserDetailedDto } from 'src/app/shared/models';
+import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
+import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
+import { ChemigationPermitUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-upsert-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
-import { ChemigationPermitUpsertDto } from 'src/app/shared/models/chemigation-permit-upsert-dto';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
-import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-edit',
   templateUrl: './chemigation-permit-edit.component.html',
-  styleUrls: ['./chemigation-permit-edit.component.scss'],
-  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
+  styleUrls: ['./chemigation-permit-edit.component.scss']
 })
 export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
 
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
   
   public chemigationPermitNumber: number;
   public chemigationPermit: ChemigationPermitDto;

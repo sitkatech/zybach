@@ -19,7 +19,6 @@ import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import { GestureHandling } from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
-import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
 import { TwinPlatteBoundaryGeoJson } from '../../shared/models/tpnrd-boundary';
 
@@ -32,6 +31,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgElement, WithProperties } from '@angular/elements';
 import { SensorStatusMapPopupComponent } from '../sensor-status-map-popup/sensor-status-map-popup.component';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 
 @Component({
   selector: 'zybach-sensor-status-map',
