@@ -26,17 +26,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Controllers.WellChartDataDto"
+                  "$ref": "#/components/schemas/WellChartDataDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Controllers.WellChartDataDto"
+                  "$ref": "#/components/schemas/WellChartDataDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Controllers.WellChartDataDto"
+                  "$ref": "#/components/schemas/WellChartDataDto"
                 }
               }
             }
@@ -57,7 +57,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Controllers.WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
                   }
                 }
               },
@@ -65,7 +65,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Controllers.WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
                   }
                 }
               },
@@ -73,7 +73,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Controllers.WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
                   }
                 }
               }
@@ -95,7 +95,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitStatusDto"
+                    "$ref": "#/components/schemas/ChemigationPermitStatusDto"
                   }
                 }
               },
@@ -103,7 +103,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitStatusDto"
+                    "$ref": "#/components/schemas/ChemigationPermitStatusDto"
                   }
                 }
               },
@@ -111,7 +111,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitStatusDto"
+                    "$ref": "#/components/schemas/ChemigationPermitStatusDto"
                   }
                 }
               }
@@ -133,7 +133,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationCountyDto"
+                    "$ref": "#/components/schemas/ChemigationCountyDto"
                   }
                 }
               },
@@ -141,7 +141,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationCountyDto"
+                    "$ref": "#/components/schemas/ChemigationCountyDto"
                   }
                 }
               },
@@ -149,7 +149,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationCountyDto"
+                    "$ref": "#/components/schemas/ChemigationCountyDto"
                   }
                 }
               }
@@ -171,7 +171,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDto"
                   }
                 }
               },
@@ -179,7 +179,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDto"
                   }
                 }
               },
@@ -187,7 +187,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDto"
                   }
                 }
               }
@@ -203,22 +203,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitNewDto"
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitNewDto"
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitNewDto"
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitNewDto"
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
               }
             }
           }
@@ -229,17 +229,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               }
             }
@@ -269,17 +269,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               }
             }
@@ -309,17 +309,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               }
             }
@@ -347,22 +347,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
               }
             }
           }
@@ -373,17 +373,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
                 }
               }
             }
@@ -425,7 +425,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationInjectionUnitTypeDto"
+                    "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
                   }
                 }
               },
@@ -433,7 +433,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationInjectionUnitTypeDto"
+                    "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
                   }
                 }
               },
@@ -441,7 +441,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationInjectionUnitTypeDto"
+                    "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
                   }
                 }
               }
@@ -463,7 +463,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordStatusDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
                   }
                 }
               },
@@ -471,7 +471,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordStatusDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
                   }
                 }
               },
@@ -479,7 +479,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordStatusDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
                   }
                 }
               }
@@ -512,7 +512,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -520,7 +520,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -528,7 +528,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               }
@@ -561,7 +561,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -569,7 +569,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -577,7 +577,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               }
@@ -608,17 +608,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               }
             }
@@ -648,17 +648,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               }
             }
@@ -699,7 +699,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -707,7 +707,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -715,7 +715,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               }
@@ -757,7 +757,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -765,7 +765,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               },
@@ -773,7 +773,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
                 }
               }
@@ -802,22 +802,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             }
           }
@@ -828,17 +828,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               }
             }
@@ -866,22 +866,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
               }
             }
           }
@@ -892,17 +892,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               }
             }
@@ -932,17 +932,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                  "$ref": "#/components/schemas/CustomRichTextDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                  "$ref": "#/components/schemas/CustomRichTextDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                  "$ref": "#/components/schemas/CustomRichTextDto"
                 }
               }
             }
@@ -968,22 +968,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                "$ref": "#/components/schemas/CustomRichTextDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                "$ref": "#/components/schemas/CustomRichTextDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                "$ref": "#/components/schemas/CustomRichTextDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                "$ref": "#/components/schemas/CustomRichTextDto"
               }
             }
           }
@@ -994,17 +994,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                  "$ref": "#/components/schemas/CustomRichTextDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                  "$ref": "#/components/schemas/CustomRichTextDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextDto"
+                  "$ref": "#/components/schemas/CustomRichTextDto"
                 }
               }
             }
@@ -1025,7 +1025,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                    "$ref": "#/components/schemas/FieldDefinitionDto"
                   }
                 }
               },
@@ -1033,7 +1033,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                    "$ref": "#/components/schemas/FieldDefinitionDto"
                   }
                 }
               },
@@ -1041,7 +1041,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                    "$ref": "#/components/schemas/FieldDefinitionDto"
                   }
                 }
               }
@@ -1072,17 +1072,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
                 }
               }
             }
@@ -1108,22 +1108,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                "$ref": "#/components/schemas/FieldDefinitionDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                "$ref": "#/components/schemas/FieldDefinitionDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                "$ref": "#/components/schemas/FieldDefinitionDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                "$ref": "#/components/schemas/FieldDefinitionDto"
               }
             }
           }
@@ -1134,17 +1134,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionDto"
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
                 }
               }
             }
@@ -1197,17 +1197,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Models.DistrictStatisticsDto"
+                  "$ref": "#/components/schemas/DistrictStatisticsDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Models.DistrictStatisticsDto"
+                  "$ref": "#/components/schemas/DistrictStatisticsDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Models.DistrictStatisticsDto"
+                  "$ref": "#/components/schemas/DistrictStatisticsDto"
                 }
               }
             }
@@ -1228,7 +1228,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Controllers.AnnualStreamFlowZonePumpingDepthDto"
+                    "$ref": "#/components/schemas/AnnualStreamFlowZonePumpingDepthDto"
                   }
                 }
               },
@@ -1236,7 +1236,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Controllers.AnnualStreamFlowZonePumpingDepthDto"
+                    "$ref": "#/components/schemas/AnnualStreamFlowZonePumpingDepthDto"
                   }
                 }
               },
@@ -1244,7 +1244,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Controllers.AnnualStreamFlowZonePumpingDepthDto"
+                    "$ref": "#/components/schemas/AnnualStreamFlowZonePumpingDepthDto"
                   }
                 }
               }
@@ -1266,7 +1266,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
                   }
                 }
               },
@@ -1274,7 +1274,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
                   }
                 }
               },
@@ -1282,7 +1282,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
                   }
                 }
               }
@@ -1304,7 +1304,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                    "$ref": "#/components/schemas/ReportTemplateDto"
                   }
                 }
               },
@@ -1312,7 +1312,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                    "$ref": "#/components/schemas/ReportTemplateDto"
                   }
                 }
               },
@@ -1320,7 +1320,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                    "$ref": "#/components/schemas/ReportTemplateDto"
                   }
                 }
               }
@@ -1363,17 +1363,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               }
             }
@@ -1452,17 +1452,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               }
             }
@@ -1532,17 +1532,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateDto"
+                  "$ref": "#/components/schemas/ReportTemplateDto"
                 }
               }
             }
@@ -1559,22 +1559,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             }
           }
@@ -1621,7 +1621,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Services.SearchSummaryDto"
+                    "$ref": "#/components/schemas/SearchSummaryDto"
                   }
                 }
               },
@@ -1629,7 +1629,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Services.SearchSummaryDto"
+                    "$ref": "#/components/schemas/SearchSummaryDto"
                   }
                 }
               },
@@ -1637,7 +1637,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Services.SearchSummaryDto"
+                    "$ref": "#/components/schemas/SearchSummaryDto"
                   }
                 }
               }
@@ -1659,7 +1659,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorMessageAgeDto"
+                    "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
                   }
                 }
               },
@@ -1667,7 +1667,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorMessageAgeDto"
+                    "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
                   }
                 }
               },
@@ -1675,7 +1675,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorMessageAgeDto"
+                    "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
                   }
                 }
               }
@@ -1705,17 +1705,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorMessageAgeDto"
+                  "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorMessageAgeDto"
+                  "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellWithSensorMessageAgeDto"
+                  "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
                 }
               }
             }
@@ -1732,22 +1732,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSummaryDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSummaryDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSummaryDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSummaryDto"
               }
             }
           }
@@ -1772,7 +1772,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.StreamFlowZoneDto"
+                    "$ref": "#/components/schemas/StreamFlowZoneDto"
                   }
                 }
               },
@@ -1780,7 +1780,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.StreamFlowZoneDto"
+                    "$ref": "#/components/schemas/StreamFlowZoneDto"
                   }
                 }
               },
@@ -1788,7 +1788,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.StreamFlowZoneDto"
+                    "$ref": "#/components/schemas/StreamFlowZoneDto"
                   }
                 }
               }
@@ -1806,22 +1806,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserInviteDto"
+                "$ref": "#/components/schemas/UserInviteDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserInviteDto"
+                "$ref": "#/components/schemas/UserInviteDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserInviteDto"
+                "$ref": "#/components/schemas/UserInviteDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserInviteDto"
+                "$ref": "#/components/schemas/UserInviteDto"
               }
             }
           }
@@ -1842,22 +1842,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserCreateDto"
+                "$ref": "#/components/schemas/UserCreateDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserCreateDto"
+                "$ref": "#/components/schemas/UserCreateDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserCreateDto"
+                "$ref": "#/components/schemas/UserCreateDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserCreateDto"
+                "$ref": "#/components/schemas/UserCreateDto"
               }
             }
           }
@@ -1868,17 +1868,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               }
             }
@@ -1897,7 +1897,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                    "$ref": "#/components/schemas/UserDto"
                   }
                 }
               },
@@ -1905,7 +1905,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                    "$ref": "#/components/schemas/UserDto"
                   }
                 }
               },
@@ -1913,7 +1913,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                    "$ref": "#/components/schemas/UserDto"
                   }
                 }
               }
@@ -1933,17 +1933,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UnassignedUserReportDto"
+                  "$ref": "#/components/schemas/UnassignedUserReportDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UnassignedUserReportDto"
+                  "$ref": "#/components/schemas/UnassignedUserReportDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UnassignedUserReportDto"
+                  "$ref": "#/components/schemas/UnassignedUserReportDto"
                 }
               }
             }
@@ -1973,17 +1973,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               }
             }
@@ -2009,22 +2009,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserUpsertDto"
+                "$ref": "#/components/schemas/UserUpsertDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserUpsertDto"
+                "$ref": "#/components/schemas/UserUpsertDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserUpsertDto"
+                "$ref": "#/components/schemas/UserUpsertDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.User.UserUpsertDto"
+                "$ref": "#/components/schemas/UserUpsertDto"
               }
             }
           }
@@ -2035,17 +2035,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               }
             }
@@ -2074,17 +2074,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               }
             }
@@ -2131,17 +2131,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+                  "$ref": "#/components/schemas/UserDto"
                 }
               }
             }
@@ -2170,17 +2170,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellDetailDto"
+                  "$ref": "#/components/schemas/WellDetailDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellDetailDto"
+                  "$ref": "#/components/schemas/WellDetailDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellDetailDto"
+                  "$ref": "#/components/schemas/WellDetailDto"
                 }
               }
             }
@@ -2211,7 +2211,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.InstallationRecordDto"
+                    "$ref": "#/components/schemas/InstallationRecordDto"
                   }
                 }
               },
@@ -2219,7 +2219,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.InstallationRecordDto"
+                    "$ref": "#/components/schemas/InstallationRecordDto"
                   }
                 }
               },
@@ -2227,7 +2227,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.InstallationRecordDto"
+                    "$ref": "#/components/schemas/InstallationRecordDto"
                   }
                 }
               }
@@ -2288,7 +2288,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Models.RobustReviewDto"
+                    "$ref": "#/components/schemas/RobustReviewDto"
                   }
                 }
               },
@@ -2296,7 +2296,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Models.RobustReviewDto"
+                    "$ref": "#/components/schemas/RobustReviewDto"
                   }
                 }
               },
@@ -2304,7 +2304,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Zybach.API.Models.RobustReviewDto"
+                    "$ref": "#/components/schemas/RobustReviewDto"
                   }
                 }
               }
@@ -2322,22 +2322,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellNewDto"
+                "$ref": "#/components/schemas/WellNewDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellNewDto"
+                "$ref": "#/components/schemas/WellNewDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellNewDto"
+                "$ref": "#/components/schemas/WellNewDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.WellNewDto"
+                "$ref": "#/components/schemas/WellNewDto"
               }
             }
           }
@@ -2391,7 +2391,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Models.StructuredResultsDto"
+                  "$ref": "#/components/schemas/StructuredResultsDto"
                 }
               }
             }
@@ -2439,7 +2439,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Zybach.API.Models.StructuredResultsDto"
+                  "$ref": "#/components/schemas/StructuredResultsDto"
                 }
               }
             }
@@ -2450,368 +2450,7 @@
   },
   "components": {
     "schemas": {
-      "GeoJSON.Net.CoordinateReferenceSystem.CRSType": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "GeoJSON.Net.CoordinateReferenceSystem.ICRSObject": {
-        "type": "object",
-        "properties": {
-          "Type": {
-            "$ref": "#/components/schemas/GeoJSON.Net.CoordinateReferenceSystem.CRSType"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GeoJSON.Net.Feature.Feature": {
-        "required": [
-          "geometry",
-          "properties"
-        ],
-        "type": "object",
-        "properties": {
-          "type": {
-            "$ref": "#/components/schemas/GeoJSON.Net.GeoJSONObjectType"
-          },
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "geometry": {
-            "$ref": "#/components/schemas/GeoJSON.Net.Geometry.IGeometryObject"
-          },
-          "properties": {
-            "type": "object",
-            "additionalProperties": { },
-            "nullable": true
-          },
-          "bbox": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            },
-            "nullable": true
-          },
-          "crs": {
-            "$ref": "#/components/schemas/GeoJSON.Net.CoordinateReferenceSystem.ICRSObject"
-          }
-        },
-        "additionalProperties": false
-      },
-      "GeoJSON.Net.GeoJSONObjectType": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8
-        ],
-        "type": "integer",
-        "format": "int32"
-      },
-      "GeoJSON.Net.Geometry.IGeometryObject": {
-        "type": "object",
-        "properties": {
-          "Type": {
-            "$ref": "#/components/schemas/GeoJSON.Net.GeoJSONObjectType"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Controllers.AnnualStreamFlowZonePumpingDepthDto": {
-        "type": "object",
-        "properties": {
-          "Year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "StreamFlowZonePumpingDepths": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Zybach.API.Controllers.StreamFlowZonePumpingDepthDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Controllers.StreamFlowZonePumpingDepthDto": {
-        "type": "object",
-        "properties": {
-          "StreamFlowZoneID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "PumpingDepth": {
-            "type": "number",
-            "format": "double"
-          },
-          "TotalIrrigatedAcres": {
-            "type": "number",
-            "format": "double"
-          },
-          "TotalPumpedVolume": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Controllers.WellChartDataDto": {
-        "type": "object",
-        "properties": {
-          "TimeSeries": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.DailyPumpedVolume"
-            },
-            "nullable": true
-          },
-          "Sensors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorSummaryDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Controllers.WellInspectionSummaryDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "LastChemigationDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "LastNitratesDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "LastWaterLevelDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "LastWaterQualityDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "PendingInspectionsCount": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Models.DailySensorVolumeDto": {
-        "type": "object",
-        "properties": {
-          "SensorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementValueGallons": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "PumpingRateGallonsPerMinute": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Models.DistrictStatisticsDto": {
-        "type": "object",
-        "properties": {
-          "NumberOfWellsTracked": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "NumberOfContinuityMeters": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "NumberOfElectricalUsageEstimates": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "NumberOfFlowMeters": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Models.IntervalVolumeDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementDate": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementType": {
-            "type": "string",
-            "nullable": true
-          },
-          "TotalMeasurementValueGallons": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "SensorVolumes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Zybach.API.Models.DailySensorVolumeDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Models.RobustReviewDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellTPID": {
-            "type": "string",
-            "nullable": true
-          },
-          "Latitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "Longitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "DataSource": {
-            "type": "string",
-            "nullable": true
-          },
-          "MonthlyPumpedVolumeGallons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.MonthlyPumpedVolume"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Models.StructuredResults": {
-        "type": "object",
-        "properties": {
-          "IntervalCountTotal": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "IntervalStart": {
-            "type": "string",
-            "nullable": true
-          },
-          "IntervalEnd": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "VolumesByWell": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Zybach.API.Models.VolumeByWell"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Models.StructuredResultsDto": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "type": "string",
-            "nullable": true
-          },
-          "Result": {
-            "$ref": "#/components/schemas/Zybach.API.Models.StructuredResults"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Models.VolumeByWell": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "IntervalCount": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "IntervalVolumes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Zybach.API.Models.IntervalVolumeDto"
-            },
-            "nullable": true
-          },
-          "TotalMeasurementValueGallonsForInterval": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.API.Services.SearchSummaryDto": {
-        "type": "object",
-        "properties": {
-          "ObjectName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ObjectType": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellID": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.Models.DataTransferObjects.AnnualPumpedVolume": {
+      "AnnualPumpedVolume": {
         "type": "object",
         "properties": {
           "Year": {
@@ -2829,7 +2468,24 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationCountyDto": {
+      "AnnualStreamFlowZonePumpingDepthDto": {
+        "type": "object",
+        "properties": {
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "StreamFlowZonePumpingDepths": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StreamFlowZonePumpingDepthDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationCountyDto": {
         "type": "object",
         "properties": {
           "ChemigationCountyID": {
@@ -2847,7 +2503,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationInjectionUnitTypeDto": {
+      "ChemigationInjectionUnitTypeDto": {
         "type": "object",
         "properties": {
           "ChemigationInjectionUnitTypeID": {
@@ -2865,7 +2521,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordDto": {
+      "ChemigationPermitAnnualRecordDto": {
         "type": "object",
         "properties": {
           "ChemigationPermitAnnualRecordID": {
@@ -2873,21 +2529,21 @@
             "format": "int32"
           },
           "ChemigationPermit": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitDto"
+            "$ref": "#/components/schemas/ChemigationPermitDto"
           },
           "RecordYear": {
             "type": "integer",
             "format": "int32"
           },
           "ChemigationPermitAnnualRecordStatus": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordStatusDto"
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
           },
           "PivotName": {
             "type": "string",
             "nullable": true
           },
           "ChemigationInjectionUnitType": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationInjectionUnitTypeDto"
+            "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
           },
           "ApplicantFirstName": {
             "type": "string",
@@ -2938,7 +2594,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordStatusDto": {
+      "ChemigationPermitAnnualRecordStatusDto": {
         "type": "object",
         "properties": {
           "ChemigationPermitAnnualRecordStatusID": {
@@ -2956,7 +2612,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto": {
+      "ChemigationPermitAnnualRecordUpsertDto": {
         "required": [
           "ApplicantFirstName",
           "ApplicantLastName",
@@ -3029,7 +2685,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationPermitDto": {
+      "ChemigationPermitDto": {
         "type": "object",
         "properties": {
           "ChemigationPermitID": {
@@ -3041,7 +2697,7 @@
             "format": "int32"
           },
           "ChemigationPermitStatus": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitStatusDto"
+            "$ref": "#/components/schemas/ChemigationPermitStatusDto"
           },
           "TotalAcresTreated": {
             "type": "number",
@@ -3056,12 +2712,12 @@
             "nullable": true
           },
           "ChemigationCounty": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationCountyDto"
+            "$ref": "#/components/schemas/ChemigationCountyDto"
           }
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationPermitNewDto": {
+      "ChemigationPermitNewDto": {
         "required": [
           "ChemigationCountyID",
           "ChemigationInjectionUnitTypeID",
@@ -3097,12 +2753,12 @@
             "format": "int32"
           },
           "ChemigationPermitAnnualRecord": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ChemigationPermitAnnualRecordUpsertDto"
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
           }
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationPermitStatusDto": {
+      "ChemigationPermitStatusDto": {
         "type": "object",
         "properties": {
           "ChemigationPermitStatusID": {
@@ -3120,7 +2776,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ChemigationPermitUpsertDto": {
+      "ChemigationPermitUpsertDto": {
         "required": [
           "ChemigationPermitStatusID"
         ],
@@ -3145,7 +2801,16 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.CustomRichTextDto": {
+      "CRSType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "CustomRichTextDto": {
         "type": "object",
         "properties": {
           "IsEmptyContent": {
@@ -3156,7 +2821,7 @@
             "format": "int32"
           },
           "CustomRichTextType": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.CustomRichTextTypeDto"
+            "$ref": "#/components/schemas/CustomRichTextTypeDto"
           },
           "CustomRichTextContent": {
             "type": "string",
@@ -3165,7 +2830,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.CustomRichTextTypeDto": {
+      "CustomRichTextTypeDto": {
         "type": "object",
         "properties": {
           "CustomRichTextTypeID": {
@@ -3183,7 +2848,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.DailyPumpedVolume": {
+      "DailyPumpedVolume": {
         "type": "object",
         "properties": {
           "Time": {
@@ -3207,7 +2872,83 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.FieldDefinitionDto": {
+      "DailySensorVolumeDto": {
+        "type": "object",
+        "properties": {
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementValueGallons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PumpingRateGallonsPerMinute": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DistrictStatisticsDto": {
+        "type": "object",
+        "properties": {
+          "NumberOfWellsTracked": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "NumberOfContinuityMeters": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "NumberOfElectricalUsageEstimates": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "NumberOfFlowMeters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Feature": {
+        "required": [
+          "geometry",
+          "properties"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/GeoJSONObjectType"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/IGeometryObject"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "bbox": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          },
+          "crs": {
+            "$ref": "#/components/schemas/ICRSObject"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FieldDefinitionDto": {
         "type": "object",
         "properties": {
           "FieldDefinitionID": {
@@ -3215,7 +2956,7 @@
             "format": "int32"
           },
           "FieldDefinitionType": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FieldDefinitionTypeDto"
+            "$ref": "#/components/schemas/FieldDefinitionTypeDto"
           },
           "FieldDefinitionValue": {
             "type": "string",
@@ -3224,7 +2965,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.FieldDefinitionTypeDto": {
+      "FieldDefinitionTypeDto": {
         "type": "object",
         "properties": {
           "FieldDefinitionTypeID": {
@@ -3242,7 +2983,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.FileResourceDto": {
+      "FileResourceDto": {
         "type": "object",
         "properties": {
           "FileResourceID": {
@@ -3250,7 +2991,7 @@
             "format": "int32"
           },
           "FileResourceMimeType": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FileResourceMimeTypeDto"
+            "$ref": "#/components/schemas/FileResourceMimeTypeDto"
           },
           "OriginalBaseFilename": {
             "type": "string",
@@ -3270,7 +3011,7 @@
             "nullable": true
           },
           "CreateUser": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.UserDto"
+            "$ref": "#/components/schemas/UserDto"
           },
           "CreateDate": {
             "type": "string",
@@ -3279,7 +3020,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.FileResourceMimeTypeDto": {
+      "FileResourceMimeTypeDto": {
         "type": "object",
         "properties": {
           "FileResourceMimeTypeID": {
@@ -3309,7 +3050,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.GenerateReportsDto": {
+      "GenerateReportsDto": {
         "type": "object",
         "properties": {
           "ReportTemplateID": {
@@ -3327,7 +3068,40 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.InstallationRecordDto": {
+      "GeoJSONObjectType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ICRSObject": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "$ref": "#/components/schemas/CRSType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IGeometryObject": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "$ref": "#/components/schemas/GeoJSONObjectType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InstallationRecordDto": {
         "type": "object",
         "properties": {
           "InstallationCanonicalName": {
@@ -3415,7 +3189,36 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.IrrigatedAcresPerYearDto": {
+      "IntervalVolumeDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementType": {
+            "type": "string",
+            "nullable": true
+          },
+          "TotalMeasurementValueGallons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorVolumes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DailySensorVolumeDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IrrigatedAcresPerYearDto": {
         "type": "object",
         "properties": {
           "Year": {
@@ -3429,7 +3232,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.MonthlyPumpedVolume": {
+      "MonthlyPumpedVolume": {
         "type": "object",
         "properties": {
           "Month": {
@@ -3447,7 +3250,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ReportTemplateDto": {
+      "ReportTemplateDto": {
         "type": "object",
         "properties": {
           "ReportTemplateID": {
@@ -3455,7 +3258,7 @@
             "format": "int32"
           },
           "FileResource": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.FileResourceDto"
+            "$ref": "#/components/schemas/FileResourceDto"
           },
           "DisplayName": {
             "type": "string",
@@ -3466,15 +3269,15 @@
             "nullable": true
           },
           "ReportTemplateModelType": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateModelTypeDto"
+            "$ref": "#/components/schemas/ReportTemplateModelTypeDto"
           },
           "ReportTemplateModel": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.ReportTemplateModelDto"
+            "$ref": "#/components/schemas/ReportTemplateModelDto"
           }
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ReportTemplateModelDto": {
+      "ReportTemplateModelDto": {
         "type": "object",
         "properties": {
           "ReportTemplateModelID": {
@@ -3496,7 +3299,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.ReportTemplateModelTypeDto": {
+      "ReportTemplateModelTypeDto": {
         "type": "object",
         "properties": {
           "ReportTemplateModelTypeID": {
@@ -3518,7 +3321,40 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.RoleDto": {
+      "RobustReviewDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "DataSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "MonthlyPumpedVolumeGallons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyPumpedVolume"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleDto": {
         "type": "object",
         "properties": {
           "RoleID": {
@@ -3544,7 +3380,25 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.SensorMessageAgeDto": {
+      "SearchSummaryDto": {
+        "type": "object",
+        "properties": {
+          "ObjectName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ObjectType": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
           "SensorName": {
@@ -3566,7 +3420,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.SensorSummaryDto": {
+      "SensorSummaryDto": {
         "type": "object",
         "properties": {
           "WellRegistrationID": {
@@ -3587,7 +3441,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.StreamFlowZoneDto": {
+      "StreamFlowZoneDto": {
         "type": "object",
         "properties": {
           "StreamFlowZoneID": {
@@ -3603,12 +3457,76 @@
             "format": "double"
           },
           "StreamFlowZoneFeature": {
-            "$ref": "#/components/schemas/GeoJSON.Net.Feature.Feature"
+            "$ref": "#/components/schemas/Feature"
           }
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.User.UnassignedUserReportDto": {
+      "StreamFlowZonePumpingDepthDto": {
+        "type": "object",
+        "properties": {
+          "StreamFlowZoneID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PumpingDepth": {
+            "type": "number",
+            "format": "double"
+          },
+          "TotalIrrigatedAcres": {
+            "type": "number",
+            "format": "double"
+          },
+          "TotalPumpedVolume": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StructuredResults": {
+        "type": "object",
+        "properties": {
+          "IntervalCountTotal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IntervalStart": {
+            "type": "string",
+            "nullable": true
+          },
+          "IntervalEnd": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "VolumesByWell": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VolumeByWell"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StructuredResultsDto": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "string",
+            "nullable": true
+          },
+          "Result": {
+            "$ref": "#/components/schemas/StructuredResults"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnassignedUserReportDto": {
         "type": "object",
         "properties": {
           "Count": {
@@ -3618,7 +3536,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.User.UserCreateDto": {
+      "UserCreateDto": {
         "required": [
           "ReceiveSupportEmails",
           "RoleID"
@@ -3663,69 +3581,7 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.User.UserInviteDto": {
-        "required": [
-          "Email",
-          "FirstName",
-          "LastName",
-          "RoleID"
-        ],
-        "type": "object",
-        "properties": {
-          "FirstName": {
-            "type": "string"
-          },
-          "LastName": {
-            "type": "string"
-          },
-          "Email": {
-            "type": "string"
-          },
-          "RoleID": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.Models.DataTransferObjects.User.UserUpsertDto": {
-        "required": [
-          "ReceiveSupportEmails",
-          "RoleID"
-        ],
-        "type": "object",
-        "properties": {
-          "FirstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "LastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "OrganizationName": {
-            "type": "string",
-            "nullable": true
-          },
-          "Email": {
-            "type": "string",
-            "nullable": true
-          },
-          "PhoneNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "RoleID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ReceiveSupportEmails": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "Zybach.Models.DataTransferObjects.UserDto": {
+      "UserDto": {
         "type": "object",
         "properties": {
           "UserID": {
@@ -3754,7 +3610,7 @@
             "nullable": true
           },
           "Role": {
-            "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.RoleDto"
+            "$ref": "#/components/schemas/RoleDto"
           },
           "CreateDate": {
             "type": "string",
@@ -3797,20 +3653,129 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.WellDetailDto": {
+      "UserInviteDto": {
+        "required": [
+          "Email",
+          "FirstName",
+          "LastName",
+          "RoleID"
+        ],
         "type": "object",
         "properties": {
-          "AnnualPumpedVolume": {
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "RoleID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserUpsertDto": {
+        "required": [
+          "ReceiveSupportEmails",
+          "RoleID"
+        ],
+        "type": "object",
+        "properties": {
+          "FirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OrganizationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "nullable": true
+          },
+          "PhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "RoleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReceiveSupportEmails": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VolumeByWell": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "IntervalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "IntervalVolumes": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.AnnualPumpedVolume"
+              "$ref": "#/components/schemas/IntervalVolumeDto"
+            },
+            "nullable": true
+          },
+          "TotalMeasurementValueGallonsForInterval": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellChartDataDto": {
+        "type": "object",
+        "properties": {
+          "TimeSeries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DailyPumpedVolume"
             },
             "nullable": true
           },
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorSummaryDto"
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellDetailDto": {
+        "type": "object",
+        "properties": {
+          "AnnualPumpedVolume": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnnualPumpedVolume"
+            },
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
             },
             "nullable": true
           },
@@ -3827,7 +3792,7 @@
             "nullable": true
           },
           "Location": {
-            "$ref": "#/components/schemas/GeoJSON.Net.Feature.Feature"
+            "$ref": "#/components/schemas/Feature"
           },
           "LastReadingDate": {
             "type": "string",
@@ -3856,7 +3821,7 @@
           "IrrigatedAcresPerYear": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.IrrigatedAcresPerYearDto"
+              "$ref": "#/components/schemas/IrrigatedAcresPerYearDto"
             },
             "nullable": true
           },
@@ -3871,7 +3836,42 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.WellNewDto": {
+      "WellInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastChemigationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastNitratesDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastWaterLevelDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastWaterQualityDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "PendingInspectionsCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellNewDto": {
         "required": [
           "Latitude",
           "Longitude",
@@ -3893,13 +3893,13 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.WellWithSensorMessageAgeDto": {
+      "WellWithSensorMessageAgeDto": {
         "type": "object",
         "properties": {
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorMessageAgeDto"
+              "$ref": "#/components/schemas/SensorMessageAgeDto"
             },
             "nullable": true
           },
@@ -3916,7 +3916,7 @@
             "nullable": true
           },
           "Location": {
-            "$ref": "#/components/schemas/GeoJSON.Net.Feature.Feature"
+            "$ref": "#/components/schemas/Feature"
           },
           "LastReadingDate": {
             "type": "string",
@@ -3945,7 +3945,7 @@
           "IrrigatedAcresPerYear": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.IrrigatedAcresPerYearDto"
+              "$ref": "#/components/schemas/IrrigatedAcresPerYearDto"
             },
             "nullable": true
           },
@@ -3960,13 +3960,13 @@
         },
         "additionalProperties": false
       },
-      "Zybach.Models.DataTransferObjects.WellWithSensorSummaryDto": {
+      "WellWithSensorSummaryDto": {
         "type": "object",
         "properties": {
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.SensorSummaryDto"
+              "$ref": "#/components/schemas/SensorSummaryDto"
             },
             "nullable": true
           },
@@ -3983,7 +3983,7 @@
             "nullable": true
           },
           "Location": {
-            "$ref": "#/components/schemas/GeoJSON.Net.Feature.Feature"
+            "$ref": "#/components/schemas/Feature"
           },
           "LastReadingDate": {
             "type": "string",
@@ -4012,7 +4012,7 @@
           "IrrigatedAcresPerYear": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Zybach.Models.DataTransferObjects.IrrigatedAcresPerYearDto"
+              "$ref": "#/components/schemas/IrrigatedAcresPerYearDto"
             },
             "nullable": true
           },
