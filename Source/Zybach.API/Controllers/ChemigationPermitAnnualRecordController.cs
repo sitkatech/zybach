@@ -147,7 +147,7 @@ namespace Zybach.API.Controllers
             }
 
             var chemigationPermitAnnualRecordDto =
-                ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, 1);
+                ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
             return Ok(chemigationPermitAnnualRecordDto);
         }
 
