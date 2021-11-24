@@ -73,38 +73,6 @@
                                         </option>
                                     </select>
                                 </div>
-                            
-                            </div>
-
-                        </div>
-
-                        <hr class="w-90" />
-
-                        <div class="row col-12">
-                            <div class="row col-6 mt-4">
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Pivot Name: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="PivotName"
-                                        placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Injection Unit Type: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <select name="ChemigationInjectionUnitTypeID" class="form-control" 
-                                        [(ngModel)]="model.ChemigationInjectionUnitTypeID" required>
-                                        <option selected disabled [value]="">Choose One</option>
-                                        <option *ngFor="let injectionUnitType of injectionUnitTypes"
-                                            [value]="injectionUnitType.ChemigationInjectionUnitTypeID">
-                                            {{injectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
-                                        </option>
-                                    </select>
-                                </div>
-                            
                                 <div class="col-6 control-label text-right mb-2">
                                     <label class="required"><strong>Total Acres Treated: </strong></label>
                                 </div>
@@ -112,76 +80,17 @@
                                     <input type="text" class="form-control" name="TotalAcresTreated"
                                         placeholder="Total Acres Treated" required [(ngModel)]="model.TotalAcresTreated" />
                                 </div>
-      
-                            </div>
-
-                            <div class="row col-6 mt-4">
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Applicant First Name: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantFirstName"
-                                        placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Applicant Last Name: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantLastName"
-                                        placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Address: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantMailingAddress"
-                                        placeholder="Street Address" required [(ngModel)]="model.ApplicantMailingAddress" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>City: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantCity"
-                                            placeholder="City" required [(ngModel)]="model.ApplicantCity" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>State: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantState"
-                                        placeholder="State" required [(ngModel)]="model.ApplicantState" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Zip: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantZipCode"
-                                            placeholder="Zip Code" required [(ngModel)]="model.ApplicantZipCode" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Phone: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantPhone"
-                                        placeholder="Phone Number" [(ngModel)]="model.ApplicantPhone" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Mobile Phone: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantMobilePhone"
-                                        placeholder="Mobile Number" [(ngModel)]="model.ApplicantMobilePhone" />
-                                </div>
-                            </div>
                             
+                            </div>
+
                         </div>
+
+                        <hr class="w-90" />
+
+                        <zybach-chemigation-permit-annual-record-upsert #annualRecordForm
+                            (isFormValid)="isAnnualRecordFormValid($event)" [(model)]="model.ChemigationPermitAnnualRecord">
+                        </zybach-chemigation-permit-annual-record-upsert>
+
                     </div>
                 </div>
 
@@ -190,7 +99,8 @@
                         <i class="fas fa-bolt"></i> Required field
                     </div>
                     <div class="col-sm text-right">
-                        <button type="submit" class="btn btn-zybach" [disabled]="!newChemigationPermitForm.form.valid || isLoadingSubmit">
+                        <button type="submit" class="btn btn-zybach" 
+                            [disabled]="isFormValid(newChemigationPermitForm)">
                             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                             Save
                         </button>

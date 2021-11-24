@@ -23,6 +23,7 @@ export class ChemigationPermitAnnualRecordDto {
 	ApplicantMobilePhone : string
 	DateReceived : Date
 	DatePaid : Date
+	ApplicantEmail : string
 
     constructor(obj?: any) {
         Object.assign(this, obj);

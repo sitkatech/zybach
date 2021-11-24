@@ -32,7 +32,8 @@ create table dbo.ChemigationPermitAnnualRecord
 	ApplicantPhone varchar(30) null,
 	ApplicantMobilePhone varchar(30) null,
 	DateReceived datetime null,
-	DatePaid datetime null
+	DatePaid datetime null,
+	constraint AK_ChemigationPermitAnnualRecord_ChemigationPermitID_RecordYear unique (ChemigationPermitID, RecordYear)
 )
 
 GO

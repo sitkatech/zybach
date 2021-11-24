@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemigationPermitAnnualRecord")]
+    [Index(nameof(ChemigationPermitID), nameof(RecordYear), Name = "AK_ChemigationPermitAnnualRecord_ChemigationPermitID_RecordYear", IsUnique = true)]
     public partial class ChemigationPermitAnnualRecord
     {
         [Key]
@@ -44,6 +45,8 @@ namespace Zybach.EFModels.Entities
         public DateTime? DateReceived { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DatePaid { get; set; }
+        [StringLength(255)]
+        public string ApplicantEmail { get; set; }
 
         [ForeignKey(nameof(ChemigationInjectionUnitTypeID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]

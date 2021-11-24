@@ -39,36 +39,17 @@ namespace Zybach.EFModels.Entities
                 ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
             };
 
-            // TODO: ChemigationPermitAnnualRecord.CreateAnnualRecord()
+            dbContext.ChemigationPermits.Add(chemigationPermit);
+            dbContext.SaveChanges();
 
             // when creating new permit, always create a default annual record as well
-            var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord()
-            {
-                ChemigationPermit = chemigationPermit,
-                // default to pending payment status on new permits
-                ChemigationPermitAnnualRecordStatusID = (int)ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
-                ChemigationInjectionUnitTypeID = chemigationPermitNewDto.ChemigationInjectionUnitTypeID,
-                ApplicantFirstName = chemigationPermitNewDto.ApplicantFirstName,
-                ApplicantLastName = chemigationPermitNewDto.ApplicantLastName,
-                ApplicantPhone = chemigationPermitNewDto.ApplicantPhone,
-                ApplicantMobilePhone = chemigationPermitNewDto.ApplicantMobilePhone,
-                ApplicantMailingAddress = chemigationPermitNewDto.ApplicantMailingAddress,
-                ApplicantCity = chemigationPermitNewDto.ApplicantCity,
-                ApplicantState = chemigationPermitNewDto.ApplicantState, 
-                ApplicantZipCode = chemigationPermitNewDto.ApplicantZipCode,
-                PivotName = chemigationPermitNewDto.PivotName,
-                // TODO: determine what default behavior should be here: are we creating a record for the year in which the permit was received, or for the upcoming year?
-                RecordYear = chemigationPermit.DateCreated.Year,
-                DateReceived = chemigationPermit.DateCreated
-            };
-
-            dbContext.ChemigationPermits.Add(chemigationPermit);
-            dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
-            dbContext.SaveChanges();
+            var chemigationPermitID = chemigationPermit.ChemigationPermitID;
+            ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext,
+                chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
 
             dbContext.Entry(chemigationPermit).Reload();
 
-            return GetChemigationPermitByID(dbContext, chemigationPermit.ChemigationPermitID);
+            return GetChemigationPermitByID(dbContext, chemigationPermitID);
         }
 
         public static ChemigationPermitDto GetChemigationPermitByID(ZybachDbContext dbContext, int chemigationPermitID)

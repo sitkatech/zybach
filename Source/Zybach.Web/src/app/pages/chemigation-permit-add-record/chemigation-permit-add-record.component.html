@@ -26,7 +26,7 @@
             <p>Add an annual record to the selected Chemigation Permit using the form below</p>
         </div>
     </div>
-    <form (ngSubmit)="onSubmit(editChemigationPermitAnnualRecordForm)" #editChemigationPermitAnnualRecordForm="ngForm">
+    <form (ngSubmit)="onSubmit(addChemigationPermitAnnualRecordForm)" #addChemigationPermitAnnualRecordForm="ngForm">
         <div class="row align-items-center">
             <div class="col-12">
                 <div class="card" *ngIf="model">
@@ -38,146 +38,58 @@
                                     <label><strong>Permit Status: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationPermitStatus" readonly
-                                        [(ngModel)]="model.ChemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName" />
+                                    {{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Chemigation Permit Number: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationPermitNumber" readonly
-                                        [(ngModel)]="model.ChemigationPermit.ChemigationPermitNumber" />
+                                    {{chemigationPermit.ChemigationPermitNumber}}
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Renewal Year: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    {{model.RecordYear}}
                                 </div>
 
                             </div>
-    
+
                             <div class="row col-6 mt-4">
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Township-Range-Section: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="TownshipRangeSection" readonly
-                                        [(ngModel)]="model.ChemigationPermit.TownshipRangeSection" />
+                                    {{chemigationPermit.TownshipRangeSection}}
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>County: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationCounty" readonly
-                                        [(ngModel)]="model.ChemigationPermit.ChemigationCounty.ChemigationCountyDisplayName" />
+                                    {{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}
                                 </div>
-                            
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Total Acres Treated: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    {{chemigationPermit.TotalAcresTreated}}
+                                </div>
+
                             </div>
 
                         </div>
 
                         <hr class="w-90" />
 
-                        <div class="row col-12">
-                            <div class="row col-6 mt-4">
+                        <zybach-chemigation-permit-annual-record-upsert #annualRecordForm
+                            (isFormValid)="isAnnualRecordFormValid($event)" [(model)]="model">
+                        </zybach-chemigation-permit-annual-record-upsert>
 
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Pivot Name: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="PivotName"
-                                        placeholder="Pivot Name" required [(ngModel)]="model.PivotName" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Injection Unit Type: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <select name="ChemigationInjectionUnitTypeID" class="form-control" 
-                                        [(ngModel)]="model.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeID" required>
-                                        <option selected disabled [value]="">Choose One</option>
-                                        <option *ngFor="let injectionUnitType of injectionUnitTypes"
-                                            [value]="injectionUnitType.ChemigationInjectionUnitTypeID">
-                                            {{injectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
-                                        </option>
-                                    </select>
-                                </div>
-                            
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Total Acres Treated: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="TotalAcresTreated" readonly
-                                        [(ngModel)]="model.ChemigationPermit.TotalAcresTreated" />
-                                </div>
-      
-                            </div>
-
-                            <div class="row col-6 mt-4">
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Applicant First Name: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantFirstName"
-                                        placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Applicant Last Name: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantLastName"
-                                        placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Address: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantMailingAddress"
-                                        placeholder="Street Address" required [(ngModel)]="model.ApplicantMailingAddress" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>City: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantCity"
-                                            placeholder="City" required [(ngModel)]="model.ApplicantCity" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>State: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantState"
-                                        placeholder="State" required [(ngModel)]="model.ApplicantState" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label class="required"><strong>Zip: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantZipCode"
-                                            placeholder="Zip Code" required [(ngModel)]="model.ApplicantZipCode" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Phone: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantPhone"
-                                        placeholder="Phone Number" [(ngModel)]="model.ApplicantPhone" />
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Mobile Phone: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ApplicantMobilePhone"
-                                        placeholder="Mobile Number" [(ngModel)]="model.ApplicantMobilePhone" />
-                                </div>
-                            </div>
-                            
-                        </div>
                     </div>
                 </div>
 
@@ -186,16 +98,17 @@
                         <i class="fas fa-bolt"></i> Required field
                     </div>
                     <div class="col-sm text-right">
-                        <button type="submit" class="btn btn-zybach" [disabled]="!editChemigationPermitAnnualRecordForm.form.valid || isLoadingSubmit">
+                        <button type="submit" class="btn btn-zybach"
+                            [disabled]="isFormValid(addChemigationPermitAnnualRecordForm)">
                             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                             Save
                         </button>
-                        <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
+                        <a class="btn btn-secondary ml-1"
+                            routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
                             Cancel
                         </a>
                     </div>
                 </div>
-            
             </div>
         </div>
     </form>

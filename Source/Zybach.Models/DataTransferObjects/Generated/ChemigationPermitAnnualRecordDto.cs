@@ -25,5 +25,6 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantMobilePhone { get; set; }
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
+        public string ApplicantEmail { get; set; }
     }
 }
