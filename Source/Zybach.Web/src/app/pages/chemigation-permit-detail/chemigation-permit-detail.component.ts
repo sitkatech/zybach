@@ -70,6 +70,10 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
         this.updateAnnualData();
     });
   }
+
+  public permitHasCurrentRecord(): boolean {
+    return this.annualRecords?.map(x => x.RecordYear).includes(this.currentYear);
+  }
   
   public updateAnnualData(): void {
     this.currentYearAnnualRecord = this.annualRecords?.find(x => x.RecordYear == this.yearToDisplay);
