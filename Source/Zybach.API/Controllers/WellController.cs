@@ -15,7 +15,6 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
     [ApiController]
     public class WellController : SitkaController<WellController>
     {
@@ -28,23 +27,6 @@ namespace Zybach.API.Controllers
             _wellService = wellService;
         }
 
-
-        /**
-        * Returns an array of all Wells in the Water Data Program registered in GeoOptix
-        */
-        [HttpGet("/api/wells")]
-        // todo: get apikey security
-        // @Security(SecurityType.API_KEY)
-        public object GetWells()
-        {
-            var wells= Wells.ListAsDtos(_dbContext);
-
-            return new
-            { 
-                Status = "success",
-                Result = wells
-            };
-        }
 
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
         [ZybachViewFeature]

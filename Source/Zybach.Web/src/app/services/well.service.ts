@@ -15,10 +15,6 @@ export class WellService {
     private httpClient: HttpClient
   ) { }
 
-  public getWells(): Observable<any> {
-    return this.apiService.getFromApi("wells");
-  }
-
   public getWellsMapData(): Observable<WellWithSensorSummaryDto[]> {
     return this.apiService.getFromApi("mapData/wells")
   }

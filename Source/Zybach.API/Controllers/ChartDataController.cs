@@ -12,7 +12,6 @@ using Zybach.Models.DataTransferObjects;
 namespace Zybach.API.Controllers
 {
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi = true)]
     public class ChartDataController : SitkaController<ChartDataController>
     {
         public ChartDataController(ZybachDbContext dbContext, ILogger<ChartDataController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)

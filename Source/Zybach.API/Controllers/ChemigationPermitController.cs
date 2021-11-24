@@ -12,7 +12,6 @@ using Zybach.Models.DataTransferObjects;
 namespace Zybach.API.Controllers
 {
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi = true)]
     public class ChemigationPermitController : SitkaController<ChemigationPermitController>
     {
         public ChemigationPermitController(ZybachDbContext dbContext, ILogger<ChemigationPermitController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)

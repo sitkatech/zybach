@@ -37,7 +37,6 @@ import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
 import { AppInsightsService } from './shared/services/app-insights.service';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
-import { TestAPIComponent } from './pages/test-api/test-api.component';
 import { WellMapComponent } from './pages/well-map/well-map.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -89,7 +88,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
     TrainingComponent,
-    TestAPIComponent,
     WellMapComponent,
     WellExplorerComponent,
     WellDetailComponent,
