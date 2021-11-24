@@ -130,12 +130,12 @@ namespace Zybach.API.Controllers
             return Ok(updatedChemigationPermitAnnualRecordDto);
         }
 
-        [HttpPost("/api/chemigationPermits/annualRecords")]
+        [HttpPost("/api/chemigationPermits/{chemigationPermitID}/annualRecords")]
         [AdminFeature]
-        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
             if (ChemigationPermitAnnualRecord.DoesChemigationPermitAnnualRecordExistForYear(_dbContext,
-                chemigationPermitAnnualRecordUpsertDto.ChemigationPermitID,
+                chemigationPermitID,
                 chemigationPermitAnnualRecordUpsertDto.RecordYear))
             {
                 ModelState.AddModelError("ChemigationPermitAnnualRecord", "Annual record already exists for this year");
@@ -147,7 +147,7 @@ namespace Zybach.API.Controllers
             }
 
             var chemigationPermitAnnualRecordDto =
-                ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto);
+                ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, 1);
             return Ok(chemigationPermitAnnualRecordDto);
         }
 

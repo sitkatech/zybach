@@ -46,14 +46,17 @@ namespace Zybach.EFModels.Entities
             return chemigationPermitAnnualRecord?.AsDto();
         }
 
-        public static ChemigationPermitAnnualRecordDto CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        public static ChemigationPermitAnnualRecordDto CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
         {
             if (chemigationPermitAnnualRecordUpsertDto == null)
             {
                 return null;
             }
 
-            var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord();
+            var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord()
+            {
+                ChemigationPermitID = chemigationPermitID
+            };
             MapUpsertDtoToPOCO(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
             
 
@@ -77,7 +80,6 @@ namespace Zybach.EFModels.Entities
         private static void MapUpsertDtoToPOCO(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
             ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
-            chemigationPermitAnnualRecord.ChemigationPermitID = chemigationPermitAnnualRecordUpsertDto.ChemigationPermitID;
             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID =
                 chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
             chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID =

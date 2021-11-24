@@ -43,12 +43,13 @@ namespace Zybach.EFModels.Entities
             dbContext.SaveChanges();
 
             // when creating new permit, always create a default annual record as well
+            var chemigationPermitID = chemigationPermit.ChemigationPermitID;
             ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext,
-                chemigationPermitNewDto.ChemigationPermitAnnualRecord);
+                chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
 
             dbContext.Entry(chemigationPermit).Reload();
 
-            return GetChemigationPermitByID(dbContext, chemigationPermit.ChemigationPermitID);
+            return GetChemigationPermitByID(dbContext, chemigationPermitID);
         }
 
         public static ChemigationPermitDto GetChemigationPermitByID(ZybachDbContext dbContext, int chemigationPermitID)

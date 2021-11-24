@@ -22,7 +22,7 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { WaterYearSelectComponent } from './components/water-year-select/water-year-select.component'
 import { CustomDropdownFilterComponent } from './components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
-import { ChemigationPermitUpsertComponent } from './components/chemigation-permit-upsert/chemigation-permit-upsert.component';
+
 @NgModule({
     declarations: [
         AlertDisplayComponent,
@@ -38,8 +38,7 @@ import { ChemigationPermitUpsertComponent } from './components/chemigation-permi
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
         CustomDropdownFilterComponent,
-        ClearGridFiltersButtonComponent,
-        ChemigationPermitUpsertComponent
+        ClearGridFiltersButtonComponent
     ],
     imports: [
         CommonModule,

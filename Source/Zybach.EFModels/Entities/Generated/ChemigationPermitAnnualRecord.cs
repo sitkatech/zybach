@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemigationPermitAnnualRecord")]
+    [Index(nameof(ChemigationPermitID), nameof(RecordYear), Name = "AK_ChemigationPermitAnnualRecord_ChemigationPermitID_RecordYear", IsUnique = true)]
     public partial class ChemigationPermitAnnualRecord
     {
         [Key]

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbDate, NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateNativeAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
@@ -66,7 +66,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
         this.initializeModel(annualRecord);
         this.cdr.detectChanges();
       });
-      this.chemigationPermitAnnualRecordUpsertComponent?.validateForm();
+
     
     });
   }
@@ -84,7 +84,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.cdr.detach();
   }
 
-  private isAnnualRecordFormValid(formValid: any) : void {
+  public isAnnualRecordFormValid(formValid: any) : void {
     this.isAnnualRecordFormValidCheck = formValid;
   }
 

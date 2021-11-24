@@ -2,8 +2,7 @@ import { ChemigationPermitAnnualRecordStatusEnum } from "./enums/chemigation-per
 import { ChemigationPermitAnnualRecordDto } from "./generated/chemigation-permit-annual-record-dto"
 
 export class ChemigationPermitAnnualRecordUpsertDto {
-    ChemigationPermitID : number
-	ChemigationPermitAnnualRecordStatusID : number
+    ChemigationPermitAnnualRecordStatusID : number
     ChemigationInjectionUnitTypeID : number
     PivotName : string
     RecordYear: number
@@ -24,7 +23,6 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     // }
 
     constructor(annualRecord: ChemigationPermitAnnualRecordDto, recordYear: number, chemigationPermitAnnualRecordStatusEnum: ChemigationPermitAnnualRecordStatusEnum) {
-        this.ChemigationPermitID = annualRecord.ChemigationPermit.ChemigationPermitID;
         this.ChemigationPermitAnnualRecordStatusID = annualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusID;
         this.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeID;
         this.RecordYear = annualRecord.RecordYear;

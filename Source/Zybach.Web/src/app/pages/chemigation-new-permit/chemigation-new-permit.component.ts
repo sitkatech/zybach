@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDetailedDto } from 'src/app/shared/models';
@@ -11,31 +11,34 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { ChemigationPermitNewDto } from 'src/app/shared/models/chemigation-permit-new-dto';
 import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
 import { ChemigationCountyDto } from 'src/app/shared/models/generated/chemigation-county-dto';
-import { ChemigationInjectionUnitTypeDto } from 'src/app/shared/models/generated/chemigation-injection-unit-type-dto';
-import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/models/chemigation-permit-annual-record-upsert-dto';
+import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
+import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 @Component({
   selector: 'zybach-chemigation-new-permit',
   templateUrl: './chemigation-new-permit.component.html',
   styleUrls: ['./chemigation-new-permit.component.scss'],
-  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
+  providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter }]
 })
 
 export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
+  @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent: ChemigationPermitAnnualRecordUpsertComponent;
+
   private watchUserChangeSubscription: any;
   private currentUser: UserDetailedDto;
-  
+
   public permitStatuses: Array<ChemigationPermitStatusDto>;
   public chemigationCounties: Array<ChemigationCountyDto>;
-  public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
+
   public model: ChemigationPermitNewDto;
-  
+
   public isLoadingSubmit: boolean = false;
+  public isAnnualRecordFormValidCheck: boolean;
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private router: Router, 
+    private router: Router,
     private chemigationPermitService: ChemigationPermitService,
-    private authenticationService: AuthenticationService, 
+    private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) { }
 
@@ -43,25 +46,24 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.model = new ChemigationPermitNewDto();
     // default to active for new permits
     this.model.ChemigationPermitStatusID = ChemigationPermitStatusEnum.Active;
-    this.model.ChemigationPermitAnnualRecord = new ChemigationPermitAnnualRecordUpsertDto(null, null, null); 
-    // {
-    //   ChemigationPermitID : null,
-    //   ChemigationPermitAnnualRecordStatusID: ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
-    //   ChemigationInjectionUnitTypeID : null,
-    //   PivotName : null,
-    //   RecordYear: new Date().getFullYear(),
-    //   ApplicantFirstName : null,
-    //   ApplicantLastName : null,
-    //   ApplicantMailingAddress : null,
-    //   ApplicantCity : null,
-    //   ApplicantState : null,
-    //   ApplicantZipCode : null,
-    //   ApplicantPhone : null,
-    //   ApplicantMobilePhone : null,
-    //   ApplicantEmail : null,
-    //   DateReceived : null,
-    //   DatePaid : null,  
-    // };
+    this.model.ChemigationPermitAnnualRecord =
+    {
+      ChemigationPermitAnnualRecordStatusID: ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
+      ChemigationInjectionUnitTypeID: null,
+      PivotName: null,
+      RecordYear: new Date().getFullYear(),
+      ApplicantFirstName: null,
+      ApplicantLastName: null,
+      ApplicantMailingAddress: null,
+      ApplicantCity: null,
+      ApplicantState: null,
+      ApplicantZipCode: null,
+      ApplicantPhone: null,
+      ApplicantMobilePhone: null,
+      ApplicantEmail: null,
+      DateReceived: null,
+      DatePaid: null,
+    };
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -85,6 +87,14 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription.unsubscribe();
     this.authenticationService.dispose();
     this.cdr.detach();
+  }
+
+  public isAnnualRecordFormValid(formValid: any): void {
+    this.isAnnualRecordFormValidCheck = formValid;
+  }
+
+  public isFormValid(addChemigationPermitAnnualRecordForm: any): boolean {
+    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !addChemigationPermitAnnualRecordForm.form.valid;
   }
 
   public onSubmit(newChemigationPermitForm: HTMLFormElement): void {
