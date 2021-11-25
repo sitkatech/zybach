@@ -15,6 +15,7 @@ namespace Zybach.API.Controllers
 {
     [ApiKey]
     [ApiController]
+    [SwaggerTag]
     public class ZybachAPIController : SitkaController<ZybachAPIController>
     {
         public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)

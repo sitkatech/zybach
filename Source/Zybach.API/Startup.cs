@@ -172,6 +172,7 @@ namespace Zybach.API
 
             services.AddControllers();
 
+#if DEBUG
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zybach", Version = "v1" });
@@ -181,6 +182,19 @@ namespace Zybach.API
                 c.IncludeXmlComments(xmlPath);
             });
             services.AddSwaggerGenNewtonsoftSupport();
+#else
+            {
+                services.AddSwaggerGen(c =>
+                {
+                    c.DocumentFilter<SwaggerTagFilter>();
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zybach", Version = "v1" });
+                    // Set the comments path for the Swagger JSON and UI.
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    c.IncludeXmlComments(xmlPath);
+                });
+            }
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
