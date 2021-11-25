@@ -32,13 +32,13 @@ export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
       this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
           this.currentUser = currentUser;
-          const apiHostName = environment.apiHostName
+          const mainAppApiUrl = environment.mainAppApiUrl
 
           const id = parseInt(this.route.snapshot.paramMap.get("id"));
           if (id) {
               this.reportTemplateService.getReportTemplate(id).subscribe(reportTemplate => {
                   this.reportTemplate = reportTemplate as ReportTemplateDto;
-                  this.reportTemplateFileLinkValue = `https://${apiHostName}/FileResource/${this.reportTemplate.FileResource.FileResourceGUID}`;
+                  this.reportTemplateFileLinkValue = `${mainAppApiUrl}/FileResource/${this.reportTemplate.FileResource.FileResourceGUID}`;
                   this.cdr.detectChanges();
               });
           }

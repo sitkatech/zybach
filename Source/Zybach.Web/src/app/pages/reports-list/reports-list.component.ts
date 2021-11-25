@@ -51,7 +51,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
         this.reportTemplatesGrid.api.hideOverlay();
         this.cdr.detectChanges();
       });
-      const apiHostName = environment.apiHostName
+      const mainAppApiUrl = environment.mainAppApiUrl
       this.columnDefs = [
         {
           headerName: 'Name', valueGetter: function (params: any) {
@@ -78,7 +78,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
         { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', sortable: true, filter: true, width: 268 },
         {
           headerName: 'Template File', valueGetter: function (params: any) {
-            return { LinkValue: `https://${apiHostName}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
+            return { LinkValue: `${mainAppApiUrl}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
           }, cellRendererFramework: LinkRendererComponent,
           cellRendererParams: { isExternalUrl: true},
           filterValueGetter: function (params: any) {

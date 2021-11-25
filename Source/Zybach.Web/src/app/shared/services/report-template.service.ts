@@ -40,8 +40,8 @@ export class ReportTemplateService {
      formData.append("ReportTemplateModelID", reportTemplateUpdateDto.ReportTemplateModelID.toString());
      formData.append("FileResource", reportTemplateUpdateDto.FileResource);
     
-     const apiHostName = environment.apiHostName;
-     const route = `https://${apiHostName}/reportTemplates/new`;
+     const mainAppApiUrl = environment.mainAppApiUrl;
+     const route = `${mainAppApiUrl}/reportTemplates/new`;
      var result = this.httpClient.post<any>(
          route,
          formData
@@ -61,8 +61,8 @@ export class ReportTemplateService {
       formData.append("FileResource", reportTemplateUpdateDto.FileResource);
      }
     
-     const apiHostName = environment.apiHostName;
-     const route = `https://${apiHostName}/reportTemplates/${reportTemplateID}`;
+     const mainAppApiUrl = environment.mainAppApiUrl;
+     const route = `${mainAppApiUrl}/reportTemplates/${reportTemplateID}`;
      var result = this.httpClient.put<any>(
          route,
          formData
@@ -71,8 +71,8 @@ export class ReportTemplateService {
   }
 
   public generateReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
-    const apiHostName = environment.apiHostName;
-    const route = `https://${apiHostName}/reportTemplates/generateReports`;
+    const mainAppApiUrl = environment.mainAppApiUrl;
+    const route = `${mainAppApiUrl}/reportTemplates/generateReports`;
     var result = this.httpClient.put(
         route,
         generateReportsDto,
