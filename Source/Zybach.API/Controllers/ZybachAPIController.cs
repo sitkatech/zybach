@@ -4,9 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Zybach.API.Models;
-using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
@@ -15,10 +13,9 @@ namespace Zybach.API.Controllers
 {
     [ApiKey]
     [ApiController]
-    [SwaggerTag]
-    public class ZybachAPIController : SitkaController<ZybachAPIController>
+    public class ZybachAPIController : SitkaApiController<ZybachAPIController>
     {
-        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger) : base(dbContext, logger)
         {
         }
 
