@@ -16,8 +16,6 @@ import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling'
-import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
-import { UserDto } from 'src/app/shared/models/generated/user-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
 import { TwinPlatteBoundaryGeoJson } from '../../shared/models/tpnrd-boundary';
 
@@ -31,6 +29,8 @@ import { DataSourceFilterOption } from 'src/app/shared/models/enums/data-source-
 import { NgElement, WithProperties } from '@angular/elements';
 import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.component';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 
 @Component({
   selector: 'zybach-well-map',

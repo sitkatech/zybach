@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
-import { FieldDefinitionDto } from 'src/app/shared/models/generated/field-definition-dto';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { ColDef } from 'ag-grid-community';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
-import { UserDetailedDto } from 'src/app/shared/models';
 import { AgGridAngular } from 'ag-grid-angular';
+import { FieldDefinitionDto } from 'src/app/shared/generated/model/field-definition-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 
 @Component({
   selector: 'zybach-field-definition-list',
@@ -17,7 +17,7 @@ export class FieldDefinitionListComponent implements OnInit, OnDestroy {
 
   @ViewChild("fieldDefinitionsGrid") fieldDefinitionsGrid: AgGridAngular;
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   public fieldDefinitions: Array<FieldDefinitionDto>
   public richTextTypeID : number = CustomRichTextType.LabelsAndDefinitionsList;

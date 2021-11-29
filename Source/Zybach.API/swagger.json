@@ -1,0 +1,4017 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Zybach",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/chartData/{wellRegistrationID}": {
+      "get": {
+        "tags": [
+          "ChartData"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellChartDataDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellChartDataDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellChartDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigation/summaries": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/permitStatuses": {
+      "get": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/chemigationCounties": {
+      "get": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationCountyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationCountyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationCountyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits": {
+      "get": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitNewDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByID/{chemigationPermitID}": {
+      "get": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}": {
+      "get": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/{chemigationPermitID}": {
+      "put": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ChemigationPermit"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/injectionUnitTypes": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/annualRecordStatuses": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords/getLatestRecordYear": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords/getLatestRecordYear": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords/{recordYear}": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "recordYear",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords/{recordYear}": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "recordYear",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}": {
+      "put": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitAnnualRecordID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/{chemigationPermitID}/annualRecords": {
+      "post": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customRichText/{customRichTextTypeID}": {
+      "get": {
+        "tags": [
+          "CustomRichText"
+        ],
+        "parameters": [
+          {
+            "name": "customRichTextTypeID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomRichTextDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomRichTextDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomRichTextDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "CustomRichText"
+        ],
+        "parameters": [
+          {
+            "name": "customRichTextTypeID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomRichTextDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomRichTextDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomRichTextDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomRichTextDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomRichTextDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomRichTextDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomRichTextDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fieldDefinitions": {
+      "get": {
+        "tags": [
+          "FieldDefinition"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FieldDefinitionDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FieldDefinitionDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FieldDefinitionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/fieldDefinitions/{fieldDefinitionTypeID}": {
+      "get": {
+        "tags": [
+          "FieldDefinition"
+        ],
+        "parameters": [
+          {
+            "name": "fieldDefinitionTypeID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "FieldDefinition"
+        ],
+        "parameters": [
+          {
+            "name": "fieldDefinitionTypeID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldDefinitionDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldDefinitionDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldDefinitionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldDefinitionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FieldDefinitionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/FileResource/CkEditorUpload": {
+      "post": {
+        "tags": [
+          "FileResource"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/FileResource/{fileResourceGuidAsString}": {
+      "get": {
+        "tags": [
+          "FileResource"
+        ],
+        "parameters": [
+          {
+            "name": "fileResourceGuidAsString",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/managerDashboard/districtStatistics": {
+      "get": {
+        "tags": [
+          "ManagerDashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictStatisticsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictStatisticsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DistrictStatisticsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/managerDashboard/streamFlowZonePumpingDepths": {
+      "get": {
+        "tags": [
+          "ManagerDashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnualStreamFlowZonePumpingDepthDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnualStreamFlowZonePumpingDepthDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnnualStreamFlowZonePumpingDepthDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/mapData/wells": {
+      "get": {
+        "tags": [
+          "MapData"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reportTemplates": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportTemplateDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportTemplateDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportTemplateDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reportTemplateModels": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/reportTemplates/{reportTemplateID}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "parameters": [
+          {
+            "name": "reportTemplateID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Report"
+        ],
+        "parameters": [
+          {
+            "name": "reportTemplateID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "DisplayName",
+                  "ReportTemplateModelID"
+                ],
+                "type": "object",
+                "properties": {
+                  "FileResource": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "DisplayName": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "ReportTemplateModelID": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "FileResource": {
+                  "style": "form"
+                },
+                "DisplayName": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "ReportTemplateModelID": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reportTemplates/new": {
+      "post": {
+        "tags": [
+          "Report"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "DisplayName",
+                  "FileResource",
+                  "ReportTemplateModelID"
+                ],
+                "type": "object",
+                "properties": {
+                  "FileResource": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "DisplayName": {
+                    "type": "string"
+                  },
+                  "Description": {
+                    "type": "string"
+                  },
+                  "ReportTemplateModelID": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "encoding": {
+                "FileResource": {
+                  "style": "form"
+                },
+                "DisplayName": {
+                  "style": "form"
+                },
+                "Description": {
+                  "style": "form"
+                },
+                "ReportTemplateModelID": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reportTemplates/generateReports": {
+      "put": {
+        "tags": [
+          "Report"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/roles": {
+      "get": {
+        "tags": [
+          "Role"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/search/{searchText}": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "parameters": [
+          {
+            "name": "searchText",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SearchSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SearchSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SearchSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensorStatus": {
+      "get": {
+        "tags": [
+          "SensorStatus"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensorStatus/{wellRegistrationID}": {
+      "get": {
+        "tags": [
+          "SensorStatus"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellWithSensorMessageAgeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensorStatus/enableDisable": {
+      "put": {
+        "tags": [
+          "SensorStatus"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorSummaryDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorSummaryDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorSummaryDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorSummaryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/streamFlowZones": {
+      "get": {
+        "tags": [
+          "StreamFlowZone"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StreamFlowZoneDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StreamFlowZoneDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/StreamFlowZoneDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/invite": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInviteDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInviteDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInviteDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInviteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/unassigned-report": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnassignedUserReportDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnassignedUserReportDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnassignedUserReportDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{userID}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/user-claims/{globalID}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "globalID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/set-disclaimer-acknowledged-date": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellRegistrationID}/details": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellDetailDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellDetailDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellDetailDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellRegistrationID}/installation": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstallationRecordDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstallationRecordDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InstallationRecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "installationCanonicalName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "photoCanonicalName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wells/download/robustReviewScenarioJson": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "summary": "Comprehensive data download to support Robust Review processes",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/new": {
+      "post": {
+        "tags": [
+          "Well"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellNewDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellNewDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellNewDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellNewDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wells/pumpedVolume": {
+      "get": {
+        "tags": [
+          "ZybachAPI"
+        ],
+        "summary": "Returns a time series representing pumped volume at a well or series of wells, summed daily for a given date range.\r\nEach point in the output time series represents the total pumped volume for the given day.",
+        "description": "Sample requests:\r\n            \r\n    Returns data for ALL wells from 8/1/2021 to 8/31/2021\r\n    GET /api/wells/pumpedVolume?startDate=2021-08-01&endDate=2021-08-31\r\n            \r\n    Returns data for Well Registration IDs G-056157, G-097457, G-110920 from 8/1/2021 to 8/31/2021\r\n    GET /api/wells/pumpedVolume?startDate=2021-08-01&endDate=2021-08-31&wellRegistrationID=G-056157&wellRegistrationID=G-097457&wellRegistrationID=G-110920",
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "query",
+            "description": "The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data for every Well that has reported data within the time range.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StructuredResultsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellRegistrationID}/pumpedVolume": {
+      "get": {
+        "tags": [
+          "ZybachAPI"
+        ],
+        "summary": "Returns a time series representing pumped volume at a well, summed daily for a given date range.\r\nEach point in the output time series represents the total pumped volume for the given day.",
+        "description": "Sample request:\r\n\r\n    GET /api/wells/G-110920/pumpedVolume?startDate=2021-08-01&endDate=2021-08-31",
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "description": "The Well Registration ID for the requested Well.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StructuredResultsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnnualPumpedVolume": {
+        "type": "object",
+        "properties": {
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DataSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "Gallons": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AnnualStreamFlowZonePumpingDepthDto": {
+        "type": "object",
+        "properties": {
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "StreamFlowZonePumpingDepths": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StreamFlowZonePumpingDepthDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationCountyDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationCountyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationCountyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationCountyDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInjectionUnitTypeDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInjectionUnitTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInjectionUnitTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInjectionUnitTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermit": {
+            "$ref": "#/components/schemas/ChemigationPermitDto"
+          },
+          "RecordYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordStatus": {
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+          },
+          "PivotName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInjectionUnitType": {
+            "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
+          },
+          "ApplicantFirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantLastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantMailingAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantState": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantZipCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ApplicantPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantMobilePhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "DateReceived": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "DatePaid": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ApplicantEmail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordStatusDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordUpsertDto": {
+        "required": [
+          "ApplicantFirstName",
+          "ApplicantLastName",
+          "ChemigationInjectionUnitTypeID",
+          "ChemigationPermitAnnualRecordStatusID",
+          "PivotName",
+          "RecordYear"
+        ],
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ApplicantFirstName": {
+            "type": "string"
+          },
+          "ApplicantLastName": {
+            "type": "string"
+          },
+          "PivotName": {
+            "type": "string"
+          },
+          "RecordYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DateReceived": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "DatePaid": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ChemigationInjectionUnitTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ApplicantPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantMobilePhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantMailingAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantState": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantZipCode": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitStatus": {
+            "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+          },
+          "TotalAcresTreated": {
+            "type": "number",
+            "format": "double"
+          },
+          "DateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationCounty": {
+            "$ref": "#/components/schemas/ChemigationCountyDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitNewDto": {
+        "required": [
+          "ChemigationCountyID",
+          "ChemigationInjectionUnitTypeID",
+          "ChemigationPermitAnnualRecord",
+          "ChemigationPermitNumber",
+          "ChemigationPermitStatusID",
+          "TotalAcresTreated",
+          "TownshipRangeSection"
+        ],
+        "type": "object",
+        "properties": {
+          "ChemigationPermitNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TownshipRangeSection": {
+            "type": "string"
+          },
+          "ChemigationCountyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TotalAcresTreated": {
+            "type": "number",
+            "format": "double"
+          },
+          "ChemigationInjectionUnitTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecord": {
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitStatusDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitUpsertDto": {
+        "required": [
+          "ChemigationPermitStatusID"
+        ],
+        "type": "object",
+        "properties": {
+          "ChemigationPermitNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationCountyID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CRSType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "CustomRichTextDto": {
+        "type": "object",
+        "properties": {
+          "IsEmptyContent": {
+            "type": "boolean"
+          },
+          "CustomRichTextID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CustomRichTextType": {
+            "$ref": "#/components/schemas/CustomRichTextTypeDto"
+          },
+          "CustomRichTextContent": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomRichTextTypeDto": {
+        "type": "object",
+        "properties": {
+          "CustomRichTextTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CustomRichTextTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CustomRichTextTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DailyPumpedVolume": {
+        "type": "object",
+        "properties": {
+          "Time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Gallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "DataSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "GallonsString": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DailySensorVolumeDto": {
+        "type": "object",
+        "properties": {
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementValueGallons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PumpingRateGallonsPerMinute": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DistrictStatisticsDto": {
+        "type": "object",
+        "properties": {
+          "NumberOfWellsTracked": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "NumberOfContinuityMeters": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "NumberOfElectricalUsageEstimates": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "NumberOfFlowMeters": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Feature": {
+        "required": [
+          "geometry",
+          "properties"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/GeoJSONObjectType"
+          },
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/IGeometryObject"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": { },
+            "nullable": true
+          },
+          "bbox": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          },
+          "crs": {
+            "$ref": "#/components/schemas/ICRSObject"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FieldDefinitionDto": {
+        "type": "object",
+        "properties": {
+          "FieldDefinitionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FieldDefinitionType": {
+            "$ref": "#/components/schemas/FieldDefinitionTypeDto"
+          },
+          "FieldDefinitionValue": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FieldDefinitionTypeDto": {
+        "type": "object",
+        "properties": {
+          "FieldDefinitionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FieldDefinitionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FieldDefinitionTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileResourceDto": {
+        "type": "object",
+        "properties": {
+          "FileResourceID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FileResourceMimeType": {
+            "$ref": "#/components/schemas/FileResourceMimeTypeDto"
+          },
+          "OriginalBaseFilename": {
+            "type": "string",
+            "nullable": true
+          },
+          "OriginalFileExtension": {
+            "type": "string",
+            "nullable": true
+          },
+          "FileResourceGUID": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FileResourceData": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
+          "CreateUser": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FileResourceMimeTypeDto": {
+        "type": "object",
+        "properties": {
+          "FileResourceMimeTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FileResourceMimeTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FileResourceMimeTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FileResourceMimeTypeContentTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FileResourceMimeTypeIconSmallFilename": {
+            "type": "string",
+            "nullable": true
+          },
+          "FileResourceMimeTypeIconNormalFilename": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenerateReportsDto": {
+        "type": "object",
+        "properties": {
+          "ReportTemplateID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellIDList": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GeoJSONObjectType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ICRSObject": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "$ref": "#/components/schemas/CRSType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "IGeometryObject": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "$ref": "#/components/schemas/GeoJSONObjectType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InstallationRecordDto": {
+        "type": "object",
+        "properties": {
+          "InstallationCanonicalName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Status": {
+            "type": "string",
+            "nullable": true
+          },
+          "Date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterSerialNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorSerialNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "Affiliation": {
+            "type": "string",
+            "nullable": true
+          },
+          "Initials": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorType": {
+            "type": "string",
+            "nullable": true
+          },
+          "ContinuitySensorModel": {
+            "type": "string",
+            "nullable": true
+          },
+          "FlowSensorModel": {
+            "type": "string",
+            "nullable": true
+          },
+          "PressureSensorModel": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "InstallDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CableLength": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "WaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Photos": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IntervalVolumeDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementDate": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementType": {
+            "type": "string",
+            "nullable": true
+          },
+          "TotalMeasurementValueGallons": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorVolumes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DailySensorVolumeDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IrrigatedAcresPerYearDto": {
+        "type": "object",
+        "properties": {
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Acres": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MonthlyPumpedVolume": {
+        "type": "object",
+        "properties": {
+          "Month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "VolumePumpedGallons": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReportTemplateDto": {
+        "type": "object",
+        "properties": {
+          "ReportTemplateID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FileResource": {
+            "$ref": "#/components/schemas/FileResourceDto"
+          },
+          "DisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportTemplateModelType": {
+            "$ref": "#/components/schemas/ReportTemplateModelTypeDto"
+          },
+          "ReportTemplateModel": {
+            "$ref": "#/components/schemas/ReportTemplateModelDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReportTemplateModelDto": {
+        "type": "object",
+        "properties": {
+          "ReportTemplateModelID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReportTemplateModelName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportTemplateModelDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportTemplateModelDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReportTemplateModelTypeDto": {
+        "type": "object",
+        "properties": {
+          "ReportTemplateModelTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReportTemplateModelTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportTemplateModelTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReportTemplateModelTypeDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RobustReviewDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "DataSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "MonthlyPumpedVolumeGallons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MonthlyPumpedVolume"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RoleDto": {
+        "type": "object",
+        "properties": {
+          "RoleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "RoleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RoleDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RoleDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "SortOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SearchSummaryDto": {
+        "type": "object",
+        "properties": {
+          "ObjectName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ObjectType": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorMessageAgeDto": {
+        "type": "object",
+        "properties": {
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MessageAge": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SensorType": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorType": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StreamFlowZoneDto": {
+        "type": "object",
+        "properties": {
+          "StreamFlowZoneID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "StreamFlowZoneName": {
+            "type": "string",
+            "nullable": true
+          },
+          "StreamFlowZoneArea": {
+            "type": "number",
+            "format": "double"
+          },
+          "StreamFlowZoneFeature": {
+            "$ref": "#/components/schemas/Feature"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StreamFlowZonePumpingDepthDto": {
+        "type": "object",
+        "properties": {
+          "StreamFlowZoneID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PumpingDepth": {
+            "type": "number",
+            "format": "double"
+          },
+          "TotalIrrigatedAcres": {
+            "type": "number",
+            "format": "double"
+          },
+          "TotalPumpedVolume": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StructuredResults": {
+        "type": "object",
+        "properties": {
+          "IntervalCountTotal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IntervalStart": {
+            "type": "string",
+            "nullable": true
+          },
+          "IntervalEnd": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "VolumesByWell": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VolumeByWell"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "StructuredResultsDto": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "string",
+            "nullable": true
+          },
+          "Result": {
+            "$ref": "#/components/schemas/StructuredResults"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnassignedUserReportDto": {
+        "type": "object",
+        "properties": {
+          "Count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserCreateDto": {
+        "required": [
+          "ReceiveSupportEmails",
+          "RoleID"
+        ],
+        "type": "object",
+        "properties": {
+          "LoginName": {
+            "type": "string",
+            "nullable": true
+          },
+          "UserGuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OrganizationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "nullable": true
+          },
+          "PhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "RoleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReceiveSupportEmails": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "UserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "UserGuid": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "FirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "nullable": true
+          },
+          "Phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "Role": {
+            "$ref": "#/components/schemas/RoleDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "UpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastActivityDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "ReceiveSupportEmails": {
+            "type": "boolean"
+          },
+          "LoginName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Company": {
+            "type": "string",
+            "nullable": true
+          },
+          "DisclaimerAcknowledgedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FullName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserInviteDto": {
+        "required": [
+          "Email",
+          "FirstName",
+          "LastName",
+          "RoleID"
+        ],
+        "type": "object",
+        "properties": {
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "RoleID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserUpsertDto": {
+        "required": [
+          "ReceiveSupportEmails",
+          "RoleID"
+        ],
+        "type": "object",
+        "properties": {
+          "FirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OrganizationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "nullable": true
+          },
+          "PhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "RoleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReceiveSupportEmails": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VolumeByWell": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "IntervalCount": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "IntervalVolumes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntervalVolumeDto"
+            },
+            "nullable": true
+          },
+          "TotalMeasurementValueGallonsForInterval": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellChartDataDto": {
+        "type": "object",
+        "properties": {
+          "TimeSeries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DailyPumpedVolume"
+            },
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellDetailDto": {
+        "type": "object",
+        "properties": {
+          "AnnualPumpedVolume": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnnualPumpedVolume"
+            },
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
+            "nullable": true
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "Location": {
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FirstReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "InAgHub": {
+            "type": "boolean"
+          },
+          "InGeoOptix": {
+            "type": "boolean"
+          },
+          "FetchDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "HasElectricalData": {
+            "type": "boolean"
+          },
+          "IrrigatedAcresPerYear": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IrrigatedAcresPerYearDto"
+            },
+            "nullable": true
+          },
+          "AgHubRegisteredUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "FieldName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastChemigationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastNitratesDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastWaterLevelDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastWaterQualityDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "PendingInspectionsCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellNewDto": {
+        "required": [
+          "Latitude",
+          "Longitude",
+          "WellRegistrationID"
+        ],
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWithSensorMessageAgeDto": {
+        "type": "object",
+        "properties": {
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorMessageAgeDto"
+            },
+            "nullable": true
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "Location": {
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FirstReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "InAgHub": {
+            "type": "boolean"
+          },
+          "InGeoOptix": {
+            "type": "boolean"
+          },
+          "FetchDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "HasElectricalData": {
+            "type": "boolean"
+          },
+          "IrrigatedAcresPerYear": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IrrigatedAcresPerYearDto"
+            },
+            "nullable": true
+          },
+          "AgHubRegisteredUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "FieldName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWithSensorSummaryDto": {
+        "type": "object",
+        "properties": {
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
+            "nullable": true
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "Location": {
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FirstReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "InAgHub": {
+            "type": "boolean"
+          },
+          "InGeoOptix": {
+            "type": "boolean"
+          },
+          "FetchDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "HasElectricalData": {
+            "type": "boolean"
+          },
+          "IrrigatedAcresPerYear": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IrrigatedAcresPerYearDto"
+            },
+            "nullable": true
+          },
+          "AgHubRegisteredUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "FieldName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

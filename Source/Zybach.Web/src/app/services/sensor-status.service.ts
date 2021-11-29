@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SensorSummaryDto, WellWithSensorMessageAgeDto } from '../shared/models/well-with-sensor-summary-dto';
+import { SensorSummaryDto } from '../shared/generated/model/sensor-summary-dto';
+import { WellWithSensorMessageAgeDto } from '../shared/generated/model/well-with-sensor-message-age-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({

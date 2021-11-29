@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '.';
 import { Observable } from 'rxjs';
-import { ReportTemplateDto } from '../models/generated/report-template-dto';
-import { ReportTemplateUpdateDto } from '../models/report-template-update-dto';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { GenerateReportsDto } from '../models/generate-reports-dto';
+import { HttpClient } from '@angular/common/http';
+import { GenerateReportsDto } from '../generated/model/generate-reports-dto';
+import { ReportTemplateDto } from '../generated/model/report-template-dto';
+import { ReportTemplateUpdateDto } from '../models/report-template-update-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -28,20 +28,20 @@ export class ReportTemplateService {
   }
 
   
-  public newReportTemplate(reportTemplateNewDto: ReportTemplateUpdateDto) {
+  public newReportTemplate(reportTemplateUpdateDto: ReportTemplateUpdateDto) {
     // return this.apiService.postToApi(`/reportTemplates/new`, reportTemplateNewDto);
 
      // we need to do it this way because the apiService.postToApi does a json.stringify, which won't work for input type="file"
      let formData = new FormData();
-     formData.append("DisplayName", reportTemplateNewDto.DisplayName);
-     if(reportTemplateNewDto.Description !== undefined){
-      formData.append("Description", reportTemplateNewDto.Description);
+     formData.append("DisplayName", reportTemplateUpdateDto.DisplayName);
+     if(reportTemplateUpdateDto.Description !== undefined){
+      formData.append("Description", reportTemplateUpdateDto.Description);
      }
-     formData.append("ReportTemplateModelID", reportTemplateNewDto.ReportTemplateModelID.toString());
-     formData.append("FileResource", reportTemplateNewDto.FileResource);
+     formData.append("ReportTemplateModelID", reportTemplateUpdateDto.ReportTemplateModelID.toString());
+     formData.append("FileResource", reportTemplateUpdateDto.FileResource);
     
-     const apiHostName = environment.apiHostName;
-     const route = `https://${apiHostName}/reportTemplates/new`;
+     const mainAppApiUrl = environment.mainAppApiUrl;
+     const route = `${mainAppApiUrl}/reportTemplates/new`;
      var result = this.httpClient.post<any>(
          route,
          formData
@@ -61,8 +61,8 @@ export class ReportTemplateService {
       formData.append("FileResource", reportTemplateUpdateDto.FileResource);
      }
     
-     const apiHostName = environment.apiHostName;
-     const route = `https://${apiHostName}/reportTemplates/${reportTemplateID}`;
+     const mainAppApiUrl = environment.mainAppApiUrl;
+     const route = `${mainAppApiUrl}/reportTemplates/${reportTemplateID}`;
      var result = this.httpClient.put<any>(
          route,
          formData
@@ -71,8 +71,8 @@ export class ReportTemplateService {
   }
 
   public generateReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
-    const apiHostName = environment.apiHostName;
-    const route = `https://${apiHostName}/reportTemplates/generateReports`;
+    const mainAppApiUrl = environment.mainAppApiUrl;
+    const route = `${mainAppApiUrl}/reportTemplates/generateReports`;
     var result = this.httpClient.put(
         route,
         generateReportsDto,

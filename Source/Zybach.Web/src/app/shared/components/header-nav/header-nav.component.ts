@@ -1,7 +1,6 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CookieStorageService } from '../../services/cookies/cookie-storage.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserDetailedDto } from '../../models';
 import { UserService } from 'src/app/services/user/user.service';
 import { AlertService } from '../../services/alert.service';
 import { Alert } from '../../models/alert';
@@ -9,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { Router } from '@angular/router';
 import { SearchService } from 'src/app/services/search.service';
+import { UserDto } from '../../generated/model/user-dto';
 
 @Component({
     selector: 'header-nav',
@@ -18,7 +18,7 @@ import { SearchService } from 'src/app/services/search.service';
 
 export class HeaderNavComponent implements OnInit, OnDestroy {
     private watchUserChangeSubscription: any;
-    private currentUser: UserDetailedDto;
+    private currentUser: UserDto;
 
     searchSuggestions: any[];
     text: string;

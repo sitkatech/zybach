@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '.';
 import { Observable } from 'rxjs';
-import { CustomRichTextDetailedDto } from '../models/custom-rich-text-detailed-dto';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { CustomRichTextDto } from '../generated/model/custom-rich-text-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +12,17 @@ export class CustomRichTextService {
 
   constructor(private apiService: ApiService, private httpClient: HttpClient) { }
 
-  public getCustomRichText(customRichTextTypeID: number): Observable<CustomRichTextDetailedDto> {
+  public getCustomRichText(customRichTextTypeID: number): Observable<CustomRichTextDto> {
     return this.apiService.getFromApi(`/customRichText/${customRichTextTypeID}`)
   }
 
-  public updateCustomRichText(customRichTextTypeID: number, updateDto: CustomRichTextDetailedDto): Observable<CustomRichTextDetailedDto> {
+  public updateCustomRichText(customRichTextTypeID: number, updateDto: CustomRichTextDto): Observable<CustomRichTextDto> {
     return this.apiService.putToApi(`customRichText/${customRichTextTypeID}`, updateDto);
   }
 
   uploadFile(file: any): Observable<any> {
-    const apiHostName = environment.apiHostName
-    const route = `https://${apiHostName}/FileResource/CkEditorUpload`;
+    const mainAppApiUrl = environment.mainAppApiUrl
+    const route = `${mainAppApiUrl}/FileResource/CkEditorUpload`;
     var result = this.httpClient.post<any>(
       route,
       file, // Send the File Blob as the POST body.

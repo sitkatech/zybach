@@ -2,9 +2,9 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
-import { UserDetailedDto } from 'src/app/shared/models';
-import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/models/generated/chemigation-permit-annual-record-dto';
-import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
+import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
+import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
 
   public watchUserChangeSubscription: any;
-  public currentUser: UserDetailedDto;
+  public currentUser: UserDto;
   public chemigationPermitNumber: number;
   public chemigationPermit: ChemigationPermitDto;
   public annualRecords: Array<ChemigationPermitAnnualRecordDto>;

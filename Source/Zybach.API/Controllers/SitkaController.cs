@@ -6,6 +6,11 @@ using Zybach.EFModels.Entities;
 
 namespace Zybach.API.Controllers
 {
+#if DEBUG
+    [ApiExplorerSettings(IgnoreApi = false)]
+#else
+    [ApiExplorerSettings(IgnoreApi = true)]
+#endif
     public abstract class SitkaController<T> : ControllerBase
     {
         protected readonly ZybachDbContext _dbContext;

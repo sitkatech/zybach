@@ -1,30 +1,29 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserDetailedDto } from 'src/app/shared/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
-import { ChemigationPermitNewDto } from 'src/app/shared/models/chemigation-permit-new-dto';
 import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
-import { ChemigationCountyDto } from 'src/app/shared/models/generated/chemigation-county-dto';
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
+import { ChemigationCountyDto } from 'src/app/shared/generated/model/chemigation-county-dto';
+import { ChemigationPermitNewDto } from 'src/app/shared/generated/model/chemigation-permit-new-dto';
+import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+
 @Component({
   selector: 'zybach-chemigation-new-permit',
   templateUrl: './chemigation-new-permit.component.html',
   styleUrls: ['./chemigation-new-permit.component.scss'],
-  providers: [{ provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter }]
 })
 
 export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent: ChemigationPermitAnnualRecordUpsertComponent;
 
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   public permitStatuses: Array<ChemigationPermitStatusDto>;
   public chemigationCounties: Array<ChemigationCountyDto>;

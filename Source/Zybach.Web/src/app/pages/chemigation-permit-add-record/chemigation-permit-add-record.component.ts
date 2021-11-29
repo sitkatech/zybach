@@ -1,29 +1,27 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbDateAdapter, NgbDateNativeUTCAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
-import { UserDetailedDto } from 'src/app/shared/models';
+import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-upsert-dto';
+import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
+import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
-import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/models/chemigation-permit-annual-record-upsert-dto';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
-import { ChemigationPermitDto } from 'src/app/shared/models/generated/chemigation-permit-dto';
-import { ChemigationPermitStatusDto } from 'src/app/shared/models/generated/chemigation-permit-status-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-add-record',
   templateUrl: './chemigation-permit-add-record.component.html',
   styleUrls: ['./chemigation-permit-add-record.component.scss'],
-  providers: [{provide: NgbDateAdapter, useClass: NgbDateNativeUTCAdapter}]
 })
 export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent : ChemigationPermitAnnualRecordUpsertComponent;
   
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
   
   public chemigationPermitNumber: number;
   public chemigationPermit: ChemigationPermitDto;
@@ -59,7 +57,23 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
 
       this.chemigationPermitService.getLatestAnnualRecordByPermitNumber(this.chemigationPermitNumber).subscribe(annualRecord => {
         this.chemigationPermit = annualRecord.ChemigationPermit;
-        var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto(annualRecord, this.newRecordYear, ChemigationPermitAnnualRecordStatusEnum.PendingPayment);
+        var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto();
+        chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID = ChemigationPermitAnnualRecordStatusEnum.PendingPayment;
+        chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeID;
+        chemigationPermitAnnualRecordUpsertDto.RecordYear = this.newRecordYear;
+        chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName = annualRecord.ApplicantFirstName;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantLastName = annualRecord.ApplicantLastName;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress = annualRecord.ApplicantMailingAddress;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantCity = annualRecord.ApplicantCity;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantState = annualRecord.ApplicantState;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode = annualRecord.ApplicantZipCode;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantPhone = annualRecord.ApplicantPhone;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone = annualRecord.ApplicantMobilePhone;
+        chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
+        chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
+        chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
+    
         this.model = chemigationPermitAnnualRecordUpsertDto;
         this.cdr.detectChanges();
       });

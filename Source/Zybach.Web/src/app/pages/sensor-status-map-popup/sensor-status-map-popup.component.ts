@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SensorMessageAgeDto, SensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
+import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
 
 @Component({
   selector: 'zybach-sensor-status-map-popup',

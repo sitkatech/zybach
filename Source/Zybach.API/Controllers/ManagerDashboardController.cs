@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Zybach.API.Models;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -13,7 +13,6 @@ using Zybach.Models.DataTransferObjects;
 namespace Zybach.API.Controllers
 {
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi = true)]
     public class ManagerDashboardController : SitkaController<ManagerDashboardController>
     {
         private readonly WellService _wellService;
@@ -38,14 +37,6 @@ namespace Zybach.API.Controllers
                 NumberOfElectricalUsageEstimates = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.ElectricalUsage)).Select(x => x.WellRegistrationID).Distinct().Count(),
                 NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.FlowMeter)).Select(x => x.WellRegistrationID).Distinct().Count()
             };
-        }
-
-        public class DistrictStatisticsDto
-        {
-            public int NumberOfWellsTracked { get; set; }
-            public int NumberOfContinuityMeters { get; set; }
-            public int NumberOfElectricalUsageEstimates { get; set; }
-            public int NumberOfFlowMeters { get; set; }
         }
 
         [HttpGet("/api/managerDashboard/streamFlowZonePumpingDepths")]

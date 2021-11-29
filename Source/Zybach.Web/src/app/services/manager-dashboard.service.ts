@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DistrictStatisticsDto } from '../shared/models/district-statistics-dto';
-import { StreamFlowZoneDto } from '../shared/models/stream-flow-zone-dto';
-import { StreamFlowZonePumpingDepthDto } from '../shared/models/stream-flow-zone-pumping-depth-dto';
+import { DistrictStatisticsDto } from '../shared/generated/model/district-statistics-dto';
+import { StreamFlowZoneDto } from '../shared/generated/model/stream-flow-zone-dto';
+import { StreamFlowZonePumpingDepthDto } from '../shared/generated/model/stream-flow-zone-pumping-depth-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({

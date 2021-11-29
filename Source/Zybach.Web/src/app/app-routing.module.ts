@@ -17,7 +17,6 @@ import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
 import { TrainingComponent } from './pages/training/training.component';
-import { TestAPIComponent } from './pages/test-api/test-api.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
 import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -35,7 +34,6 @@ import { ChemigationPermitAddRecordComponent } from './pages/chemigation-permit-
 import { ChemigationPermitEditRecordComponent } from './pages/chemigation-permit-edit-record/chemigation-permit-edit-record.component';
 
 const routes: Routes = [
-  { path: "test-api", component: TestAPIComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "dashboard", component: DashboardComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },

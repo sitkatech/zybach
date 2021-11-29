@@ -237,20 +237,20 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 text-center">
-                                <carousel *ngIf="installation.PhotoDataUrls?.length > 1"
+                                <carousel *ngIf="installationPhotos[installation.InstallationCanonicalName].length > 1"
                                     [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1"
                                     [objectFit]="contain" [dots]="true">
                                 </carousel>
 
-                                <img *ngIf="installation.PhotoDataUrls?.length === 1" class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}"
+                                <img *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 1" class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}"
                                     style="height: 300px" />
 
-                                <ng-container *ngIf="!installation.PhotoDataUrls?.length && !installation.NoPhotoAvailable">
+                                <ng-container *ngIf="!installationPhotos[installation.InstallationCanonicalName].length">
                                     <span class="fas fa-spinner loading-spinner"></span>
                                     <p>Loading...</p>
                                 </ng-container>
 
-                                <img *ngIf="installation.NoPhotoAvailable" class="img img-fluid" style="height:300px"
+                                <img *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 0" class="img img-fluid" style="height:300px"
                                     src="/assets/main/no-photo-available.jpg" />
                             </div>
                         </div>

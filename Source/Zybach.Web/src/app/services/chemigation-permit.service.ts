@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/services';
 import { Observable } from 'rxjs';
-import { ChemigationPermitUpsertDto } from '../shared/models/chemigation-permit-upsert-dto';
-import { ChemigationPermitDto } from '../shared/models/generated/chemigation-permit-dto';
-import { ChemigationPermitStatusDto } from '../shared/models/generated/chemigation-permit-status-dto';
-import { ChemigationPermitAnnualRecordDto } from '../shared/models/generated/chemigation-permit-annual-record-dto';
-import { ChemigationPermitAnnualRecordUpsertDto } from '../shared/models/chemigation-permit-annual-record-upsert-dto';
-import { ChemigationPermitNewDto } from '../shared/models/chemigation-permit-new-dto';
-import { ChemigationCountyDto } from '../shared/models/generated/chemigation-county-dto';
-import { ChemigationInjectionUnitTypeDto } from '../shared/models/generated/chemigation-injection-unit-type-dto';
-import { ChemigationPermitAnnualRecordStatusDto } from '../shared/models/generated/chemigation-permit-annual-record-status-dto';
+import { ChemigationCountyDto } from '../shared/generated/model/chemigation-county-dto';
+import { ChemigationInjectionUnitTypeDto } from '../shared/generated/model/chemigation-injection-unit-type-dto';
+import { ChemigationPermitAnnualRecordDto } from '../shared/generated/model/chemigation-permit-annual-record-dto';
+import { ChemigationPermitAnnualRecordStatusDto } from '../shared/generated/model/chemigation-permit-annual-record-status-dto';
+import { ChemigationPermitAnnualRecordUpsertDto } from '../shared/generated/model/chemigation-permit-annual-record-upsert-dto';
+import { ChemigationPermitDto } from '../shared/generated/model/chemigation-permit-dto';
+import { ChemigationPermitNewDto } from '../shared/generated/model/chemigation-permit-new-dto';
+import { ChemigationPermitStatusDto } from '../shared/generated/model/chemigation-permit-status-dto';
+import { ChemigationPermitUpsertDto } from '../shared/generated/model/chemigation-permit-upsert-dto';
 
 
 @Injectable({

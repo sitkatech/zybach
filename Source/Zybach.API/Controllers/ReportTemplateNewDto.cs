@@ -6,7 +6,6 @@ namespace Zybach.API.Controllers
 {
     public class ReportTemplateNewDto
     {
-        public int ReportTemplateID { get; set; }
         [Required]
         public IFormFile FileResource { get; set; }
         [Required]

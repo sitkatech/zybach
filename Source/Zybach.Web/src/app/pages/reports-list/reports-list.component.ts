@@ -4,12 +4,12 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { UserDetailedDto } from 'src/app/shared/models';
+import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
+import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
-import { GenerateReportsDto } from 'src/app/shared/models/generate-reports-dto';
-import { ReportTemplateDto } from 'src/app/shared/models/generated/report-template-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
 import { environment } from 'src/environments/environment';
@@ -23,7 +23,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
 
   @ViewChild("reportTemplatesGrid") reportTemplatesGrid: AgGridAngular;
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   public reportTemplates: Array<ReportTemplateDto>
   public richTextTypeID : number = CustomRichTextType.ReportsList;
@@ -51,7 +51,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
         this.reportTemplatesGrid.api.hideOverlay();
         this.cdr.detectChanges();
       });
-      const apiHostName = environment.apiHostName
+      const mainAppApiUrl = environment.mainAppApiUrl
       this.columnDefs = [
         {
           headerName: 'Name', valueGetter: function (params: any) {
@@ -78,7 +78,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
         { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', sortable: true, filter: true, width: 268 },
         {
           headerName: 'Template File', valueGetter: function (params: any) {
-            return { LinkValue: `https://${apiHostName}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
+            return { LinkValue: `${mainAppApiUrl}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
           }, cellRendererFramework: LinkRendererComponent,
           cellRendererParams: { isExternalUrl: true},
           filterValueGetter: function (params: any) {

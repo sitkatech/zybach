@@ -1,11 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { UserDetailedDto } from 'src/app/shared/models';
-import { ReportTemplateDto } from 'src/app/shared/models/generated/report-template-dto';
+import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,7 +13,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   public reportTemplate: ReportTemplateDto;
   public reportTemplateFileLinkValue: string;
@@ -35,13 +32,13 @@ export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
       this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
           this.currentUser = currentUser;
-          const apiHostName = environment.apiHostName
+          const mainAppApiUrl = environment.mainAppApiUrl
 
           const id = parseInt(this.route.snapshot.paramMap.get("id"));
           if (id) {
               this.reportTemplateService.getReportTemplate(id).subscribe(reportTemplate => {
                   this.reportTemplate = reportTemplate as ReportTemplateDto;
-                  this.reportTemplateFileLinkValue = `https://${apiHostName}/FileResource/${this.reportTemplate.FileResource.FileResourceGUID}`;
+                  this.reportTemplateFileLinkValue = `${mainAppApiUrl}/FileResource/${this.reportTemplate.FileResource.FileResourceGUID}`;
                   this.cdr.detectChanges();
               });
           }

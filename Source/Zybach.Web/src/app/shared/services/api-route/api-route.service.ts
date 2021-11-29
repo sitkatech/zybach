@@ -10,7 +10,7 @@ export class ApiRouteService {
   }
 
   getRoute(): string {
-    const programApiRoute = `https://${environment.apiHostName}`;
-    return programApiRoute;
+    const mainAppApiUrl = `${environment.mainAppApiUrl}`;
+    return mainAppApiUrl;
   }
 }
