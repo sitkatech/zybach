@@ -13,7 +13,7 @@
         <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Approve Annual Renewal </a>
         <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Schedule Inspection </a>
     </div>
-    <div class="row" *ngIf="chemigationPermit">
+    <div class="row container" *ngIf="chemigationPermit">
         <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</div>
         <div class="col-12 col-sm-6 label"><strong>Township, Range, Section: </strong></div>
@@ -23,20 +23,26 @@
         <div class="col-12 col-sm-6 label"><strong>Total Acres Treated: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.TotalAcresTreated | number: '1.0-1'}}</div>
     </div>
-    <div class="row col-12 mt-3">
-        <div class="col-6">
-            <a class="btn btn-zybach btn-md float-left" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
-                <span class="fas fa-edit"></span> Edit Permit </a>
-        </div>
-        <div class="col-6" *ngIf="permitHasCurrentRecord()">
-            <a class="btn btn-zybach btn-md float-right disabled" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
-                <span class="fas fa-plus"></span> Create Renewal 
+    <div class="row container">
+        <div class="col-12">
+            <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-right" role="button" data-toggle="dropdown" 
+                aria-haspopup="true" aria-expanded="false">
+                Other Actions
             </a>
-        </div>
-        <div class="col-6" *ngIf="!permitHasCurrentRecord()">
-            <a class="btn btn-zybach btn-md float-right" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
-                <span class="fas fa-plus"></span> Create Renewal 
-            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
+                    <span class="fas fa-edit"></span>
+                    Edit Permit 
+                </a>
+                <a *ngIf="permitHasCurrentRecord()" class="dropdown-item disabled" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+                    <span class="fas fa-plus"></span> 
+                    Create Renewal 
+                </a>
+                <a *ngIf="!permitHasCurrentRecord()" class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+                    <span class="fas fa-plus"></span> 
+                    Create Renewal 
+                </a>
+            </div>
         </div>
     </div>
 </div>
