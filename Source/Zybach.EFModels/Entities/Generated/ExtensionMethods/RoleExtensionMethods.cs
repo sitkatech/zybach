@@ -25,5 +25,20 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(Role role, RoleDto roleDto);
 
+        public static RoleSimpleDto AsSimpleDto(this Role role)
+        {
+            var roleSimpleDto = new RoleSimpleDto()
+            {
+                RoleID = role.RoleID,
+                RoleName = role.RoleName,
+                RoleDisplayName = role.RoleDisplayName,
+                RoleDescription = role.RoleDescription,
+                SortOrder = role.SortOrder
+            };
+            DoCustomSimpleDtoMappings(role, roleSimpleDto);
+            return roleSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Role role, RoleSimpleDto roleSimpleDto);
     }
 }

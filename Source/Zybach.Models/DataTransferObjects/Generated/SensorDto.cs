@@ -18,4 +18,17 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime LastUpdateDate { get; set; }
         public bool IsActive { get; set; }
     }
+
+    public partial class SensorSimpleDto
+    {
+        public int SensorID { get; set; }
+        public string SensorName { get; set; }
+        public int? SensorTypeID { get; set; }
+        public int? WellID { get; set; }
+        public bool InGeoOptix { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime LastUpdateDate { get; set; }
+        public bool IsActive { get; set; }
+    }
+
 }

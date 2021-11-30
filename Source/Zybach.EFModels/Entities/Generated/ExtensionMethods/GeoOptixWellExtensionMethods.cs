@@ -22,5 +22,17 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(GeoOptixWell geoOptixWell, GeoOptixWellDto geoOptixWellDto);
 
+        public static GeoOptixWellSimpleDto AsSimpleDto(this GeoOptixWell geoOptixWell)
+        {
+            var geoOptixWellSimpleDto = new GeoOptixWellSimpleDto()
+            {
+                GeoOptixWellID = geoOptixWell.GeoOptixWellID,
+                WellID = geoOptixWell.WellID
+            };
+            DoCustomSimpleDtoMappings(geoOptixWell, geoOptixWellSimpleDto);
+            return geoOptixWellSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(GeoOptixWell geoOptixWell, GeoOptixWellSimpleDto geoOptixWellSimpleDto);
     }
 }

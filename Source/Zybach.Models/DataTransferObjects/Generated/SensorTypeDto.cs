@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string SensorTypeName { get; set; }
         public string SensorTypeDisplayName { get; set; }
     }
+
+    public partial class SensorTypeSimpleDto
+    {
+        public int SensorTypeID { get; set; }
+        public string SensorTypeName { get; set; }
+        public string SensorTypeDisplayName { get; set; }
+    }
+
 }

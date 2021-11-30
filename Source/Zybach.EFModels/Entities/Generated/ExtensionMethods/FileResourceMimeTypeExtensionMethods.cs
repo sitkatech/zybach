@@ -26,5 +26,21 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(FileResourceMimeType fileResourceMimeType, FileResourceMimeTypeDto fileResourceMimeTypeDto);
 
+        public static FileResourceMimeTypeSimpleDto AsSimpleDto(this FileResourceMimeType fileResourceMimeType)
+        {
+            var fileResourceMimeTypeSimpleDto = new FileResourceMimeTypeSimpleDto()
+            {
+                FileResourceMimeTypeID = fileResourceMimeType.FileResourceMimeTypeID,
+                FileResourceMimeTypeName = fileResourceMimeType.FileResourceMimeTypeName,
+                FileResourceMimeTypeDisplayName = fileResourceMimeType.FileResourceMimeTypeDisplayName,
+                FileResourceMimeTypeContentTypeName = fileResourceMimeType.FileResourceMimeTypeContentTypeName,
+                FileResourceMimeTypeIconSmallFilename = fileResourceMimeType.FileResourceMimeTypeIconSmallFilename,
+                FileResourceMimeTypeIconNormalFilename = fileResourceMimeType.FileResourceMimeTypeIconNormalFilename
+            };
+            DoCustomSimpleDtoMappings(fileResourceMimeType, fileResourceMimeTypeSimpleDto);
+            return fileResourceMimeTypeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(FileResourceMimeType fileResourceMimeType, FileResourceMimeTypeSimpleDto fileResourceMimeTypeSimpleDto);
     }
 }

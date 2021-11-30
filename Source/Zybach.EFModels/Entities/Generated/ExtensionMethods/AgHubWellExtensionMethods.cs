@@ -33,5 +33,28 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(AgHubWell agHubWell, AgHubWellDto agHubWellDto);
 
+        public static AgHubWellSimpleDto AsSimpleDto(this AgHubWell agHubWell)
+        {
+            var agHubWellSimpleDto = new AgHubWellSimpleDto()
+            {
+                AgHubWellID = agHubWell.AgHubWellID,
+                WellID = agHubWell.WellID,
+                WellTPID = agHubWell.WellTPID,
+                WellTPNRDPumpRate = agHubWell.WellTPNRDPumpRate,
+                TPNRDPumpRateUpdated = agHubWell.TPNRDPumpRateUpdated,
+                WellConnectedMeter = agHubWell.WellConnectedMeter,
+                WellAuditPumpRate = agHubWell.WellAuditPumpRate,
+                AuditPumpRateUpdated = agHubWell.AuditPumpRateUpdated,
+                HasElectricalData = agHubWell.HasElectricalData,
+                RegisteredPumpRate = agHubWell.RegisteredPumpRate,
+                RegisteredUpdated = agHubWell.RegisteredUpdated,
+                AgHubRegisteredUser = agHubWell.AgHubRegisteredUser,
+                FieldName = agHubWell.FieldName
+            };
+            DoCustomSimpleDtoMappings(agHubWell, agHubWellSimpleDto);
+            return agHubWellSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(AgHubWell agHubWell, AgHubWellSimpleDto agHubWellSimpleDto);
     }
 }

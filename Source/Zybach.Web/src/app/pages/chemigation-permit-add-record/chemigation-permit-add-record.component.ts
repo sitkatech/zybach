@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
+import { ChemigationPermitAnnualRecordChemicalFormulationDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-dto';
+import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-upsert-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
@@ -32,6 +34,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   
   public isLoadingSubmit: boolean = false;
   public isAnnualRecordFormValidCheck: boolean;
+  public isChemicalFormulationsFormValidCheck: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,7 +76,8 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
         chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
         chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
         chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
-    
+        chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>();
+        
         this.model = chemigationPermitAnnualRecordUpsertDto;
         this.cdr.detectChanges();
       });
@@ -91,8 +95,12 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     this.isAnnualRecordFormValidCheck = formValid;
   }
 
+  public isChemicalFormulationsFormValid(formValid: any): void {
+    this.isChemicalFormulationsFormValidCheck = formValid;
+  }
+
   public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
-    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
+    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
   }
 
   onSubmit(addChemigationPermitAnnualRecordForm: HTMLFormElement): void {

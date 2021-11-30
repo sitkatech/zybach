@@ -23,5 +23,18 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(CustomRichText customRichText, CustomRichTextDto customRichTextDto);
 
+        public static CustomRichTextSimpleDto AsSimpleDto(this CustomRichText customRichText)
+        {
+            var customRichTextSimpleDto = new CustomRichTextSimpleDto()
+            {
+                CustomRichTextID = customRichText.CustomRichTextID,
+                CustomRichTextTypeID = customRichText.CustomRichTextTypeID,
+                CustomRichTextContent = customRichText.CustomRichTextContent
+            };
+            DoCustomSimpleDtoMappings(customRichText, customRichTextSimpleDto);
+            return customRichTextSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(CustomRichText customRichText, CustomRichTextSimpleDto customRichTextSimpleDto);
     }
 }

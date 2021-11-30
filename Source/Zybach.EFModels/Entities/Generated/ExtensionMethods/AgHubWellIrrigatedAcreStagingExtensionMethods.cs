@@ -24,5 +24,19 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(AgHubWellIrrigatedAcreStaging agHubWellIrrigatedAcreStaging, AgHubWellIrrigatedAcreStagingDto agHubWellIrrigatedAcreStagingDto);
 
+        public static AgHubWellIrrigatedAcreStagingSimpleDto AsSimpleDto(this AgHubWellIrrigatedAcreStaging agHubWellIrrigatedAcreStaging)
+        {
+            var agHubWellIrrigatedAcreStagingSimpleDto = new AgHubWellIrrigatedAcreStagingSimpleDto()
+            {
+                AgHubWellIrrigatedAcreStagingID = agHubWellIrrigatedAcreStaging.AgHubWellIrrigatedAcreStagingID,
+                WellRegistrationID = agHubWellIrrigatedAcreStaging.WellRegistrationID,
+                IrrigationYear = agHubWellIrrigatedAcreStaging.IrrigationYear,
+                Acres = agHubWellIrrigatedAcreStaging.Acres
+            };
+            DoCustomSimpleDtoMappings(agHubWellIrrigatedAcreStaging, agHubWellIrrigatedAcreStagingSimpleDto);
+            return agHubWellIrrigatedAcreStagingSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(AgHubWellIrrigatedAcreStaging agHubWellIrrigatedAcreStaging, AgHubWellIrrigatedAcreStagingSimpleDto agHubWellIrrigatedAcreStagingSimpleDto);
     }
 }

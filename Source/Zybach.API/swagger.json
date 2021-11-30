@@ -488,56 +488,7 @@
         }
       }
     },
-    "/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords": {
-      "get": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords": {
+    "/api/chemigationPermits/{chemigationPermitNumber}/annualRecords": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -586,7 +537,7 @@
         }
       }
     },
-    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords/getLatestRecordYear": {
+    "/api/chemigationPermits/{chemigationPermitNumber}/getLatestRecordYear": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -626,47 +577,7 @@
         }
       }
     },
-    "/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords/getLatestRecordYear": {
-      "get": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}/annualRecords/{recordYear}": {
+    "/api/chemigationPermits/{chemigationPermitNumber}/{recordYear}": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -697,84 +608,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationPermits/getByID/{chemigationPermitID}/annualRecords/{recordYear}": {
-      "get": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "recordYear",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                  }
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               }
             }
@@ -906,6 +750,206 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/chemicalFormulations": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecordChemicalFormulation"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemicalUnits": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecordChemicalFormulation"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalUnitDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalUnitDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalUnitDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/{chemigationPermitNumber}/{recordYear}/chemicalFormulations": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecordChemicalFormulation"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "recordYear",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "ChemigationPermitAnnualRecordChemicalFormulation"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "recordYear",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -2470,6 +2514,46 @@
         },
         "additionalProperties": false
       },
+      "ChemicalFormulationDto": {
+        "type": "object",
+        "properties": {
+          "ChemicalFormulationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalFormulationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemicalFormulationDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemicalUnitDto": {
+        "type": "object",
+        "properties": {
+          "ChemicalUnitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalUnitName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemicalUnitPluralName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemicalUnitLowercaseShortName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChemigationCountyDto": {
         "type": "object",
         "properties": {
@@ -2502,6 +2586,40 @@
           "ChemigationInjectionUnitTypeDisplayName": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordChemicalFormulationSimpleDto": {
+        "type": "object",
+        "properties": {
+          "ChemicalFormulationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemicalUnitName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordChemicalFormulationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalFormulationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalUnitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TotalApplied": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -2666,6 +2784,13 @@
           "ApplicantZipCode": {
             "type": "integer",
             "format": "int32"
+          },
+          "ChemicalFormulations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

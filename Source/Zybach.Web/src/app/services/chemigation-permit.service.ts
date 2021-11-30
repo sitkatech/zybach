@@ -10,6 +10,10 @@ import { ChemigationPermitDto } from '../shared/generated/model/chemigation-perm
 import { ChemigationPermitNewDto } from '../shared/generated/model/chemigation-permit-new-dto';
 import { ChemigationPermitStatusDto } from '../shared/generated/model/chemigation-permit-status-dto';
 import { ChemigationPermitUpsertDto } from '../shared/generated/model/chemigation-permit-upsert-dto';
+import { ChemicalFormulationDto } from '../shared/generated/model/chemical-formulation-dto';
+import { ChemicalUnitDto } from '../shared/generated/model/chemical-unit-dto';
+import { ChemigationPermitAnnualRecordChemicalFormulationsDto } from '../shared/generated/model/chemigation-permit-annual-record-chemical-formulations-dto';
+import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 
 
 @Injectable({
@@ -60,32 +64,17 @@ export class ChemigationPermitService {
   }
 
   public getLatestAnnualRecordByPermitNumber(chemigationPermitNumber: number): Observable<ChemigationPermitAnnualRecordDto> {
-    let route = `/chemigationPermits/getByPermitNumber/${chemigationPermitNumber}/annualRecords/getLatestRecordYear`;
-    return this.apiService.getFromApi(route);
-  }
-
-  public getLatestAnnualRecordByPermitID(chemigationPermitID: number): Observable<ChemigationPermitAnnualRecordDto> {
-    let route = `/chemigationPermits/getByID/${chemigationPermitID}/annualRecords/getLatestRecordYear`;
+    let route = `/chemigationPermits/${chemigationPermitNumber}/getLatestRecordYear`;
     return this.apiService.getFromApi(route);
   }
 
   public getAnnualRecordByPermitNumberAndRecordYear(chemigationPermitNumber: number, recordYear: number): Observable<ChemigationPermitAnnualRecordDto> {
-    let route = `/chemigationPermits/getByPermitNumber/${chemigationPermitNumber}/annualRecords/${recordYear}`;
-    return this.apiService.getFromApi(route);
-  }
-
-  public getAnnualRecordByPermitIDAndRecordYear(chemigationPermitID: number, recordYear: number): Observable<ChemigationPermitAnnualRecordDto> {
-    let route = `/chemigationPermits/getByPermitNumber/${chemigationPermitID}/annualRecords/${recordYear}`;
-    return this.apiService.getFromApi(route);
-  }
-
-  public getChemigationPermitAnnualRecordsByPermitID(chemigationPermitID: number): Observable<Array<ChemigationPermitAnnualRecordDto>> {
-    let route = `/chemigationPermits/getByID/${chemigationPermitID}/annualRecords`;
+    let route = `/chemigationPermits/${chemigationPermitNumber}/${recordYear}`;
     return this.apiService.getFromApi(route);
   }
 
   public getChemigationPermitAnnualRecordsByPermitNumber(chemigationPermitNumber: number): Observable<Array<ChemigationPermitAnnualRecordDto>> {
-    let route = `/chemigationPermits/getByPermitNumber/${chemigationPermitNumber}/annualRecords`;
+    let route = `/chemigationPermits/${chemigationPermitNumber}/annualRecords`;
     return this.apiService.getFromApi(route);
   }
 
@@ -107,5 +96,25 @@ export class ChemigationPermitService {
   public updateChemigationPermitAnnualRecord(annualRecordID: number, annualRecordUpsertDto: ChemigationPermitAnnualRecordUpsertDto): Observable<ChemigationPermitAnnualRecordDto> {
     let route = `/chemigationPermits/annualRecords/${annualRecordID}`;
     return this.apiService.putToApi(route, annualRecordUpsertDto);
+  }
+
+  public getChemicalFormulations(): Observable<Array<ChemicalFormulationDto>> {
+    let route = `/chemicalFormulations`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getChemicalUnits(): Observable<Array<ChemicalUnitDto>> {
+    let route = `/chemicalUnits`;
+    return this.apiService.getFromApi(route);
+  }
+  
+  public getChemicalFormulationsByPermitNumberAndRecordYear(chemigationPermitNumber: number, recordYear: number): Observable<Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>> {
+    let route = `/chemigationPermits/${chemigationPermitNumber}/${recordYear}/chemicalFormulations`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public updateChemigationPermitAnnualRecordChemicalFormulations(chemigationPermitNumber:number, recordYear: number, chemigationPermitAnnualRecordChemicalFormulations: ChemigationPermitAnnualRecordChemicalFormulationsDto): Observable<ChemigationPermitAnnualRecordDto> {
+    let route = `/chemigationPermits/${chemigationPermitNumber}/${recordYear}/chemicalFormulations`;
+    return this.apiService.postToApi(route, chemigationPermitAnnualRecordChemicalFormulations);
   }
 }

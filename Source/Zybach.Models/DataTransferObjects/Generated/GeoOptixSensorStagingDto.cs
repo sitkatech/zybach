@@ -14,4 +14,13 @@ namespace Zybach.Models.DataTransferObjects
         public string SensorName { get; set; }
         public string SensorType { get; set; }
     }
+
+    public partial class GeoOptixSensorStagingSimpleDto
+    {
+        public int GeoOptixSensorStagingID { get; set; }
+        public string WellRegistrationID { get; set; }
+        public string SensorName { get; set; }
+        public string SensorType { get; set; }
+    }
+
 }

@@ -12,6 +12,7 @@ import { ChemigationCountyDto } from 'src/app/shared/generated/model/chemigation
 import { ChemigationPermitNewDto } from 'src/app/shared/generated/model/chemigation-permit-new-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -32,6 +33,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
 
   public isLoadingSubmit: boolean = false;
   public isAnnualRecordFormValidCheck: boolean;
+  public isChemicalFormulationsFormValidCheck: boolean;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -63,6 +65,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       DateReceived: null,
       DatePaid: null,
     };
+    this.model.ChemigationPermitAnnualRecord.ChemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>();
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -92,8 +95,12 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.isAnnualRecordFormValidCheck = formValid;
   }
 
+  public isChemicalFormulationsFormValid(formValid: any): void {
+    this.isChemicalFormulationsFormValidCheck = formValid;
+  }
+
   public isFormValid(addChemigationPermitAnnualRecordForm: any): boolean {
-    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !addChemigationPermitAnnualRecordForm.form.valid;
+    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck || !addChemigationPermitAnnualRecordForm.form.valid;
   }
 
   public onSubmit(newChemigationPermitForm: HTMLFormElement): void {

@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string ChemigationCountyName { get; set; }
         public string ChemigationCountyDisplayName { get; set; }
     }
+
+    public partial class ChemigationCountySimpleDto
+    {
+        public int ChemigationCountyID { get; set; }
+        public string ChemigationCountyName { get; set; }
+        public string ChemigationCountyDisplayName { get; set; }
+    }
+
 }

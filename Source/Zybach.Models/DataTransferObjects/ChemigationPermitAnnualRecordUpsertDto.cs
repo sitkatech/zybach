@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Zybach.Models.DataTransferObjects
@@ -26,5 +27,7 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantCity { get; set; }
         public string ApplicantState { get; set; }
         public int ApplicantZipCode { get; set; }
+
+        public List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto> ChemicalFormulations { get; set; }
     }
 }

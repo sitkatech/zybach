@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string ChemigationInjectionUnitTypeName { get; set; }
         public string ChemigationInjectionUnitTypeDisplayName { get; set; }
     }
+
+    public partial class ChemigationInjectionUnitTypeSimpleDto
+    {
+        public int ChemigationInjectionUnitTypeID { get; set; }
+        public string ChemigationInjectionUnitTypeName { get; set; }
+        public string ChemigationInjectionUnitTypeDisplayName { get; set; }
+    }
+
 }

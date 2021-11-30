@@ -3,7 +3,8 @@
         <li class="breadcrumb-item">
             <a routerLink="/chemigation-permits">Chemigation Permits</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}</li>
+        <li class="breadcrumb-item active" aria-current="page">Chemigation Permit
+            #{{chemigationPermit?.ChemigationPermitNumber}}</li>
     </ol>
 </nav>
 <app-alert-display></app-alert-display>
@@ -15,7 +16,8 @@
     </div>
     <div class="row" *ngIf="chemigationPermit">
         <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
-        <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</div>
+        <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}
+        </div>
         <div class="col-12 col-sm-6 label"><strong>Township, Range, Section: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
@@ -25,11 +27,13 @@
     </div>
     <div class="row col-12 mt-3">
         <div class="col-6">
-            <a class="btn btn-zybach btn-md float-left" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
+            <a class="btn btn-zybach btn-md float-left"
+                routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
                 <span class="fas fa-edit"></span> Edit Permit </a>
         </div>
         <div class="col-6">
-            <a class="btn btn-zybach btn-md float-right" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+            <a class="btn btn-zybach btn-md float-right"
+                routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
                 <span class="fas fa-plus"></span> Create Renewal </a>
         </div>
     </div>
@@ -41,13 +45,13 @@
                 <div class="col-4 float-left pl-2">
                     <div class="row align-items-center">
                         <span class="far fa-calendar mr-2"> </span>
-                        <zybach-water-year-select
-                        [(selectedYear)]="yearToDisplay" (selectedYearChange)="updateAnnualData()"
-                        [(allYearsSelected)]="allYearsSelected" (allYearsSelectedChange)="updateAnnualData()">
+                        <zybach-water-year-select [(selectedYear)]="yearToDisplay"
+                            (selectedYearChange)="updateAnnualData()" [(allYearsSelected)]="allYearsSelected"
+                            (allYearsSelectedChange)="updateAnnualData()">
                         </zybach-water-year-select>
                     </div>
                 </div>
-                <div class="col-4 text-center pl-2">Annual Record</div>                       
+                <div class="col-4 text-center pl-2">Annual Record</div>
                 <div class="col-4 float-right" *ngIf="!currentYearAnnualRecord">
                     <a class="btn btn-zybach btn-sm float-right disabled">
                         <span class="fas fa-edit"></span> Edit Record
@@ -55,7 +59,7 @@
                 </div>
                 <div class="col-4 float-right" *ngIf="currentYearAnnualRecord">
                     <a class="btn btn-zybach btn-sm float-right"
-                    routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/{{yearToDisplay}}/edit">
+                        routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/{{yearToDisplay}}/edit">
                         <span class="fas fa-edit"></span> Edit Record
                     </a>
                 </div>
@@ -73,7 +77,8 @@
                                     <p><strong>Annual Record Status: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <p>{{currentYearAnnualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}</p>
+                                    <p>{{currentYearAnnualRecord.ChemigationPermitAnnualRecordStatusName}}
+                                    </p>
                                 </div>
                             </div>
 
@@ -116,11 +121,11 @@
                                 </div>
                                 <div class="col-6 text-left">
                                     <p>
-                                        {{currentYearAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
+                                        {{currentYearAnnualRecord.ChemigationInjectionUnitTypeName}}
                                     </p>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                         <div class="row col-6">
@@ -131,7 +136,8 @@
                                 </div>
                                 <div class="col-6 text-left">
                                     <p>
-                                        {{currentYearAnnualRecord.ApplicantFirstName}} {{currentYearAnnualRecord.ApplicantLastName}}
+                                        {{currentYearAnnualRecord.ApplicantFirstName}}
+                                        {{currentYearAnnualRecord.ApplicantLastName}}
                                     </p>
                                 </div>
                             </div>
@@ -142,7 +148,9 @@
                                 </div>
                                 <div class="col-6 text-left">
                                     <p>{{currentYearAnnualRecord.ApplicantMailingAddress}}</p>
-                                    <p>{{currentYearAnnualRecord.ApplicantCity}}, {{currentYearAnnualRecord.ApplicantState}} {{currentYearAnnualRecord.ApplicantZipCode}}</p>
+                                    <p>{{currentYearAnnualRecord.ApplicantCity}},
+                                        {{currentYearAnnualRecord.ApplicantState}}
+                                        {{currentYearAnnualRecord.ApplicantZipCode}}</p>
                                 </div>
                             </div>
 
@@ -163,7 +171,8 @@
                                 </div>
                                 <div class="col-6 text-left">
                                     <p>{{currentYearAnnualRecord.ApplicantMobilePhone}}
-                                        <em *ngIf="!currentYearAnnualRecord.ApplicantMobilePhone" class="text-muted">N/A</em>
+                                        <em *ngIf="!currentYearAnnualRecord.ApplicantMobilePhone"
+                                            class="text-muted">N/A</em>
                                     </p>
                                 </div>
                             </div>
@@ -183,6 +192,26 @@
                     </div>
 
                     <hr class="w-90" />
+
+                    <h5>Applied Chemicals</h5>
+                    <div class="row col-12">
+                        <table class="table table-responsive table-striped" *ngIf="currentYearAnnualRecord.ChemicalFormulations">
+                            <thead>
+                                <tr>
+                                    <th>Formulation</th>
+                                    <th class="text-right">Total Applied</th>
+                                    <th>Unit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let chemicalFormulation of currentYearAnnualRecord.ChemicalFormulations">
+                                    <td>{{chemicalFormulation.ChemicalFormulationName}}</td>
+                                    <td class="text-right">{{chemicalFormulation.TotalApplied}}</td>
+                                    <td>{{chemicalFormulation.ChemicalUnitName}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
                 <div class="row" *ngIf="!chemigationPermit">

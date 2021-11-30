@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string ChemigationPermitStatusName { get; set; }
         public string ChemigationPermitStatusDisplayName { get; set; }
     }
+
+    public partial class ChemigationPermitStatusSimpleDto
+    {
+        public int ChemigationPermitStatusID { get; set; }
+        public string ChemigationPermitStatusName { get; set; }
+        public string ChemigationPermitStatusDisplayName { get; set; }
+    }
+
 }

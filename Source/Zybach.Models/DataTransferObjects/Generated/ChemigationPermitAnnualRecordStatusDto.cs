@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string ChemigationPermitAnnualRecordStatusName { get; set; }
         public string ChemigationPermitAnnualRecordStatusDisplayName { get; set; }
     }
+
+    public partial class ChemigationPermitAnnualRecordStatusSimpleDto
+    {
+        public int ChemigationPermitAnnualRecordStatusID { get; set; }
+        public string ChemigationPermitAnnualRecordStatusName { get; set; }
+        public string ChemigationPermitAnnualRecordStatusDisplayName { get; set; }
+    }
+
 }

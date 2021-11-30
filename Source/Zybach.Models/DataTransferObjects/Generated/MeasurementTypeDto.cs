@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string MeasurementTypeName { get; set; }
         public string MeasurementTypeDisplayName { get; set; }
     }
+
+    public partial class MeasurementTypeSimpleDto
+    {
+        public int MeasurementTypeID { get; set; }
+        public string MeasurementTypeName { get; set; }
+        public string MeasurementTypeDisplayName { get; set; }
+    }
+
 }

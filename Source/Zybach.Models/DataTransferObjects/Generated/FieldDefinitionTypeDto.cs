@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string FieldDefinitionTypeName { get; set; }
         public string FieldDefinitionTypeDisplayName { get; set; }
     }
+
+    public partial class FieldDefinitionTypeSimpleDto
+    {
+        public int FieldDefinitionTypeID { get; set; }
+        public string FieldDefinitionTypeName { get; set; }
+        public string FieldDefinitionTypeDisplayName { get; set; }
+    }
+
 }

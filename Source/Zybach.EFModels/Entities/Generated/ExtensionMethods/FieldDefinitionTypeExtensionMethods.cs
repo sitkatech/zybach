@@ -23,5 +23,18 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(FieldDefinitionType fieldDefinitionType, FieldDefinitionTypeDto fieldDefinitionTypeDto);
 
+        public static FieldDefinitionTypeSimpleDto AsSimpleDto(this FieldDefinitionType fieldDefinitionType)
+        {
+            var fieldDefinitionTypeSimpleDto = new FieldDefinitionTypeSimpleDto()
+            {
+                FieldDefinitionTypeID = fieldDefinitionType.FieldDefinitionTypeID,
+                FieldDefinitionTypeName = fieldDefinitionType.FieldDefinitionTypeName,
+                FieldDefinitionTypeDisplayName = fieldDefinitionType.FieldDefinitionTypeDisplayName
+            };
+            DoCustomSimpleDtoMappings(fieldDefinitionType, fieldDefinitionTypeSimpleDto);
+            return fieldDefinitionTypeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(FieldDefinitionType fieldDefinitionType, FieldDefinitionTypeSimpleDto fieldDefinitionTypeSimpleDto);
     }
 }

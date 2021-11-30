@@ -37,5 +37,32 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordDto chemigationPermitAnnualRecordDto);
 
+        public static ChemigationPermitAnnualRecordSimpleDto AsSimpleDto(this ChemigationPermitAnnualRecord chemigationPermitAnnualRecord)
+        {
+            var chemigationPermitAnnualRecordSimpleDto = new ChemigationPermitAnnualRecordSimpleDto()
+            {
+                ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
+                ChemigationPermitID = chemigationPermitAnnualRecord.ChemigationPermitID,
+                RecordYear = chemigationPermitAnnualRecord.RecordYear,
+                ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID,
+                PivotName = chemigationPermitAnnualRecord.PivotName,
+                ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID,
+                ApplicantFirstName = chemigationPermitAnnualRecord.ApplicantFirstName,
+                ApplicantLastName = chemigationPermitAnnualRecord.ApplicantLastName,
+                ApplicantMailingAddress = chemigationPermitAnnualRecord.ApplicantMailingAddress,
+                ApplicantCity = chemigationPermitAnnualRecord.ApplicantCity,
+                ApplicantState = chemigationPermitAnnualRecord.ApplicantState,
+                ApplicantZipCode = chemigationPermitAnnualRecord.ApplicantZipCode,
+                ApplicantPhone = chemigationPermitAnnualRecord.ApplicantPhone,
+                ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone,
+                DateReceived = chemigationPermitAnnualRecord.DateReceived,
+                DatePaid = chemigationPermitAnnualRecord.DatePaid,
+                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail
+            };
+            DoCustomSimpleDtoMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordSimpleDto);
+            return chemigationPermitAnnualRecordSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordSimpleDto chemigationPermitAnnualRecordSimpleDto);
     }
 }

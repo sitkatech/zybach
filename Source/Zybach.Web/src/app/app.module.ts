@@ -62,6 +62,7 @@ import { CookieStorageService } from './shared/services/cookies/cookie-storage.s
 import { ChemigationPermitAddRecordComponent } from './pages/chemigation-permit-add-record/chemigation-permit-add-record.component';
 import { ChemigationPermitEditRecordComponent } from './pages/chemigation-permit-edit-record/chemigation-permit-edit-record.component';
 import { ChemigationPermitAnnualRecordUpsertComponent } from './shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
+import { ChemigationPermitChemicalFormulationsEditorComponent } from './shared/components/chemigation-permit-chemical-formulations-editor/chemigation-permit-chemical-formulations-editor.component';
 
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
@@ -107,7 +108,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationPermitEditComponent,
     ChemigationPermitAddRecordComponent,
     ChemigationPermitEditRecordComponent,
-    ChemigationPermitAnnualRecordUpsertComponent
+    ChemigationPermitAnnualRecordUpsertComponent,
+    ChemigationPermitChemicalFormulationsEditorComponent
     
   ],
   imports: [

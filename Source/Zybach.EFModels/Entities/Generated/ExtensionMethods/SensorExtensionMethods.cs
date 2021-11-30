@@ -28,5 +28,23 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(Sensor sensor, SensorDto sensorDto);
 
+        public static SensorSimpleDto AsSimpleDto(this Sensor sensor)
+        {
+            var sensorSimpleDto = new SensorSimpleDto()
+            {
+                SensorID = sensor.SensorID,
+                SensorName = sensor.SensorName,
+                SensorTypeID = sensor.SensorTypeID,
+                WellID = sensor.WellID,
+                InGeoOptix = sensor.InGeoOptix,
+                CreateDate = sensor.CreateDate,
+                LastUpdateDate = sensor.LastUpdateDate,
+                IsActive = sensor.IsActive
+            };
+            DoCustomSimpleDtoMappings(sensor, sensorSimpleDto);
+            return sensorSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Sensor sensor, SensorSimpleDto sensorSimpleDto);
     }
 }
