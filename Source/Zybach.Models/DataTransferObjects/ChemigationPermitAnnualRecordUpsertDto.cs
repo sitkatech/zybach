@@ -20,14 +20,16 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DatePaid { get; set; }
         [Required]
         public int ChemigationInjectionUnitTypeID { get; set; }
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
         public string ApplicantPhone { get; set; }
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
         public string ApplicantMobilePhone { get; set; }
         public string ApplicantMailingAddress { get; set; }
         public string ApplicantEmail { get; set; }
         public string ApplicantCity { get; set; }
         public string ApplicantState { get; set; }
-        public int ApplicantZipCode { get; set; }
-
+        [RegularExpression(@"^[0-9]{5}(?:-[0-9]{4})?$", ErrorMessage = "Zip codes must be formatted in either 5 digit or hyphenated 5+4 digit format")]
+        public string ApplicantZipCode { get; set; }
         public List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto> ChemicalFormulations { get; set; }
     }
 }

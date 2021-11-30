@@ -1,0 +1,9 @@
+@import "~src/scss/_variables.scss";
+
+.dropdown-menu {
+    z-index: 1021;
+}
+  
+.dropdown-item:hover {
+    background-color: $select-and-nav-dropdown-hover;
+}

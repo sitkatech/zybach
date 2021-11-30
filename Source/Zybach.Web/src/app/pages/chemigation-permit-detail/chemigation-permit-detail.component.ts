@@ -63,6 +63,10 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public currentUserIsAdmin(): boolean {
     return this.authenticationService.isUserAnAdministrator(this.currentUser);
   }
+
+  public permitHasCurrentRecord(): boolean {
+    return this.annualRecords?.map(x => x.RecordYear).includes(this.currentYear);
+  }
   
   public updateAnnualData(): void {
     this.currentYearAnnualRecord = this.annualRecords?.find(x => x.RecordYear == this.yearToDisplay);
