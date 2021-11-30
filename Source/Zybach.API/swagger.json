@@ -1667,6 +1667,45 @@
         }
       }
     },
+    "/api/robustReviewScenarios": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Return a list of all Robust Review Scenario Runs triggered by GWMA",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/roles": {
       "get": {
         "tags": [
@@ -3472,6 +3511,49 @@
             "items": {
               "$ref": "#/components/schemas/MonthlyPumpedVolume"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RobustReviewScenarioGETRunHistoryDto": {
+        "type": "object",
+        "properties": {
+          "RobustReviewScenarioGETRunHistoryID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CreateByUser": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "GETRunID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SuccessfulStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "IsTerminal": {
+            "type": "boolean"
+          },
+          "StatusMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "StatusHexColor": {
+            "type": "string",
             "nullable": true
           }
         },

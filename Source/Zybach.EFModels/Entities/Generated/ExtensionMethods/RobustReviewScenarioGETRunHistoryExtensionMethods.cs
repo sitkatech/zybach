@@ -29,5 +29,24 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(RobustReviewScenarioGETRunHistory robustReviewScenarioGETRunHistory, RobustReviewScenarioGETRunHistoryDto robustReviewScenarioGETRunHistoryDto);
 
+        public static RobustReviewScenarioGETRunHistorySimpleDto AsSimpleDto(this RobustReviewScenarioGETRunHistory robustReviewScenarioGETRunHistory)
+        {
+            var robustReviewScenarioGETRunHistorySimpleDto = new RobustReviewScenarioGETRunHistorySimpleDto()
+            {
+                RobustReviewScenarioGETRunHistoryID = robustReviewScenarioGETRunHistory.RobustReviewScenarioGETRunHistoryID,
+                CreateByUserID = robustReviewScenarioGETRunHistory.CreateByUserID,
+                CreateDate = robustReviewScenarioGETRunHistory.CreateDate,
+                LastUpdateDate = robustReviewScenarioGETRunHistory.LastUpdateDate,
+                GETRunID = robustReviewScenarioGETRunHistory.GETRunID,
+                SuccessfulStartDate = robustReviewScenarioGETRunHistory.SuccessfulStartDate,
+                IsTerminal = robustReviewScenarioGETRunHistory.IsTerminal,
+                StatusMessage = robustReviewScenarioGETRunHistory.StatusMessage,
+                StatusHexColor = robustReviewScenarioGETRunHistory.StatusHexColor
+            };
+            DoCustomSimpleDtoMappings(robustReviewScenarioGETRunHistory, robustReviewScenarioGETRunHistorySimpleDto);
+            return robustReviewScenarioGETRunHistorySimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(RobustReviewScenarioGETRunHistory robustReviewScenarioGETRunHistory, RobustReviewScenarioGETRunHistorySimpleDto robustReviewScenarioGETRunHistorySimpleDto);
     }
 }

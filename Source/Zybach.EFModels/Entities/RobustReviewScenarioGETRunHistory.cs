@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
@@ -17,6 +19,11 @@ namespace Zybach.EFModels.Entities
 
             _dbContext.RobustReviewScenarioGETRunHistories.Add(robustReviewScenarioGETRunHistory);
             _dbContext.SaveChanges();
+        }
+
+        public static List<RobustReviewScenarioGETRunHistoryDto> List(ZybachDbContext _dbContext)
+        {
+            return _dbContext.RobustReviewScenarioGETRunHistories.Select(x => x.AsDto()).ToList();
         }
 
         public static RobustReviewScenarioGETRunHistory GetNotYetStartedRobustReviewScenarioGetRunHistory(ZybachDbContext _dbContext)

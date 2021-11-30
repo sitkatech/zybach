@@ -9,10 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { GeoJSONNetGeoJSONObjectType } from '././geo-json-net-geo-json-object-type';
+import { UserDto } from '././user-dto';
 
-export class GeoJSONNetGeometryIGeometryObject { 
-    Type?: GeoJSONNetGeoJSONObjectType;
+export class RobustReviewScenarioGETRunHistoryDto { 
+    RobustReviewScenarioGETRunHistoryID?: number;
+    CreateByUser?: UserDto;
+    CreateDate?: string;
+    LastUpdateDate?: string;
+    GETRunID?: number;
+    SuccessfulStartDate?: string;
+    IsTerminal?: boolean;
+    StatusMessage?: string;
+    StatusHexColor?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

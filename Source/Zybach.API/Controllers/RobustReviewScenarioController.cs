@@ -58,5 +58,16 @@ namespace Zybach.API.Controllers
             BackgroundJob.Enqueue<GETStartNewRunJob>(x => x.RunJob(null));
             return Ok();
         }
+
+        /// <summary>
+        /// Return a list of all Robust Review Scenario Runs triggered by GWMA
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("/api/robustReviewScenarios")]
+        [AdminFeature]
+        public ActionResult<IEnumerable<RobustReviewScenarioGETRunHistoryDto>> List()
+        {
+            return Ok(RobustReviewScenarioGETRunHistory.List(_dbContext));
+        }
     }
 }
