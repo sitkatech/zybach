@@ -14,15 +14,15 @@ namespace Zybach.EFModels.Entities
             if (chemigationPermitAnnualRecordChemicalFormulationsDto != null && chemigationPermitAnnualRecordChemicalFormulationsDto.Any())
             {
                 var newChemigationPermitAnnualRecordChemicalFormulations =
-                    chemigationPermitAnnualRecordChemicalFormulationsDto.Select(x =>
+                    chemigationPermitAnnualRecordChemicalFormulationsDto.GroupBy(x => new {x.ChemicalFormulationID, x.ChemicalUnitID}).Select(x =>
                         new ChemigationPermitAnnualRecordChemicalFormulation
                         {
                             ChemigationPermitAnnualRecordID =
                                 chemigationPermitAnnualRecordID,
-                            ChemicalFormulationID = x.ChemicalFormulationID,
-                            ChemicalUnitID = x.ChemicalUnitID,
-                            TotalApplied = x.TotalApplied,
-                            AcresTreated = x.AcresTreated
+                            ChemicalFormulationID = x.Key.ChemicalFormulationID,
+                            ChemicalUnitID = x.Key.ChemicalUnitID,
+                            TotalApplied = x.Sum(y => y.TotalApplied),
+                            AcresTreated = x.Sum(y => y.AcresTreated)
                         }).ToList();
                 var existingChemigationPermitAnnualRecordChemicalFormulations = dbContext
                     .ChemigationPermitAnnualRecordChemicalFormulations.Where(x =>
