@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using NetTopologySuite.Geometries;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API
 {
-    public class GETStartNewRunJob : ScheduledBackgroundJobBase<GETStartNewRunJob>
+    public class GETUpdateStatusOfNonTerminalRunJob : ScheduledBackgroundJobBase<GETUpdateStatusOfNonTerminalRunJob>
     {
         private readonly GETService _GETService;
-        public const string JobName = "GET Start New Run Manual";
-        
-        public GETStartNewRunJob(IWebHostEnvironment webHostEnvironment, ILogger<GETStartNewRunJob> logger,
+        public const string JobName = "GET Update Status Of Non-Terminal Run Semi-Hourly";
+
+        public GETUpdateStatusOfNonTerminalRunJob(IWebHostEnvironment webHostEnvironment, ILogger<GETUpdateStatusOfNonTerminalRunJob> logger,
             ZybachDbContext zybachDbContext, GETService GETService) : base(
             JobName, logger, webHostEnvironment, zybachDbContext)
         {
@@ -30,7 +27,7 @@ namespace Zybach.API
         {
             try
             {
-                Task.WaitAll(_GETService.StartNewRobustReviewScenarioRun());
+                Task.WaitAll(_GETService.UpdateCurrentlyRunningRunStatus());
             }
             catch (Exception e)
             {

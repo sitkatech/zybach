@@ -90,6 +90,7 @@ namespace Zybach.Web
             AppInsightsInstrumentationKey =  configuration["AppInsightsInstrumentationKey"];
             MapQuestApiUrl =  configuration["MapQuestApiUrl"];
             GeoOptixWebUrl = configuration["GeoOptixWebUrl"];
+            GETEnvironmentUrl = configuration["GETEnvironmentUrl"];
         }
 
         [JsonProperty("production")]
@@ -128,6 +129,8 @@ namespace Zybach.Web
         public string MapQuestApiUrl { get; set; }
         [JsonProperty("geoOptixWebUrl")]
         public string GeoOptixWebUrl {get; set;}
+        [JsonProperty("GETEnvironmentUrl")]
+        public string GETEnvironmentUrl {get; set;}
     }
 
     public class KeystoneAuthConfigurationDto

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
@@ -23,13 +24,19 @@ namespace Zybach.EFModels.Entities
 
         public static List<RobustReviewScenarioGETRunHistoryDto> List(ZybachDbContext _dbContext)
         {
-            return _dbContext.RobustReviewScenarioGETRunHistories.Select(x => x.AsDto()).ToList();
+            return _dbContext.RobustReviewScenarioGETRunHistories.Include(x => x.CreateByUser).ThenInclude(x => x.Role).OrderByDescending(x => x.CreateDate).Select(x => x.AsDto()).ToList();
         }
 
-        public static RobustReviewScenarioGETRunHistory GetNotYetStartedRobustReviewScenarioGetRunHistory(ZybachDbContext _dbContext)
+        public static RobustReviewScenarioGETRunHistory GetNotYetStartedRobustReviewScenarioGETRunHistory(ZybachDbContext _dbContext)
         {
             return _dbContext.RobustReviewScenarioGETRunHistories.SingleOrDefault(x =>
                 x.IsTerminal == false && x.GETRunID == null);
+        }
+
+        public static RobustReviewScenarioGETRunHistory GetNonTerminalSuccessfullyStartedRobustReviewScenarioGETRunHistory(ZybachDbContext _dbContext)
+        {
+            return _dbContext.RobustReviewScenarioGETRunHistories.SingleOrDefault(x =>
+                x.IsTerminal == false && x.GETRunID != null && x.SuccessfulStartDate != null);
         }
     }
 }

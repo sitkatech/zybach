@@ -27,12 +27,14 @@ namespace Zybach.API.Controllers
     public class RobustReviewScenarioController : SitkaController<RobustReviewScenarioController>
     {
         private readonly WellService _wellService;
+        private readonly GETService _GETService;
 
         public RobustReviewScenarioController(ZybachDbContext dbContext, ILogger<RobustReviewScenarioController> logger,
-            KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, WellService wellService) : base(dbContext, logger, keystoneService,
+            KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, WellService wellService,  GETService GETService) : base(dbContext, logger, keystoneService,
             zybachConfiguration)
         {
             _wellService = wellService;
+            _GETService = GETService;
         }
 
         /// <summary>
@@ -65,8 +67,14 @@ namespace Zybach.API.Controllers
         /// <returns></returns>
         [HttpGet("/api/robustReviewScenarios")]
         [AdminFeature]
-        public ActionResult<IEnumerable<RobustReviewScenarioGETRunHistoryDto>> List()
+        public async Task<ActionResult<IEnumerable<RobustReviewScenarioGETRunHistoryDto>>> List()
         {
+            if (RobustReviewScenarioGETRunHistory
+                .GetNonTerminalSuccessfullyStartedRobustReviewScenarioGETRunHistory(_dbContext) != null)
+            {
+                await _GETService.UpdateCurrentlyRunningRunStatus();
+            }
+
             return Ok(RobustReviewScenarioGETRunHistory.List(_dbContext));
         }
     }

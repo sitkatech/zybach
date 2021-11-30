@@ -17,6 +17,7 @@
     "faviconFilename": [TODO],
     "leadOrganizationLogoFilename": [TODO],
     "mapQuestApiUrl": [TODO],
+    "GETEnvironmentUrl": [TODO],
   
     "keystoneAuthConfiguration": {
       "clientId": [TODO],

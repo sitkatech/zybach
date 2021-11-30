@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using GeoJSON.Net.Geometry;
 using Microsoft.Extensions.Logging;
@@ -53,14 +54,14 @@ namespace Zybach.API.Services
             }
         }
 
-        public async Task<bool> StartNewRobustReviewScenarioRun()
+        public async Task StartNewRobustReviewScenarioRun()
         {
             var historyEntry =
-                RobustReviewScenarioGETRunHistory.GetNotYetStartedRobustReviewScenarioGetRunHistory(_dbContext);
+                RobustReviewScenarioGETRunHistory.GetNotYetStartedRobustReviewScenarioGETRunHistory(_dbContext);
 
             if (historyEntry == null)
             {
-                return false;
+                return;
             }
 
             var robustReviewDtos = _wellService.GetRobustReviewDtos();
@@ -68,7 +69,7 @@ namespace Zybach.API.Services
             var byteArrayContent = new ByteArrayContent(robustReviewDtosAsBytes);
             byteArrayContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
-            var runNumForRunName = _dbContext.RobustReviewScenarioGETRunHistories.Count() + 1;
+            var runNumForRunName = _dbContext.RobustReviewScenarioGETRunHistories.Count();
 
             var requestObject = JsonConvert.SerializeObject(new GETNewRunModel(runNumForRunName, _zybachConfiguration));
 
@@ -83,7 +84,7 @@ namespace Zybach.API.Services
                 historyEntry.IsTerminal = true;
                 historyEntry.StatusMessage = "GET Integration was unable to start the run.";
                 _dbContext.SaveChanges();
-                return false;
+                return;
             }
 
             using var streamReader = new StreamReader(response.Content.ReadAsStreamAsync().Result);
@@ -96,7 +97,36 @@ namespace Zybach.API.Services
             historyEntry.StatusMessage = responseDeserialized.RunStatus.RunStatusDisplayName;
             historyEntry.StatusHexColor = responseDeserialized.RunStatus.RunStatusColor;
             _dbContext.SaveChanges();
-            return true;
+        }
+
+        public async Task UpdateCurrentlyRunningRunStatus()
+        {
+            var historyEntry =
+                RobustReviewScenarioGETRunHistory.GetNonTerminalSuccessfullyStartedRobustReviewScenarioGETRunHistory(_dbContext);
+
+            if (historyEntry == null)
+            {
+                return;
+            }
+
+            //Right now just getting the status is a post request. API needs to be updated
+            var response = await _httpClient.PostAsync("GetRunStatus",
+                new StringContent(JsonConvert.SerializeObject(new GETRunDetailModel(historyEntry.GETRunID.Value, _zybachConfiguration)), Encoding.UTF8, "application/json"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                //todo Decide what we want to do here
+                return;
+            }
+
+            using var streamReader = new StreamReader(response.Content.ReadAsStreamAsync().Result);
+            using var jsonTextReader = new JsonTextReader(streamReader);
+            var responseDeserialized = new JsonSerializer().Deserialize<GETRunResponseModel>(jsonTextReader);
+
+            historyEntry.IsTerminal = responseDeserialized.RunStatus.IsTerminal;
+            historyEntry.StatusMessage = responseDeserialized.RunStatus.RunStatusDisplayName;
+            historyEntry.StatusHexColor = responseDeserialized.RunStatus.RunStatusColor;
+            _dbContext.SaveChanges();
         }
 
         public class GETRunResponseModel
@@ -114,6 +144,21 @@ namespace Zybach.API.Services
             public string RunStatusDisplayName { get; set; }
             public string RunStatusColor { get; set; }
             public bool IsTerminal { get; set; }
+        }
+
+        public class GETRunDetailModel
+        {
+            public GETRunDetailModel(int runID, ZybachConfiguration zybachConfiguration)
+            {
+                RunID = runID;
+                //This shouldn't need to happen based on the APIM rules, but for now  we can do it manually
+                CustomerID = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID;
+            }
+            [JsonProperty("CustomerId")]
+            public int CustomerID { get; set; }
+
+            [JsonProperty("RunId")]
+            public int RunID { get; set; }
         }
 
         public class GETNewRunModel

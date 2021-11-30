@@ -84,4 +84,8 @@ export class DynamicEnvironment {
     public get geoOptixWebUrl(){
         return window.config.geoOptixWebUrl;
     }
+
+    public get GETEnvironmentUrl() {
+        return window.config.GETEnvironmentUrl;
+    }
 }
