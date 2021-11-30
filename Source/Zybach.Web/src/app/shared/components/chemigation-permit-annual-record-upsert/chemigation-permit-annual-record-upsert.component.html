@@ -104,8 +104,13 @@
                 <label class="required"><strong>State: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <input type="text" class="form-control" name="ApplicantState"
-                    placeholder="State" required [(ngModel)]="model.ApplicantState" />
+                <select name="ApplicantState" class="form-control" 
+                    [(ngModel)]="model.ApplicantState" required>
+                    <option *ngFor="let state of states | keyvalue"
+                        [value]="state.key">
+                        {{state.value}}
+                    </option>
+                </select>
             </div>
 
             <div class="col-6 control-label text-right mb-2">
@@ -113,7 +118,7 @@
             </div>
             <div class="col-6 text-left mb-2">
                 <input type="text" class="form-control" name="ApplicantZipCode"
-                        placeholder="Zip Code" required [(ngModel)]="model.ApplicantZipCode" />
+                    placeholder="Zip Code" required [(ngModel)]="model.ApplicantZipCode" />
             </div>
 
             <div class="col-6 control-label text-right mb-2">

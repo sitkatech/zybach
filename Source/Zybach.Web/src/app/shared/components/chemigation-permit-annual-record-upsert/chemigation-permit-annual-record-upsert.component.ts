@@ -7,6 +7,7 @@ import { ChemigationInjectionUnitTypeDto } from '../../generated/model/chemigati
 import { ChemigationPermitAnnualRecordStatusDto } from '../../generated/model/chemigation-permit-annual-record-status-dto';
 import { ChemigationPermitAnnualRecordUpsertDto } from '../../generated/model/chemigation-permit-annual-record-upsert-dto';
 import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
+import { States } from '../../models/enums/states.enum';
 
 @Component({
   selector: 'zybach-chemigation-permit-annual-record-upsert',
@@ -22,7 +23,8 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
   
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
   public annualRecordStatuses: Array<ChemigationPermitAnnualRecordStatusDto>;
-
+  public states: Object;
+  
   constructor(
     private chemigationPermitService: ChemigationPermitService,
     private cdr: ChangeDetectorRef
@@ -37,6 +39,7 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
       this.injectionUnitTypes = injectionUnitTypes;
       this.cdr.detectChanges();
     });
+    this.states = States.statesList;
     this.validateForm();
     this.annualRecordForm.valueChanges.subscribe(() => {
       this.validateForm();

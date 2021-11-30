@@ -36,8 +36,7 @@
                                     <label><strong>Chemigation Permit Number: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationPermitNumber" readonly
-                                        [(ngModel)]="model.ChemigationPermitNumber" />
+                                    {{chemigationPermit?.ChemigationPermitNumber}}
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -61,16 +60,14 @@
                                     <label><strong>Township-Range-Section: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="TownshipRangeSection" readonly
-                                        [(ngModel)]="model.TownshipRangeSection" />
+                                    {{chemigationPermit?.TownshipRangeSection}}
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>County: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <input type="text" class="form-control" name="ChemigationCounty" readonly
-                                        [value]="chemigationPermit?.ChemigationCounty.ChemigationCountyDisplayName" />
+                                    {{chemigationPermit?.ChemigationCounty.ChemigationCountyDisplayName}}
                                 </div>
                             
                             </div>

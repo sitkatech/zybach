@@ -29,6 +29,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   public chemigationCounties: Array<ChemigationCountyDto>;
 
   public model: ChemigationPermitNewDto;
+  public defaultState: string = 'NE';
 
   public isLoadingSubmit: boolean = false;
   public isAnnualRecordFormValidCheck: boolean;
@@ -55,7 +56,8 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       ApplicantLastName: null,
       ApplicantMailingAddress: null,
       ApplicantCity: null,
-      ApplicantState: null,
+      // default to Nebraska
+      ApplicantState: this.defaultState,
       ApplicantZipCode: null,
       ApplicantPhone: null,
       ApplicantMobilePhone: null,
