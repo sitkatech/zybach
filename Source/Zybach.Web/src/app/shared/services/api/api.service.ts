@@ -140,7 +140,7 @@ export class ApiService {
                 //https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-5.0#automatic-http-400-responses
                 if (typeof error.error === 'object' && error.error !== null && error.error.hasOwnProperty("errors")) {
                     for (const key of Object.keys(error.error.errors)) {
-                        const newLocal = new Alert((error.error.errors[key] as string[]).map((fe: string) => { return key + ": " + fe; }).join(","));
+                        const newLocal = new Alert((error.error.errors[key] as string[]).map((fe: string) => { return key + ": " + fe; }).join(","), AlertContext.Danger);
                         this.alertService.pushAlert(newLocal);
                     }
                 }

@@ -20,7 +20,7 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantMailingAddress { get; set; }
         public string ApplicantCity { get; set; }
         public string ApplicantState { get; set; }
-        public int ApplicantZipCode { get; set; }
+        public string ApplicantZipCode { get; set; }
         public string ApplicantPhone { get; set; }
         public string ApplicantMobilePhone { get; set; }
         public DateTime? DateReceived { get; set; }

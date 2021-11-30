@@ -2551,8 +2551,8 @@
             "nullable": true
           },
           "ApplicantZipCode": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "nullable": true
           },
           "ApplicantPhone": {
             "type": "string",
@@ -2640,10 +2640,12 @@
             "format": "int32"
           },
           "ApplicantPhone": {
+            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
             "type": "string",
             "nullable": true
           },
           "ApplicantMobilePhone": {
+            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
             "type": "string",
             "nullable": true
           },
@@ -2664,8 +2666,9 @@
             "nullable": true
           },
           "ApplicantZipCode": {
-            "type": "integer",
-            "format": "int32"
+            "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

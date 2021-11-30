@@ -158,6 +158,8 @@ namespace Zybach.EFModels.Entities
 
                 entity.Property(e => e.ApplicantState).IsUnicode(false);
 
+                entity.Property(e => e.ApplicantZipCode).IsUnicode(false);
+
                 entity.Property(e => e.PivotName).IsUnicode(false);
 
                 entity.HasOne(d => d.ChemigationInjectionUnitType)

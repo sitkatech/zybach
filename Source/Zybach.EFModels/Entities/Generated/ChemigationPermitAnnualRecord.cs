@@ -34,9 +34,11 @@ namespace Zybach.EFModels.Entities
         [StringLength(50)]
         public string ApplicantCity { get; set; }
         [Required]
-        [StringLength(10)]
+        [StringLength(20)]
         public string ApplicantState { get; set; }
-        public int ApplicantZipCode { get; set; }
+        [Required]
+        [StringLength(10)]
+        public string ApplicantZipCode { get; set; }
         [StringLength(30)]
         public string ApplicantPhone { get; set; }
         [StringLength(30)]
