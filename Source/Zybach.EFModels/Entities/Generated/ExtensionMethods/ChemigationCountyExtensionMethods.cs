@@ -23,5 +23,18 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(ChemigationCounty chemigationCounty, ChemigationCountyDto chemigationCountyDto);
 
+        public static ChemigationCountySimpleDto AsSimpleDto(this ChemigationCounty chemigationCounty)
+        {
+            var chemigationCountySimpleDto = new ChemigationCountySimpleDto()
+            {
+                ChemigationCountyID = chemigationCounty.ChemigationCountyID,
+                ChemigationCountyName = chemigationCounty.ChemigationCountyName,
+                ChemigationCountyDisplayName = chemigationCounty.ChemigationCountyDisplayName
+            };
+            DoCustomSimpleDtoMappings(chemigationCounty, chemigationCountySimpleDto);
+            return chemigationCountySimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(ChemigationCounty chemigationCounty, ChemigationCountySimpleDto chemigationCountySimpleDto);
     }
 }

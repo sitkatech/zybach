@@ -18,4 +18,17 @@ namespace Zybach.Models.DataTransferObjects
         public UserDto CreateUser { get; set; }
         public DateTime CreateDate { get; set; }
     }
+
+    public partial class FileResourceSimpleDto
+    {
+        public int FileResourceID { get; set; }
+        public int FileResourceMimeTypeID { get; set; }
+        public string OriginalBaseFilename { get; set; }
+        public string OriginalFileExtension { get; set; }
+        public Guid FileResourceGUID { get; set; }
+        public byte[] FileResourceData { get; set; }
+        public int CreateUserID { get; set; }
+        public DateTime CreateDate { get; set; }
+    }
+
 }

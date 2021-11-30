@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
+import { ChemigationPermitAnnualRecordChemicalFormulationDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-dto';
+import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-upsert-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
@@ -11,6 +13,7 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { X } from 'vega-lite/build/src/channel';
 
 @Component({
   selector: 'zybach-chemigation-permit-add-record',
@@ -32,6 +35,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   
   public isLoadingSubmit: boolean = false;
   public isAnnualRecordFormValidCheck: boolean;
+  public isChemicalFormulationsFormValidCheck: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,7 +63,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
         this.chemigationPermit = annualRecord.ChemigationPermit;
         var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto();
         chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID = ChemigationPermitAnnualRecordStatusEnum.PendingPayment;
-        chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeID;
+        chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitTypeID;
         chemigationPermitAnnualRecordUpsertDto.RecordYear = this.newRecordYear;
         chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;
         chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName = annualRecord.ApplicantFirstName;
@@ -73,7 +77,15 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
         chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
         chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
         chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
-    
+        const chemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>();
+        annualRecord.ChemicalFormulations.map(x => {
+          const chemicalFormulation = new ChemigationPermitAnnualRecordChemicalFormulationSimpleDto();
+          chemicalFormulation.ChemicalFormulationID = x.ChemicalFormulationID;
+          chemicalFormulation.ChemicalUnitID = x.ChemicalUnitID;
+          chemicalFormulations.push(chemicalFormulation);
+        } );
+        chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = chemicalFormulations;
+        
         this.model = chemigationPermitAnnualRecordUpsertDto;
         this.cdr.detectChanges();
       });
@@ -91,8 +103,12 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     this.isAnnualRecordFormValidCheck = formValid;
   }
 
+  public isChemicalFormulationsFormValid(formValid: any): void {
+    this.isChemicalFormulationsFormValidCheck = formValid;
+  }
+
   public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
-    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
+    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
   }
 
   onSubmit(addChemigationPermitAnnualRecordForm: HTMLFormElement): void {

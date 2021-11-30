@@ -7,7 +7,6 @@ export class NgbDateAdapterFromString extends NgbDateAdapter<string> {
   readonly DELIMITER = '-';
 
   fromModel(value: string | null): NgbDateStruct | null {
-    console.log(value);
     if (value) {
       let date = value.split(this.DELIMITER);
       return {

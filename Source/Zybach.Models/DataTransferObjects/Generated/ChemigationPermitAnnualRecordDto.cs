@@ -27,4 +27,26 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
     }
+
+    public partial class ChemigationPermitAnnualRecordSimpleDto
+    {
+        public int ChemigationPermitAnnualRecordID { get; set; }
+        public int ChemigationPermitID { get; set; }
+        public int RecordYear { get; set; }
+        public int ChemigationPermitAnnualRecordStatusID { get; set; }
+        public string PivotName { get; set; }
+        public int ChemigationInjectionUnitTypeID { get; set; }
+        public string ApplicantFirstName { get; set; }
+        public string ApplicantLastName { get; set; }
+        public string ApplicantMailingAddress { get; set; }
+        public string ApplicantCity { get; set; }
+        public string ApplicantState { get; set; }
+        public int ApplicantZipCode { get; set; }
+        public string ApplicantPhone { get; set; }
+        public string ApplicantMobilePhone { get; set; }
+        public DateTime? DateReceived { get; set; }
+        public DateTime? DatePaid { get; set; }
+        public string ApplicantEmail { get; set; }
+    }
+
 }

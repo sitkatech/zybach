@@ -1,0 +1,28 @@
+//  IMPORTANT:
+//  This file is generated. Your changes will be lost.
+//  Use the corresponding partial class for customizations.
+//  Source Table: [dbo].[ChemigationPermitAnnualRecordChemicalFormulation]
+using System;
+
+
+namespace Zybach.Models.DataTransferObjects
+{
+    public partial class ChemigationPermitAnnualRecordChemicalFormulationDto
+    {
+        public int ChemigationPermitAnnualRecordChemicalFormulationID { get; set; }
+        public ChemigationPermitAnnualRecordDto ChemigationPermitAnnualRecord { get; set; }
+        public ChemicalFormulationDto ChemicalFormulation { get; set; }
+        public ChemicalUnitDto ChemicalUnit { get; set; }
+        public double TotalApplied { get; set; }
+    }
+
+    public partial class ChemigationPermitAnnualRecordChemicalFormulationSimpleDto
+    {
+        public int ChemigationPermitAnnualRecordChemicalFormulationID { get; set; }
+        public int ChemigationPermitAnnualRecordID { get; set; }
+        public int ChemicalFormulationID { get; set; }
+        public int ChemicalUnitID { get; set; }
+        public double TotalApplied { get; set; }
+    }
+
+}

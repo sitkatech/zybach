@@ -16,4 +16,15 @@ namespace Zybach.Models.DataTransferObjects
         public ReportTemplateModelTypeDto ReportTemplateModelType { get; set; }
         public ReportTemplateModelDto ReportTemplateModel { get; set; }
     }
+
+    public partial class ReportTemplateSimpleDto
+    {
+        public int ReportTemplateID { get; set; }
+        public int FileResourceID { get; set; }
+        public string DisplayName { get; set; }
+        public string Description { get; set; }
+        public int ReportTemplateModelTypeID { get; set; }
+        public int ReportTemplateModelID { get; set; }
+    }
+
 }

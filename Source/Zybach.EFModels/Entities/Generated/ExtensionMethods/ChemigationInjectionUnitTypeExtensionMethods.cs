@@ -23,5 +23,18 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(ChemigationInjectionUnitType chemigationInjectionUnitType, ChemigationInjectionUnitTypeDto chemigationInjectionUnitTypeDto);
 
+        public static ChemigationInjectionUnitTypeSimpleDto AsSimpleDto(this ChemigationInjectionUnitType chemigationInjectionUnitType)
+        {
+            var chemigationInjectionUnitTypeSimpleDto = new ChemigationInjectionUnitTypeSimpleDto()
+            {
+                ChemigationInjectionUnitTypeID = chemigationInjectionUnitType.ChemigationInjectionUnitTypeID,
+                ChemigationInjectionUnitTypeName = chemigationInjectionUnitType.ChemigationInjectionUnitTypeName,
+                ChemigationInjectionUnitTypeDisplayName = chemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName
+            };
+            DoCustomSimpleDtoMappings(chemigationInjectionUnitType, chemigationInjectionUnitTypeSimpleDto);
+            return chemigationInjectionUnitTypeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(ChemigationInjectionUnitType chemigationInjectionUnitType, ChemigationInjectionUnitTypeSimpleDto chemigationInjectionUnitTypeSimpleDto);
     }
 }

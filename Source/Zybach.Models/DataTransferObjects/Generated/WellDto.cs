@@ -15,4 +15,14 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
     }
+
+    public partial class WellSimpleDto
+    {
+        public int WellID { get; set; }
+        public string WellRegistrationID { get; set; }
+        public int? StreamflowZoneID { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime? LastUpdateDate { get; set; }
+    }
+
 }

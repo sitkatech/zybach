@@ -15,4 +15,14 @@ namespace Zybach.Models.DataTransferObjects
         public string Status { get; set; }
         public DateTime LastUpdate { get; set; }
     }
+
+    public partial class ChemigationInspectionSimpleDto
+    {
+        public int ChemigationInspectionID { get; set; }
+        public string WellRegistrationID { get; set; }
+        public string ProtocolCanonicalName { get; set; }
+        public string Status { get; set; }
+        public DateTime LastUpdate { get; set; }
+    }
+
 }

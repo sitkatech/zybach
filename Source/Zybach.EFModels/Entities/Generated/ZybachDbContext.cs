@@ -21,11 +21,14 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
         public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
+        public virtual DbSet<ChemicalFormulation> ChemicalFormulations { get; set; }
+        public virtual DbSet<ChemicalUnit> ChemicalUnits { get; set; }
         public virtual DbSet<ChemigationCounty> ChemigationCounties { get; set; }
         public virtual DbSet<ChemigationInjectionUnitType> ChemigationInjectionUnitTypes { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecordStatus> ChemigationPermitAnnualRecordStatuses { get; set; }
         public virtual DbSet<ChemigationPermitStatus> ChemigationPermitStatuses { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
@@ -102,6 +105,24 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.WellTPID).IsUnicode(false);
             });
 
+            modelBuilder.Entity<ChemicalFormulation>(entity =>
+            {
+                entity.Property(e => e.ChemicalFormulationDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemicalFormulationName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemicalUnit>(entity =>
+            {
+                entity.Property(e => e.ChemicalUnitID).ValueGeneratedNever();
+
+                entity.Property(e => e.ChemicalUnitLowercaseShortName).IsUnicode(false);
+
+                entity.Property(e => e.ChemicalUnitName).IsUnicode(false);
+
+                entity.Property(e => e.ChemicalUnitPluralName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<ChemigationCounty>(entity =>
             {
                 entity.Property(e => e.ChemigationCountyDisplayName).IsUnicode(false);
@@ -175,6 +196,24 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.ChemigationPermit)
                     .WithMany(p => p.ChemigationPermitAnnualRecords)
                     .HasForeignKey(d => d.ChemigationPermitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecordChemicalFormulation>(entity =>
+            {
+                entity.HasOne(d => d.ChemicalFormulation)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordChemicalFormulations)
+                    .HasForeignKey(d => d.ChemicalFormulationID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemicalUnit)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordChemicalFormulations)
+                    .HasForeignKey(d => d.ChemicalUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemigationPermitAnnualRecord)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordChemicalFormulations)
+                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

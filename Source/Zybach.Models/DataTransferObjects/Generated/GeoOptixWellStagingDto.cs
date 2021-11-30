@@ -12,4 +12,11 @@ namespace Zybach.Models.DataTransferObjects
         public int GeoOptixWellStagingID { get; set; }
         public string WellRegistrationID { get; set; }
     }
+
+    public partial class GeoOptixWellStagingSimpleDto
+    {
+        public int GeoOptixWellStagingID { get; set; }
+        public string WellRegistrationID { get; set; }
+    }
+
 }

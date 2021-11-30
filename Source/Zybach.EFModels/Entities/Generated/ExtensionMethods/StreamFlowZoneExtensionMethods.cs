@@ -23,5 +23,18 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(StreamFlowZone streamFlowZone, StreamFlowZoneDto streamFlowZoneDto);
 
+        public static StreamFlowZoneSimpleDto AsSimpleDto(this StreamFlowZone streamFlowZone)
+        {
+            var streamFlowZoneSimpleDto = new StreamFlowZoneSimpleDto()
+            {
+                StreamFlowZoneID = streamFlowZone.StreamFlowZoneID,
+                StreamFlowZoneName = streamFlowZone.StreamFlowZoneName,
+                StreamFlowZoneArea = streamFlowZone.StreamFlowZoneArea
+            };
+            DoCustomSimpleDtoMappings(streamFlowZone, streamFlowZoneSimpleDto);
+            return streamFlowZoneSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(StreamFlowZone streamFlowZone, StreamFlowZoneSimpleDto streamFlowZoneSimpleDto);
     }
 }

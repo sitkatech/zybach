@@ -26,5 +26,21 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(ReportTemplate reportTemplate, ReportTemplateDto reportTemplateDto);
 
+        public static ReportTemplateSimpleDto AsSimpleDto(this ReportTemplate reportTemplate)
+        {
+            var reportTemplateSimpleDto = new ReportTemplateSimpleDto()
+            {
+                ReportTemplateID = reportTemplate.ReportTemplateID,
+                FileResourceID = reportTemplate.FileResourceID,
+                DisplayName = reportTemplate.DisplayName,
+                Description = reportTemplate.Description,
+                ReportTemplateModelTypeID = reportTemplate.ReportTemplateModelTypeID,
+                ReportTemplateModelID = reportTemplate.ReportTemplateModelID
+            };
+            DoCustomSimpleDtoMappings(reportTemplate, reportTemplateSimpleDto);
+            return reportTemplateSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(ReportTemplate reportTemplate, ReportTemplateSimpleDto reportTemplateSimpleDto);
     }
 }

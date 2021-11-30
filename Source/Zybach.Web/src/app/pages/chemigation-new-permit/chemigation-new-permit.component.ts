@@ -114,5 +114,4 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
         }
       );
   }
-
 }

@@ -28,5 +28,23 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(WellSensorMeasurementStaging wellSensorMeasurementStaging, WellSensorMeasurementStagingDto wellSensorMeasurementStagingDto);
 
+        public static WellSensorMeasurementStagingSimpleDto AsSimpleDto(this WellSensorMeasurementStaging wellSensorMeasurementStaging)
+        {
+            var wellSensorMeasurementStagingSimpleDto = new WellSensorMeasurementStagingSimpleDto()
+            {
+                WellSensorMeasurementStagingID = wellSensorMeasurementStaging.WellSensorMeasurementStagingID,
+                WellRegistrationID = wellSensorMeasurementStaging.WellRegistrationID,
+                MeasurementTypeID = wellSensorMeasurementStaging.MeasurementTypeID,
+                ReadingYear = wellSensorMeasurementStaging.ReadingYear,
+                ReadingMonth = wellSensorMeasurementStaging.ReadingMonth,
+                ReadingDay = wellSensorMeasurementStaging.ReadingDay,
+                SensorName = wellSensorMeasurementStaging.SensorName,
+                MeasurementValue = wellSensorMeasurementStaging.MeasurementValue
+            };
+            DoCustomSimpleDtoMappings(wellSensorMeasurementStaging, wellSensorMeasurementStagingSimpleDto);
+            return wellSensorMeasurementStagingSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(WellSensorMeasurementStaging wellSensorMeasurementStaging, WellSensorMeasurementStagingSimpleDto wellSensorMeasurementStagingSimpleDto);
     }
 }

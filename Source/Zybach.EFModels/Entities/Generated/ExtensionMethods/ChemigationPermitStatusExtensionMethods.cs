@@ -23,5 +23,18 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(ChemigationPermitStatus chemigationPermitStatus, ChemigationPermitStatusDto chemigationPermitStatusDto);
 
+        public static ChemigationPermitStatusSimpleDto AsSimpleDto(this ChemigationPermitStatus chemigationPermitStatus)
+        {
+            var chemigationPermitStatusSimpleDto = new ChemigationPermitStatusSimpleDto()
+            {
+                ChemigationPermitStatusID = chemigationPermitStatus.ChemigationPermitStatusID,
+                ChemigationPermitStatusName = chemigationPermitStatus.ChemigationPermitStatusName,
+                ChemigationPermitStatusDisplayName = chemigationPermitStatus.ChemigationPermitStatusDisplayName
+            };
+            DoCustomSimpleDtoMappings(chemigationPermitStatus, chemigationPermitStatusSimpleDto);
+            return chemigationPermitStatusSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(ChemigationPermitStatus chemigationPermitStatus, ChemigationPermitStatusSimpleDto chemigationPermitStatusSimpleDto);
     }
 }

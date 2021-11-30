@@ -13,4 +13,12 @@ namespace Zybach.Models.DataTransferObjects
         public string StreamFlowZoneName { get; set; }
         public double StreamFlowZoneArea { get; set; }
     }
+
+    public partial class StreamFlowZoneSimpleDto
+    {
+        public int StreamFlowZoneID { get; set; }
+        public string StreamFlowZoneName { get; set; }
+        public double StreamFlowZoneArea { get; set; }
+    }
+
 }

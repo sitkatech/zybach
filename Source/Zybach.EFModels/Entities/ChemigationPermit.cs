@@ -42,10 +42,8 @@ namespace Zybach.EFModels.Entities
             dbContext.ChemigationPermits.Add(chemigationPermit);
             dbContext.SaveChanges();
 
-            // when creating new permit, always create a default annual record as well
             var chemigationPermitID = chemigationPermit.ChemigationPermitID;
-            ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext,
-                chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
+            ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
 
             dbContext.Entry(chemigationPermit).Reload();
 

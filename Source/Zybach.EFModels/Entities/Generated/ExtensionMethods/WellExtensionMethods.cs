@@ -25,5 +25,20 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(Well well, WellDto wellDto);
 
+        public static WellSimpleDto AsSimpleDto(this Well well)
+        {
+            var wellSimpleDto = new WellSimpleDto()
+            {
+                WellID = well.WellID,
+                WellRegistrationID = well.WellRegistrationID,
+                StreamflowZoneID = well.StreamflowZoneID,
+                CreateDate = well.CreateDate,
+                LastUpdateDate = well.LastUpdateDate
+            };
+            DoCustomSimpleDtoMappings(well, wellSimpleDto);
+            return wellSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Well well, WellSimpleDto wellSimpleDto);
     }
 }

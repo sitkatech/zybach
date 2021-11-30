@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Zybach.Models.DataTransferObjects
@@ -29,5 +30,6 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantState { get; set; }
         [RegularExpression(@"^[0-9]{5}(?:-[0-9]{4})?$", ErrorMessage = "Zip codes must be formatted in either 5 digit or hyphenated 5+4 digit format")]
         public string ApplicantZipCode { get; set; }
+        public List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto> ChemicalFormulations { get; set; }
     }
 }

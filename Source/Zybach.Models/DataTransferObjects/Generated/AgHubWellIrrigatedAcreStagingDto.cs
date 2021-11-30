@@ -14,4 +14,13 @@ namespace Zybach.Models.DataTransferObjects
         public int IrrigationYear { get; set; }
         public double Acres { get; set; }
     }
+
+    public partial class AgHubWellIrrigatedAcreStagingSimpleDto
+    {
+        public int AgHubWellIrrigatedAcreStagingID { get; set; }
+        public string WellRegistrationID { get; set; }
+        public int IrrigationYear { get; set; }
+        public double Acres { get; set; }
+    }
+
 }
