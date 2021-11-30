@@ -26,7 +26,7 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ApplicantEmail?: string;
     ApplicantCity?: string;
     ApplicantState?: string;
-    ApplicantZipCode?: number;
+    ApplicantZipCode?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);

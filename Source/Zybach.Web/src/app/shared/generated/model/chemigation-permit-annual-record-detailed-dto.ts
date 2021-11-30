@@ -26,7 +26,7 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     ApplicantMailingAddress?: string;
     ApplicantCity?: string;
     ApplicantState?: string;
-    ApplicantZipCode?: number;
+    ApplicantZipCode?: string;
     ApplicantPhone?: string;
     ApplicantMobilePhone?: string;
     DateReceived?: string;

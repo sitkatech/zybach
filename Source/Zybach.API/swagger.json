@@ -2613,8 +2613,8 @@
             "nullable": true
           },
           "ApplicantZipCode": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "nullable": true
           },
           "ApplicantPhone": {
             "type": "string",
@@ -2809,7 +2809,8 @@
           },
           "ApplicantZipCode": {
             "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "ChemicalFormulations": {
             "type": "array",
