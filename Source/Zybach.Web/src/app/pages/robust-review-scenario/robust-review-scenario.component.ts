@@ -51,4 +51,10 @@ export class RobustReviewScenarioComponent implements OnInit {
     }))
   }
 
+  new() {
+    this.wellService.triggerNewRobustReview().subscribe(x => {
+      console.log("Yay");
+    })
+  }
+
 }

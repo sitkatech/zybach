@@ -8,4 +8,5 @@
     <h2 class="d-inline-block">Robust Review Scenario</h2>
     <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
     <button class="btn btn-zybach" (click)="getRobustReviewScenarioJson()" [disabled]="fileDownloading">Download Robust Review Scenario .json <span *ngIf="fileDownloading" class="fas fa-spinner loading-spinner"></span> </button>
+    <button class="btn btn-zybach" (click)="new()" [disabled]="fileDownloading">New</button>
 </div>

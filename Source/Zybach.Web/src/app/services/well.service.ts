@@ -48,6 +48,11 @@ export class WellService {
     return this.httpClient.get(route, { responseType: "blob" as "json" });
   }
 
+  public triggerNewRobustReview(): Observable<any> {
+    let route = `/robust-review-scenario/new`;
+    return this.apiService.getFromApi(route);
+  }
+
   public newWell(wellNewDto: WellNewDto) {
     let route = `/wells/new`;
     return this.apiService.postToApi(route, wellNewDto);
