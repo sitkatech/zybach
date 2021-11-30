@@ -107,8 +107,8 @@
                 <select name="ApplicantState" class="form-control" 
                     [(ngModel)]="model.ApplicantState" required>
                     <option *ngFor="let state of states | keyvalue"
-                        [value]="state.key">
-                        {{state.value}}
+                        [value]="state.value">
+                        {{state.key}}
                     </option>
                 </select>
             </div>

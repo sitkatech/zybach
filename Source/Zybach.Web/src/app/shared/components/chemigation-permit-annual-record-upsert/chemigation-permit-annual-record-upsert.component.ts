@@ -24,7 +24,7 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
   public annualRecordStatuses: Array<ChemigationPermitAnnualRecordStatusDto>;
   public states: Object;
-  
+
   constructor(
     private chemigationPermitService: ChemigationPermitService,
     private cdr: ChangeDetectorRef
