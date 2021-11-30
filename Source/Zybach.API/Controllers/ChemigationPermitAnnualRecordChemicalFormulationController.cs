@@ -40,7 +40,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>> GetChemigationPermitAnnualRecordChemicalFormulationByPermitNumberAndRecordYear([FromRoute] int chemigationPermitNumber, [FromRoute] int recordYear)
         {
-            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.GetAnnualRecordByPermitNumberAndRecordYear(_dbContext, chemigationPermitNumber, recordYear);
+            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.GetByPermitNumberAndRecordYearAsDetailedDto(_dbContext, chemigationPermitNumber, recordYear);
             if (chemigationPermitAnnualRecordDto == null)
             {
                 var notFoundMessage = $"There is no annual record found for Chemigation Permit #{chemigationPermitNumber}, Year {recordYear}!";
@@ -58,29 +58,6 @@ namespace Zybach.API.Controllers
                 .ToList();
 
             return Ok(chemigationPermitAnnualRecordChemicalFormulations);
-        }
-
-        [HttpPost("/api/chemigationPermits/{chemigationPermitNumber}/{recordYear}/chemicalFormulations")]
-        [AdminFeature]
-        public ActionResult CreateChemigationPermitAnnualRecordChemicalFormulation([FromRoute] int chemigationPermitNumber, [FromRoute] int recordYear,
-                [FromBody] List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto> chemigationPermitAnnualRecordChemicalFormulationsDto)
-        {
-            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.GetAnnualRecordByPermitNumberAndRecordYear(_dbContext, chemigationPermitNumber, recordYear);
-            if (chemigationPermitAnnualRecordDto == null)
-            {
-                var notFoundMessage = $"There is no annual record found for Chemigation Permit #{chemigationPermitNumber}, Year {recordYear}!";
-                _logger.LogError(notFoundMessage);
-                return NotFound(notFoundMessage);
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(_dbContext, chemigationPermitAnnualRecordDto.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordChemicalFormulationsDto);
-            _dbContext.SaveChanges();
-            return Ok();
         }
     }
 }

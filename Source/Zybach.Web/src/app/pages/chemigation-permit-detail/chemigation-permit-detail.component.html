@@ -195,22 +195,27 @@
 
                     <div class="row col-12 table-responsive">
                         <h5>Applied Chemicals</h5>
-                        <table class="table table-striped" *ngIf="currentYearAnnualRecord.ChemicalFormulations">
-                            <thead>
-                                <tr>
-                                    <th>Formulation</th>
-                                    <th class="text-right">Total Applied</th>
-                                    <th>Unit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let chemicalFormulation of currentYearAnnualRecord.ChemicalFormulations">
-                                    <td>{{chemicalFormulation.ChemicalFormulationName}}</td>
-                                    <td class="text-right">{{chemicalFormulation.TotalApplied}}</td>
-                                    <td>{{chemicalFormulation.ChemicalUnitName}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div *ngIf="currentYearAnnualRecord.ChemicalFormulations.length > 0; then hasChemicalFormulations else noChemicalFormulations"></div>
+                        <ng-template #hasChemicalFormulations>
+                            <p>Chemicals that were used in the chemigation system in the past year</p>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Formulation</th>
+                                        <th class="text-right">Total Applied</th>
+                                        <th>Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let chemicalFormulation of currentYearAnnualRecord.ChemicalFormulations">
+                                        <td>{{chemicalFormulation.ChemicalFormulationName}}</td>
+                                        <td class="text-right">{{chemicalFormulation.TotalApplied}}</td>
+                                        <td>{{chemicalFormulation.ChemicalUnitName}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-template>
+                        <ng-template #noChemicalFormulations>No chemicals were used in the chemigation system in the past year.</ng-template>
                     </div>
 
                 </div>

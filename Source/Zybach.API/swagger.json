@@ -512,7 +512,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                   }
                 }
               },
@@ -520,7 +520,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                   }
                 }
               },
@@ -528,7 +528,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                   }
                 }
               }
@@ -559,17 +559,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                 }
               }
             }
@@ -608,17 +608,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                 }
               }
             }
@@ -884,72 +884,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "ChemigationPermitAnnualRecordChemicalFormulation"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitNumber",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "recordYear",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
-                }
-              }
-            },
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
-                }
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
-                }
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
           }
         }
       }
@@ -2620,6 +2554,96 @@
           "TotalApplied": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordDetailedDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermit": {
+            "$ref": "#/components/schemas/ChemigationPermitDto"
+          },
+          "RecordYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PivotName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInjectionUnitTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInjectionUnitTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantFirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantLastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantMailingAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantState": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantZipCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ApplicantPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantMobilePhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "DateReceived": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "DatePaid": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ApplicantEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemicalFormulations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

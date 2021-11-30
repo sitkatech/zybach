@@ -13,6 +13,7 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { X } from 'vega-lite/build/src/channel';
 
 @Component({
   selector: 'zybach-chemigation-permit-add-record',
@@ -62,7 +63,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
         this.chemigationPermit = annualRecord.ChemigationPermit;
         var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto();
         chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID = ChemigationPermitAnnualRecordStatusEnum.PendingPayment;
-        chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeID;
+        chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitTypeID;
         chemigationPermitAnnualRecordUpsertDto.RecordYear = this.newRecordYear;
         chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;
         chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName = annualRecord.ApplicantFirstName;
@@ -76,7 +77,9 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
         chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
         chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
         chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
-        chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>();
+        const chemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>();
+        annualRecord.ChemicalFormulations.forEach(x => chemicalFormulations.push(x));
+        chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = chemicalFormulations;
         
         this.model = chemigationPermitAnnualRecordUpsertDto;
         this.cdr.detectChanges();
