@@ -15,6 +15,7 @@ namespace Zybach.EFModels.Entities
         public User()
         {
             FileResources = new HashSet<FileResource>();
+            RobustReviewScenarioGETRunHistories = new HashSet<RobustReviewScenarioGETRunHistory>();
         }
 
         [Key]
@@ -52,5 +53,7 @@ namespace Zybach.EFModels.Entities
         public virtual Role Role { get; set; }
         [InverseProperty(nameof(FileResource.CreateUser))]
         public virtual ICollection<FileResource> FileResources { get; set; }
+        [InverseProperty(nameof(RobustReviewScenarioGETRunHistory.CreateByUser))]
+        public virtual ICollection<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
     }
 }

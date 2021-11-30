@@ -103,6 +103,15 @@ namespace Zybach.API
                 c.DefaultRequestHeaders.Add("x-api-key", zybachConfiguration.AGHUB_API_KEY);
             });
 
+            services.AddHttpClient<GETService>(c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.GET_API_BASE_URL);
+                c.Timeout = TimeSpan.FromMinutes(30);
+                c.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", zybachConfiguration.GET_API_SUBSCRIPTION_KEY);
+                //Allows us to follow a URL and get more information on why a request failed
+                c.DefaultRequestHeaders.Add("Ocp-Apim-Trace", "true");
+            });
+
             services.AddScoped<InfluxDBService>();
             services.AddScoped<WellService>();
 
@@ -169,6 +178,7 @@ namespace Zybach.API
                     UseRecommendedIsolationLevel = true,
                     DisableGlobalLocks = true
                 }));
+            //services.AddHangfireServer();
 
             services.AddControllers();
 

@@ -28,5 +28,11 @@
         public string GEOOPTIX_SEARCH_HOSTNAME { get; set; }
         public string AGHUB_API_BASE_URL { get; set; }
         public string AGHUB_API_KEY { get; set; }
+        public string GET_API_BASE_URL { get; set; }
+        public string GET_API_SUBSCRIPTION_KEY { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID { get; set; }
     }
 }
