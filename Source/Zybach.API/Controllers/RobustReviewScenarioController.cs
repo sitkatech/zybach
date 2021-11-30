@@ -47,6 +47,12 @@ namespace Zybach.API.Controllers
             return _wellService.GetRobustReviewDtos();
         }
 
+        [HttpGet("/api/robustReviewScenario/checkGETAPIHealth")]
+        public ActionResult<bool> CheckGETAPIHealth()
+        {
+            return Ok(_GETService.IsAPIResponsive().Result);
+        }
+
         /// <summary>
         /// Trigger a new Robust Review Scenario GET Run
         /// </summary>

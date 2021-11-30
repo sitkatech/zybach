@@ -14,6 +14,10 @@ export class RobustReviewScenarioService {
     private httpClient: HttpClient
   ) { }
 
+  public checkGETAPIHealth(): Observable<boolean> {
+    return this.apiService.getFromApi("robustReviewScenario/checkGETAPIHealth");
+  }
+
   public getRobustReviewScenarioGETRunHistories(): Observable<RobustReviewScenarioGETRunHistoryDto[]> {
     return this.apiService.getFromApi("robustReviewScenarios");
   }

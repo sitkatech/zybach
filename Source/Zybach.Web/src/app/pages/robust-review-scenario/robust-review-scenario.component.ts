@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular/lib/ag-grid-angular.component';
 import { ColDef } from 'ag-grid-community';
+import { Subject, timer } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RobustReviewScenarioService } from 'src/app/services/robust-review-scenario.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
@@ -19,7 +21,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './robust-review-scenario.component.html',
   styleUrls: ['./robust-review-scenario.component.scss']
 })
-export class RobustReviewScenarioComponent implements OnInit {
+export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   @ViewChild('robustReviewScenarioGETRunHistoryGrid') robustReviewScenarioGETRunHistoryGrid: AgGridAngular;
 
   public richTextTypeID: number = CustomRichTextType.RobustReviewScenario;
@@ -31,6 +33,11 @@ export class RobustReviewScenarioComponent implements OnInit {
   public robustReviewScenarioGETRunHistories: RobustReviewScenarioGETRunHistoryDto[];
   public columnDefs: ColDef[];
   public gridApi: any;
+  public isGETAPIResponsive: boolean = false;
+
+  private updateRobustReviewScenarioGETHistoriesSubscription: any;
+  private stopUpdatePolling = new Subject();
+  overlayLoadingTemplate: string;
 
   constructor(private robustReviewScenarioService: RobustReviewScenarioService,
     private alertService: AlertService,
@@ -40,17 +47,31 @@ export class RobustReviewScenarioComponent implements OnInit {
   ngOnInit(): void {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.updateRobustReviewScenarioGETHistories();
+      this.robustReviewScenarioService.checkGETAPIHealth().subscribe(response => {
+          this.isGETAPIResponsive = response;
+          this.initializeGrid();  
+          this.updateRobustReviewScenarioGETHistoriesSubscription = timer(1, 300000).pipe(
+            takeUntil(this.stopUpdatePolling)
+          ).subscribe(() => {
+            this.updateRobustReviewScenarioGETHistories();
+          });
+      })
     });
   }
 
+  ngOnDestroy(): void {
+    this.watchUserChangeSubscription.unsubscribe();
+    this.updateRobustReviewScenarioGETHistoriesSubscription?.unsubscribe();
+    this.authenticationService.dispose();
+    this.stopUpdatePolling.next();
+    this.cdr.detach();
+  }
+
   updateRobustReviewScenarioGETHistories() {
-    this.robustReviewScenarioGETRunHistoryGrid.api.showLoadingOverlay();
-    this.initializeGrid();
     this.robustReviewScenarioService.getRobustReviewScenarioGETRunHistories().subscribe(response => {
+      this.robustReviewScenarioGETRunHistoryGrid.api.showLoadingOverlay();
       this.robustReviewScenarioGETRunHistories = response;
-      this.robustReviewScenarioGETRunHistoryGrid.api.hideOverlay();
-      this.cdr.detectChanges();
+      this.robustReviewScenarioGETRunHistoryGrid.api.sizeColumnsToFit();
     });
   }
 
@@ -89,6 +110,9 @@ export class RobustReviewScenarioComponent implements OnInit {
       },
       {
         headerName: 'GET Action Details URL', valueGetter: function (params: any) {
+          if (params.data.GETRunID == null) {
+            return { LinkDisplay: null};
+          }
           return { LinkValue: `${environment.GETEnvironmentUrl}/Action/ActionDetails?actionID=${params.data.GETRunID}`, LinkDisplay: `${environment.GETEnvironmentUrl}/Action/ActionDetails?actionID=${params.data.GETRunID}` };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { isExternalUrl: true },
@@ -108,7 +132,8 @@ export class RobustReviewScenarioComponent implements OnInit {
         },
         sortable: true, filter: true, width: 500
       },];
-
+      this.overlayLoadingTemplate =
+      '<span class="ag-overlay-loading-center">Refreshing History data</span>';
   }
 
   private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
@@ -142,6 +167,10 @@ export class RobustReviewScenarioComponent implements OnInit {
     this.gridApi.sizeColumnsToFit();
   }
 
+  public canCreateNewRun(): boolean {
+    return this.isGETAPIResponsive && (this.robustReviewScenarioGETRunHistories == null || this.robustReviewScenarioGETRunHistories.length ==  0 || this.robustReviewScenarioGETRunHistories.every(x => x.IsTerminal))
+  }
+
   getRobustReviewScenarioJson() {
     this.fileDownloading = true;
     this.robustReviewScenarioService.getRobustReviewScenarioJson().subscribe(x => {
@@ -166,7 +195,8 @@ export class RobustReviewScenarioComponent implements OnInit {
 
   new() {
     this.robustReviewScenarioService.newRobustReviewScenarioGETHistory().subscribe(x => {
-      console.log("Yay");
+      this.alertService.pushAlert(new Alert(`New Robust Review Scenario Run was successfully started.`, AlertContext.Success));
+      this.updateRobustReviewScenarioGETHistories();
     })
   }
 

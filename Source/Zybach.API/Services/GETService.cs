@@ -22,6 +22,7 @@ namespace Zybach.API.Services
         private readonly ZybachDbContext _dbContext;
         private readonly ZybachConfiguration _zybachConfiguration;
 
+        private readonly TimeSpan maxTimespanBeforeUpdateFailure = new TimeSpan(2, 0,  0);
 
         public GETService(HttpClient httpClient, ILogger<GETService> logger, WellService wellService, ZybachDbContext dbContext, IOptions<ZybachConfiguration> zybachConfiguration)
         {
@@ -32,25 +33,17 @@ namespace Zybach.API.Services
             _zybachConfiguration = zybachConfiguration.Value;
         }
 
-        private async Task<TV> GetJsonFromCatalogImpl<TV>(string uri)
+        public async Task<bool> IsAPIResponsive()
         {
-            using var httpResponse = await _httpClient.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead);
             try
             {
-
-                httpResponse.EnsureSuccessStatusCode(); // throws if not 200-299
-
-                var readAsStringAsync = httpResponse.Content.ReadAsStringAsync().Result;
-
-                using var streamReader = new StreamReader(httpResponse.Content.ReadAsStreamAsync().Result);
-                using var jsonTextReader = new JsonTextReader(streamReader);
-                return new JsonSerializer().Deserialize<TV>(jsonTextReader);
+                var response = await _httpClient.GetAsync("Health");
+                return response.IsSuccessStatusCode;
             }
-            catch (HttpRequestException e)
+            catch (Exception ex)
             {
-                _logger.LogError("HttpRequestException thrown when hitting this uri: " + uri);
-                _logger.LogError(e.Message);
-                throw;
+                _logger.LogError($"An error occurred when checking GET API Health. Error:{ex.Message}");
+                return false;
             }
         }
 
@@ -61,6 +54,12 @@ namespace Zybach.API.Services
 
             if (historyEntry == null)
             {
+                return;
+            }
+
+            if (!IsAPIResponsive().Result)
+            {
+                RobustReviewScenarioGETRunHistory.MarkRobustReviewScenarioGETRunHistoryAsTerminalWithIntegrationFailure(_dbContext, historyEntry);
                 return;
             }
 
@@ -81,9 +80,7 @@ namespace Zybach.API.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                historyEntry.IsTerminal = true;
-                historyEntry.StatusMessage = "GET Integration was unable to start the run.";
-                _dbContext.SaveChanges();
+                RobustReviewScenarioGETRunHistory.MarkRobustReviewScenarioGETRunHistoryAsTerminalWithIntegrationFailure(_dbContext, historyEntry);
                 return;
             }
 
@@ -104,8 +101,17 @@ namespace Zybach.API.Services
             var historyEntry =
                 RobustReviewScenarioGETRunHistory.GetNonTerminalSuccessfullyStartedRobustReviewScenarioGETRunHistory(_dbContext);
 
+            //We have nothing to check
             if (historyEntry == null)
             {
+                return;
+            }
+
+            var timeSinceLastSuccessfulUpdate = DateTime.Now.Subtract(historyEntry.LastUpdateDate ?? historyEntry.CreateDate);
+
+            if (!IsAPIResponsive().Result && timeSinceLastSuccessfulUpdate > maxTimespanBeforeUpdateFailure)
+            {
+                RobustReviewScenarioGETRunHistory.MarkRobustReviewScenarioGETRunHistoryAsTerminalWithIntegrationFailure(_dbContext, historyEntry);
                 return;
             }
 
@@ -115,7 +121,10 @@ namespace Zybach.API.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                //todo Decide what we want to do here
+                if (timeSinceLastSuccessfulUpdate > maxTimespanBeforeUpdateFailure)
+                {
+                    RobustReviewScenarioGETRunHistory.MarkRobustReviewScenarioGETRunHistoryAsTerminalWithIntegrationFailure(_dbContext, historyEntry);
+                }
                 return;
             }
 

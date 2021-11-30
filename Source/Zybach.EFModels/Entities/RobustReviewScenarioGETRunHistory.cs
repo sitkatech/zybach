@@ -8,6 +8,8 @@ namespace Zybach.EFModels.Entities
 {
     public partial class RobustReviewScenarioGETRunHistory
     {
+        private static readonly string errorTerminalStatusMessage = "GET Integration Failure";
+
         public static void CreateNewRobustReviewScenarioGETRunHistory(ZybachDbContext _dbContext,
             int userID)
         {
@@ -37,6 +39,14 @@ namespace Zybach.EFModels.Entities
         {
             return _dbContext.RobustReviewScenarioGETRunHistories.SingleOrDefault(x =>
                 x.IsTerminal == false && x.GETRunID != null && x.SuccessfulStartDate != null);
+        }
+
+        public static void MarkRobustReviewScenarioGETRunHistoryAsTerminalWithIntegrationFailure(
+            ZybachDbContext _dbContext, RobustReviewScenarioGETRunHistory historyEntry)
+        {
+            historyEntry.IsTerminal = true;
+            historyEntry.StatusMessage = errorTerminalStatusMessage;
+            _dbContext.SaveChanges();
         }
     }
 }

@@ -13,14 +13,14 @@
         <div class="col-12">
             <fresca-clear-grid-filters-button class="mr-3" [grid]="robustReviewScenarioGETRunHistoryGrid">
             </fresca-clear-grid-filters-button>
-            <button class="btn btn-zybach float-right" (click)="new()" [disabled]="fileDownloading">New Robust Review Scenario
+            <button class="btn btn-zybach float-right" (click)="new()" [disabled]="!canCreateNewRun() || fileDownloading">New Robust Review Scenario
                 Action</button>
         </div>
         <div class="col-12 table table-responsive">
             <ag-grid-angular #robustReviewScenarioGETRunHistoryGrid style="width: 100%; height: 500px;"
                 class="ag-theme-balham" [rowData]="robustReviewScenarioGETRunHistories" [columnDefs]="columnDefs"
                 [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100"
-                (firstDataRendered)="onFirstDataRendered($event)">
+                (firstDataRendered)="onFirstDataRendered($event)" [overlayLoadingTemplate]="overlayLoadingTemplate">
             </ag-grid-angular>
         </div>
     </div>
