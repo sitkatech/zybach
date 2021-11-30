@@ -49,8 +49,8 @@ export class WellService {
   }
 
   public triggerNewRobustReview(): Observable<any> {
-    let route = `/robust-review-scenario/new`;
-    return this.apiService.getFromApi(route);
+    let route = `/robustReviewScenario/new`;
+    return this.apiService.postToApi(route, null);
   }
 
   public newWell(wellNewDto: WellNewDto) {

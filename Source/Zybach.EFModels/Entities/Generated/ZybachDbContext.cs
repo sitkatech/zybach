@@ -42,6 +42,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
         public virtual DbSet<ReportTemplateModel> ReportTemplateModels { get; set; }
         public virtual DbSet<ReportTemplateModelType> ReportTemplateModelTypes { get; set; }
+        public virtual DbSet<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
         public virtual DbSet<SensorType> SensorTypes { get; set; }
@@ -342,6 +343,19 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.ReportTemplateModelTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.ReportTemplateModelTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RobustReviewScenarioGETRunHistory>(entity =>
+            {
+                entity.Property(e => e.StatusHexColor).IsUnicode(false);
+
+                entity.Property(e => e.StatusMessage).IsUnicode(false);
+
+                entity.HasOne(d => d.CreateByUser)
+                    .WithMany(p => p.RobustReviewScenarioGETRunHistories)
+                    .HasForeignKey(d => d.CreateByUserID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RobustReviewScenarioGETRunHistory_User_CreateByUserID_UserID");
             });
 
             modelBuilder.Entity<Role>(entity =>
