@@ -17,7 +17,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitAnnualRecord = chemigationPermitAnnualRecordChemicalFormulation.ChemigationPermitAnnualRecord.AsDto(),
                 ChemicalFormulation = chemigationPermitAnnualRecordChemicalFormulation.ChemicalFormulation.AsDto(),
                 ChemicalUnit = chemigationPermitAnnualRecordChemicalFormulation.ChemicalUnit.AsDto(),
-                TotalApplied = chemigationPermitAnnualRecordChemicalFormulation.TotalApplied
+                TotalApplied = chemigationPermitAnnualRecordChemicalFormulation.TotalApplied,
+                AcresTreated = chemigationPermitAnnualRecordChemicalFormulation.AcresTreated
             };
             DoCustomMappings(chemigationPermitAnnualRecordChemicalFormulation, chemigationPermitAnnualRecordChemicalFormulationDto);
             return chemigationPermitAnnualRecordChemicalFormulationDto;
@@ -33,7 +34,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecordChemicalFormulation.ChemigationPermitAnnualRecordID,
                 ChemicalFormulationID = chemigationPermitAnnualRecordChemicalFormulation.ChemicalFormulationID,
                 ChemicalUnitID = chemigationPermitAnnualRecordChemicalFormulation.ChemicalUnitID,
-                TotalApplied = chemigationPermitAnnualRecordChemicalFormulation.TotalApplied
+                TotalApplied = chemigationPermitAnnualRecordChemicalFormulation.TotalApplied,
+                AcresTreated = chemigationPermitAnnualRecordChemicalFormulation.AcresTreated
             };
             DoCustomSimpleDtoMappings(chemigationPermitAnnualRecordChemicalFormulation, chemigationPermitAnnualRecordChemicalFormulationSimpleDto);
             return chemigationPermitAnnualRecordChemicalFormulationSimpleDto;

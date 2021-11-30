@@ -2554,6 +2554,10 @@
           "TotalApplied": {
             "type": "number",
             "format": "double"
+          },
+          "AcresTreated": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -2836,10 +2840,6 @@
           "ChemigationPermitStatus": {
             "$ref": "#/components/schemas/ChemigationPermitStatusDto"
           },
-          "TotalAcresTreated": {
-            "type": "number",
-            "format": "double"
-          },
           "DateCreated": {
             "type": "string",
             "format": "date-time"
@@ -2857,11 +2857,9 @@
       "ChemigationPermitNewDto": {
         "required": [
           "ChemigationCountyID",
-          "ChemigationInjectionUnitTypeID",
           "ChemigationPermitAnnualRecord",
           "ChemigationPermitNumber",
           "ChemigationPermitStatusID",
-          "TotalAcresTreated",
           "TownshipRangeSection"
         ],
         "type": "object",
@@ -2878,14 +2876,6 @@
             "type": "string"
           },
           "ChemigationCountyID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "TotalAcresTreated": {
-            "type": "number",
-            "format": "double"
-          },
-          "ChemigationInjectionUnitTypeID": {
             "type": "integer",
             "format": "int32"
           },

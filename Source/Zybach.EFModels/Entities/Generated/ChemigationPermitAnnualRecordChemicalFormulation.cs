@@ -17,7 +17,10 @@ namespace Zybach.EFModels.Entities
         public int ChemigationPermitAnnualRecordID { get; set; }
         public int ChemicalFormulationID { get; set; }
         public int ChemicalUnitID { get; set; }
-        public double TotalApplied { get; set; }
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal TotalApplied { get; set; }
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal AcresTreated { get; set; }
 
         [ForeignKey(nameof(ChemicalFormulationID))]
         [InverseProperty("ChemigationPermitAnnualRecordChemicalFormulations")]

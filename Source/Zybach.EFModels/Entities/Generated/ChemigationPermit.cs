@@ -21,8 +21,6 @@ namespace Zybach.EFModels.Entities
         public int ChemigationPermitID { get; set; }
         public int ChemigationPermitNumber { get; set; }
         public int ChemigationPermitStatusID { get; set; }
-        [Column(TypeName = "decimal(8, 2)")]
-        public decimal TotalAcresTreated { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DateCreated { get; set; }
         [Required]

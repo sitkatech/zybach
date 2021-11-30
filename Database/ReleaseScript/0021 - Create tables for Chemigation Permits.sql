@@ -18,7 +18,6 @@ create table dbo.ChemigationPermit
 	ChemigationPermitNumber int not null constraint AK_ChemigationPermit_ChemigationPermitNumber unique,
 	ChemigationPermitStatusID int not null constraint FK_ChemigationPermit_ChemigationPermitStatus_ChemigationPermitStatusID foreign key
 		references dbo.ChemigationPermitStatus(ChemigationPermitStatusID),
-	TotalAcresTreated decimal(8, 2) not null,
 	DateCreated datetime not null,
 	TownshipRangeSection varchar(100) not null,
 	ChemigationCountyID int not null constraint FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID foreign key

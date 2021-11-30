@@ -6,7 +6,6 @@ CREATE TABLE [dbo].[ChemigationPermit](
 	[ChemigationPermitID] [int] IDENTITY(1,1) NOT NULL,
 	[ChemigationPermitNumber] [int] NOT NULL,
 	[ChemigationPermitStatusID] [int] NOT NULL,
-	[TotalAcresTreated] [decimal](8, 2) NOT NULL,
 	[DateCreated] [datetime] NOT NULL,
 	[TownshipRangeSection] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ChemigationCountyID] [int] NOT NULL,

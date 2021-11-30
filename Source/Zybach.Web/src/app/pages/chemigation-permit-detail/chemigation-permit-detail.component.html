@@ -22,8 +22,6 @@
         <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}</div>
-        <div class="col-12 col-sm-6 label"><strong>Total Acres Treated: </strong></div>
-        <div class="col-12 col-sm-6">{{chemigationPermit.TotalAcresTreated | number: '1.0-1'}}</div>
     </div>
     <div class="row container">
         <div class="col-12">
@@ -214,13 +212,15 @@
                                         <th>Formulation</th>
                                         <th class="text-right">Total Applied</th>
                                         <th>Unit</th>
+                                        <th class="text-right">Acres Treated</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let chemicalFormulation of currentYearAnnualRecord.ChemicalFormulations">
                                         <td>{{chemicalFormulation.ChemicalFormulationName}}</td>
-                                        <td class="text-right">{{chemicalFormulation.TotalApplied}}</td>
+                                        <td class="text-right">{{chemicalFormulation.TotalApplied | number: '1.0-1'}}</td>
                                         <td>{{chemicalFormulation.ChemicalUnitName}}</td>
+                                        <td class="text-right">{{chemicalFormulation.AcresTreated | number: '1.0-1'}}</td>
                                     </tr>
                                 </tbody>
                             </table>

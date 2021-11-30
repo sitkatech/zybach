@@ -16,8 +16,6 @@ export class ChemigationPermitNewDto {
     ChemigationPermitStatusID: number;
     TownshipRangeSection: string;
     ChemigationCountyID: number;
-    TotalAcresTreated: number;
-    ChemigationInjectionUnitTypeID: number;
     ChemigationPermitAnnualRecord: ChemigationPermitAnnualRecordUpsertDto;
     constructor(obj?: any) {
         Object.assign(this, obj);

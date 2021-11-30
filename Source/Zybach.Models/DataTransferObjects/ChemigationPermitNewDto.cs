@@ -14,10 +14,6 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public int ChemigationCountyID { get; set; }
         [Required]
-        public decimal TotalAcresTreated { get; set; }
-        [Required]
-        public int ChemigationInjectionUnitTypeID { get; set; }
-        [Required]
         public ChemigationPermitAnnualRecordUpsertDto ChemigationPermitAnnualRecord { get; set; }
     }
 }

@@ -12,7 +12,6 @@ namespace Zybach.Models.DataTransferObjects
         public int ChemigationPermitID { get; set; }
         public int ChemigationPermitNumber { get; set; }
         public ChemigationPermitStatusDto ChemigationPermitStatus { get; set; }
-        public decimal TotalAcresTreated { get; set; }
         public DateTime DateCreated { get; set; }
         public string TownshipRangeSection { get; set; }
         public ChemigationCountyDto ChemigationCounty { get; set; }
@@ -23,7 +22,6 @@ namespace Zybach.Models.DataTransferObjects
         public int ChemigationPermitID { get; set; }
         public int ChemigationPermitNumber { get; set; }
         public int ChemigationPermitStatusID { get; set; }
-        public decimal TotalAcresTreated { get; set; }
         public DateTime DateCreated { get; set; }
         public string TownshipRangeSection { get; set; }
         public int ChemigationCountyID { get; set; }

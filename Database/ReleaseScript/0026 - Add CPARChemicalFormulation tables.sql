@@ -19,7 +19,8 @@ create table dbo.ChemigationPermitAnnualRecordChemicalFormulation
 	ChemigationPermitAnnualRecordID int not null constraint FK_ChemigationPermitAnnualRecordChemicalFormulation_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID foreign key references dbo.ChemigationPermitAnnualRecord(ChemigationPermitAnnualRecordID),
 	ChemicalFormulationID int not null constraint FK_ChemigationPermitAnnualRecordChemicalFormulation_ChemicalFormulation_ChemicalFormulationID foreign key references dbo.ChemicalFormulation(ChemicalFormulationID),
 	ChemicalUnitID int not null constraint FK_ChemigationPermitAnnualRecordChemicalFormulation_ChemicalUnit_ChemicalUnitID foreign key references dbo.ChemicalUnit(ChemicalUnitID),
-	TotalApplied float not null,
+	TotalApplied decimal(8,2) not null,
+	AcresTreated decimal(8,2) not null
 	constraint AK_ChemigationPermitAnnualRecordChemicalFormulation_ChemigationPermitAnnualRecordID_ChemicalFormulationID_ChemicalUnitID unique (ChemigationPermitAnnualRecordID, ChemicalFormulationID, ChemicalUnitID)
 )
 GO

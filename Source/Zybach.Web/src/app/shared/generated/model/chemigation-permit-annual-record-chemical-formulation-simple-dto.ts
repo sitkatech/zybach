@@ -18,6 +18,7 @@ export class ChemigationPermitAnnualRecordChemicalFormulationSimpleDto {
     ChemicalFormulationID?: number;
     ChemicalUnitID?: number;
     TotalApplied?: number;
+    AcresTreated?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

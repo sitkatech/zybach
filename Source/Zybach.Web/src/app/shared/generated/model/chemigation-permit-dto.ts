@@ -16,7 +16,6 @@ export class ChemigationPermitDto {
     ChemigationPermitID?: number;
     ChemigationPermitNumber?: number;
     ChemigationPermitStatus?: ChemigationPermitStatusDto;
-    TotalAcresTreated?: number;
     DateCreated?: string;
     TownshipRangeSection?: string;
     ChemigationCounty?: ChemigationCountyDto;

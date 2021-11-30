@@ -21,7 +21,8 @@ namespace Zybach.EFModels.Entities
                                 chemigationPermitAnnualRecordID,
                             ChemicalFormulationID = x.ChemicalFormulationID,
                             ChemicalUnitID = x.ChemicalUnitID,
-                            TotalApplied = x.TotalApplied
+                            TotalApplied = x.TotalApplied,
+                            AcresTreated = x.AcresTreated
                         }).ToList();
                 var existingChemigationPermitAnnualRecordChemicalFormulations = dbContext
                     .ChemigationPermitAnnualRecordChemicalFormulations.Where(x =>
@@ -34,7 +35,11 @@ namespace Zybach.EFModels.Entities
                     (x, y) =>
                         x.ChemigationPermitAnnualRecordID == y.ChemigationPermitAnnualRecordID &&
                         x.ChemicalFormulationID == y.ChemicalFormulationID && x.ChemicalUnitID == y.ChemicalUnitID,
-                    (x, y) => { x.TotalApplied = y.TotalApplied; });
+                    (x, y) =>
+                    {
+                        x.TotalApplied = y.TotalApplied;
+                        x.AcresTreated = y.AcresTreated;
+                    });
                 dbContext.SaveChanges();
             }
         }

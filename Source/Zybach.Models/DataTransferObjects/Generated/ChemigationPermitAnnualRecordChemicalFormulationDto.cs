@@ -13,7 +13,8 @@ namespace Zybach.Models.DataTransferObjects
         public ChemigationPermitAnnualRecordDto ChemigationPermitAnnualRecord { get; set; }
         public ChemicalFormulationDto ChemicalFormulation { get; set; }
         public ChemicalUnitDto ChemicalUnit { get; set; }
-        public double TotalApplied { get; set; }
+        public decimal TotalApplied { get; set; }
+        public decimal AcresTreated { get; set; }
     }
 
     public partial class ChemigationPermitAnnualRecordChemicalFormulationSimpleDto
@@ -22,7 +23,8 @@ namespace Zybach.Models.DataTransferObjects
         public int ChemigationPermitAnnualRecordID { get; set; }
         public int ChemicalFormulationID { get; set; }
         public int ChemicalUnitID { get; set; }
-        public double TotalApplied { get; set; }
+        public decimal TotalApplied { get; set; }
+        public decimal AcresTreated { get; set; }
     }
 
 }

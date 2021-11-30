@@ -5,7 +5,6 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { ChemicalFormulationDto } from '../../generated/model/chemical-formulation-dto';
 import { ChemicalUnitDto } from '../../generated/model/chemical-unit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../../generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
-import { ChemigationPermitAnnualRecordChemicalFormulationsDto } from '../../generated/model/chemigation-permit-annual-record-chemical-formulations-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-chemical-formulations-editor',
@@ -53,7 +52,6 @@ export class ChemigationPermitChemicalFormulationsEditorComponent implements OnI
     const newRecord = new ChemigationPermitAnnualRecordChemicalFormulationSimpleDto();
     newRecord.ChemigationPermitAnnualRecordChemicalFormulationID = this.newRecordID--;
     this.model.push(newRecord);
-    console.log(this.model);
   }
 
   public deleteRow(row: ChemigationPermitAnnualRecordChemicalFormulationSimpleDto): void{

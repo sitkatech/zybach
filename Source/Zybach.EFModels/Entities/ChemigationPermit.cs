@@ -33,7 +33,6 @@ namespace Zybach.EFModels.Entities
             {
                 ChemigationPermitNumber = chemigationPermitNewDto.ChemigationPermitNumber,
                 ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
-                TotalAcresTreated = chemigationPermitNewDto.TotalAcresTreated,
                 DateCreated = DateTime.Now.Date,
                 TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection,
                 ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
