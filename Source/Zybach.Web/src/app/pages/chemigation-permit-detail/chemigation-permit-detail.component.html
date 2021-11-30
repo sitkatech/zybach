@@ -76,7 +76,7 @@
                 <div class="row col-12 text-center" *ngIf="!currentYearAnnualRecord">
                     <p><strong>No Annual Record available for this year</strong></p>
                 </div>
-                <div class="row" *ngIf="currentYearAnnualRecord">
+                <div class="row col-12" *ngIf="currentYearAnnualRecord">
                     <div class="row col-12">
                         <div class="row col-6">
 
@@ -199,7 +199,10 @@
                         </div>
                     </div>
 
-                    <hr class="w-90" />
+                    <div class="row col-12">
+                        <hr class="w-90" />
+
+                    </div>
 
                     <div class="row col-12 table-responsive">
                         <h5>Applied Chemicals</h5>
