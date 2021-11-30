@@ -1615,6 +1615,75 @@
         }
       }
     },
+    "/api/robustReviewScenario/download/robustReviewScenarioJson": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Comprehensive data download to support Robust Review processes",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/robust-review-scenario/new": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Comprehensive data download to support Robust Review processes",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/roles": {
       "get": {
         "tags": [
@@ -2299,45 +2368,6 @@
         "responses": {
           "200": {
             "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/wells/download/robustReviewScenarioJson": {
-      "get": {
-        "tags": [
-          "Well"
-        ],
-        "summary": "Comprehensive data download to support Robust Review processes",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              }
-            }
           }
         }
       }
