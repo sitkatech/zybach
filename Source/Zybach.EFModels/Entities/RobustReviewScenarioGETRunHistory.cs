@@ -44,9 +44,16 @@ namespace Zybach.EFModels.Entities
         public static void MarkRobustReviewScenarioGETRunHistoryAsTerminalWithIntegrationFailure(
             ZybachDbContext _dbContext, RobustReviewScenarioGETRunHistory historyEntry)
         {
+            historyEntry.LastUpdateDate = DateTime.Now;
             historyEntry.IsTerminal = true;
             historyEntry.StatusMessage = errorTerminalStatusMessage;
             _dbContext.SaveChanges();
+        }
+
+        public static Boolean NonTerminalRunsExist(ZybachDbContext _dbContext)
+        {
+            return GetNotYetStartedRobustReviewScenarioGETRunHistory(_dbContext) != null ||
+                   GetNonTerminalSuccessfullyStartedRobustReviewScenarioGETRunHistory(_dbContext) != null;
         }
     }
 }

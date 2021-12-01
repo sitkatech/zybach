@@ -61,6 +61,11 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult NewRobustReviewScenarioRun()
         {
+            if (RobustReviewScenarioGETRunHistory.NonTerminalRunsExist(_dbContext))
+            {
+                return BadRequest("There may be only one Robust Review Scenario Run in progress at any given time. Please wait until the current run completes to start another.")
+            }
+
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
             RobustReviewScenarioGETRunHistory.CreateNewRobustReviewScenarioGETRunHistory(_dbContext, userDto.UserID);
             BackgroundJob.Enqueue<GETStartNewRunJob>(x => x.RunJob(null));

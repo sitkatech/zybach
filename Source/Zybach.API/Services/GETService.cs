@@ -132,6 +132,7 @@ namespace Zybach.API.Services
             using var jsonTextReader = new JsonTextReader(streamReader);
             var responseDeserialized = new JsonSerializer().Deserialize<GETRunResponseModel>(jsonTextReader);
 
+            historyEntry.LastUpdateDate = DateTime.Now;
             historyEntry.IsTerminal = responseDeserialized.RunStatus.IsTerminal;
             historyEntry.StatusMessage = responseDeserialized.RunStatus.RunStatusDisplayName;
             historyEntry.StatusHexColor = responseDeserialized.RunStatus.RunStatusColor;
