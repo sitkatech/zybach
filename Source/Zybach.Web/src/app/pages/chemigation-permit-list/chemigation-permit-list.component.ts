@@ -41,7 +41,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.permitGrid.api.showLoadingOverlay();
       this.initializeGrid();
-      this.chemigationPermitService.getAllChemigationPermits().subscribe(chemigationPermits => {
+      this.chemigationPermitService.getChemigationPermits().subscribe(chemigationPermits => {
         this.chemigationPermits = chemigationPermits;
         this.permitGrid.api.hideOverlay();
         this.cdr.detectChanges();

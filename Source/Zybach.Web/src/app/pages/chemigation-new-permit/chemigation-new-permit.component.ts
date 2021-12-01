@@ -79,10 +79,10 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
           .then();
         return;
       }
-      this.chemigationPermitService.getAllChemigationPermitStatuses().subscribe(permitStatuses => {
+      this.chemigationPermitService.getChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
       });
-      this.chemigationPermitService.getAllChemigationCounties().subscribe(chemigationCounties => {
+      this.chemigationPermitService.getCounties().subscribe(chemigationCounties => {
         this.chemigationCounties = chemigationCounties;
       });
 
