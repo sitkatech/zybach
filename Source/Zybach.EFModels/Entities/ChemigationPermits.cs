@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class ChemigationPermit
+    public static class ChemigationPermits
     {
         public static IEnumerable<ChemigationPermitDto> List(ZybachDbContext dbContext)
         {
