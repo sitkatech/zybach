@@ -14,6 +14,7 @@ import { ChemicalFormulationDto } from '../shared/generated/model/chemical-formu
 import { ChemicalUnitDto } from '../shared/generated/model/chemical-unit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/model/chemigation-permit-annual-record-detailed-dto';
+import { ChemigationPermitDetailedDto } from '../shared/generated/model/chemigation-permit-detailed-dto';
 
 
 @Injectable({
@@ -28,7 +29,7 @@ export class ChemigationPermitService {
     return this.apiService.getFromApi(route);
   }
   
-  public getChemigationPermits(): Observable<Array<ChemigationPermitDto>> {
+  public getChemigationPermits(): Observable<Array<ChemigationPermitDetailedDto>> {
     let route = `/chemigationPermits`;
     return this.apiService.getFromApi(route);
   }

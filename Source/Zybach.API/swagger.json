@@ -171,7 +171,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
                   }
                 }
               },
@@ -179,7 +179,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
                   }
                 }
               },
@@ -187,7 +187,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
                   }
                 }
               }
@@ -3004,6 +3004,37 @@
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitDetailedDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitStatus": {
+            "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+          },
+          "DateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationCounty": {
+            "$ref": "#/components/schemas/ChemigationCountyDto"
+          },
+          "LatestAnnualRecord": {
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
           }
         },
         "additionalProperties": false

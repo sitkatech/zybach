@@ -35,10 +35,10 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/chemigationPermits")]
         [ZybachViewFeature]
-        public ActionResult<IEnumerable<ChemigationPermitDto>> ListChemigationPermits()
+        public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits()
         {
-            var chemigationPermitsDto = ChemigationPermits.List(_dbContext);
-            return Ok(chemigationPermitsDto);
+            var chemigationPermitDetailedDtos = ChemigationPermits.ListWithLatestAnnualRecordAsDto(_dbContext);
+            return Ok(chemigationPermitDetailedDtos);
         }
 
         [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}")]

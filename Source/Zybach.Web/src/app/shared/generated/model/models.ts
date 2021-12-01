@@ -15,6 +15,7 @@ export * from '././chemigation-permit-annual-record-status-dto';
 export * from '././chemigation-permit-annual-record-upsert-dto';
 export * from '././chemigation-permit-annual-record-well-simple-dto';
 export * from '././chemigation-permit-annual-record-well-upsert-dto';
+export * from '././chemigation-permit-detailed-dto';
 export * from '././chemigation-permit-dto';
 export * from '././chemigation-permit-new-dto';
 export * from '././chemigation-permit-status-dto';

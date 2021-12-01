@@ -101,6 +101,11 @@ namespace Zybach.EFModels.Entities
                 .Any(x => x.ChemigationPermitID == chemigationPermitID && x.RecordYear == year);
         }
 
+        public static List<ChemigationPermitAnnualRecordDetailedDto> GetLatestAsDetailedDto(ZybachDbContext dbContext)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).ToList().GroupBy(x => x.ChemigationPermitID).Select(x => x.OrderByDescending(y => y.RecordYear).First().AsDetailedDto()).ToList();
+        }
+
         public static ChemigationPermitAnnualRecordDetailedDto GetLatestByChemigationPermitNumberAsDetailedDto(ZybachDbContext dbContext, int chemigationPermitNumber)
         {
             return ListByChemigationPermitNumber(dbContext, chemigationPermitNumber).OrderByDescending(x => x.RecordYear).FirstOrDefault()?.AsDetailedDto();

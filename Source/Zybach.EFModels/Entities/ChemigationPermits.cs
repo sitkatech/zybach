@@ -14,6 +14,17 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
+        public static IEnumerable<ChemigationPermitDetailedDto> ListWithLatestAnnualRecordAsDto(ZybachDbContext dbContext)
+        {
+            var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecord.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
+            var listWithLatestAnnualRecordAsDto = GetChemigationPermitImpl(dbContext)
+                .Select(x =>
+                    x.AsDetailedDto(chemigationPermitAnnualRecordDetailedDtos.ContainsKey(x.ChemigationPermitID)
+                        ? chemigationPermitAnnualRecordDetailedDtos[x.ChemigationPermitID]
+                        : null)).ToList().OrderBy(x => x.ChemigationPermitNumber).ToList();
+            return listWithLatestAnnualRecordAsDto;
+        }
+
         public static bool IsChemigationPermitNumberUnique(ZybachDbContext dbContext, int chemigationPermitNumber, int? currentID)
         {
             return dbContext.ChemigationPermits
