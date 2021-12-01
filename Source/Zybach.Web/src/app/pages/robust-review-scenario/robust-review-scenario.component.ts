@@ -38,6 +38,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   private updateRobustReviewScenarioGETHistoriesSubscription: any;
   private stopUpdatePolling = new Subject();
   overlayLoadingTemplate: string;
+  newRunTriggered: boolean;
 
   constructor(private robustReviewScenarioService: RobustReviewScenarioService,
     private alertService: AlertService,
@@ -49,6 +50,9 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.robustReviewScenarioService.checkGETAPIHealth().subscribe(response => {
           this.isGETAPIResponsive = response;
+          if (!this.isGETAPIResponsive) {
+            this.alertService.pushAlert(new Alert("Unable to establish communication with GET API, ability to trigger new runs and update status of in progress runs will be effected."));
+          }
           this.initializeGrid();  
           this.updateRobustReviewScenarioGETHistoriesSubscription = timer(1, 300000).pipe(
             takeUntil(this.stopUpdatePolling)
@@ -168,7 +172,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   }
 
   public canCreateNewRun(): boolean {
-    return this.isGETAPIResponsive && (this.robustReviewScenarioGETRunHistories == null || this.robustReviewScenarioGETRunHistories.length ==  0 || this.robustReviewScenarioGETRunHistories.every(x => x.IsTerminal))
+    return this.isGETAPIResponsive && !this.newRunTriggered && (this.robustReviewScenarioGETRunHistories == null || this.robustReviewScenarioGETRunHistories.length ==  0 || this.robustReviewScenarioGETRunHistories.every(x => x.IsTerminal))
   }
 
   getRobustReviewScenarioJson() {
@@ -193,10 +197,17 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
     }))
   }
 
-  new() {
+  triggerNewRobustReviewScenarioRun() {
+    this.newRunTriggered = true;
     this.robustReviewScenarioService.newRobustReviewScenarioGETHistory().subscribe(x => {
-      this.alertService.pushAlert(new Alert(`New Robust Review Scenario Run was successfully started.`, AlertContext.Success));
+      this.alertService.pushAlert(new Alert(`New Robust Review Scenario run was successfully requested.`, AlertContext.Success));
       this.updateRobustReviewScenarioGETHistories();
+    },
+    () => {
+      this.alertService.pushAlert(new Alert(`Unable to request a new Robust Review Scenario run.`, AlertContext.Danger));
+    },
+    () => {
+      this.newRunTriggered = false;
     })
   }
 
