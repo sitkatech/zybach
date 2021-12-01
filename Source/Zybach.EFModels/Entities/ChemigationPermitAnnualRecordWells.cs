@@ -13,17 +13,17 @@ namespace Zybach.EFModels.Entities
             if (chemigationPermitAnnualRecordWellsDto != null && chemigationPermitAnnualRecordWellsDto.Any())
             {
                 var wellRegistrationIDsSelected = chemigationPermitAnnualRecordWellsDto.Select(x => x.WellRegistrationID).Distinct().ToList();
-                var wellsSelectedDictionary = dbContext.Wells
+                var wellIDsSelected = dbContext.Wells
                     .Where(x => wellRegistrationIDsSelected.Contains(x.WellRegistrationID))
-                    .ToDictionary(x => x.WellRegistrationID, x => x.WellID);
+                    .Select(x => x.WellID);
 
                 var newChemigationPermitAnnualRecordWells =
-                    chemigationPermitAnnualRecordWellsDto.Select(x =>
+                    wellIDsSelected.Select(x =>
                         new ChemigationPermitAnnualRecordWell
                         {
                             ChemigationPermitAnnualRecordID =
                                 chemigationPermitAnnualRecordID,
-                            WellID = wellsSelectedDictionary[x.WellRegistrationID]
+                            WellID = x
                         }).ToList();
                 var existingChemigationPermitAnnualRecordWells = dbContext
                     .ChemigationPermitAnnualRecordWells.Where(x =>
