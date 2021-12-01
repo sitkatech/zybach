@@ -11,6 +11,7 @@
  */
 import { ChemigationPermitDto } from '././chemigation-permit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '././chemigation-permit-annual-record-chemical-formulation-simple-dto';
+import { ChemigationPermitAnnualRecordApplicatorSimpleDto } from '././chemigation-permit-annual-record-applicator-simple-dto';
 
 export class ChemigationPermitAnnualRecordDetailedDto { 
     ChemigationPermitAnnualRecordID?: number;
@@ -33,6 +34,7 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     DatePaid?: string;
     ApplicantEmail?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
+    Applicators?: Array<ChemigationPermitAnnualRecordApplicatorSimpleDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -86,6 +86,12 @@
 
                         <hr class="w-90" />
 
+                        <zybach-chemigation-permit-applicators-editor #applicatorsForm
+                            (isFormValid)="isApplicatorsFormValid($event)" [(model)]="model.Applicators">
+                        </zybach-chemigation-permit-applicators-editor>
+
+                        <hr class="w-90" />
+
                         <zybach-chemigation-permit-chemical-formulations-editor #chemicalFormulationsForm
                             (isFormValid)="isChemicalFormulationsFormValid($event)" [(model)]="model.ChemicalFormulations">
                         </zybach-chemigation-permit-chemical-formulations-editor>

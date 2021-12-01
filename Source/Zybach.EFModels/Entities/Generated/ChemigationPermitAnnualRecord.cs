@@ -14,6 +14,7 @@ namespace Zybach.EFModels.Entities
     {
         public ChemigationPermitAnnualRecord()
         {
+            ChemigationPermitAnnualRecordApplicators = new HashSet<ChemigationPermitAnnualRecordApplicator>();
             ChemigationPermitAnnualRecordChemicalFormulations = new HashSet<ChemigationPermitAnnualRecordChemicalFormulation>();
         }
 
@@ -64,6 +65,8 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(ChemigationPermitAnnualRecordStatusID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]
         public virtual ChemigationPermitAnnualRecordStatus ChemigationPermitAnnualRecordStatus { get; set; }
+        [InverseProperty(nameof(ChemigationPermitAnnualRecordApplicator.ChemigationPermitAnnualRecord))]
+        public virtual ICollection<ChemigationPermitAnnualRecordApplicator> ChemigationPermitAnnualRecordApplicators { get; set; }
         [InverseProperty(nameof(ChemigationPermitAnnualRecordChemicalFormulation.ChemigationPermitAnnualRecord))]
         public virtual ICollection<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
     }

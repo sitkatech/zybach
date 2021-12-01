@@ -9,7 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '././chemigation-permit-annual-record-chemical-formulation-simple-dto';
+import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from '././chemigation-permit-annual-record-applicator-upsert-dto';
+import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '././chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 
 export class ChemigationPermitAnnualRecordUpsertDto { 
     ChemigationPermitAnnualRecordStatusID: number;
@@ -27,7 +28,8 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ApplicantCity?: string;
     ApplicantState?: string;
     ApplicantZipCode?: string;
-    ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
+    ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>;
+    Applicators?: Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
