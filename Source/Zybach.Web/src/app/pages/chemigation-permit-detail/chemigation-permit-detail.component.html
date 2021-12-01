@@ -204,6 +204,39 @@
 
                     </div>
 
+                    <div class="col-12 table-responsive mb-4">
+                        <h5>Certified Chemigation Applicators</h5>
+                        <div *ngIf="currentYearAnnualRecord.Applicators.length > 0; then hasApplicators else noApplicators"></div>
+                        <ng-template #hasApplicators>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Certification Number</th>
+                                        <th>Expiration</th>
+                                        <th>Home Phone</th>
+                                        <th>Mobile Phone</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let applicator of currentYearAnnualRecord.Applicators">
+                                        <td>{{applicator.ApplicatorName}}</td>
+                                        <td>{{applicator.CertificationNumber}}</td>
+                                        <td>{{applicator.ExpirationYear}}</td>
+                                        <td>{{applicator.HomePhone}}</td>
+                                        <td>{{applicator.MobilePhone}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </ng-template>
+                        <ng-template #noApplicators>No certified chemigation applicators on file.</ng-template>
+                    </div>
+
+                    <div class="col-12">
+                        <hr class="w-90" />
+
+                    </div>
+
                     <div class="col-12 table-responsive">
                         <h5>Applied Chemicals</h5>
                         <div *ngIf="currentYearAnnualRecord.ChemicalFormulations.length > 0; then hasChemicalFormulations else noChemicalFormulations"></div>
