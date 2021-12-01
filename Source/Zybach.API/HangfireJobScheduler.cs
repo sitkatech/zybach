@@ -18,7 +18,7 @@ namespace Zybach.API
             AddRecurringJob<AgHubWellsFetchDailyJob>(AgHubWellsFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(7, 15), recurringJobIds);
             AddRecurringJob<FlowMeterSeriesFetchDailyJob>(FlowMeterSeriesFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(9, 15), recurringJobIds);
             AddRecurringJob<ContinuityMeterSeriesFetchDailyJob>(ContinuityMeterSeriesFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(10, 15), recurringJobIds);
-            AddRecurringJob<GETUpdateStatusOfNonTerminalRunJob>(GETUpdateStatusOfNonTerminalRunJob.JobName, x => x.RunJob(Null), "*/1 * * * *", recurringJobIds);
+            AddRecurringJob<GETUpdateStatusOfNonTerminalRunJob>(GETUpdateStatusOfNonTerminalRunJob.JobName, x => x.RunJob(Null), "*/30 * * * *", recurringJobIds);
 
             // Remove any jobs we haven't explicitly scheduled
             RemoveExtraneousJobs(recurringJobIds);

@@ -39,7 +39,7 @@ const routes: Routes = [
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:wellRegistrationID", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
-  { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard,AcknowledgedDisclaimerGuard]},
+  { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports",  component: ReportsListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/new",  component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },

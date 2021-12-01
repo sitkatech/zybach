@@ -63,7 +63,8 @@ namespace Zybach.API.Controllers
         {
             if (RobustReviewScenarioGETRunHistory.NonTerminalRunsExist(_dbContext))
             {
-                return BadRequest("There may be only one Robust Review Scenario Run in progress at any given time. Please wait until the current run completes to start another.")
+                return BadRequest(
+                    "There may be only one Robust Review Scenario Run in progress at any given time. Please wait until the current run completes to start another.");
             }
 
             var userDto = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
