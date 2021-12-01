@@ -199,12 +199,12 @@
                         </div>
                     </div>
 
-                    <div class="row col-12">
+                    <div class="col-12">
                         <hr class="w-90" />
 
                     </div>
 
-                    <div class="row col-12 table-responsive">
+                    <div class="col-12 table-responsive">
                         <h5>Applied Chemicals</h5>
                         <div *ngIf="currentYearAnnualRecord.ChemicalFormulations.length > 0; then hasChemicalFormulations else noChemicalFormulations"></div>
                         <ng-template #hasChemicalFormulations>
