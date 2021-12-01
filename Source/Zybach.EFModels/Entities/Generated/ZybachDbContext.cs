@@ -28,6 +28,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecordApplicator> ChemigationPermitAnnualRecordApplicators { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecordStatus> ChemigationPermitAnnualRecordStatuses { get; set; }
         public virtual DbSet<ChemigationPermitStatus> ChemigationPermitStatuses { get; set; }
@@ -196,6 +197,20 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.ChemigationPermit)
                     .WithMany(p => p.ChemigationPermitAnnualRecords)
                     .HasForeignKey(d => d.ChemigationPermitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecordApplicator>(entity =>
+            {
+                entity.Property(e => e.ApplicatorName).IsUnicode(false);
+
+                entity.Property(e => e.HomePhone).IsUnicode(false);
+
+                entity.Property(e => e.MobilePhone).IsUnicode(false);
+
+                entity.HasOne(d => d.ChemigationPermitAnnualRecord)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordApplicators)
+                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

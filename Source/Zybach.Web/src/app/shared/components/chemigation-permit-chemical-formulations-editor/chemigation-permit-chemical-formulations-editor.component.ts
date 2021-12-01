@@ -4,7 +4,7 @@ import { forkJoin } from 'rxjs';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemicalFormulationDto } from '../../generated/model/chemical-formulation-dto';
 import { ChemicalUnitDto } from '../../generated/model/chemical-unit-dto';
-import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../../generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
+import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '../../generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-chemical-formulations-editor',
@@ -12,9 +12,9 @@ import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../..
   styleUrls: ['./chemigation-permit-chemical-formulations-editor.component.scss']
 })
 export class ChemigationPermitChemicalFormulationsEditorComponent implements OnInit {
-  @Input() model: ChemigationPermitAnnualRecordChemicalFormulationSimpleDto[];
+  @Input() model: ChemigationPermitAnnualRecordChemicalFormulationUpsertDto[];
   @Output() isFormValid: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('chemicalFormulationsForm',  {static: true}) public annualRecordForm: NgForm;
+  @ViewChild('chemicalFormulationsForm',  {static: true}) public chemicalFormulationsForm: NgForm;
   
   public chemicalUnits: Array<ChemicalUnitDto>;
   public chemicalFormulations: Array<ChemicalFormulationDto>;
@@ -35,13 +35,13 @@ export class ChemigationPermitChemicalFormulationsEditorComponent implements OnI
       this.cdr.detectChanges();
     });
     this.validateForm();
-    this.annualRecordForm.valueChanges.subscribe(() => {
+    this.chemicalFormulationsForm.valueChanges.subscribe(() => {
       this.validateForm();
     });
   }
 
   public validateForm(): void {
-    if (this.annualRecordForm.valid == true) {
+    if (this.chemicalFormulationsForm.valid == true) {
         this.isFormValid.emit(true);
     } else {
         this.isFormValid.emit(false);
@@ -49,12 +49,12 @@ export class ChemigationPermitChemicalFormulationsEditorComponent implements OnI
   }
 
   public addRow(): void{
-    const newRecord = new ChemigationPermitAnnualRecordChemicalFormulationSimpleDto();
+    const newRecord = new ChemigationPermitAnnualRecordChemicalFormulationUpsertDto();
     newRecord.ChemigationPermitAnnualRecordChemicalFormulationID = this.newRecordID--;
     this.model.push(newRecord);
   }
 
-  public deleteRow(row: ChemigationPermitAnnualRecordChemicalFormulationSimpleDto): void{
+  public deleteRow(row: ChemigationPermitAnnualRecordChemicalFormulationUpsertDto): void{
     this.model.forEach( (item, index) => {
       if(item === row) this.model.splice(index,1);
     });

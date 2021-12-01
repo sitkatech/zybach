@@ -26,5 +26,6 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantEmail { get; set; }
 
         public List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto> ChemicalFormulations { get; set; }
+        public List<ChemigationPermitAnnualRecordApplicatorSimpleDto> Applicators { get; set; }
     }
 }

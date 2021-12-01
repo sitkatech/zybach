@@ -28,7 +28,8 @@ namespace Zybach.EFModels.Entities
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
                 ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
-                ChemicalFormulations = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordChemicalFormulations?.Select(x => x.AsSimpleDto()).ToList()
+                ChemicalFormulations = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordChemicalFormulations?.Select(x => x.AsSimpleDto()).ToList(),
+                Applicators = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators?.Select(x => x.AsSimpleDto()).ToList()
             };
             return chemigationPermitAnnualRecordDetailedDto;
         }

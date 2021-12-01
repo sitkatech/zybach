@@ -5,7 +5,10 @@ model/chemical-formulation-dto.ts
 model/chemical-unit-dto.ts
 model/chemigation-county-dto.ts
 model/chemigation-injection-unit-type-dto.ts
+model/chemigation-permit-annual-record-applicator-simple-dto.ts
+model/chemigation-permit-annual-record-applicator-upsert-dto.ts
 model/chemigation-permit-annual-record-chemical-formulation-simple-dto.ts
+model/chemigation-permit-annual-record-chemical-formulation-upsert-dto.ts
 model/chemigation-permit-annual-record-detailed-dto.ts
 model/chemigation-permit-annual-record-dto.ts
 model/chemigation-permit-annual-record-status-dto.ts

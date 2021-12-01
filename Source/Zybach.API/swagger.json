@@ -2524,6 +2524,78 @@
         },
         "additionalProperties": false
       },
+      "ChemigationPermitAnnualRecordApplicatorSimpleDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordApplicatorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ApplicatorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CertificationNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ExpirationYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "HomePhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "MobilePhone": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordApplicatorUpsertDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordApplicatorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ApplicatorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CertificationNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ExpirationYear": {
+            "maximum": 2050,
+            "minimum": 2020,
+            "type": "integer",
+            "format": "int32"
+          },
+          "HomePhone": {
+            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "type": "string",
+            "nullable": true
+          },
+          "MobilePhone": {
+            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChemigationPermitAnnualRecordChemicalFormulationSimpleDto": {
         "type": "object",
         "properties": {
@@ -2556,6 +2628,40 @@
             "format": "double"
           },
           "AcresTreated": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordChemicalFormulationUpsertDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordChemicalFormulationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalFormulationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalUnitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TotalApplied": {
+            "maximum": 999999,
+            "minimum": 0,
+            "type": "number",
+            "format": "double"
+          },
+          "AcresTreated": {
+            "maximum": 999999,
+            "minimum": 0,
             "type": "number",
             "format": "double"
           }
@@ -2646,6 +2752,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+            },
+            "nullable": true
+          },
+          "Applicators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorSimpleDto"
             },
             "nullable": true
           }
@@ -2819,7 +2932,14 @@
           "ChemicalFormulations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationUpsertDto"
+            },
+            "nullable": true
+          },
+          "Applicators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorUpsertDto"
             },
             "nullable": true
           }

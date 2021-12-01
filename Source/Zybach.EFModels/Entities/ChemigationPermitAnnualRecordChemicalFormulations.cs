@@ -8,7 +8,7 @@ namespace Zybach.EFModels.Entities
     public static class ChemigationPermitAnnualRecordChemicalFormulations
     {
         public static void UpdateChemicalFormulations(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID,
-            List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>
+            List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>
                 chemigationPermitAnnualRecordChemicalFormulationsDto)
         {
             if (chemigationPermitAnnualRecordChemicalFormulationsDto != null && chemigationPermitAnnualRecordChemicalFormulationsDto.Any())
