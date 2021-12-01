@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from '././chemigation-permit-annual-record-applicator-upsert-dto';
+import { ChemigationPermitAnnualRecordWellUpsertDto } from '././chemigation-permit-annual-record-well-upsert-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '././chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 
 export class ChemigationPermitAnnualRecordUpsertDto { 
@@ -30,6 +31,7 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ApplicantZipCode?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>;
+    Wells?: Array<ChemigationPermitAnnualRecordWellUpsertDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

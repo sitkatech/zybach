@@ -13,6 +13,7 @@ import { ChemigationPermitNewDto } from 'src/app/shared/generated/model/chemigat
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
+import { ChemigationPermitAnnualRecordWellUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-well-upsert-dto';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -35,6 +36,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   public isLoadingSubmit: boolean = false;
   public isAnnualRecordFormValidCheck: boolean;
   public isApplicatorsFormValidCheck: boolean;
+  public isWellsFormValidCheck: boolean;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -68,6 +70,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       DatePaid: null,
     };
     this.model.ChemigationPermitAnnualRecord.Applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
+    this.model.ChemigationPermitAnnualRecord.Wells = new Array<ChemigationPermitAnnualRecordWellUpsertDto>();
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -101,8 +104,13 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.isApplicatorsFormValidCheck = formValid;
   }
 
+  public isWellsFormValid(formValid: any): void {
+    this.isWellsFormValidCheck = formValid;
+  }
+
   public isFormValid(addChemigationPermitAnnualRecordForm: any): boolean {
-    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isApplicatorsFormValidCheck || !addChemigationPermitAnnualRecordForm.form.valid;
+    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isApplicatorsFormValidCheck
+    || !this.isWellsFormValidCheck || !addChemigationPermitAnnualRecordForm.form.valid;
   }
 
   public onSubmit(newChemigationPermitForm: HTMLFormElement): void {

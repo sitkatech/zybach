@@ -2,7 +2,7 @@
 
 namespace Zybach.Models.DataTransferObjects
 {
-    public partial class ChemigationPermitAnnualRecordApplicatorUpsertDto
+    public class ChemigationPermitAnnualRecordApplicatorUpsertDto
     {
         public int ChemigationPermitAnnualRecordApplicatorID { get; set; }
         public int ChemigationPermitAnnualRecordID { get; set; }

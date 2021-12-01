@@ -2112,6 +2112,54 @@
         }
       }
     },
+    "/api/wells/search/{wellRegistrationID}": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/{wellRegistrationID}/details": {
       "get": {
         "tags": [
@@ -2761,6 +2809,13 @@
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorSimpleDto"
             },
             "nullable": true
+          },
+          "Wells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellSimpleDto"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2941,6 +2996,53 @@
             "items": {
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorUpsertDto"
             },
+            "nullable": true
+          },
+          "Wells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellUpsertDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordWellSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordWellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordWellUpsertDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordWellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
             "nullable": true
           }
         },

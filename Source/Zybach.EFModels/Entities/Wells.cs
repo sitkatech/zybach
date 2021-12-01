@@ -97,19 +97,19 @@ namespace Zybach.EFModels.Entities
             return wellWithSensorSummaryDto;
         }
 
-        public static List<WellDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
+        public static List<WellSimpleDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.ToUpper().Contains(searchText.ToUpper())).Select(x => x.AsDto()).ToList();
+            return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText)).Select(x => x.AsSimpleDto()).ToList();
         }
 
-        public static List<WellDto> SearchByLandowner(ZybachDbContext dbContext, string searchText)
+        public static List<WellSimpleDto> SearchByAghubRegisteredUser(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.AgHubRegisteredUser.ToUpper().Contains(searchText.ToUpper())).Select(x => x.Well.AsDto()).ToList();
+            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.AgHubRegisteredUser.Contains(searchText)).Select(x => x.Well.AsSimpleDto()).ToList();
         }
 
-        public static List<WellDto> SearchByField(ZybachDbContext dbContext, string searchText)
+        public static List<WellSimpleDto> SearchByField(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.FieldName.ToUpper().Contains(searchText.ToUpper())).Select(x => x.Well.AsDto()).ToList();
+            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.FieldName.Contains(searchText)).Select(x => x.Well.AsSimpleDto()).ToList();
         }
 
         public static WellDto CreateNew(ZybachDbContext dbContext, WellNewDto wellNewDto)

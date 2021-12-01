@@ -25,6 +25,7 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalUnit)
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalFormulation)
                 .Include(x => x.ChemigationPermitAnnualRecordApplicators)
+                .Include(x => x.ChemigationPermitAnnualRecordWells).ThenInclude(x => x.Well)
                 .AsNoTracking();
         }
 
@@ -51,6 +52,7 @@ namespace Zybach.EFModels.Entities
             UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
             Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
             Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Applicators);
+            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
 
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
@@ -61,6 +63,7 @@ namespace Zybach.EFModels.Entities
             UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
             Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
             Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Applicators);
+            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
 
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);

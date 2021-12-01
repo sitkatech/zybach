@@ -6,6 +6,7 @@ import { InstallationRecordDto } from '../shared/generated/model/installation-re
 import { WellChartDataDto } from '../shared/generated/model/well-chart-data-dto';
 import { WellDetailDto } from '../shared/generated/model/well-detail-dto';
 import { WellNewDto } from '../shared/generated/model/well-new-dto';
+import { WellSimpleDto } from '../shared/generated/model/well-simple-dto';
 import { WellWithSensorSummaryDto } from '../shared/generated/model/well-with-sensor-summary-dto';
 import { ApiService } from '../shared/services';
 
@@ -51,5 +52,10 @@ export class WellService {
   public newWell(wellNewDto: WellNewDto) {
     let route = `/wells/new`;
     return this.apiService.postToApi(route, wellNewDto);
+  }
+
+  public searchByWellRegistrationID(wellRegistrationID: string): Observable<WellSimpleDto> {
+    let route = `/wells/search/${wellRegistrationID}`;
+    return this.apiService.getFromApi(route);
   }
 }

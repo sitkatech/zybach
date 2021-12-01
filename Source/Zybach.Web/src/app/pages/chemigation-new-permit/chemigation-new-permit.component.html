@@ -89,6 +89,11 @@
                             (isFormValid)="isApplicatorsFormValid($event)" [(model)]="model.ChemigationPermitAnnualRecord.Applicators">
                         </zybach-chemigation-permit-applicators-editor>
 
+                        <hr class="w-90" />
+
+                        <zybach-chemigation-permit-wells-editor #wellsForm
+                            (isFormValid)="isWellsFormValid($event)" [(model)]="model.ChemigationPermitAnnualRecord.Wells">
+                        </zybach-chemigation-permit-wells-editor>
                     </div>
                 </div>
 
