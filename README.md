@@ -25,6 +25,6 @@
 7. Press the green "play" triangle to start the API server
 
 ## Zybach Set-up (Web)
-1. Open the rio-web-workspace in VSC ([repo root dir]\Source\Rio.Web)
+1. Open the zybach-web-workspace in VSC ([repo root dir]\Source\Zybach.Web)
 2. Open the VSC terminal and run npm install, then npm build, then npm start.
 3. Press F5 to open the web app in Google Chrome. You will be able to debug JavaScript directly in VSC.
