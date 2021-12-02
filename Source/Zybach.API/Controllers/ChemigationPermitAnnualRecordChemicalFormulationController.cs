@@ -76,18 +76,20 @@ namespace Zybach.API.Controllers
 
             var chemicalFormulationYearlyTotals = chemigationPermitAnnualRecordChemicalFormulations
                 .GroupBy(x => new
-                    { x.ChemigationPermitAnnualRecord.RecordYear, x.ChemicalFormulationID, x.ChemicalUnitID })
+                    { x.ChemigationPermitAnnualRecord.RecordYear, x.ChemicalFormulation, x.ChemicalUnit })
                 .Select(x => new ChemicalFormulationYearlyTotalDto()
                 {
                     RecordYear = x.Key.RecordYear,
-                    ChemicalFormulationID = x.Key.ChemicalFormulationID,
-                    ChemicalUnitID = x.Key.ChemicalUnitID,
-                    TotalApplied = x.Where(z => z.ChemicalFormulationID == x.Key.ChemicalFormulationID &&
+                    ChemicalFormulation = x.Key.ChemicalFormulation.ChemicalFormulationDisplayName,
+                    ChemicalUnit = x.Key.ChemicalUnit.AsDto(),
+                    TotalApplied = x.Where(z => z.ChemicalFormulation.ChemicalFormulationID == x.Key.ChemicalFormulation.ChemicalFormulationID &&
                                                 z.ChemigationPermitAnnualRecord.RecordYear == x.Key.RecordYear &&
-                                                z.ChemicalUnitID == x.Key.ChemicalUnitID).Sum(y => y.TotalApplied),
-                    AcresTreated = x.Where(z => z.ChemicalFormulationID == x.Key.ChemicalFormulationID &&
+                                                z.ChemicalUnit.ChemicalUnitID == x.Key.ChemicalUnit.ChemicalUnitID)
+                                    .Sum(y => y.TotalApplied),
+                    AcresTreated = x.Where(z => z.ChemicalFormulation.ChemicalFormulationID == x.Key.ChemicalFormulation.ChemicalFormulationID &&
                                                 z.ChemigationPermitAnnualRecord.RecordYear == x.Key.RecordYear &&
-                                                z.ChemicalUnitID == x.Key.ChemicalUnitID).Sum(y => y.AcresTreated)
+                                                z.ChemicalUnit.ChemicalUnitID == x.Key.ChemicalUnit.ChemicalUnitID)
+                                    .Sum(y => y.AcresTreated)
                 }).ToList();
 
             return Ok(chemicalFormulationYearlyTotals);

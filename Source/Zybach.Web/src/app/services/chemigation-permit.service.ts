@@ -14,6 +14,7 @@ import { ChemicalFormulationDto } from '../shared/generated/model/chemical-formu
 import { ChemicalUnitDto } from '../shared/generated/model/chemical-unit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/model/chemigation-permit-annual-record-detailed-dto';
+import { ChemicalFormulationYearlyTotalDto } from '../shared/generated/model/chemical-formulation-yearly-total-dto';
 
 
 @Injectable({
@@ -110,6 +111,11 @@ export class ChemigationPermitService {
   
   public getChemicalFormulationsByPermitNumberAndRecordYear(chemigationPermitNumber: number, recordYear: number): Observable<Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>> {
     let route = `/chemigationPermits/${chemigationPermitNumber}/${recordYear}/chemicalFormulations`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getChemicalFormulationYearlyTotals(): Observable<Array<ChemicalFormulationYearlyTotalDto>> {
+    let route = `/chemicalFormulationYearlyTotals/`;
     return this.apiService.getFromApi(route);
   }
 }

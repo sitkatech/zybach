@@ -2,6 +2,7 @@ export * from '././annual-pumped-volume';
 export * from '././annual-stream-flow-zone-pumping-depth-dto';
 export * from '././crs-type';
 export * from '././chemical-formulation-dto';
+export * from '././chemical-formulation-yearly-total-dto';
 export * from '././chemical-unit-dto';
 export * from '././chemigation-county-dto';
 export * from '././chemigation-injection-unit-type-dto';

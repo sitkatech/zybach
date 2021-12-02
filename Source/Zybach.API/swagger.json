@@ -2511,9 +2511,9 @@
             "type": "integer",
             "format": "int32"
           },
-          "ChemicalFormulationID": {
-            "type": "integer",
-            "format": "int32"
+          "ChemicalFormulation": {
+            "type": "string",
+            "nullable": true
           },
           "TotalApplied": {
             "maximum": 999999,
@@ -2521,9 +2521,8 @@
             "type": "number",
             "format": "double"
           },
-          "ChemicalUnitID": {
-            "type": "integer",
-            "format": "int32"
+          "ChemicalUnit": {
+            "$ref": "#/components/schemas/ChemicalUnitDto"
           },
           "AcresTreated": {
             "maximum": 999999,
