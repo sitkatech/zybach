@@ -221,5 +221,13 @@ namespace Zybach.API.Controllers
             var wellDto = Wells.CreateNew(_dbContext, wellNewDto);
             return Ok(wellDto);
         }
+
+        [HttpGet("/api/wells/{wellRegistrationID}/chemigationPermits")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] string wellRegistrationID)
+        {
+            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecord.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            return Ok(chemigationPermitDetailedDtos);
+        }
     }
 }

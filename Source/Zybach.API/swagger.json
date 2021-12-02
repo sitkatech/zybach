@@ -2320,6 +2320,54 @@
         }
       }
     },
+    "/api/wells/{wellRegistrationID}/chemigationPermits": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/pumpedVolume": {
       "get": {
         "tags": [

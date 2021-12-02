@@ -272,7 +272,7 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let well of currentYearAnnualRecord.Wells">
-                                        <td>{{well.WellRegistrationID}}</td>
+                                        <td><a routerLink="/wells/{{well.WellRegistrationID}}">{{well.WellRegistrationID}}</a></td>
                                     </tr>
                                 </tbody>
                             </table>
