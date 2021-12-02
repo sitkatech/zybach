@@ -22,7 +22,6 @@ import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
 import { TwinPlatteBoundaryGeoJson } from '../../shared/models/tpnrd-boundary';
 
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NominatimService } from 'src/app/services/nominatim.service';
 
 import { point, polygon } from '@turf/helpers';
@@ -66,9 +65,8 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   public wellsLayer: GeoJSON<any>;
   selectedFeatureLayer: any;
 
-  public dataSourceDropdownList: { item_id: number, item_text: string }[] = [];
-  public selectedDataSources: { item_id: number, item_text: string }[] = [];
-  public dataSourceDropdownSettings: IDropdownSettings = {};
+  public dataSourceDropdownList: { group_name: string, item_id: number, item_text: string }[];
+  public selectedDataSources: MessageAgeFilterOption[];
 
   public mapSearchQuery: string;
   public maxZoom: number = 17;
@@ -106,26 +104,12 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     this.compileService.configure(this.appRef);
 
     this.dataSourceDropdownList = [
-      { item_id: MessageAgeFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
-      { item_id: MessageAgeFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
-      { item_id: MessageAgeFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
-      { item_id: MessageAgeFilterOption.NO_DATA, item_text: "No Data" }
+      { group_name: "Select All", item_id: MessageAgeFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
+      { group_name: "Select All", item_id: MessageAgeFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
+      { group_name: "Select All", item_id: MessageAgeFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
+      { group_name: "Select All", item_id: MessageAgeFilterOption.NO_DATA, item_text: "No Data" }
     ];
-    this.selectedDataSources = [
-      { item_id: MessageAgeFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
-      { item_id: MessageAgeFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
-      { item_id: MessageAgeFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
-    ];
-
-    this.dataSourceDropdownSettings = {
-      singleSelection: false,
-      idField: "item_id",
-      textField: "item_text",
-      selectAllText: "Select All",
-      unSelectAllText: "Unselect All",
-      allowSearchFilter: false,
-      enableCheckAll: true
-    }
+    this.selectedDataSources = [MessageAgeFilterOption.TWO_HOURS, MessageAgeFilterOption.EIGHT_HOURS, MessageAgeFilterOption.EIGHT_PLUS_HOURS];
   }
 
   public ngAfterViewInit(): void {
@@ -250,8 +234,8 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       new SensorStatusLegend().addTo(this.map);
   }
 
-  public onDataSourceFilterChange(event: Event) {
-    const selectedDataSourceOptions = this.selectedDataSources.map(x => x.item_id);
+  public onDataSourceFilterChange() {
+    const selectedDataSourceOptions = this.selectedDataSources;
 
     this.showZeroToThirty = selectedDataSourceOptions.includes(MessageAgeFilterOption.TWO_HOURS)
     this.showThirtyToSixty = selectedDataSourceOptions.includes(MessageAgeFilterOption.EIGHT_HOURS)
@@ -260,19 +244,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
-  }
-
-  // the select-all/deselect-all events fire before the model updates.
-  // not sure if this is a fundamental limitation or just an annoying bug in the multiselect library,
-  // but manually filling/clearing the selectedDataSources array lets select/deselect all work
-  public onDataSourceFilterSelectAll(event) {
-    this.selectedDataSources = [...this.dataSourceDropdownList];
-    this.onDataSourceFilterChange(event)
-  }
-
-  public onDataSourceFilterDeselectAll(event) {
-    this.selectedDataSources = [];
-    this.onDataSourceFilterChange(event);
   }
 
   public mapSearch() {
