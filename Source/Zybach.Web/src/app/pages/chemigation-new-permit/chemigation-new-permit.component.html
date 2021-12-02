@@ -31,13 +31,10 @@
                                     <label class="required"><strong>Permit Status: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <select name="PermitStatusID" class="form-control" 
-                                        [(ngModel)]="model.ChemigationPermitStatusID" required>
-                                        <option *ngFor="let permitStatus of permitStatuses"
-                                            [value]="permitStatus.ChemigationPermitStatusID">
-                                            {{permitStatus.ChemigationPermitStatusDisplayName}}
-                                        </option>
-                                    </select>
+                                    <ng-select [(ngModel)]="model.ChemigationPermitStatusID"
+                                        [items]="permitStatuses" bindLabel="ChemigationPermitStatusDisplayName" bindValue="ChemigationPermitStatusID" 
+                                        placeholder="Choose One" name="ChemigationPermitStatusID" required>
+                                    </ng-select>
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -64,15 +61,11 @@
                                     <label class="required"><strong>County: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <select name="ChemigationCountyID" class="form-control" 
-                                        [(ngModel)]="model.ChemigationCountyID" required>
-                                        <option selected disabled [value]="">Choose One</option>
-                                        <option *ngFor="let chemigationCounty of chemigationCounties"
-                                            [value]="chemigationCounty.ChemigationCountyID">
-                                            {{chemigationCounty.ChemigationCountyDisplayName}}
-                                        </option>
-                                    </select>
-                                </div>                            
+                                    <ng-select [(ngModel)]="model.ChemigationCountyID"
+                                        [items]="chemigationCounties" bindLabel="ChemigationCountyDisplayName" bindValue="ChemigationCountyID" 
+                                        placeholder="Choose One" name="ChemigationCountyID" required>
+                                    </ng-select>
+                                </div>
                             </div>
 
                         </div>

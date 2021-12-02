@@ -22,13 +22,10 @@
     </div>
     <div class="row col-10" *ngFor="let chemicalPermitAnnualRecordChemicalFormulation of model; let index = index">
         <div class="col-4 text-left mb-2">
-            <select class="form-control" name="ChemicalFormulationID-{{index}}"
-                [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalFormulationID" required>
-                <option *ngFor="let chemicalFormulation of chemicalFormulations"
-                    [value]="chemicalFormulation.ChemicalFormulationID">
-                    {{chemicalFormulation.ChemicalFormulationDisplayName}}
-                </option>
-            </select>
+            <ng-select [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalFormulationID"
+                [items]="chemicalFormulations" bindLabel="ChemicalFormulationDisplayName" bindValue="ChemicalFormulationID" 
+                placeholder="Choose One" name="ChemicalFormulationID-{{index}}" required>
+            </ng-select>
         </div>
 
         <div class="col-2 text-left mb-2">
@@ -37,14 +34,10 @@
         </div>
 
         <div class="col-2 text-left mb-2">
-            <select class="form-control" name="ChemicalUnitID-{{index}}"
-                [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalUnitID" required>
-                <option selected disabled [value]="">Choose One</option>
-                <option *ngFor="let chemicalUnit of chemicalUnits"
-                    [value]="chemicalUnit.ChemicalUnitID">
-                    {{chemicalUnit.ChemicalUnitPluralName}}
-                </option>
-            </select>
+            <ng-select [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalUnitID"
+            [items]="chemicalUnits" bindLabel="ChemicalUnitPluralName" bindValue="ChemicalUnitID" 
+            placeholder="Choose One" name="ChemicalUnitID-{{index}}" required>
+            </ng-select>
         </div>
 
         <div class="col-2 text-left mb-2">

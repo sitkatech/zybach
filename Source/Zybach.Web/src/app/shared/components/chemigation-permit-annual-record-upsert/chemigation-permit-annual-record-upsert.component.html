@@ -6,13 +6,10 @@
                 <label class="required"><strong>Annual Renewal Status: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <select name="ChemigationPermitAnnualRecordStatusID" class="form-control" 
-                    [(ngModel)]="model.ChemigationPermitAnnualRecordStatusID" required>
-                    <option *ngFor="let annualRecordStatus of annualRecordStatuses"
-                        [value]="annualRecordStatus.ChemigationPermitAnnualRecordStatusID">
-                        {{annualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}
-                    </option>
-                </select>
+                <ng-select [(ngModel)]="model.ChemigationPermitAnnualRecordStatusID"
+                    [items]="annualRecordStatuses" bindLabel="ChemigationPermitAnnualRecordStatusDisplayName" bindValue="ChemigationPermitAnnualRecordStatusID" 
+                    placeholder="Choose One" name="ChemigationPermitAnnualRecordStatusID" required>
+                </ng-select>
             </div>
 
             <div class="col-6 control-label text-right mb-2">
@@ -27,14 +24,10 @@
                 <label class="required"><strong>Injection Unit Type: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <select name="ChemigationInjectionUnitTypeID" class="form-control" 
-                    [(ngModel)]="model.ChemigationInjectionUnitTypeID" required>
-                    <option selected disabled [value]="">Choose One</option>
-                    <option *ngFor="let injectionUnitType of injectionUnitTypes"
-                        [value]="injectionUnitType.ChemigationInjectionUnitTypeID">
-                        {{injectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
-                    </option>
-                </select>
+                <ng-select [(ngModel)]="model.ChemigationInjectionUnitTypeID"
+                    [items]="injectionUnitTypes" bindLabel="ChemigationInjectionUnitTypeDisplayName" bindValue="ChemigationInjectionUnitTypeID" 
+                    placeholder="Choose One" name="ChemigationInjectionUnitTypeID" required>
+                </ng-select>
             </div>
             
             <div class="col-6 control-label text-right mb-2">
@@ -104,13 +97,10 @@
                 <label class="required"><strong>State: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <select name="ApplicantState" class="form-control" 
-                    [(ngModel)]="model.ApplicantState" required>
-                    <option *ngFor="let state of states | keyvalue"
-                        [value]="state.value">
-                        {{state.key}}
-                    </option>
-                </select>
+                <ng-select [(ngModel)]="model.ApplicantState"
+                    [items]="states | keyvalue" bindLabel="key" bindValue="value" 
+                    placeholder="Choose One" name="ApplicantState" required>
+                </ng-select>
             </div>
 
             <div class="col-6 control-label text-right mb-2">

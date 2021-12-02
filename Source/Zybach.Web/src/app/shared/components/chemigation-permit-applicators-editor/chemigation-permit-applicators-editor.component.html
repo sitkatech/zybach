@@ -33,14 +33,10 @@
         </div>
 
         <div class="col-1 text-left mb-2">
-            <select class="form-control" name="ExpirationYear-{{index}}"
-                [(ngModel)]="chemicalPermitAnnualRecordApplicator.ExpirationYear" required>
-                <option selected disabled [value]="">Choose One</option>
-                <option *ngFor="let year of expirationYears"
-                    [value]="year">
-                    {{year}}
-                </option>
-            </select>
+            <ng-select [(ngModel)]="chemicalPermitAnnualRecordApplicator.ExpirationYear"
+                [items]="expirationYears" 
+                placeholder="Choose One" name="ExpirationYear-{{index}}" required>
+            </ng-select>
         </div>
 
         <div class="col-2 text-left mb-2">
