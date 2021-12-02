@@ -2586,8 +2586,6 @@
             "format": "int32"
           },
           "ExpirationYear": {
-            "maximum": 2050,
-            "minimum": 2020,
             "type": "integer",
             "format": "int32"
           },
