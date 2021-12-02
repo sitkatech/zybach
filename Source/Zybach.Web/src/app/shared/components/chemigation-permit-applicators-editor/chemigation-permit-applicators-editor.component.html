@@ -1,6 +1,6 @@
 <h4>Certified Chemigation Applicators</h4>
 <form #applicatorsForm="ngForm">
-    <div class="row col-12">
+    <div class="row col-12" *ngIf="model.length > 0">
         <div class="col-3 control-label text-left mb-2">
             <label class="required"><strong>Name: </strong></label>
         </div>

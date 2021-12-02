@@ -3,7 +3,7 @@
     List the names and estimated amounts of all chemicals that were used in the chemigation system in the past year.
 </p>
 <form #chemicalFormulationsForm="ngForm">
-    <div class="row col-10">
+    <div class="row col-10" *ngIf="model.length > 0">
         <div class="col-4 control-label text-left mb-2">
             <label class="required"><strong>Formulation: </strong></label>
         </div>
