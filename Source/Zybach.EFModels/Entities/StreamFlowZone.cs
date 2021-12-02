@@ -15,20 +15,20 @@ namespace Zybach.EFModels.Entities
         public static List<StreamFlowZoneWellsDto> ListStreamFlowZonesAndWellsWithinZone(ZybachDbContext dbContext)
         {
             var streamFlowZones = dbContext.StreamFlowZones.AsNoTracking().ToList();
-            var aghubWells = dbContext.AgHubWells.Include(x => x.AgHubWellIrrigatedAcres).AsNoTracking().Where(x => x.HasElectricalData).ToList();
+            var agHubWells = GetAghubWellsWithElectricalData(dbContext);
             var streamFlowZoneWellsDtos = streamFlowZones.Select(streamFlowZone => new StreamFlowZoneWellsDto
                 {
                     StreamFlowZone = streamFlowZone.AsDto(),
-                    AgHubWells = aghubWells.Where(x => x.StreamflowZoneID == streamFlowZone.StreamFlowZoneID)
+                    Wells = agHubWells.Where(x => x.Well.StreamflowZoneID == streamFlowZone.StreamFlowZoneID)
                         .Select(x =>
                         {
-                            var agHubWellWithIrrigatedAcresDto = new AgHubWellWithIrrigatedAcresDto
+                            var wellWithIrrigatedAcresDto = new WellWithIrrigatedAcresDto
                             {
-                                WellRegistrationID = x.WellRegistrationID,
+                                WellRegistrationID = x.Well.WellRegistrationID,
                                 IrrigatedAcresPerYear = x.AgHubWellIrrigatedAcres.Select(y =>
                                     new IrrigatedAcresPerYearDto {Year = y.IrrigationYear, Acres = y.Acres}).ToList()
                             };
-                            return agHubWellWithIrrigatedAcresDto;
+                            return wellWithIrrigatedAcresDto;
                         })
                         .ToList()
                 })
@@ -36,5 +36,10 @@ namespace Zybach.EFModels.Entities
             return streamFlowZoneWellsDtos;
         }
 
+        private static List<AgHubWell> GetAghubWellsWithElectricalData(ZybachDbContext dbContext)
+        {
+            return dbContext.AgHubWells.Include(x => x.Well).Include(x => x.AgHubWellIrrigatedAcres).AsNoTracking()
+                .Where(x => x.HasElectricalData).ToList();
+        }
     }
 }

@@ -1,15 +1,13 @@
-import { Component, OnInit, ViewChildren, QueryList, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
 import { UserService } from 'src/app/services/user/user.service';
-import { UserDetailedDto } from 'src/app/shared/models';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ColDef } from 'ag-grid-community';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { FontAwesomeIconLinkRendererComponent } from 'src/app/shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { DecimalPipe } from '@angular/common';
 import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { UserCreateDto } from 'src/app/shared/models/user/user-create-dto';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 
 declare var $:any;
 
@@ -23,13 +21,13 @@ export class UserListComponent implements OnInit, OnDestroy {
   @ViewChild('unassignedUsersGrid') unassignedUsersGrid: AgGridAngular;
 
   private watchUserChangeSubscription: any;
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   public rowData = [];
   columnDefs: ColDef[];
   columnDefsUnassigned: ColDef[];
-  users: UserDetailedDto[];
-  unassignedUsers: UserDetailedDto[];
+  users: UserDto[];
+  unassignedUsers: UserDto[];
 
   constructor(private cdr: ChangeDetectorRef, private authenticationService: AuthenticationService, private utilityFunctionsService: UtilityFunctionsService, private userService: UserService, private decimalPipe: DecimalPipe) { }
 

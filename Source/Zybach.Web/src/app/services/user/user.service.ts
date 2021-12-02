@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { UserDetailedDto } from 'src/app/shared/models';
 import { ApiService } from 'src/app/shared/services';
 import { Observable } from 'rxjs';
-import { UserCreateDto } from 'src/app/shared/models/user/user-create-dto';
-import { UnassignedUserReportDto } from 'src/app/shared/models/user/unassigned-user-report-dto';
+import { UnassignedUserReportDto } from 'src/app/shared/generated/model/unassigned-user-report-dto';
+import { UserCreateDto } from 'src/app/shared/generated/model/user-create-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
 
 @Injectable({
     providedIn: 'root'
@@ -11,32 +11,32 @@ import { UnassignedUserReportDto } from 'src/app/shared/models/user/unassigned-u
 export class UserService {
     constructor(private apiService: ApiService) { }
 
-    inviteUser(userInviteDto: any): Observable<UserDetailedDto> {
+    inviteUser(userInviteDto: any): Observable<UserDto> {
         let route = `/users/invite`;
         return this.apiService.postToApi(route, userInviteDto);
     }
 
-    createNewUser(userCreateDto: UserCreateDto): Observable<UserDetailedDto> {
+    createNewUser(userCreateDto: UserCreateDto): Observable<UserDto> {
         let route = `/users/`;
         return this.apiService.postToApi(route, userCreateDto);
     }
 
-    getUsers(): Observable<UserDetailedDto[]> {
+    getUsers(): Observable<UserDto[]> {
         let route = `/users`;
         return this.apiService.getFromApi(route);
     }
 
-    getUserFromUserID(userID: number): Observable<UserDetailedDto> {
+    getUserFromUserID(userID: number): Observable<UserDto> {
         let route = `/users/${userID}`;
         return this.apiService.getFromApi(route);
     }
 
-    getUserFromGlobalID(globalID: string): Observable<UserDetailedDto> {
+    getUserFromGlobalID(globalID: string): Observable<UserDto> {
         let route = `/users/user-claims/${globalID}`;
         return this.apiService.getFromApi(route);
     }
 
-    updateUser(userID: number, userUpdateDto: any): Observable<UserDetailedDto> {
+    updateUser(userID: number, userUpdateDto: any): Observable<UserDto> {
         let route = `/users/${userID}`;
         return this.apiService.putToApi(route, userUpdateDto);
     }
@@ -46,7 +46,7 @@ export class UserService {
         return this.apiService.getFromApi(route);
     }
 
-    setDisclaimerAcknowledgedDate(userID: number): Observable<UserDetailedDto> {
+    setDisclaimerAcknowledgedDate(userID: number): Observable<UserDto> {
         let route = `/users/set-disclaimer-acknowledged-date`
         return this.apiService.putToApi(route, userID);
     }

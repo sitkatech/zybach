@@ -75,7 +75,7 @@ namespace Zybach.Web
             Production = bool.Parse(configuration["Production"]);
             Staging = bool.Parse(configuration["Staging"]);
             Dev = bool.Parse(configuration["Dev"]);
-            ApiHostName = configuration["ApiHostName"];
+            MainAppApiUrl = configuration["MainAppApiUrl"];
             CreateAccountUrl = configuration["CreateAccountUrl"];
             CreateAccountRedirectUrl = configuration["CreateAccountRedirectUrl"];
             GeoserverMapServiceUrl = configuration["GeoserverMapServiceUrl"];
@@ -98,8 +98,8 @@ namespace Zybach.Web
         public bool Staging { get; set; }
         [JsonProperty("dev")]
         public bool Dev { get; set; }
-        [JsonProperty("apiHostName")]
-        public string ApiHostName { get; set; }
+        [JsonProperty("mainAppApiUrl")]
+        public string MainAppApiUrl { get; set; }
         [JsonProperty("createAccountUrl")]
         public string CreateAccountUrl { get; set; }
         [JsonProperty("createAccountRedirectUrl")]

@@ -5,5 +5,7 @@ export enum CustomRichTextType{
     Help = 4,
     LabelsAndDefinitionsList = 5,
     Training = 6,
-    RobustReviewScenario = 7
+    RobustReviewScenario = 7,
+    ReportsList = 8,
+    Chemigation = 9
 }

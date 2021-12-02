@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FieldDefinitionGridHeaderComponent } from './field-definition-grid-header.component';
 
@@ -6,7 +6,7 @@ describe('FieldDefinitionGridHeaderComponent', () => {
   let component: FieldDefinitionGridHeaderComponent;
   let fixture: ComponentFixture<FieldDefinitionGridHeaderComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FieldDefinitionGridHeaderComponent ]
     })

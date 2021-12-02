@@ -3,7 +3,6 @@ import { OAuthService, OAuthSuccessEvent } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 import { Subject, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
-import { CookieStorageService } from './shared/services/cookies/cookie-storage.service';
 import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationEnd } from '@angular/router';
 import { BusyService } from './shared/services';
 import { AuthenticationService } from './services/authentication.service';
@@ -23,7 +22,7 @@ export class AppComponent {
     ignoreSessionTerminated = false;
     public currentYear: number = new Date().getFullYear();
     
-    constructor(private router: Router, private oauthService: OAuthService, private cookieStorageService: CookieStorageService, private busyService: BusyService, private authenticationService: AuthenticationService, private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument) {
+    constructor(private router: Router, private oauthService: OAuthService, private busyService: BusyService, private authenticationService: AuthenticationService, private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument) {
     }
 
     ngOnInit() {
@@ -49,7 +48,6 @@ export class AppComponent {
         const subject = new Subject<void>();
         this.oauthService.configure(environment.keystoneAuthConfiguration);
         this.oauthService.setupAutomaticSilentRefresh();
-        this.oauthService.setStorage(this.cookieStorageService);
         this.oauthService.tokenValidationHandler = new JwksValidationHandler();
         this.oauthService.loadDiscoveryDocument();
         this.oauthService.events.subscribe((e) => {
@@ -66,15 +64,15 @@ export class AppComponent {
                     console.log("token_received");
                     subject.next();
                     subject.complete();
-                    this.authenticationService.checkAuthentication();
                     break;
                 case 'token_refreshed':
                     subject.next();
                     subject.complete();
+                    this.authenticationService.checkAuthentication();
                     break;
                 case 'token_refresh_error':
                     console.log("token_refresh_error");
-                    this.authenticationService.logout();
+                    this.authenticationService.forcedLogout();
                     break;
             }
 

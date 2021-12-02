@@ -20,16 +20,20 @@
                             <div class="row" *ngIf="well">
                                 <div class="col-12  col-sm-6 label"><strong>Registration ID: </strong> </div>
                                 <div class="col-12  col-sm-6">{{well.WellRegistrationID}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>In AgHub? </strong></div>
+                                <div class="col-12  col-sm-6">{{well.InAgHub ? "Yes" : "No"}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>In GeoOptix? </strong></div>
+                                <div class="col-12  col-sm-6">{{well.InGeoOptix ? "Yes" : "No"}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>TPID: </strong></div>
                                 <div class="col-12  col-sm-6">{{well.WellTPID}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Landowner: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.LandownerName}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>AgHub Registered User: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.AgHubRegisteredUser}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>Field Name: </strong></div>
                                 <div class="col-12  col-sm-6">{{well.FieldName}}</div>
                                 <div class="col-12  col-sm-6 label"><strong>{{getDataSourcesLabel()}}</strong></div>
                                 <div class="col-12  col-sm-6">
-                                    <p *ngFor="let sensor of getSensors()" class="m-0">
-                                        {{sensor.SensorType}} ({{sensor.SensorName}})
+                                    <p *ngFor="let sensorType of getSensorTypes()" class="m-0">
+                                        {{sensorType}}
                                     </p>
                                     <p *ngIf="well.hasElectricalData" class="m-0">
                                         Electrical Usage
@@ -72,7 +76,7 @@
                                 <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="[unitsShown === 'in' ? 'active' : '', displayIrrigatedAcres() ? '' : 'disabled']" style="width:100px">
                                   <input type="radio" name="units" id="in" (click)="toggleUnitsShown('in')" [disabled]="!displayIrrigatedAcres()"> Depth&nbsp;(in)
                                 </label>
-                              </div>
+                            </div>
                         </div>
                         <div class="card-body text-center">
                             <table class="table table-responsive table-striped" *ngIf="well">
@@ -103,12 +107,59 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Location
+            <div class=row>
+                <div class=col>
+                    <div class="card">
+                        <div class="card-header">
+                            Location
+                        </div>
+                        <div class="card-body">
+                            <div id="{{mapID}}" style="height:300px;"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div id="{{mapID}}" style="height:300px;"></div>
+                
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Sensors
+                        </div>
+                        <div class="card-body text-center">
+                            <table class="table table-responsive table-striped" *ngIf="well">
+                                <thead>
+                                    <tr>
+                                        <th>Sensor Name</th>
+                                        <th>Sensor Type</th>
+                                        <th>Last Message Age (Hours)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let sensor of sensorsWithStatus">
+                                        <td>{{sensor.SensorName}}</td>
+                                        <td>{{sensor.SensorType}}</td>
+                                        <td>{{sensor.MessageAge}}</td>
+                                        <td>
+                                            <div class="btn-group btn-group-toggle float-right">
+                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
+                                                  <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, true)" [disabled]="sensor.IsActive"> Enabled
+                                                </label>
+                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''">
+                                                  <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, false)" [disabled]="!sensor.IsActive"> Disabled
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <ng-container *ngIf="!well">
+                                <span class="fas fa-spinner loading-spinner"></span>
+                                <p>Loading...</p>
+                            </ng-container>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -160,6 +211,44 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
+                    Permits & Inspections
+                </div>
+                <div class="card-body">
+
+                    <div *ngIf="chemigationPermitAnnualRecords && chemigationPermitAnnualRecords.length > 0; then hasChemigationPermitAnnualRecords else noChemigationPermitAnnualRecords"></div>
+                    <ng-template #hasChemigationPermitAnnualRecords>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Permit #</th>
+                                    <th>Status</th>
+                                    <th>Township, Range, Section</th>
+                                    <th>Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let chemigationPermitAnnualRecord of chemigationPermitAnnualRecords">
+                                    <td><a routerLink="/chemigationPermits/{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}">{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}</a></td>
+                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusName}}</td>
+                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection}}</td>
+                                    <td>{{chemigationPermitAnnualRecord.RecordYear}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                    <ng-template #noChemigationPermitAnnualRecords>
+                        <p class="font-italic">
+                            No Chemigation Permits were found for this well.
+                        </p>                        
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
                     Installation Details
                     <a *ngIf="well?.InGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
                         View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
@@ -186,20 +275,20 @@
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 text-center">
-                                <carousel *ngIf="installation.PhotoDataUrls?.length > 1"
+                                <carousel *ngIf="installationPhotos[installation.InstallationCanonicalName].length > 1"
                                     [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1"
                                     [objectFit]="contain" [dots]="true">
                                 </carousel>
 
-                                <img *ngIf="installation.PhotoDataUrls?.length === 1" class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}"
+                                <img *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 1" class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}"
                                     style="height: 300px" />
 
-                                <ng-container *ngIf="!installation.PhotoDataUrls?.length && !installation.NoPhotoAvailable">
+                                <ng-container *ngIf="!installationPhotos[installation.InstallationCanonicalName].length">
                                     <span class="fas fa-spinner loading-spinner"></span>
                                     <p>Loading...</p>
                                 </ng-container>
 
-                                <img *ngIf="installation.NoPhotoAvailable" class="img img-fluid" style="height:300px"
+                                <img *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 0" class="img img-fluid" style="height:300px"
                                     src="/assets/main/no-photo-available.jpg" />
                             </div>
                         </div>

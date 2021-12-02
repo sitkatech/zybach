@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnDestroy, ViewChild} from "@angular/core";
-import {IHeaderParams} from "ag-grid-community";
+import {IAfterGuiAttachedParams, IHeaderParams} from "ag-grid-community";
 import {IHeaderAngularComp} from "ag-grid-angular";
 
 interface MyParams extends IHeaderParams {
@@ -20,6 +20,11 @@ export class FieldDefinitionGridHeaderComponent implements OnDestroy, IHeaderAng
 
     constructor(elementRef: ElementRef) {
         this.elementRef = elementRef;
+    }
+    refresh(params: IHeaderParams): boolean {
+        return true;
+    }
+    afterGuiAttached?(params?: IAfterGuiAttachedParams): void {
     }
 
     agInit(params: MyParams): void {

@@ -1,7 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ManagerDashboardService } from 'src/app/services/manager-dashboard.service';
-import { DistrictStatisticsDto } from 'src/app/shared/models/district-statistics-dto';
-import { StreamFlowZoneDto } from 'src/app/shared/models/stream-flow-zone-dto';
 import {
   Control, FitBoundsOptions,
   GeoJSON,
@@ -19,8 +17,10 @@ import 'leaflet.fullscreen';
 import { GestureHandling } from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { forkJoin } from 'rxjs';
-import { streamFlowZonePumpingDepthDto } from 'src/app/shared/models/stream-flow-zone-pumping-depth-dto';
-import { X } from 'vega-lite/build/src/channel';
+import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
+import { DistrictStatisticsDto } from 'src/app/shared/generated/model/district-statistics-dto';
+import { StreamFlowZoneDto } from 'src/app/shared/generated/model/stream-flow-zone-dto';
+import { StreamFlowZonePumpingDepthDto } from 'src/app/shared/generated/model/stream-flow-zone-pumping-depth-dto';
 
 @Component({
   selector: 'zybach-dashboard',
@@ -49,8 +49,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public districtStatistics: DistrictStatisticsDto;
   public loadingDistrictStatistics: boolean = true;
 
-  public pumpingDepthsByYear: { Year: number, StreamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[] }[]
-  allYearsPumpingDepths: streamFlowZonePumpingDepthDto[];
+  public pumpingDepthsByYear: { Year: number, StreamFlowZonePumpingDepths: StreamFlowZonePumpingDepthDto[] }[]
+  allYearsPumpingDepths: StreamFlowZonePumpingDepthDto[];
 
   constructor(
     private managerDashboardService: ManagerDashboardService,
@@ -60,11 +60,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear();
+
+    this.managerDashboardService.getDistrictStatistics().subscribe(stats => {
+      this.districtStatistics = stats;
+      this.loadingDistrictStatistics = false;
+    });
   }
 
   public updateAnnualData(): void {
-    this.loadingDistrictStatistics = true;
-
     // the "district statistics" panel will show the same information for all years as for the current year
     // (unless we in the future get some way to indicate that a well/sensor has been decommissioned)
     const yearForStatistics = this.allYearsSelected ? this.currentYear : this.yearToDisplay;
@@ -72,18 +75,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.pumpingDepthsByYear) {
       this.displayStreamFlowZones();
     }
-    this.managerDashboardService.getDistrictStatistics(yearForStatistics).subscribe(stats => {
-      this.districtStatistics = stats;
-      this.loadingDistrictStatistics = false;
-    });
   }
 
   public getAcreage(streamFlowZone: StreamFlowZoneDto): number {
     return (streamFlowZone.StreamFlowZoneArea * 0.000247105) || 0;
   }
 
-  public getSelectedYearPumpingDepths(): streamFlowZonePumpingDepthDto[] {
-    let selectedYearPumpingDepths : streamFlowZonePumpingDepthDto[]
+  public getSelectedYearPumpingDepths(): StreamFlowZonePumpingDepthDto[] {
+    let selectedYearPumpingDepths : StreamFlowZonePumpingDepthDto[]
     if (!this.allYearsSelected) {
       selectedYearPumpingDepths = this.pumpingDepthsByYear.find(x => x.Year === this.yearToDisplay).StreamFlowZonePumpingDepths;
     } else {
@@ -96,29 +95,24 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   public getPumpingDepth(streamFlowZone: StreamFlowZoneDto): number {
     let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
-
-    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneFeatureID === streamFlowZone.StreamFlowZoneID).PumpingDepth;
+    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZone.StreamFlowZoneID).PumpingDepth;
   }
 
   public getTotalIrrigatedAcres(streamFlowZone: StreamFlowZoneDto) : number{
     let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
 
-    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneFeatureID === streamFlowZone.StreamFlowZoneID).TotalIrrigatedAcres;
+    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZone.StreamFlowZoneID).TotalIrrigatedAcres;
   }
 
   
   public getTotalPumpedVolume(streamFlowZone: StreamFlowZoneDto) : number{
     let selectedYearPumpingDepths = this.getSelectedYearPumpingDepths();
 
-    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneFeatureID === streamFlowZone.StreamFlowZoneID).TotalPumpedVolume;
+    return selectedYearPumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZone.StreamFlowZoneID).TotalPumpedVolume;
   }
 
   public ngAfterViewInit(): void {
-    this.boundingBox = new BoundingBoxDto();
-    this.boundingBox.Left = -122.65840077734131;
-    this.boundingBox.Bottom = 44.800395454281436;
-    this.boundingBox.Right = -121.65139301718362;
-    this.boundingBox.Top = 45.528908149000124;
+    this.boundingBox = DefaultBoundingBox;
 
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -189,15 +183,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.streamFlowZones = zones;
       this.pumpingDepthsByYear = pumpingDepthsByYear;
 
-      const allPumpingDepths: streamFlowZonePumpingDepthDto[] = [].concat.apply([], this.pumpingDepthsByYear.map(x => x.StreamFlowZonePumpingDepths))
+      const allPumpingDepths: StreamFlowZonePumpingDepthDto[] = [].concat.apply([], this.pumpingDepthsByYear.map(x => x.StreamFlowZonePumpingDepths))
       this.allYearsPumpingDepths = this.streamFlowZones.map(zone => {
-        const filteredPumpingDepths = allPumpingDepths.filter(depth => depth.StreamFlowZoneFeatureID === zone.StreamFlowZoneID)
+        const filteredPumpingDepths = allPumpingDepths.filter(depth => depth.StreamFlowZoneID === zone.StreamFlowZoneID);
 
         const allYearsPumpingDepth = filteredPumpingDepths.map(depth => depth.PumpingDepth).reduce((x, y) => x + y, 0);
         const allYearsTotalPumpedVolume = filteredPumpingDepths.map(depth => depth.TotalPumpedVolume).reduce((x, y) => x + y, 0);
         const allYearsTotalIrrigatedAcres = filteredPumpingDepths.map(depth => depth.TotalIrrigatedAcres).reduce((x, y) => x + y, 0) / filteredPumpingDepths.length;
 
-        return { StreamFlowZoneFeatureID: zone.StreamFlowZoneID, PumpingDepth: allYearsPumpingDepth, TotalIrrigatedAcres: allYearsTotalIrrigatedAcres, TotalPumpedVolume: allYearsTotalPumpedVolume }
+        return { StreamFlowZoneID: zone.StreamFlowZoneID, PumpingDepth: allYearsPumpingDepth, TotalIrrigatedAcres: allYearsTotalIrrigatedAcres, TotalPumpedVolume: allYearsTotalPumpedVolume }
       });
 
       console.log(this.pumpingDepthsByYear);
@@ -212,7 +206,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.streamFlowZoneLayer = null;
     }
 
-    let pumpingDepths: streamFlowZonePumpingDepthDto[];
+    let pumpingDepths: StreamFlowZonePumpingDepthDto[];
 
     if (!this.allYearsSelected) {
       pumpingDepths = this.pumpingDepthsByYear.find(x => x.Year === this.yearToDisplay).StreamFlowZonePumpingDepths;
@@ -245,7 +239,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.streamFlowZoneLayer.on("click", (event: LeafletEvent) => {
       const selectedFeatureID = event.propagatedFrom.feature.properties.FeatureID
-      this.selectedStreamflowZone = this.streamFlowZones.find(x=>x.StreamFlowZoneID === selectedFeatureID );
+      this.selectedStreamflowZone = this.streamFlowZones.find(x => x.StreamFlowZoneID === selectedFeatureID );
       this.streamFlowZoneLayer.eachLayer(function(layer) {
         if (layer.feature.properties.FeatureID == selectedFeatureID) {
           layer.setStyle({color: "#00FFFF"});
@@ -260,9 +254,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     })
 
   }
-  getFillColor(FeatureID: number, pumpingDepths: streamFlowZonePumpingDepthDto[]) {
+  getFillColor(streamFlowZoneID: number, pumpingDepths: StreamFlowZonePumpingDepthDto[]) {
 
-    const pumpingDepth = pumpingDepths.find(x => x.StreamFlowZoneFeatureID === FeatureID).PumpingDepth;
+    const pumpingDepth = pumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZoneID).PumpingDepth;
 
     if (pumpingDepth === 0) {
       return null;

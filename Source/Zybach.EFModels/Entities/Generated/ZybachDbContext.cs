@@ -21,7 +21,18 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
         public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
+        public virtual DbSet<ChemicalFormulation> ChemicalFormulations { get; set; }
+        public virtual DbSet<ChemicalUnit> ChemicalUnits { get; set; }
+        public virtual DbSet<ChemigationCounty> ChemigationCounties { get; set; }
+        public virtual DbSet<ChemigationInjectionUnitType> ChemigationInjectionUnitTypes { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
+        public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecordApplicator> ChemigationPermitAnnualRecordApplicators { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecordStatus> ChemigationPermitAnnualRecordStatuses { get; set; }
+        public virtual DbSet<ChemigationPermitAnnualRecordWell> ChemigationPermitAnnualRecordWells { get; set; }
+        public virtual DbSet<ChemigationPermitStatus> ChemigationPermitStatuses { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
         public virtual DbSet<DatabaseMigration> DatabaseMigrations { get; set; }
@@ -29,10 +40,19 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<FileResourceMimeType> FileResourceMimeTypes { get; set; }
+        public virtual DbSet<GeoOptixSensorStaging> GeoOptixSensorStagings { get; set; }
+        public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
+        public virtual DbSet<GeoOptixWellStaging> GeoOptixWellStagings { get; set; }
         public virtual DbSet<MeasurementType> MeasurementTypes { get; set; }
+        public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
+        public virtual DbSet<ReportTemplateModel> ReportTemplateModels { get; set; }
+        public virtual DbSet<ReportTemplateModelType> ReportTemplateModelTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Sensor> Sensors { get; set; }
+        public virtual DbSet<SensorType> SensorTypes { get; set; }
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Well> Wells { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
 
@@ -51,18 +71,16 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<AgHubWell>(entity =>
             {
+                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
+
                 entity.Property(e => e.FieldName).IsUnicode(false);
-
-                entity.Property(e => e.LandownerName).IsUnicode(false);
-
-                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 
                 entity.Property(e => e.WellTPID).IsUnicode(false);
 
-                entity.HasOne(d => d.StreamflowZone)
-                    .WithMany(p => p.AgHubWells)
-                    .HasForeignKey(d => d.StreamflowZoneID)
-                    .HasConstraintName("FK_AghubWell_StreamFlowZone_StreamFlowZoneID");
+                entity.HasOne(d => d.Well)
+                    .WithOne(p => p.AgHubWell)
+                    .HasForeignKey<AgHubWell>(d => d.WellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<AgHubWellIrrigatedAcre>(entity =>
@@ -80,13 +98,45 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<AgHubWellStaging>(entity =>
             {
-                entity.Property(e => e.FieldName).IsUnicode(false);
+                entity.Property(e => e.AgHubRegisteredUser).IsUnicode(false);
 
-                entity.Property(e => e.LandownerName).IsUnicode(false);
+                entity.Property(e => e.FieldName).IsUnicode(false);
 
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 
                 entity.Property(e => e.WellTPID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemicalFormulation>(entity =>
+            {
+                entity.Property(e => e.ChemicalFormulationDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemicalFormulationName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemicalUnit>(entity =>
+            {
+                entity.Property(e => e.ChemicalUnitID).ValueGeneratedNever();
+
+                entity.Property(e => e.ChemicalUnitLowercaseShortName).IsUnicode(false);
+
+                entity.Property(e => e.ChemicalUnitName).IsUnicode(false);
+
+                entity.Property(e => e.ChemicalUnitPluralName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemigationCounty>(entity =>
+            {
+                entity.Property(e => e.ChemigationCountyDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationCountyName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemigationInjectionUnitType>(entity =>
+            {
+                entity.Property(e => e.ChemigationInjectionUnitTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationInjectionUnitTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<ChemigationInspection>(entity =>
@@ -96,6 +146,118 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.Status).IsUnicode(false);
 
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemigationPermit>(entity =>
+            {
+                entity.Property(e => e.TownshipRangeSection).IsUnicode(false);
+
+                entity.HasOne(d => d.ChemigationCounty)
+                    .WithMany(p => p.ChemigationPermits)
+                    .HasForeignKey(d => d.ChemigationCountyID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemigationPermitStatus)
+                    .WithMany(p => p.ChemigationPermits)
+                    .HasForeignKey(d => d.ChemigationPermitStatusID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecord>(entity =>
+            {
+                entity.Property(e => e.ApplicantCity).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantEmail).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantFirstName).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantLastName).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantMailingAddress).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantMobilePhone).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantPhone).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantState).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantZipCode).IsUnicode(false);
+
+                entity.Property(e => e.PivotName).IsUnicode(false);
+
+                entity.HasOne(d => d.ChemigationInjectionUnitType)
+                    .WithMany(p => p.ChemigationPermitAnnualRecords)
+                    .HasForeignKey(d => d.ChemigationInjectionUnitTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemigationPermitAnnualRecordStatus)
+                    .WithMany(p => p.ChemigationPermitAnnualRecords)
+                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordStatusID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemigationPermit)
+                    .WithMany(p => p.ChemigationPermitAnnualRecords)
+                    .HasForeignKey(d => d.ChemigationPermitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecordApplicator>(entity =>
+            {
+                entity.Property(e => e.ApplicatorName).IsUnicode(false);
+
+                entity.Property(e => e.HomePhone).IsUnicode(false);
+
+                entity.Property(e => e.MobilePhone).IsUnicode(false);
+
+                entity.HasOne(d => d.ChemigationPermitAnnualRecord)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordApplicators)
+                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecordChemicalFormulation>(entity =>
+            {
+                entity.HasOne(d => d.ChemicalFormulation)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordChemicalFormulations)
+                    .HasForeignKey(d => d.ChemicalFormulationID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemicalUnit)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordChemicalFormulations)
+                    .HasForeignKey(d => d.ChemicalUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ChemigationPermitAnnualRecord)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordChemicalFormulations)
+                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecordStatus>(entity =>
+            {
+                entity.Property(e => e.ChemigationPermitAnnualRecordStatusDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationPermitAnnualRecordStatusName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemigationPermitAnnualRecordWell>(entity =>
+            {
+                entity.HasOne(d => d.ChemigationPermitAnnualRecord)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordWells)
+                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Well)
+                    .WithMany(p => p.ChemigationPermitAnnualRecordWells)
+                    .HasForeignKey(d => d.WellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ChemigationPermitStatus>(entity =>
+            {
+                entity.Property(e => e.ChemigationPermitStatusDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationPermitStatusName).IsUnicode(false);
             });
 
             modelBuilder.Entity<CustomRichText>(entity =>
@@ -177,6 +339,28 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.FileResourceMimeTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<GeoOptixSensorStaging>(entity =>
+            {
+                entity.Property(e => e.SensorName).IsUnicode(false);
+
+                entity.Property(e => e.SensorType).IsUnicode(false);
+
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<GeoOptixWell>(entity =>
+            {
+                entity.HasOne(d => d.Well)
+                    .WithOne(p => p.GeoOptixWell)
+                    .HasForeignKey<GeoOptixWell>(d => d.WellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<GeoOptixWellStaging>(entity =>
+            {
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
             modelBuilder.Entity<MeasurementType>(entity =>
             {
                 entity.Property(e => e.MeasurementTypeID).ValueGeneratedNever();
@@ -184,6 +368,50 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.MeasurementTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.MeasurementTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ReportTemplate>(entity =>
+            {
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.DisplayName).IsUnicode(false);
+
+                entity.HasOne(d => d.FileResource)
+                    .WithMany(p => p.ReportTemplates)
+                    .HasForeignKey(d => d.FileResourceID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ReportTemplateModel)
+                    .WithMany(p => p.ReportTemplates)
+                    .HasForeignKey(d => d.ReportTemplateModelID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ReportTemplateModelType)
+                    .WithMany(p => p.ReportTemplates)
+                    .HasForeignKey(d => d.ReportTemplateModelTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<ReportTemplateModel>(entity =>
+            {
+                entity.Property(e => e.ReportTemplateModelID).ValueGeneratedNever();
+
+                entity.Property(e => e.ReportTemplateModelDescription).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ReportTemplateModelType>(entity =>
+            {
+                entity.Property(e => e.ReportTemplateModelTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.ReportTemplateModelTypeDescription).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ReportTemplateModelTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -195,6 +423,20 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.RoleDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.RoleName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Sensor>(entity =>
+            {
+                entity.Property(e => e.SensorName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SensorType>(entity =>
+            {
+                entity.Property(e => e.SensorTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.SensorTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.SensorTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<StreamFlowZone>(entity =>
@@ -220,6 +462,16 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<Well>(entity =>
+            {
+                entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+
+                entity.HasOne(d => d.StreamflowZone)
+                    .WithMany(p => p.Wells)
+                    .HasForeignKey(d => d.StreamflowZoneID)
+                    .HasConstraintName("FK_Well_StreamFlowZone_StreamFlowZoneID");
             });
 
             modelBuilder.Entity<WellSensorMeasurement>(entity =>

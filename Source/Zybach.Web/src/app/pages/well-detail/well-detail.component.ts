@@ -3,8 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
-import { UserDetailedDto } from 'src/app/shared/models';
-import { WellDetailDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { AsyncParser } from 'json2csv';
@@ -20,12 +18,20 @@ import {
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';
-import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
-import { InstallationDto } from 'src/app/shared/models/installation-dto';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
 import { DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { Alert } from 'src/app/shared/models/alert';
+import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
+import { SensorStatusService } from 'src/app/services/sensor-status.service';
+import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
+import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
+import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
+import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -42,17 +48,20 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   maxZoom = 17;
 
-  currentUser: UserDetailedDto;
+  currentUser: UserDto;
   chartSubscription: any;
   well: WellDetailDto;
-  installations: InstallationDto[] = [];
+  sensorsWithStatus: SensorMessageAgeDto[];
+  installations: InstallationRecordDto[] = [];
+  installationPhotos: Map<string, any[]>; 
   rawResults: string;
   timeSeries: any[];
   vegaView: any;
   rangeMax: number;
   wellRegistrationID: string;
   tooltipFields: any;
-  noTimeSeriesData: boolean = false; sensors: any;
+  noTimeSeriesData: boolean = false;
+  sensors: any;
   boundingBox: any;
   tileLayers: any;
   map: LeafletMap;
@@ -72,12 +81,18 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   dateRange: any;
   public unitsShown: string = "gal";
 
+  public isLoadingSubmit: boolean = false;
+
+  public chemigationPermitAnnualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
+
   constructor(
     private wellService: WellService,
+    private sensorService: SensorStatusService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private alertService: AlertService
   ) { }
 
   initDateRange(startDate: Date, endDate: Date) {
@@ -113,7 +128,9 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
       this.getWellDetails();
       this.getInstallationDetails();
+      this.getSenorsWithAgeMessages();
       this.getChartDataAndBuildChart();
+      this.getChemigationPermits();
     })
   }
 
@@ -127,7 +144,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.well = well;
       
       this.cdr.detectChanges();
-      this.addWellToMap();
+      
+      if (well.Location != null && well.Location != undefined) {
+        this.addWellToMap();
+      }
+      else {
+        this.alertService.pushAlert(new Alert(`No location was provided for ${well.WellRegistrationID}.`))
+      }
     })
   }
 
@@ -138,17 +161,34 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getInstallationDetails(){
     this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installations => {
       this.installations = installations;
-
+      this.installationPhotos = new Map();
       for (const installation of installations) {
 
-        this.getPhotoRecords(installation);
+        const installationPhotoDataUrls = this.getPhotoRecords(installation);
+        this.installationPhotos.set(installation.InstallationCanonicalName, installationPhotoDataUrls);
       }
+    });
+  }
+
+  getSenorsWithAgeMessages(){
+    this.sensorService.getSensorStatusForWell(this.wellRegistrationID).subscribe(wellWithSensorMessageAge => {
+      this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
+
+      for (var sensor of this.sensorsWithStatus){
+        sensor.MessageAge = Math.floor(sensor.MessageAge / 3600)
+      }
+    });
+  }
+
+  getChemigationPermits(){
+    this.wellService.getChemigationPermts(this.wellRegistrationID).subscribe(chemigationPermitAnnualRecords => {
+      this.chemigationPermitAnnualRecords = chemigationPermitAnnualRecords;
     });
   }
 
   getDataSourcesLabel() {
     let plural = true;
-    let sensorCount = this.getSensors().length;
+    let sensorCount = this.getSensorTypes().size;
     if ((sensorCount == 0 && this.well.HasElectricalData) || (sensorCount == 1 && !this.well.HasElectricalData)) {
       plural = false;
     }
@@ -156,9 +196,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return `Data Source${plural ? "s": ""}: `
   }
 
-  getPhotoRecords(installation: InstallationDto){
-    installation.PhotoDataUrls = [];
-    installation.NoPhotoAvailable = false;
+  getPhotoRecords(installation: InstallationRecordDto) : any[]{
+    const installationPhotoDataUrls = [];
     const photos = installation.Photos;
 
     const photoObservables = photos.map(
@@ -181,20 +220,19 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         reader.readAsDataURL(blob);
         reader.onloadend = () => {
           // result includes identifier 'data:image/png;base64,' plus the base64 data
-          installation.PhotoDataUrls.push({path: reader.result});
+          installationPhotoDataUrls.push({path: reader.result});
         };
       }
-
-      installation.NoPhotoAvailable = !foundPhoto;
     });
+    return installationPhotoDataUrls;
   }
   
   wellInGeoOptixUrl(): string {
     return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.wellRegistrationID}`;
   }
 
-  getSensors() {
-    return this.well.Sensors;
+  getSensorTypes() {
+    return new Set(this.well.Sensors.map(sensor => {return sensor.SensorType}));
   }
 
   getLastReadingDate() {
@@ -206,7 +244,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return time.format('M/D/yyyy');// + timepiece;
   }
 
-  getInstallationDate(installation: InstallationDto) {
+  getInstallationDate(installation: InstallationRecordDto) {
     if (!installation.Date) {
       return ""
     }
@@ -252,6 +290,28 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.unitsShown = units;
   }
 
+  public toggleIsActive(sensorName : string, isActive : boolean): void{
+    var sensor = this.sensorsWithStatus.find(x => x.SensorName === sensorName);
+    if(sensor) {
+      this.isLoadingSubmit = true;
+      var sensorSummaryDto = new SensorSummaryDto();
+      sensorSummaryDto.SensorName = sensorName;
+      sensorSummaryDto.IsActive = isActive
+      this.sensorService.updateSensorIsActive(sensorSummaryDto)
+        .subscribe(response => {
+          this.isLoadingSubmit = false;
+          sensor.IsActive = isActive;
+          // this.alertService.pushAlert(new Alert(`Sensor '${sensorName}' now ${isActive ? "enabled" : "disabled"}`, AlertContext.Success));
+        }
+          ,
+          error => {
+            this.isLoadingSubmit = false;
+            this.cdr.detectChanges();
+          }
+        );
+    }
+  }
+
   // Begin section: location map
 
   public ngAfterViewInit(): void {
@@ -271,11 +331,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public initMapConstants() {
-    this.boundingBox = new BoundingBoxDto();
-    this.boundingBox.Left = -122.65840077734131;
-    this.boundingBox.Bottom = 44.800395454281436;
-    this.boundingBox.Right = -121.65139301718362;
-    this.boundingBox.Top = 45.528908149000124;
+    this.boundingBox = DefaultBoundingBox;
 
     this.tileLayers = Object.assign({}, {
       "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -337,8 +393,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getChartDataAndBuildChart() {
 
     this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
-      if (!response.TimeSeries) {
-        console.log("No Time Series Data");
+      if (!response.TimeSeries || response.TimeSeries.length == 0) {
         this.noTimeSeriesData = true;
         this.timeSeries = [];
         return;

@@ -23,5 +23,18 @@ namespace Zybach.EFModels.Entities
 
         static partial void DoCustomMappings(MeasurementType measurementType, MeasurementTypeDto measurementTypeDto);
 
+        public static MeasurementTypeSimpleDto AsSimpleDto(this MeasurementType measurementType)
+        {
+            var measurementTypeSimpleDto = new MeasurementTypeSimpleDto()
+            {
+                MeasurementTypeID = measurementType.MeasurementTypeID,
+                MeasurementTypeName = measurementType.MeasurementTypeName,
+                MeasurementTypeDisplayName = measurementType.MeasurementTypeDisplayName
+            };
+            DoCustomSimpleDtoMappings(measurementType, measurementTypeSimpleDto);
+            return measurementTypeSimpleDto;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(MeasurementType measurementType, MeasurementTypeSimpleDto measurementTypeSimpleDto);
     }
 }

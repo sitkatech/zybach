@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Zybach.API.Models;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -13,56 +13,30 @@ using Zybach.Models.DataTransferObjects;
 namespace Zybach.API.Controllers
 {
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi = true)]
     public class ManagerDashboardController : SitkaController<ManagerDashboardController>
     {
-        private readonly GeoOptixService _geoOptixService;
+        private readonly WellService _wellService;
         private const double GALLON_TO_ACRE_INCH = 3.68266E-5;
 
-        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ManagerDashboardController(ZybachDbContext dbContext, ILogger<ManagerDashboardController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _geoOptixService = geoOptixService;
+            _wellService = wellService;
         }
 
 
-        [HttpGet("/api/managerDashboard/districtStatistics/{year}")]
+        [HttpGet("/api/managerDashboard/districtStatistics")]
         [ZybachViewFeature]
-        public async Task<DistrictStatisticsDto> GetDistrictStatistics([FromRoute] int year)
+        public DistrictStatisticsDto GetDistrictStatistics()
         {
-            // get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year
-            var geoOptixWells = await _geoOptixService.GetWellSummariesCreatedAsOfYear(year);
-            var aghubRegistrationIds = _dbContext.WellSensorMeasurements
-                .Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.ElectricalUsage &&
-                            x.ReadingYear == year).Select(x => x.WellRegistrationID).Distinct().ToList();
-            // combine the registration ids as a set and count to avoid counting duplicates
-            var numberOfWellsTracked = geoOptixWells.Select(x => x.WellRegistrationID)
-                .Union(aghubRegistrationIds, StringComparer.InvariantCultureIgnoreCase).Count();
-
-            // get all sensors that existed in GeoOptix as of the given year
-            var sensors = await _geoOptixService.GetSensorSummariesCreatedAsOfYear(year);
-
-            // filter by sensor type and count
-            var numberOfFlowMeters = sensors.Count(x => x.SensorType == InfluxDBService.SensorTypes.FlowMeter);
-            var numberOfContinuityMeters = sensors.Count(x => x.SensorType == InfluxDBService.SensorTypes.ContinuityMeter);
-
-            // todo: get total number of electrical usage estimates
-            var numberOfElectricalUsageEstimates = aghubRegistrationIds.Count;
+            var allWells = _wellService.GetAghubAndGeoOptixWells();
 
             return new DistrictStatisticsDto
             { 
-                NumberOfWellsTracked = numberOfWellsTracked,
-                NumberOfContinuityMeters = numberOfContinuityMeters,
-                NumberOfElectricalUsageEstimates = numberOfElectricalUsageEstimates,
-                NumberOfFlowMeters = numberOfFlowMeters
+                NumberOfWellsTracked = allWells.Count,
+                NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.ContinuityMeter)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfElectricalUsageEstimates = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.ElectricalUsage)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.FlowMeter)).Select(x => x.WellRegistrationID).Distinct().Count()
             };
-        }
-
-        public class DistrictStatisticsDto
-        {
-            public int NumberOfWellsTracked { get; set; }
-            public int NumberOfContinuityMeters { get; set; }
-            public int NumberOfElectricalUsageEstimates { get; set; }
-            public int NumberOfFlowMeters { get; set; }
         }
 
         [HttpGet("/api/managerDashboard/streamFlowZonePumpingDepths")]
@@ -97,15 +71,15 @@ namespace Zybach.API.Controllers
             var streamFlowZonePumpingDepthDtos = new List<StreamFlowZonePumpingDepthDto>();
             foreach (var streamFlowZoneWellsDto in streamFlowZoneWellMap)
             {
-                if (!streamFlowZoneWellsDto.AgHubWells.Any())
+                if (!streamFlowZoneWellsDto.Wells.Any())
                 {
                     streamFlowZonePumpingDepthDtos.Add(
                         new StreamFlowZonePumpingDepthDto(streamFlowZoneWellsDto.StreamFlowZone.StreamFlowZoneID, 0, 0, 0));
                 }
                 else
                 {
-                    var wellRegistrationIDsWithinStreamFlowZone = streamFlowZoneWellsDto.AgHubWells.Select(x => x.WellRegistrationID.ToUpper());
-                    var totalIrrigatedAcres = streamFlowZoneWellsDto.AgHubWells
+                    var wellRegistrationIDsWithinStreamFlowZone = streamFlowZoneWellsDto.Wells.Select(x => x.WellRegistrationID.ToUpper());
+                    var totalIrrigatedAcres = streamFlowZoneWellsDto.Wells
                         .Where(x => wellRegistrationIDsWithinStreamFlowZone.Contains(x.WellRegistrationID))
                         .SelectMany(x => x.IrrigatedAcresPerYear).Where(x => x.Year == year).Sum(x => x.Acres);
                     var totalVolume = pumpedVolumes.Where(x => wellRegistrationIDsWithinStreamFlowZone.Contains(x.Key)).Sum(x => x.Value);
@@ -143,15 +117,15 @@ namespace Zybach.API.Controllers
         {
         }
 
-        public StreamFlowZonePumpingDepthDto(int streamFlowZoneFeatureID, double pumpingDepth, double totalIrrigatedAcres, double totalPumpedVolume)
+        public StreamFlowZonePumpingDepthDto(int streamFlowZoneID, double pumpingDepth, double totalIrrigatedAcres, double totalPumpedVolume)
         {
-            StreamFlowZoneFeatureID = streamFlowZoneFeatureID;
+            StreamFlowZoneID = streamFlowZoneID;
             PumpingDepth = pumpingDepth;
             TotalIrrigatedAcres = totalIrrigatedAcres;
             TotalPumpedVolume = totalPumpedVolume;
         }
 
-        public int StreamFlowZoneFeatureID { get; set; }
+        public int StreamFlowZoneID { get; set; }
         public double PumpingDepth { get; set; }
         public double TotalIrrigatedAcres { get; set; }
         public double TotalPumpedVolume { get; set; }

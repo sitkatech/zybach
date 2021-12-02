@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@ang
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { UserDto } from 'src/app/shared/models/generated/user-dto';
-import { WellWithSensorSummaryDto } from 'src/app/shared/models/well-with-sensor-summary-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
 import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
 import { WellMapComponent } from '../well-map/well-map.component';
 
@@ -36,18 +36,18 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
         this.wells = wells;
-        
+        wells.filter(x => x.Location == null || x.Location ==  undefined).forEach(x => console.log(x));
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
           features:
 
-            wells.map(x => {
+            wells.filter(x => x.Location != null && x.Location != undefined).map(x => {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellRegistrationID: x.WellRegistrationID,
                 sensors: x.Sensors || [],
-                landownerName: x.LandownerName,
+                AgHubRegisteredUser: x.AgHubRegisteredUser,
                 fieldName: x.FieldName
               };
               return geoJsonPoint;
@@ -108,9 +108,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, filter: true, resizable: true
       },
       {
-        headerName: "Landowner",
-        field: "LandownerName",
-        width: 125,
+        headerName: "AgHub Registered User",
+        field: "AgHubRegisteredUser",
+        width: 170,
         sortable: true, filter: true, resizable: true
       },
       {
@@ -173,7 +173,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "In AgHub?",
         valueGetter: function (params) {
-          if (params.data.WellTPID) {
+          if (params.data.InAgHub) {
             return "Yes"
           } else {
             return "No"

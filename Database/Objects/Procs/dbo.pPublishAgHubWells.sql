@@ -13,13 +13,24 @@ begin
 
 	delete aw 
 	from dbo.AgHubWell aw
-	left join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
+	join dbo.Well w on aw.WellID = w.WellID
+	left join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 	where aws.AgHubWellStagingID is null
 
-	insert into dbo.AgHubWell(WellRegistrationID, WellTPID, WellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, FetchDate, LandownerName, FieldName)
+	insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
 	select	upper(aws.WellRegistrationID) as WellRegistrationID, 
-			aws.WellTPID,
 			aws.WellGeometry,
+			@fetchDate as CreateDate,
+			@fetchDate as LastUpdateDate
+	from dbo.AgHubWellStaging aws
+	left join dbo.Well aw on aws.WellRegistrationID = aw.WellRegistrationID
+	where aw.WellID is null
+
+
+	insert into dbo.AgHubWell(WellID, WellTPID, AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName)
+	select	w.WellID,
+			aws.WellTPID,
+			aws.WellGeometry as AgHubWellGeometry,
 			aws.WellTPNRDPumpRate,
 			aws.TPNRDPumpRateUpdated,
 			aws.WellConnectedMeter,
@@ -28,17 +39,16 @@ begin
 			aws.HasElectricalData,
 			aws.RegisteredPumpRate,
 			aws.RegisteredUpdated,
-			@fetchDate as FetchDate,
-			aws.LandownerName,
+			aws.AgHubRegisteredUser,
 			aws.FieldName
 	from dbo.AgHubWellStaging aws
-	left join dbo.AgHubWell aw on aws.WellRegistrationID = aw.WellRegistrationID
+	join dbo.Well w on aws.WellRegistrationID = w.WellRegistrationID
+	left join dbo.AgHubWell aw on w.WellID = aw.WellID
 	where aw.AgHubWellID is null
 
 	update aw
-	set aw.WellRegistrationID = upper(aws.WellRegistrationID),
-		aw.WellTPID = aws.WellTPID,
-		aw.WellGeometry = aws.WellGeometry,
+	set aw.WellTPID = aws.WellTPID,
+		aw.AgHubWellGeometry = aws.WellGeometry,
 		aw.WellTPNRDPumpRate = aws.WellTPNRDPumpRate,
 		aw.TPNRDPumpRateUpdated = aws.TPNRDPumpRateUpdated,
 		aw.WellConnectedMeter = aws.WellConnectedMeter,
@@ -47,38 +57,37 @@ begin
 		aw.HasElectricalData = aws.HasElectricalData,
 		aw.RegisteredPumpRate = aws.RegisteredPumpRate,
 		aw.RegisteredUpdated =aws.RegisteredUpdated,
-		aw.FetchDate = @fetchDate,
-		aw.LandownerName = aws.LandownerName,
+		aw.AgHubRegisteredUser = aws.AgHubRegisteredUser,
 		aw.FieldName = aws.FieldName
 	from dbo.AgHubWell aw
-	join dbo.AgHubWellStaging aws on aw.WellRegistrationID = aws.WellRegistrationID
+	join dbo.Well w on aw.WellID = w.WellID
+	join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
+
+	update w
+	set LastUpdateDate = @fetchDate, WellGeometry.STSrid = 4326
+	from dbo.Well w
+	join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 
 	update dbo.AgHubWell
-	Set WellGeometry.STSrid = 4326
+	Set AgHubWellGeometry.STSrid = 4326
 
 	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres)
 	select	aw.AgHubWellID, 
 			awias.IrrigationYear,
 			avg(awias.Acres) as Acres
 	from dbo.AgHubWellIrrigatedAcreStaging awias
-	join dbo.AgHubWell aw on awias.WellRegistrationID = aw.WellRegistrationID
+	join dbo.Well w on awias.WellRegistrationID = w.WellRegistrationID
+	join dbo.AgHubWell aw on w.WellID = aw.WellID
 	group by aw.AgHubWellID, awias.IrrigationYear
 
 	-- Set StreamflowZoneID; first "reset" it to null; then actually calculate matching ones
-	update dbo.AgHubWell
+	update dbo.Well
 	Set StreamflowZoneID = null
 
 	update aw
 	set StreamflowZoneID = sfz.StreamFlowZoneID
 	from dbo.StreamFlowZone sfz
-	join dbo.AgHubWell aw on aw.WellGeometry.STWithin(sfz.StreamFlowZoneGeometry) = 1
-
-
-	--select	aw.AgHubWellID, 
-	--		awias.IrrigationYear,
-	--		awias.Acres
-	--from dbo.AgHubWellIrrigatedAcreStaging awias
-	--join dbo.AgHubWell aw on awias.WellRegistrationID = awias.WellRegistrationID
+	join dbo.Well aw on aw.WellGeometry.STWithin(sfz.StreamFlowZoneGeometry) = 1
 
 	exec dbo.pPublishWellSensorMeasurementStaging
 

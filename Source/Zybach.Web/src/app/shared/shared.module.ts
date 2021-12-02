@@ -6,7 +6,7 @@ import { NotFoundComponent } from './pages';
 import { HeaderNavComponent } from './components';
 import { UnauthenticatedComponent } from './pages/unauthenticated/unauthenticated.component';
 import { SubscriptionInsufficientComponent } from './pages/subscription-insufficient/subscription-insufficient.component';
-import { NgProgressModule } from '@ngx-progressbar/core';
+import { NgProgressModule } from 'ngx-progressbar';
 import { RouterModule } from '@angular/router';
 import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-renderer.component';
 import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
@@ -20,6 +20,8 @@ import { AlertDisplayComponent } from './components/alert-display/alert-display.
 import { FieldDefinitionGridHeaderComponent } from './components/field-definition-grid-header/field-definition-grid-header.component';
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { WaterYearSelectComponent } from './components/water-year-select/water-year-select.component'
+import { CustomDropdownFilterComponent } from './components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +37,8 @@ import { WaterYearSelectComponent } from './components/water-year-select/water-y
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
+        CustomDropdownFilterComponent,
+        ClearGridFiltersButtonComponent
     ],
     imports: [
         CommonModule,
@@ -45,7 +49,7 @@ import { WaterYearSelectComponent } from './components/water-year-select/water-y
         SelectDropDownModule,
         CKEditorModule,
         NgbModule,
-        AutoCompleteModule
+        AutoCompleteModule,
     ],
     exports: [
         AlertDisplayComponent,
@@ -56,7 +60,8 @@ import { WaterYearSelectComponent } from './components/water-year-select/water-y
         CustomRichTextComponent,
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
-        WaterYearSelectComponent
+        WaterYearSelectComponent,
+        ClearGridFiltersButtonComponent
     ]
 })
 export class SharedModule {

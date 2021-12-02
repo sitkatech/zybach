@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UserService } from './user/user.service';
-import { UserDetailedDto } from '../shared/models';
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CookieStorageService } from '../shared/services/cookies/cookie-storage.service';
@@ -10,18 +9,19 @@ import { RoleEnum } from '../shared/models/enums/role.enum';
 import { AlertService } from '../shared/services/alert.service';
 import { Alert } from '../shared/models/alert';
 import { AlertContext } from '../shared/models/enums/alert-context.enum';
-import { UserCreateDto } from '../shared/models/user/user-create-dto';
 import { environment } from 'src/environments/environment';
+import { UserCreateDto } from '../shared/generated/model/user-create-dto';
+import { UserDto } from '../shared/generated/model/user-dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private currentUser: UserDetailedDto;
+  private currentUser: UserDto;
 
   private getUserObservable: any;
 
-  private _currentUserSetSubject = new Subject<UserDetailedDto>();
+  private _currentUserSetSubject = new Subject<UserDto>();
   public currentUserSetObservable = this._currentUserSetSubject.asObservable();
 
 
@@ -34,33 +34,7 @@ export class AuthenticationService {
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: NavigationEnd) => {
         if (this.isAuthenticated()) {
-          var claims = this.oauthService.getIdentityClaims();
-          var globalID = claims["sub"];
-
-          this.getUserObservable = this.userService.getUserFromGlobalID(globalID).subscribe(result => {
-            this.getUserCallback(result);
-          }, error => {
-            if (error.status !== 404) {
-              this.alertService.pushAlert(new Alert("There was an error logging into the application.", AlertContext.Danger));
-              this.router.navigate(['/']);
-            } else {
-              this.alertService.clearAlerts();
-              const newUser = new UserCreateDto({
-                FirstName: claims["given_name"],
-                LastName: claims["family_name"],
-                Email: claims["email"],
-                RoleID: RoleEnum.Unassigned,
-                LoginName: claims["login_name"],
-                UserGuid: claims["sub"],
-              });
-
-              this.userService.createNewUser(newUser).subscribe(user => {
-                this.getUserCallback(user);
-              })
-
-            }
-          });
-
+          this.getGlobalIDFromClaimsAndAttemptToSetUserObservableAndCreateUserIfNecessary();
         } else {
           this.currentUser = null;
           this._currentUserSetSubject.next(null);
@@ -77,22 +51,46 @@ export class AuthenticationService {
 
   public checkAuthentication() {
     if (this.isAuthenticated() && !this.currentUser) {
-      var claims = this.oauthService.getIdentityClaims();
-      var globalID = claims["sub"];
       console.log("Authenticated but no user found...");
-      this.getUserObservable = this.userService.getUserFromGlobalID(globalID).subscribe(user => {
-        this.currentUser = user;
-        this._currentUserSetSubject.next(this.currentUser);
-      });
+      this.getGlobalIDFromClaimsAndAttemptToSetUserObservableAndCreateUserIfNecessary();
     }
   }
 
-  private getUserCallback(user: UserDetailedDto) {
+  public getGlobalIDFromClaimsAndAttemptToSetUserObservableAndCreateUserIfNecessary() {
+    var claims = this.oauthService.getIdentityClaims();
+    var globalID = claims["sub"];
+
+    this.getUserObservable = this.userService.getUserFromGlobalID(globalID).subscribe(result => {
+      this.getUserCallback(result);
+    }, error => {
+      if (error.status !== 404) {
+        this.alertService.pushAlert(new Alert("There was an error logging into the application.", AlertContext.Danger));
+        this.router.navigate(['/']);
+      } else {
+        this.alertService.clearAlerts();
+        const newUser = new UserCreateDto({
+          FirstName: claims["given_name"],
+          LastName: claims["family_name"],
+          Email: claims["email"],
+          RoleID: RoleEnum.Unassigned,
+          LoginName: claims["login_name"],
+          UserGuid: claims["sub"],
+        });
+
+        this.userService.createNewUser(newUser).subscribe(user => {
+          this.getUserCallback(user);
+        })
+
+      }
+    });
+  }
+
+  private getUserCallback(user: UserDto) {
     this.currentUser = user;
     this._currentUserSetSubject.next(this.currentUser);
   }
 
-  public refreshUserInfo(user: UserDetailedDto) {
+  public refreshUserInfo(user: UserDto) {
     this.getUserCallback(user);
   }
 
@@ -105,7 +103,7 @@ export class AuthenticationService {
   }
 
   public handleUnauthorized(): void {
-    this.logout();
+    this.forcedLogout();
   }
 
   public login() {
@@ -121,6 +119,11 @@ export class AuthenticationService {
     return `ClientID=${environment.keystoneAuthConfiguration.clientId}&RedirectUrl=${encodeURIComponent(environment.createAccountRedirectUrl)}`;
   }
 
+  public forcedLogout() {
+    sessionStorage["authRedirectUrl"] = window.location.href;
+    this.logout();
+  }
+
   public logout() {
     this.oauthService.logOut();
 
@@ -129,7 +132,7 @@ export class AuthenticationService {
     });
   }
 
-  public isUserAnAdministrator(user: UserDetailedDto): boolean {
+  public isUserAnAdministrator(user: UserDto): boolean {
     const role = user && user.Role
       ? user.Role.RoleID
       : null;
@@ -140,14 +143,18 @@ export class AuthenticationService {
     return this.isUserAnAdministrator(this.currentUser);
   }
 
-  public isUserUnassigned(user: UserDetailedDto): boolean {
+  public isCurrentUserDisabled(): boolean {
+    return this.isUserRoleDisabled(this.currentUser);
+  }
+
+  public isUserUnassigned(user: UserDto): boolean {
     const role = user && user.Role
       ? user.Role.RoleID
       : null;
     return role === RoleEnum.Unassigned;
   }
 
-  public isUserRoleDisabled(user: UserDetailedDto): boolean {
+  public isUserRoleDisabled(user: UserDto): boolean {
     const role = user && user.Role
       ? user.Role.RoleID
       : null;

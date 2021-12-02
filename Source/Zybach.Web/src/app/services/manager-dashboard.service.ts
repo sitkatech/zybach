@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DistrictStatisticsDto } from '../shared/models/district-statistics-dto';
-import { StreamFlowZoneDto } from '../shared/models/stream-flow-zone-dto';
-import { streamFlowZonePumpingDepthDto } from '../shared/models/stream-flow-zone-pumping-depth-dto';
+import { DistrictStatisticsDto } from '../shared/generated/model/district-statistics-dto';
+import { StreamFlowZoneDto } from '../shared/generated/model/stream-flow-zone-dto';
+import { StreamFlowZonePumpingDepthDto } from '../shared/generated/model/stream-flow-zone-pumping-depth-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({
@@ -12,15 +12,15 @@ export class ManagerDashboardService {
 
   constructor(private apiService: ApiService) { }
 
-  getDistrictStatistics(year: number): Observable<DistrictStatisticsDto>{
-    return this.apiService.getFromApi(`managerDashboard/districtStatistics/${year}`);
+  getDistrictStatistics(): Observable<DistrictStatisticsDto>{
+    return this.apiService.getFromApi(`managerDashboard/districtStatistics`);
   }
 
   getStreamflowZones(): Observable<StreamFlowZoneDto[]> {
     return this.apiService.getFromApi(`streamFlowZones`);
   }
 
-  getStreamFlowZonePumpingDepths(): Observable<{Year:number, StreamFlowZonePumpingDepths: streamFlowZonePumpingDepthDto[]}[]> {
+  getStreamFlowZonePumpingDepths(): Observable<{Year:number, StreamFlowZonePumpingDepths: StreamFlowZonePumpingDepthDto[]}[]> {
     return this.apiService.getFromApi(`managerDashboard/streamFlowZonePumpingDepths`)
   }
 }

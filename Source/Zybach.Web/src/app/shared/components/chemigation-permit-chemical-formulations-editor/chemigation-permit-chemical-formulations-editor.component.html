@@ -1,0 +1,66 @@
+<h4>Applied Chemicals</h4>
+<p>
+    List the names and estimated amounts of all chemicals that were used in the chemigation system in the past year.
+</p>
+<form #chemicalFormulationsForm="ngForm">
+    <div class="row col-10" *ngIf="model.length > 0">
+        <div class="col-4 control-label text-left mb-2">
+            <label class="required"><strong>Formulation: </strong></label>
+        </div>
+
+        <div class="col-2 control-label text-right mb-2">
+            <label class="required"><strong>Total Applied: </strong></label>
+        </div>
+
+        <div class="col-2 control-label text-left mb-2">
+            <label class="required"><strong>Unit: </strong></label>
+        </div>
+
+        <div class="col-2 control-label text-right mb-2">
+            <label class="required"><strong>Acres Treated: </strong></label>
+        </div>
+    </div>
+    <div class="row col-10" *ngFor="let chemicalPermitAnnualRecordChemicalFormulation of model; let index = index">
+        <div class="col-4 text-left mb-2">
+            <select class="form-control" name="ChemicalFormulationID-{{index}}"
+                [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalFormulationID" required>
+                <option *ngFor="let chemicalFormulation of chemicalFormulations"
+                    [value]="chemicalFormulation.ChemicalFormulationID">
+                    {{chemicalFormulation.ChemicalFormulationDisplayName}}
+                </option>
+            </select>
+        </div>
+
+        <div class="col-2 text-left mb-2">
+            <input type="number" step=".1" class="form-control" name="TotalApplied-{{index}}" required
+                [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.TotalApplied" />
+        </div>
+
+        <div class="col-2 text-left mb-2">
+            <select class="form-control" name="ChemicalUnitID-{{index}}"
+                [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalUnitID" required>
+                <option selected disabled [value]="">Choose One</option>
+                <option *ngFor="let chemicalUnit of chemicalUnits"
+                    [value]="chemicalUnit.ChemicalUnitID">
+                    {{chemicalUnit.ChemicalUnitPluralName}}
+                </option>
+            </select>
+        </div>
+
+        <div class="col-2 text-left mb-2">
+            <input type="number" step=".1" class="form-control" name="AcresTreated-{{index}}" required 
+                [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.AcresTreated" />
+        </div>
+
+        <div class="col-2 text-left mb-2">
+            <button type="button" class="btn btn-zybach" (click)="deleteRow(chemicalPermitAnnualRecordChemicalFormulation)">
+                <span class="fa fa-trash"></span>
+                Delete Row
+            </button>
+        </div>
+    </div>
+</form>
+<button type="button" class="btn btn-zybach" (click)="addRow()">
+    <span class="fa fa-plus"></span>
+    Add New Chemical
+</button>

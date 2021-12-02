@@ -34,7 +34,7 @@ namespace Zybach.EFModels.Entities
         public DateTime? RegisteredUpdated { get; set; }
         public bool HasElectricalData { get; set; }
         [StringLength(100)]
-        public string LandownerName { get; set; }
+        public string AgHubRegisteredUser { get; set; }
         [StringLength(100)]
         public string FieldName { get; set; }
     }

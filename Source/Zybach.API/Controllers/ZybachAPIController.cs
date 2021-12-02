@@ -4,9 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Zybach.API.Models;
-using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
@@ -15,9 +13,9 @@ namespace Zybach.API.Controllers
 {
     [ApiKey]
     [ApiController]
-    public class ZybachAPIController : SitkaController<ZybachAPIController>
+    public class ZybachAPIController : SitkaApiController<ZybachAPIController>
     {
-        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger) : base(dbContext, logger)
         {
         }
 
@@ -39,7 +37,7 @@ namespace Zybach.API.Controllers
         /// <param name="endDate">The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)</param>
         [Produces("application/json")]
         [HttpGet("/api/wells/pumpedVolume")]
-        public ApiResult<StructuredResults> GetPumpedVolume([FromQuery] List<string> wellRegistrationID, [FromQuery] string startDate, [FromQuery] string endDate)
+        public StructuredResultsDto GetPumpedVolume([FromQuery] List<string> wellRegistrationID, [FromQuery] string startDate, [FromQuery] string endDate)
         {
             return GetPumpedVolumeImpl(wellRegistrationID, startDate, endDate);
         }
@@ -59,12 +57,12 @@ namespace Zybach.API.Controllers
         /// <returns></returns>
         [Produces("application/json")]
         [HttpGet("/api/wells/{wellRegistrationID}/pumpedVolume")]
-        public ApiResult<StructuredResults> GetPumpedVolume([FromRoute] string wellRegistrationID, [FromQuery] string startDate, [FromQuery] string endDate)
+        public StructuredResultsDto GetPumpedVolume([FromRoute] string wellRegistrationID, [FromQuery] string startDate, [FromQuery] string endDate)
         {
             return GetPumpedVolumeImpl(new List<string> { wellRegistrationID }, startDate, endDate);
         }
 
-        private ApiResult<StructuredResults> GetPumpedVolumeImpl(List<string> wellRegistrationIDs, string startDateString, string endDateString)
+        private StructuredResultsDto GetPumpedVolumeImpl(List<string> wellRegistrationIDs, string startDateString, string endDateString)
         {
             if (string.IsNullOrWhiteSpace(endDateString))
             {
@@ -112,17 +110,17 @@ namespace Zybach.API.Controllers
                     wellSensorMeasurementDtos = query.Select(x => x.AsDto()).ToList();
                 }
 
-                var aghubWells = _dbContext.AgHubWells.AsNoTracking().Where(x =>
-                        wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList()
-                    .ToDictionary(x => x.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
+                var wells = _dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x =>
+                        wellRegistrationIDs.Contains(x.Well.WellRegistrationID)).ToList()
+                    .ToDictionary(x => x.Well.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
 
-                var apiResult = new ApiResult<StructuredResults>
+                var apiResult = new StructuredResultsDto
                 {
                     Status = "success"
                 };
 
                 var firstReadingDates = WellSensorMeasurement.GetFirstReadingDateTimesPerSensorForWells(_dbContext, measurementTypeEnum, wellRegistrationIDs);
-                apiResult.Result = StructureResults(wellSensorMeasurementDtos, aghubWells, startDate, endDate, firstReadingDates, wellRegistrationIDs);
+                apiResult.Result = StructureResults(wellSensorMeasurementDtos, wells, startDate, endDate, firstReadingDates, wellRegistrationIDs);
                 return apiResult;
             }
             catch (Exception ex)
@@ -133,7 +131,7 @@ namespace Zybach.API.Controllers
 
 
         private static StructuredResults StructureResults(List<WellSensorMeasurementDto> results,
-            Dictionary<string, int> aghubWells, DateTime startDate, DateTime endDate,
+            Dictionary<string, int> wells, DateTime startDate, DateTime endDate,
             List<WellSensorReadingDateDto> firstReadingDates, List<string> wellRegistrationIDs)
         {
             var volumesByWell = new List<VolumeByWell>();
@@ -145,7 +143,7 @@ namespace Zybach.API.Controllers
                 {
                     WellRegistrationID = wellRegistrationID
                 };
-                var pumpingRateGallonsPerMinute = aghubWells.ContainsKey(wellRegistrationID) ? aghubWells[wellRegistrationID] : 0;
+                var pumpingRateGallonsPerMinute = wells.ContainsKey(wellRegistrationID) ? wells[wellRegistrationID] : 0;
                 volumeByWell.IntervalVolumes = CreateIntervalVolumesAndZeroFillMissingDays(wellRegistrationID,
                     currentWellResults, startDate, endDate,
                     pumpingRateGallonsPerMinute,
@@ -179,7 +177,7 @@ namespace Zybach.API.Controllers
                             wellSensorMeasurementDtos
                                 .Where(x => x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString())
                                 .ToList(),
-                            InfluxDBService.SensorTypes.ContinuityMeter);
+                            MeasurementTypes.ContinuityMeter);
                         var dailySensorVolumeDtos = new List<DailySensorVolumeDto>();
                         foreach (var wellSensorReadingDate in wellSensorReadingDates.OrderBy(x => x.SensorName))
                         {

@@ -1,8 +1,8 @@
-version: '3.5'
+version: '3.7'
 
 services:
   zybach.web:
-    image: sitkacontainers.azurecr.io/zybach/web
+    image: zybach/web
     build:
       args:
         env: ${ENVIRONMENT}

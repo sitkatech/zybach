@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '.';
 import { Observable } from 'rxjs';
-import { FieldDefinitionDto } from '../models/generated/field-definition-dto';
+import { FieldDefinitionDto } from '../generated/model/field-definition-dto';
 
 @Injectable({
   providedIn: 'root'

@@ -2,18 +2,18 @@ version: '3.7'
 
 services:
   zybach.api:
-    image: sitkacontainers.azurecr.io/zybach/api
+    image: zybach/api
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
     ports:
-      - "8111:80"
-      - "8112:443"
+      - "8711:80"
+      - "8712:443"
     environment:
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_HTTPS_PORT=8112
+      - ASPNETCORE_HTTPS_PORT=8712
       - Kestrel__Certificates__Default__Path=/https/host.docker.internal.pfx
       - Kestrel__Certificates__Default__Password=password#1
     volumes:

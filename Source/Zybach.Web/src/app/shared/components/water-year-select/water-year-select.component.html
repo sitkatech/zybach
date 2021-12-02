@@ -9,6 +9,6 @@
         {{year}}
       </a>
     </ng-template>
-    <a class="dropdown-item" (click)="selectedYear = null; allYearsSelected = true;">All Years</a>
+    <a *ngIf="displayAllYearsOption" class="dropdown-item" (click)="selectedYear = null; allYearsSelected = true;">All Years</a>
   </div>
 </div>

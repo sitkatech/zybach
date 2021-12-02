@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,7 +15,6 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
     [ApiController]
     public class WellController : SitkaController<WellController>
     {
@@ -27,77 +27,80 @@ namespace Zybach.API.Controllers
             _wellService = wellService;
         }
 
-
-        /**
-        * Returns an array of all Wells in the Water Data Program registered in GeoOptix
-        */
-        [HttpGet("/api/wells")]
-        // todo: get apikey security
-        // @Security(SecurityType.API_KEY)
-        public async Task<object> GetWells()
+        [HttpGet("/api/wells/search/{wellRegistrationID}")]
+        [ZybachViewFeature]
+        public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
         {
-            // get all wells that either existed in GeoOptix as of the given year or that had electrical estimates as of the given year
-            var geoOptixWells = await _geoOptixService.GetWellSummaries();
-
-            return new
-            { 
-                Status = "success",
-                Result = geoOptixWells
-            };
+            var wellSimpleDtos = Wells.SearchByWellRegistrationID(_dbContext, wellRegistrationID);
+            return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
         [ZybachViewFeature]
-        public async Task<WellDetailDto> GetWellDetails([FromRoute] string wellRegistrationID)
+        public WellDetailDto GetWellDetails([FromRoute] string wellRegistrationID)
         {
-            var geooptixWell = await _geoOptixService.GetWellSummary(wellRegistrationID);
-            var agHubWell = AgHubWell.FindByWellRegistrationIDAsWellWithSensorSummaryDto(_dbContext, wellRegistrationID);
+            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
 
-            if (geooptixWell == null && agHubWell == null)
+            if (well == null)
             {
                 throw new Exception($"Well with {wellRegistrationID} not found!");
             }
-            var hasElectricalData = agHubWell != null && (agHubWell.HasElectricalData ?? false);
 
-            var well = new WellDetailDto
+            var wellDetailDto = new WellDetailDto
             {
-                WellRegistrationID = agHubWell?.WellRegistrationID ?? geooptixWell?.WellRegistrationID,
-                WellTPID = agHubWell?.WellTPID,
-                IrrigatedAcresPerYear = agHubWell?.IrrigatedAcresPerYear,
-                Location = agHubWell?.Location ?? geooptixWell?.Location,
-                LandownerName = agHubWell?.LandownerName,
-                FieldName = agHubWell?.FieldName
-
+                WellRegistrationID = well.WellRegistrationID,
+                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
+                InAgHub = well.AgHubWell != null,
+                InGeoOptix = well.GeoOptixWell != null
             };
+
+            var agHubWell = well.AgHubWell;
+            if (agHubWell != null)
+            {
+                wellDetailDto.WellTPID = agHubWell.WellTPID;
+                wellDetailDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres.Select(x => new IrrigatedAcresPerYearDto { Acres = x.Acres, Year = x.IrrigationYear }).ToList();
+                wellDetailDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
+                wellDetailDto.FieldName = agHubWell.FieldName;
+                wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
+                wellDetailDto.InAgHub = true;
+            }
+            else
+            {
+                wellDetailDto.HasElectricalData = false;
+                wellDetailDto.InAgHub = false;
+            }
 
             var firstReadingDate = WellSensorMeasurement.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
             var lastReadingDate = WellSensorMeasurement.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
 
-            well.InGeoOptix = geooptixWell != null;
-            well.HasElectricalData = hasElectricalData;
-            well.FirstReadingDate = firstReadingDate;
-            well.LastReadingDate = lastReadingDate;
+            wellDetailDto.FirstReadingDate = firstReadingDate;
+            wellDetailDto.LastReadingDate = lastReadingDate;
 
-
-            var sensors = await _geoOptixService.GetSensorSummariesForWell(wellRegistrationID);
-            well.Sensors = sensors;
+            var sensors = well.Sensors.Select(x => new SensorSummaryDto()
+            {
+                SensorName = x.SensorName,
+                SensorType = x.SensorType.SensorTypeDisplayName,
+                WellRegistrationID = wellRegistrationID,
+                IsActive = x.IsActive
+            }).ToList();
+            wellDetailDto.Sensors = sensors;
 
             var annualPumpedVolumes = new List<AnnualPumpedVolume>();
 
-            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
-            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, InfluxDBService.SensorTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
+            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
+            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 
-            if (hasElectricalData)
+            if (wellDetailDto.HasElectricalData)
             {
                 var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
                 var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                     .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue),
-                        InfluxDBService.SensorTypes.ElectricalUsage)).ToList();
+                        MeasurementTypes.ElectricalUsage)).ToList();
 
                 annualPumpedVolumes.AddRange(pumpedVolumes);
             }
-            well.AnnualPumpedVolume = annualPumpedVolumes;
-            return well;
+            wellDetailDto.AnnualPumpedVolume = annualPumpedVolumes;
+            return wellDetailDto;
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation")]
@@ -145,13 +148,12 @@ namespace Zybach.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("/api/wells/download/robustReviewScenarioJson")]
-        public async Task<List<RobustReviewDto>> GetRobustReviewJsonFile()
+        public List<RobustReviewDto> GetRobustReviewJsonFile()
         {
-            var wellWithSensorSummaryDtos = await _wellService.GetAghubAndGeoOptixWells();
+            var wellWithSensorSummaryDtos = _wellService.GetAghubAndGeoOptixWells();
             var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
             var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();
-
         }
 
         private RobustReviewDto CreateRobustReviewDto(WellWithSensorSummaryDto wellWithSensorSummaryDto, Dictionary<string, DateTime> firstReadingDateTimes)
@@ -164,16 +166,16 @@ namespace Zybach.API.Controllers
 
             string dataSource;
             List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
-            if (wellWithSensorSummaryDto.HasElectricalData ?? false)
+            if (wellWithSensorSummaryDto.HasElectricalData)
             {
                 wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(
                     _dbContext,
                     wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
-                dataSource = InfluxDBService.SensorTypes.ElectricalUsage;
+                dataSource = MeasurementTypes.ElectricalUsage;
             }
             else
             {
-                const string continuityMeter = InfluxDBService.SensorTypes.ContinuityMeter;
+                const string continuityMeter = MeasurementTypes.ContinuityMeter;
                 wellSensorMeasurementDtos =
                     WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
                         wellRegistrationID,
@@ -188,7 +190,7 @@ namespace Zybach.API.Controllers
                     new MonthlyPumpedVolume(x.First().ReadingYear, x.First().ReadingMonth,
                         x.Sum(y => y.MeasurementValue))).ToList();
 
-            var point = (Point)wellWithSensorSummaryDto.Location.Geometry;
+            var point = (Point)((Feature)wellWithSensorSummaryDto.Location).Geometry;
             var robustReviewDto = new RobustReviewDto
             {
                 WellRegistrationID = wellRegistrationID,
@@ -202,6 +204,30 @@ namespace Zybach.API.Controllers
             return robustReviewDto;
         }
 
+        [HttpPost("/api/wells/new")]
+        [AdminFeature]
+        public IActionResult NewWell([FromBody] WellNewDto wellNewDto)
+        {
+            var existingWell = Wells.GetByWellRegistrationID(_dbContext, wellNewDto.WellRegistrationID);
+            if (existingWell != null)
+            {
+                ModelState.AddModelError("Well Registration ID", $"'{wellNewDto.WellRegistrationID}' already exists!");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            var wellDto = Wells.CreateNew(_dbContext, wellNewDto);
+            return Ok(wellDto);
+        }
+
+        [HttpGet("/api/wells/{wellRegistrationID}/chemigationPermits")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] string wellRegistrationID)
+        {
+            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecord.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            return Ok(chemigationPermitDetailedDtos);
+        }
     }
 }

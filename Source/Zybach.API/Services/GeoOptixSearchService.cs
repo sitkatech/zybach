@@ -13,9 +13,9 @@ namespace Zybach.API.Services
     public class GeoOptixSearchService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<GeoOptixService> _logger;
+        private readonly ILogger<GeoOptixSearchService> _logger;
 
-        public GeoOptixSearchService(HttpClient httpClient, ILogger<GeoOptixService> logger)
+        public GeoOptixSearchService(HttpClient httpClient, ILogger<GeoOptixSearchService> logger)
         {
             _httpClient = httpClient;
             _logger = logger;
@@ -76,11 +76,11 @@ namespace Zybach.API.Services
             WellID = geoOptixDocument.SiteCanonicalName;
         }
 
-        public SearchSummaryDto(AgHubWellDto agHubWellDto)
+        public SearchSummaryDto(WellSimpleDto wellDto)
         {
-            ObjectName = agHubWellDto.WellRegistrationID;
+            ObjectName = wellDto.WellRegistrationID;
             ObjectType = ZybachObjectTypeEnum.Well.ToString();
-            WellID = agHubWellDto.WellRegistrationID;
+            WellID = wellDto.WellRegistrationID;
         }
 
         private string GeoOptixObjectTypeToZybachObjectType(string objectType)

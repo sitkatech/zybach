@@ -4,7 +4,7 @@ import { NgModule, APP_INITIALIZER, ErrorHandler, Injector } from '@angular/core
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import { OAuthModule, OAuthStorage } from 'angular-oauth2-oidc';
 import { CookieService } from 'ngx-cookie-service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './shared/interceptors/auth-interceptor';
@@ -21,8 +21,6 @@ import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer
 
 
 import { FormsModule } from '@angular/forms';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { ComboSeriesVerticalComponent } from './shared/components/combo-chart/combo-series-vertical.component'
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
@@ -35,12 +33,10 @@ import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { HttpErrorInterceptor } from './shared/interceptors/httpErrorInterceptor';
 import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
 import { AppInsightsService } from './shared/services/app-insights.service';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
-import { TestAPIComponent } from './pages/test-api/test-api.component';
 import { WellMapComponent } from './pages/well-map/well-map.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
@@ -50,12 +46,26 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WellMapPopupComponent } from './pages/well-map-popup/well-map-popup.component';
 import { createCustomElement } from '@angular/elements';
 import { AngularMyDatePickerModule } from 'angular-mydatepicker';
-import { IvyCarouselModule } from 'angular-responsive-carousel';
 import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-status-map.component';
 import { SensorStatusMapPopupComponent } from './pages/sensor-status-map-popup/sensor-status-map-popup.component';
-import { ChemigationLandingComponent } from './pages/chemigation-landing/chemigation-landing.component';
+import { WellNewComponent } from './pages/well-new/well-new.component';
+import { ReportsListComponent } from './pages/reports-list/reports-list.component';
+import { ReportTemplateDetailComponent } from './pages/report-template-detail/report-template-detail.component';
+import { ReportTemplateEditComponent } from './pages/report-template-edit/report-template-edit.component';
+import { ChemigationNewPermitComponent } from './pages/chemigation-new-permit/chemigation-new-permit.component';
+import { ChemigationPermitListComponent } from './pages/chemigation-permit-list/chemigation-permit-list.component';
+import { ChemigationPermitDetailComponent } from './pages/chemigation-permit-detail/chemigation-permit-detail.component';
+import { ChemigationPermitEditComponent } from './pages/chemigation-permit-edit/chemigation-permit-edit.component';
+import { CookieStorageService } from './shared/services/cookies/cookie-storage.service';
+import { ChemigationPermitAddRecordComponent } from './pages/chemigation-permit-add-record/chemigation-permit-add-record.component';
+import { ChemigationPermitEditRecordComponent } from './pages/chemigation-permit-edit-record/chemigation-permit-edit-record.component';
+import { ChemigationPermitAnnualRecordUpsertComponent } from './shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
+import { ChemigationPermitChemicalFormulationsEditorComponent } from './shared/components/chemigation-permit-chemical-formulations-editor/chemigation-permit-chemical-formulations-editor.component';
+import { ChemigationPermitApplicatorsEditorComponent } from './shared/components/chemigation-permit-applicators-editor/chemigation-permit-applicators-editor.component';
+import { ChemigationPermitWellsEditorComponent } from './shared/components/chemigation-permit-wells-editor/chemigation-permit-wells-editor.component';
+
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -73,7 +83,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     UserInviteComponent,
     UserDetailComponent,
     UserEditComponent,
-    ComboSeriesVerticalComponent,
     LoginCallbackComponent,
     HelpComponent,
     CreateUserCallbackComponent,
@@ -82,7 +91,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FieldDefinitionListComponent,
     FieldDefinitionEditComponent,
     TrainingComponent,
-    TestAPIComponent,
     WellMapComponent,
     WellExplorerComponent,
     WellDetailComponent,
@@ -92,7 +100,20 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     SensorStatusComponent,
     SensorStatusMapComponent,
     SensorStatusMapPopupComponent,
-    ChemigationLandingComponent,
+    WellNewComponent,
+    ReportsListComponent,
+    ReportTemplateDetailComponent,
+    ReportTemplateEditComponent,
+    ChemigationNewPermitComponent,
+    ChemigationPermitListComponent,
+    ChemigationPermitDetailComponent,
+    ChemigationPermitEditComponent,
+    ChemigationPermitAddRecordComponent,
+    ChemigationPermitEditRecordComponent,
+    ChemigationPermitAnnualRecordUpsertComponent,
+    ChemigationPermitChemicalFormulationsEditorComponent,
+    ChemigationPermitApplicatorsEditorComponent,
+    ChemigationPermitWellsEditorComponent
   ],
   imports: [
     AppRoutingModule,
@@ -103,7 +124,6 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     OAuthModule.forRoot(),
     SharedModule.forRoot(),
     FormsModule,
-    NgxChartsModule,
     BrowserAnimationsModule,
     AgGridModule.withComponents([]),
     SelectDropDownModule,
@@ -113,20 +133,22 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ToastrModule.forRoot({
       positionClass: "toast-top-right"
     }),
-    AngularMyDatePickerModule,
-    IvyCarouselModule
+    AngularMyDatePickerModule
   ],  
   providers: [
     CookieService,
     AppInitService,
     { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandlerService
     },
-    DecimalPipe, CurrencyPipe, DatePipe
+    DecimalPipe, CurrencyPipe, DatePipe,
+    {
+      provide: OAuthStorage,
+      useClass: CookieStorageService
+    }
   ],
   entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, WellMapPopupComponent],
   bootstrap: [AppComponent]

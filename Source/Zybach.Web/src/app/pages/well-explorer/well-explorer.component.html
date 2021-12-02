@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!wells">
+<div class="container" *ngIf="!wells else wellsList">
     <div class="row">
         <div class="col text-center">
             <span class="fas fa-spinner loading-spinner"></span>
@@ -7,20 +7,23 @@
     </div>
 </div>
 
-<div class="container navCaretMargin" *ngIf="wells">
-    <zybach-well-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"
-        (onFilterChange)="onFilterChange($event)">
-    </zybach-well-map>
-</div>
-
-<div class="container mt-2" *ngIf="wells">
-    <div class="row my-2">
-        <div class="col">
-            <button type="button" class="btn btn-zybach float-right" (click)="downloadCsv()"><span class="fas fa-download"></span> Download CSV</button>
-        </div>
+<ng-template #wellsList>
+    <div class="container navCaretMargin">
+        <zybach-well-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"
+            (onFilterChange)="onFilterChange($event)">
+        </zybach-well-map>
     </div>
-    <ag-grid-angular #wellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="wells"
-        [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'" [paginationPageSize]="100"
-        (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
-    </ag-grid-angular>
-</div>
+
+    <div class="container mt-2">
+        <div class="row my-2">
+            <div class="col">
+                <button type="button" class="btn btn-zybach btn-sm float-right" (click)="downloadCsv()"><span class="fas fa-download"></span> Download CSV</button>
+                <a class="btn btn-zybach btn-sm mr-3 float-right" routerLink="/new-well"><span class="fas fa-plus"></span> New Well</a>
+            </div>
+        </div>
+        <ag-grid-angular #wellsGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="wells"
+            [columnDefs]="columnDefs" [pagination]="true" [rowSelection]="'single'" [paginationPageSize]="100"
+            (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
+        </ag-grid-angular>
+    </div>
+</ng-template>

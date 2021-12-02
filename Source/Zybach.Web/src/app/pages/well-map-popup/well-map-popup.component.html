@@ -6,9 +6,9 @@
                     routerLink="/wells/{{registrationID}}">{{registrationID}}</a>
             </td>
         </tr>
-        <tr *ngIf="landownerName">
-            <td class="rowHeader">Landowner:</td>
-            <td>{{landownerName}}</td>
+        <tr *ngIf="AgHubRegisteredUser">
+            <td class="rowHeader">AgHub Registered User:</td>
+            <td>{{AgHubRegisteredUser}}</td>
         </tr>
         <tr *ngIf="fieldName">
             <td class="rowHeader">Field Name:</td>

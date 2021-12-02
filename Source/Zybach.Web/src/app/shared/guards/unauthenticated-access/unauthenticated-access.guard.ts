@@ -15,7 +15,14 @@ export class UnauthenticatedAccessGuard implements CanActivate {
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     const token = this.cookieStorageService.getItem('access_token');
     if (token) {
-      return true;
+      if(this.authenticationService.isCurrentUserDisabled())
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
     } else {
       sessionStorage["authRedirectUrl"] = state.url;
       this.authenticationService.login()

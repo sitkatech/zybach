@@ -13,7 +13,6 @@ using Microsoft.Extensions.Options;
 namespace Zybach.API.Controllers
 {
     [ApiController]
-    [ApiExplorerSettings(IgnoreApi = true)]
     public class FileResourceController : SitkaController<FileResourceController>
     {
         public FileResourceController(ZybachDbContext dbContext, ILogger<FileResourceController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
@@ -96,6 +95,9 @@ namespace Zybach.API.Controllers
                 case "JPEG":
                 case "PJPEG":
                     return File(fileResource.FileResourceData, fileResource.FileResourceMimeType.FileResourceMimeTypeContentTypeName);
+                case "Word (DOCX)":
+                case "Word (DOC)":
+                    return File(fileResource.FileResourceData, fileResource.FileResourceMimeType.FileResourceMimeTypeContentTypeName, fileResource.OriginalBaseFilename);
                 default:
                     throw new NotSupportedException("Only image uploads are supported at this time.");
             }

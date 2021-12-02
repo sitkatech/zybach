@@ -1,0 +1,8 @@
+create table dbo.ChemigationPermitAnnualRecordWell
+(
+	ChemigationPermitAnnualRecordWellID int not null identity(1,1) constraint PK_ChemigationPermitAnnualRecordWell_ChemigationPermitAnnualRecordWellID primary key,
+	ChemigationPermitAnnualRecordID int not null constraint FK_ChemigationPermitAnnualRecordWell_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID foreign key references dbo.ChemigationPermitAnnualRecord(ChemigationPermitAnnualRecordID),
+	WellID int not null constraint FK_ChemigationPermitAnnualRecordWell_Well_WellID foreign key references dbo.Well(WellID),
+	constraint AK_ChemigationPermitAnnualRecordWell_ChemigationPermitAnnualRecordID_WellID unique (ChemigationPermitAnnualRecordID, WellID)
+)
+GO
