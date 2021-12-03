@@ -120,7 +120,6 @@ export class ApiService {
         if (clearBusyGlobally) {
             this.busyService.setBusy(false);
         }
-        console.log(error);
 
         if (!supressErrorMessage) {
             if (error && (error.status === 401)) {
