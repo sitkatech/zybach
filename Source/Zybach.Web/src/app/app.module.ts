@@ -24,7 +24,6 @@ import { FormsModule } from '@angular/forms';
 import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
-import { SelectDropDownModule } from 'ngx-select-dropdown'
 import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { AboutComponent } from './pages/about/about.component';
@@ -39,7 +38,6 @@ import { AppInsightsService } from './shared/services/app-insights.service';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.service';
 import { WellMapComponent } from './pages/well-map/well-map.component';
 import { WellExplorerComponent } from './pages/well-explorer/well-explorer.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ToastrModule } from 'ngx-toastr';
 import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -64,8 +62,9 @@ import { ChemigationPermitEditRecordComponent } from './pages/chemigation-permit
 import { ChemigationPermitAnnualRecordUpsertComponent } from './shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { ChemigationPermitChemicalFormulationsEditorComponent } from './shared/components/chemigation-permit-chemical-formulations-editor/chemigation-permit-chemical-formulations-editor.component';
 import { ChemigationPermitApplicatorsEditorComponent } from './shared/components/chemigation-permit-applicators-editor/chemigation-permit-applicators-editor.component';
+import { ChemigationPermitWellsEditorComponent } from './shared/components/chemigation-permit-wells-editor/chemigation-permit-wells-editor.component';
 import { NdeeChemicalsReportComponent } from './pages/ndee-chemicals-report/ndee-chemicals-report.component';
-
+import { NgSelectModule } from '@ng-select/ng-select';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -113,6 +112,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationPermitAnnualRecordUpsertComponent,
     ChemigationPermitChemicalFormulationsEditorComponent,
     ChemigationPermitApplicatorsEditorComponent,
+    ChemigationPermitWellsEditorComponent,
     NdeeChemicalsReportComponent    
   ],
   imports: [
@@ -126,14 +126,13 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     FormsModule,
     BrowserAnimationsModule,
     AgGridModule.withComponents([]),
-    SelectDropDownModule,
     CKEditorModule,
-    NgMultiSelectDropDownModule.forRoot(),
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass: "toast-top-right"
     }),
-    AngularMyDatePickerModule
+    AngularMyDatePickerModule,
+    NgSelectModule
   ],  
   providers: [
     CookieService,

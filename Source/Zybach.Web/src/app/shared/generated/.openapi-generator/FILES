@@ -14,6 +14,9 @@ model/chemigation-permit-annual-record-detailed-dto.ts
 model/chemigation-permit-annual-record-dto.ts
 model/chemigation-permit-annual-record-status-dto.ts
 model/chemigation-permit-annual-record-upsert-dto.ts
+model/chemigation-permit-annual-record-well-simple-dto.ts
+model/chemigation-permit-annual-record-well-upsert-dto.ts
+model/chemigation-permit-detailed-dto.ts
 model/chemigation-permit-dto.ts
 model/chemigation-permit-new-dto.ts
 model/chemigation-permit-status-dto.ts

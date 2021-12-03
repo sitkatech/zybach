@@ -82,7 +82,7 @@
         }
       }
     },
-    "/api/chemigationPermits/permitStatuses": {
+    "/api/chemigationPermitStatuses": {
       "get": {
         "tags": [
           "ChemigationPermit"
@@ -120,7 +120,7 @@
         }
       }
     },
-    "/api/chemigationPermits/chemigationCounties": {
+    "/api/counties": {
       "get": {
         "tags": [
           "ChemigationPermit"
@@ -171,7 +171,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
                   }
                 }
               },
@@ -179,7 +179,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
                   }
                 }
               },
@@ -187,7 +187,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitDto"
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
                   }
                 }
               }
@@ -247,47 +247,7 @@
         }
       }
     },
-    "/api/chemigationPermits/getByID/{chemigationPermitID}": {
-      "get": {
-        "tags": [
-          "ChemigationPermit"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationPermits/getByPermitNumber/{chemigationPermitNumber}": {
+    "/api/chemigationPermits/{chemigationPermitNumber}": {
       "get": {
         "tags": [
           "ChemigationPermit"
@@ -2150,6 +2110,54 @@
         }
       }
     },
+    "/api/wells/search/{wellRegistrationID}": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/{wellRegistrationID}/details": {
       "get": {
         "tags": [
@@ -2346,6 +2354,54 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wells/{wellRegistrationID}/chemigationPermits": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitDetailedDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2641,8 +2697,6 @@
             "format": "int32"
           },
           "ExpirationYear": {
-            "maximum": 2050,
-            "minimum": 2020,
             "type": "integer",
             "format": "int32"
           },
@@ -2822,6 +2876,13 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorSimpleDto"
+            },
+            "nullable": true
+          },
+          "Wells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellSimpleDto"
             },
             "nullable": true
           }
@@ -3005,6 +3066,84 @@
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorUpsertDto"
             },
             "nullable": true
+          },
+          "Wells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellUpsertDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordWellSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordWellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordWellUpsertDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordWellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitDetailedDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitStatus": {
+            "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+          },
+          "DateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationCounty": {
+            "$ref": "#/components/schemas/ChemigationCountyDto"
+          },
+          "LatestAnnualRecord": {
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
           }
         },
         "additionalProperties": false

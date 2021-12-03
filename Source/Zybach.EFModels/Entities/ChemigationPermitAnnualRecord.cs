@@ -25,6 +25,7 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalUnit)
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalFormulation)
                 .Include(x => x.ChemigationPermitAnnualRecordApplicators)
+                .Include(x => x.ChemigationPermitAnnualRecordWells).ThenInclude(x => x.Well)
                 .AsNoTracking();
         }
 
@@ -51,6 +52,7 @@ namespace Zybach.EFModels.Entities
             UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
             Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
             Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Applicators);
+            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
 
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
@@ -61,6 +63,7 @@ namespace Zybach.EFModels.Entities
             UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
             Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
             Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Applicators);
+            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
 
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
@@ -98,6 +101,11 @@ namespace Zybach.EFModels.Entities
                 .Any(x => x.ChemigationPermitID == chemigationPermitID && x.RecordYear == year);
         }
 
+        public static List<ChemigationPermitAnnualRecordDetailedDto> GetLatestAsDetailedDto(ZybachDbContext dbContext)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).ToList().GroupBy(x => x.ChemigationPermitID).Select(x => x.OrderByDescending(y => y.RecordYear).First().AsDetailedDto()).ToList();
+        }
+
         public static ChemigationPermitAnnualRecordDetailedDto GetLatestByChemigationPermitNumberAsDetailedDto(ZybachDbContext dbContext, int chemigationPermitNumber)
         {
             return ListByChemigationPermitNumber(dbContext, chemigationPermitNumber).OrderByDescending(x => x.RecordYear).FirstOrDefault()?.AsDetailedDto();
@@ -119,6 +127,11 @@ namespace Zybach.EFModels.Entities
         {
             return ListByChemigationPermitNumber(dbContext, chemigationPermitNumber)
                 .Select(x => x.AsDetailedDto()).ToList();
+        }
+
+        public static List<ChemigationPermitAnnualRecordDetailedDto> GetByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermitAnnualRecordWells.Any(y => y.Well.WellRegistrationID == wellRegistrationID)).Select(x => x.AsDetailedDto()).ToList();
         }
     }
 }

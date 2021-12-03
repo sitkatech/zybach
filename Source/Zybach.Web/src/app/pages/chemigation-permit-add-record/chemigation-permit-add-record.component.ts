@@ -7,6 +7,7 @@ import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-upsert-dto';
+import { ChemigationPermitAnnualRecordWellUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-well-upsert-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -37,6 +38,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   public isAnnualRecordFormValidCheck: boolean;
   public isChemicalFormulationsFormValidCheck: boolean;
   public isApplicatorsFormValidCheck: boolean;
+  public isWellsFormValidCheck: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -86,6 +88,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
     chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
     chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
+
     const chemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>();
     annualRecord.ChemicalFormulations.map(x => {
       const chemicalFormulation = new ChemigationPermitAnnualRecordChemicalFormulationUpsertDto();
@@ -94,6 +97,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
       chemicalFormulations.push(chemicalFormulation);
     });
     chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = chemicalFormulations;
+
     const applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
     annualRecord.Applicators.map(x => {
       const applicator = new ChemigationPermitAnnualRecordApplicatorUpsertDto();
@@ -105,6 +109,15 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
       applicators.push(applicator);
     });
     chemigationPermitAnnualRecordUpsertDto.Applicators = applicators;
+
+    const wells = new Array<ChemigationPermitAnnualRecordWellUpsertDto>();
+    annualRecord.Wells.map(x => {
+      const well = new ChemigationPermitAnnualRecordWellUpsertDto();
+      well.WellRegistrationID = x.WellRegistrationID;
+      wells.push(well);
+    });
+    chemigationPermitAnnualRecordUpsertDto.Wells = wells;
+
     this.model = chemigationPermitAnnualRecordUpsertDto;
   }
 
@@ -126,8 +139,13 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     this.isApplicatorsFormValidCheck = formValid;
   }
 
+  public isWellsFormValid(formValid: any): void {
+    this.isWellsFormValidCheck = formValid;
+  }
+
   public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
-    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck || !this.isApplicatorsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
+    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck
+     || !this.isApplicatorsFormValidCheck || !this.isWellsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
   }
 
   onSubmit(addChemigationPermitAnnualRecordForm: HTMLFormElement): void {

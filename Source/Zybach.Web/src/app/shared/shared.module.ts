@@ -11,7 +11,6 @@ import { RouterModule } from '@angular/router';
 import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-renderer.component';
 import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { MultiLinkRendererComponent } from './components/ag-grid/multi-link-renderer/multi-link-renderer.component';
-import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { CustomRichTextComponent } from './components/custom-rich-text/custom-rich-text.component'
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FieldDefinitionComponent } from './components/field-definition/field-definition.component';
@@ -48,7 +47,6 @@ import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pi
         HttpClientModule,
         NgProgressModule,
         RouterModule,
-        SelectDropDownModule,
         CKEditorModule,
         NgbModule,
         AutoCompleteModule,

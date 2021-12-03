@@ -95,6 +95,11 @@
                             (isFormValid)="isChemicalFormulationsFormValid($event)" [(model)]="model.ChemicalFormulations">
                         </zybach-chemigation-permit-chemical-formulations-editor>
 
+                        <hr class="w-90" />
+
+                        <zybach-chemigation-permit-wells-editor #wellsForm
+                            (isFormValid)="isWellsFormValid($event)" [(model)]="model.Wells">
+                        </zybach-chemigation-permit-wells-editor>
                     </div>
                 </div>
 

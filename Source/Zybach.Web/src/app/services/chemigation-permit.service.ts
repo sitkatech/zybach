@@ -15,7 +15,7 @@ import { ChemicalUnitDto } from '../shared/generated/model/chemical-unit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { ChemicalFormulationYearlyTotalDto } from '../shared/generated/model/chemical-formulation-yearly-total-dto';
-
+import { ChemigationPermitDetailedDto } from '../shared/generated/model/chemigation-permit-detailed-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -23,29 +23,24 @@ import { ChemicalFormulationYearlyTotalDto } from '../shared/generated/model/che
 export class ChemigationPermitService {
 
   constructor(private apiService: ApiService) { }
-
-  public getChemigationPermitByID(chemigationPermitID: number): Observable<ChemigationPermitDto> {
-    let route = `/chemigationPermits/getByID/${chemigationPermitID}`;
-    return this.apiService.getFromApi(route);
-  }
-  
+ 
   public getChemigationPermitByPermitNumber(chemigationPermitNumber: number): Observable<ChemigationPermitDto> {
-    let route = `/chemigationPermits/getByPermitNumber/${chemigationPermitNumber}`;
+    let route = `/chemigationPermits/${chemigationPermitNumber}`;
     return this.apiService.getFromApi(route);
   }
   
-  public getAllChemigationPermits(): Observable<Array<ChemigationPermitDto>> {
+  public getChemigationPermits(): Observable<Array<ChemigationPermitDetailedDto>> {
     let route = `/chemigationPermits`;
     return this.apiService.getFromApi(route);
   }
 
-  public getAllChemigationPermitStatuses(): Observable<Array<ChemigationPermitStatusDto>> {
-    let route = `/chemigationPermits/permitStatuses`;
+  public getChemigationPermitStatuses(): Observable<Array<ChemigationPermitStatusDto>> {
+    let route = `/chemigationPermitStatuses`;
     return this.apiService.getFromApi(route);
   }
 
-  public getAllChemigationCounties(): Observable<Array<ChemigationCountyDto>> {
-    let route = `/chemigationPermits/chemigationCounties`;
+  public getCounties(): Observable<Array<ChemigationCountyDto>> {
+    let route = `/counties`;
     return this.apiService.getFromApi(route);
   }
   
