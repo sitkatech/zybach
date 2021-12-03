@@ -14,6 +14,7 @@ import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemi
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
 import { ChemigationPermitAnnualRecordWellUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-well-upsert-dto';
+import { ChemigationInjectionUnitTypeEnum } from 'src/app/shared/models/enums/chemigation-injection-unit-type.enum';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -53,7 +54,8 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.model.ChemigationPermitAnnualRecord =
     {
       ChemigationPermitAnnualRecordStatusID: ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
-      ChemigationInjectionUnitTypeID: null,
+      // default to portable injection unit type
+      ChemigationInjectionUnitTypeID: ChemigationInjectionUnitTypeEnum.Portable,
       PivotName: null,
       RecordYear: new Date().getFullYear(),
       ApplicantFirstName: null,
