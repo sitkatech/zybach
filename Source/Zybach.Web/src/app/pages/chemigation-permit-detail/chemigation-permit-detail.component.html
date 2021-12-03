@@ -237,7 +237,7 @@
 
                     </div>
 
-                    <div class="col-12 table-responsive">
+                    <div class="col-12 table-responsive mb-4">
                         <h5>Applied Chemicals</h5>
                         <div *ngIf="currentYearAnnualRecord.ChemicalFormulations.length > 0; then hasChemicalFormulations else noChemicalFormulations"></div>
                         <ng-template #hasChemicalFormulations>
@@ -264,9 +264,12 @@
                         <ng-template #noChemicalFormulations>No chemicals were used in the chemigation system in the past year.</ng-template>
                     </div>
 
-                    <hr class="w-90" />
+                    <div class="col-12">
+                        <hr class="w-90" />
 
-                    <div class="row col-6 table-responsive mb-4">
+                    </div>
+
+                    <div class="col-12 table-responsive mb-4">
                         <h5>Wells</h5>
                         <div *ngIf="currentYearAnnualRecord.Wells.length > 0; then hasWells else noWells"></div>
                         <ng-template #hasWells>
