@@ -2516,8 +2516,6 @@
             "nullable": true
           },
           "TotalApplied": {
-            "maximum": 999999,
-            "minimum": 0,
             "type": "number",
             "format": "double"
           },
@@ -2525,8 +2523,6 @@
             "$ref": "#/components/schemas/ChemicalUnitDto"
           },
           "AcresTreated": {
-            "maximum": 999999,
-            "minimum": 0,
             "type": "number",
             "format": "double"
           }

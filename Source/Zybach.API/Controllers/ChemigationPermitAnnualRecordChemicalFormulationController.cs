@@ -82,8 +82,7 @@ namespace Zybach.API.Controllers
                 .Select(x =>
                 {
                     var permitAnnualRecordChemicalFormulations = x.Where(z =>
-                        z.ChemicalFormulation.ChemicalFormulationID ==
-                        x.Key.ChemicalFormulation.ChemicalFormulationID &&
+                        z.ChemicalFormulation.ChemicalFormulationID == x.Key.ChemicalFormulation.ChemicalFormulationID &&
                         z.ChemigationPermitAnnualRecord.RecordYear == x.Key.RecordYear &&
                         z.ChemicalUnit.ChemicalUnitID == x.Key.ChemicalUnit.ChemicalUnitID).ToList();
 
