@@ -32,5 +32,6 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantZipCode { get; set; }
         public List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto> ChemicalFormulations { get; set; }
         public List<ChemigationPermitAnnualRecordApplicatorUpsertDto> Applicators { get; set; }
+        public List<ChemigationPermitAnnualRecordWellUpsertDto> Wells { get; set; }
     }
 }

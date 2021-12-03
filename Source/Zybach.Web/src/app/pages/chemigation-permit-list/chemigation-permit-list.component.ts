@@ -7,8 +7,8 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
-import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
@@ -23,8 +23,8 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
 
   public richTextTypeID : number = CustomRichTextType.Chemigation;
 
-  public columnDefs: ColDef[];
-  public chemigationPermits: Array<ChemigationPermitDto>;
+  public columnDefs: any[];
+  public chemigationPermits: Array<ChemigationPermitDetailedDto>;
   public users: UserDto[];
   public unassignedUsers: UserDto[];
 
@@ -41,7 +41,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.permitGrid.api.showLoadingOverlay();
       this.initializeGrid();
-      this.chemigationPermitService.getAllChemigationPermits().subscribe(chemigationPermits => {
+      this.chemigationPermitService.getChemigationPermits().subscribe(chemigationPermits => {
         this.chemigationPermits = chemigationPermits;
         this.permitGrid.api.hideOverlay();
         this.cdr.detectChanges();
@@ -52,6 +52,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
 
   
   private initializeGrid(): void {
+    let datePipe = new DatePipe('en-US');
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
@@ -70,12 +71,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
-        width: 60,
+        width: 80,
         resizable: true,
         sort: 'asc'
       },
       {
-        headerName: 'Permit Number',
+        headerName: 'Permit #',
         field: 'ChemigationPermitNumber',
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkDisplay;
@@ -88,6 +89,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
+        width: 120,
         filter: true,
         resizable: true,
         sort: 'asc',
@@ -98,11 +100,87 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName'
         },
+        width: 80,
         resizable: true,
         sortable: true
       },
-      this.createDateColumnDef('Date Created', 'DateCreated', 'M/d/yyyy'),
-      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true }
+      this.createDateColumnDef('Created', 'DateCreated', 'M/d/yyyy'),
+      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true },
+      {
+        headerName: 'Latest Annual Record',
+        children: [
+          
+          { headerName: 'Year', field: 'LatestAnnualRecord.RecordYear', width: 80, filter: true, resizable: true, sortable: true },
+          { headerName: 'Status', field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName', width: 140, filter: true, resizable: true, sortable: true },
+          { headerName: 'Pivot', field: 'LatestAnnualRecord.PivotName', width: 100, filter: true, resizable: true, sortable: true },
+          {
+            headerName: 'Received', valueGetter: function (params: any) {
+              return datePipe.transform(params.data.LatestAnnualRecord.DateReceived, 'M/d/yyyy');
+            },
+            comparator: this.dateFilterComparator,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+              filterOptions: ['inRange'],
+              comparator: this.dateFilterComparator
+            }, 
+            width: 120,
+            resizable: true,
+            sortable: true
+          },
+          {
+            headerName: 'Paid', valueGetter: function (params: any) {
+              return datePipe.transform(params.data.LatestAnnualRecord.DatePaid, 'M/d/yyyy');
+            },
+            comparator: this.dateFilterComparator,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+              filterOptions: ['inRange'],
+              comparator: this.dateFilterComparator
+            }, 
+            width: 120,
+            resizable: true,
+            sortable: true
+          },
+          { headerName: 'Injection Unit', field: 'LatestAnnualRecord.ChemigationInjectionUnitTypeName', filter: true, resizable: true, sortable: true },
+          { 
+            headerName: 'Applied Chemicals', 
+            valueGetter: function (params) {
+              const applicators = params.data.LatestAnnualRecord.ChemicalFormulations.map(x => x.ChemicalFormulationName);
+              if (applicators.length > 0) {
+                return `${applicators.join(', ')}`;
+              } else {
+                return "-";
+              }
+            }, 
+            filter: true, resizable: true, sortable: true 
+          },
+          { 
+            headerName: 'Applicators', 
+            valueGetter: function (params) {
+              const applicators = params.data.LatestAnnualRecord.Applicators.map(x => x.ApplicatorName);
+              if (applicators.length > 0) {
+                return `${applicators.join(', ')}`;
+              } else {
+                return "-";
+              }
+            }, 
+            filter: true, resizable: true, sortable: true 
+          },
+          { 
+            headerName: 'Wells', 
+            valueGetter: function (params) {
+              const wells = params.data.LatestAnnualRecord.Wells.map(x => x.WellRegistrationID);
+              if (wells.length > 0) {
+                return `${wells.join(', ')}`;
+              } else {
+                return "-";
+              }
+            }, 
+            filter: true, resizable: true, sortable: true 
+          },
+        ]
+      }
+
     ];
 
   }
@@ -128,6 +206,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
       }, 
+      width: 120,
       resizable: true,
       sortable: true
     };

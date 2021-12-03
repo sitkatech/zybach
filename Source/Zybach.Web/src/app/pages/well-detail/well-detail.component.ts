@@ -31,6 +31,7 @@ import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
 import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
+import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -82,6 +83,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public isLoadingSubmit: boolean = false;
 
+  public chemigationPermitAnnualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
+
   constructor(
     private wellService: WellService,
     private sensorService: SensorStatusService,
@@ -127,6 +130,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getInstallationDetails();
       this.getSenorsWithAgeMessages();
       this.getChartDataAndBuildChart();
+      this.getChemigationPermits();
     })
   }
 
@@ -173,6 +177,12 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       for (var sensor of this.sensorsWithStatus){
         sensor.MessageAge = Math.floor(sensor.MessageAge / 3600)
       }
+    });
+  }
+
+  getChemigationPermits(){
+    this.wellService.getChemigationPermts(this.wellRegistrationID).subscribe(chemigationPermitAnnualRecords => {
+      this.chemigationPermitAnnualRecords = chemigationPermitAnnualRecords;
     });
   }
 

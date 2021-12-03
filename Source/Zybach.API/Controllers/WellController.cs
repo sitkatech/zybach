@@ -27,6 +27,13 @@ namespace Zybach.API.Controllers
             _wellService = wellService;
         }
 
+        [HttpGet("/api/wells/search/{wellRegistrationID}")]
+        [ZybachViewFeature]
+        public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
+        {
+            var wellSimpleDtos = Wells.SearchByWellRegistrationID(_dbContext, wellRegistrationID);
+            return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
+        }
 
         [HttpGet("/api/wells/{wellRegistrationID}/details")]
         [ZybachViewFeature]
@@ -213,6 +220,14 @@ namespace Zybach.API.Controllers
 
             var wellDto = Wells.CreateNew(_dbContext, wellNewDto);
             return Ok(wellDto);
+        }
+
+        [HttpGet("/api/wells/{wellRegistrationID}/chemigationPermits")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] string wellRegistrationID)
+        {
+            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecord.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            return Ok(chemigationPermitDetailedDtos);
         }
     }
 }

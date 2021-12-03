@@ -1,0 +1,26 @@
+<h4>Wells</h4>
+<form #wellsForm="ngForm">
+    <div class="row col-10" *ngIf="model.length > 0">
+        <div class="col-4 control-label text-left mb-2">
+            <label class="required"><strong>Registered Well ID: </strong></label>
+        </div>
+
+    </div>
+    <div class="row col-10" *ngFor="let chemicalPermitAnnualRecordWell of model; let index = index">
+        <div class="col-4 text-left mb-2">
+            <input type="text" class="form-control" name="WellRegistrationID-{{index}}" [(ngModel)]="chemicalPermitAnnualRecordWell.WellRegistrationID" [ngbTypeahead]="searchApi" />
+            <small class="form-text text-muted font-italic" *ngIf="searchFailed">Suggestions could not be loaded.</small>
+        </div>
+
+        <div class="col-2 text-left mb-2">
+            <button type="button" class="btn btn-zybach" (click)="deleteRow(chemicalPermitAnnualRecordWell)">
+                <span class="fa fa-trash"></span>
+                Delete Row
+            </button>
+        </div>
+    </div>
+</form>
+<button type="button" class="btn btn-zybach" (click)="addRow()">
+    <span class="fa fa-plus"></span>
+    Add New Well
+</button>

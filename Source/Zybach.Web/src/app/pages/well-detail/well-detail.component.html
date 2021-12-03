@@ -211,6 +211,44 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
+                    Permits & Inspections
+                </div>
+                <div class="card-body">
+
+                    <div *ngIf="chemigationPermitAnnualRecords && chemigationPermitAnnualRecords.length > 0; then hasChemigationPermitAnnualRecords else noChemigationPermitAnnualRecords"></div>
+                    <ng-template #hasChemigationPermitAnnualRecords>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Permit #</th>
+                                    <th>Status</th>
+                                    <th>Township, Range, Section</th>
+                                    <th>Year</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let chemigationPermitAnnualRecord of chemigationPermitAnnualRecords">
+                                    <td><a routerLink="/chemigationPermits/{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}">{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}</a></td>
+                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusName}}</td>
+                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection}}</td>
+                                    <td>{{chemigationPermitAnnualRecord.RecordYear}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                    <ng-template #noChemigationPermitAnnualRecords>
+                        <p class="font-italic">
+                            No Chemigation Permits were found for this well.
+                        </p>                        
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
                     Installation Details
                     <a *ngIf="well?.InGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
                         View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>

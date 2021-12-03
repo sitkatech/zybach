@@ -48,7 +48,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
         return;
       }
 
-      this.chemigationPermitService.getAllChemigationPermitStatuses().subscribe(permitStatuses => {
+      this.chemigationPermitService.getChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
       });
 

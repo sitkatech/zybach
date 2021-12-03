@@ -14,6 +14,7 @@ namespace Zybach.EFModels.Entities
     {
         public Well()
         {
+            ChemigationPermitAnnualRecordWells = new HashSet<ChemigationPermitAnnualRecordWell>();
             Sensors = new HashSet<Sensor>();
         }
 
@@ -38,6 +39,8 @@ namespace Zybach.EFModels.Entities
         public virtual AgHubWell AgHubWell { get; set; }
         [InverseProperty("Well")]
         public virtual GeoOptixWell GeoOptixWell { get; set; }
+        [InverseProperty(nameof(ChemigationPermitAnnualRecordWell.Well))]
+        public virtual ICollection<ChemigationPermitAnnualRecordWell> ChemigationPermitAnnualRecordWells { get; set; }
         [InverseProperty(nameof(Sensor.Well))]
         public virtual ICollection<Sensor> Sensors { get; set; }
     }
