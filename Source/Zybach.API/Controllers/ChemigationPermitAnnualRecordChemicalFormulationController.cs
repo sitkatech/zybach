@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Vml.Office;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NodaTime.TimeZones;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -58,6 +63,42 @@ namespace Zybach.API.Controllers
                 .ToList();
 
             return Ok(chemigationPermitAnnualRecordChemicalFormulations);
+        }
+
+        [HttpGet("/api/chemicalFormulationYearlyTotals")]
+        [ZybachViewFeature]
+        public ActionResult<List<ChemicalFormulationYearlyTotalDto>> GetChemicalFormulationYearlyTotals()
+        {
+            var chemigationPermitAnnualRecordChemicalFormulations = _dbContext
+                .ChemigationPermitAnnualRecordChemicalFormulations
+                .Include(x => x.ChemigationPermitAnnualRecord)
+                .Include(x => x.ChemicalFormulation)
+                .Include(x => x.ChemicalUnit)
+                .ToList();
+
+            var chemicalFormulationYearlyTotals = chemigationPermitAnnualRecordChemicalFormulations
+                .GroupBy(x => new
+                    { x.ChemigationPermitAnnualRecord.RecordYear, x.ChemicalFormulation, x.ChemicalUnit })
+                .Select(x =>
+                {
+                    var permitAnnualRecordChemicalFormulations = x.Where(z =>
+                        z.ChemicalFormulation.ChemicalFormulationID == x.Key.ChemicalFormulation.ChemicalFormulationID &&
+                        z.ChemigationPermitAnnualRecord.RecordYear == x.Key.RecordYear &&
+                        z.ChemicalUnit.ChemicalUnitID == x.Key.ChemicalUnit.ChemicalUnitID).ToList();
+
+                    return new ChemicalFormulationYearlyTotalDto()
+                    {
+                        RecordYear = x.Key.RecordYear,
+                        ChemicalFormulation = x.Key.ChemicalFormulation.ChemicalFormulationDisplayName,
+                        ChemicalUnit = x.Key.ChemicalUnit.AsDto(),
+                        TotalApplied = permitAnnualRecordChemicalFormulations
+                            .Sum(y => y.TotalApplied),
+                        AcresTreated = permitAnnualRecordChemicalFormulations
+                            .Sum(y => y.AcresTreated)
+                    };
+                }).ToList();
+
+            return Ok(chemicalFormulationYearlyTotals);
         }
     }
 }
