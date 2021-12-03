@@ -6,6 +6,7 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { ChemicalFormulationYearlyTotalDto } from 'src/app/shared/generated/model/chemical-formulation-yearly-total-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
   selector: 'zybach-ndee-chemicals-report',
@@ -26,7 +27,8 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     constructor(
       private authenticationService: AuthenticationService,
       private chemigationPermitService: ChemigationPermitService,
-      private cdr: ChangeDetectorRef
+      private cdr: ChangeDetectorRef,
+      private utilityFunctionsService: UtilityFunctionsService
     ) { }
 
   ngOnInit(): void {
@@ -82,6 +84,15 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       }
     ];
 
+  }
+
+  public exportToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.chemicalReportGrid, 'chemical-report.csv', null);
+  }
+
+  public onFirstDataRendered(params): void {
+    this.gridApi = params.api;
+    this.gridApi.sizeColumnsToFit();
   }
   
   ngOnDestroy(): void {

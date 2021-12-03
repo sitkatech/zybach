@@ -72,6 +72,8 @@ namespace Zybach.API.Controllers
             var chemigationPermitAnnualRecordChemicalFormulations = _dbContext
                 .ChemigationPermitAnnualRecordChemicalFormulations
                 .Include(x => x.ChemigationPermitAnnualRecord)
+                .Include(x => x.ChemicalFormulation)
+                .Include(x => x.ChemicalUnit)
                 .ToList();
 
             var chemicalFormulationYearlyTotals = chemigationPermitAnnualRecordChemicalFormulations

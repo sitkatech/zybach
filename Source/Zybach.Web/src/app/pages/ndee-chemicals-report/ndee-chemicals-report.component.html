@@ -3,21 +3,21 @@
     <div class="row">
         <div class="col-12">
             <h2 class="d-inline-block">NDEE Chemicals Report</h2>
-            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+            <p></p>
         </div>
     </div>
     <div class="row">
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
-                    <fresca-clear-grid-filters-button class="mr-3" [grid]="permitGrid">
+                    <fresca-clear-grid-filters-button class="float-left mr-2" [grid]="chemicalReportGrid">
                     </fresca-clear-grid-filters-button>
-                    <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/new"><span class="fas fa-plus"></span> New Chemigation Permit </a>
-                    <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/chemigation-permits/create-annual-renewals"><span class="fas fa-plus"></span> Create Annual Renewals </a>
+                    <a class="btn btn-secondary btn-sm float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    ngbTooltip="Download Report as CSV"><i class="fas fa-download"></i></a>
                 </div>
             </div>
             <div class="table-responsive">
-                <ag-grid-angular #permitGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="chemigationPermits"
+                <ag-grid-angular #chemicalReportGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="chemicalFormulationYearlyTotals"
                     [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100"
                     (firstDataRendered)="onFirstDataRendered($event)">
                 </ag-grid-angular>
