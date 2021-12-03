@@ -67,7 +67,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
       { headerName: 'Renewal Status', field: 'ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualREcordStatusDisplayName'
+          field: 'ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName'
         },
         resizable: true, sortable: true 
       },
