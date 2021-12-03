@@ -120,6 +120,7 @@ export class ApiService {
         if (clearBusyGlobally) {
             this.busyService.setBusy(false);
         }
+        console.log(error);
 
         if (!supressErrorMessage) {
             if (error && (error.status === 401)) {
@@ -139,10 +140,32 @@ export class ApiService {
                 //Eg. When model binding fails
                 //https://docs.microsoft.com/en-us/aspnet/core/web-api/?view=aspnetcore-5.0#automatic-http-400-responses
                 if (typeof error.error === 'object' && error.error !== null && error.error.hasOwnProperty("errors")) {
+                    const errorsList : { groupName: string, errorMessage: string }[] = [];
                     for (const key of Object.keys(error.error.errors)) {
-                        const newLocal = new Alert((error.error.errors[key] as string[]).map((fe: string) => { return key + ": " + fe; }).join(","), AlertContext.Danger);
-                        this.alertService.pushAlert(newLocal);
+                        (error.error.errors[key] as string[]).forEach((fe: string) => {
+                            const fieldNameParts: string[] = key.split(".");
+                            if(fieldNameParts.length > 1)
+                            {
+                                errorsList.push({ groupName: fieldNameParts[0], errorMessage: this.formatFieldName(fieldNameParts[1]) + ": " + fe });
+                            }
+                            else
+                            {
+                                errorsList.push({ groupName: null, errorMessage: this.formatFieldName(fieldNameParts[0]) + ": " + fe });
+                            }
+                        });
                     }
+                    let errorsFormatted: string = errorsList.filter(item => item.groupName === null).map(item => item.errorMessage).join("<br />");
+                    if(errorsFormatted.length > 0)
+                    {
+                        errorsFormatted += "<br />";
+                    }
+                    const uniqueGroupNames = [...new Set(errorsList.filter(item => item.groupName !== null).map(item => item.groupName))];
+                    uniqueGroupNames.forEach(groupName => {
+                        const groupNameFormatted = this.formatGroupName(groupName);
+                        const errorsForGroup = errorsList.filter(e => e.groupName === groupName).map(x => "<li>" + x.errorMessage + "</li>").join("");
+                        errorsFormatted += groupNameFormatted + "<ul>" + errorsForGroup + "</ul>";
+                    })
+                    this.alertService.pushAlert(new Alert(errorsFormatted, AlertContext.Danger));
                 }
                 else {
                     let errorString = this.errorStringFromObject(error.error, true)
@@ -154,6 +177,24 @@ export class ApiService {
         }
 
         return _throw(error);
+    }
+
+    private formatGroupName(groupName: string) {
+        const groupNameParts = groupName.split("[");
+        if (groupNameParts.length > 1) {
+            return this.formatFieldName(groupNameParts[0]) + " row " + (parseInt(groupNameParts[1].substring(0, groupNameParts[1].indexOf("]"))) + 1);
+        }
+
+        else {
+            return this.formatFieldName(groupName);
+        }
+    }
+
+    private formatFieldName(fieldName: string) : string
+    {
+        const result = fieldName.replace(/([A-Z])/g, " $1");
+        const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+        return finalResult;
     }
 
     private errorStringFromObject(errorObject: any, includeIntro: boolean, nestedKey? : string) : string {
