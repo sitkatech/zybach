@@ -9,6 +9,7 @@ import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
@@ -33,6 +34,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   constructor(
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
+    private utilityFunctionsService: UtilityFunctionsService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -111,7 +113,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         children: [
           
           { headerName: 'Year', field: 'LatestAnnualRecord.RecordYear', width: 80, filter: true, resizable: true, sortable: true },
-          { headerName: 'Status', field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName', width: 140, filter: true, resizable: true, sortable: true },
+          { headerName: 'Status', field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName', 
+            filterFramework: CustomDropdownFilterComponent,
+            filterParams: {
+              field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName'
+            },
+            width: 140, resizable: true, sortable: true },
           { headerName: 'Pivot', field: 'LatestAnnualRecord.PivotName', width: 100, filter: true, resizable: true, sortable: true },
           {
             headerName: 'Received', valueGetter: function (params: any) {
@@ -141,7 +148,11 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
             resizable: true,
             sortable: true
           },
-          { headerName: 'Injection Unit', field: 'LatestAnnualRecord.ChemigationInjectionUnitTypeName', filter: true, resizable: true, sortable: true },
+          { headerName: 'Applicant', 
+            valueGetter: function (params) {
+              return params.data.LatestAnnualRecord.ApplicantFirstName + " " + params.data.LatestAnnualRecord.ApplicantLastName;
+            }
+            , filter: true, resizable: true, sortable: true },
           { 
             headerName: 'Applied Chemicals', 
             valueGetter: function (params) {
@@ -215,6 +226,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
+  }
+
+  public exportToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.permitGrid, 'chemigation-permits.csv', null);
   }
 
   ngOnDestroy(): void {
