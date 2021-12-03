@@ -38,9 +38,6 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.chemicalReportGrid.api.showLoadingOverlay();
       this.initializeGrid();
-      
-
-      this.chemicalReportGrid.api.hideOverlay();
     });
   }
 
@@ -49,28 +46,31 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Record Year',
         field: 'RecordYear',
+        filter: 'agNumberColumnFilter',
         resizable: true,
         sort: 'desc'
       },
       {
         headerName: 'Chemical Formulation',
         field: 'ChemicalFormulation',
-        // filterFramework: CustomDropdownFilterComponent,
-        // filterParams: {
-        //   field: ''
-        // },
         filter: true,
-        resizable: true
+        resizable: true,
+        sortable: true
       },
       { 
         headerName: 'Total Applied', 
         field: 'TotalApplied',
+        filter: 'agNumberColumnFilter',
         resizable: true,
         sortable: true
       },
       { 
         headerName: 'Measurement Units', 
         field: 'ChemicalUnit.ChemicalUnitPluralName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemicalUnit.ChemicalUnitPluralName'
+        },
         resizable: true,
         sortable: true
       },
@@ -81,7 +81,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
         },
         pinnedRowCellRendererFramework: CustomPinnedRowRendererComponent,
         pinnedRowCellRendererParams: { filter: true },
-        filter: true,
+        filter: 'agNumberColumnFilter',
         resizable: true,
         sortable: true
       }
@@ -90,7 +90,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
   }
 
   public exportToCsv() {
-    this.utilityFunctionsService.exportGridToCsv(this.chemicalReportGrid, 'chemical-report.csv', null);
+    this.utilityFunctionsService.exportGridToCsv(this.chemicalReportGrid, 'chemicals-report.csv', null);
   }
 
   public onChemicalReportGridReady(gridEvent) {
