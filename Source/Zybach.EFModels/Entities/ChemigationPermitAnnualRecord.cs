@@ -29,6 +29,12 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking();
         }
 
+        public static List<ChemigationPermitAnnualRecordDto> GetAllChemigationPermitAnnualRecords(ZybachDbContext dbContext)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Select(x => x.AsDto()).ToList();
+        }
+
         public static ChemigationPermitAnnualRecordDto GetChemigationPermitAnnualRecordByID(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
         {
             var chemigationPermitAnnualRecord = GetChemigationPermitAnnualRecordsImpl(dbContext)
