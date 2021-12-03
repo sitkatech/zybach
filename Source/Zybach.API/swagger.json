@@ -1547,6 +1547,126 @@
         }
       }
     },
+    "/api/robustReviewScenario/download/robustReviewScenarioJson": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Comprehensive data download to support Robust Review processes",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/robustReviewScenario/checkGETAPIHealth": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/robustReviewScenario/new": {
+      "post": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Trigger a new Robust Review Scenario GET Run",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/robustReviewScenarios": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Return a list of all Robust Review Scenario Runs triggered by GWMA",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/roles": {
       "get": {
         "tags": [
@@ -2279,45 +2399,6 @@
         "responses": {
           "200": {
             "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/wells/download/robustReviewScenarioJson": {
-      "get": {
-        "tags": [
-          "Well"
-        ],
-        "summary": "Comprehensive data download to support Robust Review processes",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -3798,6 +3879,49 @@
             "items": {
               "$ref": "#/components/schemas/MonthlyPumpedVolume"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RobustReviewScenarioGETRunHistoryDto": {
+        "type": "object",
+        "properties": {
+          "RobustReviewScenarioGETRunHistoryID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CreateByUser": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "GETRunID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SuccessfulStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "IsTerminal": {
+            "type": "boolean"
+          },
+          "StatusMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "StatusHexColor": {
+            "type": "string",
             "nullable": true
           }
         },

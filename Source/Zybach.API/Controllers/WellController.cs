@@ -143,67 +143,6 @@ namespace Zybach.API.Controllers
             return annualPumpedVolumes;
         }
 
-        /// <summary>
-        /// Comprehensive data download to support Robust Review processes
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("/api/wells/download/robustReviewScenarioJson")]
-        public List<RobustReviewDto> GetRobustReviewJsonFile()
-        {
-            var wellWithSensorSummaryDtos = _wellService.GetAghubAndGeoOptixWells();
-            var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
-            var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
-            return robustReviewDtos.Where(x => x != null).ToList();
-        }
-
-        private RobustReviewDto CreateRobustReviewDto(WellWithSensorSummaryDto wellWithSensorSummaryDto, Dictionary<string, DateTime> firstReadingDateTimes)
-        {
-            var wellRegistrationID = wellWithSensorSummaryDto.WellRegistrationID;
-            if (!firstReadingDateTimes.ContainsKey(wellRegistrationID))
-            {
-                return null;
-            }
-
-            string dataSource;
-            List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
-            if (wellWithSensorSummaryDto.HasElectricalData)
-            {
-                wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(
-                    _dbContext,
-                    wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
-                dataSource = MeasurementTypes.ElectricalUsage;
-            }
-            else
-            {
-                const string continuityMeter = MeasurementTypes.ContinuityMeter;
-                wellSensorMeasurementDtos =
-                    WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
-                        wellRegistrationID,
-                        new List<MeasurementTypeEnum>
-                            {MeasurementTypeEnum.ContinuityMeter, MeasurementTypeEnum.FlowMeter},
-                        wellWithSensorSummaryDto.Sensors.Where(y => y.SensorType == continuityMeter));
-                dataSource = continuityMeter;
-            }
-
-            var monthlyPumpedVolume = wellSensorMeasurementDtos.GroupBy(x => x.MeasurementDate.ToString("yyyyMM"))
-                .Select(x =>
-                    new MonthlyPumpedVolume(x.First().ReadingYear, x.First().ReadingMonth,
-                        x.Sum(y => y.MeasurementValue))).ToList();
-
-            var point = (Point)((Feature)wellWithSensorSummaryDto.Location).Geometry;
-            var robustReviewDto = new RobustReviewDto
-            {
-                WellRegistrationID = wellRegistrationID,
-                WellTPID = wellWithSensorSummaryDto.WellTPID,
-                Latitude = point.Coordinates.Latitude,
-                Longitude = point.Coordinates.Longitude,
-                DataSource = dataSource,
-                MonthlyPumpedVolumeGallons = monthlyPumpedVolume
-            };
-
-            return robustReviewDto;
-        }
-
         [HttpPost("/api/wells/new")]
         [AdminFeature]
         public IActionResult NewWell([FromBody] WellNewDto wellNewDto)

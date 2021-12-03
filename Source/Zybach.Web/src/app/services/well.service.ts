@@ -49,11 +49,6 @@ export class WellService {
     return this.httpClient.get(route, { responseType: "blob" });
   }
 
-  public getRobustReviewScenarioJson(): Observable<any> {
-    const route = `${environment.mainAppApiUrl}/wells/download/robustReviewScenarioJson`
-    return this.httpClient.get(route, { responseType: "blob" as "json" });
-  }
-
   public newWell(wellNewDto: WellNewDto) {
     let route = `/wells/new`;
     return this.apiService.postToApi(route, wellNewDto);

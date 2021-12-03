@@ -43,6 +43,7 @@ export * from '././report-template-dto';
 export * from '././report-template-model-dto';
 export * from '././report-template-model-type-dto';
 export * from '././robust-review-dto';
+export * from '././robust-review-scenario-get-run-history-dto';
 export * from '././role-dto';
 export * from '././search-summary-dto';
 export * from '././sensor-message-age-dto';
