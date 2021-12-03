@@ -74,7 +74,7 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAdministrator()">
+            <li class="nav-item dropdown" routerLinkActive="active">
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     Report
@@ -82,6 +82,9 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a routerLink="/reports" class="dropdown-item">
                         Report Center
+                    </a>
+                    <a routerLink="/reports/ndee-report" class="dropdown-item">
+                        NDEE Chemicals Report
                     </a>
                 </div>
             </li>

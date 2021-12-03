@@ -848,6 +848,44 @@
         }
       }
     },
+    "/api/chemicalFormulationYearlyTotals": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecordChemicalFormulation"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationYearlyTotalDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationYearlyTotalDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationYearlyTotalDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/customRichText/{customRichTextTypeID}": {
       "get": {
         "tags": [
@@ -2518,6 +2556,31 @@
           "ChemicalFormulationDisplayName": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemicalFormulationYearlyTotalDto": {
+        "type": "object",
+        "properties": {
+          "RecordYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalFormulation": {
+            "type": "string",
+            "nullable": true
+          },
+          "TotalApplied": {
+            "type": "number",
+            "format": "double"
+          },
+          "ChemicalUnit": {
+            "$ref": "#/components/schemas/ChemicalUnitDto"
+          },
+          "AcresTreated": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

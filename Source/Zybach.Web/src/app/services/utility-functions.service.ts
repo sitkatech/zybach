@@ -17,7 +17,7 @@ export class UtilityFunctionsService {
         skipFooters: true,
         skipGroups: true,
         skipPinnedTop: true,
-        skipPinnedBottom: true,
+        skipPinnedBottom: false,
         allColumns: true,
         onlySelected: false,
         suppressQuotes: false,

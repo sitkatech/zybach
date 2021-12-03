@@ -9,10 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '././chemigation-permit-annual-record-chemical-formulation-simple-dto';
+import { ChemicalUnitDto } from '././chemical-unit-dto';
 
-export class ChemigationPermitAnnualRecordChemicalFormulationsDto { 
-    ChemicalFormulations: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
+export class ChemicalFormulationYearlyTotalDto { 
+    RecordYear?: number;
+    ChemicalFormulation?: string;
+    TotalApplied?: number;
+    ChemicalUnit?: ChemicalUnitDto;
+    AcresTreated?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
