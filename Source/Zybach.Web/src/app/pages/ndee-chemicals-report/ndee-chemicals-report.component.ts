@@ -38,11 +38,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.chemicalReportGrid.api.showLoadingOverlay();
       this.initializeGrid();
-      this.chemigationPermitService.getChemicalFormulationYearlyTotals().subscribe(chemicalFormulationYearlyTotals => {
-        this.chemicalFormulationYearlyTotals = chemicalFormulationYearlyTotals;
-        this.chemicalReportGrid.api.hideOverlay();
-        this.cdr.detectChanges();
-      });
+      
 
       this.chemicalReportGrid.api.hideOverlay();
     });
@@ -81,13 +77,13 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       { 
         headerName: 'Total Acres Treated',  
         valueGetter: function (params: any) {
-        return params.node.rowPinned ? "Total: " + params.data.AcresTreated : params.data.AcresTreated;
+          return params.node.rowPinned ? "Total: " + params.data.AcresTreatedTotal : params.data.AcresTreated;
         },
         pinnedRowCellRendererFramework: CustomPinnedRowRendererComponent,
         pinnedRowCellRendererParams: { filter: true },
         filter: true,
         resizable: true,
-        sortable: true,
+        sortable: true
       }
     ];
 
@@ -97,16 +93,27 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     this.utilityFunctionsService.exportGridToCsv(this.chemicalReportGrid, 'chemical-report.csv', null);
   }
 
-  public onFirstDataRendered(params): void {
-    this.gridApi = params.api;
+  public onChemicalReportGridReady(gridEvent) {
+    this.chemigationPermitService.getChemicalFormulationYearlyTotals().subscribe(chemicalFormulationYearlyTotals => {
+      this.chemicalFormulationYearlyTotals = chemicalFormulationYearlyTotals;
+      this.chemicalReportGrid.api.hideOverlay();
+      this.pinnedBottomRowData = [
+        { 
+          AcresTreatedTotal: this.chemicalFormulationYearlyTotals.map(x => x.AcresTreated).reduce((sum, x) => sum + x, 0)
+        }
+      ];
+      this.chemicalReportGrid.api.sizeColumnsToFit();
+    });
+  
+  }
 
-    this.pinnedBottomRowData = [
-      { 
-        AcresTreatedTotal: this.chemicalFormulationYearlyTotals.map(x => x.AcresTreated).reduce((sum, x) => sum + x, 0)
+  
+  onFilterChanged(gridEvent) {
+    gridEvent.api.setPinnedBottomRowData([
+      {
+        AcresTreatedTotal: gridEvent.api.getModel().rowsToDisplay.map(x => x.data.AcresTreated).reduce((sum, x) => sum+x, 0)
       }
-    ];
-
-    this.gridApi.sizeColumnsToFit();
+    ]);
   }
   
   ngOnDestroy(): void {

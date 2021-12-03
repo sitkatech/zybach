@@ -18,8 +18,8 @@
             </div>
             <div class="table-responsive">
                 <ag-grid-angular #chemicalReportGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="chemicalFormulationYearlyTotals"
-                    [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100"
-                    (firstDataRendered)="onFirstDataRendered($event)">
+                    [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100" [pinnedBottomRowData]="pinnedBottomRowData"
+                    (filterChanged)="onFilterChanged($event)" (gridReady)="onChemicalReportGridReady($event)">
                 </ag-grid-angular>
             </div>
         </div>
