@@ -6,6 +6,7 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { ChemicalFormulationYearlyTotalDto } from 'src/app/shared/generated/model/chemical-formulation-yearly-total-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     public columnDefs: ColDef[];
   
     public gridApi: any;
+    public pinnedBottomRowData: any;
   
     constructor(
       private authenticationService: AuthenticationService,
@@ -77,10 +79,15 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
         sortable: true
       },
       { 
-        headerName: 'Acres Treated', 
-        field: 'AcresTreated',
+        headerName: 'Total Acres Treated',  
+        valueGetter: function (params: any) {
+        return params.node.rowPinned ? "Total: " + params.data.AcresTreated : params.data.AcresTreated;
+        },
+        pinnedRowCellRendererFramework: CustomPinnedRowRendererComponent,
+        pinnedRowCellRendererParams: { filter: true },
+        filter: true,
         resizable: true,
-        sortable: true
+        sortable: true,
       }
     ];
 
@@ -92,6 +99,13 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
 
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
+
+    this.pinnedBottomRowData = [
+      { 
+        AcresTreatedTotal: this.chemicalFormulationYearlyTotals.map(x => x.AcresTreated).reduce((sum, x) => sum + x, 0)
+      }
+    ];
+
     this.gridApi.sizeColumnsToFit();
   }
   
