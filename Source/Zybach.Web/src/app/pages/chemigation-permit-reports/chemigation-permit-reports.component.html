@@ -8,6 +8,15 @@
     </div>
     <div class="row">
         <div class="container col-12">
+            <div class="col-4 float-left ml-2">
+                <div class="row align-items-center">
+                    <span class="far fa-calendar mr-2"> </span>
+                    <zybach-water-year-select [(selectedYear)]="yearToDisplay"
+                        (selectedYearChange)="updateAnnualData()" [(allYearsSelected)]="allYearsSelected"
+                        (allYearsSelectedChange)="updateAnnualData()">
+                    </zybach-water-year-select>
+                </div>
+            </div>
             <div class="row my-2">
                 <div class="col">
                     <a class="btn btn-secondary btn-md float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
@@ -19,7 +28,7 @@
             <div class="table-responsive">
                 <ag-grid-angular #chemigationPermitReportGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="rowData"
                     [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100"
-                    (filterChanged)="onFilterChanged($event)" (gridReady)="onGridReady($event)">
+                    (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
             </div>
         </div>

@@ -24,6 +24,10 @@ export class ChemigationPermitReportsComponent implements OnInit {
   
   public gridApi: any;
 
+  public allYearsSelected: boolean = false;
+  public yearToDisplay: number;
+  public currentYear: number;
+
   constructor(
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
@@ -32,6 +36,9 @@ export class ChemigationPermitReportsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentYear = new Date().getFullYear();
+    this.yearToDisplay = new Date().getFullYear(); 
+
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
       this.chemigationPermitReportGrid.api.showLoadingOverlay();
@@ -41,7 +48,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
 
   initializeGrid() {
     this.columnDefs = [
-      { headerName: 'Permit #', field: 'ChemigationPermit.ChemigationPermitNumber', filter: true, resizable: true, sort: 'asc' },
+      { headerName: 'Permit #', field: 'ChemigationPermit.ChemigationPermitNumber', filter: true, resizable: true, sortable: true, sort: 'asc'},
       { headerName: 'Permit Status', field: 'ChemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
@@ -101,16 +108,19 @@ export class ChemigationPermitReportsComponent implements OnInit {
   }
   
   public onGridReady(gridEvent) {
+    this.populateAnnualRecords();
+  }
+
+  public updateAnnualData(): void {
+    this.populateAnnualRecords();
+  }
+
+  private populateAnnualRecords(): void {
     this.chemigationPermitService.getAllAnnualRecords().subscribe(annualRecords => {
-      this.rowData = annualRecords;
+      this.rowData = annualRecords.filter(x => x.RecordYear == this.yearToDisplay);
       this.chemigationPermitReportGrid.api.hideOverlay();
       this.chemigationPermitReportGrid.api.sizeColumnsToFit();
     });
-  
-  }
-  
-  onFilterChanged(gridEvent) {
-
   }
   
   ngOnDestroy(): void {
