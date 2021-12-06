@@ -8,6 +8,7 @@ import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -51,7 +52,29 @@ export class ChemigationPermitReportsComponent implements OnInit {
 
   initializeGrid() {
     this.columnDefs = [
-      { headerName: 'Permit #', field: 'ChemigationPermit.ChemigationPermitNumber', filter: true, resizable: true, sortable: true, sort: 'asc'},
+      {
+        headerName: 'Permit #',
+        valueGetter: function (params: any) {
+          return { LinkValue: params.data.ChemigationPermit.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit.ChemigationPermitNumber }
+        },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/chemigation-permits/" },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkDisplay;
+          let link2 = id2.LinkDisplay;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        filter: true,
+        resizable: true,
+        sortable: true,
+        sort: 'asc',
+      },
       { headerName: 'Permit Status', field: 'ChemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
