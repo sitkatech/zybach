@@ -7,6 +7,7 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
+import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -18,6 +19,8 @@ export class ChemigationPermitReportsComponent implements OnInit {
   
   private watchUserChangeSubscription: any;
   private currentUser: UserDto;
+
+  public richTextTypeID : number = CustomRichTextType.ChemigationPermitReport;
   
   public rowData: Array<ChemigationPermitAnnualRecordDto>;
   public columnDefs: ColDef[];
