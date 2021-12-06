@@ -65,6 +65,7 @@ import { ChemigationPermitApplicatorsEditorComponent } from './shared/components
 import { ChemigationPermitWellsEditorComponent } from './shared/components/chemigation-permit-wells-editor/chemigation-permit-wells-editor.component';
 import { NdeeChemicalsReportComponent } from './pages/ndee-chemicals-report/ndee-chemicals-report.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ChemigationPermitReportsComponent } from './pages/chemigation-permit-reports/chemigation-permit-reports.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -113,7 +114,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationPermitChemicalFormulationsEditorComponent,
     ChemigationPermitApplicatorsEditorComponent,
     ChemigationPermitWellsEditorComponent,
-    NdeeChemicalsReportComponent    
+    NdeeChemicalsReportComponent,
+    ChemigationPermitReportsComponent    
   ],
   imports: [
     AppRoutingModule,

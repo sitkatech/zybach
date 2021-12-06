@@ -5,19 +5,19 @@
             <label class="required"><strong>Name: </strong></label>
         </div>
 
-        <div class="col-2 control-label text-right mb-2">
+        <div class="col-1 control-label text-left mb-2">
             <label class="required"><strong>Certification Number: </strong></label>
         </div>
 
-        <div class="col-1 control-label text-left mb-2">
+        <div class="col-2 control-label text-left mb-2">
             <label class="required"><strong>Expiration: </strong></label>
         </div>
 
-        <div class="col-2 control-label text-right mb-2">
+        <div class="col-2 control-label text-left mb-2">
             <label><strong>Home Phone: </strong></label>
         </div>
         
-        <div class="col-2 control-label text-right mb-2">
+        <div class="col-2 control-label text-left mb-2">
             <label><strong>Mobile Phone: </strong></label>
         </div>
     </div>
@@ -27,12 +27,12 @@
             placeholder="First Last" [(ngModel)]="chemicalPermitAnnualRecordApplicator.ApplicatorName" />
         </div>
 
-        <div class="col-2 text-left mb-2">
+        <div class="col-1 text-left mb-2">
             <input type="number" step="1" class="form-control" name="CertificationNumber-{{index}}" required
                 [(ngModel)]="chemicalPermitAnnualRecordApplicator.CertificationNumber" />
         </div>
 
-        <div class="col-1 text-left mb-2">
+        <div class="col-2 text-left mb-2">
             <ng-select [(ngModel)]="chemicalPermitAnnualRecordApplicator.ExpirationYear"
                 [items]="expirationYears" 
                 placeholder="Choose One" name="ExpirationYear-{{index}}" required>
@@ -57,7 +57,9 @@
         </div>
     </div>
 </form>
-<button type="button" class="btn btn-zybach" (click)="addRow()">
-    <span class="fa fa-plus"></span>
-    Add New Applicator
-</button>
+<div class="row ml-3 mt-2">
+    <button type="button" class="btn btn-zybach" (click)="addRow()">
+        <span class="fa fa-plus"></span>
+        Add New Applicator
+    </button>
+</div>

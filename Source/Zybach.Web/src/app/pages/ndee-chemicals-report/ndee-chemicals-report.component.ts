@@ -4,6 +4,7 @@ import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemicalFormulationYearlyTotalDto } from 'src/app/shared/generated/model/chemical-formulation-yearly-total-dto';
+import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
@@ -19,6 +20,8 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
   
     private watchUserChangeSubscription: any;
     private currentUser: UserDto;
+
+    public richTextTypeID : number = CustomRichTextType.NDEEChemicalsReport;
     
     public chemicalFormulationYearlyTotals: Array<ChemicalFormulationYearlyTotalDto>;
     public columnDefs: ColDef[];
@@ -48,6 +51,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
         field: 'RecordYear',
         filter: 'agNumberColumnFilter',
         resizable: true,
+        sortable: true,
         sort: 'desc'
       },
       {
@@ -93,7 +97,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     this.utilityFunctionsService.exportGridToCsv(this.chemicalReportGrid, 'chemicals-report.csv', null);
   }
 
-  public onChemicalReportGridReady(gridEvent) {
+  public onChemicalReportGridReady(params) {
     this.chemigationPermitService.getChemicalFormulationYearlyTotals().subscribe(chemicalFormulationYearlyTotals => {
       this.chemicalFormulationYearlyTotals = chemicalFormulationYearlyTotals;
       this.chemicalReportGrid.api.hideOverlay();
