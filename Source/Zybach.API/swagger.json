@@ -2904,7 +2904,8 @@
           },
           "TotalApplied": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "AcresTreated": {
             "type": "number",
@@ -2936,7 +2937,8 @@
             "maximum": 999999,
             "minimum": 0,
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "AcresTreated": {
             "maximum": 999999,

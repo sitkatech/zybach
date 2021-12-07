@@ -55,7 +55,7 @@ namespace Zybach.EFModels.Entities
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
         }
 
-        private static ChemigationPermitAnnualRecord CreateAnnualRecordImpl(ZybachDbContext dbContext,
+        public static ChemigationPermitAnnualRecord CreateAnnualRecordImpl(ZybachDbContext dbContext,
             ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
         {
             var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord
