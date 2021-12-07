@@ -15,7 +15,8 @@
                     <fresca-clear-grid-filters-button class="mr-3" [grid]="permitGrid">
                     </fresca-clear-grid-filters-button>
                     <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/new"><span class="fas fa-plus"></span> New Chemigation Permit </a>
-                    <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/chemigation-permits/create-annual-renewals"><span class="fas fa-plus"></span> Create Annual Renewals </a>
+                    <a class="btn btn-zybach btn-md mr-3 float-right" style="cursor: pointer;" (click)="launchModal(renewalEntity, 'renewalEntity')" placement="top"
+                    ngbTooltip="Bulk Create Annual Renewal Applications"><span class="fas fa-plus"></span> Generate Renewal Applications </a>
                 </div>
             </div>
             <div class="table-responsive">
@@ -27,4 +28,29 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #createAnnualRenewalsModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Generate Renewal Applications</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        There are {{countOfActivePermitsWithoutRenewalRecordsForCurrentYear}} active Chemigation Permits that do not have a renewal record for year {{currentYear}}. 
+        Would you like to create renewal records for these permits? 
+        The renewal records will be assigned the status “Pending Renewal”
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-zybach btn-sm" [disabled]="isPerformingAction" (click)="bulkCreateAnnualRenewals()">
+            <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+            Continue
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="modal.close('Cancel click')"
+            [disabled]="isPerformingAction">
+            Cancel
+        </button>
+    </div>
+</ng-template>
 
