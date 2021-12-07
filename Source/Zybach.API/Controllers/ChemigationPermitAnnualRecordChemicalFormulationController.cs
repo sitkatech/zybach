@@ -91,8 +91,8 @@ namespace Zybach.API.Controllers
                         RecordYear = x.Key.RecordYear,
                         ChemicalFormulation = x.Key.ChemicalFormulation.ChemicalFormulationDisplayName,
                         ChemicalUnit = x.Key.ChemicalUnit.AsDto(),
-                        TotalApplied = (decimal)permitAnnualRecordChemicalFormulations
-                            .Sum(y => y.TotalApplied),
+                        TotalApplied = permitAnnualRecordChemicalFormulations
+                            .Sum(y => y.TotalApplied ?? 0),
                         AcresTreated = permitAnnualRecordChemicalFormulations
                             .Sum(y => y.AcresTreated)
                     };

@@ -15,15 +15,26 @@ namespace Zybach.EFModels.Entities
             {
                 var newChemigationPermitAnnualRecordChemicalFormulations =
                     chemigationPermitAnnualRecordChemicalFormulationsDto.GroupBy(x => new {x.ChemicalFormulationID, x.ChemicalUnitID}).Select(x =>
-                        new ChemigationPermitAnnualRecordChemicalFormulation
+                    {
+                        var formulation = new ChemigationPermitAnnualRecordChemicalFormulation
+                            {
+                                ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecordID,
+                                ChemicalFormulationID = x.Key.ChemicalFormulationID,
+                                ChemicalUnitID = x.Key.ChemicalUnitID,
+                                AcresTreated = x.Sum(y => y.AcresTreated)
+                            };
+
+                        var hasTotalAppliedValues = x.Where(y => y.TotalApplied.HasValue).ToList();
+                        if (hasTotalAppliedValues.Any())
                         {
-                            ChemigationPermitAnnualRecordID =
-                                chemigationPermitAnnualRecordID,
-                            ChemicalFormulationID = x.Key.ChemicalFormulationID,
-                            ChemicalUnitID = x.Key.ChemicalUnitID,
-                            TotalApplied = x.Sum(y => y.TotalApplied),
-                            AcresTreated = x.Sum(y => y.AcresTreated)
-                        }).ToList();
+                            formulation.TotalApplied = hasTotalAppliedValues.Sum(y => y.TotalApplied.Value);
+                        }
+                        else
+                        {
+                            formulation.TotalApplied = null;
+                        }
+                        return formulation;
+                    }).ToList();
                 var existingChemigationPermitAnnualRecordChemicalFormulations = dbContext
                     .ChemigationPermitAnnualRecordChemicalFormulations.Where(x =>
                         x.ChemigationPermitAnnualRecordID ==

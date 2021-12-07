@@ -38,12 +38,18 @@
         </button>
     </div>
     <div class="modal-body">
-        There are {{countOfActivePermitsWithoutRenewalRecordsForCurrentYear}} active Chemigation Permits that do not have a renewal record for year {{currentYear}}. 
-        Would you like to create renewal records for these permits? 
-        The renewal records will be assigned the status “Pending Renewal”
+        <p *ngIf="countOfActivePermitsWithoutRenewalRecordsForCurrentYear < 1">
+            All active Chemigation Permits have renewal records for year {{currentYear}}.
+        </p>
+        <p *ngIf="countOfActivePermitsWithoutRenewalRecordsForCurrentYear > 0">
+            There are {{countOfActivePermitsWithoutRenewalRecordsForCurrentYear}} active Chemigation Permits that do not have a Renewal Record for year {{currentYear}}. 
+            Would you like to create renewal records for these permits? 
+            The renewal records will be assigned the status “Pending Renewal”
+        </p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-zybach btn-sm" [disabled]="isPerformingAction" (click)="bulkCreateAnnualRenewals()">
+        <button type="button" class="btn btn-zybach btn-sm" [disabled]="isPerformingAction ||
+            countOfActivePermitsWithoutRenewalRecordsForCurrentYear < 1" (click)="bulkCreateAnnualRenewals()">
             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
             Continue
         </button>

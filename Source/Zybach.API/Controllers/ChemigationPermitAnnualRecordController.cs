@@ -124,7 +124,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpPost("/api/chemigationPermits/annualRecordsBulkCreate/{recordYear}")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult<int> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
         {
             var chemigationPermitDetailedDtos = ChemigationPermits.ListWithLatestAnnualRecordAsDto(_dbContext)
