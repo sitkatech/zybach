@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -116,11 +117,47 @@ namespace Zybach.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
             return Ok(chemigationPermitAnnualRecordDto);
         }
 
+
+        [HttpPost("/api/chemigationPermits/annualRecordsBulkCreate/{recordYear}")]
+        [AdminFeature]
+        public ActionResult<int> BulkCreateChemigationAnnualRecords([FromRoute] int recordYear)
+        {
+            var chemigationPermitDetailedDtos = ChemigationPermits.ListWithLatestAnnualRecordAsDto(_dbContext)
+                .Where(x => x.ChemigationPermitStatus.ChemigationPermitStatusID == (int)ChemigationPermitStatus.ChemigationPermitStatusEnum.Active &&
+                            x.LatestAnnualRecord.RecordYear == recordYear - 1)
+                .ToList();
+
+            foreach (var chemigationPermitDetailedDto in chemigationPermitDetailedDtos)
+            {
+                //var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto();
+                //chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID = (int)ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusEnum.PendingPayment;
+                //chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = chemigationPermitDetailedDto.ChemigationPermit.ChemigationInjectionUnitTypeID;
+                //chemigationPermitAnnualRecordUpsertDto.RecordYear = this.newRecordYear;
+                //chemigationPermitAnnualRecordUpsertDto.PivotName = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.PivotName;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantFirstName;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantLastName = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantLastName;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantMailingAddress;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantCity = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantCity;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantState = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantState;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantZipCode;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantPhone = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantPhone;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantMobilePhone;
+                //chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.ApplicantEmail;
+                //chemigationPermitAnnualRecordUpsertDto.DateReceived = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.DateReceived;
+                //chemigationPermitAnnualRecordUpsertDto.DatePaid = chemigationPermitDetailedDto.ChemigationPermitAnnualRecord.DatePaid;
+            }
+            // foreach chemigationPermitDetailedDto, create an annual record
+            // use the InitializeModel from the typescript in add-annual-record; we need to create them as ChemigationPermitAnnualRecordUpsertDto so we can reuse CreateAnnualRecord
+            // make saving total applied nullable
+            // return count created, which is just chemigationPermitDetailedDtos.Count
+
+            return 1;
+        }
     }
 
 }
