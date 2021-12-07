@@ -16,7 +16,7 @@
         <div class="col-12 mb-1">
             <fresca-clear-grid-filters-button class="mr-3" [grid]="robustReviewScenarioGETRunHistoryGrid">
             </fresca-clear-grid-filters-button>
-            <button class="btn btn-zybach float-right" (click)="triggerNewRobustReviewScenarioRun()" [disabled]="!canCreateNewRun() || fileDownloading"> <span *ngIf="newRunTriggered" class="fas fa-spinner loading-spinner"></span>New Robust Review Scenario
+            <button class="btn btn-zybach float-right" (click)="triggerNewRobustReviewScenarioRun()" [disabled]="!canCreateNewRun() || fileDownloading"> <span *ngIf="newRunTriggered" class="fas fa-spinner loading-spinner"></span><span class="fas fa-plus"></span> New Robust Review Scenario
                 Action</button>
         </div>
         <div class="col-12 table table-responsive">
