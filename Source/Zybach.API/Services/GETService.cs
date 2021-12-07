@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using GeoJSON.Net.Geometry;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -176,13 +177,15 @@ namespace Zybach.API.Services
             public GETNewRunModel(int numForRunName, ZybachConfiguration zybachConfiguration)
             {
                 Name = $"GWMA Integration Run #{numForRunName}";
+                Description = "This action was automatically created by the TP NRD Groundwater Manager’s Application";
                 CustomerId = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID;
                 UserId = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID;
                 ModelId = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID;
                 ScenarioId = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID;
                 CreateMaps = true;
                 IsDifferential = true;
-                InputVolumeType = 1;
+                //Input Volume is N/A for Custom Scenarios
+                InputVolumeType = 0;
                 OutputVolumeType = 1;
             }
 
@@ -203,6 +206,7 @@ namespace Zybach.API.Services
             public int CustomerId { get; set; }
 
             public string Name { get; set; }
+            public string Description { get; set; }
         }
     }
 }
