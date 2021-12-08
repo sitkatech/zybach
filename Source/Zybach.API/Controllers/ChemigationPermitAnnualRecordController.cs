@@ -132,8 +132,6 @@ namespace Zybach.API.Controllers
                             x.LatestAnnualRecord.RecordYear == recordYear - 1)
                 .ToList();
 
-            var countAnnualRecordsCreated = 0;
-
             foreach (var chemigationPermitDetailedDto in chemigationPermitDetailedDtos)
             {
                 var applicatorsUpsert = MapLatestAnnualRecordApplicatorsToApplicatorUpsertDtoList(chemigationPermitDetailedDto);
@@ -146,21 +144,9 @@ namespace Zybach.API.Controllers
 
                 var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.CreateAnnualRecordImpl(_dbContext, chemigationPermitAnnualRecordUpsert,
                     chemigationPermitDetailedDto.ChemigationPermitID);
-
-                if (chemigationPermitAnnualRecord != null)
-                {
-                    countAnnualRecordsCreated += 1;
-                }
             }
 
-            _dbContext.SaveChanges();
-
-            // foreach chemigationPermitDetailedDto, create an annual record
-            // use the InitializeModel from the typescript in add-annual-record; we need to create them as ChemigationPermitAnnualRecordUpsertDto so we can reuse CreateAnnualRecord
-            // make saving total applied nullable
-            // return count created, which is just chemigationPermitDetailedDtos.Count
-
-            return countAnnualRecordsCreated;
+            return chemigationPermitDetailedDtos.Count();
         }
 
         private static ChemigationPermitAnnualRecordUpsertDto MapLatestChemigationPermitAnnualRecordToUpsertDto(int recordYear,
