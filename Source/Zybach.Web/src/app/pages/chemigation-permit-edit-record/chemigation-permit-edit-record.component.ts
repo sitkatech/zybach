@@ -67,6 +67,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
       forkJoin({
         annualRecord: this.chemigationPermitService.getAnnualRecordByPermitNumberAndRecordYear(this.chemigationPermitNumber, this.recordYear),
       }).subscribe(({ annualRecord }) => {
+        //this.model = annualRecord;
         this.initializeModel(annualRecord);
         this.cdr.detectChanges();
       });

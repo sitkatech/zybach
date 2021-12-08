@@ -134,19 +134,28 @@ namespace Zybach.API.Controllers
 
             foreach (var chemigationPermitDetailedDto in chemigationPermitDetailedDtos)
             {
-                var applicatorsUpsert = MapLatestAnnualRecordApplicatorsToApplicatorUpsertDtoList(chemigationPermitDetailedDto);
+                var chemigationPermitAnnualRecordUpsertDto = CreateChemigationPermitAnnualRecordUpsertDto(recordYear, chemigationPermitDetailedDto);
 
-                var chemicalFormulationsUpsert = MapLatestAnnualRecordChemicalFormulationsToChemicalFormulationUpsertDtoList(chemigationPermitDetailedDto);
-
-                var wellsUpsert = MapLatestAnnualRecordWellsToWellUpsertDtoList(chemigationPermitDetailedDto);
-
-                var chemigationPermitAnnualRecordUpsert = MapLatestChemigationPermitAnnualRecordToUpsertDto(recordYear, chemigationPermitDetailedDto, applicatorsUpsert, chemicalFormulationsUpsert, wellsUpsert);
-
-                var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.CreateAnnualRecordImpl(_dbContext, chemigationPermitAnnualRecordUpsert,
+                var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.CreateAnnualRecordImpl(_dbContext, chemigationPermitAnnualRecordUpsertDto,
                     chemigationPermitDetailedDto.ChemigationPermitID);
             }
 
             return chemigationPermitDetailedDtos.Count();
+        }
+
+        private static ChemigationPermitAnnualRecordUpsertDto CreateChemigationPermitAnnualRecordUpsertDto(int recordYear,
+            ChemigationPermitDetailedDto chemigationPermitDetailedDto)
+        {
+            var applicatorsUpsert = MapLatestAnnualRecordApplicatorsToApplicatorUpsertDtoList(chemigationPermitDetailedDto);
+
+            var chemicalFormulationsUpsert =
+                MapLatestAnnualRecordChemicalFormulationsToChemicalFormulationUpsertDtoList(chemigationPermitDetailedDto);
+
+            var wellsUpsert = MapLatestAnnualRecordWellsToWellUpsertDtoList(chemigationPermitDetailedDto);
+
+            var chemigationPermitAnnualRecordUpsert = MapLatestChemigationPermitAnnualRecordToUpsertDto(recordYear,
+                chemigationPermitDetailedDto, applicatorsUpsert, chemicalFormulationsUpsert, wellsUpsert);
+            return chemigationPermitAnnualRecordUpsert;
         }
 
         private static ChemigationPermitAnnualRecordUpsertDto MapLatestChemigationPermitAnnualRecordToUpsertDto(int recordYear,
