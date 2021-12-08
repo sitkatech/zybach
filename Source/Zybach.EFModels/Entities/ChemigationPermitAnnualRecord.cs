@@ -49,6 +49,15 @@ namespace Zybach.EFModels.Entities
                 return null;
             }
 
+            var chemigationPermitAnnualRecord = CreateAnnualRecordImpl(dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
+
+            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
+            return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
+        }
+
+        public static ChemigationPermitAnnualRecord CreateAnnualRecordImpl(ZybachDbContext dbContext,
+            ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
+        {
             var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord
             {
                 ChemigationPermitID = chemigationPermitID
@@ -56,12 +65,15 @@ namespace Zybach.EFModels.Entities
             dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
 
             UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
-            Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
-            Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Applicators);
-            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
-
-            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
-            return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
+            Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext,
+                chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
+                chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
+            Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext,
+                chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
+                chemigationPermitAnnualRecordUpsertDto.Applicators);
+            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext,
+                chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
+            return chemigationPermitAnnualRecord;
         }
 
         public static ChemigationPermitAnnualRecordDto UpdateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)

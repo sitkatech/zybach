@@ -752,6 +752,49 @@
         }
       }
     },
+    "/api/chemigationPermits/annualRecordsBulkCreate/{recordYear}": {
+      "post": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "recordYear",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/chemicalFormulations": {
       "get": {
         "tags": [
@@ -2861,7 +2904,8 @@
           },
           "TotalApplied": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "AcresTreated": {
             "type": "number",
@@ -2893,7 +2937,8 @@
             "maximum": 999999,
             "minimum": 0,
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "AcresTreated": {
             "maximum": 999999,

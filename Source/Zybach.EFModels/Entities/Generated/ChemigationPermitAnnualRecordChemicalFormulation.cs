@@ -18,7 +18,7 @@ namespace Zybach.EFModels.Entities
         public int ChemicalFormulationID { get; set; }
         public int ChemicalUnitID { get; set; }
         [Column(TypeName = "decimal(8, 2)")]
-        public decimal TotalApplied { get; set; }
+        public decimal? TotalApplied { get; set; }
         [Column(TypeName = "decimal(8, 2)")]
         public decimal AcresTreated { get; set; }
 

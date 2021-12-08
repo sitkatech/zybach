@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecordChemicalFormulation](
 	[ChemigationPermitAnnualRecordID] [int] NOT NULL,
 	[ChemicalFormulationID] [int] NOT NULL,
 	[ChemicalUnitID] [int] NOT NULL,
-	[TotalApplied] [decimal](8, 2) NOT NULL,
+	[TotalApplied] [decimal](8, 2) NULL,
 	[AcresTreated] [decimal](8, 2) NOT NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecordChemicalFormulation_ChemigationPermitAnnualRecordChemicalFormulationID] PRIMARY KEY CLUSTERED 
 (

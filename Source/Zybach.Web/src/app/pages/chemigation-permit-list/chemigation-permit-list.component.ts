@@ -10,6 +10,11 @@ import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
@@ -18,6 +23,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 })
 export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   @ViewChild('permitGrid') permitGrid: AgGridAngular;
+  @ViewChild('createAnnualRenewalsModal') renewalEntity: any;
 
   private watchUserChangeSubscription: any;
   private currentUser: UserDto;
@@ -28,12 +34,20 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   public chemigationPermits: Array<ChemigationPermitDetailedDto>;
   public users: UserDto[];
   public unassignedUsers: UserDto[];
+  public currentYear: number;
+  public countOfActivePermitsWithoutRenewalRecordsForCurrentYear: number;
 
   public gridApi: any;
 
+  public modalReference: NgbModalRef;
+  public isPerformingAction: boolean = false;
+  public closeResult: string;
+
   constructor(
+    private alertService: AlertService,
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
+    private modalService: NgbModal,
     private utilityFunctionsService: UtilityFunctionsService,
     private cdr: ChangeDetectorRef
   ) { }
@@ -41,17 +55,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
+      this.currentYear = new Date().getFullYear();
       this.permitGrid.api.showLoadingOverlay();
       this.initializeGrid();
-      this.chemigationPermitService.getChemigationPermits().subscribe(chemigationPermits => {
-        this.chemigationPermits = chemigationPermits;
-        this.permitGrid.api.hideOverlay();
-        this.cdr.detectChanges();
-      });
-      this.permitGrid.api.hideOverlay();
+      this.updateGridData();
     });
   }
-
   
   private initializeGrid(): void {
     let datePipe = new DatePipe('en-US');
@@ -226,10 +235,50 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
+    this.updateGridData();
+  }
+
+  public updateGridData(): void {
+    this.chemigationPermitService.getChemigationPermits().subscribe(chemigationPermits => {
+      this.chemigationPermits = chemigationPermits;
+      this.countOfActivePermitsWithoutRenewalRecordsForCurrentYear = this.chemigationPermits.filter(x => 
+        x.ChemigationPermitStatus.ChemigationPermitStatusID == ChemigationPermitStatusEnum.Active &&
+        x.LatestAnnualRecord.RecordYear < this.currentYear).length;
+      this.permitGrid.api.hideOverlay();
+      this.cdr.detectChanges();
+    });
+    this.permitGrid.api.hideOverlay();
   }
 
   public exportToCsv() {
     this.utilityFunctionsService.exportGridToCsv(this.permitGrid, 'chemigation-permits.csv', null);
+  }
+
+  public launchModal(modalContent: any, modalTitle: string): void {
+    this.modalReference = this.modalService.open(modalContent, { ariaLabelledBy: modalTitle, beforeDismiss: () => this.checkIfSubmitting(), backdrop: 'static', keyboard: false });
+    this.modalReference.result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+    });
+  }
+  
+  public checkIfSubmitting(): boolean {
+    return !this.isPerformingAction;
+  }
+
+  public bulkCreateAnnualRenewals(): void {
+    this.isPerformingAction = true;
+    this.chemigationPermitService.bulkCreateChemigationPermitAnnualRecordsByRecordYear(this.currentYear).subscribe((responseCount) => {
+      this.modalReference.close();
+      this.isPerformingAction = false;
+      this.alertService.pushAlert(new Alert(`${responseCount} Annual Renewal Applications successfully created`, AlertContext.Success, true));
+      this.updateGridData();
+    }, error => {
+      this.modalReference.close();
+      this.isPerformingAction = false;
+      this.alertService.pushAlert(new Alert(`There was an error completing the renewal action. Please try again`, AlertContext.Danger, true));
+    })
   }
 
   ngOnDestroy(): void {

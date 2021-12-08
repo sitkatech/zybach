@@ -89,7 +89,7 @@ export class ChemigationPermitService {
     return this.apiService.getFromApi(route);
   }
   
-  public createChemigationPermitAnnualRecord(chemigationPermitID:number, chemigationPermitAnnualRecord: ChemigationPermitAnnualRecordUpsertDto): Observable<ChemigationPermitAnnualRecordDto> {
+  public createChemigationPermitAnnualRecord(chemigationPermitID: number, chemigationPermitAnnualRecord: ChemigationPermitAnnualRecordUpsertDto): Observable<ChemigationPermitAnnualRecordDto> {
     let route = `/chemigationPermits/${chemigationPermitID}/annualRecords`;
     return this.apiService.postToApi(route, chemigationPermitAnnualRecord);
   }
@@ -117,5 +117,10 @@ export class ChemigationPermitService {
   public getChemicalFormulationYearlyTotals(): Observable<Array<ChemicalFormulationYearlyTotalDto>> {
     let route = `/chemicalFormulationYearlyTotals/`;
     return this.apiService.getFromApi(route);
+  }
+
+  public bulkCreateChemigationPermitAnnualRecordsByRecordYear(recordYear: number): Observable<number> {
+    let route = `/chemigationPermits/annualRecordsBulkCreate/${recordYear}`;
+    return this.apiService.postToApi(route, null);
   }
 }

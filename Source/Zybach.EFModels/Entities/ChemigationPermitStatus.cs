@@ -9,10 +9,11 @@ namespace Zybach.EFModels.Entities
     public partial class ChemigationPermitStatus
     {
 
-        public enum PermitStatusEnum
+        public enum ChemigationPermitStatusEnum
         {
             Active = 1,
-            Inactive = 2
+            Inactive = 2,
+            PermanentlyInactive = 3
         }
 
         public static IEnumerable<ChemigationPermitStatusDto> List(ZybachDbContext dbContext)
