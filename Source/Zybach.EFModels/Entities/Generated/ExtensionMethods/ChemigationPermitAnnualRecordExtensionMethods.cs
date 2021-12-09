@@ -29,7 +29,8 @@ namespace Zybach.EFModels.Entities
                 ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone,
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
-                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail
+                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
+                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount
             };
             DoCustomMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordDto);
             return chemigationPermitAnnualRecordDto;
@@ -57,7 +58,8 @@ namespace Zybach.EFModels.Entities
                 ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone,
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
-                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail
+                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
+                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount
             };
             DoCustomSimpleDtoMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordSimpleDto);
             return chemigationPermitAnnualRecordSimpleDto;

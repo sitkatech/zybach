@@ -117,8 +117,18 @@ namespace Zybach.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
+            var chemigationPermitNumber = ChemigationPermits.GetChemigationPermitByID(_dbContext, chemigationPermitID)
+                .ChemigationPermitNumber;
+
+            var mostRecentYearWithAnnualRecord =
+                ChemigationPermitAnnualRecord.GetLatestByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber).RecordYear;
+
+            chemigationPermitAnnualRecordUpsertDto.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentYearWithAnnualRecord == 1 ? 
+                ChemigationPermitAnnualRecord.NDEEAmountEnum.Renewal : ChemigationPermitAnnualRecord.NDEEAmountEnum.New;
+
             var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
+
             return Ok(chemigationPermitAnnualRecordDto);
         }
 
@@ -134,7 +144,7 @@ namespace Zybach.API.Controllers
 
             foreach (var chemigationPermitDetailedDto in chemigationPermitDetailedDtos)
             {
-                var chemigationPermitAnnualRecordUpsertDto = CreateChemigationPermitAnnualRecordUpsertDto(recordYear, chemigationPermitDetailedDto);
+                var chemigationPermitAnnualRecordUpsertDto = CreateChemigationPermitAnnualRecordUpsertDto(recordYear, chemigationPermitDetailedDto, false);
 
                 var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.CreateAnnualRecordImpl(_dbContext, chemigationPermitAnnualRecordUpsertDto,
                     chemigationPermitDetailedDto.ChemigationPermitID);
@@ -144,17 +154,18 @@ namespace Zybach.API.Controllers
         }
 
         private static ChemigationPermitAnnualRecordUpsertDto CreateChemigationPermitAnnualRecordUpsertDto(int recordYear,
-            ChemigationPermitDetailedDto chemigationPermitDetailedDto)
+            ChemigationPermitDetailedDto chemigationPermitDetailedDto, bool useExistingChemicalFormulationAmounts)
         {
             var applicatorsUpsert = MapLatestAnnualRecordApplicatorsToApplicatorUpsertDtoList(chemigationPermitDetailedDto);
 
             var chemicalFormulationsUpsert =
-                MapLatestAnnualRecordChemicalFormulationsToChemicalFormulationUpsertDtoList(chemigationPermitDetailedDto);
+                MapLatestAnnualRecordChemicalFormulationsToChemicalFormulationUpsertDtoList(chemigationPermitDetailedDto, useExistingChemicalFormulationAmounts);
 
             var wellsUpsert = MapLatestAnnualRecordWellsToWellUpsertDtoList(chemigationPermitDetailedDto);
 
             var chemigationPermitAnnualRecordUpsert = MapLatestChemigationPermitAnnualRecordToUpsertDto(recordYear,
                 chemigationPermitDetailedDto, applicatorsUpsert, chemicalFormulationsUpsert, wellsUpsert);
+
             return chemigationPermitAnnualRecordUpsert;
         }
 
@@ -179,6 +190,7 @@ namespace Zybach.API.Controllers
                 ApplicantCity = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantCity,
                 ApplicantState = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantState,
                 ApplicantZipCode = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantZipCode,
+                NDEEAmount = ChemigationPermitAnnualRecord.NDEEAmountEnum.Renewal,
                 Applicators = applicatorsUpsert,
                 ChemicalFormulations = chemicalFormulationsUpsert,
                 Wells = wellsUpsert
@@ -204,7 +216,7 @@ namespace Zybach.API.Controllers
         }
 
         private static List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto> MapLatestAnnualRecordChemicalFormulationsToChemicalFormulationUpsertDtoList(
-            ChemigationPermitDetailedDto chemigationPermitDetailedDto)
+            ChemigationPermitDetailedDto chemigationPermitDetailedDto, bool useExistingChemicalFormulationAmounts)
         {
             var chemicalFormulationsUpsert = new List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>();
             foreach (var chemicalFormulation in chemigationPermitDetailedDto.LatestAnnualRecord.ChemicalFormulations)
@@ -213,7 +225,7 @@ namespace Zybach.API.Controllers
                 {
                     ChemicalFormulationID = chemicalFormulation.ChemicalFormulationID,
                     ChemicalUnitID = chemicalFormulation.ChemicalUnitID,
-                    TotalApplied = null,
+                    TotalApplied = useExistingChemicalFormulationAmounts ? chemicalFormulation.TotalApplied : null,
                     AcresTreated = chemicalFormulation.AcresTreated
                 };
 

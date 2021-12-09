@@ -26,6 +26,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
+        public decimal? NDEEAmount { get; set; }
     }
 
     public partial class ChemigationPermitAnnualRecordSimpleDto
@@ -47,6 +48,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
+        public decimal? NDEEAmount { get; set; }
     }
 
 }
