@@ -122,12 +122,12 @@ export class ChemigationPermitReportsComponent implements OnInit {
       },
       { headerName: 'Zip Code', field: 'ApplicantZipCode', filter: true, resizable: true, sortable: true },
       { headerName: 'Home Phone', valueGetter: function (params: any) {
-        return params.data.ApplicantPhone ? params.data.ApplicantPhone : '-';
+        return params.node.rowPinned ? null : params.data.ApplicantPhone ? params.data.ApplicantPhone : '-';
         },
         filter: true, resizable: true, sortable: true 
       },
       { headerName: 'Mobile Phone', valueGetter: function (params: any) {
-        return params.data.ApplicantMobilePhone ? params.data.ApplicantMobilePhone : '-';
+        return params.node.rowPinned ? null : params.data.ApplicantMobilePhone ? params.data.ApplicantMobilePhone : '-';
         },
         filter: true, resizable: true, sortable: true 
       },
