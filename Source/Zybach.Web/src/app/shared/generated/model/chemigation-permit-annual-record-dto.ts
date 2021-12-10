@@ -31,6 +31,7 @@ export class ChemigationPermitAnnualRecordDto {
     DateReceived?: string;
     DatePaid?: string;
     ApplicantEmail?: string;
+    NDEEAmount?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

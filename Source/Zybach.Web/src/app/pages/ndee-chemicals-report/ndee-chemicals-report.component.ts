@@ -23,7 +23,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
 
     public richTextTypeID : number = CustomRichTextType.NDEEChemicalsReport;
     
-    public chemicalFormulationYearlyTotals: Array<ChemicalFormulationYearlyTotalDto>;
+    public rowData: Array<ChemicalFormulationYearlyTotalDto>;
     public columnDefs: ColDef[];
   
     public gridApi: any;
@@ -97,13 +97,13 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     this.utilityFunctionsService.exportGridToCsv(this.chemicalReportGrid, 'chemicals-report.csv', null);
   }
 
-  public onChemicalReportGridReady(params) {
+  public onGridReady(params) {
     this.chemigationPermitService.getChemicalFormulationYearlyTotals().subscribe(chemicalFormulationYearlyTotals => {
-      this.chemicalFormulationYearlyTotals = chemicalFormulationYearlyTotals;
+      this.rowData = chemicalFormulationYearlyTotals;
       this.chemicalReportGrid.api.hideOverlay();
       this.pinnedBottomRowData = [
         { 
-          AcresTreatedTotal: this.chemicalFormulationYearlyTotals.map(x => x.AcresTreated).reduce((sum, x) => sum + x, 0)
+          AcresTreatedTotal: this.rowData.map(x => x.AcresTreated).reduce((sum, x) => sum + x, 0)
         }
       ];
       this.chemicalReportGrid.api.sizeColumnsToFit();

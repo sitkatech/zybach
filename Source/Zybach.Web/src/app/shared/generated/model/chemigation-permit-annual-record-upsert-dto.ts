@@ -29,6 +29,7 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ApplicantCity?: string;
     ApplicantState?: string;
     ApplicantZipCode?: string;
+    NDEEAmount?: number;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>;
     Wells?: Array<ChemigationPermitAnnualRecordWellUpsertDto>;

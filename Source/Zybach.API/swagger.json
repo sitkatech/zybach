@@ -3122,6 +3122,11 @@
           "ApplicantEmail": {
             "type": "string",
             "nullable": true
+          },
+          "NDEEAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3215,6 +3220,11 @@
           "ApplicantZipCode": {
             "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
             "type": "string",
+            "nullable": true
+          },
+          "NDEEAmount": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "ChemicalFormulations": {

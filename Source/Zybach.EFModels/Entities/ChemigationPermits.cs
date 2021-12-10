@@ -53,6 +53,11 @@ namespace Zybach.EFModels.Entities
             dbContext.SaveChanges();
 
             var chemigationPermitID = chemigationPermit.ChemigationPermitID;
+
+            // set NDEE amount to NEW by default for new permits
+            chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount =
+                ChemigationPermitAnnualRecord.NDEEAmountEnum.New;
+
             ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
 
             dbContext.Entry(chemigationPermit).Reload();

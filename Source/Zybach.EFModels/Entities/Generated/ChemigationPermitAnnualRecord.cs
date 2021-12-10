@@ -56,6 +56,8 @@ namespace Zybach.EFModels.Entities
         public DateTime? DatePaid { get; set; }
         [StringLength(255)]
         public string ApplicantEmail { get; set; }
+        [Column(TypeName = "decimal(4, 2)")]
+        public decimal? NDEEAmount { get; set; }
 
         [ForeignKey(nameof(ChemigationInjectionUnitTypeID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]

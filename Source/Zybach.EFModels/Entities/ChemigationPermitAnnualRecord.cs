@@ -7,6 +7,12 @@ namespace Zybach.EFModels.Entities
 {
     public partial class ChemigationPermitAnnualRecord
     {
+        public static class NDEEAmountEnum
+        {
+            public const decimal New = 5.00m;
+            public const decimal Renewal = 2.00m;
+        }
+
         public static List<ChemigationInjectionUnitTypeDto> GetChemigationInjectionUnitTypes(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationInjectionUnitTypes
@@ -33,6 +39,14 @@ namespace Zybach.EFModels.Entities
         {
             return GetChemigationPermitAnnualRecordsImpl(dbContext)
                 .Select(x => x.AsDto()).ToList();
+        }
+
+        public static int GetYearOfMostRecentChemigationPermitAnnualRecordByPermitID(ZybachDbContext dbContext,
+            int chemigationPermitID)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID)
+                .RecordYear;
         }
 
         public static ChemigationPermitAnnualRecordDto GetChemigationPermitAnnualRecordByID(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
@@ -107,6 +121,7 @@ namespace Zybach.EFModels.Entities
             chemigationPermitAnnualRecord.ApplicantZipCode = chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode;
             chemigationPermitAnnualRecord.PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName;
             chemigationPermitAnnualRecord.RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear;
+            chemigationPermitAnnualRecord.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.NDEEAmount;
             //TODO: find a better solution to correct date assignment
             chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid?.AddHours(8);
             chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived?.AddHours(8);
