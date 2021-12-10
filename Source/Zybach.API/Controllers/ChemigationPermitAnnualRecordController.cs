@@ -118,11 +118,9 @@ namespace Zybach.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var chemigationPermitNumber = ChemigationPermits.GetChemigationPermitByID(_dbContext, chemigationPermitID)
-                .ChemigationPermitNumber;
-
             var mostRecentYearWithAnnualRecord =
-                ChemigationPermitAnnualRecord.GetLatestByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber).RecordYear;
+                ChemigationPermitAnnualRecord.GetYearOfMostRecentChemigationPermitAnnualRecordByPermitID(_dbContext,
+                    chemigationPermitID);
 
             chemigationPermitAnnualRecordUpsertDto.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentYearWithAnnualRecord == 1 ? 
                 ChemigationPermitAnnualRecord.NDEEAmountEnum.Renewal : ChemigationPermitAnnualRecord.NDEEAmountEnum.New;

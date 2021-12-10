@@ -41,6 +41,14 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
+        public static int GetYearOfMostRecentChemigationPermitAnnualRecordByPermitID(ZybachDbContext dbContext,
+            int chemigationPermitID)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID)
+                .RecordYear;
+        }
+
         public static ChemigationPermitAnnualRecordDto GetChemigationPermitAnnualRecordByID(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
         {
             var chemigationPermitAnnualRecord = GetChemigationPermitAnnualRecordsImpl(dbContext)

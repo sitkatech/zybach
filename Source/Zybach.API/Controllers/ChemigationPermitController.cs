@@ -53,6 +53,16 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitNewDto chemigationPermitNewDto)
         {
+            if (ChemigationPermits.IsChemigationPermitNumberUnique(_dbContext, chemigationPermitNewDto.ChemigationPermitNumber, null))
+            {
+                ModelState.AddModelError("ChemigationPermitNumber", "Permit Number must be unique");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var chemigationPermit = ChemigationPermits.CreateNewChemigationPermit(_dbContext, chemigationPermitNewDto);
             return Ok(chemigationPermit);
         }
