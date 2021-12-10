@@ -9,6 +9,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -27,10 +28,14 @@ export class ChemigationPermitReportsComponent implements OnInit {
   public columnDefs: ColDef[];
   
   public gridApi: any;
+  public gridColumnApi: any;
 
   public allYearsSelected: boolean = false;
   public yearToDisplay: number;
   public currentYear: number;
+
+  public NDEEAmountTotal: number;
+  public pinnedBottomRowData: { NDEEAmountTotal: number; }[];
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -55,7 +60,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
       {
         headerName: 'Permit #',
         valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationPermit.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit.ChemigationPermitNumber }
+          return { LinkValue: params.data.ChemigationPermit?.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit?.ChemigationPermitNumber };
         },
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
@@ -125,6 +130,18 @@ export class ChemigationPermitReportsComponent implements OnInit {
         return params.data.ApplicantMobilePhone ? params.data.ApplicantMobilePhone : '-';
         },
         filter: true, resizable: true, sortable: true 
+      },
+      { 
+        headerName: 'NDEE Amount ($)',  
+        valueGetter: function (params: any) {
+          return params.node.rowPinned ? "Total: " + params.data.NDEEAmountTotal : 
+            params.data.NDEEAmount ?? '-';
+        },
+        pinnedRowCellRendererFramework: CustomPinnedRowRendererComponent,
+        pinnedRowCellRendererParams: { filter: true },
+        filter: 'agNumberColumnFilter',
+        resizable: true,
+        sortable: true
       }
     ]; 
   }
@@ -132,11 +149,19 @@ export class ChemigationPermitReportsComponent implements OnInit {
   public exportToCsv() {
     this.utilityFunctionsService.exportGridToCsv(this.chemigationPermitReportGrid, 'chemigation-permit-report.csv', null);
   }
-  
+
   public onGridReady(gridEvent) {
     this.populateAnnualRecords();
   }
 
+  public onFilterChanged(gridEvent) {
+    gridEvent.api.setPinnedBottomRowData([
+      {
+        NDEEAmountTotal: gridEvent.api.getModel().rowsToDisplay.map(x => x.data.NDEEAmount ?? 0).reduce((sum, x) => sum+x, 0)
+      }
+    ]);
+  }
+  
   public updateAnnualData(): void {
     this.populateAnnualRecords();
   }
@@ -145,6 +170,11 @@ export class ChemigationPermitReportsComponent implements OnInit {
     this.chemigationPermitService.getAllAnnualRecords().subscribe(annualRecords => {
       this.rowData = annualRecords.filter(x => x.RecordYear == this.yearToDisplay);
       this.chemigationPermitReportGrid.api.hideOverlay();
+      this.pinnedBottomRowData = [
+        { 
+          NDEEAmountTotal: this.rowData.map(x => x.NDEEAmount ?? 0).reduce((sum, x) => sum + x, 0)
+        }
+      ];
       this.chemigationPermitReportGrid.api.sizeColumnsToFit();
     });
   }

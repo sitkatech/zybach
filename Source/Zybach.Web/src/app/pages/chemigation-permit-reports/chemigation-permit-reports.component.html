@@ -13,7 +13,8 @@
                     <span class="far fa-calendar mr-2"> </span>
                     <zybach-water-year-select [(selectedYear)]="yearToDisplay"
                         (selectedYearChange)="updateAnnualData()" [(allYearsSelected)]="allYearsSelected"
-                        (allYearsSelectedChange)="updateAnnualData()">
+                        (allYearsSelectedChange)="updateAnnualData()"
+                        >
                     </zybach-water-year-select>
                 </div>
             </div>
@@ -27,8 +28,8 @@
             </div>
             <div class="table-responsive">
                 <ag-grid-angular #chemigationPermitReportGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="rowData"
-                    [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100"
-                    (gridReady)="onGridReady($event)">
+                    [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100" [pinnedBottomRowData]="pinnedBottomRowData"
+                    (filterChanged)="onFilterChanged($event)" (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
             </div>
         </div>
