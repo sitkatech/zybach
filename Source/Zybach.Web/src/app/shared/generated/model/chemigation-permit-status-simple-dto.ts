@@ -10,11 +10,10 @@
  * Do not edit the class manually.
  */
 
-export class ChemigationPermitAnnualRecordWellSimpleDto { 
-    WellRegistrationID?: string;
-    ChemigationPermitAnnualRecordWellID?: number;
-    ChemigationPermitAnnualRecordID?: number;
-    WellID?: number;
+export class ChemigationPermitStatusSimpleDto { 
+    ChemigationPermitStatusID?: number;
+    ChemigationPermitStatusName?: string;
+    ChemigationPermitStatusDisplayName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

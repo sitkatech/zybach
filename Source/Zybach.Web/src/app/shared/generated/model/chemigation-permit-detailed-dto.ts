@@ -10,16 +10,19 @@
  * Do not edit the class manually.
  */
 import { ChemigationPermitAnnualRecordDetailedDto } from '././chemigation-permit-annual-record-detailed-dto';
-import { ChemigationPermitStatusDto } from '././chemigation-permit-status-dto';
-import { ChemigationCountyDto } from '././chemigation-county-dto';
+import { ChemigationCountySimpleDto } from '././chemigation-county-simple-dto';
+import { WellSimpleDto } from '././well-simple-dto';
+import { ChemigationPermitStatusSimpleDto } from '././chemigation-permit-status-simple-dto';
 
 export class ChemigationPermitDetailedDto { 
     ChemigationPermitID?: number;
     ChemigationPermitNumber?: number;
-    ChemigationPermitStatus?: ChemigationPermitStatusDto;
+    ChemigationPermitNumberDisplay?: string;
+    ChemigationPermitStatus?: ChemigationPermitStatusSimpleDto;
     DateCreated?: string;
     TownshipRangeSection?: string;
-    ChemigationCounty?: ChemigationCountyDto;
+    ChemigationCounty?: ChemigationCountySimpleDto;
+    Well?: WellSimpleDto;
     LatestAnnualRecord?: ChemigationPermitAnnualRecordDetailedDto;
     constructor(obj?: any) {
         Object.assign(this, obj);

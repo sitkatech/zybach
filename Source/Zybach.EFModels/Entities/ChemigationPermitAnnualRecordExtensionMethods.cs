@@ -17,8 +17,7 @@ namespace Zybach.EFModels.Entities
                 PivotName = chemigationPermitAnnualRecord.PivotName,
                 ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID,
                 ChemigationInjectionUnitTypeName = chemigationPermitAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName,
-                ApplicantFirstName = chemigationPermitAnnualRecord.ApplicantFirstName,
-                ApplicantLastName = chemigationPermitAnnualRecord.ApplicantLastName,
+                ApplicantName = chemigationPermitAnnualRecord.ApplicantName,
                 ApplicantMailingAddress = chemigationPermitAnnualRecord.ApplicantMailingAddress,
                 ApplicantCity = chemigationPermitAnnualRecord.ApplicantCity,
                 ApplicantState = chemigationPermitAnnualRecord.ApplicantState,
@@ -30,7 +29,6 @@ namespace Zybach.EFModels.Entities
                 ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
                 ChemicalFormulations = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordChemicalFormulations?.OrderBy(x => x.ChemicalFormulation.ChemicalFormulationDisplayName).ThenBy(x => x.ChemicalUnit.ChemicalUnitPluralName).Select(x => x.AsSimpleDto()).ToList(),
                 Applicators = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators?.OrderBy(x => x.ApplicatorName).Select(x => x.AsSimpleDto()).ToList(),
-                Wells = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordWells?.OrderBy(x => x.Well.WellRegistrationID).Select(x => x.AsSimpleDto()).ToList()
             };
             return chemigationPermitAnnualRecordDetailedDto;
         }

@@ -26,12 +26,13 @@ namespace Zybach.EFModels.Entities
                     .ThenInclude(x => x.ChemigationPermitStatus)
                 .Include(x => x.ChemigationPermit)
                     .ThenInclude(x => x.ChemigationCounty)
+                .Include(x => x.ChemigationPermit)
+                    .ThenInclude(x => x.Well)
                 .Include(x => x.ChemigationPermitAnnualRecordStatus)
                 .Include(x => x.ChemigationInjectionUnitType)
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalUnit)
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalFormulation)
                 .Include(x => x.ChemigationPermitAnnualRecordApplicators)
-                .Include(x => x.ChemigationPermitAnnualRecordWells).ThenInclude(x => x.Well)
                 .AsNoTracking();
         }
 
@@ -85,8 +86,6 @@ namespace Zybach.EFModels.Entities
             Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext,
                 chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
                 chemigationPermitAnnualRecordUpsertDto.Applicators);
-            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext,
-                chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
             return chemigationPermitAnnualRecord;
         }
 
@@ -95,7 +94,6 @@ namespace Zybach.EFModels.Entities
             UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
             Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
             Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Applicators);
-            Entities.ChemigationPermitAnnualRecordWells.UpdateWells(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Wells);
 
             dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
@@ -109,8 +107,7 @@ namespace Zybach.EFModels.Entities
                 chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
             chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID =
                 chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID;
-            chemigationPermitAnnualRecord.ApplicantFirstName = chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName;
-            chemigationPermitAnnualRecord.ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName;
+            chemigationPermitAnnualRecord.ApplicantName = chemigationPermitAnnualRecordUpsertDto.ApplicantName;
             chemigationPermitAnnualRecord.ApplicantPhone = chemigationPermitAnnualRecordUpsertDto.ApplicantPhone;
             chemigationPermitAnnualRecord.ApplicantMobilePhone = chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone;
             chemigationPermitAnnualRecord.ApplicantEmail = chemigationPermitAnnualRecordUpsertDto.ApplicantEmail;
@@ -164,7 +161,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<ChemigationPermitAnnualRecordDetailedDto> GetByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
         {
-            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermitAnnualRecordWells.Any(y => y.Well.WellRegistrationID == wellRegistrationID)).Select(x => x.AsDetailedDto()).ToList();
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.Well.WellRegistrationID == wellRegistrationID).Select(x => x.AsDetailedDto()).ToList();
         }
     }
 }

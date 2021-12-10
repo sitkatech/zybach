@@ -31,7 +31,6 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<ChemigationPermitAnnualRecordApplicator> ChemigationPermitAnnualRecordApplicators { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecordStatus> ChemigationPermitAnnualRecordStatuses { get; set; }
-        public virtual DbSet<ChemigationPermitAnnualRecordWell> ChemigationPermitAnnualRecordWells { get; set; }
         public virtual DbSet<ChemigationPermitStatus> ChemigationPermitStatuses { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<CustomRichTextType> CustomRichTextTypes { get; set; }
@@ -170,13 +169,11 @@ namespace Zybach.EFModels.Entities
 
                 entity.Property(e => e.ApplicantEmail).IsUnicode(false);
 
-                entity.Property(e => e.ApplicantFirstName).IsUnicode(false);
-
-                entity.Property(e => e.ApplicantLastName).IsUnicode(false);
-
                 entity.Property(e => e.ApplicantMailingAddress).IsUnicode(false);
 
                 entity.Property(e => e.ApplicantMobilePhone).IsUnicode(false);
+
+                entity.Property(e => e.ApplicantName).IsUnicode(false);
 
                 entity.Property(e => e.ApplicantPhone).IsUnicode(false);
 
@@ -239,19 +236,6 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.ChemigationPermitAnnualRecordStatusDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.ChemigationPermitAnnualRecordStatusName).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<ChemigationPermitAnnualRecordWell>(entity =>
-            {
-                entity.HasOne(d => d.ChemigationPermitAnnualRecord)
-                    .WithMany(p => p.ChemigationPermitAnnualRecordWells)
-                    .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.Well)
-                    .WithMany(p => p.ChemigationPermitAnnualRecordWells)
-                    .HasForeignKey(d => d.WellID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<ChemigationPermitStatus>(entity =>

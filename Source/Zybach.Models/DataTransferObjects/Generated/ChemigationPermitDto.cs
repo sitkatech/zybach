@@ -15,6 +15,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime DateCreated { get; set; }
         public string TownshipRangeSection { get; set; }
         public ChemigationCountyDto ChemigationCounty { get; set; }
+        public WellDto Well { get; set; }
     }
 
     public partial class ChemigationPermitSimpleDto
@@ -25,6 +26,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime DateCreated { get; set; }
         public string TownshipRangeSection { get; set; }
         public int ChemigationCountyID { get; set; }
+        public int? WellID { get; set; }
     }
 
 }

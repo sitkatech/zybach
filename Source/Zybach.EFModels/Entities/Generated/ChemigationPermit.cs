@@ -27,6 +27,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         public string TownshipRangeSection { get; set; }
         public int ChemigationCountyID { get; set; }
+        public int? WellID { get; set; }
 
         [ForeignKey(nameof(ChemigationCountyID))]
         [InverseProperty("ChemigationPermits")]
@@ -34,6 +35,9 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(ChemigationPermitStatusID))]
         [InverseProperty("ChemigationPermits")]
         public virtual ChemigationPermitStatus ChemigationPermitStatus { get; set; }
+        [ForeignKey(nameof(WellID))]
+        [InverseProperty("ChemigationPermits")]
+        public virtual Well Well { get; set; }
         [InverseProperty(nameof(ChemigationPermitAnnualRecord.ChemigationPermit))]
         public virtual ICollection<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
     }

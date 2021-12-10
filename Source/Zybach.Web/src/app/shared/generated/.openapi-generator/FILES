@@ -5,6 +5,7 @@ model/chemical-formulation-dto.ts
 model/chemical-formulation-yearly-total-dto.ts
 model/chemical-unit-dto.ts
 model/chemigation-county-dto.ts
+model/chemigation-county-simple-dto.ts
 model/chemigation-injection-unit-type-dto.ts
 model/chemigation-permit-annual-record-applicator-simple-dto.ts
 model/chemigation-permit-annual-record-applicator-upsert-dto.ts
@@ -14,12 +15,11 @@ model/chemigation-permit-annual-record-detailed-dto.ts
 model/chemigation-permit-annual-record-dto.ts
 model/chemigation-permit-annual-record-status-dto.ts
 model/chemigation-permit-annual-record-upsert-dto.ts
-model/chemigation-permit-annual-record-well-simple-dto.ts
-model/chemigation-permit-annual-record-well-upsert-dto.ts
 model/chemigation-permit-detailed-dto.ts
 model/chemigation-permit-dto.ts
 model/chemigation-permit-new-dto.ts
 model/chemigation-permit-status-dto.ts
+model/chemigation-permit-status-simple-dto.ts
 model/chemigation-permit-upsert-dto.ts
 model/crs-type.ts
 model/custom-rich-text-dto.ts
@@ -62,7 +62,9 @@ model/user-upsert-dto.ts
 model/volume-by-well.ts
 model/well-chart-data-dto.ts
 model/well-detail-dto.ts
+model/well-dto.ts
 model/well-inspection-summary-dto.ts
 model/well-new-dto.ts
+model/well-simple-dto.ts
 model/well-with-sensor-message-age-dto.ts
 model/well-with-sensor-summary-dto.ts

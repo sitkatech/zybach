@@ -48,6 +48,14 @@ namespace Zybach.EFModels.Entities
                 TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection,
                 ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
             };
+            var wellID = dbContext.Wells
+                .SingleOrDefault(x => x.WellRegistrationID == chemigationPermitNewDto.WellRegistrationID)?.WellID;
+            if (!wellID.HasValue)
+            {
+                throw new NullReferenceException($"Well with Registration ID: {chemigationPermitNewDto.WellRegistrationID} not found!");
+            }
+
+            chemigationPermit.WellID = wellID.Value;
 
             dbContext.ChemigationPermits.Add(chemigationPermit);
             dbContext.SaveChanges();
@@ -86,12 +94,12 @@ namespace Zybach.EFModels.Entities
             return dbContext.ChemigationPermits
                 .Include(x => x.ChemigationPermitStatus)
                 .Include(x => x.ChemigationCounty)
+                .Include(x => x.Well)
                 .AsNoTracking();
         }
 
         public static ChemigationPermitDto UpdateChemigationPermit(ZybachDbContext dbContext, ChemigationPermit chemigationPermit, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
-            // null check occurs in calling endpoint method.
             chemigationPermit.ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber;
             chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
             chemigationPermit.TownshipRangeSection = chemigationPermitUpsertDto.TownshipRangeSection;

@@ -1,20 +1,23 @@
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" *ngIf="chemigationPermit">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a routerLink="/chemigation-permits">Chemigation Permits</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">Chemigation Permit
-            #{{chemigationPermit?.ChemigationPermitNumber}}</li>
+            #{{chemigationPermit?.ChemigationPermitNumberDisplay }}</li>
     </ol>
 </nav>
 <app-alert-display></app-alert-display>
-<div class="row container">
+<div class="row container" *ngIf="chemigationPermit">
     <div class="col-12">
-        <h2 class="d-inline-block">Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}</h2>
+        <h2 class="d-inline-block">Chemigation Permit #{{chemigationPermit.ChemigationPermitNumberDisplay}}</h2>
         <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Approve Annual Renewal </a>
         <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Schedule Inspection </a>
     </div>
     <div class="row container" *ngIf="chemigationPermit">
+        <div class="col-12 col-sm-6 label"><strong>Well: </strong></div>
+        <div class="col-12 col-sm-6"><a routerLink="/wells/{{chemigationPermit.Well.WellRegistrationID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
+        </div>
         <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}
         </div>
@@ -144,8 +147,7 @@
                                 </div>
                                 <div class="col-6 text-left">
                                     <p>
-                                        {{currentYearAnnualRecord.ApplicantFirstName}}
-                                        {{currentYearAnnualRecord.ApplicantLastName}}
+                                        {{currentYearAnnualRecord.ApplicantName}}
                                     </p>
                                 </div>
                             </div>
@@ -262,31 +264,6 @@
                             </table>
                         </ng-template>
                         <ng-template #noChemicalFormulations>No chemicals were used in the chemigation system in the past year.</ng-template>
-                    </div>
-
-                    <div class="col-12">
-                        <hr class="w-90" />
-
-                    </div>
-
-                    <div class="col-12 table-responsive mb-4">
-                        <h5>Wells</h5>
-                        <div *ngIf="currentYearAnnualRecord.Wells.length > 0; then hasWells else noWells"></div>
-                        <ng-template #hasWells>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Registered Well ID</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let well of currentYearAnnualRecord.Wells">
-                                        <td><a routerLink="/wells/{{well.WellRegistrationID}}">{{well.WellRegistrationID}}</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </ng-template>
-                        <ng-template #noWells>No related wells in the past year.</ng-template>
                     </div>
 
                 </div>

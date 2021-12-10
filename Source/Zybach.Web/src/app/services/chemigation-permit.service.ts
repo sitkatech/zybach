@@ -9,13 +9,13 @@ import { ChemigationPermitAnnualRecordUpsertDto } from '../shared/generated/mode
 import { ChemigationPermitDto } from '../shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitNewDto } from '../shared/generated/model/chemigation-permit-new-dto';
 import { ChemigationPermitStatusDto } from '../shared/generated/model/chemigation-permit-status-dto';
-import { ChemigationPermitUpsertDto } from '../shared/generated/model/chemigation-permit-upsert-dto';
 import { ChemicalFormulationDto } from '../shared/generated/model/chemical-formulation-dto';
 import { ChemicalUnitDto } from '../shared/generated/model/chemical-unit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '../shared/generated/model/chemigation-permit-annual-record-chemical-formulation-simple-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { ChemicalFormulationYearlyTotalDto } from '../shared/generated/model/chemical-formulation-yearly-total-dto';
 import { ChemigationPermitDetailedDto } from '../shared/generated/model/chemigation-permit-detailed-dto';
+import { ChemigationPermitUpsertDto } from '../shared/generated/model/chemigation-permit-upsert-dto';
 
 @Injectable({
   providedIn: 'root'

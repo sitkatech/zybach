@@ -7,7 +7,6 @@ import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-upsert-dto';
-import { ChemigationPermitAnnualRecordWellUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-well-upsert-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -38,7 +37,6 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   public isAnnualRecordFormValidCheck: boolean;
   public isChemicalFormulationsFormValidCheck: boolean;
   public isApplicatorsFormValidCheck: boolean;
-  public isWellsFormValidCheck: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -77,8 +75,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitTypeID;
     chemigationPermitAnnualRecordUpsertDto.RecordYear = this.newRecordYear;
     chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;
-    chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName = annualRecord.ApplicantFirstName;
-    chemigationPermitAnnualRecordUpsertDto.ApplicantLastName = annualRecord.ApplicantLastName;
+    chemigationPermitAnnualRecordUpsertDto.ApplicantName = annualRecord.ApplicantName;
     chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress = annualRecord.ApplicantMailingAddress;
     chemigationPermitAnnualRecordUpsertDto.ApplicantCity = annualRecord.ApplicantCity;
     chemigationPermitAnnualRecordUpsertDto.ApplicantState = annualRecord.ApplicantState;
@@ -110,14 +107,6 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     });
     chemigationPermitAnnualRecordUpsertDto.Applicators = applicators;
 
-    const wells = new Array<ChemigationPermitAnnualRecordWellUpsertDto>();
-    annualRecord.Wells.map(x => {
-      const well = new ChemigationPermitAnnualRecordWellUpsertDto();
-      well.WellRegistrationID = x.WellRegistrationID;
-      wells.push(well);
-    });
-    chemigationPermitAnnualRecordUpsertDto.Wells = wells;
-
     this.model = chemigationPermitAnnualRecordUpsertDto;
   }
 
@@ -139,13 +128,9 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     this.isApplicatorsFormValidCheck = formValid;
   }
 
-  public isWellsFormValid(formValid: any): void {
-    this.isWellsFormValidCheck = formValid;
-  }
-
   public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
     return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck
-     || !this.isApplicatorsFormValidCheck || !this.isWellsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
+     || !this.isApplicatorsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
   }
 
   onSubmit(addChemigationPermitAnnualRecordForm: HTMLFormElement): void {

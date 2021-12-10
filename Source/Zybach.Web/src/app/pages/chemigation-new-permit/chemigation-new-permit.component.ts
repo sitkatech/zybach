@@ -13,8 +13,10 @@ import { ChemigationPermitNewDto } from 'src/app/shared/generated/model/chemigat
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
-import { ChemigationPermitAnnualRecordWellUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-well-upsert-dto';
 import { ChemigationInjectionUnitTypeEnum } from 'src/app/shared/models/enums/chemigation-injection-unit-type.enum';
+import { Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
+import { WellService } from 'src/app/services/well.service';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -37,11 +39,12 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   public isLoadingSubmit: boolean = false;
   public isAnnualRecordFormValidCheck: boolean;
   public isApplicatorsFormValidCheck: boolean;
-  public isWellsFormValidCheck: boolean;
+  public searchFailed : boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private wellService: WellService,
     private chemigationPermitService: ChemigationPermitService,
     private authenticationService: AuthenticationService,
     private alertService: AlertService
@@ -58,8 +61,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       ChemigationInjectionUnitTypeID: ChemigationInjectionUnitTypeEnum.Portable,
       PivotName: null,
       RecordYear: new Date().getFullYear(),
-      ApplicantFirstName: null,
-      ApplicantLastName: null,
+      ApplicantName: null,
       ApplicantMailingAddress: null,
       ApplicantCity: null,
       // default to Nebraska
@@ -72,7 +74,6 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       DatePaid: null,
     };
     this.model.ChemigationPermitAnnualRecord.Applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
-    this.model.ChemigationPermitAnnualRecord.Wells = new Array<ChemigationPermitAnnualRecordWellUpsertDto>();
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -106,13 +107,9 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.isApplicatorsFormValidCheck = formValid;
   }
 
-  public isWellsFormValid(formValid: any): void {
-    this.isWellsFormValidCheck = formValid;
-  }
-
   public isFormValid(addChemigationPermitAnnualRecordForm: any): boolean {
     return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isApplicatorsFormValidCheck
-    || !this.isWellsFormValidCheck || !addChemigationPermitAnnualRecordForm.form.valid;
+     || !addChemigationPermitAnnualRecordForm.form.valid;
   }
 
   public onSubmit(newChemigationPermitForm: HTMLFormElement): void {
@@ -130,5 +127,19 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         }
       );
+  }
+
+  
+  searchApi = (text$: Observable<string>) => {
+    return text$.pipe(      
+        debounceTime(200), 
+        distinctUntilChanged(),
+        tap(() => this.searchFailed = false),
+        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationID(searchText) : ([])), 
+        catchError(() => {
+          this.searchFailed = true;
+          return of([]);
+        })     
+      );                 
   }
 }

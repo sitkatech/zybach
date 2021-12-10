@@ -30,8 +30,8 @@ import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-messa
 import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
-import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
+import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
 
 @Component({
   selector: 'zybach-well-detail',

@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
@@ -49,6 +49,8 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
     private chemigationPermitService: ChemigationPermitService,
     private modalService: NgbModal,
     private utilityFunctionsService: UtilityFunctionsService,
+    private datePipe: DatePipe,
+    private decimalPipe: DecimalPipe,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -63,11 +65,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   }
   
   private initializeGrid(): void {
-    let datePipe = new DatePipe('en-US');
+    let datePipe = this.datePipe;
+    let decimalPipe = this.decimalPipe;
     this.columnDefs = [
       {
-        headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
+        headerName: 'Permit #', valueGetter: function (params: any) {
+          return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermitNumberDisplay };
         }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
@@ -84,26 +87,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         },
         width: 80,
         resizable: true,
-        sort: 'asc'
-      },
-      {
-        headerName: 'Permit #',
-        field: 'ChemigationPermitNumber',
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkDisplay;
-          let link2 = id2.LinkDisplay;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
-        width: 120,
-        filter: true,
-        resizable: true,
-        sort: 'asc',
+        sortable: true
       },
       { 
         headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
@@ -112,6 +96,27 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName'
         },
         width: 80,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Well', valueGetter: function (params: any) {
+          return { LinkValue: params.data.Well.WellRegistrationID, LinkDisplay: params.data.Well.WellRegistrationID };
+        }, 
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/wells/" },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkValue;
+          let link2 = id2.LinkValue;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        width: 100,
         resizable: true,
         sortable: true
       },
@@ -157,11 +162,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
             resizable: true,
             sortable: true
           },
-          { headerName: 'Applicant', 
-            valueGetter: function (params) {
-              return params.data.LatestAnnualRecord.ApplicantFirstName + " " + params.data.LatestAnnualRecord.ApplicantLastName;
-            }
-            , filter: true, resizable: true, sortable: true },
+          { headerName: 'Applicant', field: "LatestAnnualRecord.ApplicantName", filter: true, resizable: true, sortable: true },
           { 
             headerName: 'Applied Chemicals', 
             valueGetter: function (params) {
@@ -180,18 +181,6 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               const applicators = params.data.LatestAnnualRecord.Applicators.map(x => x.ApplicatorName);
               if (applicators.length > 0) {
                 return `${applicators.join(', ')}`;
-              } else {
-                return "-";
-              }
-            }, 
-            filter: true, resizable: true, sortable: true 
-          },
-          { 
-            headerName: 'Wells', 
-            valueGetter: function (params) {
-              const wells = params.data.LatestAnnualRecord.Wells.map(x => x.WellRegistrationID);
-              if (wells.length > 0) {
-                return `${wells.join(', ')}`;
               } else {
                 return "-";
               }

@@ -28,6 +28,14 @@
                             <div class="row col-6 mt-4">
 
                                 <div class="col-6 control-label text-right mb-2">
+                                    <label class="required"><strong>Well: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <input type="text" class="form-control" name="WellRegistrationID" [(ngModel)]="model.WellRegistrationID" [ngbTypeahead]="searchApi" />
+                                    <small class="form-text text-muted font-italic" *ngIf="searchFailed">Suggestions could not be loaded.</small>
+                                </div>
+ 
+                                <div class="col-6 control-label text-right mb-2">
                                     <label class="required"><strong>Permit Status: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
@@ -82,11 +90,6 @@
                             (isFormValid)="isApplicatorsFormValid($event)" [(model)]="model.ChemigationPermitAnnualRecord.Applicators">
                         </zybach-chemigation-permit-applicators-editor>
 
-                        <hr class="w-90" />
-
-                        <zybach-chemigation-permit-wells-editor #wellsForm
-                            (isFormValid)="isWellsFormValid($event)" [(model)]="model.ChemigationPermitAnnualRecord.Wells">
-                        </zybach-chemigation-permit-wells-editor>
                     </div>
                 </div>
 

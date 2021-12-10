@@ -2787,6 +2787,24 @@
         },
         "additionalProperties": false
       },
+      "ChemigationCountySimpleDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationCountyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationCountyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationCountyDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChemigationInjectionUnitTypeDto": {
         "type": "object",
         "properties": {
@@ -2822,11 +2840,13 @@
           },
           "CertificationNumber": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "ExpirationYear": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "HomePhone": {
             "type": "string",
@@ -2840,6 +2860,11 @@
         "additionalProperties": false
       },
       "ChemigationPermitAnnualRecordApplicatorUpsertDto": {
+        "required": [
+          "ApplicatorName",
+          "CertificationNumber",
+          "ExpirationYear"
+        ],
         "type": "object",
         "properties": {
           "ChemigationPermitAnnualRecordApplicatorID": {
@@ -2851,8 +2876,7 @@
             "format": "int32"
           },
           "ApplicatorName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "CertificationNumber": {
             "type": "integer",
@@ -2983,11 +3007,7 @@
             "type": "string",
             "nullable": true
           },
-          "ApplicantFirstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ApplicantLastName": {
+          "ApplicantName": {
             "type": "string",
             "nullable": true
           },
@@ -3042,13 +3062,6 @@
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorSimpleDto"
             },
             "nullable": true
-          },
-          "Wells": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellSimpleDto"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3077,11 +3090,7 @@
           "ChemigationInjectionUnitType": {
             "$ref": "#/components/schemas/ChemigationInjectionUnitTypeDto"
           },
-          "ApplicantFirstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ApplicantLastName": {
+          "ApplicantName": {
             "type": "string",
             "nullable": true
           },
@@ -3151,8 +3160,7 @@
       },
       "ChemigationPermitAnnualRecordUpsertDto": {
         "required": [
-          "ApplicantFirstName",
-          "ApplicantLastName",
+          "ApplicantName",
           "ChemigationInjectionUnitTypeID",
           "ChemigationPermitAnnualRecordStatusID",
           "PivotName",
@@ -3164,10 +3172,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "ApplicantFirstName": {
-            "type": "string"
-          },
-          "ApplicantLastName": {
+          "ApplicantName": {
             "type": "string"
           },
           "PivotName": {
@@ -3240,53 +3245,6 @@
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorUpsertDto"
             },
             "nullable": true
-          },
-          "Wells": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellUpsertDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationPermitAnnualRecordWellSimpleDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationPermitAnnualRecordWellID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationPermitAnnualRecordID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellID": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationPermitAnnualRecordWellUpsertDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationPermitAnnualRecordWellID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationPermitAnnualRecordID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3302,8 +3260,12 @@
             "type": "integer",
             "format": "int32"
           },
+          "ChemigationPermitNumberDisplay": {
+            "type": "string",
+            "nullable": true
+          },
           "ChemigationPermitStatus": {
-            "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+            "$ref": "#/components/schemas/ChemigationPermitStatusSimpleDto"
           },
           "DateCreated": {
             "type": "string",
@@ -3314,7 +3276,10 @@
             "nullable": true
           },
           "ChemigationCounty": {
-            "$ref": "#/components/schemas/ChemigationCountyDto"
+            "$ref": "#/components/schemas/ChemigationCountySimpleDto"
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
           },
           "LatestAnnualRecord": {
             "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
@@ -3325,6 +3290,10 @@
       "ChemigationPermitDto": {
         "type": "object",
         "properties": {
+          "ChemigationPermitNumberDisplay": {
+            "type": "string",
+            "nullable": true
+          },
           "ChemigationPermitID": {
             "type": "integer",
             "format": "int32"
@@ -3346,6 +3315,9 @@
           },
           "ChemigationCounty": {
             "$ref": "#/components/schemas/ChemigationCountyDto"
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellDto"
           }
         },
         "additionalProperties": false
@@ -3356,7 +3328,8 @@
           "ChemigationPermitAnnualRecord",
           "ChemigationPermitNumber",
           "ChemigationPermitStatusID",
-          "TownshipRangeSection"
+          "TownshipRangeSection",
+          "WellRegistrationID"
         ],
         "type": "object",
         "properties": {
@@ -3374,6 +3347,9 @@
           "ChemigationCountyID": {
             "type": "integer",
             "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string"
           },
           "ChemigationPermitAnnualRecord": {
             "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
@@ -3399,9 +3375,29 @@
         },
         "additionalProperties": false
       },
+      "ChemigationPermitStatusSimpleDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChemigationPermitUpsertDto": {
         "required": [
-          "ChemigationPermitStatusID"
+          "ChemigationCountyID",
+          "ChemigationPermitStatusID",
+          "TownshipRangeSection"
         ],
         "type": "object",
         "properties": {
@@ -3414,8 +3410,7 @@
             "format": "int32"
           },
           "TownshipRangeSection": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "ChemigationCountyID": {
             "type": "integer",
@@ -4502,6 +4497,40 @@
         },
         "additionalProperties": false
       },
+      "WellDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "StreamflowZone": {
+            "$ref": "#/components/schemas/StreamFlowZoneDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "WellInspectionSummaryDto": {
         "type": "object",
         "properties": {
@@ -4555,6 +4584,34 @@
           "Latitude": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "StreamflowZoneID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false

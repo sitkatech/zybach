@@ -221,17 +221,17 @@
                             <thead>
                                 <tr>
                                     <th>Permit #</th>
+                                    <th>Year</th>
                                     <th>Status</th>
                                     <th>Township, Range, Section</th>
-                                    <th>Year</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let chemigationPermitAnnualRecord of chemigationPermitAnnualRecords">
-                                    <td><a routerLink="/chemigation-permits/{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}">{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}</a></td>
+                                    <td><a routerLink="/chemigation-permits/{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}">{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay}}</a></td>
+                                    <td>{{chemigationPermitAnnualRecord.RecordYear}}</td>
                                     <td>{{chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusName}}</td>
                                     <td>{{chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection}}</td>
-                                    <td>{{chemigationPermitAnnualRecord.RecordYear}}</td>
                                 </tr>
                             </tbody>
                         </table>

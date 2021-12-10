@@ -7,7 +7,9 @@ namespace Zybach.Models.DataTransferObjects
         public int ChemigationPermitNumber { get; set; }
         [Required]
         public int ChemigationPermitStatusID { get; set; }
+        [Required]
         public string TownshipRangeSection { get; set; }
+        [Required]
         public int ChemigationCountyID { get; set; }
     }
 }

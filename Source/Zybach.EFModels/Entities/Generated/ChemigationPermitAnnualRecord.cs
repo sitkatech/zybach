@@ -16,7 +16,6 @@ namespace Zybach.EFModels.Entities
         {
             ChemigationPermitAnnualRecordApplicators = new HashSet<ChemigationPermitAnnualRecordApplicator>();
             ChemigationPermitAnnualRecordChemicalFormulations = new HashSet<ChemigationPermitAnnualRecordChemicalFormulation>();
-            ChemigationPermitAnnualRecordWells = new HashSet<ChemigationPermitAnnualRecordWell>();
         }
 
         [Key]
@@ -24,26 +23,17 @@ namespace Zybach.EFModels.Entities
         public int ChemigationPermitID { get; set; }
         public int RecordYear { get; set; }
         public int ChemigationPermitAnnualRecordStatusID { get; set; }
-        [Required]
         [StringLength(100)]
         public string PivotName { get; set; }
         public int ChemigationInjectionUnitTypeID { get; set; }
-        [Required]
-        [StringLength(100)]
-        public string ApplicantFirstName { get; set; }
-        [Required]
-        [StringLength(100)]
-        public string ApplicantLastName { get; set; }
-        [Required]
+        [StringLength(200)]
+        public string ApplicantName { get; set; }
         [StringLength(100)]
         public string ApplicantMailingAddress { get; set; }
-        [Required]
         [StringLength(50)]
         public string ApplicantCity { get; set; }
-        [Required]
         [StringLength(20)]
         public string ApplicantState { get; set; }
-        [Required]
         [StringLength(10)]
         public string ApplicantZipCode { get; set; }
         [StringLength(30)]
@@ -72,7 +62,5 @@ namespace Zybach.EFModels.Entities
         public virtual ICollection<ChemigationPermitAnnualRecordApplicator> ChemigationPermitAnnualRecordApplicators { get; set; }
         [InverseProperty(nameof(ChemigationPermitAnnualRecordChemicalFormulation.ChemigationPermitAnnualRecord))]
         public virtual ICollection<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
-        [InverseProperty(nameof(ChemigationPermitAnnualRecordWell.ChemigationPermitAnnualRecord))]
-        public virtual ICollection<ChemigationPermitAnnualRecordWell> ChemigationPermitAnnualRecordWells { get; set; }
     }
 }

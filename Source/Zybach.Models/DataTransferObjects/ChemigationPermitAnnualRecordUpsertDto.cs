@@ -9,9 +9,7 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public int ChemigationPermitAnnualRecordStatusID { get; set; }
         [Required]
-        public string ApplicantFirstName { get; set; }
-        [Required]
-        public string ApplicantLastName { get; set; }
+        public string ApplicantName { get; set; }
         [Required]
         public string PivotName { get; set; }
         [Required]
@@ -33,6 +31,5 @@ namespace Zybach.Models.DataTransferObjects
         public decimal? NDEEAmount { get; set; }
         public List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto> ChemicalFormulations { get; set; }
         public List<ChemigationPermitAnnualRecordApplicatorUpsertDto> Applicators { get; set; }
-        public List<ChemigationPermitAnnualRecordWellUpsertDto> Wells { get; set; }
     }
 }

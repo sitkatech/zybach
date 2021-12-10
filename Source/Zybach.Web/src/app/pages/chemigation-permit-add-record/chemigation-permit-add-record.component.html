@@ -33,6 +33,12 @@
                     <div class="card-body">
                         <div class="row col-12">
                             <div class="row col-6 mt-4">
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Well: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <a routerLink="/wells/{{chemigationPermit.Well.WellRegistrationID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
+                                </div>
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Permit Status: </strong></label>
@@ -48,16 +54,15 @@
                                     {{chemigationPermit.ChemigationPermitNumber}}
                                 </div>
 
+                            </div>
+
+                            <div class="row col-6 mt-4">
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Renewal Year: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     {{model.RecordYear}}
                                 </div>
-
-                            </div>
-
-                            <div class="row col-6 mt-4">
 
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>Township-Range-Section: </strong></label>
@@ -95,11 +100,6 @@
                             (isFormValid)="isChemicalFormulationsFormValid($event)" [(model)]="model.ChemicalFormulations">
                         </zybach-chemigation-permit-chemical-formulations-editor>
 
-                        <hr class="w-90" />
-
-                        <zybach-chemigation-permit-wells-editor #wellsForm
-                            (isFormValid)="isWellsFormValid($event)" [(model)]="model.Wells">
-                        </zybach-chemigation-permit-wells-editor>
                     </div>
                 </div>
 

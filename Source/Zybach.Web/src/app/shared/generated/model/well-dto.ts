@@ -9,15 +9,16 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { StreamFlowZoneDto } from '././stream-flow-zone-dto';
 
-export class ChemigationPermitAnnualRecordApplicatorUpsertDto { 
-    ChemigationPermitAnnualRecordApplicatorID?: number;
-    ChemigationPermitAnnualRecordID?: number;
-    ApplicatorName: string;
-    CertificationNumber: number;
-    ExpirationYear: number;
-    HomePhone?: string;
-    MobilePhone?: string;
+export class WellDto { 
+    WellID?: number;
+    WellRegistrationID?: string;
+    StreamflowZone?: StreamFlowZoneDto;
+    CreateDate?: string;
+    LastUpdateDate?: string;
+    Longitude?: number;
+    Latitude?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

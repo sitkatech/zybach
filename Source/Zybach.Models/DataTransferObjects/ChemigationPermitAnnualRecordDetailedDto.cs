@@ -13,8 +13,7 @@ namespace Zybach.Models.DataTransferObjects
         public string PivotName { get; set; }
         public int ChemigationInjectionUnitTypeID { get; set; }
         public string ChemigationInjectionUnitTypeName { get; set; }
-        public string ApplicantFirstName { get; set; }
-        public string ApplicantLastName { get; set; }
+        public string ApplicantName { get; set; }
         public string ApplicantMailingAddress { get; set; }
         public string ApplicantCity { get; set; }
         public string ApplicantState { get; set; }
@@ -27,6 +26,5 @@ namespace Zybach.Models.DataTransferObjects
 
         public List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto> ChemicalFormulations { get; set; }
         public List<ChemigationPermitAnnualRecordApplicatorSimpleDto> Applicators { get; set; }
-        public List<ChemigationPermitAnnualRecordWellSimpleDto> Wells { get; set; }
     }
 }
