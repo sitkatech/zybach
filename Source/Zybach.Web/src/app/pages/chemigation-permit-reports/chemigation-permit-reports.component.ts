@@ -75,7 +75,10 @@ export class ChemigationPermitReportsComponent implements OnInit {
           }
           return 0;
         },
-        filter: true,
+        filterValueGetter: function (params: any) {
+          return params.data.ChemigationPermit.ChemigationPermitNumber;
+        },
+        filter: 'agNumberColumnFilter',
         resizable: true,
         sortable: true,
         sort: 'asc',
