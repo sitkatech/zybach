@@ -136,7 +136,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   onSubmit(addChemigationPermitAnnualRecordForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.chemigationPermitService.createChemigationPermitAnnualRecord(this.chemigationPermit.ChemigationPermitID, this.model)
+    this.chemigationPermitService.createChemigationPermitAnnualRecord(this.chemigationPermit.ChemigationPermitNumber, this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addChemigationPermitAnnualRecordForm.reset();

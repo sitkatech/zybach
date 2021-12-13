@@ -42,14 +42,6 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
-        public static int GetYearOfMostRecentChemigationPermitAnnualRecordByPermitID(ZybachDbContext dbContext,
-            int chemigationPermitID)
-        {
-            return GetChemigationPermitAnnualRecordsImpl(dbContext)
-                .SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID)
-                .RecordYear;
-        }
-
         public static ChemigationPermitAnnualRecordDto GetChemigationPermitAnnualRecordByID(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
         {
             var chemigationPermitAnnualRecord = GetChemigationPermitAnnualRecordsImpl(dbContext)
@@ -57,22 +49,13 @@ namespace Zybach.EFModels.Entities
             return chemigationPermitAnnualRecord?.AsDto();
         }
 
-        public static ChemigationPermitAnnualRecordDto CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
+        public static ChemigationPermitAnnualRecord CreateAnnualRecordImpl(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
         {
             if (chemigationPermitAnnualRecordUpsertDto == null)
             {
                 return null;
             }
 
-            var chemigationPermitAnnualRecord = CreateAnnualRecordImpl(dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
-
-            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
-            return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
-        }
-
-        public static ChemigationPermitAnnualRecord CreateAnnualRecordImpl(ZybachDbContext dbContext,
-            ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
-        {
             var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord
             {
                 ChemigationPermitID = chemigationPermitID
@@ -123,12 +106,6 @@ namespace Zybach.EFModels.Entities
             chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid?.AddHours(8);
             chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived?.AddHours(8);
             dbContext.SaveChanges();
-        }
-
-        public static bool DoesChemigationPermitAnnualRecordExistForYear(ZybachDbContext dbContext, int chemigationPermitID, int year)
-        {
-            return GetChemigationPermitAnnualRecordsImpl(dbContext)
-                .Any(x => x.ChemigationPermitID == chemigationPermitID && x.RecordYear == year);
         }
 
         public static List<ChemigationPermitAnnualRecordDetailedDto> GetLatestAsDetailedDto(ZybachDbContext dbContext)

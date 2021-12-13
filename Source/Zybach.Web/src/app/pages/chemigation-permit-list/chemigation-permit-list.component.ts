@@ -126,7 +126,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         headerName: 'Latest Annual Record',
         children: [
           
-          { headerName: 'Year', field: 'LatestAnnualRecord.RecordYear', width: 80, filter: true, resizable: true, sortable: true },
+          { headerName: 'Year', field: 'LatestAnnualRecord.RecordYear', 
+            filterFramework: CustomDropdownFilterComponent,
+            filterParams: {
+              field: 'LatestAnnualRecord.RecordYear'
+            },
+            width: 80, resizable: true, sortable: true },
           { headerName: 'Status', field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName', 
             filterFramework: CustomDropdownFilterComponent,
             filterParams: {
@@ -224,7 +229,6 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
-    this.updateGridData();
   }
 
   public updateGridData(): void {
@@ -232,7 +236,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       this.chemigationPermits = chemigationPermits;
       this.countOfActivePermitsWithoutRenewalRecordsForCurrentYear = this.chemigationPermits.filter(x => 
         x.ChemigationPermitStatus.ChemigationPermitStatusID == ChemigationPermitStatusEnum.Active &&
-        x.LatestAnnualRecord.RecordYear < this.currentYear).length;
+        x.LatestAnnualRecord.RecordYear == this.currentYear - 1).length;
       this.permitGrid.api.hideOverlay();
       this.cdr.detectChanges();
     });
