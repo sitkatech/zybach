@@ -151,7 +151,7 @@ namespace Zybach.API.Controllers
                     chemigationPermitDetailedDto.ChemigationPermitID);
             }
 
-            return chemigationPermitDetailedDtos.Count();
+            return chemigationPermitDetailedDtos.Count;
         }
 
         private static ChemigationPermitAnnualRecordUpsertDto MapLatestChemigationPermitAnnualRecordToUpsertDto(int recordYear,

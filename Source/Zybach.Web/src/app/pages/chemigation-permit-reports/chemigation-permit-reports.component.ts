@@ -99,11 +99,12 @@ export class ChemigationPermitReportsComponent implements OnInit {
         resizable: true, sortable: true 
       },
       { headerName: 'Renewal Year', field: 'RecordYear',
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'RecordYear',
-        }, 
-        resizable: true, sortable: true
+        filterValueGetter: function (params: any) {
+          return params.data.RecordYear;
+        },
+        filter: 'agNumberColumnFilter',
+        resizable: true, 
+        sortable: true
       },
       { headerName: 'Renewal Status', field: 'ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName',
         filterFramework: CustomDropdownFilterComponent,
@@ -121,7 +122,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         filterParams: {
           field: 'ApplicantState'
         },
-       resizable: true, sortable: true 
+        resizable: true, sortable: true 
       },
       { headerName: 'Zip Code', field: 'ApplicantZipCode', filter: true, resizable: true, sortable: true },
       { headerName: 'Home Phone', valueGetter: function (params: any) {
