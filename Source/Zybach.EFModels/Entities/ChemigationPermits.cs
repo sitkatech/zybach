@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using Zybach.Models.DataTransferObjects;
 using System.Linq;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
@@ -66,7 +68,7 @@ namespace Zybach.EFModels.Entities
             chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount =
                 ChemigationPermitAnnualRecord.NDEEAmountEnum.New;
 
-            ChemigationPermitAnnualRecord.CreateAnnualRecordImpl(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
+            ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
 
             dbContext.Entry(chemigationPermit).Reload();
 
@@ -121,5 +123,14 @@ namespace Zybach.EFModels.Entities
             }
         }
 
+
+        public static int BulkCreateRenewalRecords(ZybachDbContext dbContext, int recordYear)
+        {
+            var sqlParameter = new SqlParameter("recordYear", recordYear);
+            var sqlParameterOutput = new SqlParameter("recordsCreated", SqlDbType.Int);
+            sqlParameterOutput.Direction = ParameterDirection.Output;
+            dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear @recordYear, @recordsCreated OUTPUT", sqlParameter, sqlParameterOutput);
+            return (int)sqlParameterOutput.Value;
+        }
     }
 }

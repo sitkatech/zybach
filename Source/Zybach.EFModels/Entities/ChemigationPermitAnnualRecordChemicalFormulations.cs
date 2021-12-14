@@ -7,7 +7,8 @@ namespace Zybach.EFModels.Entities
 {
     public static class ChemigationPermitAnnualRecordChemicalFormulations
     {
-        public static void UpdateChemicalFormulations(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID,
+        public static void UpdateChemicalFormulations(ZybachDbContext dbContext,
+            ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
             List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>
                 chemigationPermitAnnualRecordChemicalFormulationsDto)
         {
@@ -18,7 +19,7 @@ namespace Zybach.EFModels.Entities
                     {
                         var formulation = new ChemigationPermitAnnualRecordChemicalFormulation
                             {
-                                ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecordID,
+                                ChemigationPermitAnnualRecord = chemigationPermitAnnualRecord,
                                 ChemicalFormulationID = x.Key.ChemicalFormulationID,
                                 ChemicalUnitID = x.Key.ChemicalUnitID,
                                 AcresTreated = x.Sum(y => y.AcresTreated)
@@ -38,7 +39,7 @@ namespace Zybach.EFModels.Entities
                 var existingChemigationPermitAnnualRecordChemicalFormulations = dbContext
                     .ChemigationPermitAnnualRecordChemicalFormulations.Where(x =>
                         x.ChemigationPermitAnnualRecordID ==
-                        chemigationPermitAnnualRecordID)
+                        chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID)
                     .ToList();
                 existingChemigationPermitAnnualRecordChemicalFormulations.Merge(
                     newChemigationPermitAnnualRecordChemicalFormulations,
@@ -51,7 +52,6 @@ namespace Zybach.EFModels.Entities
                         x.TotalApplied = y.TotalApplied;
                         x.AcresTreated = y.AcresTreated;
                     });
-                dbContext.SaveChanges();
             }
         }
     }

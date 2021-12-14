@@ -49,7 +49,7 @@ namespace Zybach.EFModels.Entities
             return chemigationPermitAnnualRecord?.AsDto();
         }
 
-        public static ChemigationPermitAnnualRecord CreateAnnualRecordImpl(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
+        public static ChemigationPermitAnnualRecord CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
         {
             if (chemigationPermitAnnualRecordUpsertDto == null)
             {
@@ -62,28 +62,20 @@ namespace Zybach.EFModels.Entities
             };
             dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
 
-            UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
-            Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext,
-                chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
-                chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
-            Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext,
-                chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
-                chemigationPermitAnnualRecordUpsertDto.Applicators);
+            UpdateAnnualRecord(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
             return chemigationPermitAnnualRecord;
         }
 
-        public static ChemigationPermitAnnualRecordDto UpdateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        public static void UpdateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
-            UpdateFromDto(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
-            Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
-            Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID, chemigationPermitAnnualRecordUpsertDto.Applicators);
-
-            dbContext.Entry(chemigationPermitAnnualRecord).Reload();
-            return GetChemigationPermitAnnualRecordByID(dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
+            MapFromUpsertDto(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
+            Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.Applicators);
+            dbContext.SaveChanges();
         }
 
-        private static void UpdateFromDto(ZybachDbContext dbContext,
-            ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
+        private static void MapFromUpsertDto(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
             ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID =
@@ -105,7 +97,6 @@ namespace Zybach.EFModels.Entities
             //TODO: find a better solution to correct date assignment
             chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid?.AddHours(8);
             chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived?.AddHours(8);
-            dbContext.SaveChanges();
         }
 
         public static List<ChemigationPermitAnnualRecordDetailedDto> GetLatestAsDetailedDto(ZybachDbContext dbContext)

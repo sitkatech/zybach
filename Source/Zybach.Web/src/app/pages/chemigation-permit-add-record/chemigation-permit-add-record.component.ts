@@ -140,8 +140,8 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addChemigationPermitAnnualRecordForm.reset();
-        this.router.navigateByUrl("/chemigation-permits/" + response.ChemigationPermit.ChemigationPermitNumber).then(() => {
-          this.alertService.pushAlert(new Alert(`Annual Record added for ${response.RecordYear}.`, AlertContext.Success));
+        this.router.navigateByUrl("/chemigation-permits/" + this.chemigationPermit.ChemigationPermitNumber).then(() => {
+          this.alertService.pushAlert(new Alert(`Annual Record added for ${this.model.RecordYear}.`, AlertContext.Success));
         });
       }
         ,

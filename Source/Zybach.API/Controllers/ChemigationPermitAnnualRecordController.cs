@@ -95,10 +95,8 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            var updatedChemigationPermitAnnualRecordDto =
-                ChemigationPermitAnnualRecord.UpdateAnnualRecord(_dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
-
-            return Ok(updatedChemigationPermitAnnualRecordDto);
+            ChemigationPermitAnnualRecord.UpdateAnnualRecord(_dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            return Ok();
         }
 
         [HttpPost("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
@@ -120,15 +118,13 @@ namespace Zybach.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var mostRecentChemigationPermitAnnualRecord =
-                chemigationPermitAnnualRecords.OrderByDescending(x => x.RecordYear).First();
+            var mostRecentChemigationPermitAnnualRecord = chemigationPermitAnnualRecords.OrderByDescending(x => x.RecordYear).First();
 
             chemigationPermitAnnualRecordUpsertDto.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentChemigationPermitAnnualRecord.RecordYear == 1 ? 
                 ChemigationPermitAnnualRecord.NDEEAmountEnum.Renewal : ChemigationPermitAnnualRecord.NDEEAmountEnum.New;
 
-            var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.CreateAnnualRecordImpl(_dbContext, chemigationPermitAnnualRecordUpsertDto, mostRecentChemigationPermitAnnualRecord.ChemigationPermitID);
-            _dbContext.Entry(chemigationPermitAnnualRecord).Reload();
-            return ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordByID(_dbContext, chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID);
+            ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, mostRecentChemigationPermitAnnualRecord.ChemigationPermitID);
+            return Ok();
         }
 
 
@@ -136,91 +132,8 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<int> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
         {
-            var chemigationPermitDetailedDtos = ChemigationPermits.ListWithLatestAnnualRecordAsDto(_dbContext)
-                .Where(x => x.ChemigationPermitStatus.ChemigationPermitStatusID == (int)ChemigationPermitStatus.ChemigationPermitStatusEnum.Active &&
-                            x.LatestAnnualRecord.RecordYear == recordYear - 1)
-                .ToList();
-
-            foreach (var chemigationPermitDetailedDto in chemigationPermitDetailedDtos)
-            {
-                var applicatorsUpsert = MapLatestAnnualRecordApplicatorsToApplicatorUpsertDtoList(chemigationPermitDetailedDto);
-
-                var chemicalFormulationsUpsert = MapLatestAnnualRecordChemicalFormulationsToChemicalFormulationUpsertDtoList(chemigationPermitDetailedDto);
-
-                var chemigationPermitAnnualRecordUpsert = MapLatestChemigationPermitAnnualRecordToUpsertDto(recordYear, chemigationPermitDetailedDto, applicatorsUpsert, chemicalFormulationsUpsert);
-
-                var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.CreateAnnualRecordImpl(_dbContext, chemigationPermitAnnualRecordUpsert,
-                    chemigationPermitDetailedDto.ChemigationPermitID);
-            }
-
-            return chemigationPermitDetailedDtos.Count;
-        }
-
-        private static ChemigationPermitAnnualRecordUpsertDto MapLatestChemigationPermitAnnualRecordToUpsertDto(int recordYear,
-            ChemigationPermitDetailedDto chemigationPermitDetailedDto, List<ChemigationPermitAnnualRecordApplicatorUpsertDto> applicatorsUpsert, List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto> chemicalFormulationsUpsert)
-        {
-            var chemigationPermitAnnualRecordUpsert = new ChemigationPermitAnnualRecordUpsertDto()
-            {
-                ChemigationPermitAnnualRecordStatusID = (int)ChemigationPermitAnnualRecordStatus
-                    .ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
-                ApplicantName = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantName,
-                PivotName = chemigationPermitDetailedDto.LatestAnnualRecord.PivotName,
-                RecordYear = recordYear,
-                ChemigationInjectionUnitTypeID =
-                    chemigationPermitDetailedDto.LatestAnnualRecord.ChemigationInjectionUnitTypeID,
-                ApplicantPhone = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantPhone,
-                ApplicantMobilePhone = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantMobilePhone,
-                ApplicantEmail = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantEmail,
-                ApplicantMailingAddress = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantMailingAddress,
-                ApplicantCity = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantCity,
-                ApplicantState = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantState,
-                ApplicantZipCode = chemigationPermitDetailedDto.LatestAnnualRecord.ApplicantZipCode,
-                NDEEAmount = ChemigationPermitAnnualRecord.NDEEAmountEnum.Renewal,
-                Applicators = applicatorsUpsert,
-                ChemicalFormulations = chemicalFormulationsUpsert
-            };
-            return chemigationPermitAnnualRecordUpsert;
-        }
-
-        private static List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto> MapLatestAnnualRecordChemicalFormulationsToChemicalFormulationUpsertDtoList(
-            ChemigationPermitDetailedDto chemigationPermitDetailedDto)
-        {
-            var chemicalFormulationsUpsert = new List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>();
-            foreach (var chemicalFormulation in chemigationPermitDetailedDto.LatestAnnualRecord.ChemicalFormulations)
-            {
-                var chemicalFormulationUpsert = new ChemigationPermitAnnualRecordChemicalFormulationUpsertDto
-                {
-                    ChemicalFormulationID = chemicalFormulation.ChemicalFormulationID,
-                    ChemicalUnitID = chemicalFormulation.ChemicalUnitID,
-                    TotalApplied = null,
-                    AcresTreated = chemicalFormulation.AcresTreated
-                };
-
-                chemicalFormulationsUpsert.Add(chemicalFormulationUpsert);
-            }
-
-            return chemicalFormulationsUpsert;
-        }
-
-        private static List<ChemigationPermitAnnualRecordApplicatorUpsertDto> MapLatestAnnualRecordApplicatorsToApplicatorUpsertDtoList(
-            ChemigationPermitDetailedDto chemigationPermitDetailedDto)
-        {
-            var applicatorsUpsert = new List<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
-            foreach (var applicator in chemigationPermitDetailedDto.LatestAnnualRecord.Applicators)
-            {
-                var applicatorUpsert = new ChemigationPermitAnnualRecordApplicatorUpsertDto
-                {
-                    ApplicatorName = applicator.ApplicatorName,
-                    CertificationNumber = applicator.CertificationNumber,
-                    ExpirationYear = applicator.ExpirationYear,
-                    HomePhone = applicator.HomePhone,
-                    MobilePhone = applicator.MobilePhone
-                };
-
-                applicatorsUpsert.Add(applicatorUpsert);
-            }
-
-            return applicatorsUpsert;
+            var chemigationPermitsRenewed = ChemigationPermits.BulkCreateRenewalRecords(_dbContext, recordYear);
+            return Ok(chemigationPermitsRenewed);
         }
     }
 

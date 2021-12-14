@@ -236,7 +236,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       this.chemigationPermits = chemigationPermits;
       this.countOfActivePermitsWithoutRenewalRecordsForCurrentYear = this.chemigationPermits.filter(x => 
         x.ChemigationPermitStatus.ChemigationPermitStatusID == ChemigationPermitStatusEnum.Active &&
-        x.LatestAnnualRecord.RecordYear == this.currentYear - 1).length;
+        x.LatestAnnualRecord?.RecordYear == this.currentYear - 1).length;
       this.permitGrid.api.hideOverlay();
       this.cdr.detectChanges();
     });
