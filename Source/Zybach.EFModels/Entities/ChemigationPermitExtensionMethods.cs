@@ -27,7 +27,7 @@ namespace Zybach.EFModels.Entities
                 DateCreated = chemigationPermit.DateCreated,
                 TownshipRangeSection = chemigationPermit.TownshipRangeSection,
                 ChemigationCounty = chemigationPermit.ChemigationCounty.AsSimpleDto(),
-                Well = chemigationPermit.Well.AsSimpleDto(),
+                Well = chemigationPermit.Well?.AsSimpleDto(),
                 LatestAnnualRecord = chemigationPermitAnnualRecordDetailedDto
             };
             return chemigationPermitDetailedDto;

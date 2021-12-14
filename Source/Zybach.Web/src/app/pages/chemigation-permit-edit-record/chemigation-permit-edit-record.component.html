@@ -38,7 +38,7 @@
                                     <label><strong>Well: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <a routerLink="/wells/{{chemigationPermit.Well.WellRegistrationID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
+                                    <a *ngIf="chemigationPermit.Well" routerLink="/wells/{{chemigationPermit.Well.WellRegistrationID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">

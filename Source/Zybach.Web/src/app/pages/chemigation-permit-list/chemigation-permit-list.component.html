@@ -20,9 +20,10 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <ag-grid-angular #permitGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="chemigationPermits"
-                    [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100"
-                    (firstDataRendered)="onFirstDataRendered($event)">
+                <ag-grid-angular #permitGrid style="width: 100%; height: 500px;" 
+                    class="ag-theme-balham"
+                    [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+                    [pagination]="true" [paginationPageSize]="100" [suppressMenuHide]="true">
                 </ag-grid-angular>
             </div>
         </div>

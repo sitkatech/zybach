@@ -50,23 +50,15 @@ namespace Zybach.EFModels.Entities
                 TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection,
                 ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
             };
-            var wellID = dbContext.Wells
-                .SingleOrDefault(x => x.WellRegistrationID == chemigationPermitNewDto.WellRegistrationID)?.WellID;
-            if (!wellID.HasValue)
-            {
-                throw new NullReferenceException($"Well with Registration ID: {chemigationPermitNewDto.WellRegistrationID} not found!");
-            }
-
-            chemigationPermit.WellID = wellID.Value;
+            var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == chemigationPermitNewDto.WellRegistrationID)?.WellID;
+            chemigationPermit.WellID = wellID;
 
             dbContext.ChemigationPermits.Add(chemigationPermit);
             dbContext.SaveChanges();
 
             var chemigationPermitID = chemigationPermit.ChemigationPermitID;
 
-            // set NDEE amount to NEW by default for new permits
-            chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount =
-                ChemigationPermitAnnualRecord.NDEEAmountEnum.New;
+            chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount = ChemigationPermitAnnualRecord.NDEEAmountEnum.New;
 
             ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
 

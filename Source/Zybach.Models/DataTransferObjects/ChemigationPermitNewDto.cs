@@ -12,7 +12,6 @@ namespace Zybach.Models.DataTransferObjects
         public string TownshipRangeSection { get; set; }
         [Required]
         public int ChemigationCountyID { get; set; }
-        [Required]
         public string WellRegistrationID { get; set; }
         [Required]
         public ChemigationPermitAnnualRecordUpsertDto ChemigationPermitAnnualRecord { get; set; }

@@ -129,7 +129,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<ChemigationPermitAnnualRecordDetailedDto> GetByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
         {
-            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.Well.WellRegistrationID == wellRegistrationID).Select(x => x.AsDetailedDto()).ToList();
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.Well != null && x.ChemigationPermit.Well.WellRegistrationID == wellRegistrationID).Select(x => x.AsDetailedDto()).ToList();
         }
     }
 }

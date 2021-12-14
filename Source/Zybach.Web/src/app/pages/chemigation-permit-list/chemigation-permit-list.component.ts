@@ -31,9 +31,8 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   public richTextTypeID : number = CustomRichTextType.Chemigation;
 
   public columnDefs: any[];
+  public defaultColDef: ColDef;
   public chemigationPermits: Array<ChemigationPermitDetailedDto>;
-  public users: UserDto[];
-  public unassignedUsers: UserDto[];
   public currentYear: number;
   public countOfActivePermitsWithoutRenewalRecordsForCurrentYear: number;
 
@@ -57,9 +56,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
+      this.initializeGrid();
+
       this.currentYear = new Date().getFullYear();
       this.permitGrid.api.showLoadingOverlay();
-      this.initializeGrid();
       this.updateGridData();
     });
   }
@@ -101,7 +101,14 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Well', valueGetter: function (params: any) {
-          return { LinkValue: params.data.Well.WellRegistrationID, LinkDisplay: params.data.Well.WellRegistrationID };
+          if(params.data.Well)
+          {
+            return { LinkValue: params.data.Well.WellRegistrationID, LinkDisplay: params.data.Well.WellRegistrationID };
+          }
+          else
+          {
+            return { LinkValue: null, LinkDisplay: null };
+          }
         }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
@@ -141,7 +148,14 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           { headerName: 'Pivot', field: 'LatestAnnualRecord.PivotName', width: 100, filter: true, resizable: true, sortable: true },
           {
             headerName: 'Received', valueGetter: function (params: any) {
-              return datePipe.transform(params.data.LatestAnnualRecord.DateReceived, 'M/d/yyyy');
+              if(params.data.LatestAnnualRecord && params.data.LatestAnnualRecord.DateReceived)
+              {
+                return datePipe.transform(params.data.LatestAnnualRecord.DateReceived, 'M/d/yyyy');
+              }
+              else
+              {
+                return "";
+              }
             },
             comparator: this.dateFilterComparator,
             filter: 'agDateColumnFilter',
@@ -155,7 +169,14 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           },
           {
             headerName: 'Paid', valueGetter: function (params: any) {
-              return datePipe.transform(params.data.LatestAnnualRecord.DatePaid, 'M/d/yyyy');
+              if(params.data.LatestAnnualRecord && params.data.LatestAnnualRecord.DatePaid)
+              {
+                return datePipe.transform(params.data.LatestAnnualRecord.DatePaid, 'M/d/yyyy');
+              }
+              else
+              {
+                return "";
+              }
             },
             comparator: this.dateFilterComparator,
             filter: 'agDateColumnFilter',
@@ -171,10 +192,16 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           { 
             headerName: 'Applied Chemicals', 
             valueGetter: function (params) {
-              const applicators = params.data.LatestAnnualRecord.ChemicalFormulations.map(x => x.ChemicalFormulationName);
-              if (applicators.length > 0) {
-                return `${applicators.join(', ')}`;
-              } else {
+              if(params.data.LatestAnnualRecord)
+              {
+                const applicators = params.data.LatestAnnualRecord.ChemicalFormulations.map(x => x.ChemicalFormulationName);
+                if (applicators.length > 0) {
+                  return `${applicators.join(', ')}`;
+                } else {
+                  return "-";
+                }
+              }
+              else {
                 return "-";
               }
             }, 
@@ -183,13 +210,19 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           { 
             headerName: 'Applicators', 
             valueGetter: function (params) {
+              if(params.data.LatestAnnualRecord)
+              {
               const applicators = params.data.LatestAnnualRecord.Applicators.map(x => x.ApplicatorName);
               if (applicators.length > 0) {
                 return `${applicators.join(', ')}`;
               } else {
                 return "-";
               }
-            }, 
+            }
+            else {
+              return "-";
+            }
+          }, 
             filter: true, resizable: true, sortable: true 
           },
         ]
@@ -237,10 +270,8 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       this.countOfActivePermitsWithoutRenewalRecordsForCurrentYear = this.chemigationPermits.filter(x => 
         x.ChemigationPermitStatus.ChemigationPermitStatusID == ChemigationPermitStatusEnum.Active &&
         x.LatestAnnualRecord?.RecordYear == this.currentYear - 1).length;
-      this.permitGrid.api.hideOverlay();
-      this.cdr.detectChanges();
-    });
-    this.permitGrid.api.hideOverlay();
+        this.permitGrid ? this.permitGrid.api.setRowData(chemigationPermits) : null;
+      });
   }
 
   public exportToCsv() {

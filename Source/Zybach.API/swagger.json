@@ -3326,8 +3326,7 @@
           "ChemigationPermitAnnualRecord",
           "ChemigationPermitNumber",
           "ChemigationPermitStatusID",
-          "TownshipRangeSection",
-          "WellRegistrationID"
+          "TownshipRangeSection"
         ],
         "type": "object",
         "properties": {
@@ -3347,7 +3346,8 @@
             "format": "int32"
           },
           "WellRegistrationID": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "ChemigationPermitAnnualRecord": {
             "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
