@@ -1626,6 +1626,42 @@
         }
       }
     },
+    "/api/reportTemplates/generateChemigationPermitAnnualRecordReports": {
+      "put": {
+        "tags": [
+          "Report"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/robustReviewScenario/download/robustReviewScenarioJson": {
       "get": {
         "tags": [
@@ -3661,6 +3697,24 @@
           },
           "FileResourceMimeTypeIconNormalFilename": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenerateChemigationPermitAnnualRecordReportsDto": {
+        "type": "object",
+        "properties": {
+          "ReportTemplateID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordIDList": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
             "nullable": true
           }
         },

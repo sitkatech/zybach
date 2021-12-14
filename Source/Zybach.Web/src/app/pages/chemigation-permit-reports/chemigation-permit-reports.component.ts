@@ -113,8 +113,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         },
         resizable: true, sortable: true 
       },
-      { headerName: 'First Name', field: 'ApplicantFirstName', filter: true, resizable: true, sortable: true },
-      { headerName: 'Last Name', field: 'ApplicantLastName', filter: true, resizable: true, sortable: true },
+      { headerName: 'Applicant', field: 'ApplicantName', filter: true, resizable: true, sortable: true },
       { headerName: 'Street Address', field: 'ApplicantMailingAddress', filter: true, resizable: true, sortable: true },
       { headerName: 'City', field: 'ApplicantCity', filter: true, resizable: true, sortable: true },
       { headerName: 'State', field: 'ApplicantState',

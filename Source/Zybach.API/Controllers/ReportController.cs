@@ -133,7 +133,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/reportTemplates/generateReports")]
-        [AdminFeature]
+        //[AdminFeature]
         public ActionResult GenerateReportsFromSelectedProjects([FromBody] GenerateReportsDto generateReportsDto)
         {
             var reportTemplateID = generateReportsDto.ReportTemplateID;
@@ -141,6 +141,19 @@ namespace Zybach.API.Controllers
 
             var selectedModelIDs = generateReportsDto.WellIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
             
+            var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
+            return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
+        }
+
+        [HttpPut("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
+        //[AdminFeature]
+        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateChemigationPermitAnnualRecordReportsDto generateChemigationPermitAnnualRecordReportsDto)
+        {
+            var reportTemplateID = generateChemigationPermitAnnualRecordReportsDto.ReportTemplateID;
+            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
+
+            var selectedModelIDs = generateChemigationPermitAnnualRecordReportsDto.ChemigationPermitAnnualRecordIDList ?? _dbContext.ChemigationPermitAnnualRecords.Select(x => x.ChemigationPermitAnnualRecordID).ToList();
+
             var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
             return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
         }
