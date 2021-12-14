@@ -8,7 +8,7 @@ namespace Zybach.API.ReportTemplates.Models
     public class ReportTemplateChemigationPermitAnnualRecordModel : ReportTemplateBaseModel
     {
         public int ChemigationPermitAnnualRecordID { get; set; }
-        public int ChemigationPermitNumber { get; set; }
+        public string ChemigationPermitNumber { get; set; }
         public string TownshipRangeSection { get; set; }
         public string County { get; set; }
         public int RecordYear { get; set; }
@@ -29,7 +29,7 @@ namespace Zybach.API.ReportTemplates.Models
             ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
             ChemigationPermitNumber = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
                 .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID)
-                .ChemigationPermit.ChemigationPermitNumber;
+                .ChemigationPermit.ChemigationPermitNumberDisplay;
             TownshipRangeSection = dbContext.ChemigationPermits
                 .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID)
                 .TownshipRangeSection;

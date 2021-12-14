@@ -62,7 +62,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-            this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
+      this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
         this.reportTemplates = reportTemplates;
       });
 
@@ -74,7 +74,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
   initializeGrid() {
     this.columnDefs = [
       {
-        sortable: false, filter: false, width: 40, headerCheckboxSelection: true, checkboxSelection: true, headerCheckboxSelectionFilteredOnly: true
+        sortable: false, filter: false, width: 50, headerCheckboxSelection: true, checkboxSelection: true, headerCheckboxSelectionFilteredOnly: true
       },
       {
         headerName: 'Permit #',
@@ -206,7 +206,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     if(this.chemigationPermitReportGrid){
       this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
         if(node.isSelected()){
-          selectedFilteredSortedRows.push(node.data.AccountID);
+          selectedFilteredSortedRows.push(node.data.ChemigationPermitAnnualRecordID);
         }
       });
     }
@@ -227,7 +227,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     let selectedFilteredSortedRows = [];
     this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
       if(node.isSelected()){
-        selectedFilteredSortedRows.push(node.data.ChemigationPermitAnnualRecordID);
+        selectedFilteredSortedRows.push(parseInt(node.data.ChemigationPermitAnnualRecordID));
       }
     });
 
@@ -242,7 +242,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
       var generateCPARReportsDto = new GenerateChemigationPermitAnnualRecordReportsDto();
       generateCPARReportsDto.ReportTemplateID = reportTemplateID;
       generateCPARReportsDto.ChemigationPermitAnnualRecordIDList = selectedFilteredSortedRows;
-      this.reportTemplateService.generateReport(generateCPARReportsDto)
+      this.reportTemplateService.generateChemigationPermitAnnualRecordReport(generateCPARReportsDto)
         .subscribe(response => {
           this.isLoadingSubmit = false;
   
@@ -252,7 +252,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
           // start download
           a.click();
   
-          this.alertService.pushAlert(new Alert("Report Generatedfrom Report Template '" + reportTemplate.DisplayName + "' for selected accounts/pools", AlertContext.Success));
+          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + reportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
         }
           ,
           error => {
