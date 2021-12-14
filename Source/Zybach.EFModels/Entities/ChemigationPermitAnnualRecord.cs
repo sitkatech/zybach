@@ -19,7 +19,7 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
-        private static IQueryable<ChemigationPermitAnnualRecord> GetChemigationPermitAnnualRecordsImpl(ZybachDbContext dbContext)
+        public static IQueryable<ChemigationPermitAnnualRecord> GetChemigationPermitAnnualRecordsImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermitAnnualRecords
                 .Include(x => x.ChemigationPermit)

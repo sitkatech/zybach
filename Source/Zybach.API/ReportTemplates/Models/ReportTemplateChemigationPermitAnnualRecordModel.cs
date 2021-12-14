@@ -8,7 +8,7 @@ namespace Zybach.API.ReportTemplates.Models
     public class ReportTemplateChemigationPermitAnnualRecordModel : ReportTemplateBaseModel
     {
         public int ChemigationPermitAnnualRecordID { get; set; }
-        public int ChemigationPermitID { get; set; }
+        public int ChemigationPermitNumber { get; set; }
         public string TownshipRangeSection { get; set; }
         public string County { get; set; }
         public int RecordYear { get; set; }
@@ -27,8 +27,12 @@ namespace Zybach.API.ReportTemplates.Models
         public ReportTemplateChemigationPermitAnnualRecordModel(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ZybachDbContext dbContext)
         {
             ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
-            ChemigationPermitID = chemigationPermitAnnualRecord.ChemigationPermitID;
-            TownshipRangeSection = chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection;
+            ChemigationPermitNumber = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID)
+                .ChemigationPermit.ChemigationPermitNumber;
+            TownshipRangeSection = dbContext.ChemigationPermits
+                .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID)
+                .TownshipRangeSection;
             RecordYear = chemigationPermitAnnualRecord.RecordYear;
             PivotName = chemigationPermitAnnualRecord.PivotName;
             ApplicantName = chemigationPermitAnnualRecord.ApplicantName;
@@ -43,8 +47,12 @@ namespace Zybach.API.ReportTemplates.Models
                 .Where(x => x.ChemigationPermitAnnualRecordID ==
                             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID)
                 .ToList();
-            County = chemigationPermitAnnualRecord.ChemigationPermit.ChemigationCounty.ChemigationCountyDisplayName;
-            WellName = chemigationPermitAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
+            County = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID)
+                .ChemigationPermit.ChemigationCounty.ChemigationCountyDisplayName;
+            WellName = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID)
+                .ChemigationPermit.Well.WellRegistrationID;
         }
     }
 }
