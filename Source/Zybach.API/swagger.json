@@ -2885,12 +2885,12 @@
             "format": "int32"
           },
           "HomePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
           "MobilePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           }
@@ -3195,12 +3195,12 @@
             "format": "int32"
           },
           "ApplicantPhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
           "ApplicantMobilePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },

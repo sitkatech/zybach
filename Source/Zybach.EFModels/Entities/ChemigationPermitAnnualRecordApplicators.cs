@@ -16,7 +16,7 @@ namespace Zybach.EFModels.Entities
                     chemigationPermitAnnualRecordApplicatorsDto.GroupBy(x => new { x.ApplicatorName, x.CertificationNumber }).Select(x =>
                         new ChemigationPermitAnnualRecordApplicator
                         {
-                            ChemigationPermitAnnualRecord = chemigationPermitAnnualRecord,
+                            ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
                             ApplicatorName = x.Key.ApplicatorName,
                             CertificationNumber = x.Key.CertificationNumber,
                             ExpirationYear = x.First().ExpirationYear,
