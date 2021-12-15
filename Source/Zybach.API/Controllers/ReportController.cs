@@ -145,7 +145,7 @@ namespace Zybach.API.Controllers
             return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
         }
 
-        [HttpPut("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
+        [HttpPost("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
         [AdminFeature]
         public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateReportsDto generateReportsDto)
         {

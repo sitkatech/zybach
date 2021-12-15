@@ -1627,7 +1627,7 @@
       }
     },
     "/api/reportTemplates/generateChemigationPermitAnnualRecordReports": {
-      "put": {
+      "post": {
         "tags": [
           "Report"
         ],
