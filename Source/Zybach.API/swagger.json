@@ -1626,6 +1626,42 @@
         }
       }
     },
+    "/api/reportTemplates/generateChemigationPermitAnnualRecordReports": {
+      "put": {
+        "tags": [
+          "Report"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/robustReviewScenario/download/robustReviewScenarioJson": {
       "get": {
         "tags": [
@@ -3673,7 +3709,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "WellIDList": {
+          "ModelIDList": {
             "type": "array",
             "items": {
               "type": "integer",

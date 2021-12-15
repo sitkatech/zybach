@@ -18,8 +18,14 @@
                     </zybach-water-year-select>
                 </div>
             </div>
-            <div class="row my-2">
+            <div class="row ml-2 mb-2">
                 <div class="col">
+                    <button (click)="generateReport()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-md float-right"
+                        placement="top"
+                        ngbTooltip="Generate Chemigation Permit Annual Renewal Forms">
+                        <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                        Generate Renewal Forms
+                    </button>
                     <a class="btn btn-secondary btn-md float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
                     ngbTooltip="Download Report as CSV"><i class="fas fa-download"></i></a>
                     <fresca-clear-grid-filters-button class="float-right mr-2" [grid]="chemigationPermitReportGrid">
@@ -27,10 +33,11 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <ag-grid-angular #chemigationPermitReportGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="rowData"
+                <ag-grid-angular #chemigationPermitReportGrid style="width: 100%; height: 800px;" class="ag-theme-balham" [rowData]="rowData" [rowSelection]="'multiple'"
                     [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100" [pinnedBottomRowData]="pinnedBottomRowData"
                     (filterChanged)="onFilterChanged($event)" (gridReady)="onGridReady($event)">
                 </ag-grid-angular>
+                <div><span>{{getSelectedRows().length}} of {{getFilteredRowsCount()}} Selected</span></div>
             </div>
         </div>
     </div>

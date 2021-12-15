@@ -83,7 +83,7 @@ namespace Zybach.EFModels.Entities
             return chemigationPermit?.AsDto();
         }
 
-        private static IQueryable<ChemigationPermit> GetChemigationPermitImpl(ZybachDbContext dbContext)
+        public static IQueryable<ChemigationPermit> GetChemigationPermitImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermits
                 .Include(x => x.ChemigationPermitStatus)
