@@ -103,7 +103,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       this.chemicalReportGrid.api.hideOverlay();
       this.pinnedBottomRowData = [
         { 
-          AcresTreatedTotal: this.rowData.map(x => x.AcresTreated).reduce((sum, x) => sum + x, 0)
+          AcresTreatedTotal: this.rowData.map(x => x.AcresTreated).reduce((sum, x) => sum + x, 0).toFixed(2)
         }
       ];
       this.chemicalReportGrid.api.sizeColumnsToFit();
@@ -115,7 +115,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
   onFilterChanged(gridEvent) {
     gridEvent.api.setPinnedBottomRowData([
       {
-        AcresTreatedTotal: gridEvent.api.getModel().rowsToDisplay.map(x => x.data.AcresTreated).reduce((sum, x) => sum+x, 0)
+        AcresTreatedTotal: gridEvent.api.getModel().rowsToDisplay.map(x => x.data.AcresTreated).reduce((sum, x) => sum + x, 0).toFixed(2)
       }
     ]);
   }
