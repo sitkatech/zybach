@@ -134,6 +134,8 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<ChemigationInjectionUnitType>(entity =>
             {
+                entity.Property(e => e.ChemigationInjectionUnitTypeID).ValueGeneratedNever();
+
                 entity.Property(e => e.ChemigationInjectionUnitTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.ChemigationInjectionUnitTypeName).IsUnicode(false);
@@ -233,6 +235,8 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<ChemigationPermitAnnualRecordStatus>(entity =>
             {
+                entity.Property(e => e.ChemigationPermitAnnualRecordStatusID).ValueGeneratedNever();
+
                 entity.Property(e => e.ChemigationPermitAnnualRecordStatusDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.ChemigationPermitAnnualRecordStatusName).IsUnicode(false);
