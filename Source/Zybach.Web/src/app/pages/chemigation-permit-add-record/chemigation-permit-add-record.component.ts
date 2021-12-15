@@ -91,6 +91,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
       const chemicalFormulation = new ChemigationPermitAnnualRecordChemicalFormulationUpsertDto();
       chemicalFormulation.ChemicalFormulationID = x.ChemicalFormulationID;
       chemicalFormulation.ChemicalUnitID = x.ChemicalUnitID;
+      chemicalFormulation.AcresTreated = x.AcresTreated;
       chemicalFormulations.push(chemicalFormulation);
     });
     chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = chemicalFormulations;
