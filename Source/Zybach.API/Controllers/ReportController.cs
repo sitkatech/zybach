@@ -139,8 +139,26 @@ namespace Zybach.API.Controllers
             var reportTemplateID = generateReportsDto.ReportTemplateID;
             var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
 
-            var selectedModelIDs = generateReportsDto.WellIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
+            var selectedModelIDs = generateReportsDto.ModelIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
             
+            var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
+            return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
+        }
+
+        [HttpPost("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
+        [AdminFeature]
+        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateReportsDto generateReportsDto)
+        {
+            var reportTemplateID = generateReportsDto.ReportTemplateID;
+            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
+
+            var selectedModelIDs = generateReportsDto.ModelIDList;
+            if (selectedModelIDs == null)
+            {
+                return RequireNotNullThrowNotFound(generateReportsDto,
+                    "GenerateReportsDto", selectedModelIDs);
+            }
+
             var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
             return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
         }

@@ -83,4 +83,18 @@ export class ReportTemplateService {
     );
     return result;
   }
+
+  public generateChemigationPermitAnnualRecordReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
+    const mainAppApiUrl = environment.mainAppApiUrl;
+    const route = `${mainAppApiUrl}/reportTemplates/generateChemigationPermitAnnualRecordReports`;
+    var result = this.httpClient.post(
+        route,
+        generateReportsDto,
+        {
+          // need to set the response type so it is not defauled to json
+          responseType: 'blob'
+        }
+    );
+    return result;
+  }
 }

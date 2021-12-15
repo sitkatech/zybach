@@ -80,6 +80,13 @@ namespace Zybach.API.ReportTemplates
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, baseViewModel);
                     break;
+                case ReportTemplateModelEnum.ChemigationPermitAnnualRecord:
+                    var baseCPARViewModel = new ReportTemplateChemigationPermitAnnualRecordBaseViewModel()
+                    {
+                        ReportModel = GetListOfChemigationPermitAnnualRecordModels(dbContext)
+                    };
+                    document = DocumentFactory.Create<DocxDocument>(templatePath, baseCPARViewModel);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -245,6 +252,14 @@ namespace Zybach.API.ReportTemplates
             var wellsList = dbContext.Wells.Where(x => SelectedModelIDs.Contains(x.WellID)).ToList();
             var orderedWellList = wellsList.OrderBy(p => SelectedModelIDs.IndexOf(p.WellID)).ToList();
             orderedWellList.ForEach(x => listOfModels.Add(new ReportTemplateWellModel(x)));
+            return listOfModels;
+        }
+
+        private List<ReportTemplateChemigationPermitAnnualRecordModel> GetListOfChemigationPermitAnnualRecordModels(ZybachDbContext dbContext)
+        {
+            var listOfModels = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Where(x => SelectedModelIDs.Contains(x.ChemigationPermitAnnualRecordID)).ToList()
+                .Select(x => new ReportTemplateChemigationPermitAnnualRecordModel(x, dbContext)).ToList();
             return listOfModels;
         }
 

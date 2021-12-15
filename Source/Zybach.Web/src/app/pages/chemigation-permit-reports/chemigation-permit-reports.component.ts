@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -10,6 +10,13 @@ import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
+import { Alert } from 'src/app/shared/models/alert';
+import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
+import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
+import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -37,16 +44,27 @@ export class ChemigationPermitReportsComponent implements OnInit {
   public NDEEAmountTotal: number;
   public pinnedBottomRowData: { NDEEAmountTotal: number; }[];
 
+  public isLoadingSubmit: boolean;
+  public selectedReportTemplateID: number;
+  public selectedReportTemplate: ReportTemplateDto;
+
   constructor(
+    private alertService: AlertService,
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
     private cdr: ChangeDetectorRef,
+    private reportTemplateService: ReportTemplateService,
     private utilityFunctionsService: UtilityFunctionsService
   ) { }
 
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear(); 
+    this.selectedReportTemplateID = ReportTemplateModelEnum.ChemigationPermitAnnualRecord;
+
+    this.reportTemplateService.getReportTemplate(this.selectedReportTemplateID).subscribe(reportTemplate => {
+      this.selectedReportTemplate = reportTemplate;
+    });
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -58,9 +76,12 @@ export class ChemigationPermitReportsComponent implements OnInit {
   initializeGrid() {
     this.columnDefs = [
       {
+        sortable: false, filter: false, width: 50, headerCheckboxSelection: true, checkboxSelection: true, headerCheckboxSelectionFilteredOnly: true
+      },
+      {
         headerName: 'Permit #',
         valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationPermit?.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit?.ChemigationPermitNumber };
+          return { LinkValue: params.data.ChemigationPermit?.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit?.ChemigationPermitNumberDisplay };
         },
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
@@ -113,8 +134,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         },
         resizable: true, sortable: true 
       },
-      { headerName: 'First Name', field: 'ApplicantFirstName', filter: true, resizable: true, sortable: true },
-      { headerName: 'Last Name', field: 'ApplicantLastName', filter: true, resizable: true, sortable: true },
+      { headerName: 'Applicant', field: 'ApplicantName', filter: true, resizable: true, sortable: true },
       { headerName: 'Street Address', field: 'ApplicantMailingAddress', filter: true, resizable: true, sortable: true },
       { headerName: 'City', field: 'ApplicantCity', filter: true, resizable: true, sortable: true },
       { headerName: 'State', field: 'ApplicantState',
@@ -181,6 +201,64 @@ export class ChemigationPermitReportsComponent implements OnInit {
       ];
       this.chemigationPermitReportGrid.api.sizeColumnsToFit();
     });
+  }
+
+  public getSelectedRows() {
+    let selectedFilteredSortedRows = [];
+    if(this.chemigationPermitReportGrid){
+      this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
+        if(node.isSelected()){
+          selectedFilteredSortedRows.push(node.data.ChemigationPermitAnnualRecordID);
+        }
+      });
+    }
+    return selectedFilteredSortedRows;
+  }
+
+  public getFilteredRowsCount() {
+    var count = 0;
+    if(this.chemigationPermitReportGrid){
+      this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
+        count++;
+      });
+    }
+    return count;
+  }
+
+  public generateReport(): void {
+    let selectedFilteredSortedRows = [];
+    this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
+      if(node.isSelected()){
+        selectedFilteredSortedRows.push(parseInt(node.data.ChemigationPermitAnnualRecordID));
+      }
+    });
+
+    if(selectedFilteredSortedRows.length === 0){
+      this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Warning));
+    } else {
+      this.isLoadingSubmit = true;
+      var generateCPARReportsDto = new GenerateReportsDto();
+      generateCPARReportsDto.ReportTemplateID = this.selectedReportTemplateID;
+      generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
+      this.reportTemplateService.generateChemigationPermitAnnualRecordReport(generateCPARReportsDto)
+        .subscribe(response => {
+          this.isLoadingSubmit = false;
+  
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(response);
+          a.download = this.selectedReportTemplate.DisplayName + " Generated Report";
+          // start download
+          a.click();
+  
+          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + this.selectedReportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
+        }
+          ,
+          error => {
+            this.isLoadingSubmit = false;
+            this.cdr.detectChanges();
+          }
+        );
+    }
   }
   
   ngOnDestroy(): void {

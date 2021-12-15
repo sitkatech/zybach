@@ -1626,6 +1626,42 @@
         }
       }
     },
+    "/api/reportTemplates/generateChemigationPermitAnnualRecordReports": {
+      "post": {
+        "tags": [
+          "Report"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateReportsDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/robustReviewScenario/download/robustReviewScenarioJson": {
       "get": {
         "tags": [
@@ -2885,12 +2921,12 @@
             "format": "int32"
           },
           "HomePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
           "MobilePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           }
@@ -3200,12 +3236,12 @@
             "format": "int32"
           },
           "ApplicantPhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
           "ApplicantMobilePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
@@ -3678,7 +3714,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "WellIDList": {
+          "ModelIDList": {
             "type": "array",
             "items": {
               "type": "integer",

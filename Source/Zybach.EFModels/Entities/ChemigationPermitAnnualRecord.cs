@@ -19,7 +19,7 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
-        private static IQueryable<ChemigationPermitAnnualRecord> GetChemigationPermitAnnualRecordsImpl(ZybachDbContext dbContext)
+        public static IQueryable<ChemigationPermitAnnualRecord> GetChemigationPermitAnnualRecordsImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermitAnnualRecords
                 .Include(x => x.ChemigationPermit)
@@ -70,6 +70,11 @@ namespace Zybach.EFModels.Entities
         public static void UpdateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
             MapFromUpsertDto(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            if (chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID <= 0)
+            {
+                // we need to save the annual record first to get an ID for it
+                dbContext.SaveChanges();
+            }
             Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
             Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.Applicators);
             dbContext.SaveChanges();

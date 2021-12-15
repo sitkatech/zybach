@@ -19,7 +19,7 @@ namespace Zybach.EFModels.Entities
                     {
                         var formulation = new ChemigationPermitAnnualRecordChemicalFormulation
                             {
-                                ChemigationPermitAnnualRecord = chemigationPermitAnnualRecord,
+                                ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
                                 ChemicalFormulationID = x.Key.ChemicalFormulationID,
                                 ChemicalUnitID = x.Key.ChemicalUnitID,
                                 AcresTreated = x.Sum(y => y.AcresTreated)
