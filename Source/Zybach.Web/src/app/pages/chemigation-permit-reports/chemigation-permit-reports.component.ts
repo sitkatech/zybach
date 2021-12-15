@@ -79,7 +79,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
       {
         headerName: 'Permit #',
         valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationPermit?.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit?.ChemigationPermitNumber };
+          return { LinkValue: params.data.ChemigationPermit?.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit?.ChemigationPermitNumberDisplay };
         },
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },

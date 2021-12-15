@@ -133,7 +133,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/reportTemplates/generateReports")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult GenerateReportsFromSelectedProjects([FromBody] GenerateReportsDto generateReportsDto)
         {
             var reportTemplateID = generateReportsDto.ReportTemplateID;
@@ -146,7 +146,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateChemigationPermitAnnualRecordReportsDto generateChemigationPermitAnnualRecordReportsDto)
         {
             var reportTemplateID = generateChemigationPermitAnnualRecordReportsDto.ReportTemplateID;

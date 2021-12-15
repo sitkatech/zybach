@@ -22,7 +22,7 @@ namespace Zybach.API.ReportTemplates.Models
         public string ApplicantMobilePhone { get; set; }
         public string ApplicantEmail { get; set; }
         public string WellName { get; set; }
-        public List<ChemigationPermitAnnualRecordApplicator> ChemigationPermitAnnualRecordApplicators { get; set; }
+        public List<ChemigationPermitAnnualRecordApplicator> Applicators { get; set; }
 
         public ReportTemplateChemigationPermitAnnualRecordModel(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ZybachDbContext dbContext)
         {
@@ -43,7 +43,7 @@ namespace Zybach.API.ReportTemplates.Models
             ApplicantPhone = chemigationPermitAnnualRecord.ApplicantPhone;
             ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone;
             ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail;
-            ChemigationPermitAnnualRecordApplicators = dbContext.ChemigationPermitAnnualRecordApplicators
+            Applicators = dbContext.ChemigationPermitAnnualRecordApplicators
                 .Where(x => x.ChemigationPermitAnnualRecordID ==
                             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID)
                 .ToList();
@@ -53,6 +53,11 @@ namespace Zybach.API.ReportTemplates.Models
             WellName = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
                 .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID)
                 .ChemigationPermit.Well.WellRegistrationID;
+        }
+
+        public List<ReportTemplateApplicatorModel> GetApplicators()
+        {
+            return Applicators.Select(x => new ReportTemplateApplicatorModel(x)).OrderBy(x => x.ApplicatorName).ToList();
         }
     }
 }
