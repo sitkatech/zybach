@@ -177,7 +177,7 @@ namespace Zybach.API.Services
             public GETNewRunModel(int numForRunName, ZybachConfiguration zybachConfiguration)
             {
                 Name = $"GWMA Integration Run #{numForRunName}";
-                Description = "This action was automatically created by the TP NRD Groundwater Manager’s Application";
+                Description = "This action was automatically created by the TPNRD Groundwater Manager’s Application";
                 CustomerId = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID;
                 UserId = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID;
                 ModelId = zybachConfiguration.GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID;
