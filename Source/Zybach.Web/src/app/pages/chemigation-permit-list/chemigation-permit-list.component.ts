@@ -69,7 +69,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
     let decimalPipe = this.decimalPipe;
     this.columnDefs = [
       {
-        headerName: 'Permit #', valueGetter: function (params: any) {
+        headerName: '#', valueGetter: function (params: any) {
           return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermitNumberDisplay };
         }, 
         cellRendererFramework: LinkRendererComponent,
@@ -85,6 +85,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
+        filterValueGetter: function (params: any) {
+          return params.data.ChemigationPermitNumber;
+        },
+        filter: true,
         width: 80,
         resizable: true,
         sortable: true
@@ -123,6 +127,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
+        filterValueGetter: function (params: any) {
+          return params.data.Well?.WellRegistrationID;
+        },
+        filter: true,
         width: 100,
         resizable: true,
         sortable: true
