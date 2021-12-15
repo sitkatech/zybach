@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
 import { GenerateReportsDto } from '../generated/model/generate-reports-dto';
 import { ReportTemplateDto } from '../generated/model/report-template-dto';
 import { ReportTemplateUpdateDto } from '../models/report-template-update-dto';
-import { GenerateChemigationPermitAnnualRecordReportsDto } from '../generated/model/generate-chemigation-permit-annual-record-reports-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -85,12 +84,12 @@ export class ReportTemplateService {
     return result;
   }
 
-  public generateChemigationPermitAnnualRecordReport(generateCPARReportsDto: GenerateChemigationPermitAnnualRecordReportsDto):  Observable<Blob> {
+  public generateChemigationPermitAnnualRecordReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
     const mainAppApiUrl = environment.mainAppApiUrl;
     const route = `${mainAppApiUrl}/reportTemplates/generateChemigationPermitAnnualRecordReports`;
     var result = this.httpClient.put(
         route,
-        generateCPARReportsDto,
+        generateReportsDto,
         {
           // need to set the response type so it is not defauled to json
           responseType: 'blob'

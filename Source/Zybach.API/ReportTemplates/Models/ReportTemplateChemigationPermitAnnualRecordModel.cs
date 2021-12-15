@@ -29,12 +29,9 @@ namespace Zybach.API.ReportTemplates.Models
 
         public ReportTemplateChemigationPermitAnnualRecordModel(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ZybachDbContext dbContext)
         {
-            var chemigationPermit = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
-                .FirstOrDefault(x => x.ChemigationPermitID == chemigationPermitAnnualRecord.ChemigationPermitID).ChemigationPermit.AsDto();
-
             ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
-            ChemigationPermitNumber = chemigationPermit.ChemigationPermitNumberDisplay;
-            TownshipRangeSection = chemigationPermit.TownshipRangeSection;
+            ChemigationPermitNumber = chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay;
+            TownshipRangeSection = chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection;
             RecordYear = chemigationPermitAnnualRecord.RecordYear;
             PivotName = chemigationPermitAnnualRecord.PivotName;
             ApplicantName = chemigationPermitAnnualRecord.ApplicantName;
@@ -45,14 +42,11 @@ namespace Zybach.API.ReportTemplates.Models
             ApplicantPhone = chemigationPermitAnnualRecord.ApplicantPhone;
             ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone;
             ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail;
-            Applicators = dbContext.ChemigationPermitAnnualRecordApplicators
-                .Where(x => x.ChemigationPermitAnnualRecordID ==
-                            chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID)
-                .ToList();
-            County = chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName;
-            WellName = chemigationPermit.Well.WellRegistrationID;
-            WellLatitude = chemigationPermit.Well.Latitude.ToString("F4");
-            WellLongitude = chemigationPermit.Well.Longitude.ToString("F4");
+            Applicators = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators.ToList();
+            County = chemigationPermitAnnualRecord.ChemigationPermit.ChemigationCounty.ChemigationCountyDisplayName;
+            WellName = chemigationPermitAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
+            WellLatitude = chemigationPermitAnnualRecord.ChemigationPermit.Well.Latitude.ToString("F4");
+            WellLongitude = chemigationPermitAnnualRecord.ChemigationPermit.Well.Longitude.ToString("F4");
         }
         
         public List<ReportTemplateApplicatorModel> GetApplicators()

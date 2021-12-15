@@ -1635,22 +1635,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateChemigationPermitAnnualRecordReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             }
           }
@@ -3702,24 +3702,6 @@
         },
         "additionalProperties": false
       },
-      "GenerateChemigationPermitAnnualRecordReportsDto": {
-        "type": "object",
-        "properties": {
-          "ReportTemplateID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationPermitAnnualRecordIDList": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "GenerateReportsDto": {
         "type": "object",
         "properties": {
@@ -3727,7 +3709,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "WellIDList": {
+          "ModelIDList": {
             "type": "array",
             "items": {
               "type": "integer",

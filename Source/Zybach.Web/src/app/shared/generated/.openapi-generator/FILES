@@ -32,7 +32,6 @@ model/field-definition-dto.ts
 model/field-definition-type-dto.ts
 model/file-resource-dto.ts
 model/file-resource-mime-type-dto.ts
-model/generate-chemigation-permit-annual-record-reports-dto.ts
 model/generate-reports-dto.ts
 model/geo-json-object-type.ts
 model/i-geometry-object.ts

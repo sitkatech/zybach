@@ -12,7 +12,7 @@
 
 export class GenerateReportsDto { 
     ReportTemplateID?: number;
-    WellIDList?: Array<number>;
+    ModelIDList?: Array<number>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

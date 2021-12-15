@@ -12,10 +12,11 @@ import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-re
 import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { GenerateChemigationPermitAnnualRecordReportsDto } from 'src/app/shared/generated/model/generate-chemigation-permit-annual-record-reports-dto';
 import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
+import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
+import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -44,8 +45,8 @@ export class ChemigationPermitReportsComponent implements OnInit {
   public pinnedBottomRowData: { NDEEAmountTotal: number; }[];
 
   public isLoadingSubmit: boolean;
-  public selectedReportTemplateID: string;
-  public reportTemplates: Array<ReportTemplateDto>;
+  public selectedReportTemplateID: number;
+  public selectedReportTemplate: ReportTemplateDto;
 
   constructor(
     private alertService: AlertService,
@@ -59,13 +60,14 @@ export class ChemigationPermitReportsComponent implements OnInit {
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear(); 
+    this.selectedReportTemplateID = ReportTemplateModelEnum.ChemigationPermitAnnualRecord;
+
+    this.reportTemplateService.getReportTemplate(this.selectedReportTemplateID).subscribe(reportTemplate => {
+      this.selectedReportTemplate = reportTemplate;
+    });
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
-        this.reportTemplates = reportTemplates;
-      });
-
       this.chemigationPermitReportGrid.api.showLoadingOverlay();
       this.initializeGrid();
     });
@@ -233,26 +235,22 @@ export class ChemigationPermitReportsComponent implements OnInit {
 
     if(selectedFilteredSortedRows.length === 0){
       this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Warning));
-    } else if(!this.selectedReportTemplateID){
-      this.alertService.pushAlert(new Alert("No report template selected.", AlertContext.Warning));  
     } else {
       this.isLoadingSubmit = true;
-      var reportTemplateID = parseInt(this.selectedReportTemplateID);
-      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateID === reportTemplateID);
-      var generateCPARReportsDto = new GenerateChemigationPermitAnnualRecordReportsDto();
-      generateCPARReportsDto.ReportTemplateID = reportTemplateID;
-      generateCPARReportsDto.ChemigationPermitAnnualRecordIDList = selectedFilteredSortedRows;
+      var generateCPARReportsDto = new GenerateReportsDto();
+      generateCPARReportsDto.ReportTemplateID = this.selectedReportTemplateID;
+      generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
       this.reportTemplateService.generateChemigationPermitAnnualRecordReport(generateCPARReportsDto)
         .subscribe(response => {
           this.isLoadingSubmit = false;
   
           var a = document.createElement("a");
           a.href = URL.createObjectURL(response);
-          a.download = reportTemplate.DisplayName + " Generated Report";
+          a.download = this.selectedReportTemplate.DisplayName + " Generated Report";
           // start download
           a.click();
   
-          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + reportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
+          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + this.selectedReportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
         }
           ,
           error => {

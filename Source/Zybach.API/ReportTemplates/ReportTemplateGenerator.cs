@@ -257,9 +257,9 @@ namespace Zybach.API.ReportTemplates
 
         private List<ReportTemplateChemigationPermitAnnualRecordModel> GetListOfChemigationPermitAnnualRecordModels(ZybachDbContext dbContext)
         {
-            var listOfModels = new List<ReportTemplateChemigationPermitAnnualRecordModel>();
-            var chemigationPermitAnnualRecordList = dbContext.ChemigationPermitAnnualRecords.Where(x => SelectedModelIDs.Contains(x.ChemigationPermitAnnualRecordID)).ToList();
-            chemigationPermitAnnualRecordList.ForEach(x => listOfModels.Add(new ReportTemplateChemigationPermitAnnualRecordModel(x, dbContext)));
+            var listOfModels = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Where(x => SelectedModelIDs.Contains(x.ChemigationPermitAnnualRecordID)).ToList()
+                .Select(x => new ReportTemplateChemigationPermitAnnualRecordModel(x, dbContext)).ToList();
             return listOfModels;
         }
 

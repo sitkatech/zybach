@@ -139,7 +139,7 @@ namespace Zybach.API.Controllers
             var reportTemplateID = generateReportsDto.ReportTemplateID;
             var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
 
-            var selectedModelIDs = generateReportsDto.WellIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
+            var selectedModelIDs = generateReportsDto.ModelIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
             
             var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
             return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
@@ -147,12 +147,17 @@ namespace Zybach.API.Controllers
 
         [HttpPut("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
         [AdminFeature]
-        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateChemigationPermitAnnualRecordReportsDto generateChemigationPermitAnnualRecordReportsDto)
+        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateReportsDto generateReportsDto)
         {
-            var reportTemplateID = generateChemigationPermitAnnualRecordReportsDto.ReportTemplateID;
+            var reportTemplateID = generateReportsDto.ReportTemplateID;
             var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
 
-            var selectedModelIDs = generateChemigationPermitAnnualRecordReportsDto.ChemigationPermitAnnualRecordIDList ?? _dbContext.ChemigationPermitAnnualRecords.Select(x => x.ChemigationPermitAnnualRecordID).ToList();
+            var selectedModelIDs = generateReportsDto.ModelIDList;
+            if (selectedModelIDs == null)
+            {
+                return RequireNotNullThrowNotFound(generateReportsDto,
+                    "GenerateReportsDto", selectedModelIDs);
+            }
 
             var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
             return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
