@@ -87,7 +87,7 @@ export class ReportTemplateService {
   public generateChemigationPermitAnnualRecordReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
     const mainAppApiUrl = environment.mainAppApiUrl;
     const route = `${mainAppApiUrl}/reportTemplates/generateChemigationPermitAnnualRecordReports`;
-    var result = this.httpClient.put(
+    var result = this.httpClient.post(
         route,
         generateReportsDto,
         {
