@@ -3047,6 +3047,11 @@
             "type": "string",
             "nullable": true
           },
+          "NDEEAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "ChemicalFormulations": {
             "type": "array",
             "items": {

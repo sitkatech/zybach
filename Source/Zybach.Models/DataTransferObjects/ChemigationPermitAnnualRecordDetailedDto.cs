@@ -23,6 +23,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
+        public decimal? NDEEAmount { get; set; }
 
         public List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto> ChemicalFormulations { get; set; }
         public List<ChemigationPermitAnnualRecordApplicatorSimpleDto> Applicators { get; set; }

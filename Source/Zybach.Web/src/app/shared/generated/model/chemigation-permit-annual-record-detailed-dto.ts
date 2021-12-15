@@ -32,6 +32,7 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     DateReceived?: string;
     DatePaid?: string;
     ApplicantEmail?: string;
+    NDEEAmount?: number;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorSimpleDto>;
     constructor(obj?: any) {
