@@ -1675,22 +1675,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsByModelDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsByModelDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsByModelDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
+                "$ref": "#/components/schemas/GenerateReportsByModelDto"
               }
             }
           }
@@ -3742,6 +3742,24 @@
           },
           "FileResourceMimeTypeIconNormalFilename": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GenerateReportsByModelDto": {
+        "type": "object",
+        "properties": {
+          "ReportTemplateModelID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ModelIDList": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
             "nullable": true
           }
         },

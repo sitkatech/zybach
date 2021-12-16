@@ -31,6 +31,7 @@ export * from '././field-definition-dto';
 export * from '././field-definition-type-dto';
 export * from '././file-resource-dto';
 export * from '././file-resource-mime-type-dto';
+export * from '././generate-reports-by-model-dto';
 export * from '././generate-reports-dto';
 export * from '././geo-json-object-type';
 export * from '././icrs-object';

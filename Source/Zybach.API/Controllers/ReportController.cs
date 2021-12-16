@@ -48,9 +48,9 @@ namespace Zybach.API.Controllers
 
         [HttpGet("api/reportTemplates/getByModelID/{reportTemplateModelID}")]
         [AdminFeature]
-        public ActionResult<ReportTemplateDto> GetReportTemplatebyModelID([FromRoute] int reportTemplateModelID)
+        public ActionResult<ReportTemplateDto> GetReportTemplateByModelID([FromRoute] int reportTemplateModelID)
         {
-            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateByModelIDAsDto(_dbContext, reportTemplateModelID);
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetReportTemplateByModelID(_dbContext, reportTemplateModelID);
             return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateModelID);
         }
 
@@ -155,15 +155,15 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
         [AdminFeature]
-        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateReportsDto generateReportsDto)
+        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateReportsByModelDto generateReportsByModelDto)
         {
-            var reportTemplateID = generateReportsDto.ReportTemplateID;
-            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
+            var reportTemplateModelID = generateReportsByModelDto.ReportTemplateModelID;
+            var reportTemplate = EFModels.Entities.ReportTemplates.GetReportTemplateByModelID(_dbContext, reportTemplateModelID);
 
-            var selectedModelIDs = generateReportsDto.ModelIDList;
+            var selectedModelIDs = generateReportsByModelDto.ModelIDList;
             if (selectedModelIDs == null)
             {
-                return RequireNotNullThrowNotFound(generateReportsDto,
+                return RequireNotNullThrowNotFound(generateReportsByModelDto,
                     "GenerateReportsDto", selectedModelIDs);
             }
 

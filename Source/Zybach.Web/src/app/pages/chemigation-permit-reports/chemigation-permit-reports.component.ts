@@ -16,7 +16,7 @@ import { ReportTemplateService } from 'src/app/shared/services/report-template.s
 import { Alert } from 'src/app/shared/models/alert';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
 import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
-import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
+import { GenerateReportsByModelDto } from 'src/app/shared/generated/model/generate-reports-by-model-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -235,9 +235,9 @@ export class ChemigationPermitReportsComponent implements OnInit {
       this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Warning));
     } else {
       this.isLoadingSubmit = true;
-      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateModel.ReportTemplateModelName === 'ChemigationPermitAnnualRecord');
-      var generateCPARReportsDto = new GenerateReportsDto();
-      generateCPARReportsDto.ReportTemplateID = reportTemplate.ReportTemplateID;
+      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateModel.ReportTemplateModelID === ReportTemplateModelEnum.ChemigationPermitAnnualRecord);
+      var generateCPARReportsDto = new GenerateReportsByModelDto();
+      generateCPARReportsDto.ReportTemplateModelID = reportTemplate.ReportTemplateID;
       generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
       this.reportTemplateService.generateChemigationPermitAnnualRecordReport(generateCPARReportsDto)
         .subscribe(response => {
