@@ -44,5 +44,11 @@ namespace Zybach.EFModels.Entities
             }
             return reportTemplates;
         }
+
+        public static ReportTemplateDto GetByReportTemplateByModelIDAsDto(ZybachDbContext dbContext, int reportTemplateModelID)
+        {
+            var reportTemplate = GetReportTemplatesImpl(dbContext, false).SingleOrDefault(x => x.ReportTemplateModelID == reportTemplateModelID);
+            return reportTemplate?.AsDto();
+        }
     }
 }

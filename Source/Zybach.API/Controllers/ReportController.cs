@@ -46,6 +46,14 @@ namespace Zybach.API.Controllers
             return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateID);
         }
 
+        [HttpGet("api/reportTemplates/getByModelID/{reportTemplateModelID}")]
+        [AdminFeature]
+        public ActionResult<ReportTemplateDto> GetReportTemplatebyModelID([FromRoute] int reportTemplateModelID)
+        {
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateByModelIDAsDto(_dbContext, reportTemplateModelID);
+            return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateModelID);
+        }
+
         [HttpPost("/api/reportTemplates/new")]
         [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
         [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]

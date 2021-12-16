@@ -1517,6 +1517,46 @@
         }
       }
     },
+    "/api/reportTemplates/getByModelID/{reportTemplateModelID}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "parameters": [
+          {
+            "name": "reportTemplateModelID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportTemplateDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/reportTemplates/new": {
       "post": {
         "tags": [

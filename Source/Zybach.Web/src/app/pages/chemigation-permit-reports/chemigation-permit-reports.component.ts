@@ -45,8 +45,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
   public pinnedBottomRowData: { NDEEAmountTotal: number; }[];
 
   public isLoadingSubmit: boolean;
-  public selectedReportTemplateID: number;
-  public selectedReportTemplate: ReportTemplateDto;
+  public reportTemplates: Array<ReportTemplateDto>;
 
   constructor(
     private alertService: AlertService,
@@ -60,10 +59,9 @@ export class ChemigationPermitReportsComponent implements OnInit {
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear(); 
-    this.selectedReportTemplateID = ReportTemplateModelEnum.ChemigationPermitAnnualRecord;
-
-    this.reportTemplateService.getReportTemplate(this.selectedReportTemplateID).subscribe(reportTemplate => {
-      this.selectedReportTemplate = reportTemplate;
+    
+    this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
+      this.reportTemplates = reportTemplates;
     });
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -237,8 +235,9 @@ export class ChemigationPermitReportsComponent implements OnInit {
       this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Warning));
     } else {
       this.isLoadingSubmit = true;
+      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateModel.ReportTemplateModelName === 'ChemigationPermitAnnualRecord');
       var generateCPARReportsDto = new GenerateReportsDto();
-      generateCPARReportsDto.ReportTemplateID = this.selectedReportTemplateID;
+      generateCPARReportsDto.ReportTemplateID = reportTemplate.ReportTemplateID;
       generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
       this.reportTemplateService.generateChemigationPermitAnnualRecordReport(generateCPARReportsDto)
         .subscribe(response => {
@@ -246,11 +245,11 @@ export class ChemigationPermitReportsComponent implements OnInit {
   
           var a = document.createElement("a");
           a.href = URL.createObjectURL(response);
-          a.download = this.selectedReportTemplate.DisplayName + " Generated Report";
+          a.download = reportTemplate.DisplayName + " Generated Report";
           // start download
           a.click();
   
-          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + this.selectedReportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
+          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + reportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
         }
           ,
           error => {
