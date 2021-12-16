@@ -27,7 +27,10 @@ export class ReportTemplateService {
     return this.apiService.getFromApi(route);
   }
 
-  
+  public getReportTemplatesByModelID(reportTemplateModelID: number): Observable<Array<ReportTemplateDto>> {
+    return this.apiService.getFromApi(`/reportTemplatesByModelID/${reportTemplateModelID}`);
+  }
+
   public newReportTemplate(reportTemplateUpdateDto: ReportTemplateUpdateDto) {
     // return this.apiService.postToApi(`/reportTemplates/new`, reportTemplateNewDto);
 
@@ -73,25 +76,11 @@ export class ReportTemplateService {
   public generateReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
     const mainAppApiUrl = environment.mainAppApiUrl;
     const route = `${mainAppApiUrl}/reportTemplates/generateReports`;
-    var result = this.httpClient.put(
-        route,
-        generateReportsDto,
-        {
-          // need to set the response type so it is not defauled to json
-          responseType: 'blob'
-        }
-    );
-    return result;
-  }
-
-  public generateChemigationPermitAnnualRecordReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
-    const mainAppApiUrl = environment.mainAppApiUrl;
-    const route = `${mainAppApiUrl}/reportTemplates/generateChemigationPermitAnnualRecordReports`;
     var result = this.httpClient.post(
         route,
         generateReportsDto,
         {
-          // need to set the response type so it is not defauled to json
+          // need to set the response type so it is not defaulted to json
           responseType: 'blob'
         }
     );

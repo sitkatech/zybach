@@ -28,6 +28,13 @@ namespace Zybach.API.Controllers
             return reportTemplateDtos;
         }
 
+        [HttpGet("api/reportTemplatesByModelID/{reportTemplateModelID}")]
+        [AdminFeature]
+        public ActionResult<List<ReportTemplateDto>> ListAllReportsByModelID([FromRoute] int reportTemplateModelID)
+        {
+            var reportTemplateDtos = EFModels.Entities.ReportTemplates.ListByModelIDAsDtos(_dbContext, reportTemplateModelID);
+            return reportTemplateDtos;
+        }
 
         [HttpGet("api/reportTemplateModels")]
         [AdminFeature]
@@ -132,22 +139,9 @@ namespace Zybach.API.Controllers
             return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
-        [HttpPut("/api/reportTemplates/generateReports")]
+        [HttpPost("/api/reportTemplates/generateReports")]
         [AdminFeature]
-        public ActionResult GenerateReportsFromSelectedProjects([FromBody] GenerateReportsDto generateReportsDto)
-        {
-            var reportTemplateID = generateReportsDto.ReportTemplateID;
-            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
-
-            var selectedModelIDs = generateReportsDto.ModelIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
-            
-            var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
-            return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
-        }
-
-        [HttpPost("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
-        [AdminFeature]
-        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateReportsDto generateReportsDto)
+        public ActionResult GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {
             var reportTemplateID = generateReportsDto.ReportTemplateID;
             var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);

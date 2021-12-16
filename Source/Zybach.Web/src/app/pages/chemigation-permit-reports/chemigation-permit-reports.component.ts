@@ -45,8 +45,9 @@ export class ChemigationPermitReportsComponent implements OnInit {
   public pinnedBottomRowData: { NDEEAmountTotal: number; }[];
 
   public isLoadingSubmit: boolean;
-  public selectedReportTemplateID: number;
+  public reportTemplates: Array<ReportTemplateDto>;
   public selectedReportTemplate: ReportTemplateDto;
+  public selectedReportTemplateID: number;
 
   constructor(
     private alertService: AlertService,
@@ -60,10 +61,12 @@ export class ChemigationPermitReportsComponent implements OnInit {
   ngOnInit(): void {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear(); 
-    this.selectedReportTemplateID = ReportTemplateModelEnum.ChemigationPermitAnnualRecord;
-
-    this.reportTemplateService.getReportTemplate(this.selectedReportTemplateID).subscribe(reportTemplate => {
-      this.selectedReportTemplate = reportTemplate;
+    
+    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.ChemigationPermitAnnualRecord).subscribe(reportTemplates => {
+      this.reportTemplates = reportTemplates;
+      if (this.reportTemplates.length == 1) {
+        this.selectedReportTemplateID = reportTemplates[0].ReportTemplateID;
+      }
     });
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -225,39 +228,48 @@ export class ChemigationPermitReportsComponent implements OnInit {
     return count;
   }
 
-  public generateReport(): void {
-    let selectedFilteredSortedRows = [];
-    this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
-      if(node.isSelected()){
-        selectedFilteredSortedRows.push(parseInt(node.data.ChemigationPermitAnnualRecordID));
-      }
-    });
+  public modelHasMultipleTemplates(): boolean {
+    return this.reportTemplates?.length > 1;
+  }
 
-    if(selectedFilteredSortedRows.length === 0){
-      this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Warning));
+  public generateReport(): void {
+    if(!this.selectedReportTemplateID){
+      this.alertService.pushAlert(new Alert("No report template selected.", AlertContext.Danger));
     } else {
-      this.isLoadingSubmit = true;
-      var generateCPARReportsDto = new GenerateReportsDto();
-      generateCPARReportsDto.ReportTemplateID = this.selectedReportTemplateID;
-      generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
-      this.reportTemplateService.generateChemigationPermitAnnualRecordReport(generateCPARReportsDto)
-        .subscribe(response => {
-          this.isLoadingSubmit = false;
-  
-          var a = document.createElement("a");
-          a.href = URL.createObjectURL(response);
-          a.download = this.selectedReportTemplate.DisplayName + " Generated Report";
-          // start download
-          a.click();
-  
-          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + this.selectedReportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
+      let selectedFilteredSortedRows = [];
+      this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
+        if(node.isSelected()){
+          selectedFilteredSortedRows.push(parseInt(node.data.ChemigationPermitAnnualRecordID));
         }
-          ,
-          error => {
+      });
+  
+      if(selectedFilteredSortedRows.length === 0){
+        this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Danger));
+      } else {
+        this.isLoadingSubmit = true;
+        var generateCPARReportsDto = new GenerateReportsDto();
+        generateCPARReportsDto.ReportTemplateID = this.selectedReportTemplateID;
+        generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
+        this.reportTemplateService.generateReport(generateCPARReportsDto)
+          .subscribe(response => {
             this.isLoadingSubmit = false;
-            this.cdr.detectChanges();
+    
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(response);
+            a.download = "Generated Report";
+            // start download
+            a.click();
+    
+            this.alertService.pushAlert(new Alert("Report Generated for selected rows", AlertContext.Success));
           }
-        );
+            ,
+            error => {
+              this.isLoadingSubmit = false;
+              this.cdr.detectChanges();
+            }
+          );
+      }
+
     }
   }
   
