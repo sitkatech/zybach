@@ -256,7 +256,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     
             var a = document.createElement("a");
             a.href = URL.createObjectURL(response);
-            a.download = "Generated Report";
+            a.download = this.yearToDisplay + " Chemigation Permits";
             // start download
             a.click();
     
