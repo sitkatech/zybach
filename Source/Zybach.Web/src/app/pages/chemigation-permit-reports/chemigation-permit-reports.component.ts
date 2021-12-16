@@ -16,7 +16,7 @@ import { ReportTemplateService } from 'src/app/shared/services/report-template.s
 import { Alert } from 'src/app/shared/models/alert';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
 import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
-import { GenerateReportsByModelDto } from 'src/app/shared/generated/model/generate-reports-by-model-dto';
+import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -46,6 +46,8 @@ export class ChemigationPermitReportsComponent implements OnInit {
 
   public isLoadingSubmit: boolean;
   public reportTemplates: Array<ReportTemplateDto>;
+  public selectedReportTemplate: ReportTemplateDto;
+  public selectedReportTemplateID: number;
 
   constructor(
     private alertService: AlertService,
@@ -61,7 +63,11 @@ export class ChemigationPermitReportsComponent implements OnInit {
     this.yearToDisplay = new Date().getFullYear(); 
     
     this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
-      this.reportTemplates = reportTemplates;
+      // filter down to only templates for CPAR model
+      this.reportTemplates = reportTemplates.filter(x => x.ReportTemplateModel.ReportTemplateModelID === ReportTemplateModelEnum.ChemigationPermitAnnualRecord);
+      if (this.reportTemplates.length == 1) {
+        this.selectedReportTemplateID = reportTemplates[0].ReportTemplateID;
+      }
     });
 
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
@@ -223,6 +229,10 @@ export class ChemigationPermitReportsComponent implements OnInit {
     return count;
   }
 
+  public modelHasMultipleTemplates(): boolean {
+    return this.reportTemplates?.length > 1;
+  }
+
   public generateReport(): void {
     let selectedFilteredSortedRows = [];
     this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
@@ -235,21 +245,21 @@ export class ChemigationPermitReportsComponent implements OnInit {
       this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Warning));
     } else {
       this.isLoadingSubmit = true;
-      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateModel.ReportTemplateModelID === ReportTemplateModelEnum.ChemigationPermitAnnualRecord);
-      var generateCPARReportsDto = new GenerateReportsByModelDto();
-      generateCPARReportsDto.ReportTemplateModelID = reportTemplate.ReportTemplateID;
+      this.selectedReportTemplate = this.reportTemplates.find(x => x.ReportTemplateID === this.selectedReportTemplateID);
+      var generateCPARReportsDto = new GenerateReportsDto();
+      generateCPARReportsDto.ReportTemplateID = this.selectedReportTemplate.ReportTemplateID;
       generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
-      this.reportTemplateService.generateChemigationPermitAnnualRecordReport(generateCPARReportsDto)
+      this.reportTemplateService.generateReport(generateCPARReportsDto)
         .subscribe(response => {
           this.isLoadingSubmit = false;
   
           var a = document.createElement("a");
           a.href = URL.createObjectURL(response);
-          a.download = reportTemplate.DisplayName + " Generated Report";
+          a.download = this.selectedReportTemplate.DisplayName + " Generated Report";
           // start download
           a.click();
   
-          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + reportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
+          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + this.selectedReportTemplate.DisplayName + "' for selected rows", AlertContext.Success));
         }
           ,
           error => {

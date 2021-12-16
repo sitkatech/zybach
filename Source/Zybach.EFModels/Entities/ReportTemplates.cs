@@ -25,7 +25,9 @@ namespace Zybach.EFModels.Entities
 
         public static ReportTemplate GetByReportTemplateID(ZybachDbContext dbContext, int reportTemplateID, bool forUpdate)
         {
-            var reportTemplate = GetReportTemplatesImpl(dbContext, forUpdate).SingleOrDefault(x => x.ReportTemplateID == reportTemplateID);
+            var reportTemplate = GetReportTemplatesImpl(dbContext, forUpdate)
+                .OrderBy(x => x.ReportTemplateID)
+                .FirstOrDefault(x => x.ReportTemplateID == reportTemplateID);
             return reportTemplate;
         }
 
@@ -43,12 +45,6 @@ namespace Zybach.EFModels.Entities
                 reportTemplates.AsNoTracking();
             }
             return reportTemplates;
-        }
-
-        public static ReportTemplate GetReportTemplateByModelID(ZybachDbContext dbContext, int reportTemplateModelID)
-        {
-            var reportTemplate = GetReportTemplatesImpl(dbContext, false).SingleOrDefault(x => x.ReportTemplateModelID == reportTemplateModelID);
-            return reportTemplate;
         }
     }
 }

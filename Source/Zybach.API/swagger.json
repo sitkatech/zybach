@@ -1517,46 +1517,6 @@
         }
       }
     },
-    "/api/reportTemplates/getByModelID/{reportTemplateModelID}": {
-      "get": {
-        "tags": [
-          "Report"
-        ],
-        "parameters": [
-          {
-            "name": "reportTemplateModelID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportTemplateDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportTemplateDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportTemplateDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/reportTemplates/new": {
       "post": {
         "tags": [
@@ -1631,42 +1591,6 @@
       }
     },
     "/api/reportTemplates/generateReports": {
-      "put": {
-        "tags": [
-          "Report"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/GenerateReportsDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/reportTemplates/generateChemigationPermitAnnualRecordReports": {
       "post": {
         "tags": [
           "Report"
@@ -1675,22 +1599,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsByModelDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsByModelDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsByModelDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/GenerateReportsByModelDto"
+                "$ref": "#/components/schemas/GenerateReportsDto"
               }
             }
           }
@@ -3742,24 +3666,6 @@
           },
           "FileResourceMimeTypeIconNormalFilename": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "GenerateReportsByModelDto": {
-        "type": "object",
-        "properties": {
-          "ReportTemplateModelID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ModelIDList": {
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int32"
-            },
             "nullable": true
           }
         },

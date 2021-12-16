@@ -46,14 +46,6 @@ namespace Zybach.API.Controllers
             return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateID);
         }
 
-        [HttpGet("api/reportTemplates/getByModelID/{reportTemplateModelID}")]
-        [AdminFeature]
-        public ActionResult<ReportTemplateDto> GetReportTemplateByModelID([FromRoute] int reportTemplateModelID)
-        {
-            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetReportTemplateByModelID(_dbContext, reportTemplateModelID);
-            return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateModelID);
-        }
-
         [HttpPost("/api/reportTemplates/new")]
         [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
         [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]
@@ -140,30 +132,17 @@ namespace Zybach.API.Controllers
             return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
-        [HttpPut("/api/reportTemplates/generateReports")]
+        [HttpPost("/api/reportTemplates/generateReports")]
         [AdminFeature]
-        public ActionResult GenerateReportsFromSelectedProjects([FromBody] GenerateReportsDto generateReportsDto)
+        public ActionResult GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {
             var reportTemplateID = generateReportsDto.ReportTemplateID;
             var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
 
-            var selectedModelIDs = generateReportsDto.ModelIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
-            
-            var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
-            return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
-        }
-
-        [HttpPost("/api/reportTemplates/generateChemigationPermitAnnualRecordReports")]
-        [AdminFeature]
-        public ActionResult GenerateChemigationPermitAnnualRecordReports([FromBody] GenerateReportsByModelDto generateReportsByModelDto)
-        {
-            var reportTemplateModelID = generateReportsByModelDto.ReportTemplateModelID;
-            var reportTemplate = EFModels.Entities.ReportTemplates.GetReportTemplateByModelID(_dbContext, reportTemplateModelID);
-
-            var selectedModelIDs = generateReportsByModelDto.ModelIDList;
+            var selectedModelIDs = generateReportsDto.ModelIDList;
             if (selectedModelIDs == null)
             {
-                return RequireNotNullThrowNotFound(generateReportsByModelDto,
+                return RequireNotNullThrowNotFound(generateReportsDto,
                     "GenerateReportsDto", selectedModelIDs);
             }
 
