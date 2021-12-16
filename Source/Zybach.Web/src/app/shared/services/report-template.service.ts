@@ -27,6 +27,10 @@ export class ReportTemplateService {
     return this.apiService.getFromApi(route);
   }
 
+  public getReportTemplatesByModelID(reportTemplateModelID: number): Observable<Array<ReportTemplateDto>> {
+    return this.apiService.getFromApi(`/reportTemplatesByModelID/${reportTemplateModelID}`);
+  }
+
   public newReportTemplate(reportTemplateUpdateDto: ReportTemplateUpdateDto) {
     // return this.apiService.postToApi(`/reportTemplates/new`, reportTemplateNewDto);
 

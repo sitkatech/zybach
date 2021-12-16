@@ -28,6 +28,13 @@ namespace Zybach.API.Controllers
             return reportTemplateDtos;
         }
 
+        [HttpGet("api/reportTemplatesByModelID/{reportTemplateModelID}")]
+        [AdminFeature]
+        public ActionResult<List<ReportTemplateDto>> ListAllReportsByModelID([FromRoute] int reportTemplateModelID)
+        {
+            var reportTemplateDtos = EFModels.Entities.ReportTemplates.ListByModelIDAsDtos(_dbContext, reportTemplateModelID);
+            return reportTemplateDtos;
+        }
 
         [HttpGet("api/reportTemplateModels")]
         [AdminFeature]
