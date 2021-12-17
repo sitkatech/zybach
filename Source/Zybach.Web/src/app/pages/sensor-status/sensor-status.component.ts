@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@ang
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorMessageAgeDto } from 'src/app/shared/generated/model/well-with-sensor-message-age-dto';
@@ -63,8 +64,18 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         sortable: true, filter: true, resizable: true
       },
       { headerName: 'Sensor Number', field: 'SensorName', sortable: true, filter: true, resizable: true},
-      { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => Math.floor(params.data.MessageAge / 3600)},
-      { headerName: 'Sensor Type', field: 'SensorType', sortable: true, filter: true, resizable: true},
+      { headerName: 'Last Message Age (Hours)',
+        valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
+        filter: 'agNumberColumnFilter',
+        sortable: true, resizable: true
+      },
+      { headerName: 'Sensor Type', field: 'SensorType',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'SensorType'
+        },
+        resizable: true, sortable: true
+      }
     ];
 
 
