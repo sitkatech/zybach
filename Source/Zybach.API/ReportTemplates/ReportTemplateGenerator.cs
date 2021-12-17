@@ -259,7 +259,8 @@ namespace Zybach.API.ReportTemplates
         {
             var listOfModels = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
                 .Where(x => SelectedModelIDs.Contains(x.ChemigationPermitAnnualRecordID)).ToList()
-                .Select(x => new ReportTemplateChemigationPermitAnnualRecordModel(x, dbContext)).ToList();
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.ChemigationPermitAnnualRecordID)).ToList()
+                .Select(x => new ReportTemplateChemigationPermitAnnualRecordModel(x)).ToList();
             return listOfModels;
         }
 

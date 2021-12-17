@@ -27,7 +27,7 @@ namespace Zybach.API.ReportTemplates.Models
 
         public List<ChemigationPermitAnnualRecordApplicator> Applicators { get; set; }
 
-        public ReportTemplateChemigationPermitAnnualRecordModel(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord, ZybachDbContext dbContext)
+        public ReportTemplateChemigationPermitAnnualRecordModel(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord)
         {
             ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
             ChemigationPermitNumber = chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay;
