@@ -8,6 +8,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 
 declare var $:any;
 
@@ -69,8 +70,23 @@ export class UserListComponent implements OnInit, OnDestroy {
             sortable: true, filter: true, width: 170
           },
           { headerName: 'Email', field: 'Email', sortable: true, filter: true },
-          { headerName: 'Role', field: 'Role.RoleDisplayName', sortable: true, filter: true, width: 100 },
-          { headerName: 'Receives System Communications?', field: 'ReceiveSupportEmails', valueGetter: function (params) { return params.data.ReceiveSupportEmails ? "Yes" : "No";}, sortable: true, filter: true, width: 250 },
+          { headerName: 'Role', field: 'Role.RoleDisplayName', 
+            filterFramework: CustomDropdownFilterComponent,
+            filterParams: {
+              field: 'Role.RoleDisplayName'
+            },
+            sortable: true, width: 100 },
+          { 
+            headerName: 'Receives System Communications?', field: 'ReceiveSupportEmails', 
+            valueGetter: function (params) { 
+              return params.data.ReceiveSupportEmails ? "Yes" : "No";
+            }, 
+            filterFramework: CustomDropdownFilterComponent,
+            filterParams: {
+              field: 'params.data.ReceiveSupportEmails'
+            },
+            sortable: true, width: 250 
+          },
         ];
         
         this.columnDefs.forEach(x => {

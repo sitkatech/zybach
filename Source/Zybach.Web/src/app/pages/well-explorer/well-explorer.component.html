@@ -9,6 +9,9 @@
 
 <ng-template #wellsList>
     <div class="container navCaretMargin">
+        <div class="col-12 col-md-6">
+            <h2 class="d-inline-block">Well Map</h2>
+        </div>
         <zybach-well-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"
             (onFilterChange)="onFilterChange($event)">
         </zybach-well-map>

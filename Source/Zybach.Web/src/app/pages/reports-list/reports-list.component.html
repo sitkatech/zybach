@@ -29,6 +29,8 @@
             {{reportTemplate.DisplayName}}
         </option>
     </select>
+    <fresca-clear-grid-filters-button class="float-right mr-3" [grid]="reportTemplatesGrid">
+    </fresca-clear-grid-filters-button>
 
     <div class="table-responsive">
         <ag-grid-angular #reportTemplatesGrid style="width: 100%; height: 800px;" class="ag-theme-balham" [rowData]="rowData"

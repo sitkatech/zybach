@@ -18,6 +18,9 @@
     </div>
 </div>
 <div class="container">
+    <fresca-clear-grid-filters-button class="float-right m-2" [grid]="fieldDefinitionsGrid">
+    </fresca-clear-grid-filters-button>
+
     <div class="table-responsive">
         <ag-grid-angular #fieldDefinitionsGrid style="width: 100%; height: 800px;" class="ag-theme-balham" [rowData]="rowData"
             [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100">
