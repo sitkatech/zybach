@@ -1,7 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
 import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
@@ -119,20 +122,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         width: 115,
         sortable: true, filter: true, resizable: true
       },
-      {
-        headerName: "Last Reading Date",
-        field: "LastReadingDate",
-        valueFormatter: agGridDateFormatter,
-        width: 150,
-        sortable: true, filter: true, resizable: true
-      },
-      {
-        headerName: "First Reading Date",
-        field: "FirstReadingDate",
-        valueFormatter: agGridDateFormatter,
-        width: 150,
-        sortable: true, filter: true, resizable: true
-      },
+      this.createDateColumnDef('Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
+      this.createDateColumnDef('First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
       {
         headerName: "Has Flow Meter?",
         valueGetter: function (params) {
@@ -156,7 +147,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        sortable: true, filter: true, resizable: true,
+        filter: true,
+        sortable: true, resizable: true,
         width: 170
       },
       {
@@ -168,7 +160,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        sortable: true, filter: true, resizable: true
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.HasElectricalData'
+        },
+        sortable: true, resizable: true
       },
       {
         headerName: "In AgHub?",
@@ -179,7 +175,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        sortable: true, filter: true, resizable: true, width: 110
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.InAgHub'
+        },
+        sortable: true, resizable: true, width: 110
       },
       {
         headerName: "In GeoOptix?",
@@ -190,17 +190,43 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        sortable: true, filter: true, resizable: true, width: 115
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.InGeoOptix'
+        },
+        sortable: true, resizable: true, width: 115
       },
-      {
-        headerName: "Last Fetched from AgHub",
-        field: "FetchDate",
-        valueFormatter: agGridDateFormatter,
-        sortable: true, filter: true, resizable: true
-      }
+      this.createDateColumnDef('Last Fetched from AgHub', 'FetchDate', 'M/d/yyyy')
     ]
   }
 
+  private createDateColumnDef(headerName: string, fieldName: string, dateFormat: string): ColDef {
+    let datePipe = new DatePipe('en-US');
+  
+    return {
+      headerName: headerName, valueGetter: function (params: any) {
+        return datePipe.transform(params.data[fieldName], dateFormat);
+      },
+      comparator: this.dateFilterComparator,
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        filterOptions: ['inRange'],
+        comparator: this.dateFilterComparator
+      }, 
+      width: 150,
+      resizable: true,
+      sortable: true
+    };
+  }
+
+  private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+    const cellDate = Date.parse(cellValue);
+    if (cellDate == filterLocalDateAtMidnight) {
+      return 0;
+    }
+    return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
+  }
+  
   public onSelectionChanged(event: Event) {
     const selectedNode = this.gridApi.getSelectedNodes()[0];
     if (!selectedNode) {

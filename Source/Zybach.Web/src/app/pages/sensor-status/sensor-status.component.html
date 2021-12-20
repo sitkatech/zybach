@@ -19,7 +19,10 @@
             <p>The following grid shows all sensors that have not sent a message in 8 or more hours.</p>
         </div>
         <div class="col">
-            <button type="button" class="btn btn-zybach float-right" (click)="downloadCsv()"><span class="fas fa-download"></span> Download CSV</button>
+            <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="downloadCsv()" placement="top"
+            ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+            <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="redSensorsGrid">
+            </fresca-clear-grid-filters-button>
         </div>
     </div>
     <ag-grid-angular #redSensorsGrid style="width: 100%; height: 300px;" class="ag-theme-balham mt-2"

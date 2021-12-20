@@ -10,13 +10,14 @@
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
-                    <a class="btn btn-secondary btn-md float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></a>
-                    <fresca-clear-grid-filters-button class="mr-3" [grid]="permitGrid">
+                    <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/new"
+                    ngbTooltip="Create New Chemigation Permit"><span class="fas fa-plus"></span> New Chemigation Permit </a>
+                    <button class="btn btn-zybach btn-md mr-3 float-right" style="cursor: pointer;" (click)="launchModal(renewalEntity, 'renewalEntity')" placement="top"
+                    ngbTooltip="Bulk Create Annual Renewal Applications"><span class="fas fa-plus"></span> Generate Renewal Applications </button>
+                    <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                    <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="permitGrid">
                     </fresca-clear-grid-filters-button>
-                    <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/chemigation-permits/new"><span class="fas fa-plus"></span> New Chemigation Permit </a>
-                    <a class="btn btn-zybach btn-md mr-3 float-right" style="cursor: pointer;" (click)="launchModal(renewalEntity, 'renewalEntity')" placement="top"
-                    ngbTooltip="Bulk Create Annual Renewal Applications"><span class="fas fa-plus"></span> Generate Renewal Applications </a>
                 </div>
             </div>
             <div class="table-responsive">

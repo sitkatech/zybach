@@ -4,6 +4,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -75,7 +76,12 @@ export class ReportsListComponent implements OnInit, OnDestroy {
           sortable: true, filter: true, width: 500
         },
         { headerName: 'Description', field: 'Description', sortable: true, filter: true, width: 500 },
-        { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', sortable: true, filter: true, width: 268 },
+        { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', 
+          filterFramework: CustomDropdownFilterComponent,
+          filterParams: {
+            field: 'ReportTemplateModel.ReportTemplateModelDisplayName'
+          },
+          sortable: true, width: 268 },
         {
           headerName: 'Template File', valueGetter: function (params: any) {
             return { LinkValue: `${mainAppApiUrl}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
