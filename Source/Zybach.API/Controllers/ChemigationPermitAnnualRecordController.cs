@@ -44,6 +44,16 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
+
+        [HttpGet("/api/chemigationInspections")]
+        //[ZybachViewFeature]
+        public ActionResult<List<ChemigationInspectionDto>> GetAllChemigationInspections()
+        {
+            var chemigationInspections =
+                ChemigationInspection.List(_dbContext);
+            return Ok(chemigationInspections);
+        }
+
         [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
         [ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetChemigationPermitAnnualRecordsByPermitNumber([FromRoute] int chemigationPermitNumber)
