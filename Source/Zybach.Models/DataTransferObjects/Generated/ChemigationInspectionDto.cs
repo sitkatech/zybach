@@ -11,8 +11,8 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int ChemigationInspectionID { get; set; }
         public ChemigationPermitAnnualRecordDto ChemigationPermitAnnualRecord { get; set; }
-        public ChemigationInspectionTypeDto ChemigationInspectionType { get; set; }
         public ChemigationInspectionStatusDto ChemigationInspectionStatus { get; set; }
+        public ChemigationInspectionTypeDto ChemigationInspectionType { get; set; }
         public DateTime? InspectionDate { get; set; }
         public UserDto InspectorUser { get; set; }
         public ChemigationMainlineCheckValveDto ChemigationMainlineCheckValve { get; set; }
@@ -29,8 +29,8 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int ChemigationInspectionID { get; set; }
         public int ChemigationPermitAnnualRecordID { get; set; }
-        public int ChemigationInspectionTypeID { get; set; }
         public int ChemigationInspectionStatusID { get; set; }
+        public int? ChemigationInspectionTypeID { get; set; }
         public DateTime? InspectionDate { get; set; }
         public int? InspectorUserID { get; set; }
         public int? ChemigationMainlineCheckValveID { get; set; }

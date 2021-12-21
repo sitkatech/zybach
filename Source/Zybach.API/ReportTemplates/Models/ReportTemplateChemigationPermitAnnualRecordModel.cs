@@ -42,7 +42,7 @@ namespace Zybach.API.ReportTemplates.Models
             ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone;
             ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail;
             Applicators = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators.ToList();
-            County = chemigationPermitAnnualRecord.ChemigationPermit.ChemigationCounty.ChemigationCountyDisplayName;
+            County = chemigationPermitAnnualRecord.ChemigationPermit.County.CountyDisplayName;
             WellName = chemigationPermitAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
             WellLatitude = chemigationPermitAnnualRecord.ChemigationPermit.Well.Latitude.ToString("F4");
             WellLongitude = chemigationPermitAnnualRecord.ChemigationPermit.Well.Longitude.ToString("F4");

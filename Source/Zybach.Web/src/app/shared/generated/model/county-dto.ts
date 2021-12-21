@@ -10,10 +10,10 @@
  * Do not edit the class manually.
  */
 
-export class ChemigationCountySimpleDto { 
-    ChemigationCountyID?: number;
-    ChemigationCountyName?: string;
-    ChemigationCountyDisplayName?: string;
+export class CountyDto { 
+    CountyID?: number;
+    CountyName?: string;
+    CountyDisplayName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

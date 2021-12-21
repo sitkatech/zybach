@@ -15,8 +15,8 @@ namespace Zybach.EFModels.Entities
             {
                 ChemigationInspectionID = chemigationInspection.ChemigationInspectionID,
                 ChemigationPermitAnnualRecord = chemigationInspection.ChemigationPermitAnnualRecord.AsDto(),
-                ChemigationInspectionType = chemigationInspection.ChemigationInspectionType.AsDto(),
                 ChemigationInspectionStatus = chemigationInspection.ChemigationInspectionStatus.AsDto(),
+                ChemigationInspectionType = chemigationInspection.ChemigationInspectionType?.AsDto(),
                 InspectionDate = chemigationInspection.InspectionDate,
                 InspectorUser = chemigationInspection.InspectorUser?.AsDto(),
                 ChemigationMainlineCheckValve = chemigationInspection.ChemigationMainlineCheckValve?.AsDto(),
@@ -40,8 +40,8 @@ namespace Zybach.EFModels.Entities
             {
                 ChemigationInspectionID = chemigationInspection.ChemigationInspectionID,
                 ChemigationPermitAnnualRecordID = chemigationInspection.ChemigationPermitAnnualRecordID,
-                ChemigationInspectionTypeID = chemigationInspection.ChemigationInspectionTypeID,
                 ChemigationInspectionStatusID = chemigationInspection.ChemigationInspectionStatusID,
+                ChemigationInspectionTypeID = chemigationInspection.ChemigationInspectionTypeID,
                 InspectionDate = chemigationInspection.InspectionDate,
                 InspectorUserID = chemigationInspection.InspectorUserID,
                 ChemigationMainlineCheckValveID = chemigationInspection.ChemigationMainlineCheckValveID,

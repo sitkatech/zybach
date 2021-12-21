@@ -10,8 +10,9 @@
  * Do not edit the class manually.
  */
 import { ChemigationPermitAnnualRecordDetailedDto } from '././chemigation-permit-annual-record-detailed-dto';
-import { ChemigationCountySimpleDto } from '././chemigation-county-simple-dto';
+import { ChemigationInspectionSimpleDto } from '././chemigation-inspection-simple-dto';
 import { WellSimpleDto } from '././well-simple-dto';
+import { CountySimpleDto } from '././county-simple-dto';
 import { ChemigationPermitStatusSimpleDto } from '././chemigation-permit-status-simple-dto';
 
 export class ChemigationPermitDetailedDto { 
@@ -20,10 +21,10 @@ export class ChemigationPermitDetailedDto {
     ChemigationPermitNumberDisplay?: string;
     ChemigationPermitStatus?: ChemigationPermitStatusSimpleDto;
     DateCreated?: string;
-    TownshipRangeSection?: string;
-    ChemigationCounty?: ChemigationCountySimpleDto;
+    County?: CountySimpleDto;
     Well?: WellSimpleDto;
     LatestAnnualRecord?: ChemigationPermitAnnualRecordDetailedDto;
+    LatestInspection?: ChemigationInspectionSimpleDto;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

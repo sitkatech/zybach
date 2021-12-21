@@ -5,8 +5,8 @@ GO
 CREATE TABLE [dbo].[ChemigationInspection](
 	[ChemigationInspectionID] [int] IDENTITY(1,1) NOT NULL,
 	[ChemigationPermitAnnualRecordID] [int] NOT NULL,
-	[ChemigationInspectionTypeID] [int] NOT NULL,
 	[ChemigationInspectionStatusID] [int] NOT NULL,
+	[ChemigationInspectionTypeID] [int] NULL,
 	[InspectionDate] [datetime] NULL,
 	[InspectorUserID] [int] NULL,
 	[ChemigationMainlineCheckValveID] [int] NULL,

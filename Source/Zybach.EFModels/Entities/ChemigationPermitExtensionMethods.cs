@@ -16,7 +16,7 @@ namespace Zybach.EFModels.Entities
         }
 
         public static ChemigationPermitDetailedDto AsDetailedDto(this ChemigationPermit chemigationPermit,
-            ChemigationPermitAnnualRecordDetailedDto chemigationPermitAnnualRecordDetailedDto)
+            ChemigationPermitAnnualRecordDetailedDto chemigationPermitAnnualRecordDetailedDto, ChemigationInspectionSimpleDto chemigationInspectionSimpleDto)
         {
             var chemigationPermitDetailedDto = new ChemigationPermitDetailedDto()
             {
@@ -25,9 +25,10 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitNumberDisplay = chemigationPermit.ChemigationPermitNumberDisplay,
                 ChemigationPermitStatus = chemigationPermit.ChemigationPermitStatus.AsSimpleDto(),
                 DateCreated = chemigationPermit.DateCreated,
-                ChemigationCounty = chemigationPermit.ChemigationCounty.AsSimpleDto(),
+                County = chemigationPermit.County.AsSimpleDto(),
                 Well = chemigationPermit.Well?.AsSimpleDto(),
-                LatestAnnualRecord = chemigationPermitAnnualRecordDetailedDto
+                LatestAnnualRecord = chemigationPermitAnnualRecordDetailedDto,
+                LatestInspection = chemigationInspectionSimpleDto
             };
             return chemigationPermitDetailedDto;
         }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../shared/services';
 import { Observable } from 'rxjs';
-import { ChemigationCountyDto } from '../shared/generated/model/chemigation-county-dto';
 import { ChemigationInjectionUnitTypeDto } from '../shared/generated/model/chemigation-injection-unit-type-dto';
 import { ChemigationPermitAnnualRecordDto } from '../shared/generated/model/chemigation-permit-annual-record-dto';
 import { ChemigationPermitAnnualRecordStatusDto } from '../shared/generated/model/chemigation-permit-annual-record-status-dto';
@@ -16,6 +15,7 @@ import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/mo
 import { ChemicalFormulationYearlyTotalDto } from '../shared/generated/model/chemical-formulation-yearly-total-dto';
 import { ChemigationPermitDetailedDto } from '../shared/generated/model/chemigation-permit-detailed-dto';
 import { ChemigationPermitUpsertDto } from '../shared/generated/model/chemigation-permit-upsert-dto';
+import { CountyDto } from '../shared/generated/model/county-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,7 @@ export class ChemigationPermitService {
     return this.apiService.getFromApi(route);
   }
 
-  public getCounties(): Observable<Array<ChemigationCountyDto>> {
+  public getCounties(): Observable<Array<CountyDto>> {
     let route = `/counties`;
     return this.apiService.getFromApi(route);
   }

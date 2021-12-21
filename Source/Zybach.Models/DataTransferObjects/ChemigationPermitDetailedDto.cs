@@ -9,10 +9,10 @@ namespace Zybach.Models.DataTransferObjects
         public string ChemigationPermitNumberDisplay { get; set; }
         public ChemigationPermitStatusSimpleDto ChemigationPermitStatus { get; set; }
         public DateTime DateCreated { get; set; }
-        public string TownshipRangeSection { get; set; }
-        public ChemigationCountySimpleDto ChemigationCounty { get; set; }
+        public CountySimpleDto County { get; set; }
         public WellSimpleDto Well { get; set; }
 
         public ChemigationPermitAnnualRecordDetailedDto LatestAnnualRecord { get; set; }
+        public ChemigationInspectionSimpleDto LatestInspection { get; set; }
     }
 }

@@ -50,40 +50,22 @@ update dbo.BeehivePermit
 set [Quarter] = 'NE'
 where PermitNumber = '1910'
 */
-
+-- permit 1913 has two different counties
 insert into dbo.ChemigationPermit([ChemigationPermitNumber], [ChemigationPermitStatusID], [ChemigationCountyID], WellID, [DateCreated])
 select PermitNumber, 1 as [ChemigationPermitStatusID], c.ChemigationCountyID, w.WellID, dateadd(hour, 8, min(bp.[Date])) as DateCreated
 from dbo.BeehivePermit bp
 join dbo.ChemigationCounty c on bp.County = c.ChemigationCountyDisplayName
 join dbo.Well w on bp.WellRegistrationID = w.WellRegistrationID
-where PermitNumber not in ('1886', '1913')
-and
-PermitNumber not in 
-(
-'0493'
-,'0495'
-,'0500'
-,'0509'
-,'0510'
-,'0571'
-,'0648'
-,'0692'
-,'0993'
-,'0994'
-,'0995'
-,'0997'
-,'1080'
-,'1197'
-,'1328'
-,'1346'
-,'1376'
-,'1394'
-,'1786'
-,'1787'
-) -- these permit numbers have more than one permitholder
+where PermitNumber != '1913'-- and ChemigationYear != 2019
+group by PermitNumber, c.ChemigationCountyID, w.WellID
+union all
+select PermitNumber, 1 as [ChemigationPermitStatusID], c.ChemigationCountyID, w.WellID, dateadd(hour, 8, min(bp.[Date])) as DateCreated
+from dbo.BeehivePermit bp
+join dbo.ChemigationCounty c on bp.County = c.ChemigationCountyDisplayName
+join dbo.Well w on bp.WellRegistrationID = w.WellRegistrationID
+where PermitNumber = '1913' and ChemigationYear != 2019
 group by PermitNumber, c.ChemigationCountyID, w.WellID
 order by PermitNumber, c.ChemigationCountyID, w.WellID
-
 
 insert into dbo.ChemigationPermitAnnualRecord([ChemigationPermitID], [RecordYear], [ChemigationPermitAnnualRecordStatusID], [PivotName], [ChemigationInjectionUnitTypeID], [ApplicantFirstName], [ApplicantLastName], [ApplicantCompany], [ApplicantMailingAddress], [ApplicantCity], [ApplicantState], [ApplicantZipCode], ApplicantPhone, ApplicantMobilePhone, [DateReceived], [DatePaid], NDEEAmount, TownshipRangeSection, AnnualNotes)
 select cp.ChemigationPermitID, bp.ChemigationYear as RecordYear, 4  /* using Approved for now bp.[Status]*/, case when len(bw.[Pivot Name]) = 0 then null else bw.[Pivot Name] end as PivotName, 1 as [ChemigationInjectionUnitTypeID]
@@ -93,30 +75,6 @@ select cp.ChemigationPermitID, bp.ChemigationYear as RecordYear, 4  /* using App
 from dbo.BeehivePermit bp
 join dbo.ChemigationPermit cp on cast(bp.PermitNumber as int) = cp.ChemigationPermitNumber
 join dbo.BeehiveWell bw on bp.WellFeatureID = bw.WellFeatureID
-where --PermitHolder is not null and PermitHolderAdd is not null and PermitHolderCity is not null and PermitHolderZip is not null and PermitHolderState is not null and
-PermitNumber not in 
-(
-'0493'
-,'0495'
-,'0500'
-,'0509'
-,'0510'
-,'0571'
-,'0648'
-,'0692'
-,'0993'
-,'0994'
-,'0995'
-,'0997'
-,'1080'
-,'1197'
-,'1328'
-,'1346'
-,'1376'
-,'1394'
-,'1786'
-,'1787'
-) -- these permit numbers have more than one permitholder
 order by PermitNumber, bp.ChemigationYear
 
 insert into dbo.ChemigationPermitAnnualRecordApplicator(ChemigationPermitAnnualRecordID, ApplicatorName, CertificationNumber, ExpirationYear, HomePhone, MobilePhone)
@@ -182,6 +140,22 @@ join
 	from dbo.ChemigationPermitAnnualRecord
 	where ApplicantLastName like '(%'
 ) a on cpar.ChemigationPermitAnnualRecordID = a.ChemigationPermitAnnualRecordID
+
+-- update the permit status
+update cp
+set cp.ChemigationPermitStatusID = 2
+from dbo.ChemigationPermit cp
+left join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.ChemigationPermitID and cpar.RecordYear = 2021
+where cpar.ChemigationPermitAnnualRecordID is null
+
+update cp
+set cp.ChemigationPermitStatusID = case when bp.[Status] = 'Inactive' then 2 else 1 end
+from dbo.ChemigationPermit cp
+join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.ChemigationPermitID and cpar.RecordYear = 2021
+join dbo.Well w on cp.WellID = w.WellID
+join dbo.BeehivePermit bp on w.WellRegistrationID = bp.WellRegistrationID and cp.ChemigationPermitNumber = bp.PermitNumber and cpar.RecordYear = bp.ChemigationYear
+
+
 
 drop table dbo.BeehivePermitApplicator
 drop table dbo.BeehivePermitChemical
