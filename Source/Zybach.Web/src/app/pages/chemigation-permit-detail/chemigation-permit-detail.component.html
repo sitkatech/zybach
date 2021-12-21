@@ -310,6 +310,21 @@
                         <ng-template #noChemicalFormulations>No chemicals were used in the chemigation system in the past year.</ng-template>
                     </div>
 
+                    <div class="col-12">
+                        <hr class="w-90" />
+
+                    </div>
+
+                    <div class="col-12 mb-4">
+                        <h5>Annual Record Notes</h5>
+                        <div *ngIf="currentYearAnnualRecord.AnnualNotes ; then hasAnnualNotes else noAnnualNotes"></div>
+                        <ng-template #hasAnnualNotes>
+                            <p>{{currentYearAnnualRecord.AnnualNotes}}</p>
+                            
+                        </ng-template>
+                        <ng-template #noAnnualNotes><p>No annual record notes found for this year.</p></ng-template>
+                    </div>
+
                 </div>
                 <div class="row" *ngIf="!chemigationPermit">
                     <div class="col text-center">
