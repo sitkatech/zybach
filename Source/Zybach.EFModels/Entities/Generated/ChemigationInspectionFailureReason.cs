@@ -13,6 +13,11 @@ namespace Zybach.EFModels.Entities
     [Index(nameof(ChemigationInspectionFailureReasonName), Name = "AK_ChemigationInspectionFailureReason_ChemigationInspectionFailureReasonName", IsUnique = true)]
     public partial class ChemigationInspectionFailureReason
     {
+        public ChemigationInspectionFailureReason()
+        {
+            ChemigationInspections = new HashSet<ChemigationInspection>();
+        }
+
         [Key]
         public int ChemigationInspectionFailureReasonID { get; set; }
         [Required]
@@ -21,5 +26,8 @@ namespace Zybach.EFModels.Entities
         [Required]
         [StringLength(50)]
         public string ChemigationInspectionFailureReasonDisplayName { get; set; }
+
+        [InverseProperty(nameof(ChemigationInspection.ChemigationInspectionFailureReason))]
+        public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
     }
 }

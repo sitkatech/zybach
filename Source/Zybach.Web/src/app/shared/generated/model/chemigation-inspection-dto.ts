@@ -11,6 +11,7 @@
  */
 import { ChemigationLowPressureValveDto } from '././chemigation-low-pressure-valve-dto';
 import { ChemigationPermitAnnualRecordDto } from '././chemigation-permit-annual-record-dto';
+import { ChemigationInspectionFailureReasonDto } from '././chemigation-inspection-failure-reason-dto';
 import { UserDto } from '././user-dto';
 import { CropTypeDto } from '././crop-type-dto';
 import { ChemigationInspectionStatusDto } from '././chemigation-inspection-status-dto';
@@ -34,6 +35,7 @@ export class ChemigationInspectionDto {
     Tillage?: TillageDto;
     CropType?: CropTypeDto;
     InspectionNotes?: string;
+    ChemigationInspectionFailureReason?: ChemigationInspectionFailureReasonDto;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

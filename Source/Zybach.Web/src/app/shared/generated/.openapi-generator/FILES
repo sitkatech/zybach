@@ -7,6 +7,7 @@ model/chemical-unit-dto.ts
 model/chemigation-injection-unit-type-dto.ts
 model/chemigation-injection-valve-dto.ts
 model/chemigation-inspection-dto.ts
+model/chemigation-inspection-failure-reason-dto.ts
 model/chemigation-inspection-simple-dto.ts
 model/chemigation-inspection-status-dto.ts
 model/chemigation-inspection-type-dto.ts

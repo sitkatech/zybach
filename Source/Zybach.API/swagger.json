@@ -461,7 +461,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationInspectionDto"
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
                   }
                 }
               },
@@ -469,7 +469,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationInspectionDto"
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
                   }
                 }
               },
@@ -477,7 +477,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationInspectionDto"
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
                   }
                 }
               }
@@ -2834,78 +2834,6 @@
         },
         "additionalProperties": false
       },
-      "ChemigationInjectionValveDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationInjectionValveID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationInjectionValveName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationInjectionValveDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationInspectionDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationInspectionID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationPermitAnnualRecord": {
-            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-          },
-          "ChemigationInspectionStatus": {
-            "$ref": "#/components/schemas/ChemigationInspectionStatusDto"
-          },
-          "ChemigationInspectionType": {
-            "$ref": "#/components/schemas/ChemigationInspectionTypeDto"
-          },
-          "InspectionDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "InspectorUser": {
-            "$ref": "#/components/schemas/UserDto"
-          },
-          "ChemigationMainlineCheckValve": {
-            "$ref": "#/components/schemas/ChemigationMainlineCheckValveDto"
-          },
-          "HasVacuumReliefValve": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "HasInspectionPort": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "ChemigationLowPressureValve": {
-            "$ref": "#/components/schemas/ChemigationLowPressureValveDto"
-          },
-          "ChemigationInjectionValve": {
-            "$ref": "#/components/schemas/ChemigationInjectionValveDto"
-          },
-          "Tillage": {
-            "$ref": "#/components/schemas/TillageDto"
-          },
-          "CropType": {
-            "$ref": "#/components/schemas/CropTypeDto"
-          },
-          "InspectionNotes": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ChemigationInspectionSimpleDto": {
         "type": "object",
         "properties": {
@@ -3019,77 +2947,10 @@
           "InspectionNotes": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationInspectionStatusDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationInspectionStatusID": {
+          },
+          "ChemigationInspectionFailureReasonID": {
             "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationInspectionStatusName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationInspectionStatusDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationInspectionTypeDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationInspectionTypeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationInspectionTypeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationInspectionTypeDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationLowPressureValveDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationLowPressureValveID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationLowPressureValveName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationLowPressureValveDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationMainlineCheckValveDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationMainlineCheckValveID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationMainlineCheckValveName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationMainlineCheckValveDisplayName": {
-            "type": "string",
+            "format": "int32",
             "nullable": true
           }
         },
@@ -3763,24 +3624,6 @@
             "nullable": true
           },
           "CountyDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CropTypeDto": {
-        "type": "object",
-        "properties": {
-          "CropTypeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "CropTypeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "CropTypeDisplayName": {
             "type": "string",
             "nullable": true
           }
@@ -4551,24 +4394,6 @@
           },
           "Result": {
             "$ref": "#/components/schemas/StructuredResults"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TillageDto": {
-        "type": "object",
-        "properties": {
-          "TillageID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "TillageName": {
-            "type": "string",
-            "nullable": true
-          },
-          "TillageDisplayName": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

@@ -7,6 +7,14 @@ namespace Zybach.EFModels.Entities
         static partial void DoCustomSimpleDtoMappings(ChemigationInspection chemigationInspection,
             ChemigationInspectionSimpleDto chemigationInspectionSimpleDto)
         {
+            chemigationInspectionSimpleDto.ChemigationPermitNumber = chemigationInspection.ChemigationPermitAnnualRecord
+                .ChemigationPermit.ChemigationPermitNumber;
+            chemigationInspectionSimpleDto.ChemigationPermitNumberDisplay = chemigationInspection
+                .ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay;
+            chemigationInspectionSimpleDto.County = chemigationInspection.ChemigationPermitAnnualRecord
+                .ChemigationPermit.County.CountyDisplayName;
+            chemigationInspectionSimpleDto.TownshipRangeSection =
+                chemigationInspection.ChemigationPermitAnnualRecord.TownshipRangeSection;
             chemigationInspectionSimpleDto.ChemigationInspectionTypeName = chemigationInspection.ChemigationInspectionType?.ChemigationInspectionTypeDisplayName;
             chemigationInspectionSimpleDto.ChemigationInspectionStatusName = chemigationInspection.ChemigationInspectionStatus.ChemigationInspectionStatusDisplayName;
             chemigationInspectionSimpleDto.ChemigationMainlineCheckValveName = chemigationInspection.ChemigationMainlineCheckValve?.ChemigationMainlineCheckValveDisplayName;
@@ -16,5 +24,6 @@ namespace Zybach.EFModels.Entities
             chemigationInspectionSimpleDto.CropTypeName = chemigationInspection.CropType?.CropTypeDisplayName;
             chemigationInspectionSimpleDto.Inspector = chemigationInspection.InspectorUser?.AsSimpleDto();
         }
+
     }
 }

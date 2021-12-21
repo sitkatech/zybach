@@ -46,7 +46,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/chemigationInspections")]
         //[ZybachViewFeature]
-        public ActionResult<List<ChemigationInspectionDto>> GetAllChemigationInspections()
+        public ActionResult<List<ChemigationInspectionSimpleDto>> GetAllChemigationInspections()
         {
             var chemigationInspections =
                 ChemigationInspection.List(_dbContext);

@@ -7,6 +7,7 @@ export * from '././chemical-unit-dto';
 export * from '././chemigation-injection-unit-type-dto';
 export * from '././chemigation-injection-valve-dto';
 export * from '././chemigation-inspection-dto';
+export * from '././chemigation-inspection-failure-reason-dto';
 export * from '././chemigation-inspection-simple-dto';
 export * from '././chemigation-inspection-status-dto';
 export * from '././chemigation-inspection-type-dto';

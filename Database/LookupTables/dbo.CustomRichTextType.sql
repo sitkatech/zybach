@@ -10,7 +10,8 @@ USING (VALUES
 (8, 'ReportsList', 'Reports List'),
 (9, 'Chemigation', 'Chemigation'),
 (10, 'NDEEChemicalsReport', 'NDEE Chemicals Report'),
-(11, 'ChemigationPermitReport', 'Chemigation Permit Report')
+(11, 'ChemigationPermitReport', 'Chemigation Permit Report'),
+(12, 'ChemigationInspections', 'Chemigation Inspections')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

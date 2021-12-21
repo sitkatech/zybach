@@ -26,7 +26,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationInjectionValve = chemigationInspection.ChemigationInjectionValve?.AsDto(),
                 Tillage = chemigationInspection.Tillage?.AsDto(),
                 CropType = chemigationInspection.CropType?.AsDto(),
-                InspectionNotes = chemigationInspection.InspectionNotes
+                InspectionNotes = chemigationInspection.InspectionNotes,
+                ChemigationInspectionFailureReason = chemigationInspection.ChemigationInspectionFailureReason?.AsDto()
             };
             DoCustomMappings(chemigationInspection, chemigationInspectionDto);
             return chemigationInspectionDto;
@@ -38,10 +39,6 @@ namespace Zybach.EFModels.Entities
         {
             var chemigationInspectionSimpleDto = new ChemigationInspectionSimpleDto()
             {
-                ChemigationPermitNumber = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber,
-                ChemigationPermitNumberDisplay = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay,
-                County = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.County.CountyDisplayName,
-                TownshipRangeSection = chemigationInspection.ChemigationPermitAnnualRecord.TownshipRangeSection,
                 ChemigationInspectionID = chemigationInspection.ChemigationInspectionID,
                 ChemigationPermitAnnualRecordID = chemigationInspection.ChemigationPermitAnnualRecordID,
                 ChemigationInspectionStatusID = chemigationInspection.ChemigationInspectionStatusID,
@@ -55,7 +52,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationInjectionValveID = chemigationInspection.ChemigationInjectionValveID,
                 TillageID = chemigationInspection.TillageID,
                 CropTypeID = chemigationInspection.CropTypeID,
-                InspectionNotes = chemigationInspection.InspectionNotes
+                InspectionNotes = chemigationInspection.InspectionNotes,
+                ChemigationInspectionFailureReasonID = chemigationInspection.ChemigationInspectionFailureReasonID
             };
             DoCustomSimpleDtoMappings(chemigationInspection, chemigationInspectionSimpleDto);
             return chemigationInspectionSimpleDto;

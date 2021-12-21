@@ -28,10 +28,14 @@ namespace Zybach.EFModels.Entities
         public int? CropTypeID { get; set; }
         [StringLength(500)]
         public string InspectionNotes { get; set; }
+        public int? ChemigationInspectionFailureReasonID { get; set; }
 
         [ForeignKey(nameof(ChemigationInjectionValveID))]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInjectionValve ChemigationInjectionValve { get; set; }
+        [ForeignKey(nameof(ChemigationInspectionFailureReasonID))]
+        [InverseProperty("ChemigationInspections")]
+        public virtual ChemigationInspectionFailureReason ChemigationInspectionFailureReason { get; set; }
         [ForeignKey(nameof(ChemigationInspectionStatusID))]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInspectionStatus ChemigationInspectionStatus { get; set; }

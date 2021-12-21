@@ -12,7 +12,8 @@
 import { UserSimpleDto } from '././user-simple-dto';
 
 export class ChemigationInspectionSimpleDto { 
-    ChemigationPermitNumber?: string;
+    ChemigationPermitNumber?: number;
+    ChemigationPermitNumberDisplay?: string;
     County?: string;
     TownshipRangeSection?: string;
     ChemigationInspectionTypeName?: string;
@@ -37,6 +38,7 @@ export class ChemigationInspectionSimpleDto {
     TillageID?: number;
     CropTypeID?: number;
     InspectionNotes?: string;
+    ChemigationInspectionFailureReasonID?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
