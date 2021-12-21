@@ -12,6 +12,9 @@
 import { UserSimpleDto } from '././user-simple-dto';
 
 export class ChemigationInspectionSimpleDto { 
+    ChemigationPermitNumber?: string;
+    County?: string;
+    TownshipRangeSection?: string;
     ChemigationInspectionTypeName?: string;
     ChemigationInspectionStatusName?: string;
     ChemigationMainlineCheckValveName?: string;

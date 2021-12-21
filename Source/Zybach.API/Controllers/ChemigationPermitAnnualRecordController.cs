@@ -44,7 +44,6 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
-
         [HttpGet("/api/chemigationInspections")]
         //[ZybachViewFeature]
         public ActionResult<List<ChemigationInspectionDto>> GetAllChemigationInspections()

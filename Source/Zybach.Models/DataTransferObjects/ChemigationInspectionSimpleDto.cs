@@ -2,7 +2,8 @@
 {
     public partial class ChemigationInspectionSimpleDto
     {
-        public string ChemigationPermitNumber { get; set; }
+        public int ChemigationPermitNumber { get; set; }
+        public string ChemigationPermitNumberDisplay { get; set; }
         public string County { get; set; }
         public string TownshipRangeSection { get; set; }
         public string ChemigationInspectionTypeName { get; set; }

@@ -34,6 +34,7 @@ import { ChemigationPermitAddRecordComponent } from './pages/chemigation-permit-
 import { ChemigationPermitEditRecordComponent } from './pages/chemigation-permit-edit-record/chemigation-permit-edit-record.component';
 import { NdeeChemicalsReportComponent } from './pages/ndee-chemicals-report/ndee-chemicals-report.component';
 import { ChemigationPermitReportsComponent } from './pages/chemigation-permit-reports/chemigation-permit-reports.component';
+import { ChemigationInspectionsListComponent } from './pages/chemigation-inspections-list/chemigation-inspections-list.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
@@ -48,6 +49,7 @@ const routes: Routes = [
   { path: "reports/ndee-report",  component: NdeeChemicalsReportComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "reports/:id/edit", component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "chemigation-inspections",  component: ChemigationInspectionsListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits",  component: ChemigationPermitListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/new",  component: ChemigationNewPermitComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/:permit-number",  component: ChemigationPermitDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},

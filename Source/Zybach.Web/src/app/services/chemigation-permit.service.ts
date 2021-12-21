@@ -16,6 +16,7 @@ import { ChemicalFormulationYearlyTotalDto } from '../shared/generated/model/che
 import { ChemigationPermitDetailedDto } from '../shared/generated/model/chemigation-permit-detailed-dto';
 import { ChemigationPermitUpsertDto } from '../shared/generated/model/chemigation-permit-upsert-dto';
 import { CountyDto } from '../shared/generated/model/county-dto';
+import { ChemigationInspectionSimpleDto } from '../shared/generated/model/chemigation-inspection-simple-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -122,5 +123,10 @@ export class ChemigationPermitService {
   public bulkCreateChemigationPermitAnnualRecordsByRecordYear(recordYear: number): Observable<number> {
     let route = `/chemigationPermits/annualRecordsBulkCreate/${recordYear}`;
     return this.apiService.postToApi(route, null);
+  }
+
+  public getAllChemigationInspections(): Observable<Array<ChemigationInspectionSimpleDto>> {
+    let route = `/chemigationInspections`;
+    return this.apiService.getFromApi(route);
   }
 }

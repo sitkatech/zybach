@@ -38,7 +38,8 @@ namespace Zybach.EFModels.Entities
         {
             var chemigationInspectionSimpleDto = new ChemigationInspectionSimpleDto()
             {
-                ChemigationPermitNumber = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay,
+                ChemigationPermitNumber = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber,
+                ChemigationPermitNumberDisplay = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay,
                 County = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.County.CountyDisplayName,
                 TownshipRangeSection = chemigationInspection.ChemigationPermitAnnualRecord.TownshipRangeSection,
                 ChemigationInspectionID = chemigationInspection.ChemigationInspectionID,
