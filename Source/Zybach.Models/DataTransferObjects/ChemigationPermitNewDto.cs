@@ -5,8 +5,6 @@ namespace Zybach.Models.DataTransferObjects
     public class ChemigationPermitNewDto
     {
         [Required]
-        public int ChemigationPermitNumber { get; set; }
-        [Required]
         public int ChemigationPermitStatusID { get; set; }
         [Required]
         public int CountyID { get; set; }

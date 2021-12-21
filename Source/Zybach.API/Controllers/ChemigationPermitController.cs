@@ -53,11 +53,6 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitNewDto chemigationPermitNewDto)
         {
-            if (ChemigationPermits.IsChemigationPermitNumberUnique(_dbContext, chemigationPermitNewDto.ChemigationPermitNumber, null))
-            {
-                ModelState.AddModelError("ChemigationPermitNumber", "Permit Number must be unique");
-            }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -77,8 +72,6 @@ namespace Zybach.API.Controllers
             {
                 return actionResult;
             }
-
-            RunChemigationPermitUpsertValidation(chemigationPermitUpsertDto, chemigationPermitID);
 
             if (!ModelState.IsValid)
             {
@@ -103,14 +96,6 @@ namespace Zybach.API.Controllers
             ChemigationPermits.DeleteByChemigationPermitID(_dbContext, chemigationPermitID);
 
             return Ok();
-        }
-
-        private void RunChemigationPermitUpsertValidation(ChemigationPermitUpsertDto chemigationPermitUpsertDto, int? currentID)
-        {
-            if (ChemigationPermits.IsChemigationPermitNumberUnique(_dbContext, chemigationPermitUpsertDto.ChemigationPermitNumber, currentID))
-            {
-                ModelState.AddModelError("ChemigationPermitNumber", "Permit Number must be unique");
-            }
         }
     }
 }

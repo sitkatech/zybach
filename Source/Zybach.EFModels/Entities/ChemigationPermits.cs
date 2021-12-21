@@ -40,14 +40,6 @@ namespace Zybach.EFModels.Entities
             return listWithLatestAnnualRecordAsDto;
         }
 
-        public static bool IsChemigationPermitNumberUnique(ZybachDbContext dbContext, int chemigationPermitNumber, int? currentID)
-        {
-            return dbContext.ChemigationPermits
-                .Any(x => x.ChemigationPermitNumber == chemigationPermitNumber &&
-                          (currentID == null || (
-                              currentID != null && x.ChemigationPermitID != currentID)));
-        }
-
         public static ChemigationPermitDto CreateNewChemigationPermit(ZybachDbContext dbContext, ChemigationPermitNewDto chemigationPermitNewDto)
         {
             if (chemigationPermitNewDto == null)
@@ -55,9 +47,10 @@ namespace Zybach.EFModels.Entities
                 return null;
             }
 
+            var nextPermitNumber = dbContext.ChemigationPermits.Max(x => x.ChemigationPermitNumber) + 1;
             var chemigationPermit = new ChemigationPermit()
             {
-                ChemigationPermitNumber = chemigationPermitNewDto.ChemigationPermitNumber,
+                ChemigationPermitNumber = nextPermitNumber,
                 ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
                 DateCreated = DateTime.Now.Date,
                 CountyID = chemigationPermitNewDto.CountyID
@@ -106,7 +99,6 @@ namespace Zybach.EFModels.Entities
 
         public static ChemigationPermitDto UpdateChemigationPermit(ZybachDbContext dbContext, ChemigationPermit chemigationPermit, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
-            chemigationPermit.ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber;
             chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
             chemigationPermit.CountyID = chemigationPermitUpsertDto.CountyID;
 

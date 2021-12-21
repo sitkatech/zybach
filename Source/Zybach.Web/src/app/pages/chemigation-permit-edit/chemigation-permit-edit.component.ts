@@ -55,7 +55,6 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber).subscribe(chemigationPermit => {
         this.chemigationPermit = chemigationPermit;
-        this.model.ChemigationPermitNumber = this.chemigationPermit.ChemigationPermitNumber;
         this.model.ChemigationPermitStatusID = this.chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusID;
         this.model.CountyID = this.chemigationPermit.County.CountyID;
         this.cdr.detectChanges();
@@ -89,8 +88,3 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
       );
   }
 }
-
-
-
-
-

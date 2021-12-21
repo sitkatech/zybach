@@ -3458,16 +3458,11 @@
       "ChemigationPermitNewDto": {
         "required": [
           "ChemigationPermitAnnualRecord",
-          "ChemigationPermitNumber",
           "ChemigationPermitStatusID",
           "CountyID"
         ],
         "type": "object",
         "properties": {
-          "ChemigationPermitNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
           "ChemigationPermitStatusID": {
             "type": "integer",
             "format": "int32"
@@ -3525,21 +3520,13 @@
       "ChemigationPermitUpsertDto": {
         "required": [
           "ChemigationPermitStatusID",
-          "CountyID",
-          "TownshipRangeSection"
+          "CountyID"
         ],
         "type": "object",
         "properties": {
-          "ChemigationPermitNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
           "ChemigationPermitStatusID": {
             "type": "integer",
             "format": "int32"
-          },
-          "TownshipRangeSection": {
-            "type": "string"
           },
           "CountyID": {
             "type": "integer",
