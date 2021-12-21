@@ -23,9 +23,6 @@ namespace Zybach.EFModels.Entities
         public int ChemigationPermitStatusID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DateCreated { get; set; }
-        [Required]
-        [StringLength(100)]
-        public string TownshipRangeSection { get; set; }
         public int ChemigationCountyID { get; set; }
         public int? WellID { get; set; }
 

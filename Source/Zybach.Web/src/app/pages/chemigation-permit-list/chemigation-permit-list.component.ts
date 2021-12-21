@@ -136,7 +136,6 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         sortable: true
       },
       this.createDateColumnDef('Created', 'DateCreated', 'M/d/yyyy'),
-      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true },
       {
         headerName: 'Latest Annual Record',
         children: [
@@ -153,6 +152,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName'
             },
             width: 140, resizable: true, sortable: true },
+          { headerName: 'Township-Range-Section', field: 'LatestAnnualRecord.TownshipRangeSection', filter: true, resizable: true, sortable: true },
           { headerName: 'Pivot', field: 'LatestAnnualRecord.PivotName', width: 100, filter: true, resizable: true, sortable: true },
           {
             headerName: 'Received', valueGetter: function (params: any) {

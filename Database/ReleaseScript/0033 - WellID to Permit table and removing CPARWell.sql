@@ -1,8 +1,13 @@
 alter table dbo.ChemigationPermit add WellID int null constraint FK_ChemigationPermit_Well_WellID foreign key references dbo.Well(WellID)
+alter table dbo.ChemigationPermitAnnualRecord add TownshipRangeSection varchar(100) not null
+alter table dbo.ChemigationPermit drop column TownshipRangeSection
+alter table dbo.ChemigationPermitAnnualRecord add ApplicantCompany varchar(200) null
+alter table dbo.ChemigationPermitAnnualRecord add AnnualNotes varchar(500) null
+
 drop table dbo.ChemigationPermitAnnualRecordWell
 
 alter table dbo.ChemigationPermitAnnualRecord alter column PivotName varchar(100) null
-alter table dbo.ChemigationPermitAnnualRecord drop column ApplicantLastName
+alter table dbo.ChemigationPermitAnnualRecord alter column ApplicantLastName varchar(200) null
 alter table dbo.ChemigationPermitAnnualRecord alter column ApplicantFirstName varchar(200) null
 alter table dbo.ChemigationPermitAnnualRecord alter column ApplicantMailingAddress varchar(100) null
 alter table dbo.ChemigationPermitAnnualRecord alter column ApplicantCity varchar(50) null
@@ -17,8 +22,6 @@ drop table dbo.ChemigationInjectionUnitType
 GO
 
 
-
-exec sp_rename 'dbo.ChemigationPermitAnnualRecord.ApplicantFirstName', 'ApplicantName', 'COLUMN'
 
 create table dbo.ChemigationPermitAnnualRecordStatus
 (

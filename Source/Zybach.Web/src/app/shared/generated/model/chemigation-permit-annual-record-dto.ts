@@ -20,7 +20,8 @@ export class ChemigationPermitAnnualRecordDto {
     ChemigationPermitAnnualRecordStatus?: ChemigationPermitAnnualRecordStatusDto;
     PivotName?: string;
     ChemigationInjectionUnitType?: ChemigationInjectionUnitTypeDto;
-    ApplicantName?: string;
+    ApplicantFirstName?: string;
+    ApplicantLastName?: string;
     ApplicantMailingAddress?: string;
     ApplicantCity?: string;
     ApplicantState?: string;
@@ -31,6 +32,9 @@ export class ChemigationPermitAnnualRecordDto {
     DatePaid?: string;
     ApplicantEmail?: string;
     NDEEAmount?: number;
+    TownshipRangeSection?: string;
+    ApplicantCompany?: string;
+    AnnualNotes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

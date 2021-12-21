@@ -7,6 +7,7 @@ model/chemical-unit-dto.ts
 model/chemigation-county-dto.ts
 model/chemigation-county-simple-dto.ts
 model/chemigation-injection-unit-type-dto.ts
+model/chemigation-inspection-simple-dto.ts
 model/chemigation-permit-annual-record-applicator-simple-dto.ts
 model/chemigation-permit-annual-record-applicator-upsert-dto.ts
 model/chemigation-permit-annual-record-chemical-formulation-simple-dto.ts
@@ -58,12 +59,12 @@ model/unassigned-user-report-dto.ts
 model/user-create-dto.ts
 model/user-dto.ts
 model/user-invite-dto.ts
+model/user-simple-dto.ts
 model/user-upsert-dto.ts
 model/volume-by-well.ts
 model/well-chart-data-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
-model/well-inspection-summary-dto.ts
 model/well-new-dto.ts
 model/well-simple-dto.ts
 model/well-with-sensor-message-age-dto.ts

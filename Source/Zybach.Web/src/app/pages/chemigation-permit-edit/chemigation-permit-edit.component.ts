@@ -57,7 +57,6 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
         this.chemigationPermit = chemigationPermit;
         this.model.ChemigationPermitNumber = this.chemigationPermit.ChemigationPermitNumber;
         this.model.ChemigationPermitStatusID = this.chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusID;
-        this.model.TownshipRangeSection = this.chemigationPermit.TownshipRangeSection;
         this.model.ChemigationCountyID = this.chemigationPermit.ChemigationCounty.ChemigationCountyID;
         this.cdr.detectChanges();
       });

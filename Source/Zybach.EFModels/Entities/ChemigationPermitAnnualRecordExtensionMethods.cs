@@ -12,12 +12,16 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
                 ChemigationPermit = chemigationPermitAnnualRecord.ChemigationPermit.AsDto(),
                 RecordYear = chemigationPermitAnnualRecord.RecordYear,
+                TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection,
                 ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID,
                 ChemigationPermitAnnualRecordStatusName = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName,
                 PivotName = chemigationPermitAnnualRecord.PivotName,
                 ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID,
                 ChemigationInjectionUnitTypeName = chemigationPermitAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName,
                 ApplicantName = chemigationPermitAnnualRecord.ApplicantName,
+                ApplicantFirstName = chemigationPermitAnnualRecord.ApplicantFirstName,
+                ApplicantLastName = chemigationPermitAnnualRecord.ApplicantLastName,
+                ApplicantCompany = chemigationPermitAnnualRecord.ApplicantCompany,
                 ApplicantMailingAddress = chemigationPermitAnnualRecord.ApplicantMailingAddress,
                 ApplicantCity = chemigationPermitAnnualRecord.ApplicantCity,
                 ApplicantState = chemigationPermitAnnualRecord.ApplicantState,
@@ -28,8 +32,10 @@ namespace Zybach.EFModels.Entities
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
                 ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
                 NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount,
+                AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes,
                 ChemicalFormulations = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordChemicalFormulations?.OrderBy(x => x.ChemicalFormulation.ChemicalFormulationDisplayName).ThenBy(x => x.ChemicalUnit.ChemicalUnitPluralName).Select(x => x.AsSimpleDto()).ToList(),
                 Applicators = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators?.OrderBy(x => x.ApplicatorName).Select(x => x.AsSimpleDto()).ToList(),
+                Inspections = chemigationPermitAnnualRecord.ChemigationInspections?.OrderBy(x => x.InspectionDate).Select(x => x.AsSimpleDto()).ToList(),
             };
             return chemigationPermitAnnualRecordDetailedDto;
         }

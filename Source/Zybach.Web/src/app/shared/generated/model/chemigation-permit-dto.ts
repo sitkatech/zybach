@@ -19,7 +19,6 @@ export class ChemigationPermitDto {
     ChemigationPermitNumber?: number;
     ChemigationPermitStatus?: ChemigationPermitStatusDto;
     DateCreated?: string;
-    TownshipRangeSection?: string;
     ChemigationCounty?: ChemigationCountyDto;
     Well?: WellDto;
     constructor(obj?: any) {

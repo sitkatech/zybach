@@ -8,12 +8,15 @@ namespace Zybach.Models.DataTransferObjects
     {
         [Required]
         public int ChemigationPermitAnnualRecordStatusID { get; set; }
-        [Required]
-        public string ApplicantName { get; set; }
+        public string ApplicantFirstName { get; set; }
+        public string ApplicantLastName { get; set; }
+        public string ApplicantCompany { get; set; }
         [Required]
         public string PivotName { get; set; }
         [Required]
         public int RecordYear { get; set; }
+        [Required]
+        public string TownshipRangeSection { get; set; }
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
         [Required]
@@ -29,6 +32,7 @@ namespace Zybach.Models.DataTransferObjects
         [RegularExpression(@"^[0-9]{5}(?:-[0-9]{4})?$", ErrorMessage = "Zip codes must be formatted in either 5 digit or hyphenated 5+4 digit format")]
         public string ApplicantZipCode { get; set; }
         public decimal? NDEEAmount { get; set; }
+        public string AnnualNotes { get; set; }
         public List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto> ChemicalFormulations { get; set; }
         public List<ChemigationPermitAnnualRecordApplicatorUpsertDto> Applicators { get; set; }
     }

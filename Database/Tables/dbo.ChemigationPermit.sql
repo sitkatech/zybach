@@ -7,7 +7,6 @@ CREATE TABLE [dbo].[ChemigationPermit](
 	[ChemigationPermitNumber] [int] NOT NULL,
 	[ChemigationPermitStatusID] [int] NOT NULL,
 	[DateCreated] [datetime] NOT NULL,
-	[TownshipRangeSection] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ChemigationCountyID] [int] NOT NULL,
 	[WellID] [int] NULL,
  CONSTRAINT [PK_ChemigationPermit_ChemigationPermitID] PRIMARY KEY CLUSTERED 

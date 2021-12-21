@@ -33,6 +33,14 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalUnit)
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalFormulation)
                 .Include(x => x.ChemigationPermitAnnualRecordApplicators)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationInspectionType)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationInspectionStatus)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationMainlineCheckValve)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationLowPressureValve)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationInjectionValve)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.Tillage)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.CropType)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.InspectorUser)
                 .AsNoTracking();
         }
 
@@ -87,7 +95,10 @@ namespace Zybach.EFModels.Entities
                 chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
             chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID =
                 chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID;
-            chemigationPermitAnnualRecord.ApplicantName = chemigationPermitAnnualRecordUpsertDto.ApplicantName;
+            chemigationPermitAnnualRecord.TownshipRangeSection = chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection;
+            chemigationPermitAnnualRecord.ApplicantFirstName = chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName;
+            chemigationPermitAnnualRecord.ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName;
+            chemigationPermitAnnualRecord.ApplicantCompany = chemigationPermitAnnualRecordUpsertDto.ApplicantCompany;
             chemigationPermitAnnualRecord.ApplicantPhone = chemigationPermitAnnualRecordUpsertDto.ApplicantPhone;
             chemigationPermitAnnualRecord.ApplicantMobilePhone = chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone;
             chemigationPermitAnnualRecord.ApplicantEmail = chemigationPermitAnnualRecordUpsertDto.ApplicantEmail;
@@ -99,6 +110,7 @@ namespace Zybach.EFModels.Entities
             chemigationPermitAnnualRecord.PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName;
             chemigationPermitAnnualRecord.RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear;
             chemigationPermitAnnualRecord.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.NDEEAmount;
+            chemigationPermitAnnualRecord.AnnualNotes = chemigationPermitAnnualRecordUpsertDto.AnnualNotes;
             //TODO: find a better solution to correct date assignment
             chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid?.AddHours(8);
             chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived?.AddHours(8);
@@ -135,6 +147,20 @@ namespace Zybach.EFModels.Entities
         public static List<ChemigationPermitAnnualRecordDetailedDto> GetByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
         {
             return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.Well != null && x.ChemigationPermit.Well.WellRegistrationID == wellRegistrationID).Select(x => x.AsDetailedDto()).ToList();
+        }
+
+        public string ApplicantName
+        {
+            get
+            {
+                var applicantFullNameLastFirst = $"{(!string.IsNullOrWhiteSpace(ApplicantLastName) ? $"{ApplicantLastName}, " : "")}{(!string.IsNullOrWhiteSpace(ApplicantFirstName) ? ApplicantFirstName : "")}";
+                if (!string.IsNullOrWhiteSpace(ApplicantCompany))
+                {
+                    return !string.IsNullOrWhiteSpace(applicantFullNameLastFirst) ? $"{ApplicantCompany} ({applicantFullNameLastFirst})" : ApplicantCompany;
+                }
+
+                return applicantFullNameLastFirst;
+            }
         }
     }
 }

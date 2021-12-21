@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Zybach.API.ReportTemplates.Models;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API.ReportTemplates.Models
@@ -31,7 +30,7 @@ namespace Zybach.API.ReportTemplates.Models
         {
             ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
             ChemigationPermitNumber = chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay;
-            TownshipRangeSection = chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection;
+            TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection;
             RecordYear = chemigationPermitAnnualRecord.RecordYear;
             PivotName = chemigationPermitAnnualRecord.PivotName;
             ApplicantName = chemigationPermitAnnualRecord.ApplicantName;

@@ -14,6 +14,7 @@ namespace Zybach.EFModels.Entities
     {
         public User()
         {
+            ChemigationInspections = new HashSet<ChemigationInspection>();
             FileResources = new HashSet<FileResource>();
             RobustReviewScenarioGETRunHistories = new HashSet<RobustReviewScenarioGETRunHistory>();
         }
@@ -51,6 +52,8 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(RoleID))]
         [InverseProperty("Users")]
         public virtual Role Role { get; set; }
+        [InverseProperty(nameof(ChemigationInspection.InspectorUser))]
+        public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
         [InverseProperty(nameof(FileResource.CreateUser))]
         public virtual ICollection<FileResource> FileResources { get; set; }
         [InverseProperty(nameof(RobustReviewScenarioGETRunHistory.CreateByUser))]

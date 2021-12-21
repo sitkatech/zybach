@@ -9,7 +9,8 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 	[ChemigationPermitAnnualRecordStatusID] [int] NOT NULL,
 	[PivotName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[ChemigationInjectionUnitTypeID] [int] NOT NULL,
-	[ApplicantName] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ApplicantFirstName] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ApplicantLastName] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[ApplicantMailingAddress] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[ApplicantCity] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[ApplicantState] [varchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -20,6 +21,9 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 	[DatePaid] [datetime] NULL,
 	[ApplicantEmail] [varchar](255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[NDEEAmount] [decimal](4, 2) NULL,
+	[TownshipRangeSection] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ApplicantCompany] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AnnualNotes] [varchar](500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationPermitAnnualRecordID] ASC

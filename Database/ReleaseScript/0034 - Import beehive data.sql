@@ -13,6 +13,7 @@ join
 left join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
 where w.WellID is null AND bw.[Long/Lat] is not null
 
+/*
 update dbo.BeehivePermit
 set Township = '13N', [Range] = '33W'
 where PermitNumber = '0345'
@@ -48,9 +49,10 @@ where PermitNumber = '1827'
 update dbo.BeehivePermit
 set [Quarter] = 'NE'
 where PermitNumber = '1910'
+*/
 
-insert into dbo.ChemigationPermit([ChemigationPermitNumber], [ChemigationPermitStatusID], [TownshipRangeSection], [ChemigationCountyID], WellID, [DateCreated])
-select PermitNumber, 1 as [ChemigationPermitStatusID], ltrim(rtrim([Quarter] + ' ' + Section + ' ' + Township + ' ' + [Range])) as TownshipRangeSection, c.ChemigationCountyID, w.WellID, dateadd(hour, 8, min(bp.[Date])) as DateCreated
+insert into dbo.ChemigationPermit([ChemigationPermitNumber], [ChemigationPermitStatusID], [ChemigationCountyID], WellID, [DateCreated])
+select PermitNumber, 1 as [ChemigationPermitStatusID], c.ChemigationCountyID, w.WellID, dateadd(hour, 8, min(bp.[Date])) as DateCreated
 from dbo.BeehivePermit bp
 join dbo.ChemigationCounty c on bp.County = c.ChemigationCountyDisplayName
 join dbo.Well w on bp.WellRegistrationID = w.WellRegistrationID
@@ -79,13 +81,15 @@ PermitNumber not in
 ,'1786'
 ,'1787'
 ) -- these permit numbers have more than one permitholder
-group by PermitNumber, [Quarter], Section, Township, [Range], c.ChemigationCountyID, w.WellID
-order by PermitNumber, [Quarter], Section, Township, [Range], c.ChemigationCountyID, w.WellID
+group by PermitNumber, c.ChemigationCountyID, w.WellID
+order by PermitNumber, c.ChemigationCountyID, w.WellID
 
 
-insert into dbo.ChemigationPermitAnnualRecord([ChemigationPermitID], [RecordYear], [ChemigationPermitAnnualRecordStatusID], [PivotName], [ChemigationInjectionUnitTypeID], [ApplicantName], [ApplicantMailingAddress], [ApplicantCity], [ApplicantState], [ApplicantZipCode], ApplicantPhone, ApplicantMobilePhone, [DateReceived], [DatePaid], NDEEAmount)
-select cp.ChemigationPermitID, bp.ChemigationYear as RecordYear, 4  /* using Approved for now bp.[Status]*/, case when len(bw.[Pivot Name]) = 0 then null else bw.[Pivot Name] end as PivotName, 1 as [ChemigationInjectionUnitTypeID], PermitHolder, PermitHolderAdd, PermitHolderCity, PermitHolderState, PermitHolderZip, PermitHolderHomePhone, case when len(PermitHolderMobilePhone) = 8 then '(308) ' + PermitHolderMobilePhone when len(PermitHolderMobilePhone) = 0 then null else PermitHolderMobilePhone end
+insert into dbo.ChemigationPermitAnnualRecord([ChemigationPermitID], [RecordYear], [ChemigationPermitAnnualRecordStatusID], [PivotName], [ChemigationInjectionUnitTypeID], [ApplicantFirstName], [ApplicantLastName], [ApplicantCompany], [ApplicantMailingAddress], [ApplicantCity], [ApplicantState], [ApplicantZipCode], ApplicantPhone, ApplicantMobilePhone, [DateReceived], [DatePaid], NDEEAmount, TownshipRangeSection, AnnualNotes)
+select cp.ChemigationPermitID, bp.ChemigationYear as RecordYear, 4  /* using Approved for now bp.[Status]*/, case when len(bw.[Pivot Name]) = 0 then null else bw.[Pivot Name] end as PivotName, 1 as [ChemigationInjectionUnitTypeID]
+, PermitHolderFirstName, PermitHolderLastName, PermitHolderCompany, PermitHolderAdd, PermitHolderCity, PermitHolderState, PermitHolderZip, PermitHolderHomePhone, case when len(PermitHolderMobilePhone) = 8 then '(308) ' + PermitHolderMobilePhone when len(PermitHolderMobilePhone) = 0 then null else PermitHolderMobilePhone end
 , case when bp.ReceivedDate is null then null else dateadd(hour, 8, concat(month(bp.ReceivedDate), '-', day(bp.ReceivedDate), '-', year(bp.ReceivedDate))) end as DateReceived, case when bp.DatePaid is null then null else dateadd(hour, 8, concat(month(bp.DatePaid), '-', day(bp.DatePaid), '-', year(bp.DatePaid))) end as DatePaid, DEQAmount
+, ltrim(rtrim(bp.[Quarter] + ' ' + bp.Section + ' ' + bp.Township + ' ' + bp.[Range])) as TownshipRangeSection, bp.Note as AnnualNotes
 from dbo.BeehivePermit bp
 join dbo.ChemigationPermit cp on cast(bp.PermitNumber as int) = cp.ChemigationPermitNumber
 join dbo.BeehiveWell bw on bp.WellFeatureID = bw.WellFeatureID
@@ -145,7 +149,39 @@ join dbo.ChemicalUnit cu on
 group by cpar.ChemigationPermitAnnualRecordID, cf.ChemicalFormulationID, cu.ChemicalUnitID
 order by cpar.ChemigationPermitAnnualRecordID, cf.ChemicalFormulationID, cu.ChemicalUnitID
 
-drop table dbo.BeehiveWell
-drop table dbo.BeehivePermit
+
+-- parse out company names and first lastnames
+update cpar
+set cpar.ApplicantCompany = a.ApplicantCompanyNew
+, cpar.ApplicantFirstName = a.ApplicantFirstNameNew
+, cpar.ApplicantLastName = a.ApplicantLastNameNew
+from dbo.ChemigationPermitAnnualRecord cpar
+join 
+(
+	select ChemigationPermitAnnualRecordID, ApplicantCompany, ApplicantFirstName, ApplicantLastName
+		, ApplicantFirstName + ' ' + substring(ApplicantLastName, 1, charindex('(', ApplicantLastName) - 2) as ApplicantCompanyNew
+		,  case when charindex(' ', ApplicantLastName, charindex('(', ApplicantLastName) + 1) = 0 
+				then replace(substring(ApplicantLastName, charindex('(', ApplicantLastName) + 1, 100), ')', '')
+			else 
+			substring(ApplicantLastName, charindex('(', ApplicantLastName) + 1,  
+			 charindex(' ', ApplicantLastName, charindex('(', ApplicantLastName) + 1) - (charindex('(', ApplicantLastName) + 1)
+			 )
+			end
+			as ApplicantFirstNameNew
+		,	case when charindex(' ', ApplicantLastName, charindex('(', ApplicantLastName) + 1) = 0
+			then null
+			else
+			replace(substring(ApplicantLastName, charindex(' ', ApplicantLastName, charindex('(', ApplicantLastName) + 1) + 1, 100), ')', '')
+			end as ApplicantLastNameNew
+	from dbo.ChemigationPermitAnnualRecord
+	where ApplicantLastName like '%(%' and ApplicantLastName not like '(%'
+	union
+	select ChemigationPermitAnnualRecordID, ApplicantCompany, ApplicantFirstName, ApplicantLastName, ApplicantFirstName as ApplicantCompanyNew
+	, case when charindex(' ', ApplicantLastName) = 0 then replace(replace(ApplicantLastName, '(', ''), ')', '') else substring(ApplicantLastName, 2, charindex(' ', ApplicantLastName) - 2) end as ApplicantFirstNameNew
+	, case when charindex(' ', ApplicantLastName) = 0 then null else replace(substring(ApplicantLastName, charindex(' ', ApplicantLastName) + 1, len(ApplicantLastName)), ')', '') end as ApplicantLastNameNew
+	from dbo.ChemigationPermitAnnualRecord
+	where ApplicantLastName like '(%'
+) a on cpar.ChemigationPermitAnnualRecordID = a.ChemigationPermitAnnualRecordID
+
 drop table dbo.BeehivePermitApplicator
 drop table dbo.BeehivePermitChemical

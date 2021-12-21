@@ -82,7 +82,9 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitTypeID;
     chemigationPermitAnnualRecordUpsertDto.RecordYear = annualRecord.RecordYear;
     chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;
-    chemigationPermitAnnualRecordUpsertDto.ApplicantName = annualRecord.ApplicantName;
+    chemigationPermitAnnualRecordUpsertDto.ApplicantCompany = annualRecord.ApplicantCompany;
+    chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName = annualRecord.ApplicantFirstName;
+    chemigationPermitAnnualRecordUpsertDto.ApplicantLastName = annualRecord.ApplicantLastName;
     chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress = annualRecord.ApplicantMailingAddress;
     chemigationPermitAnnualRecordUpsertDto.ApplicantCity = annualRecord.ApplicantCity;
     chemigationPermitAnnualRecordUpsertDto.ApplicantState = annualRecord.ApplicantState;
@@ -92,6 +94,8 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
     chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
     chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
+    chemigationPermitAnnualRecordUpsertDto.AnnualNotes = annualRecord.AnnualNotes;
+    chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection = annualRecord.TownshipRangeSection;
     
     const chemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>();
     annualRecord.ChemicalFormulations.map(x => {

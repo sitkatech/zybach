@@ -61,7 +61,10 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       ChemigationInjectionUnitTypeID: ChemigationInjectionUnitTypeEnum.Portable,
       PivotName: null,
       RecordYear: new Date().getFullYear(),
-      ApplicantName: null,
+      TownshipRangeSection: null,
+      ApplicantCompany: null,
+      ApplicantFirstName: null,
+      ApplicantLastName: null,
       ApplicantMailingAddress: null,
       ApplicantCity: null,
       // default to Nebraska
@@ -72,6 +75,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       ApplicantEmail: null,
       DateReceived: null,
       DatePaid: null,
+      AnnualNotes: null,
     };
     this.model.ChemigationPermitAnnualRecord.Applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
 

@@ -21,8 +21,6 @@
         <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}
         </div>
-        <div class="col-12 col-sm-6 label"><strong>Township, Range, Section: </strong></div>
-        <div class="col-12 col-sm-6">{{chemigationPermit.TownshipRangeSection}}</div>
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationCounty.ChemigationCountyDisplayName}}</div>
     </div>
@@ -95,6 +93,16 @@
 
                             <div class="row col-12">
                                 <div class="col-6 text-right">
+                                    <p><strong>Township, Range, Section: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.TownshipRangeSection}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
                                     <p><strong>Date Received: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
@@ -157,11 +165,33 @@
 
                             <div class="row col-12">
                                 <div class="col-6 text-right">
-                                    <p><strong>Applicant Name: </strong></p>
+                                    <p><strong>Applicant Company: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
                                     <p>
-                                        {{currentYearAnnualRecord.ApplicantName}}
+                                        {{currentYearAnnualRecord.ApplicantCompany}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Applicant First Name: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>
+                                        {{currentYearAnnualRecord.ApplicantFirstName}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Applicant Last Name: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>
+                                        {{currentYearAnnualRecord.ApplicantLastName}}
                                     </p>
                                 </div>
                             </div>

@@ -15,7 +15,8 @@ namespace Zybach.Models.DataTransferObjects
         public ChemigationPermitAnnualRecordStatusDto ChemigationPermitAnnualRecordStatus { get; set; }
         public string PivotName { get; set; }
         public ChemigationInjectionUnitTypeDto ChemigationInjectionUnitType { get; set; }
-        public string ApplicantName { get; set; }
+        public string ApplicantFirstName { get; set; }
+        public string ApplicantLastName { get; set; }
         public string ApplicantMailingAddress { get; set; }
         public string ApplicantCity { get; set; }
         public string ApplicantState { get; set; }
@@ -26,6 +27,9 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
         public decimal? NDEEAmount { get; set; }
+        public string TownshipRangeSection { get; set; }
+        public string ApplicantCompany { get; set; }
+        public string AnnualNotes { get; set; }
     }
 
     public partial class ChemigationPermitAnnualRecordSimpleDto
@@ -36,7 +40,8 @@ namespace Zybach.Models.DataTransferObjects
         public int ChemigationPermitAnnualRecordStatusID { get; set; }
         public string PivotName { get; set; }
         public int ChemigationInjectionUnitTypeID { get; set; }
-        public string ApplicantName { get; set; }
+        public string ApplicantFirstName { get; set; }
+        public string ApplicantLastName { get; set; }
         public string ApplicantMailingAddress { get; set; }
         public string ApplicantCity { get; set; }
         public string ApplicantState { get; set; }
@@ -47,6 +52,9 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
         public decimal? NDEEAmount { get; set; }
+        public string TownshipRangeSection { get; set; }
+        public string ApplicantCompany { get; set; }
+        public string AnnualNotes { get; set; }
     }
 
 }

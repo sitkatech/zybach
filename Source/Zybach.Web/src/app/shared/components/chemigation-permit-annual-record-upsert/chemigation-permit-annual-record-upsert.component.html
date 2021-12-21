@@ -13,6 +13,14 @@
             </div>
 
             <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Township-Range-Section: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <input type="text" class="form-control" name="TownshipRangeSection"
+                    placeholder="Township-Range-Section" required [(ngModel)]="model.TownshipRangeSection" />
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
                 <label class="required"><strong>Pivot Name: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
@@ -62,11 +70,27 @@
 
         <div class="row col-6 mt-4">
             <div class="col-6 control-label text-right mb-2">
-                <label class="required"><strong>Applicant Name: </strong></label>
+                <label><strong>Applicant Company: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <input type="text" class="form-control" name="ApplicantName"
-                    placeholder="First Last" required [(ngModel)]="model.ApplicantName" />
+                <input type="text" class="form-control" name="ApplicantCompany"
+                    placeholder="Company" [(ngModel)]="model.ApplicantCompany" />
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Applicant First Name: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <input type="text" class="form-control" name="ApplicantFirstName"
+                    placeholder="First Name" [(ngModel)]="model.ApplicantFirstName" />
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Applicant Last Name: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <input type="text" class="form-control" name="ApplicantLastName"
+                    placeholder="Last Name" [(ngModel)]="model.ApplicantLastName" />
             </div>
 
             <div class="col-6 control-label text-right mb-2">

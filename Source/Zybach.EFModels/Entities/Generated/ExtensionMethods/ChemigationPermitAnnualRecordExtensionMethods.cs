@@ -19,7 +19,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitAnnualRecordStatus = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatus.AsDto(),
                 PivotName = chemigationPermitAnnualRecord.PivotName,
                 ChemigationInjectionUnitType = chemigationPermitAnnualRecord.ChemigationInjectionUnitType.AsDto(),
-                ApplicantName = chemigationPermitAnnualRecord.ApplicantName,
+                ApplicantFirstName = chemigationPermitAnnualRecord.ApplicantFirstName,
+                ApplicantLastName = chemigationPermitAnnualRecord.ApplicantLastName,
                 ApplicantMailingAddress = chemigationPermitAnnualRecord.ApplicantMailingAddress,
                 ApplicantCity = chemigationPermitAnnualRecord.ApplicantCity,
                 ApplicantState = chemigationPermitAnnualRecord.ApplicantState,
@@ -29,7 +30,10 @@ namespace Zybach.EFModels.Entities
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
                 ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
-                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount
+                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount,
+                TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection,
+                ApplicantCompany = chemigationPermitAnnualRecord.ApplicantCompany,
+                AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes
             };
             DoCustomMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordDto);
             return chemigationPermitAnnualRecordDto;
@@ -47,7 +51,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitAnnualRecordStatusID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID,
                 PivotName = chemigationPermitAnnualRecord.PivotName,
                 ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID,
-                ApplicantName = chemigationPermitAnnualRecord.ApplicantName,
+                ApplicantFirstName = chemigationPermitAnnualRecord.ApplicantFirstName,
+                ApplicantLastName = chemigationPermitAnnualRecord.ApplicantLastName,
                 ApplicantMailingAddress = chemigationPermitAnnualRecord.ApplicantMailingAddress,
                 ApplicantCity = chemigationPermitAnnualRecord.ApplicantCity,
                 ApplicantState = chemigationPermitAnnualRecord.ApplicantState,
@@ -57,7 +62,10 @@ namespace Zybach.EFModels.Entities
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
                 ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
-                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount
+                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount,
+                TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection,
+                ApplicantCompany = chemigationPermitAnnualRecord.ApplicantCompany,
+                AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes
             };
             DoCustomSimpleDtoMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordSimpleDto);
             return chemigationPermitAnnualRecordSimpleDto;

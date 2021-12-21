@@ -47,7 +47,6 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitNumber = chemigationPermitNewDto.ChemigationPermitNumber,
                 ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
                 DateCreated = DateTime.Now.Date,
-                TownshipRangeSection = chemigationPermitNewDto.TownshipRangeSection,
                 ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
             };
             var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == chemigationPermitNewDto.WellRegistrationID)?.WellID;
@@ -96,7 +95,6 @@ namespace Zybach.EFModels.Entities
         {
             chemigationPermit.ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber;
             chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
-            chemigationPermit.TownshipRangeSection = chemigationPermitUpsertDto.TownshipRangeSection;
             chemigationPermit.ChemigationCountyID = chemigationPermitUpsertDto.ChemigationCountyID;
 
             dbContext.SaveChanges();

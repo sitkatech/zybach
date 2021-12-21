@@ -11,18 +11,22 @@
  */
 import { ChemigationPermitDto } from '././chemigation-permit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '././chemigation-permit-annual-record-chemical-formulation-simple-dto';
+import { ChemigationInspectionSimpleDto } from '././chemigation-inspection-simple-dto';
 import { ChemigationPermitAnnualRecordApplicatorSimpleDto } from '././chemigation-permit-annual-record-applicator-simple-dto';
 
 export class ChemigationPermitAnnualRecordDetailedDto { 
     ChemigationPermitAnnualRecordID?: number;
     ChemigationPermit?: ChemigationPermitDto;
     RecordYear?: number;
+    TownshipRangeSection?: string;
     ChemigationPermitAnnualRecordStatusID?: number;
     ChemigationPermitAnnualRecordStatusName?: string;
     PivotName?: string;
     ChemigationInjectionUnitTypeID?: number;
     ChemigationInjectionUnitTypeName?: string;
-    ApplicantName?: string;
+    ApplicantFirstName?: string;
+    ApplicantLastName?: string;
+    ApplicantCompany?: string;
     ApplicantMailingAddress?: string;
     ApplicantCity?: string;
     ApplicantState?: string;
@@ -33,8 +37,10 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     DatePaid?: string;
     ApplicantEmail?: string;
     NDEEAmount?: number;
+    AnnualNotes?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorSimpleDto>;
+    Inspections?: Array<ChemigationInspectionSimpleDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

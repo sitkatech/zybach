@@ -5,7 +5,7 @@
         </li>
         <li class="breadcrumb-item" aria-current="page">
             <a routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
-                Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}
+                Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumberDisplay}}
             </a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
@@ -17,7 +17,7 @@
     <app-alert-display></app-alert-display>
     <div class="row mt-2">
         <div class="col-12">
-            <h2 class="d-inline-block">New Annual Record: Renewal for {{newRecordYear}}</h2>
+            <h2 class="d-inline-block">New Annual Record for #{{chemigationPermit.ChemigationPermitNumberDisplay}}: Renewal for {{newRecordYear}}</h2>
         </div>
 
     </div>
@@ -46,14 +46,6 @@
                                 <div class="col-6 text-left mb-2">
                                     {{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}
                                 </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Chemigation Permit Number: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    {{chemigationPermit.ChemigationPermitNumber}}
-                                </div>
-
                             </div>
 
                             <div class="row col-6 mt-4">
@@ -62,13 +54,6 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     {{model.RecordYear}}
-                                </div>
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Township-Range-Section: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    {{chemigationPermit.TownshipRangeSection}}
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">

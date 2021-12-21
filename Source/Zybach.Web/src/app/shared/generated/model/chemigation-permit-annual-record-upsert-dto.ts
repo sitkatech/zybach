@@ -14,9 +14,12 @@ import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '././c
 
 export class ChemigationPermitAnnualRecordUpsertDto { 
     ChemigationPermitAnnualRecordStatusID: number;
-    ApplicantName: string;
+    ApplicantFirstName?: string;
+    ApplicantLastName?: string;
+    ApplicantCompany?: string;
     PivotName: string;
     RecordYear: number;
+    TownshipRangeSection: string;
     DateReceived?: string;
     DatePaid?: string;
     ChemigationInjectionUnitTypeID: number;
@@ -28,6 +31,7 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ApplicantState?: string;
     ApplicantZipCode?: string;
     NDEEAmount?: number;
+    AnnualNotes?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>;
     constructor(obj?: any) {

@@ -17,7 +17,6 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitNumber = chemigationPermit.ChemigationPermitNumber,
                 ChemigationPermitStatus = chemigationPermit.ChemigationPermitStatus.AsDto(),
                 DateCreated = chemigationPermit.DateCreated,
-                TownshipRangeSection = chemigationPermit.TownshipRangeSection,
                 ChemigationCounty = chemigationPermit.ChemigationCounty.AsDto(),
                 Well = chemigationPermit.Well?.AsDto()
             };
@@ -35,7 +34,6 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitNumber = chemigationPermit.ChemigationPermitNumber,
                 ChemigationPermitStatusID = chemigationPermit.ChemigationPermitStatusID,
                 DateCreated = chemigationPermit.DateCreated,
-                TownshipRangeSection = chemigationPermit.TownshipRangeSection,
                 ChemigationCountyID = chemigationPermit.ChemigationCountyID,
                 WellID = chemigationPermit.WellID
             };

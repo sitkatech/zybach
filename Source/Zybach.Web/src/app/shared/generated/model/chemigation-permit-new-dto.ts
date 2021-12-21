@@ -14,7 +14,6 @@ import { ChemigationPermitAnnualRecordUpsertDto } from '././chemigation-permit-a
 export class ChemigationPermitNewDto { 
     ChemigationPermitNumber: number;
     ChemigationPermitStatusID: number;
-    TownshipRangeSection: string;
     ChemigationCountyID: number;
     WellRegistrationID?: string;
     ChemigationPermitAnnualRecord: ChemigationPermitAnnualRecordUpsertDto;
