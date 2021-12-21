@@ -155,6 +155,30 @@ join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.Che
 join dbo.Well w on cp.WellID = w.WellID
 join dbo.BeehivePermit bp on w.WellRegistrationID = bp.WellRegistrationID and cp.ChemigationPermitNumber = bp.PermitNumber and cpar.RecordYear = bp.ChemigationYear
 
+-- updating more applicant names
+update cpar
+set cpar.ApplicantCompany = case when len(cpar.ApplicantFirstName) = 0 then '' else cpar.ApplicantFirstName + ' ' end + cpar.ApplicantLastName, cpar.ApplicantFirstName = null, cpar.ApplicantLastName = null
+from dbo.ChemigationPermitAnnualRecord cpar
+join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
+where ApplicantLastName like '%Farms%'
+
+update cpar
+set cpar.ApplicantCompany = case when len(cpar.ApplicantCompany) = 0 then '' else cpar.ApplicantCompany + ' ' end + cpar.ApplicantFirstName + ' ' + cpar.ApplicantLastName, cpar.ApplicantFirstName = null, cpar.ApplicantLastName = null
+from dbo.ChemigationPermitAnnualRecord cpar
+join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
+where ApplicantLastName in ('Land & Cattle', 'Livestock Feeders', 'Inc', 'Farming Trust', 'Ag Inc')
+
+update cpar
+set cpar.ApplicantCompany = case when len(cpar.ApplicantFirstName) = 0 then null else cpar.ApplicantFirstName + ' ' end, cpar.ApplicantFirstName = null, cpar.ApplicantLastName = null
+from dbo.ChemigationPermitAnnualRecord cpar
+join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
+where ApplicantLastName = ''
+
+update cpar
+set cpar.ApplicantCompany = cpar.ApplicantFirstName + ' ' + cpar.ApplicantLastName, cpar.ApplicantFirstName = null, cpar.ApplicantLastName = null
+from dbo.ChemigationPermitAnnualRecord cpar
+join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
+where ApplicantLastName = 'Land & Cattle'
 
 
 drop table dbo.BeehivePermitApplicator
