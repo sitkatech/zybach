@@ -2909,6 +2909,18 @@
       "ChemigationInspectionSimpleDto": {
         "type": "object",
         "properties": {
+          "ChemigationPermitNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "County": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
           "ChemigationInspectionTypeName": {
             "type": "string",
             "nullable": true
