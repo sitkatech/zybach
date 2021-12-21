@@ -14,6 +14,7 @@ namespace Zybach.EFModels.Entities
             chemigationInspectionSimpleDto.ChemigationInjectionValveName = chemigationInspection.ChemigationInjectionValve?.ChemigationInjectionValveDisplayName;
             chemigationInspectionSimpleDto.TillageName = chemigationInspection.Tillage?.TillageDisplayName;
             chemigationInspectionSimpleDto.CropTypeName = chemigationInspection.CropType?.CropTypeDisplayName;
+            chemigationInspectionSimpleDto.Inspector = chemigationInspection.InspectorUser?.AsSimpleDto();
         }
     }
 }

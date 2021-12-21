@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 using Zybach.Models.DataTransferObjects.User;
@@ -10,6 +9,9 @@ namespace Zybach.EFModels.Entities
 {
     public partial class User
     {
+        public string FullName => $"{FirstName} {LastName}";
+        public string FullNameLastFirst => $"{LastName}, {FirstName}";
+
         public static UserDto CreateNewUser(ZybachDbContext dbContext, UserUpsertDto userToCreate, string loginName, Guid userGuid)
         {
             if (!userToCreate.RoleID.HasValue)

@@ -26,6 +26,8 @@ export class UserSimpleDto {
     LoginName?: string;
     Company?: string;
     DisclaimerAcknowledgedDate?: string;
+    FullName?: string;
+    FullNameLastFirst?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

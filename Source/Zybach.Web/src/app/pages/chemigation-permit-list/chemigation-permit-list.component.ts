@@ -137,6 +137,39 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       },
       this.createDateColumnDef('Created', 'DateCreated', 'M/d/yyyy'),
       {
+        headerName: 'Latest Inspection',
+        children: [
+          {
+            headerName: 'Inspected', valueGetter: function (params: any) {
+              if(params.data.LatestInspection && params.data.LatestInspection.InspectionDate)
+              {
+                return datePipe.transform(params.data.LatestInspection.InspectionDate, 'M/d/yyyy');
+              }
+              else
+              {
+                return "";
+              }
+            },
+            comparator: this.dateFilterComparator,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+              filterOptions: ['inRange'],
+              comparator: this.dateFilterComparator
+            }, 
+            width: 140,
+            resizable: true,
+            sortable: true
+          },          
+          { headerName: 'Inspected By', field: "LatestInspection.Inspector.FullNameLastFirst", width: 140, filter: true, resizable: true, sortable: true },
+          { headerName: 'Status', field: 'LatestInspection.ChemigationInspectionStatusName', 
+            filterFramework: CustomDropdownFilterComponent,
+            filterParams: {
+              field: 'LatestInspection.ChemigationInspectionStatusName'
+            },
+            width: 100, resizable: true, sortable: true },
+        ]
+      },
+      {
         headerName: 'Latest Annual Record',
         children: [
           
@@ -235,7 +268,6 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           },
         ]
       }
-
     ];
 
   }

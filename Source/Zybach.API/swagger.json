@@ -3445,10 +3445,6 @@
             "type": "string",
             "format": "date-time"
           },
-          "TownshipRangeSection": {
-            "type": "string",
-            "nullable": true
-          },
           "ChemigationCounty": {
             "$ref": "#/components/schemas/ChemigationCountySimpleDto"
           },
@@ -3457,6 +3453,9 @@
           },
           "LatestAnnualRecord": {
             "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+          },
+          "LatestInspection": {
+            "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
           }
         },
         "additionalProperties": false
@@ -4474,8 +4473,11 @@
           },
           "FullName": {
             "type": "string",
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
+          },
+          "FullNameLastFirst": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4568,6 +4570,14 @@
           "DisclaimerAcknowledgedDate": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "FullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FullNameLastFirst": {
+            "type": "string",
             "nullable": true
           }
         },

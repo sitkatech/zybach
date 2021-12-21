@@ -19,11 +19,24 @@ namespace Zybach.EFModels.Entities
         public static IEnumerable<ChemigationPermitDetailedDto> ListWithLatestAnnualRecordAsDto(ZybachDbContext dbContext)
         {
             var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecord.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
-            var listWithLatestAnnualRecordAsDto = GetChemigationPermitImpl(dbContext)
+            var chemigationInspectionSimpleDtos = dbContext.ChemigationInspections
+                .Include(x => x.ChemigationPermitAnnualRecord)
+                .Include(x => x.ChemigationInspectionType)
+                .Include(x => x.ChemigationInspectionStatus)
+                .Include(x => x.ChemigationMainlineCheckValve)
+                .Include(x => x.ChemigationLowPressureValve)
+                .Include(x => x.ChemigationInjectionValve)
+                .Include(x => x.Tillage)
+                .Include(x => x.CropType)
+                .Include(x => x.InspectorUser).AsNoTracking().ToList()
+                .GroupBy(x => x.ChemigationPermitAnnualRecord.ChemigationPermitID).ToDictionary(x => x.Key, x =>
+                    x.OrderByDescending(y => y.InspectionDate).ThenByDescending(y => y.ChemigationInspectionID).FirstOrDefault()?.AsSimpleDto());
+            var listWithLatestAnnualRecordAsDto = GetChemigationPermitImpl(dbContext).ToList()
                 .Select(x =>
-                    x.AsDetailedDto(chemigationPermitAnnualRecordDetailedDtos.ContainsKey(x.ChemigationPermitID)
-                        ? chemigationPermitAnnualRecordDetailedDtos[x.ChemigationPermitID]
-                        : null)).ToList().OrderBy(x => x.ChemigationPermitNumber).ToList();
+                    x.AsDetailedDto(
+                        chemigationPermitAnnualRecordDetailedDtos.ContainsKey(x.ChemigationPermitID) ? chemigationPermitAnnualRecordDetailedDtos[x.ChemigationPermitID] : null,
+                        chemigationInspectionSimpleDtos.ContainsKey(x.ChemigationPermitID) ? chemigationInspectionSimpleDtos[x.ChemigationPermitID] : null))
+                .OrderBy(x => x.ChemigationPermitNumber).ToList();
             return listWithLatestAnnualRecordAsDto;
         }
 
