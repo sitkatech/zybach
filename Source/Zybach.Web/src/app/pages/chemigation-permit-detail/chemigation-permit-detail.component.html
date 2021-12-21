@@ -247,7 +247,6 @@
 
                     <div class="col-12">
                         <hr class="w-90" />
-
                     </div>
 
                     <div class="col-12 table-responsive mb-4">
@@ -280,7 +279,6 @@
 
                     <div class="col-12">
                         <hr class="w-90" />
-
                     </div>
 
                     <div class="col-12 table-responsive mb-4">
@@ -312,7 +310,6 @@
 
                     <div class="col-12">
                         <hr class="w-90" />
-
                     </div>
 
                     <div class="col-12 mb-4">
@@ -323,6 +320,38 @@
                             
                         </ng-template>
                         <ng-template #noAnnualNotes><p>No annual record notes found for this year.</p></ng-template>
+                    </div>
+
+                    <div class="col-12">
+                        <hr class="w-90" />
+                    </div>
+
+                    <div class="col-12 mb-4">
+                        <h5>Inspections</h5>
+                        <div *ngIf="currentYearAnnualRecord.Inspections.length > 0 ; then hasInspections else noInspections"></div>
+                        <ng-template #hasInspections>
+
+                            <!-- 
+                    [class.selected]="checkSelectedView(item)" (click)="updateView(item)" (mouseenter)="hoverItem = item"
+                    (mouseleave)="hoverItem = null" placement="top" ngbTooltip="{{item}}" tooltipClass="selector-tooltip" -->
+
+
+                            <div class="col-12 p-0">
+                                <ul class="list-group list-group-flush text-center text-lg-left flex-row" style="width:100%">
+                                  <li class="list-group-item header p-0" style="width:100%" *ngFor="let inspection of getInspections()">
+                                    <div class="container" style="height:100%">
+                                      <div class="row d-flex flex-wrap align-items-center ml-1" style="height:100%">
+                                        <div class="col-lg-9 pl-0 d-lg-block d-none">
+                                          {{inspection}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </li>
+                                </ul>
+                            </div>
+                            
+                        </ng-template>
+                        <ng-template #noInspections><p>No inspection records found for this year.</p></ng-template>
                     </div>
 
                 </div>
