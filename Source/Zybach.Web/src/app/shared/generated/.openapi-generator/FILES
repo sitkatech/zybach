@@ -4,8 +4,6 @@ model/annual-stream-flow-zone-pumping-depth-dto.ts
 model/chemical-formulation-dto.ts
 model/chemical-formulation-yearly-total-dto.ts
 model/chemical-unit-dto.ts
-model/chemigation-county-dto.ts
-model/chemigation-county-simple-dto.ts
 model/chemigation-injection-unit-type-dto.ts
 model/chemigation-inspection-simple-dto.ts
 model/chemigation-permit-annual-record-applicator-simple-dto.ts
@@ -22,6 +20,8 @@ model/chemigation-permit-new-dto.ts
 model/chemigation-permit-status-dto.ts
 model/chemigation-permit-status-simple-dto.ts
 model/chemigation-permit-upsert-dto.ts
+model/county-dto.ts
+model/county-simple-dto.ts
 model/crs-type.ts
 model/custom-rich-text-dto.ts
 model/custom-rich-text-type-dto.ts

@@ -135,6 +135,16 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
+      { 
+        headerName: 'County', field: 'County.CountyDisplayName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'County.CountyDisplayName'
+        },
+        width: 100,
+        resizable: true,
+        sortable: true
+      },
       this.createDateColumnDef('Created', 'DateCreated', 'M/d/yyyy'),
       {
         headerName: 'Latest Inspection',
@@ -156,11 +166,11 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               filterOptions: ['inRange'],
               comparator: this.dateFilterComparator
             }, 
-            width: 140,
+            width: 120,
             resizable: true,
             sortable: true
           },          
-          { headerName: 'Inspected By', field: "LatestInspection.Inspector.FullNameLastFirst", width: 140, filter: true, resizable: true, sortable: true },
+          { headerName: 'Inspected By', field: "LatestInspection.Inspector.FullNameLastFirst", width: 130, filter: true, resizable: true, sortable: true },
           { headerName: 'Status', field: 'LatestInspection.ChemigationInspectionStatusName', 
             filterFramework: CustomDropdownFilterComponent,
             filterParams: {
@@ -184,7 +194,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
             filterParams: {
               field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName'
             },
-            width: 140, resizable: true, sortable: true },
+            width: 120, resizable: true, sortable: true },
           { headerName: 'Township-Range-Section', field: 'LatestAnnualRecord.TownshipRangeSection', filter: true, resizable: true, sortable: true },
           { headerName: 'Pivot', field: 'LatestAnnualRecord.PivotName', width: 100, filter: true, resizable: true, sortable: true },
           {
@@ -293,7 +303,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
       }, 
-      width: 120,
+      width: 110,
       resizable: true,
       sortable: true
     };

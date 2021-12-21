@@ -25,7 +25,7 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitNumberDisplay = chemigationPermit.ChemigationPermitNumberDisplay,
                 ChemigationPermitStatus = chemigationPermit.ChemigationPermitStatus.AsSimpleDto(),
                 DateCreated = chemigationPermit.DateCreated,
-                ChemigationCounty = chemigationPermit.ChemigationCounty.AsSimpleDto(),
+                County = chemigationPermit.County.AsSimpleDto(),
                 Well = chemigationPermit.Well?.AsSimpleDto(),
                 LatestAnnualRecord = chemigationPermitAnnualRecordDetailedDto,
                 LatestInspection = chemigationInspectionSimpleDto

@@ -60,7 +60,7 @@ namespace Zybach.EFModels.Entities
                 ChemigationPermitNumber = chemigationPermitNewDto.ChemigationPermitNumber,
                 ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
                 DateCreated = DateTime.Now.Date,
-                ChemigationCountyID = chemigationPermitNewDto.ChemigationCountyID
+                CountyID = chemigationPermitNewDto.CountyID
             };
             var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == chemigationPermitNewDto.WellRegistrationID)?.WellID;
             chemigationPermit.WellID = wellID;
@@ -99,7 +99,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.ChemigationPermits
                 .Include(x => x.ChemigationPermitStatus)
-                .Include(x => x.ChemigationCounty)
+                .Include(x => x.County)
                 .Include(x => x.Well)
                 .AsNoTracking();
         }
@@ -108,7 +108,7 @@ namespace Zybach.EFModels.Entities
         {
             chemigationPermit.ChemigationPermitNumber = chemigationPermitUpsertDto.ChemigationPermitNumber;
             chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
-            chemigationPermit.ChemigationCountyID = chemigationPermitUpsertDto.ChemigationCountyID;
+            chemigationPermit.CountyID = chemigationPermitUpsertDto.CountyID;
 
             dbContext.SaveChanges();
             dbContext.Entry(chemigationPermit).Reload();

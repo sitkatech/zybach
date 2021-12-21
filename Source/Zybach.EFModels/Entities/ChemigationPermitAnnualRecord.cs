@@ -25,7 +25,7 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.ChemigationPermit)
                     .ThenInclude(x => x.ChemigationPermitStatus)
                 .Include(x => x.ChemigationPermit)
-                    .ThenInclude(x => x.ChemigationCounty)
+                    .ThenInclude(x => x.County)
                 .Include(x => x.ChemigationPermit)
                     .ThenInclude(x => x.Well)
                 .Include(x => x.ChemigationPermitAnnualRecordStatus)

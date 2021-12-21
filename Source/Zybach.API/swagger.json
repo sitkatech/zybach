@@ -95,7 +95,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationCountyDto"
+                    "$ref": "#/components/schemas/CountyDto"
                   }
                 }
               },
@@ -103,7 +103,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationCountyDto"
+                    "$ref": "#/components/schemas/CountyDto"
                   }
                 }
               },
@@ -111,7 +111,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationCountyDto"
+                    "$ref": "#/components/schemas/CountyDto"
                   }
                 }
               }
@@ -2778,42 +2778,6 @@
         },
         "additionalProperties": false
       },
-      "ChemigationCountyDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationCountyID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationCountyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationCountyDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationCountySimpleDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationCountyID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationCountyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationCountyDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ChemigationInjectionUnitTypeDto": {
         "type": "object",
         "properties": {
@@ -3445,8 +3409,8 @@
             "type": "string",
             "format": "date-time"
           },
-          "ChemigationCounty": {
-            "$ref": "#/components/schemas/ChemigationCountySimpleDto"
+          "County": {
+            "$ref": "#/components/schemas/CountySimpleDto"
           },
           "Well": {
             "$ref": "#/components/schemas/WellSimpleDto"
@@ -3482,8 +3446,8 @@
             "type": "string",
             "format": "date-time"
           },
-          "ChemigationCounty": {
-            "$ref": "#/components/schemas/ChemigationCountyDto"
+          "County": {
+            "$ref": "#/components/schemas/CountyDto"
           },
           "Well": {
             "$ref": "#/components/schemas/WellDto"
@@ -3493,10 +3457,10 @@
       },
       "ChemigationPermitNewDto": {
         "required": [
-          "ChemigationCountyID",
           "ChemigationPermitAnnualRecord",
           "ChemigationPermitNumber",
-          "ChemigationPermitStatusID"
+          "ChemigationPermitStatusID",
+          "CountyID"
         ],
         "type": "object",
         "properties": {
@@ -3508,7 +3472,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "ChemigationCountyID": {
+          "CountyID": {
             "type": "integer",
             "format": "int32"
           },
@@ -3560,8 +3524,8 @@
       },
       "ChemigationPermitUpsertDto": {
         "required": [
-          "ChemigationCountyID",
           "ChemigationPermitStatusID",
+          "CountyID",
           "TownshipRangeSection"
         ],
         "type": "object",
@@ -3577,9 +3541,45 @@
           "TownshipRangeSection": {
             "type": "string"
           },
-          "ChemigationCountyID": {
+          "CountyID": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CountyDto": {
+        "type": "object",
+        "properties": {
+          "CountyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CountyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountyDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CountySimpleDto": {
+        "type": "object",
+        "properties": {
+          "CountyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CountyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountyDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

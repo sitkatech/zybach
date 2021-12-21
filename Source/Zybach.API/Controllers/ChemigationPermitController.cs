@@ -27,10 +27,10 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/counties")]
         [ZybachViewFeature]
-        public ActionResult<IEnumerable<ChemigationCountyDto>> GetChemigationCounties()
+        public ActionResult<IEnumerable<CountyDto>> GetCounties()
         {
-            var chemigationCounties = ChemigationCounty.List(_dbContext);
-            return Ok(chemigationCounties);
+            var counties = Counties.ListAsDto(_dbContext);
+            return Ok(counties);
         }
 
         [HttpGet("/api/chemigationPermits")]

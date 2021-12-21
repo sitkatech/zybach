@@ -10,6 +10,6 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public string TownshipRangeSection { get; set; }
         [Required]
-        public int ChemigationCountyID { get; set; }
+        public int CountyID { get; set; }
     }
 }

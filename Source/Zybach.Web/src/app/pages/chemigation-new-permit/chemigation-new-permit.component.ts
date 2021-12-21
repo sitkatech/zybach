@@ -8,7 +8,6 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
-import { ChemigationCountyDto } from 'src/app/shared/generated/model/chemigation-county-dto';
 import { ChemigationPermitNewDto } from 'src/app/shared/generated/model/chemigation-permit-new-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -17,6 +16,7 @@ import { ChemigationInjectionUnitTypeEnum } from 'src/app/shared/models/enums/ch
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { WellService } from 'src/app/services/well.service';
+import { CountyDto } from 'src/app/shared/generated/model/county-dto';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -31,7 +31,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   private currentUser: UserDto;
 
   public permitStatuses: Array<ChemigationPermitStatusDto>;
-  public chemigationCounties: Array<ChemigationCountyDto>;
+  public counties: Array<CountyDto>;
 
   public model: ChemigationPermitNewDto;
   public defaultState: string = 'NE';
@@ -89,8 +89,8 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       this.chemigationPermitService.getChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
       });
-      this.chemigationPermitService.getCounties().subscribe(chemigationCounties => {
-        this.chemigationCounties = chemigationCounties;
+      this.chemigationPermitService.getCounties().subscribe(counties => {
+        this.counties = counties;
       });
 
     });

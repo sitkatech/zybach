@@ -23,15 +23,15 @@ namespace Zybach.EFModels.Entities
         public int ChemigationPermitStatusID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime DateCreated { get; set; }
-        public int ChemigationCountyID { get; set; }
+        public int CountyID { get; set; }
         public int? WellID { get; set; }
 
-        [ForeignKey(nameof(ChemigationCountyID))]
-        [InverseProperty("ChemigationPermits")]
-        public virtual ChemigationCounty ChemigationCounty { get; set; }
         [ForeignKey(nameof(ChemigationPermitStatusID))]
         [InverseProperty("ChemigationPermits")]
         public virtual ChemigationPermitStatus ChemigationPermitStatus { get; set; }
+        [ForeignKey(nameof(CountyID))]
+        [InverseProperty("ChemigationPermits")]
+        public virtual County County { get; set; }
         [ForeignKey(nameof(WellID))]
         [InverseProperty("ChemigationPermits")]
         public virtual Well Well { get; set; }
