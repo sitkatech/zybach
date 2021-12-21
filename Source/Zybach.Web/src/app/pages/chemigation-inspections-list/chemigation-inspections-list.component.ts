@@ -73,7 +73,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
           return 0;
         },
         filterValueGetter: function (params: any) {
-          return params.data.ChemigationPermit.ChemigationPermitNumber;
+          return params.data.ChemigationPermitNumber;
         },
         filter: 'agNumberColumnFilter',
         resizable: true,
@@ -83,7 +83,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
       { headerName: 'County', field: 'County',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'ChemigationPermit.County.CountyDisplayName',
+          field: 'County',
         }, 
         resizable: true, sortable: true 
       },
@@ -92,16 +92,47 @@ export class ChemigationInspectionsListComponent implements OnInit {
       { headerName: 'Status', field: 'ChemigationInspectionStatusName', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'LatestInspection.ChemigationInspectionStatusName'
+          field: 'ChemigationInspectionStatusName'
         },
         width: 100, resizable: true, sortable: true 
       },
-      { headerName: 'Inspected By', field: "Inspector.FullNameLastFirst", width: 130, filter: true, resizable: true, sortable: true },
-      { headerName: 'Mainline Check Valve', field: 'ChemigationMainlineCheckValveName', filter: true, resizable: true, sortable: true },
-      { headerName: 'Low Pressure Valve', field: 'ChemigationLowPressureValveName', filter: true, resizable: true, sortable: true },
-      { headerName: 'Injection Valve', field: 'ChemigationInjectionValveName', filter: true, resizable: true, sortable: true },
-      { headerName: 'Tillage', field: 'TillageName', filter: true, resizable: true, sortable: true },
-      { headerName: 'Crop Type', field: 'CropTypeName', filter: true, resizable: true, sortable: true }
+      { headerName: 'Inspected By', field: "Inspector.FullNameLastFirst",
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Inspector.FullNameLastFirst'
+        },
+        width: 130, resizable: true, sortable: true 
+      },
+      { headerName: 'Mainline Check Valve', field: 'ChemigationMainlineCheckValveName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemigationMainlineCheckValveName'
+        }, 
+       resizable: true, sortable: true },
+      { headerName: 'Low Pressure Valve', field: 'ChemigationLowPressureValveName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemigationLowPressureValveName'
+        }, 
+        resizable: true, sortable: true },
+      { headerName: 'Injection Valve', field: 'ChemigationInjectionValveName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemigationInjectionValveName'
+        }, 
+        resizable: true, sortable: true },
+      { headerName: 'Tillage', field: 'TillageName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'TillageName'
+        }, 
+        resizable: true, sortable: true },
+      { headerName: 'Crop Type', field: 'CropTypeName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'CropTypeName'
+        }, 
+        resizable: true, sortable: true }
     ]; 
   }
 
