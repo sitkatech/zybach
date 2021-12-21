@@ -2874,13 +2874,14 @@
             "type": "integer",
             "format": "int32"
           },
-          "ChemigationInspectionTypeID": {
-            "type": "integer",
-            "format": "int32"
-          },
           "ChemigationInspectionStatusID": {
             "type": "integer",
             "format": "int32"
+          },
+          "ChemigationInspectionTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           },
           "InspectionDate": {
             "type": "string",

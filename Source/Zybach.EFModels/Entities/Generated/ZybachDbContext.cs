@@ -167,11 +167,6 @@ namespace Zybach.EFModels.Entities
                     .HasForeignKey(d => d.ChemigationInspectionStatusID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
 
-                entity.HasOne(d => d.ChemigationInspectionType)
-                    .WithMany(p => p.ChemigationInspections)
-                    .HasForeignKey(d => d.ChemigationInspectionTypeID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
                 entity.HasOne(d => d.ChemigationPermitAnnualRecord)
                     .WithMany(p => p.ChemigationInspections)
                     .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)

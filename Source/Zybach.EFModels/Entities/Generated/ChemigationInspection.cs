@@ -14,8 +14,8 @@ namespace Zybach.EFModels.Entities
         [Key]
         public int ChemigationInspectionID { get; set; }
         public int ChemigationPermitAnnualRecordID { get; set; }
-        public int ChemigationInspectionTypeID { get; set; }
         public int ChemigationInspectionStatusID { get; set; }
+        public int? ChemigationInspectionTypeID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? InspectionDate { get; set; }
         public int? InspectorUserID { get; set; }
