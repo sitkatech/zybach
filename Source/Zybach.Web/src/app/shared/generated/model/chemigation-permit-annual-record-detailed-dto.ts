@@ -38,6 +38,7 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     ApplicantEmail?: string;
     NDEEAmount?: number;
     AnnualNotes?: string;
+    ApplicantName?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorSimpleDto>;
     Inspections?: Array<ChemigationInspectionSimpleDto>;

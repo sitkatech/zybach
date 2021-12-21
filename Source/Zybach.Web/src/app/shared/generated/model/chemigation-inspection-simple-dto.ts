@@ -22,8 +22,8 @@ export class ChemigationInspectionSimpleDto {
     Inspector?: UserSimpleDto;
     ChemigationInspectionID?: number;
     ChemigationPermitAnnualRecordID?: number;
-    ChemigationInspectionTypeID?: number;
     ChemigationInspectionStatusID?: number;
+    ChemigationInspectionTypeID?: number;
     InspectionDate?: string;
     InspectorUserID?: number;
     ChemigationMainlineCheckValveID?: number;
