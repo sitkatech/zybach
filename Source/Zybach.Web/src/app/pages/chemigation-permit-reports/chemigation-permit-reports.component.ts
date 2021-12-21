@@ -190,6 +190,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
   }
   
   public updateAnnualData(): void {
+    this.chemigationPermitReportGrid?.api.showLoadingOverlay();
     this.populateAnnualRecords();
   }
 
