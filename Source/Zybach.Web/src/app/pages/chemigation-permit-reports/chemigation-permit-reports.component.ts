@@ -114,7 +114,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         },
         resizable: true, sortable: true 
       },
-      { headerName: 'Township-Range-Section', field: 'ChemigationPermit.TownshipRangeSection', filter: true, resizable: true, sortable: true },
+      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true },
       { headerName: 'County', field: 'ChemigationPermit.County.CountyDisplayName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
@@ -190,6 +190,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
   }
   
   public updateAnnualData(): void {
+    this.chemigationPermitReportGrid?.api.showLoadingOverlay();
     this.populateAnnualRecords();
   }
 

@@ -72,14 +72,6 @@ namespace Zybach.API.ReportTemplates
 
             switch (ReportTemplateModelEnum)
             {
-                case ReportTemplateModelEnum.Well:
-                    var baseViewModel = new ReportTemplateWellBaseViewModel()
-                    {
-                        ReportTitle = ReportTemplate.DisplayName,
-                        ReportModel = GetListOfWellModels(dbContext)
-                    };
-                    document = DocumentFactory.Create<DocxDocument>(templatePath, baseViewModel);
-                    break;
                 case ReportTemplateModelEnum.ChemigationPermitAnnualRecord:
                     var baseCPARViewModel = new ReportTemplateChemigationPermitAnnualRecordBaseViewModel()
                     {
@@ -244,15 +236,6 @@ namespace Zybach.API.ReportTemplates
             var fileName = new FileInfo($"{FullTemplateTempDirectory}{ReportTemplateUniqueIdentifier}-generated-{ReportTemplate.FileResource.OriginalBaseFilename}");
             fileName.Directory.Create();
             return fileName.FullName;
-        }
-        
-        private List<ReportTemplateWellModel> GetListOfWellModels(ZybachDbContext dbContext)
-        {
-            var listOfModels = new List<ReportTemplateWellModel>();
-            var wellsList = dbContext.Wells.Where(x => SelectedModelIDs.Contains(x.WellID)).ToList();
-            var orderedWellList = wellsList.OrderBy(p => SelectedModelIDs.IndexOf(p.WellID)).ToList();
-            orderedWellList.ForEach(x => listOfModels.Add(new ReportTemplateWellModel(x)));
-            return listOfModels;
         }
 
         private List<ReportTemplateChemigationPermitAnnualRecordModel> GetListOfChemigationPermitAnnualRecordModels(ZybachDbContext dbContext)

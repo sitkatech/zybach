@@ -9,5 +9,6 @@ export enum CustomRichTextType{
     ReportsList = 8,
     Chemigation = 9,
     NDEEChemicalsReport = 10,
-    ChemigationPermitReport = 11
+    ChemigationPermitReport = 11,
+    ChemigationInspections = 12
 }

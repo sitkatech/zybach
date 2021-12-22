@@ -23,6 +23,7 @@ namespace Zybach.Models.DataTransferObjects
         public TillageDto Tillage { get; set; }
         public CropTypeDto CropType { get; set; }
         public string InspectionNotes { get; set; }
+        public ChemigationInspectionFailureReasonDto ChemigationInspectionFailureReason { get; set; }
     }
 
     public partial class ChemigationInspectionSimpleDto
@@ -41,6 +42,7 @@ namespace Zybach.Models.DataTransferObjects
         public int? TillageID { get; set; }
         public int? CropTypeID { get; set; }
         public string InspectionNotes { get; set; }
+        public int? ChemigationInspectionFailureReasonID { get; set; }
     }
 
 }

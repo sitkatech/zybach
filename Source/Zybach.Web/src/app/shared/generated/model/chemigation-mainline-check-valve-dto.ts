@@ -10,13 +10,10 @@
  * Do not edit the class manually.
  */
 
-export class WellInspectionSummaryDto { 
-    WellRegistrationID?: string;
-    LastChemigationDate?: string;
-    LastNitratesDate?: string;
-    LastWaterLevelDate?: string;
-    LastWaterQualityDate?: string;
-    PendingInspectionsCount?: number;
+export class ChemigationMainlineCheckValveDto { 
+    ChemigationMainlineCheckValveID?: number;
+    ChemigationMainlineCheckValveName?: string;
+    ChemigationMainlineCheckValveDisplayName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

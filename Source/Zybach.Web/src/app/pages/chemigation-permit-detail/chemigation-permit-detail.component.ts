@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
+import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -19,12 +21,13 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public currentUser: UserDto;
   public chemigationPermitNumber: number;
   public chemigationPermit: ChemigationPermitDto;
-  public annualRecords: Array<ChemigationPermitAnnualRecordDto>;
+  public annualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
 
   public allYearsSelected: boolean = false;
   public yearToDisplay: number;
   public currentYear: number;
-  public currentYearAnnualRecord: ChemigationPermitAnnualRecordDto;
+  public currentYearAnnualRecord: ChemigationPermitAnnualRecordDetailedDto;
+  //public inspectionIDCurrentlyViewing: number;
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
@@ -70,4 +73,16 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public updateAnnualData(): void {
     this.currentYearAnnualRecord = this.annualRecords?.find(x => x.RecordYear == this.yearToDisplay);
   }
+
+  public getInspections(): Array<ChemigationInspectionSimpleDto> {
+    return this.currentYearAnnualRecord?.Inspections.sort((a, b) => Date.parse(b.InspectionDate) - Date.parse(a.InspectionDate));
+  }
+
+  // public checkSelectedView(inspectionID: number): boolean {
+  //   return this.inspectionIDCurrentlyViewing == inspectionID;
+  // }
+
+  // public updateView(inspectionID: number): void {
+  //   this.inspectionIDCurrentlyViewing = inspectionID;
+  // }
 }

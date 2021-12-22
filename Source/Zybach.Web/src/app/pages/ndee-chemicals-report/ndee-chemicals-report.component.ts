@@ -49,7 +49,10 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Record Year',
         field: 'RecordYear',
-        filter: 'agNumberColumnFilter',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'RecordYear'
+        },
         resizable: true,
         sortable: true,
         sort: 'desc'

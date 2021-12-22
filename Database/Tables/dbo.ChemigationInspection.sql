@@ -17,6 +17,7 @@ CREATE TABLE [dbo].[ChemigationInspection](
 	[TillageID] [int] NULL,
 	[CropTypeID] [int] NULL,
 	[InspectionNotes] [varchar](500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ChemigationInspectionFailureReasonID] [int] NULL,
  CONSTRAINT [PK_ChemigationInspection_ChemigationInspectionID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationInspectionID] ASC
@@ -28,6 +29,11 @@ ALTER TABLE [dbo].[ChemigationInspection]  WITH CHECK ADD  CONSTRAINT [FK_Chemig
 REFERENCES [dbo].[ChemigationInjectionValve] ([ChemigationInjectionValveID])
 GO
 ALTER TABLE [dbo].[ChemigationInspection] CHECK CONSTRAINT [FK_ChemigationInspection_ChemigationInjectionValve_ChemigationInjectionValveID]
+GO
+ALTER TABLE [dbo].[ChemigationInspection]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationInspection_ChemigationInspectionFailureReason_ChemigationInspectionFailureReasonID] FOREIGN KEY([ChemigationInspectionFailureReasonID])
+REFERENCES [dbo].[ChemigationInspectionFailureReason] ([ChemigationInspectionFailureReasonID])
+GO
+ALTER TABLE [dbo].[ChemigationInspection] CHECK CONSTRAINT [FK_ChemigationInspection_ChemigationInspectionFailureReason_ChemigationInspectionFailureReasonID]
 GO
 ALTER TABLE [dbo].[ChemigationInspection]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationInspection_ChemigationInspectionStatus_ChemigationInspectionStatusID] FOREIGN KEY([ChemigationInspectionStatusID])
 REFERENCES [dbo].[ChemigationInspectionStatus] ([ChemigationInspectionStatusID])
