@@ -19,6 +19,7 @@ namespace Zybach.Models.DataTransferObjects
         public string TownshipRangeSection { get; set; }
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
+        public DateTime? DateApproved { get; set; }
         [Required]
         public int ChemigationInjectionUnitTypeID { get; set; }
         [RegularExpression(@"^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]

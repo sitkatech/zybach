@@ -239,6 +239,27 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
             resizable: true,
             sortable: true
           },
+          {
+            headerName: 'Approved', valueGetter: function (params: any) {
+              if(params.data.LatestAnnualRecord && params.data.LatestAnnualRecord.DateApproved)
+              {
+                return datePipe.transform(params.data.LatestAnnualRecord.DateApproved, 'M/d/yyyy');
+              }
+              else
+              {
+                return "";
+              }
+            },
+            comparator: this.dateFilterComparator,
+            filter: 'agDateColumnFilter',
+            filterParams: {
+              filterOptions: ['inRange'],
+              comparator: this.dateFilterComparator
+            }, 
+            width: 120,
+            resizable: true,
+            sortable: true
+          },
           { headerName: 'Applicant', field: "LatestAnnualRecord.ApplicantName", filter: true, resizable: true, sortable: true },
           { 
             headerName: 'Applied Chemicals', 

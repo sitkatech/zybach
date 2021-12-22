@@ -30,6 +30,7 @@ namespace Zybach.EFModels.Entities
                 ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone,
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
+                DateApproved = chemigationPermitAnnualRecord.DateApproved,
                 ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
                 NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount,
                 AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes,

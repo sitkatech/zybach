@@ -75,6 +75,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
       ApplicantEmail: null,
       DateReceived: null,
       DatePaid: null,
+      DateApproved: null,
       AnnualNotes: null,
     };
     this.model.ChemigationPermitAnnualRecord.Applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();

@@ -22,6 +22,7 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     TownshipRangeSection: string;
     DateReceived?: string;
     DatePaid?: string;
+    DateApproved?: string;
     ChemigationInjectionUnitTypeID: number;
     ApplicantPhone?: string;
     ApplicantMobilePhone?: string;

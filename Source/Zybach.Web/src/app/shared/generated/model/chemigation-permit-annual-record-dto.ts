@@ -35,6 +35,7 @@ export class ChemigationPermitAnnualRecordDto {
     TownshipRangeSection?: string;
     ApplicantCompany?: string;
     AnnualNotes?: string;
+    DateApproved?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

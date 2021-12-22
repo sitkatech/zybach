@@ -30,6 +30,7 @@ namespace Zybach.Models.DataTransferObjects
         public string TownshipRangeSection { get; set; }
         public string ApplicantCompany { get; set; }
         public string AnnualNotes { get; set; }
+        public DateTime? DateApproved { get; set; }
     }
 
     public partial class ChemigationPermitAnnualRecordSimpleDto
@@ -55,6 +56,7 @@ namespace Zybach.Models.DataTransferObjects
         public string TownshipRangeSection { get; set; }
         public string ApplicantCompany { get; set; }
         public string AnnualNotes { get; set; }
+        public DateTime? DateApproved { get; set; }
     }
 
 }

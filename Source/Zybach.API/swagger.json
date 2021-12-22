@@ -3131,6 +3131,11 @@
             "format": "date-time",
             "nullable": true
           },
+          "DateApproved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "ApplicantEmail": {
             "type": "string",
             "nullable": true
@@ -3258,6 +3263,11 @@
           "AnnualNotes": {
             "type": "string",
             "nullable": true
+          },
+          "DateApproved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3322,6 +3332,11 @@
             "nullable": true
           },
           "DatePaid": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "DateApproved": {
             "type": "string",
             "format": "date-time",
             "nullable": true

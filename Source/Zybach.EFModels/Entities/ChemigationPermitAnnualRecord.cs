@@ -114,6 +114,7 @@ namespace Zybach.EFModels.Entities
             //TODO: find a better solution to correct date assignment
             chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid?.AddHours(8);
             chemigationPermitAnnualRecord.DateReceived = chemigationPermitAnnualRecordUpsertDto.DateReceived?.AddHours(8);
+            chemigationPermitAnnualRecord.DateApproved = chemigationPermitAnnualRecordUpsertDto.DateApproved?.AddHours(8);
         }
 
         public static List<ChemigationPermitAnnualRecordDetailedDto> GetLatestAsDetailedDto(ZybachDbContext dbContext)

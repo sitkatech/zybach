@@ -94,6 +94,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
     chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
     chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
+    chemigationPermitAnnualRecordUpsertDto.DateApproved = annualRecord.DateApproved;
     chemigationPermitAnnualRecordUpsertDto.AnnualNotes = annualRecord.AnnualNotes;
     chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection = annualRecord.TownshipRangeSection;
     

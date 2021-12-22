@@ -58,6 +58,8 @@ namespace Zybach.EFModels.Entities
         public string ApplicantCompany { get; set; }
         [StringLength(500)]
         public string AnnualNotes { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? DateApproved { get; set; }
 
         [ForeignKey(nameof(ChemigationInjectionUnitTypeID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]

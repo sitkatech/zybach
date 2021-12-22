@@ -25,6 +25,7 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantMobilePhone { get; set; }
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
+        public DateTime? DateApproved { get; set; }
         public string ApplicantEmail { get; set; }
         public decimal? NDEEAmount { get; set; }
         public string AnnualNotes { get; set; }

@@ -3,6 +3,7 @@ alter table dbo.ChemigationPermitAnnualRecord add TownshipRangeSection varchar(1
 alter table dbo.ChemigationPermit drop column TownshipRangeSection
 alter table dbo.ChemigationPermitAnnualRecord add ApplicantCompany varchar(200) null
 alter table dbo.ChemigationPermitAnnualRecord add AnnualNotes varchar(500) null
+alter table dbo.ChemigationPermitAnnualRecord add DateApproved datetime null
 
 drop table dbo.ChemigationPermitAnnualRecordWell
 

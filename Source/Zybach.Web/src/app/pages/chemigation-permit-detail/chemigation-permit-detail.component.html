@@ -125,6 +125,17 @@
 
                             <div class="row col-12">
                                 <div class="col-6 text-right">
+                                    <p><strong>Date Approved: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{currentYearAnnualRecord.DateApproved | date:'shortDate'}}
+                                        <em *ngIf="!currentYearAnnualRecord.DateApproved" class="text-muted">N/A</em>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
                                     <p><strong>Pivot Name: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">

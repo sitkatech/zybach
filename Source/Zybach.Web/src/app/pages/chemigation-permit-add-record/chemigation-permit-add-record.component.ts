@@ -85,9 +85,10 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.ApplicantPhone = annualRecord.ApplicantPhone;
     chemigationPermitAnnualRecordUpsertDto.ApplicantMobilePhone = annualRecord.ApplicantMobilePhone;
     chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
-    chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
-    chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
-    chemigationPermitAnnualRecordUpsertDto.AnnualNotes = annualRecord.AnnualNotes;
+    chemigationPermitAnnualRecordUpsertDto.DateReceived = null;
+    chemigationPermitAnnualRecordUpsertDto.DatePaid = null;
+    chemigationPermitAnnualRecordUpsertDto.DateApproved = null;
+    chemigationPermitAnnualRecordUpsertDto.AnnualNotes = null;
     chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection = annualRecord.TownshipRangeSection;
 
     const chemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>();

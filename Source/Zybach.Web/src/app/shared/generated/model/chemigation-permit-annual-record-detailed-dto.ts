@@ -35,6 +35,7 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     ApplicantMobilePhone?: string;
     DateReceived?: string;
     DatePaid?: string;
+    DateApproved?: string;
     ApplicantEmail?: string;
     NDEEAmount?: number;
     AnnualNotes?: string;

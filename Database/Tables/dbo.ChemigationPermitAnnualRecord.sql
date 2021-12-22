@@ -24,6 +24,7 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 	[TownshipRangeSection] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ApplicantCompany] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[AnnualNotes] [varchar](500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[DateApproved] [datetime] NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationPermitAnnualRecordID] ASC

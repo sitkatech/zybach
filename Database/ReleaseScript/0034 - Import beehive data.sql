@@ -67,11 +67,12 @@ where PermitNumber = '1913' and ChemigationYear != 2019
 group by PermitNumber, c.ChemigationCountyID, w.WellID
 order by PermitNumber, c.ChemigationCountyID, w.WellID
 
-insert into dbo.ChemigationPermitAnnualRecord([ChemigationPermitID], [RecordYear], [ChemigationPermitAnnualRecordStatusID], [PivotName], [ChemigationInjectionUnitTypeID], [ApplicantFirstName], [ApplicantLastName], [ApplicantCompany], [ApplicantMailingAddress], [ApplicantCity], [ApplicantState], [ApplicantZipCode], ApplicantPhone, ApplicantMobilePhone, [DateReceived], [DatePaid], NDEEAmount, TownshipRangeSection, AnnualNotes)
+insert into dbo.ChemigationPermitAnnualRecord([ChemigationPermitID], [RecordYear], [ChemigationPermitAnnualRecordStatusID], [PivotName], [ChemigationInjectionUnitTypeID], [ApplicantFirstName], [ApplicantLastName], [ApplicantCompany], [ApplicantMailingAddress], [ApplicantCity], [ApplicantState], [ApplicantZipCode], ApplicantPhone, ApplicantMobilePhone, [DateReceived], [DatePaid], NDEEAmount, TownshipRangeSection, AnnualNotes, DateApproved)
 select cp.ChemigationPermitID, bp.ChemigationYear as RecordYear, 4  /* using Approved for now bp.[Status]*/, case when len(bw.[Pivot Name]) = 0 then null else bw.[Pivot Name] end as PivotName, 1 as [ChemigationInjectionUnitTypeID]
 , PermitHolderFirstName, PermitHolderLastName, PermitHolderCompany, PermitHolderAdd, PermitHolderCity, PermitHolderState, PermitHolderZip, PermitHolderHomePhone, case when len(PermitHolderMobilePhone) = 8 then '(308) ' + PermitHolderMobilePhone when len(PermitHolderMobilePhone) = 0 then null else PermitHolderMobilePhone end
 , case when bp.ReceivedDate is null then null else dateadd(hour, 8, concat(month(bp.ReceivedDate), '-', day(bp.ReceivedDate), '-', year(bp.ReceivedDate))) end as DateReceived, case when bp.DatePaid is null then null else dateadd(hour, 8, concat(month(bp.DatePaid), '-', day(bp.DatePaid), '-', year(bp.DatePaid))) end as DatePaid, DEQAmount
 , ltrim(rtrim(bp.[Quarter] + ' ' + bp.Section + ' ' + bp.Township + ' ' + bp.[Range])) as TownshipRangeSection, bp.Note as AnnualNotes
+, case when bp.ApprovedDate is null then null else dateadd(hour, 8, concat(month(bp.ApprovedDate), '-', day(bp.ApprovedDate), '-', year(bp.ApprovedDate))) end as DateApproved
 from dbo.BeehivePermit bp
 join dbo.ChemigationPermit cp on cast(bp.PermitNumber as int) = cp.ChemigationPermitNumber
 join dbo.BeehiveWell bw on bp.WellFeatureID = bw.WellFeatureID
