@@ -178,7 +178,20 @@ update cpar
 set cpar.ApplicantCompany = case when cpar.ApplicantCompany is null or len(cpar.ApplicantCompany) = 0 then '' else cpar.ApplicantCompany + ' ' end + cpar.ApplicantFirstName + ' ' + cpar.ApplicantLastName, cpar.ApplicantFirstName = null, cpar.ApplicantLastName = null
 from dbo.ChemigationPermitAnnualRecord cpar
 join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
-where ApplicantLastName in ('Land & Cattle', 'Livestock Feeders', 'Inc', 'Farming Trust', 'Ag Inc', 'Land & Cattle Co', 'Ranch Inc', 'Ranch LLC', 'Holdings LLC', 'Cattle Co', 'Land & Livestock')
+where ApplicantLastName in ('Land & Cattle', 'Livestock Feeders', 'Inc', 'Farming Trust', 'Ag Inc', 'Land & Cattle Co', 'Ranch Inc', 'Ranch LLC', 'Holdings LLC', 'Cattle Co', 'Land & Livestock', 'LLC', 'Creek Ranch', 'Hecox Inc', 'Family Farm', 'Family Trust', 'Land & Seed LLC', 'Ranch', 'Seed')
+
+update cpar
+set cpar.ApplicantCompany = cpar.ApplicantLastName, cpar.ApplicantFirstName = null, cpar.ApplicantLastName = null
+from dbo.ChemigationPermitAnnualRecord cpar
+join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
+where ApplicantLastName in ('Double Dog Ranch LLC') and ApplicantFirstName is null and ApplicantCompany is null
+
+update cpar
+set cpar.ApplicantCompany = cpar.ApplicantFirstName, cpar.ApplicantFirstName = 'Rick', cpar.ApplicantLastName = 'Johnson'
+from dbo.ChemigationPermitAnnualRecord cpar
+join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
+where ApplicantFirstName in ('Farmer''s National Co') and ApplicantLastName = 'Rick Johnson'
+
 
 
 drop table dbo.BeehivePermitApplicator
