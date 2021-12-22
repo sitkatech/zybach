@@ -297,6 +297,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           }, 
             filter: true, resizable: true, sortable: true 
           },
+          { headerName: 'Notes', field: "LatestAnnualRecord.AnnualNotes", filter: true, resizable: true, sortable: true },
         ]
       }
     ];
