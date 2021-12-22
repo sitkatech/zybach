@@ -1,9 +1,10 @@
 ﻿MERGE INTO dbo.ChemigationPermitAnnualRecordStatus AS Target
 USING (VALUES
-(1, 'PendingRenewal', 'Pending Renewal'),
+(1, 'PendingPayment', 'Pending Payment'),
 (2, 'ReadyForReview', 'Ready For Review'),
 (3, 'PendingInspection', 'Pending Inspection'),
-(4, 'Approved', 'Approved')
+(4, 'Approved', 'Approved'),
+(5, 'Canceled', 'Canceled')
 )
 AS Source (ChemigationPermitAnnualRecordStatusID, ChemigationPermitAnnualRecordStatusName, ChemigationPermitAnnualRecordStatusDisplayName)
 ON Target.ChemigationPermitAnnualRecordStatusID = Source.ChemigationPermitAnnualRecordStatusID

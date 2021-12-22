@@ -53,3 +53,8 @@ INSERT INTO dbo.ChemigationInjectionUnitType(ChemigationInjectionUnitTypeID, Che
 VALUES
 (1, 'Portable', 'Portable'),
 (2, 'Stationary', 'Stationary')
+
+
+INSERT INTO dbo.ChemigationPermitAnnualRecordStatus(ChemigationPermitAnnualRecordStatusID, ChemigationPermitAnnualRecordStatusName, ChemigationPermitAnnualRecordStatusDisplayName)
+VALUES
+(5, 'Canceled', 'Canceled')
