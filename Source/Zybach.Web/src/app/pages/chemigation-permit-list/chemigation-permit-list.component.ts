@@ -265,7 +265,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               {
               const applicators = params.data.LatestAnnualRecord.Applicators.map(x => x.ApplicatorName);
               if (applicators.length > 0) {
-                return `${applicators.join(', ')}`;
+                return `${applicators.join('; ')}`;
               } else {
                 return "-";
               }

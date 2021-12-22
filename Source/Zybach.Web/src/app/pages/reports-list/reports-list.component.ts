@@ -26,14 +26,10 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;
   private currentUser: UserDto;
 
-  public reportTemplates: Array<ReportTemplateDto>
   public richTextTypeID : number = CustomRichTextType.ReportsList;
 
-  public rowData = [];
+  public rowData: Array<ReportTemplateDto>;
   public columnDefs: ColDef[];
-
-  public selectedReportTemplateID: string;
-  public isLoadingSubmit: boolean = false;
 
   constructor(
     private reportTemplateService: ReportTemplateService,
@@ -47,7 +43,6 @@ export class ReportsListComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.reportTemplatesGrid.api.showLoadingOverlay();
       this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
-        this.reportTemplates = reportTemplates;
         this.rowData = reportTemplates;
         this.reportTemplatesGrid.api.hideOverlay();
         this.cdr.detectChanges();
@@ -117,33 +112,4 @@ export class ReportsListComponent implements OnInit, OnDestroy {
     this.cdr.detach();
   }
 
-  public generateReport(): void {
-    if(!this.selectedReportTemplateID){
-      this.alertService.pushAlert(new Alert("No report template selected.", AlertContext.Warning));
-    } else {
-      this.isLoadingSubmit = true;
-      var reportTemplateID = parseInt(this.selectedReportTemplateID);
-      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateID === reportTemplateID);
-      var generateReportsDto = new GenerateReportsDto();
-      generateReportsDto.ReportTemplateID = reportTemplateID;
-      this.reportTemplateService.generateReport(generateReportsDto)
-        .subscribe(response => {
-          this.isLoadingSubmit = false;
-  
-          var a = document.createElement("a");
-          a.href = URL.createObjectURL(response);
-          a.download = reportTemplate.DisplayName + " Generated Report";
-          // start download
-          a.click();
-  
-          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + reportTemplate.DisplayName + "'", AlertContext.Success));
-        }
-          ,
-          error => {
-            this.isLoadingSubmit = false;
-            this.cdr.detectChanges();
-          }
-        );
-    }
-  }
 }
