@@ -25,6 +25,7 @@ namespace Zybach.EFModels.Entities
                     .ThenInclude(x => x.ChemigationPermit)
                         .ThenInclude(x => x.Well)
                 .Include(x => x.ChemigationInspectionStatus)
+                .Include(x => x.ChemigationInspectionFailureReason)
                 .Include(x => x.ChemigationInspectionType)
                 .Include(x => x.ChemigationMainlineCheckValve)
                 .Include(x => x.ChemigationLowPressureValve)

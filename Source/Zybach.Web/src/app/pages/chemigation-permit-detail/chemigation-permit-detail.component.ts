@@ -74,6 +74,6 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   }
 
   public getInspections(): Array<ChemigationInspectionSimpleDto> {
-    return this.currentYearAnnualRecord?.Inspections;
+    return this.currentYearAnnualRecord?.Inspections.sort((a, b) => Date.parse(b.InspectionDate) - Date.parse(a.InspectionDate));
   }
 }

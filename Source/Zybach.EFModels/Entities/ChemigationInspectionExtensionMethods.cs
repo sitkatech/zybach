@@ -20,6 +20,7 @@ namespace Zybach.EFModels.Entities
             chemigationInspectionSimpleDto.ChemigationMainlineCheckValveName = chemigationInspection.ChemigationMainlineCheckValve?.ChemigationMainlineCheckValveDisplayName;
             chemigationInspectionSimpleDto.ChemigationLowPressureValveName = chemigationInspection.ChemigationLowPressureValve?.ChemigationLowPressureValveDisplayName;
             chemigationInspectionSimpleDto.ChemigationInjectionValveName = chemigationInspection.ChemigationInjectionValve?.ChemigationInjectionValveDisplayName;
+            chemigationInspectionSimpleDto.ChemigationInspectionFailureReasonName = chemigationInspection.ChemigationInspectionFailureReason?.ChemigationInspectionFailureReasonDisplayName;
             chemigationInspectionSimpleDto.TillageName = chemigationInspection.Tillage?.TillageDisplayName;
             chemigationInspectionSimpleDto.CropTypeName = chemigationInspection.CropType?.CropTypeDisplayName;
             chemigationInspectionSimpleDto.Inspector = chemigationInspection.InspectorUser?.AsSimpleDto();

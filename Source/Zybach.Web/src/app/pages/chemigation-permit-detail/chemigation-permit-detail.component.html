@@ -316,7 +316,7 @@
                         <h5>Annual Record Notes</h5>
                         <div *ngIf="currentYearAnnualRecord.AnnualNotes ; then hasAnnualNotes else noAnnualNotes"></div>
                         <ng-template #hasAnnualNotes>
-                            <div class="card card-body mt-2 mb-5">
+                            <div class="card card-body mb-5">
                                 <p>{{currentYearAnnualRecord.AnnualNotes}}</p>
 
                             </div>
@@ -384,13 +384,25 @@
                                             </p>
                                         </div>
                                     </div>
+
+                                    <div class="row col-12">
+                                        <div class="col-6 text-right">
+                                            <p><strong>Failure Reason: </strong></p>
+                                        </div>
+                                        <div class="col-6 text-left">
+                                            <p>{{inspection.ChemigationInspectionFailureReasonName}}
+                                                <em *ngIf="!inspection.ChemigationInspectionFailureReasonName" class="text-muted">N/A</em>
+                                            </p>
+                                        </div>
+                                    </div>
         
                                     <div class="row col-12">
                                         <div class="col-6 text-right">
                                             <p><strong>Inspection Notes: </strong></p>
                                         </div>
                                         <div class="col-6 text-left">
-                                            <div class="card card-body mt-2 mb-5">
+                                            <em *ngIf="!inspection.InspectionNotes" class="text-muted">N/A</em>
+                                            <div class="card card-body mb-5" *ngIf="inspection.InspectionNotes">
                                                 <p>
                                                     {{inspection.InspectionNotes}}
                                                 </p>
