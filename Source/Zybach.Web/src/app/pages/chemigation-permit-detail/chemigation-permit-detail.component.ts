@@ -27,6 +27,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public yearToDisplay: number;
   public currentYear: number;
   public currentYearAnnualRecord: ChemigationPermitAnnualRecordDetailedDto;
+  //public inspectionIDCurrentlyViewing: number;
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
@@ -76,4 +77,12 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public getInspections(): Array<ChemigationInspectionSimpleDto> {
     return this.currentYearAnnualRecord?.Inspections.sort((a, b) => Date.parse(b.InspectionDate) - Date.parse(a.InspectionDate));
   }
+
+  // public checkSelectedView(inspectionID: number): boolean {
+  //   return this.inspectionIDCurrentlyViewing == inspectionID;
+  // }
+
+  // public updateView(inspectionID: number): void {
+  //   this.inspectionIDCurrentlyViewing = inspectionID;
+  // }
 }
