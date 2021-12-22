@@ -339,175 +339,177 @@
                         <h5>Inspections</h5>
                         <div *ngIf="currentYearAnnualRecord.Inspections.length > 0 ; then hasInspections else noInspections"></div>
                         <ng-template #hasInspections>
-                            
-                            <div class="row col-12" *ngFor="let inspection of getInspections()">
-                                    <!-- <ul class="list-group list-group-flush text-center text-lg-left flex-row" style="width:100%">
-                                      <li class="list-group-item header" style="width:100%" *ngFor="let inspection of getInspections()"
-                                        [class.selected]="checkSelectedView(inspection.ChemigationInspectionID)" (click)="updateView(inspection.ChemigationInspectionID)" (mouseenter)="hoverItem = inspection"
-                                        (mouseleave)="hoverItem = null" placement="top" ngbTooltip="{{inspection.InspectionDate | date:'shortDate'}}" tooltipClass="selector-tooltip">
-                                        <div class="container" style="height:100%">
-                                          <div class="row d-flex flex-wrap align-items-center ml-1" style="height:100%">
-                                            <div class="col-lg-9 pl-0 d-lg-block d-none">
-                                              {{inspection.InspectionDate | date:'shortDate'}}
+
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a [ngClass]="{'nav-link': true, 'active': isFirst}" *ngFor="let inspection of getInspections(); first as isFirst"
+                                        id="inspection-{{inspection.ChemigationInspectionID}}" data-toggle="tab" 
+                                        href="#nav-inspection-{{inspection.ChemigationInspectionID}}" role="tab">
+                                        <strong>{{inspection.InspectionDate | date:'shortDate'}} - {{inspection.ChemigationInspectionStatusName}}</strong>
+                                    </a>
+                                    <a class="nav-link" role="tab">
+                                        <strong>
+                                            <span class="fas fa-plus"></span> Add Inspection
+                                        </strong>
+                                    </a>
+                                </div>
+                            </nav>
+
+                            <div class="tab-content" id="nav-tabContent">
+                                <div [ngClass]="{'tab-pane': true, 'fade': true, 'show': true, 'active': isFirst}" 
+                                    *ngFor="let inspection of getInspections(); first as isFirst" 
+                                    id="nav-inspection-{{inspection.ChemigationInspectionID}}" role="tabpanel">
+                                    <div class="row col-12 mt-4">
+                                        <div class="row col-6">
+                                            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Date: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.InspectionDate | date:'shortDate'}}
+                                                    </p>
+                                                </div>
                                             </div>
-                                          </div>
+                
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Inspection Type: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.ChemigationInspectionTypeName}}
+                                                        <em *ngIf="!inspection.ChemigationInspectionTypeName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+                
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Inspector: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.Inspector.FullNameLastFirst}}
+                                            
+                                                    </p>
+                                                </div>
+                                            </div>
+                
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Status: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.ChemigationInspectionStatusName}}
+                                        
+                                                    </p>
+                                                </div>
+                                            </div>
+            
+                                            <div class="row col-12" *ngIf="inspection.ChemigationInspectionFailureReasonName">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Failure Reason: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.ChemigationInspectionFailureReasonName}}
+                                                        <em *ngIf="!inspection.ChemigationInspectionFailureReasonName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+                
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Inspection Notes: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>
+                                                        <em *ngIf="!inspection.InspectionNotes" class="text-muted">N/A</em>
+                                                        {{inspection.InspectionNotes}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                
                                         </div>
-                                      </li>
-                                    </ul> -->
-
-                                <div class="col-12">
-                                    <hr class="w-90" />
+            
+                                        <div class="row col-6">
+            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Mainline Check Valve: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.ChemigationMainlineCheckValveName}}
+                                                        <em *ngIf="!inspection.ChemigationMainlineCheckValveName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Low Pressure Valve: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.ChemigationLowPressureValveName}}
+                                                        <em *ngIf="!inspection.ChemigationLowPressureValveName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Chemigation Injection Valve: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.ChemigationInjectionValveName}}
+                                                        <em *ngIf="!inspection.ChemigationInjectionValveName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Vacuum Relief Valve?: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.HasVacuumReliefValve ? 'Yes' : 'No'}}
+                                                    </p>
+                                                </div>
+                                            </div>
+            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Inspection Port?: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.HasInspectionPort ? 'Yes' : 'No'}}
+                                                    </p>
+                                                </div>
+                                            </div>
+            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Tillage: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.TillageName}}
+                                                        <em *ngIf="!inspection.TillageName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+            
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Crop Type: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.CropTypeName}}
+                                                        <em *ngIf="!inspection.CropTypeName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+            
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="row col-6">
-                                    
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Date: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.InspectionDate | date:'shortDate'}}
-                                            </p>
-                                        </div>
-                                    </div>
-        
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Inspection Type: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.ChemigationInspectionTypeName}}
-                                                <em *ngIf="!inspection.ChemigationInspectionTypeName" class="text-muted">N/A</em>
-                                            </p>
-                                        </div>
-                                    </div>
-        
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Inspector: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.Inspector.FullNameLastFirst}}
-                                    
-                                            </p>
-                                        </div>
-                                    </div>
-        
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Status: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.ChemigationInspectionStatusName}}
-                                
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row col-12" *ngIf="inspection.ChemigationInspectionFailureReasonName">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Failure Reason: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.ChemigationInspectionFailureReasonName}}
-                                                <em *ngIf="!inspection.ChemigationInspectionFailureReasonName" class="text-muted">N/A</em>
-                                            </p>
-                                        </div>
-                                    </div>
-        
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Inspection Notes: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>
-                                                <em *ngIf="!inspection.InspectionNotes" class="text-muted">N/A</em>
-                                                {{inspection.InspectionNotes}}
-                                            </p>
-                                        </div>
-                                    </div>
-        
-                                </div>
-
-                                <div class="row col-6">
-
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Mainline Check Valve: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.ChemigationMainlineCheckValveName}}
-                                                <em *ngIf="!inspection.ChemigationMainlineCheckValveName" class="text-muted">N/A</em>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Low Pressure Valve: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.ChemigationLowPressureValveName}}
-                                                <em *ngIf="!inspection.ChemigationLowPressureValveName" class="text-muted">N/A</em>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Chemigation Injection Valve: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.ChemigationInjectionValveName}}
-                                                <em *ngIf="!inspection.ChemigationInjectionValveName" class="text-muted">N/A</em>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Vacuum Relief Valve?: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.HasVacuumReliefValve ? 'Yes' : 'No'}}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Inspection Port?: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.HasInspectionPort ? 'Yes' : 'No'}}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Tillage: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.TillageName}}
-                                                <em *ngIf="!inspection.TillageName" class="text-muted">N/A</em>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row col-12">
-                                        <div class="col-6 text-right">
-                                            <p><strong>Crop Type: </strong></p>
-                                        </div>
-                                        <div class="col-6 text-left">
-                                            <p>{{inspection.CropTypeName}}
-                                                <em *ngIf="!inspection.CropTypeName" class="text-muted">N/A</em>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </div>
-
                             </div>
                             
                         </ng-template>
