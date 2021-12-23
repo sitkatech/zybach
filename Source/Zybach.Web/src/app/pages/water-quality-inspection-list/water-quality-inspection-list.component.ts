@@ -24,7 +24,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
   private watchUserChangeSubscription: any;
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.Chemigation;
+  public richTextTypeID : number = CustomRichTextType.WaterQualityInspections;
 
   public columnDefs: any[];
   public defaultColDef: ColDef;
@@ -150,13 +150,22 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
+      { headerName: 'Type', field: 'WaterQualityInspectionTypeName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'WaterQualityInspectionTypeName'
+        }, 
+        width: 100,
+        resizable: true, sortable: true 
+      },
       { headerName: 'Crop Type', field: 'CropTypeName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'CropTypeName'
         }, 
         width: 100,
-        resizable: true, sortable: true },
+        resizable: true, sortable: true 
+      },
       {
         headerName: 'Temperature (C)', 
         field: 'Temperature',
@@ -325,6 +334,13 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
         width: 140,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Notes', 
+        field: 'InspectionNotes',
+        filterable: true,
         resizable: true,
         sortable: true
       }

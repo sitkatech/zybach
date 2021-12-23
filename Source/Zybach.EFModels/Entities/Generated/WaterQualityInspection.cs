@@ -14,6 +14,7 @@ namespace Zybach.EFModels.Entities
         [Key]
         public int WaterQualityInspectionID { get; set; }
         public int WellID { get; set; }
+        public int WaterQualityInspectionTypeID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime InspectionDate { get; set; }
         public int InspectorUserID { get; set; }
@@ -56,6 +57,8 @@ namespace Zybach.EFModels.Entities
         public decimal? PreWaterLevel { get; set; }
         [Column(TypeName = "decimal(12, 4)")]
         public decimal? PostWaterLevel { get; set; }
+        [StringLength(500)]
+        public string InspectionNotes { get; set; }
 
         [ForeignKey(nameof(CropTypeID))]
         [InverseProperty("WaterQualityInspections")]
@@ -63,6 +66,9 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(InspectorUserID))]
         [InverseProperty(nameof(User.WaterQualityInspections))]
         public virtual User InspectorUser { get; set; }
+        [ForeignKey(nameof(WaterQualityInspectionTypeID))]
+        [InverseProperty("WaterQualityInspections")]
+        public virtual WaterQualityInspectionType WaterQualityInspectionType { get; set; }
         [ForeignKey(nameof(WellID))]
         [InverseProperty("WaterQualityInspections")]
         public virtual Well Well { get; set; }

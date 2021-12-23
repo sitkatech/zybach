@@ -11,6 +11,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.WaterQualityInspections
                 .Include(x => x.Well)
+                .Include(x => x.WaterQualityInspectionType)
                 .Include(x => x.CropType)
                 .Include(x => x.InspectorUser)
                 .ThenInclude(x => x.Role)
@@ -19,7 +20,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<WaterQualityInspectionSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
-            return ListImpl(dbContext).Select(x => x.AsSimpleDto()).ToList();
+            return ListImpl(dbContext).OrderByDescending(x => x.InspectionDate).ThenBy(x => x.Well.WellRegistrationID).Select(x => x.AsSimpleDto()).ToList();
         }
 
         public static WaterQualityInspectionSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int waterQualityInspectionID)

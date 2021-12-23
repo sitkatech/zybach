@@ -8,6 +8,7 @@ namespace Zybach.EFModels.Entities
             WaterQualityInspectionSimpleDto waterQualityInspectionSimpleDto)
         {
             waterQualityInspectionSimpleDto.Well = waterQualityInspection.Well.AsSimpleDto();
+            waterQualityInspectionSimpleDto.WaterQualityInspectionTypeName = waterQualityInspection.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName;
             waterQualityInspectionSimpleDto.CropTypeName = waterQualityInspection.CropType?.CropTypeDisplayName;
             waterQualityInspectionSimpleDto.Inspector = waterQualityInspection.InspectorUser?.AsSimpleDto();
         }

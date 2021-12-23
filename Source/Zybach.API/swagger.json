@@ -4801,6 +4801,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "InspectionDate": {
             "type": "string",
             "format": "date-time"
@@ -4909,8 +4913,16 @@
             "format": "double",
             "nullable": true
           },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
           "Well": {
             "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "WaterQualityInspectionTypeName": {
+            "type": "string",
+            "nullable": true
           },
           "CropTypeName": {
             "type": "string",

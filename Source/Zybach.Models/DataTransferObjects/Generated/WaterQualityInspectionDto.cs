@@ -11,6 +11,7 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int WaterQualityInspectionID { get; set; }
         public WellDto Well { get; set; }
+        public WaterQualityInspectionTypeDto WaterQualityInspectionType { get; set; }
         public DateTime InspectionDate { get; set; }
         public UserDto InspectorUser { get; set; }
         public decimal? Temperature { get; set; }
@@ -33,12 +34,14 @@ namespace Zybach.Models.DataTransferObjects
         public CropTypeDto CropType { get; set; }
         public decimal? PreWaterLevel { get; set; }
         public decimal? PostWaterLevel { get; set; }
+        public string InspectionNotes { get; set; }
     }
 
     public partial class WaterQualityInspectionSimpleDto
     {
         public int WaterQualityInspectionID { get; set; }
         public int WellID { get; set; }
+        public int WaterQualityInspectionTypeID { get; set; }
         public DateTime InspectionDate { get; set; }
         public int InspectorUserID { get; set; }
         public decimal? Temperature { get; set; }
@@ -61,6 +64,7 @@ namespace Zybach.Models.DataTransferObjects
         public int? CropTypeID { get; set; }
         public decimal? PreWaterLevel { get; set; }
         public decimal? PostWaterLevel { get; set; }
+        public string InspectionNotes { get; set; }
     }
 
 }

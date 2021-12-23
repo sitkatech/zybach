@@ -15,6 +15,7 @@ import { UserSimpleDto } from '././user-simple-dto';
 export class WaterQualityInspectionSimpleDto { 
     WaterQualityInspectionID?: number;
     WellID?: number;
+    WaterQualityInspectionTypeID?: number;
     InspectionDate?: string;
     InspectorUserID?: number;
     Temperature?: number;
@@ -37,7 +38,9 @@ export class WaterQualityInspectionSimpleDto {
     CropTypeID?: number;
     PreWaterLevel?: number;
     PostWaterLevel?: number;
+    InspectionNotes?: string;
     Well?: WellSimpleDto;
+    WaterQualityInspectionTypeName?: string;
     CropTypeName?: string;
     Inspector?: UserSimpleDto;
     constructor(obj?: any) {

@@ -15,6 +15,7 @@ namespace Zybach.EFModels.Entities
             {
                 WaterQualityInspectionID = waterQualityInspection.WaterQualityInspectionID,
                 Well = waterQualityInspection.Well.AsDto(),
+                WaterQualityInspectionType = waterQualityInspection.WaterQualityInspectionType.AsDto(),
                 InspectionDate = waterQualityInspection.InspectionDate,
                 InspectorUser = waterQualityInspection.InspectorUser.AsDto(),
                 Temperature = waterQualityInspection.Temperature,
@@ -36,7 +37,8 @@ namespace Zybach.EFModels.Entities
                 SiliconDioxide = waterQualityInspection.SiliconDioxide,
                 CropType = waterQualityInspection.CropType?.AsDto(),
                 PreWaterLevel = waterQualityInspection.PreWaterLevel,
-                PostWaterLevel = waterQualityInspection.PostWaterLevel
+                PostWaterLevel = waterQualityInspection.PostWaterLevel,
+                InspectionNotes = waterQualityInspection.InspectionNotes
             };
             DoCustomMappings(waterQualityInspection, waterQualityInspectionDto);
             return waterQualityInspectionDto;
@@ -50,6 +52,7 @@ namespace Zybach.EFModels.Entities
             {
                 WaterQualityInspectionID = waterQualityInspection.WaterQualityInspectionID,
                 WellID = waterQualityInspection.WellID,
+                WaterQualityInspectionTypeID = waterQualityInspection.WaterQualityInspectionTypeID,
                 InspectionDate = waterQualityInspection.InspectionDate,
                 InspectorUserID = waterQualityInspection.InspectorUserID,
                 Temperature = waterQualityInspection.Temperature,
@@ -71,7 +74,8 @@ namespace Zybach.EFModels.Entities
                 SiliconDioxide = waterQualityInspection.SiliconDioxide,
                 CropTypeID = waterQualityInspection.CropTypeID,
                 PreWaterLevel = waterQualityInspection.PreWaterLevel,
-                PostWaterLevel = waterQualityInspection.PostWaterLevel
+                PostWaterLevel = waterQualityInspection.PostWaterLevel,
+                InspectionNotes = waterQualityInspection.InspectionNotes
             };
             DoCustomSimpleDtoMappings(waterQualityInspection, waterQualityInspectionSimpleDto);
             return waterQualityInspectionSimpleDto;
