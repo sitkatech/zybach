@@ -3482,7 +3482,8 @@
           },
           "ChemigationInspectionTypeID": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "ChemigationInspectionStatusID": {
             "type": "integer",
@@ -3510,7 +3511,8 @@
           },
           "InspectorUserID": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "ChemigationMainlineCheckValveID": {
             "type": "integer",

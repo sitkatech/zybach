@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationInspectionUpsertComponent } from 'src/app/shared/components/chemigation-inspection-upsert/chemigation-inspection-upsert.component';
 import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
@@ -10,6 +11,8 @@ import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generat
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationInspectionStatusEnum } from 'src/app/shared/models/enums/chemigation-inspection-status';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
@@ -33,11 +36,14 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public currentYearAnnualRecord: ChemigationPermitAnnualRecordDetailedDto;
 
   public inspection: ChemigationInspectionUpsertDto;
+  public isLoadingSubmit: boolean;
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
+    private chemigationInspectionService: ChemigationInspectionService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
+    private router: Router,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
   ) { }
@@ -104,5 +110,26 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
     chemigationInspectionUpsertDto.InspectionNotes = null;
 
     this.inspection = chemigationInspectionUpsertDto;
+  }
+
+  public onSubmit(addChemigationInspectionForm: HTMLFormElement): void {
+    this.isLoadingSubmit = true;
+  
+    this.chemigationInspectionService.createChemigationInspectionByAnnualRecordID(this.currentYearAnnualRecord.ChemigationPermitAnnualRecordID, this.inspection)
+      .subscribe(response => {
+        this.isLoadingSubmit = false;
+        addChemigationInspectionForm.reset();
+        //get router to reload and show new inspection record
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigateByUrl("/chemigation-permits/" + this.chemigationPermit.ChemigationPermitNumber).then(() => {
+          this.alertService.pushAlert(new Alert(`Chemigation inspection record added.`, AlertContext.Success));
+        });
+      }
+        ,
+        error => {
+          this.isLoadingSubmit = false;
+          this.cdr.detectChanges();
+        }
+      );
   }
 }

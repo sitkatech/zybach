@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
@@ -14,11 +15,13 @@ import { ChemigationMainlineCheckValveDto } from '../../generated/model/chemigat
 import { CropTypeDto } from '../../generated/model/crop-type-dto';
 import { TillageDto } from '../../generated/model/tillage-dto';
 import { UserDto } from '../../generated/model/user-dto';
+import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 
 @Component({
   selector: 'zybach-chemigation-inspection-upsert',
   templateUrl: './chemigation-inspection-upsert.component.html',
-  styleUrls: ['./chemigation-inspection-upsert.component.scss']
+  styleUrls: ['./chemigation-inspection-upsert.component.scss'],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateAdapterFromString}]
 })
 export class ChemigationInspectionUpsertComponent implements OnInit {
   @Input() inspection: ChemigationInspectionUpsertDto;

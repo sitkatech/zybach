@@ -510,10 +510,27 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade show" id="nav-add-inspection" role="tabpanel">
-                                    <zybach-chemigation-inspection-upsert #inspectionUpsertForm
-                                    [(inspection)]="inspection">
-                                    </zybach-chemigation-inspection-upsert >
+                                <div class="tab-pane fade" id="nav-add-inspection" role="tabpanel">
+
+                                    <form (ngSubmit)="onSubmit(addChemigationInspectionForm)" #addChemigationInspectionForm="ngForm">
+
+                                        <zybach-chemigation-inspection-upsert #inspectionUpsertForm
+                                        [(inspection)]="inspection">
+                                        </zybach-chemigation-inspection-upsert >
+    
+                                        <div class="col-sm text-right">
+                                            <button type="submit" class="btn btn-zybach">
+                                                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                                                Save
+                                            </button>
+                                            <a class="btn btn-secondary ml-1"
+                                                routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
+                                                Cancel
+                                            </a>
+                                        </div>
+
+                                    </form>
+
                                 </div>
                             </div>
                             
