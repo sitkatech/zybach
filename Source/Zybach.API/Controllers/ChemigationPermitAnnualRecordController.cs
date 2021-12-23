@@ -45,13 +45,56 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/chemigationInspections")]
-        //[ZybachViewFeature]
+        [ZybachViewFeature]
         public ActionResult<List<ChemigationInspectionSimpleDto>> GetAllChemigationInspections()
         {
             var chemigationInspections =
                 ChemigationInspection.List(_dbContext);
             return Ok(chemigationInspections);
         }
+
+        [HttpPost("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection")]
+        //[AdminFeature]
+        public ActionResult<ChemigationInspectionSimpleDto>
+            CreateChemigationInspectionByAnnualRecordID([FromRoute] int chemigationPermitAnnualRecordID,
+                [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
+        {
+            var chemigationPermitAnnualRecord = _dbContext.ChemigationPermitAnnualRecords.SingleOrDefault(x =>
+                x.ChemigationPermitAnnualRecordID == chemigationPermitAnnualRecordID);
+
+            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord",
+                chemigationPermitAnnualRecordID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            var chemigationInspection = ChemigationInspection.CreateChemigationInspection(_dbContext,
+                chemigationInspectionUpsertDto);
+
+            return Ok(chemigationInspection);
+        }
+
+        [HttpPut("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/chemigationInspections/{chemigationInspectionID}")]
+        //[AdminFeature]
+        public ActionResult<ChemigationInspectionSimpleDto>
+            UpdateChemigationInspectionByAnnualRecordIDAndInspectionID([FromRoute] int chemigationPermitAnnualRecordID, [FromRoute] int chemigationInspectionID,
+                [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
+        {
+            var chemigationPermitAnnualRecord = _dbContext.ChemigationPermitAnnualRecords.SingleOrDefault(x =>
+                x.ChemigationPermitAnnualRecordID == chemigationPermitAnnualRecordID);
+
+            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord",
+                chemigationPermitAnnualRecordID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            var chemigationInspection = ChemigationInspection.UpdateChemigationInspectionByID(_dbContext,
+                chemigationInspectionID, chemigationInspectionUpsertDto);
+
+            return Ok(chemigationInspection);
+        }
+
 
         [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
         [ZybachViewFeature]
