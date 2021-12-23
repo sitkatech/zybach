@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Zybach.Models.DataTransferObjects;
 
 #nullable disable
 
@@ -29,5 +31,12 @@ namespace Zybach.EFModels.Entities
 
         [InverseProperty(nameof(ChemigationInspection.Tillage))]
         public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
+
+        public static IEnumerable<TillageDto> List(ZybachDbContext dbContext)
+        {
+            return dbContext.Tillages
+                .AsNoTracking()
+                .Select(x => x.AsDto()).ToList();
+        }
     }
 }

@@ -6,6 +6,7 @@ export * from '././chemical-formulation-yearly-total-dto';
 export * from '././chemical-unit-dto';
 export * from '././chemigation-injection-unit-type-dto';
 export * from '././chemigation-inspection-simple-dto';
+export * from '././chemigation-inspection-upsert-dto';
 export * from '././chemigation-permit-annual-record-applicator-simple-dto';
 export * from '././chemigation-permit-annual-record-applicator-upsert-dto';
 export * from '././chemigation-permit-annual-record-chemical-formulation-simple-dto';
