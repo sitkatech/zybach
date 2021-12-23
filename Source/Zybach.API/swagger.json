@@ -2396,6 +2396,46 @@
         }
       }
     },
+    "/api/waterQualityInspections/{waterQualityInspectionID}": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterQualityInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/search/{wellRegistrationID}": {
       "get": {
         "tags": [

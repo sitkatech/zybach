@@ -14,4 +14,9 @@ export class WaterQualityInspectionService {
     let route = `/waterQualityInspections`;
     return this.apiService.getFromApi(route);
   }
+
+  public getByID(waterQualityInspectionID: number): Observable<WaterQualityInspectionSimpleDto> {
+    let route = `/waterQualityInspections/${waterQualityInspectionID}`;
+    return this.apiService.getFromApi(route);
+  }
 }

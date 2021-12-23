@@ -21,5 +21,10 @@ namespace Zybach.EFModels.Entities
         {
             return ListImpl(dbContext).Select(x => x.AsSimpleDto()).ToList();
         }
+
+        public static WaterQualityInspectionSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int waterQualityInspectionID)
+        {
+            return ListImpl(dbContext).SingleOrDefault(x => x.WaterQualityInspectionID == waterQualityInspectionID)?.AsSimpleDto();
+        }
     }
 }

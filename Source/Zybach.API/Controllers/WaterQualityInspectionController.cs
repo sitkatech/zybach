@@ -25,5 +25,13 @@ namespace Zybach.API.Controllers
             var waterQualityInspectionSimpleDtos = WaterQualityInspections.ListAsSimpleDto(_dbContext);
             return Ok(waterQualityInspectionSimpleDtos);
         }
+
+        [HttpGet("/api/waterQualityInspections/{waterQualityInspectionID}")]
+        [ZybachViewFeature]
+        public ActionResult<WaterQualityInspectionSimpleDto> GetWaterQualityInspection([FromRoute] int waterQualityInspectionID)
+        {
+            var waterQualityInspectionSimpleDto = WaterQualityInspections.GetByIDAsSimpleDto(_dbContext, waterQualityInspectionID);
+            return Ok(waterQualityInspectionSimpleDto);
+        }
     }
 }
