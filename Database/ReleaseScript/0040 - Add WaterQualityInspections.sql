@@ -6522,6 +6522,26 @@ GO
 INSERT [dbo].[BeehiveWaterQualityInspection] ([WellFeatureID], [WellRegistrationID], [WellName], [SampleDate], [InspectorUser], [Temperature], [PH], [Conductivity], [FieldAlkilinity], [FieldNitrates], [LabNitrates], [Salinity], [MV], [Sodium], [Calcium], [Magnesium], [Potassium], [HydrogenCarbonate], [CalciumCarbonate], [Sulfate], [Chloride], [SiliconDioxide], [Crop], [PreWaterLevel], [PostWaterLevel]) VALUES (N'f2e94c58-274b-41e8-ad98-ffbf474019f2', N'G-093191', N'133912 (Withington,Waggoner)', CAST(N'2000-07-07' AS Date), N'system', NULL, NULL, NULL, NULL, NULL, CAST(1.4000 AS Decimal(12, 4)), NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
 GO
 
+declare @dateCreated datetime
+set @dateCreated = '12/9/2021'
+insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
+select bw.WellRegistrationID, geometry::STGeomFromText(WKT, 4326) as WellGeometry, @dateCreated, @dateCreated
+from
+(
+	select 'G-084200' as WellRegistrationID, 'POINT (-100.762901857 41.089739829)' as WKT union all
+	select 'G-102622' as WellRegistrationID, 'POINT (-100.761345418 41.070443277)' as WKT union all
+	select 'G-100216' as WellRegistrationID, 'POINT (-101.788511452 41.091186094)' as WKT union all
+	select 'G-102624' as WellRegistrationID, 'POINT (41.121577802 -100.776726439)' as WKT union all
+	select 'G-101546' as WellRegistrationID, 'POINT (40.945735564 -100.338764465)' as WKT union all
+	select 'G-070664' as WellRegistrationID, 'POINT (-101.603866411 41.119885967)' as WKT union all
+	select 'G-100213' as WellRegistrationID, 'POINT (-101.792528965 41.091174611)' as WKT union all
+	select 'G-100214' as WellRegistrationID, 'POINT (-101.792366745 41.091169751)' as WKT union all
+	select 'G-091066' as WellRegistrationID, 'POINT (-100.532371476 41.041852851)' as WKT union all
+	select 'G-093191' as WellRegistrationID, 'POINT (-101.730340436 41.106032346)' as WKT
+) bw 
+left join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
+where w.WellID is null
+
 insert into dbo.WaterQualityInspection(WellID, InspectionDate,
 Temperature,
 PH,
