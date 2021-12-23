@@ -37,7 +37,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/failureReasons")]
         [ZybachViewFeature]
-        public ActionResult<IEnumerable<ChemigationInspectionTypeDto>> GetChemigationInspectionFailureReasons()
+        public ActionResult<IEnumerable<ChemigationInspectionFailureReasonDto>> GetChemigationInspectionFailureReasons()
         {
             var chemigationInspectionFailureReasonDtos = ChemigationInspectionFailureReason.List(_dbContext);
             return Ok(chemigationInspectionFailureReasonDtos);
@@ -73,6 +73,14 @@ namespace Zybach.API.Controllers
         {
             var lowPressureValveDtos = ChemigationLowPressureValve.List(_dbContext);
             return Ok(lowPressureValveDtos);
+        }
+
+        [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/injectionValves")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationInjectionValveDto>> GetChemigationInjectionValves()
+        {
+            var injectionValveDtos = ChemigationInjectionValve.List(_dbContext);
+            return Ok(injectionValveDtos);
         }
 
         [HttpGet("/api/chemigationInspections")]

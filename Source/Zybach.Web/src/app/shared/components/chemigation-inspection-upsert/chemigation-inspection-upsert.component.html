@@ -10,7 +10,7 @@
                 <div class="input-group">
                     <input class="form-control" name="dp1"
                     placeholder="yyyy-mm-dd"
-                    [(ngModel)]="model.InspectionDate" ngbDatepicker #d1="ngbDatepicker" />
+                    [(ngModel)]="inspection.InspectionDate" ngbDatepicker #d1="ngbDatepicker" />
                     <div class="input-group-append">
                         <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()" type="button"></button>
                     </div>
@@ -21,7 +21,7 @@
                 <label><strong>Inspection Type: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.ChemigationInspectionTypeID"
+                <ng-select [(ngModel)]="inspection.ChemigationInspectionTypeID"
                     [items]="chemigationInspectionTypes" bindLabel="ChemigationInspectionTypeDisplayName" bindValue="ChemigationInspectionTypeID" 
                     placeholder="Choose One" name="ChemigationInspectionTypeID">
                 </ng-select>
@@ -31,7 +31,7 @@
                 <label><strong>Inspector: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.InspectorUserID"
+                <ng-select [(ngModel)]="inspection.InspectorUserID"
                     [items]="users" bindLabel="FullNameLastFirst" bindValue="UserID" 
                     placeholder="Choose One" name="InspectorUserID">
                 </ng-select>
@@ -41,7 +41,7 @@
                 <label><strong>Status: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.ChemigationInspectionStatusID"
+                <ng-select [(ngModel)]="inspection.ChemigationInspectionStatusID"
                     [items]="chemigationInspectionStatuses" bindLabel="ChemigationInspectionStatusDisplayName" bindValue="ChemigationInspectionStatusID" 
                     placeholder="Choose One" name="ChemigationInspectionStatusID">
                 </ng-select>
@@ -51,7 +51,7 @@
                 <label><strong>Failure Reason: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.ChemigationInspectionFailureReasonID"
+                <ng-select [(ngModel)]="inspection.ChemigationInspectionFailureReasonID"
                     [items]="chemigationInspectionFailureReasons" bindLabel="ChemigationInspectionFailureReasonDisplayName" bindValue="ChemigationInspectionFailureReasonID" 
                     placeholder="Choose One" name="ChemigationInspectionFailureReasonID">
                 </ng-select>
@@ -62,7 +62,7 @@
             </div>
             <div class="col-6 text-left mb-2">
                 <textarea class="form-control" name="InspectionNotes"
-                    placeholder="Notes" [(ngModel)]="model.InspectionNotes">
+                    placeholder="Notes" [(ngModel)]="inspection.InspectionNotes">
                 </textarea>
             </div>
 
@@ -74,8 +74,8 @@
                 <label><strong>Mainline Check Valve: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.ChemigationMainlineCheckValveID"
-                    [items]="mainlineCheckValves" bindLabel="ChemigationMainlineCheckValveDisplayName" bindValue="ChemigationMainlineCheckValveID" 
+                <ng-select [(ngModel)]="inspection.ChemigationMainlineCheckValveID"
+                    [items]="chemigationMainlineCheckValves" bindLabel="ChemigationMainlineCheckValveDisplayName" bindValue="ChemigationMainlineCheckValveID" 
                     placeholder="Choose One" name="ChemigationMainlineCheckValveID">
                 </ng-select>
             </div>
@@ -84,8 +84,8 @@
                 <label><strong>Low Pressure Valve: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.ChemigationLowPressureValveID"
-                    [items]="lowPressureValves" bindLabel="ChemigationLowPressureValveDisplayName" bindValue="ChemigationLowPressureValveID" 
+                <ng-select [(ngModel)]="inspection.ChemigationLowPressureValveID"
+                    [items]="chemigationLowPressureValves" bindLabel="ChemigationLowPressureValveDisplayName" bindValue="ChemigationLowPressureValveID" 
                     placeholder="Choose One" name="ChemigationLowPressureValveID">
                 </ng-select>
             </div>
@@ -94,8 +94,8 @@
                 <label><strong>Chemigation Injection Valve: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.ChemigationInjectionValveID"
-                    [items]="injectionValves" bindLabel="ChemigationInjectionValveDisplayName" bindValue="ChemigationInjectionValveID" 
+                <ng-select [(ngModel)]="inspection.ChemigationInjectionValveID"
+                    [items]="chemigationInjectionValves" bindLabel="ChemigationInjectionValveDisplayName" bindValue="ChemigationInjectionValveID" 
                     placeholder="Choose One" name="ChemigationInjectionValveID">
                 </ng-select>
             </div>
@@ -124,8 +124,8 @@
                 <label><strong>Tillage: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.TillageID"
-                    [items]="tillageTypes" bindLabel="TillageID" bindValue="TillageDisplayName" 
+                <ng-select [(ngModel)]="inspection.TillageID"
+                    [items]="tillages" bindLabel="TillageDisplayName" bindValue="TillageID" 
                     placeholder="Choose One" name="TillageID">
                 </ng-select>
             </div>
@@ -134,8 +134,8 @@
                 <label><strong>Crop Type: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="model.CropTypeID"
-                    [items]="cropTypes" bindLabel="CropTypeID" bindValue="CropTypeDisplayName" 
+                <ng-select [(ngModel)]="inspection.CropTypeID"
+                    [items]="cropTypes" bindLabel="CropTypeDisplayName" bindValue="CropTypeID" 
                     placeholder="Choose One" name="CropTypeID">
                 </ng-select>
             </div>

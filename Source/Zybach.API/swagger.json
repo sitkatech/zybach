@@ -44,6 +44,485 @@
         }
       }
     },
+    "/api/chemigationPermits/annualRecords/chemigationInspections/inspectionTypes": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/chemigationInspections/inspectionStatuses": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionStatusDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionStatusDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/chemigationInspections/failureReasons": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionFailureReasonDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionFailureReasonDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionFailureReasonDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tillageTypes": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TillageDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TillageDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TillageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cropTypes": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CropTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CropTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CropTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/chemigationInspections/mainlineCheckValves": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationMainlineCheckValveDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationMainlineCheckValveDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationMainlineCheckValveDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/chemigationInspections/lowPressureValves": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationLowPressureValveDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationLowPressureValveDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationLowPressureValveDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/chemigationInspections/injectionValves": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionValveDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionValveDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionValveDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection": {
+      "post": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitAnnualRecordID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/chemigationInspections/{chemigationInspectionID}": {
+      "put": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitAnnualRecordID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "chemigationInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/chemigationPermitStatuses": {
       "get": {
         "tags": [
@@ -441,181 +920,6 @@
                   "items": {
                     "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                   }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationInspections": {
-      "get": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection": {
-      "post": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitAnnualRecordID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/chemigationInspections/{chemigationInspectionID}": {
-      "put": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitAnnualRecordID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "chemigationInspectionID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
                 }
               }
             }
@@ -2971,6 +3275,42 @@
         },
         "additionalProperties": false
       },
+      "ChemigationInjectionValveDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInjectionValveID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInjectionValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInjectionValveDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInspectionFailureReasonDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInspectionFailureReasonID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionFailureReasonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionFailureReasonDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChemigationInspectionSimpleDto": {
         "type": "object",
         "properties": {
@@ -3097,6 +3437,42 @@
         },
         "additionalProperties": false
       },
+      "ChemigationInspectionStatusDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInspectionStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInspectionTypeDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ChemigationInspectionUpsertDto": {
         "type": "object",
         "properties": {
@@ -3155,11 +3531,47 @@
             "type": "boolean",
             "nullable": true
           },
-          "HasInpectionPort": {
+          "HasInspectionPort": {
             "type": "boolean",
             "nullable": true
           },
           "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationLowPressureValveDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationLowPressureValveID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationLowPressureValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationLowPressureValveDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationMainlineCheckValveDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationMainlineCheckValveID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationMainlineCheckValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationMainlineCheckValveDisplayName": {
             "type": "string",
             "nullable": true
           }
@@ -3849,6 +4261,24 @@
             "nullable": true
           },
           "CountyDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CropTypeDto": {
+        "type": "object",
+        "properties": {
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CropTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CropTypeDisplayName": {
             "type": "string",
             "nullable": true
           }
@@ -4619,6 +5049,24 @@
           },
           "Result": {
             "$ref": "#/components/schemas/StructuredResults"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TillageDto": {
+        "type": "object",
+        "properties": {
+          "TillageID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TillageName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TillageDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -347,7 +347,7 @@
                                         href="#nav-inspection-{{inspection.ChemigationInspectionID}}" role="tab">
                                         <strong>{{inspection.InspectionDate | date:'shortDate'}} - {{inspection.ChemigationInspectionStatusName}}</strong>
                                     </a>
-                                    <a class="nav-link" role="tab">
+                                    <a class="nav-link" role="tab" id="add-inspection" data-toggle="tab" href="#nav-add-inspection">
                                         <strong>
                                             <span class="fas fa-plus"></span> Add Inspection
                                         </strong>
@@ -509,6 +509,11 @@
             
                                         </div>
                                     </div>
+                                </div>
+                                <div class="tab-pane fade show" id="nav-add-inspection" role="tabpanel">
+                                        <zybach-chemigation-inspection-upsert #inspectionUpsertForm
+                                        [(inspection)]="inspection">
+                                        </zybach-chemigation-inspection-upsert >
                                 </div>
                             </div>
                             

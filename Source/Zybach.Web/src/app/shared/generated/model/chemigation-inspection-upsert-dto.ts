@@ -23,7 +23,7 @@ export class ChemigationInspectionUpsertDto {
     ChemigationLowPressureValveID?: number;
     ChemigationInjectionValveID?: number;
     HasVacuumReliefValve?: boolean;
-    HasInpectionPort?: boolean;
+    HasInspectionPort?: boolean;
     InspectionNotes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);

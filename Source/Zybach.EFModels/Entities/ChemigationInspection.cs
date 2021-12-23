@@ -73,7 +73,7 @@ namespace Zybach.EFModels.Entities
                 ChemigationLowPressureValveID = chemigationInspectionUpsertDto.ChemigationLowPressureValveID,
                 ChemigationInjectionValveID = chemigationInspectionUpsertDto.ChemigationInjectionValveID,
                 HasVacuumReliefValve = chemigationInspectionUpsertDto.HasVacuumReliefValve,
-                HasInspectionPort = chemigationInspectionUpsertDto.HasInpectionPort,
+                HasInspectionPort = chemigationInspectionUpsertDto.HasInspectionPort,
                 TillageID = chemigationInspectionUpsertDto.TillageID,
                 CropTypeID = chemigationInspectionUpsertDto.CropTypeID,
                 InspectionNotes = chemigationInspectionUpsertDto.InspectionNotes
@@ -112,7 +112,7 @@ namespace Zybach.EFModels.Entities
             chemigationInspection.ChemigationInjectionValveID =
                 chemigationInspectionUpsertDto.ChemigationInjectionValveID;
             chemigationInspection.HasVacuumReliefValve = chemigationInspectionUpsertDto.HasVacuumReliefValve;
-            chemigationInspection.HasInspectionPort = chemigationInspectionUpsertDto.HasInpectionPort;
+            chemigationInspection.HasInspectionPort = chemigationInspectionUpsertDto.HasInspectionPort;
             chemigationInspection.TillageID = chemigationInspectionUpsertDto.TillageID;
             chemigationInspection.CropTypeID = chemigationInspectionUpsertDto.CropTypeID;
             chemigationInspection.InspectionNotes = chemigationInspectionUpsertDto.InspectionNotes;
