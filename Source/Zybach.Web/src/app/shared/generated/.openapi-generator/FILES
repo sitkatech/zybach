@@ -5,14 +5,7 @@ model/chemical-formulation-dto.ts
 model/chemical-formulation-yearly-total-dto.ts
 model/chemical-unit-dto.ts
 model/chemigation-injection-unit-type-dto.ts
-model/chemigation-injection-valve-dto.ts
-model/chemigation-inspection-dto.ts
-model/chemigation-inspection-failure-reason-dto.ts
 model/chemigation-inspection-simple-dto.ts
-model/chemigation-inspection-status-dto.ts
-model/chemigation-inspection-type-dto.ts
-model/chemigation-low-pressure-valve-dto.ts
-model/chemigation-mainline-check-valve-dto.ts
 model/chemigation-permit-annual-record-applicator-simple-dto.ts
 model/chemigation-permit-annual-record-applicator-upsert-dto.ts
 model/chemigation-permit-annual-record-chemical-formulation-simple-dto.ts
@@ -29,7 +22,6 @@ model/chemigation-permit-status-simple-dto.ts
 model/chemigation-permit-upsert-dto.ts
 model/county-dto.ts
 model/county-simple-dto.ts
-model/crop-type-dto.ts
 model/crs-type.ts
 model/custom-rich-text-dto.ts
 model/custom-rich-text-type-dto.ts
@@ -63,7 +55,6 @@ model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
 model/structured-results-dto.ts
 model/structured-results.ts
-model/tillage-dto.ts
 model/unassigned-user-report-dto.ts
 model/user-create-dto.ts
 model/user-dto.ts
@@ -71,6 +62,7 @@ model/user-invite-dto.ts
 model/user-simple-dto.ts
 model/user-upsert-dto.ts
 model/volume-by-well.ts
+model/water-quality-inspection-simple-dto.ts
 model/well-chart-data-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts

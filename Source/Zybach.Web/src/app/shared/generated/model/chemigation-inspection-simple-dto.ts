@@ -16,6 +16,7 @@ export class ChemigationInspectionSimpleDto {
     ChemigationPermitNumberDisplay?: string;
     County?: string;
     TownshipRangeSection?: string;
+    ChemigationInspectionFailureReasonName?: string;
     ChemigationInspectionTypeName?: string;
     ChemigationInspectionStatusName?: string;
     ChemigationMainlineCheckValveName?: string;

@@ -60,6 +60,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<Tillage> Tillages { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<WaterQualityInspection> WaterQualityInspections { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
@@ -560,6 +561,20 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<WaterQualityInspection>(entity =>
+            {
+                entity.HasOne(d => d.InspectorUser)
+                    .WithMany(p => p.WaterQualityInspections)
+                    .HasForeignKey(d => d.InspectorUserID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WaterQualityInspection_User_InspectorUserID_UserID");
+
+                entity.HasOne(d => d.Well)
+                    .WithMany(p => p.WaterQualityInspections)
+                    .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
