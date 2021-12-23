@@ -100,23 +100,31 @@
                 </ng-select>
             </div>
 
-            <div class="row col-12">
-                <div class="col-6 text-right">
-                    <p><strong>Vacuum Relief Valve?: </strong></p>
-                </div>
-                <div class="col-6 text-left">
-                    <p>{{inspection.HasVacuumReliefValve ? 'Yes' : 'No'}}
-                    </p>
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Vacuum Relief Valve?: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2 form-group">
+                <div class="input-group">
+                    <input type="radio" id="hasVacuumReliefValve" class="mr-2" name="HasVacuumReliefValve"
+                        [value]="true" [(ngModel)]="inspection.HasVacuumReliefValve">
+                    <label for="hasVacuumReliefValve" class="mr-4">Yes</label>
+                    <input type="radio" id="notHasVacuumReliefValve" class="mr-2" name="HasVacuumReliefValve"
+                        [value]="false" [(ngModel)]="inspection.HasVacuumReliefValve">
+                    <label for="notHasVacuumReliefValve" class="mr-2">No</label>
                 </div>
             </div>
 
-            <div class="row col-12">
-                <div class="col-6 text-right">
-                    <p><strong>Inspection Port?: </strong></p>
-                </div>
-                <div class="col-6 text-left">
-                    <p>{{inspection.HasInspectionPort ? 'Yes' : 'No'}}
-                    </p>
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Inspection Port?: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2 form-group">
+                <div class="input-group">
+                    <input type="radio" id="hasInspectionPort" class="mr-2" name="HasInspectionPort"
+                        [value]="true" [(ngModel)]="inspection.HasInspectionPort" />
+                    <label for="hasInspectionPort" class="mr-4">Yes</label>
+                    <input type="radio" id="notHasInspectionPort" class="mr-2" name="HasInspectionPort"
+                        [value]="false" [(ngModel)]="inspection.HasInspectionPort" />
+                    <label for="notHasInspectionPort">No</label>
                 </div>
             </div>
 
