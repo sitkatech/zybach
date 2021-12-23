@@ -24,7 +24,7 @@
     <div class="row col-12" *ngFor="let chemicalPermitAnnualRecordApplicator of model; let index = index">
         <div class="col-3 text-left mb-2">
             <input type="text" class="form-control" name="ApplicatorName-{{index}}" required
-            placeholder="First Last" [(ngModel)]="chemicalPermitAnnualRecordApplicator.ApplicatorName" />
+            placeholder="Last, First" [(ngModel)]="chemicalPermitAnnualRecordApplicator.ApplicatorName" />
         </div>
 
         <div class="col-1 text-left mb-2">
