@@ -119,6 +119,9 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addChemigationInspectionForm.reset();
+        //hacky but effective way to remove the active class from the add tab so we don't have render issues with multiple tabs selected
+        document.getElementById('add-inspection').classList.remove('active');
+        document.getElementById('nav-add-inspection').classList.remove('active');
         //get router to reload and show new inspection record
         this.router.onSameUrlNavigation = 'reload';
         this.router.navigateByUrl("/chemigation-permits/" + this.chemigationPermit.ChemigationPermitNumber).then(() => {

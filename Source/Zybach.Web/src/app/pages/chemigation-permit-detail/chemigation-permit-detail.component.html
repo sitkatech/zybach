@@ -388,7 +388,7 @@
                                                     <p><strong>Inspector: </strong></p>
                                                 </div>
                                                 <div class="col-6 text-left">
-                                                    <p>{{inspection.Inspector.FullNameLastFirst}}
+                                                    <p>{{inspection.Inspector?.FullNameLastFirst}}
                                             
                                                     </p>
                                                 </div>
@@ -519,7 +519,7 @@
                                         </zybach-chemigation-inspection-upsert >
     
                                         <div class="col-sm text-right">
-                                            <button type="submit" class="btn btn-zybach">
+                                            <button type="submit" class="btn btn-zybach mr-1">
                                                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                                                 Save
                                             </button>
