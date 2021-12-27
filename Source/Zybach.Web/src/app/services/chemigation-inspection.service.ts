@@ -72,6 +72,15 @@ export class ChemigationInspectionService {
   public updateChemigationInspectionByAnnualRecordIDAndInspectionID(chemigationPermitAnnualRecordID: number, chemigationInspectionID: number, chemigationInspectionUpsertDto: ChemigationInspectionUpsertDto): Observable<ChemigationInspectionSimpleDto> {
     let route = `/chemigationPermits/annualRecords/${chemigationPermitAnnualRecordID}/chemigationInspections/${chemigationInspectionID}`;
     return this.apiService.putToApi(route, chemigationInspectionUpsertDto);
+
+  }
+  public deleteChemigationInspectionByID(chemigationPermitAnnualRecordID: number, chemigationInspectionID: number) : any {
+    let route = `chemigationPermits/annualRecords/${chemigationPermitAnnualRecordID}/chemigationInspections/${chemigationInspectionID}`;
+    return this.apiService.deleteToApi(route);
   }
 
+  public getChemigationInspectionByID(chemigationInspectionID: number) : Observable<ChemigationInspectionSimpleDto> {
+    let route = `/chemigationInspections/${chemigationInspectionID}`;
+    return this.apiService.getFromApi(route);
+  }
 }

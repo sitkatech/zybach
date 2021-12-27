@@ -76,8 +76,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
         },
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        sort: 'asc',
+        sortable: true
       },
       { headerName: 'County', field: 'County',
         filterFramework: CustomDropdownFilterComponent,

@@ -92,6 +92,21 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspections);
         }
 
+
+        [HttpGet("/api/chemigationInspections/{chemigationInspectionID}")]
+        [AdminFeature]
+        public ActionResult<ChemigationInspectionSimpleDto> GetChemigationInspectionByID([FromRoute] int chemigationInspectionID)
+        {
+            var chemigationInspection = ChemigationInspection.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
+
+            if (ThrowNotFound(chemigationInspection, "ChemigationInspection", chemigationInspectionID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            return chemigationInspection;
+        }
+
         [HttpPost("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection")]
         [AdminFeature]
         public ActionResult<ChemigationInspectionSimpleDto>
