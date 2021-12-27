@@ -37,7 +37,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/chemigationPermits/annualRecords")]
         [ZybachViewFeature]
-        public ActionResult<List<ChemigationPermitAnnualRecordDto>> GetAllChemigationPermitAnnualRecords()
+        public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetAllChemigationPermitAnnualRecords()
         {
             var chemigationPermitAnnualRecords =
                 ChemigationPermitAnnualRecord.GetAllChemigationPermitAnnualRecords(_dbContext);
@@ -45,7 +45,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/chemigationInspections")]
-        //[ZybachViewFeature]
+        [ZybachViewFeature]
         public ActionResult<List<ChemigationInspectionSimpleDto>> GetAllChemigationInspections()
         {
             var chemigationInspections =

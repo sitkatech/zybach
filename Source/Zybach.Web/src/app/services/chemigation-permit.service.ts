@@ -60,7 +60,7 @@ export class ChemigationPermitService {
     return this.apiService.deleteToApi(route);
   }
 
-  public getAllAnnualRecords(): Observable<Array<ChemigationPermitAnnualRecordDto>> {
+  public getAllAnnualRecords(): Observable<Array<ChemigationPermitAnnualRecordDetailedDto>> {
     let route = `/chemigationPermits/annualRecords`;
     return this.apiService.getFromApi(route);
   }

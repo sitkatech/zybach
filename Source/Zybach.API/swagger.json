@@ -423,7 +423,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                   }
                 }
               },
@@ -431,7 +431,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                   }
                 }
               },
@@ -439,7 +439,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
                   }
                 }
               }
