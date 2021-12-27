@@ -67,6 +67,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ChemigationPermitReportsComponent } from './pages/chemigation-permit-reports/chemigation-permit-reports.component';
 import { ChemigationInspectionsListComponent } from './pages/chemigation-inspections-list/chemigation-inspections-list.component';
 import { ChemigationInspectionUpsertComponent } from './shared/components/chemigation-inspection-upsert/chemigation-inspection-upsert.component';
+import { ChemigationInspectionNewComponent } from './pages/chemigation-inspection-new/chemigation-inspection-new.component';
+import { ChemigationInspectionEditComponent } from './pages/chemigation-inspection-edit/chemigation-inspection-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -117,7 +119,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     NdeeChemicalsReportComponent,
     ChemigationPermitReportsComponent,
     ChemigationInspectionsListComponent,
-    ChemigationInspectionUpsertComponent    
+    ChemigationInspectionUpsertComponent,
+    ChemigationInspectionNewComponent,
+    ChemigationInspectionEditComponent    
   ],
   imports: [
     AppRoutingModule,

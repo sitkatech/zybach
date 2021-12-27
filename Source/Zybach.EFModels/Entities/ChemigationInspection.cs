@@ -122,5 +122,16 @@ namespace Zybach.EFModels.Entities
 
             return chemigationInspection.AsSimpleDto();
         }
+
+        public static void DeleteByInspectionID(ZybachDbContext dbContext, int chemigationInspectionID)
+        {
+            var chemigationInspectionToRemove = dbContext.ChemigationInspections.SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);
+
+            if (chemigationInspectionToRemove != null)
+            {
+                dbContext.ChemigationInspections.Remove(chemigationInspectionToRemove);
+                dbContext.SaveChanges();
+            }
+        }
     }
 }

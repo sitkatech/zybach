@@ -93,7 +93,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult<ChemigationInspectionSimpleDto>
             CreateChemigationInspectionByAnnualRecordID([FromRoute] int chemigationPermitAnnualRecordID,
                 [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
@@ -114,7 +114,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/chemigationInspections/{chemigationInspectionID}")]
-        //[AdminFeature]
+        [AdminFeature]
         public ActionResult<ChemigationInspectionSimpleDto>
             UpdateChemigationInspectionByAnnualRecordIDAndInspectionID([FromRoute] int chemigationPermitAnnualRecordID, [FromRoute] int chemigationInspectionID,
                 [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
@@ -132,6 +132,22 @@ namespace Zybach.API.Controllers
                 chemigationInspectionID, chemigationInspectionUpsertDto);
 
             return Ok(chemigationInspection);
+        }
+
+        [HttpDelete("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/chemigationInspections/{chemigationInspectionID}")]
+        [AdminFeature]
+        public ActionResult DeleteChemigationInspectionByID([FromRoute] int chemigationPermitAnnualRecordID, [FromRoute] int chemigationInspectionID)
+        {
+            var chemigationInspection = ChemigationInspection.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
+
+            if (ThrowNotFound(chemigationInspection, "ChemigationInspection", chemigationInspectionID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            ChemigationInspection.DeleteByInspectionID(_dbContext, chemigationInspectionID);
+
+            return Ok();
         }
 
     }

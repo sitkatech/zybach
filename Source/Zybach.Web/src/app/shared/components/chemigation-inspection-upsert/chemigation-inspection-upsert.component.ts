@@ -3,7 +3,6 @@ import { NgForm } from '@angular/forms';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { ChemigationInjectionValveDto } from '../../generated/model/chemigation-injection-valve-dto';
 import { ChemigationInspectionFailureReasonDto } from '../../generated/model/chemigation-inspection-failure-reason-dto';
@@ -23,6 +22,7 @@ import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
   styleUrls: ['./chemigation-inspection-upsert.component.scss'],
   providers: [{provide: NgbDateAdapter, useClass: NgbDateAdapterFromString}]
 })
+
 export class ChemigationInspectionUpsertComponent implements OnInit {
   @Input() inspection: ChemigationInspectionUpsertDto;
   @Output() isFormValid: EventEmitter<any> = new EventEmitter<any>();
@@ -38,9 +38,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
   public chemigationLowPressureValves: ChemigationLowPressureValveDto[];
   public chemigationInjectionValves: ChemigationInjectionValveDto[];
 
-  
   constructor(
-    private chemigationPermitService: ChemigationPermitService,
     private chemigationInspectionService: ChemigationInspectionService,
     private cdr: ChangeDetectorRef,
     private userService: UserService
