@@ -30,6 +30,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   public gridApi: any;
 
   constructor(private authenticationService: AuthenticationService,
+    private datePipe: DatePipe,
     private wellService: WellService) { }
 
   ngOnInit(): void {
@@ -77,6 +78,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   private makeColumnDefs() {
+    let datePipe = this.datePipe;
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
@@ -122,8 +124,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         width: 115,
         sortable: true, filter: true, resizable: true
       },
-      this.createDateColumnDef('Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
-      this.createDateColumnDef('First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
+      this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
+      this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
       {
         headerName: "Has Flow Meter?",
         valueGetter: function (params) {
@@ -196,35 +198,44 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         },
         sortable: true, resizable: true, width: 115
       },
-      this.createDateColumnDef('Last Fetched from AgHub', 'FetchDate', 'M/d/yyyy')
+      this.createDateColumnDef(datePipe, 'Last Fetched from AgHub', 'FetchDate', 'M/d/yyyy')
     ]
   }
 
-  private createDateColumnDef(headerName: string, fieldName: string, dateFormat: string): ColDef {
-    let datePipe = new DatePipe('en-US');
   
-    return {
-      headerName: headerName, valueGetter: function (params: any) {
-        return datePipe.transform(params.data[fieldName], dateFormat);
-      },
-      comparator: this.dateFilterComparator,
-      filter: 'agDateColumnFilter',
-      filterParams: {
-        filterOptions: ['inRange'],
-        comparator: this.dateFilterComparator
-      }, 
-      width: 150,
-      resizable: true,
-      sortable: true
-    };
+  private dateSortComparer (id1: any, id2: any) {
+    const date1 = id1 ? Date.parse(id1) : Date.parse("1/1/1900");
+    const date2 = id2 ? Date.parse(id2) : Date.parse("1/1/1900");
+    if (date1 < date2) {
+      return -1;
+    }
+    return (date1 > date2)  ?  1 : 0;
   }
 
   private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+    if(cellValue === null) return -1;
     const cellDate = Date.parse(cellValue);
     if (cellDate == filterLocalDateAtMidnight) {
       return 0;
     }
     return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
+  }
+
+  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string): ColDef {
+    return {
+      headerName: headerName, valueGetter: function (params: any) {
+        return datePipe.transform(params.data[fieldName], dateFormat);
+      },
+      comparator: this.dateSortComparer,
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        filterOptions: ['inRange'],
+        comparator: this.dateFilterComparator
+      }, 
+      width: 110,
+      resizable: true,
+      sortable: true
+    };
   }
   
   public onSelectionChanged(event: Event) {
