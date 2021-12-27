@@ -66,6 +66,8 @@ import { NdeeChemicalsReportComponent } from './pages/ndee-chemicals-report/ndee
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ChemigationPermitReportsComponent } from './pages/chemigation-permit-reports/chemigation-permit-reports.component';
 import { ChemigationInspectionsListComponent } from './pages/chemigation-inspections-list/chemigation-inspections-list.component';
+import { WaterQualityInspectionListComponent } from './pages/water-quality-inspection-list/water-quality-inspection-list.component';
+import { WaterQualityInspectionDetailComponent } from './pages/water-quality-inspection-detail/water-quality-inspection-detail.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -115,7 +117,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationPermitApplicatorsEditorComponent,
     NdeeChemicalsReportComponent,
     ChemigationPermitReportsComponent,
-    ChemigationInspectionsListComponent    
+    ChemigationInspectionsListComponent,
+    WaterQualityInspectionListComponent,
+    WaterQualityInspectionDetailComponent    
   ],
   imports: [
     AppRoutingModule,

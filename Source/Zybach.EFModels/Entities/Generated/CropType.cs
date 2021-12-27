@@ -16,6 +16,7 @@ namespace Zybach.EFModels.Entities
         public CropType()
         {
             ChemigationInspections = new HashSet<ChemigationInspection>();
+            WaterQualityInspections = new HashSet<WaterQualityInspection>();
         }
 
         [Key]
@@ -29,5 +30,7 @@ namespace Zybach.EFModels.Entities
 
         [InverseProperty(nameof(ChemigationInspection.CropType))]
         public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
+        [InverseProperty(nameof(WaterQualityInspection.CropType))]
+        public virtual ICollection<WaterQualityInspection> WaterQualityInspections { get; set; }
     }
 }

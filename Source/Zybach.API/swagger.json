@@ -2358,6 +2358,84 @@
         }
       }
     },
+    "/api/waterQualityInspections": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/waterQualityInspections/{waterQualityInspectionID}": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterQualityInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/search/{wellRegistrationID}": {
       "get": {
         "tags": [
@@ -4708,6 +4786,150 @@
             "type": "integer",
             "format": "int32",
             "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterQualityInspectionSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WaterQualityInspectionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Temperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PH": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Conductivity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldAlkilinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "LabNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Salinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MV": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sodium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Calcium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Magnesium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Potassium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "HydrogenCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CalciumCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sulfate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Chloride": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "SiliconDioxide": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "PreWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PostWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "WaterQualityInspectionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CropTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Inspector": {
+            "$ref": "#/components/schemas/UserSimpleDto"
           }
         },
         "additionalProperties": false

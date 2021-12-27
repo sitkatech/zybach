@@ -17,6 +17,7 @@ namespace Zybach.EFModels.Entities
             ChemigationInspections = new HashSet<ChemigationInspection>();
             FileResources = new HashSet<FileResource>();
             RobustReviewScenarioGETRunHistories = new HashSet<RobustReviewScenarioGETRunHistory>();
+            WaterQualityInspections = new HashSet<WaterQualityInspection>();
         }
 
         [Key]
@@ -58,5 +59,7 @@ namespace Zybach.EFModels.Entities
         public virtual ICollection<FileResource> FileResources { get; set; }
         [InverseProperty(nameof(RobustReviewScenarioGETRunHistory.CreateByUser))]
         public virtual ICollection<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
+        [InverseProperty(nameof(WaterQualityInspection.InspectorUser))]
+        public virtual ICollection<WaterQualityInspection> WaterQualityInspections { get; set; }
     }
 }

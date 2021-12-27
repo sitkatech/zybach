@@ -62,6 +62,7 @@ model/user-invite-dto.ts
 model/user-simple-dto.ts
 model/user-upsert-dto.ts
 model/volume-by-well.ts
+model/water-quality-inspection-simple-dto.ts
 model/well-chart-data-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
