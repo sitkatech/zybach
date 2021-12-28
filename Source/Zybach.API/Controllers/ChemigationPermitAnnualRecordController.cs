@@ -121,7 +121,7 @@ namespace Zybach.API.Controllers
             var mostRecentChemigationPermitAnnualRecord = chemigationPermitAnnualRecords.OrderByDescending(x => x.RecordYear).First();
 
             chemigationPermitAnnualRecordUpsertDto.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentChemigationPermitAnnualRecord.RecordYear == 1 ? 
-                ChemigationPermitAnnualRecords.NDEEAmountEnum.Renewal : ChemigationPermitAnnualRecords.NDEEAmountEnum.New;
+                ChemigationPermitAnnualRecords.NDEEAmounts.Renewal : ChemigationPermitAnnualRecords.NDEEAmounts.New;
 
             ChemigationPermitAnnualRecords.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, mostRecentChemigationPermitAnnualRecord.ChemigationPermitID);
             return Ok();

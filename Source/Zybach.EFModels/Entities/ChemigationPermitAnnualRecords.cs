@@ -7,7 +7,7 @@ namespace Zybach.EFModels.Entities
 {
     public static class ChemigationPermitAnnualRecords
     {
-        public static class NDEEAmountEnum
+        public static class NDEEAmounts
         {
             public const decimal New = 5.00m;
             public const decimal Renewal = 2.00m;
