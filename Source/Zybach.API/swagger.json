@@ -2815,6 +2815,44 @@
         }
       }
     },
+    "/api/waterQualityInspectionTypes": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/waterQualityInspections": {
       "get": {
         "tags": [
@@ -5706,18 +5744,35 @@
         },
         "additionalProperties": false
       },
+      "WaterQualityInspectionTypeDto": {
+        "type": "object",
+        "properties": {
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterQualityInspectionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterQualityInspectionTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WaterQualityInspectionUpsertDto": {
         "required": [
           "InspectionDate",
           "InspectorUserID",
           "WaterQualityInspectionTypeID",
-          "WellID"
+          "WellRegistrationID"
         ],
         "type": "object",
         "properties": {
-          "WellID": {
-            "type": "integer",
-            "format": "int32"
+          "WellRegistrationID": {
+            "type": "string"
           },
           "WaterQualityInspectionTypeID": {
             "type": "integer",

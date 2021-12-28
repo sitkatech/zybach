@@ -19,6 +19,14 @@ namespace Zybach.API.Controllers
         {
         }
 
+        [HttpGet("/api/waterQualityInspectionTypes")]
+        [ZybachViewFeature]
+        public ActionResult<List<WaterQualityInspectionTypeDto>> GetWaterQualityInspectionTypes()
+        {
+            var waterQualityInspectionTypeDtos = WaterQualityInspectionTypes.ListAsDto(_dbContext);
+            return Ok(waterQualityInspectionTypeDtos);
+        }
+
         [HttpGet("/api/waterQualityInspections")]
         [ZybachViewFeature]
         public ActionResult<List<WaterQualityInspectionSimpleDto>> GetAllWaterQualityInspections()
@@ -39,6 +47,12 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
+            var wellID = _dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == waterQualityInspectionUpsert.WellRegistrationID)?.WellID;
+            if (ThrowNotFound(waterQualityInspectionUpsert, "WaterQualityInspection",
+                wellID, out var actionResult))
+            {
+                return actionResult;
+            }
             var waterQualityInspectionSimpleDto = WaterQualityInspections.CreateWaterQualityInspection(_dbContext, waterQualityInspectionUpsert);
             return Ok(waterQualityInspectionSimpleDto);
         }

@@ -11,7 +11,7 @@
  */
 
 export class WaterQualityInspectionUpsertDto { 
-    WellID: number;
+    WellRegistrationID: string;
     WaterQualityInspectionTypeID: number;
     InspectionDate: string;
     InspectorUserID: number;

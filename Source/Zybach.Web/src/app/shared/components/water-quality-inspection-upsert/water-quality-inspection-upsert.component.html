@@ -4,267 +4,230 @@
 
         <div class="row col-12">
             <div class="row col-6">
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Temperature: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>{{waterQualityInspection.Temperature}}
-                        </p>
+
+                <div class="col-6 control-label text-right mb-2">
+                    <label class="required"><strong>Date Inspected: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2 form-group">
+                    <div class="input-group">
+                        <input class="form-control" name="dp1"
+                        placeholder="yyyy-mm-dd" required
+                        [(ngModel)]="inspection.InspectionDate" ngbDatepicker #d1="ngbDatepicker" />
+                        <div class="input-group-append">
+                            <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()" type="button"></button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>PH: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>{{waterQualityInspection.PH}}
-                        </p>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label class="required"><strong>Well: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="text" class="form-control" name="WellRegistrationID" required [(ngModel)]="inspection.WellRegistrationID" [ngbTypeahead]="searchApi" placeholder="Search by Reg #" />
+                    <small class="form-text text-muted font-italic" *ngIf="searchFailed">Suggestions could not be loaded.</small>
                 </div>
 
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Conductivity: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>{{waterQualityInspection.Conductivity}}
-                        </p>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label class="required"><strong>Inspector: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <ng-select [(ngModel)]="inspection.InspectorUserID" required
+                        [items]="users" bindLabel="FullNameLastFirst" bindValue="UserID" 
+                        placeholder="Choose One" name="InspectorUserID">
+                    </ng-select>
                 </div>
 
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Field Alkilinity: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>{{waterQualityInspection.FieldAlkilinity}}
-                        </p>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label class="required"><strong>Inspection Type: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <ng-select [(ngModel)]="inspection.WaterQualityInspectionTypeID" required
+                        [items]="inspectionTypes" bindLabel="WaterQualityInspectionTypeDisplayName" bindValue="WaterQualityInspectionTypeID" 
+                        placeholder="Choose One" name="WaterQualityInspectionTypeID">
+                    </ng-select>
                 </div>
 
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Field Nitrates: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>{{waterQualityInspection.FieldNitrates}}
-                        </p>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Temperature: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="number" class="form-control" name="Temperature" [(ngModel)]="inspection.Temperature" />
                 </div>
 
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Lab Nitrates: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>{{waterQualityInspection.LabNitrates}}
-                        </p>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>pH: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="number" class="form-control" name="PH" [(ngModel)]="inspection.PH" />
                 </div>
 
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Salinity: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>{{waterQualityInspection.Salinity}}
-                        </p>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Conductivity: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="number" class="form-control" name="Conductivity" [(ngModel)]="inspection.Conductivity" />
                 </div>
 
-                <div class="row col-12">       
-                    <div class="col-6 control-label text-right mb-2">
-                        <label><strong>Crop Type: </strong></label>
-                    </div>
-                    <div class="col-6 text-left mb-2">
-                        <ng-select [(ngModel)]="inspection.CropTypeID"
-                            [items]="cropTypes" bindLabel="CropTypeDisplayName" bindValue="CropTypeID" 
-                            placeholder="Choose One" name="CropTypeID">
-                        </ng-select>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Field Alkalinity: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="number" class="form-control" name="FieldAlkilinity" [(ngModel)]="inspection.FieldAlkilinity" />
+                </div>
+
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Field Nitrates: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="number" class="form-control" name="FieldNitrates" [(ngModel)]="inspection.FieldNitrates" />
+                </div>
+            
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Lab Nitrates: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="number" class="form-control" name="LabNitrates" [(ngModel)]="inspection.LabNitrates" />
+                </div>
+
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Salinity: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <input type="number" class="form-control" name="Salinity" [(ngModel)]="inspection.Salinity" />
                 </div>
     
-                <div class="row col-12">
-                    <div class="col-6 control-label text-right mb-2">
-                        <label><strong>Inspection Notes: </strong></label>
-                    </div>
-                    <div class="col-6 text-left mb-2">
-                        <textarea class="form-control" name="InspectionNotes"
-                            placeholder="Notes" [(ngModel)]="inspection.InspectionNotes">
-                        </textarea>
-                    </div>
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Crop Type: </strong></label>
                 </div>
+                <div class="col-6 text-left mb-2">
+                    <ng-select [(ngModel)]="inspection.CropTypeID"
+                        [items]="cropTypes" bindLabel="CropTypeDisplayName" bindValue="CropTypeID" 
+                        placeholder="Choose One" name="CropTypeID">
+                    </ng-select>
+                </div>
+
+                <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Inspection Notes: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <textarea class="form-control" name="InspectionNotes"
+                        placeholder="Notes" [(ngModel)]="inspection.InspectionNotes">
+                    </textarea>
+                </div>
+
             </div>
 
             <div class="row col-6">
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>MV: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>MV: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.MV}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="MV" [(ngModel)]="inspection.MV" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Na: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>Na: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.Sodium}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="Sodium" [(ngModel)]="inspection.Sodium" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Ca: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>Ca: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.Calcium}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="Calcium" [(ngModel)]="inspection.Calcium" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Mg: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>Mg: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.Magnesium}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="Magnesium" [(ngModel)]="inspection.Magnesium" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>K: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>K: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.Potassium}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="Potassium" [(ngModel)]="inspection.Potassium" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>HCO<sub>3-</sub>: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>HCO<sub>3</sub><sup>-</sup>: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.HydrogenCarbonate}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="HydrogenCarbonate" [(ngModel)]="inspection.HydrogenCarbonate" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>CaCO<sub>3-</sub>: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>CaCO<sub>3-</sub>: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.CalciumCarbonate}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="CalciumCarbonate" [(ngModel)]="inspection.CalciumCarbonate" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>SO<sub>4</sub><sup>2-</sup>: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>SO<sub>4</sub><sup>2-</sup>: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.Sulfate}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="Sulfate" [(ngModel)]="inspection.Sulfate" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Cl: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>Cl: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.Chloride}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="Chloride" [(ngModel)]="inspection.Chloride" />
+                    </div>
+                </div>
+                
+                <div class="row col-12">
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>SiO<sub>2</sub>: </strong></label>
+                    </div>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="SiliconDioxide" [(ngModel)]="inspection.SiliconDioxide" />
                     </div>
                 </div>
 
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>SiO<sub>2</sub>: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>Pre Water Level: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.SiliconDioxide}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="PreWaterLevel" [(ngModel)]="inspection.PreWaterLevel" />
                     </div>
                 </div>
-
+                
                 <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Pre Water Level: </strong></p>
+                    <div class="col-6 control-label text-right mb-2">
+                        <label><strong>Post Water Level: </strong></label>
                     </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.PreWaterLevel}}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="row col-12">
-                    <div class="col-6 text-right">
-                        <p><strong>Post Water Level: </strong></p>
-                    </div>
-                    <div class="col-6 text-left">
-                        <p>
-                            {{waterQualityInspection.PostWaterLevel}}
-                        </p>
+                    <div class="col-6 text-left mb-2">
+                        <input type="number" class="form-control" name="PostWaterLevel" [(ngModel)]="inspection.PostWaterLevel" />
                     </div>
                 </div>
 
             </div>
-        </div>
-        <div class="row col-6">
-            
-            <div class="col-6 control-label text-right mb-2">
-                <label><strong>Date Inspected: </strong></label>
-            </div>
-            <div class="col-6 text-left mb-2 form-group">
-                <div class="input-group">
-                    <input class="form-control" name="dp1"
-                    placeholder="yyyy-mm-dd"
-                    [(ngModel)]="inspection.InspectionDate" ngbDatepicker #d1="ngbDatepicker" />
-                    <div class="input-group-append">
-                        <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()" type="button"></button>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-6 control-label text-right mb-2">
-                <label><strong>Inspector: </strong></label>
-            </div>
-            <div class="col-6 text-left mb-2">
-                <ng-select [(ngModel)]="inspection.InspectorUserID"
-                    [items]="users" bindLabel="FullNameLastFirst" bindValue="UserID" 
-                    placeholder="Choose One" name="InspectorUserID">
-                </ng-select>
-            </div>
-
-
-
-
-
         </div>
     </div>
 

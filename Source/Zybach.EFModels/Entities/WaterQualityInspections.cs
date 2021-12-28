@@ -31,10 +31,12 @@ namespace Zybach.EFModels.Entities
         public static WaterQualityInspectionSimpleDto CreateWaterQualityInspection(ZybachDbContext dbContext,
             WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
+            var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == waterQualityInspectionUpsert.WellRegistrationID).WellID;
+
             var waterQualityInspection = new WaterQualityInspection
             {
-                WellID = waterQualityInspectionUpsert.WellID,
-                WaterQualityInspectionID = waterQualityInspectionUpsert.WaterQualityInspectionTypeID,
+                WellID = wellID,
+                WaterQualityInspectionTypeID = waterQualityInspectionUpsert.WaterQualityInspectionTypeID,
                 InspectionDate = waterQualityInspectionUpsert.InspectionDate,
                 InspectorUserID = waterQualityInspectionUpsert.InspectorUserID,
                 Temperature = waterQualityInspectionUpsert.Temperature,
@@ -68,8 +70,10 @@ namespace Zybach.EFModels.Entities
 
         public static void UpdateWaterQualityInspection(ZybachDbContext dbContext, WaterQualityInspection waterQualityInspection, WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
-            waterQualityInspection.WellID = waterQualityInspectionUpsert.WellID;
-            waterQualityInspection.WaterQualityInspectionID = waterQualityInspectionUpsert.WaterQualityInspectionTypeID;
+            var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == waterQualityInspectionUpsert.WellRegistrationID).WellID;
+
+            waterQualityInspection.WellID = wellID;
+            waterQualityInspection.WaterQualityInspectionTypeID = waterQualityInspectionUpsert.WaterQualityInspectionTypeID;
             waterQualityInspection.InspectionDate = waterQualityInspectionUpsert.InspectionDate;
             waterQualityInspection.InspectorUserID = waterQualityInspectionUpsert.InspectorUserID;
             waterQualityInspection.Temperature = waterQualityInspectionUpsert.Temperature;

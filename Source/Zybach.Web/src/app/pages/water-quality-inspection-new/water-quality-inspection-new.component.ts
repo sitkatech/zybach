@@ -41,7 +41,7 @@ export class WaterQualityInspectionNewComponent implements OnInit {
 
   private initializeInspectionModel() : void {
     var waterQualityInspectionUpsertDto = new WaterQualityInspectionUpsertDto();
-    waterQualityInspectionUpsertDto.WellID = null;
+    waterQualityInspectionUpsertDto.WellRegistrationID = null;
     waterQualityInspectionUpsertDto.WaterQualityInspectionTypeID = null;
     waterQualityInspectionUpsertDto.InspectionDate = null;
     waterQualityInspectionUpsertDto.InspectorUserID = null;
@@ -83,7 +83,7 @@ export class WaterQualityInspectionNewComponent implements OnInit {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addWaterQualityInspectionForm.reset();
-        this.router.navigateByUrl("/water-quality-inspections/").then(() => {
+        this.router.navigateByUrl("/water-quality-inspections").then(() => {
           this.alertService.pushAlert(new Alert(`Water Quality Inspection Record added.`, AlertContext.Success));
         });
       }

@@ -6,7 +6,7 @@ namespace Zybach.Models.DataTransferObjects
     public class WaterQualityInspectionUpsertDto
     {
         [Required]
-        public int WellID { get; set; }
+        public string WellRegistrationID { get; set; }
         [Required]
         public int WaterQualityInspectionTypeID { get; set; }
         [Required]

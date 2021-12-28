@@ -9,7 +9,6 @@
     </ol>
 </nav>
 
-
 <div class="container" *ngIf="inspection">
     <app-alert-display></app-alert-display>
     <div class="row mt-2">
@@ -26,13 +25,16 @@
         </div>
     </div>
 
-    <form (ngSubmit)="onSubmit(addWaterQualityInspection)" #addWaterQualityInspectionForm="ngForm" class="container">
+    <form (ngSubmit)="onSubmit(addWaterQualityInspectionForm)" #addWaterQualityInspectionForm="ngForm" class="container">
 
         <zybach-water-quality-inspection-upsert #inspectionUpsertForm
         [(inspection)]="inspection">
         </zybach-water-quality-inspection-upsert >
 
         <div class="col-12 text-right mt-3 mr-3">
+            <div class="col-sm text-left float-right">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
             <button type="submit" class="btn btn-zybach mr-1">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                 Save
@@ -46,3 +48,4 @@
     </form>
 
 </div>
+
