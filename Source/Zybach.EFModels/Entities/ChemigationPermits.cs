@@ -18,7 +18,7 @@ namespace Zybach.EFModels.Entities
 
         public static IEnumerable<ChemigationPermitDetailedDto> ListWithLatestAnnualRecordAsDto(ZybachDbContext dbContext)
         {
-            var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecord.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
+            var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecords.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
             var chemigationInspectionSimpleDtos = ChemigationInspections.GetChemigationInspectionsImpl(dbContext).ToList()
                 .GroupBy(x => x.ChemigationPermitAnnualRecord.ChemigationPermitID).ToDictionary(x => x.Key, x =>
                     x.OrderByDescending(y => y.InspectionDate).ThenByDescending(y => y.ChemigationInspectionID).FirstOrDefault()?.AsSimpleDto());
@@ -54,9 +54,9 @@ namespace Zybach.EFModels.Entities
 
             var chemigationPermitID = chemigationPermit.ChemigationPermitID;
 
-            chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount = ChemigationPermitAnnualRecord.NDEEAmountEnum.New;
+            chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount = ChemigationPermitAnnualRecords.NDEEAmountEnum.New;
 
-            ChemigationPermitAnnualRecord.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
+            ChemigationPermitAnnualRecords.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
 
             dbContext.Entry(chemigationPermit).Reload();
 

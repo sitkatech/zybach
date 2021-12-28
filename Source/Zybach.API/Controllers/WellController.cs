@@ -165,7 +165,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] string wellRegistrationID)
         {
-            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecord.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecords.GetByWellRegistrationIDAsDetailedDto(_dbContext, wellRegistrationID);
             return Ok(chemigationPermitDetailedDtos);
         }
     }

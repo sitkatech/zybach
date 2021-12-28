@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Zybach.EFModels.Entities;
+﻿using Zybach.EFModels.Entities;
 
 namespace Zybach.API.ReportTemplates.Models
 {
@@ -11,8 +7,8 @@ namespace Zybach.API.ReportTemplates.Models
         public string ApplicatorName { get; set; }
         public int? CertificationNumber { get; set; }
         public int? ExpirationYear { get; set; }
-        public string? HomePhone { get; set; }
-        public string? MobilePhone { get; set; }
+        public string HomePhone { get; set; }
+        public string MobilePhone { get; set; }
 
         public ReportTemplateApplicatorModel(ChemigationPermitAnnualRecordApplicator applicator)
         {

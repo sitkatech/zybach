@@ -40,7 +40,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>> GetChemigationPermitAnnualRecordChemicalFormulationByPermitNumberAndRecordYear([FromRoute] int chemigationPermitNumber, [FromRoute] int recordYear)
         {
-            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.GetByPermitNumberAndRecordYearAsDetailedDto(_dbContext, chemigationPermitNumber, recordYear);
+            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecords.GetByPermitNumberAndRecordYearAsDetailedDto(_dbContext, chemigationPermitNumber, recordYear);
             if (chemigationPermitAnnualRecordDto == null)
             {
                 var notFoundMessage = $"There is no annual record found for Chemigation Permit #{chemigationPermitNumber}, Year {recordYear}!";

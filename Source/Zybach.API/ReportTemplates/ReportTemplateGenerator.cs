@@ -166,8 +166,6 @@ namespace Zybach.API.ReportTemplates
         ///
         /// todo: let the owner of the SharpDocx repository know about these issues to be able to set defaults there instead
         /// </summary>
-        /// <param name="projectImage"></param>
-        /// <param name="imagePath"></param>
         // private static void CorrectImageProblemsAndSaveToDisk(ProjectImage projectImage, string imagePath)
         // {
         //     // // in order to save time on subsequent reports, we should check to see if the file already exists at the path and return early
@@ -240,7 +238,7 @@ namespace Zybach.API.ReportTemplates
 
         private List<ReportTemplateChemigationPermitAnnualRecordModel> GetListOfChemigationPermitAnnualRecordModels(ZybachDbContext dbContext)
         {
-            var listOfModels = ChemigationPermitAnnualRecord.GetChemigationPermitAnnualRecordsImpl(dbContext)
+            var listOfModels = ChemigationPermitAnnualRecords.GetChemigationPermitAnnualRecordsImpl(dbContext)
                 .Where(x => SelectedModelIDs.Contains(x.ChemigationPermitAnnualRecordID)).ToList()
                 .OrderBy(x => SelectedModelIDs.IndexOf(x.ChemigationPermitAnnualRecordID)).ToList()
                 .Select(x => new ReportTemplateChemigationPermitAnnualRecordModel(x)).ToList();
