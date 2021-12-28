@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionTypeDto>> GetChemigationInspectionTypes()
         {
-            var chemigationInspectionTypeDtos = ChemigationInspectionTypes.List(_dbContext);
+            var chemigationInspectionTypeDtos = ChemigationInspectionTypes.ListAsDto(_dbContext);
             return Ok(chemigationInspectionTypeDtos);
         }
 
@@ -31,7 +31,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionStatusDto>> GetChemigationInspectionStatuses()
         {
-            var chemigationInspectionStatusDtos = ChemigationInspectionStatuses.List(_dbContext);
+            var chemigationInspectionStatusDtos = ChemigationInspectionStatuses.ListAsDto(_dbContext);
             return Ok(chemigationInspectionStatusDtos);
         }
 
@@ -39,7 +39,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionFailureReasonDto>> GetChemigationInspectionFailureReasons()
         {
-            var chemigationInspectionFailureReasonDtos = ChemigationInspectionFailureReasons.List(_dbContext);
+            var chemigationInspectionFailureReasonDtos = ChemigationInspectionFailureReasons.ListAsDto(_dbContext);
             return Ok(chemigationInspectionFailureReasonDtos);
         }
 
@@ -47,7 +47,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<TillageDto>> GetTillageTypes()
         {
-            var tillageTypeDtos = Tillages.List(_dbContext);
+            var tillageTypeDtos = Tillages.ListAsDto(_dbContext);
             return Ok(tillageTypeDtos);
         }
 
@@ -55,7 +55,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<CropTypeDto>> GetCropTypes()
         {
-            var cropTypeDtos = CropTypes.List(_dbContext);
+            var cropTypeDtos = CropTypes.ListAsDto(_dbContext);
             return Ok(cropTypeDtos);
         }
 
@@ -63,7 +63,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationMainlineCheckValveDto>> GetMainlineCheckValves()
         {
-            var mainlineCheckValveDtos = ChemigationMainlineCheckValves.List(_dbContext);
+            var mainlineCheckValveDtos = ChemigationMainlineCheckValves.ListAsDto(_dbContext);
             return Ok(mainlineCheckValveDtos);
         }
 
@@ -71,7 +71,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationLowPressureValveDto>> GetLowPressureValves()
         {
-            var lowPressureValveDtos = ChemigationLowPressureValves.List(_dbContext);
+            var lowPressureValveDtos = ChemigationLowPressureValves.ListAsDto(_dbContext);
             return Ok(lowPressureValveDtos);
         }
 
@@ -79,7 +79,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInjectionValveDto>> GetChemigationInjectionValves()
         {
-            var injectionValveDtos = ChemigationInjectionValves.List(_dbContext);
+            var injectionValveDtos = ChemigationInjectionValves.ListAsDto(_dbContext);
             return Ok(injectionValveDtos);
         }
 
@@ -88,7 +88,7 @@ namespace Zybach.API.Controllers
         public ActionResult<List<ChemigationInspectionSimpleDto>> GetAllChemigationInspections()
         {
             var chemigationInspections =
-                ChemigationInspections.List(_dbContext);
+                ChemigationInspections.ListAsDto(_dbContext);
             return Ok(chemigationInspections);
         }
 

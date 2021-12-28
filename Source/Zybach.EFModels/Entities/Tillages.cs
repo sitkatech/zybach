@@ -7,7 +7,7 @@ namespace Zybach.EFModels.Entities
 {
     public static class Tillages
     {
-        public static IEnumerable<TillageDto> List(ZybachDbContext dbContext)
+        public static IEnumerable<TillageDto> ListAsDto(ZybachDbContext dbContext)
         {
             return dbContext.Tillages
                 .AsNoTracking()

@@ -37,7 +37,7 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking();
         }
 
-        public static List<ChemigationInspectionSimpleDto> List(ZybachDbContext dbContext)
+        public static List<ChemigationInspectionSimpleDto> ListAsDto(ZybachDbContext dbContext)
         {
             return GetChemigationInspectionsImpl(dbContext).Select(x => x.AsSimpleDto()).ToList();
         }

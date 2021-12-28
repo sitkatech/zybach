@@ -7,7 +7,7 @@ namespace Zybach.EFModels.Entities
 {
     public static class ChemigationInspectionFailureReasons
     {
-        public static IEnumerable<ChemigationInspectionFailureReasonDto> List(ZybachDbContext dbContext)
+        public static IEnumerable<ChemigationInspectionFailureReasonDto> ListAsDto(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationInspectionFailureReasons
                 .AsNoTracking()

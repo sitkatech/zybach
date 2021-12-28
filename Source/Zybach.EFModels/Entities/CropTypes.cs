@@ -8,7 +8,7 @@ namespace Zybach.EFModels.Entities
     public static class CropTypes
     {
 
-        public static IEnumerable<CropTypeDto> List(ZybachDbContext dbContext)
+        public static IEnumerable<CropTypeDto> ListAsDto(ZybachDbContext dbContext)
         {
             return dbContext.CropTypes.AsNoTracking().Select(x => x.AsDto()).ToList();
         }
