@@ -330,7 +330,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Post Water Level', 
-        field: 'FieldAlkilinity',
+        field: 'PostWaterLevel',
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
         width: 140,
