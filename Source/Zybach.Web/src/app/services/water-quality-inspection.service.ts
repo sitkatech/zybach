@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WaterQualityInspectionSimpleDto } from '../shared/generated/model/water-quality-inspection-simple-dto';
+import { WaterQualityInspectionUpsertDto } from '../shared/generated/model/water-quality-inspection-upsert-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({
@@ -19,4 +20,20 @@ export class WaterQualityInspectionService {
     let route = `/waterQualityInspections/${waterQualityInspectionID}`;
     return this.apiService.getFromApi(route);
   }
+  
+  public createWaterQualityInspection(waterQualityInspectionUpsertDto: WaterQualityInspectionUpsertDto): Observable<any> {
+    let route = `/waterQualityInspections`;
+    return this.apiService.postToApi(route, waterQualityInspectionUpsertDto);
+  }
+
+  public updateWaterQualityInspection(waterQualityInspectionID: number, waterQualityInspectionUpsertDto: WaterQualityInspectionUpsertDto): Observable<any> {
+    let route = `/waterQualityInspections/${waterQualityInspectionID}`;
+    return this.apiService.putToApi(route, waterQualityInspectionUpsertDto);
+  }
+
+  public deleteWaterQualityInspection(waterQualityInspectionID: number): Observable<any> {
+    let route = `/waterQualityInspections/${waterQualityInspectionID}`;
+    return this.apiService.deleteToApi(route);
+  }
+
 }

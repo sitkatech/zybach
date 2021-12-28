@@ -2851,6 +2851,40 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
       }
     },
     "/api/waterQualityInspections/{waterQualityInspectionID}": {
@@ -2889,6 +2923,72 @@
                 }
               }
             }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterQualityInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterQualityInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -5602,6 +5702,138 @@
           },
           "Inspector": {
             "$ref": "#/components/schemas/UserSimpleDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterQualityInspectionUpsertDto": {
+        "required": [
+          "InspectionDate",
+          "InspectorUserID",
+          "WaterQualityInspectionTypeID",
+          "WellID"
+        ],
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Temperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PH": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Conductivity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldAlkilinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "LabNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Salinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MV": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sodium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Calcium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Magnesium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Potassium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "HydrogenCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CalciumCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sulfate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Chloride": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "SiliconDioxide": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "PreWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PostWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

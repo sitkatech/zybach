@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -32,6 +33,50 @@ namespace Zybach.API.Controllers
         {
             var waterQualityInspectionSimpleDto = WaterQualityInspections.GetByIDAsSimpleDto(_dbContext, waterQualityInspectionID);
             return Ok(waterQualityInspectionSimpleDto);
+        }
+
+        [HttpPost("/api/waterQualityInspections")]
+        [AdminFeature]
+        public ActionResult CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
+        {
+            var waterQualityInspectionSimpleDto = WaterQualityInspections.CreateWaterQualityInspection(_dbContext, waterQualityInspectionUpsert);
+            return Ok(waterQualityInspectionSimpleDto);
+        }
+
+        [HttpPut("/api/waterQualityInspections/{waterQualityInspectionID}")]
+        [AdminFeature]
+        public ActionResult UpdateWaterQualityInspection([FromRoute] int waterQualityInspectionID,
+            [FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
+        {
+            var waterQualityInspection = _dbContext.WaterQualityInspections.SingleOrDefault(x =>
+                x.WaterQualityInspectionID == waterQualityInspectionID);
+
+            if (ThrowNotFound(waterQualityInspection, "WaterQualityInspection",
+                waterQualityInspectionID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            WaterQualityInspections.UpdateWaterQualityInspection(_dbContext, waterQualityInspection, waterQualityInspectionUpsert);
+            return Ok();
+        }
+
+        [HttpDelete("/api/waterQualityInspections/{waterQualityInspectionID}")]
+        [AdminFeature]
+        public ActionResult DeleteWaterQualityInspectionByID([FromRoute] int waterQualityInspectionID)
+        {
+            var waterQualityInspection = _dbContext.WaterQualityInspections.SingleOrDefault(x => x.WaterQualityInspectionID == waterQualityInspectionID);
+
+            if (ThrowNotFound(waterQualityInspection, "WaterQualityInspection",
+                waterQualityInspectionID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            _dbContext.WaterQualityInspections.Remove(waterQualityInspection);
+            _dbContext.SaveChanges();
+
+            return Ok();
         }
     }
 }

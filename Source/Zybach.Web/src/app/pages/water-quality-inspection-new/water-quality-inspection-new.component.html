@@ -1,0 +1,48 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/water-quality-inspections">Water Quality Inspections</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Add Inspection
+        </li>
+    </ol>
+</nav>
+
+
+<div class="container" *ngIf="inspection">
+    <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">Add Inspection</h2>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <p>Add a water quality inspection record using the form below
+            </p>
+        </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit(addWaterQualityInspection)" #addWaterQualityInspectionForm="ngForm" class="container">
+
+        <zybach-water-quality-inspection-upsert #inspectionUpsertForm
+        [(inspection)]="inspection">
+        </zybach-water-quality-inspection-upsert >
+
+        <div class="col-12 text-right mt-3 mr-3">
+            <button type="submit" class="btn btn-zybach mr-1">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+            <a class="btn btn-secondary ml-1"
+                routerLink="/water-quality-inspections">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
