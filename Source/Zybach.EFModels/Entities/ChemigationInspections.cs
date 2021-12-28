@@ -43,14 +43,8 @@ namespace Zybach.EFModels.Entities
 
         public static ChemigationInspectionSimpleDto GetChemigationInspectionSimpleDtoByID(ZybachDbContext dbContext, int chemigationInspectionID)
         {
-            return GetChemigationInspectionByIDImpl(dbContext, chemigationInspectionID)?.AsSimpleDto();
-        }
-
-        private static ChemigationInspection GetChemigationInspectionByIDImpl(ZybachDbContext dbContext,
-            int chemigationInspectionID)
-        {
             return GetChemigationInspectionsImpl(dbContext)
-                .SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);
+                .SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID)?.AsSimpleDto();
         }
 
         public static ChemigationInspectionSimpleDto CreateChemigationInspection(ZybachDbContext dbContext, ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
@@ -66,7 +60,7 @@ namespace Zybach.EFModels.Entities
                 ChemigationInspectionStatusID = chemigationInspectionUpsertDto.ChemigationInspectionStatusID,
                 ChemigationInspectionFailureReasonID = chemigationInspectionUpsertDto.ChemigationInspectionFailureReasonID,
                 ChemigationInspectionTypeID = chemigationInspectionUpsertDto.ChemigationInspectionTypeID,
-                InspectionDate = chemigationInspectionUpsertDto.InspectionDate,
+                InspectionDate = chemigationInspectionUpsertDto.InspectionDate?.AddHours(8),
                 InspectorUserID = chemigationInspectionUpsertDto.InspectorUserID,
                 ChemigationMainlineCheckValveID = chemigationInspectionUpsertDto.ChemigationMainlineCheckValveID,
                 ChemigationLowPressureValveID = chemigationInspectionUpsertDto.ChemigationLowPressureValveID,
@@ -87,7 +81,7 @@ namespace Zybach.EFModels.Entities
 
         public static ChemigationInspectionSimpleDto UpdateChemigationInspectionByID(ZybachDbContext dbContext, int chemigationInspectionID, ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
         {
-            var chemigationInspection = GetChemigationInspectionByIDImpl(dbContext, chemigationInspectionID);
+            var chemigationInspection = dbContext.ChemigationInspections.SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);
 
             if (chemigationInspection == null || chemigationInspectionUpsertDto == null)
             {
@@ -117,7 +111,6 @@ namespace Zybach.EFModels.Entities
             chemigationInspection.InspectionNotes = chemigationInspectionUpsertDto.InspectionNotes;
             
             dbContext.SaveChanges();
-            dbContext.Entry(chemigationInspection).Reload();
 
             return chemigationInspection.AsSimpleDto();
         }

@@ -11,7 +11,6 @@ import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generat
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ChemigationInspectionStatusEnum } from 'src/app/shared/models/enums/chemigation-inspection-status';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -86,7 +85,7 @@ export class ChemigationInspectionEditComponent implements OnInit {
   public onSubmit(updateChemigationInspectionForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.chemigationInspectionService.updateChemigationInspectionByAnnualRecordIDAndInspectionID(this.annualRecord.ChemigationPermitAnnualRecordID, this.chemigationInspectionID, this.inspection)
+    this.chemigationInspectionService.updateChemigationInspectionByID(this.chemigationInspectionID, this.inspection)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         updateChemigationInspectionForm.reset();

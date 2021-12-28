@@ -128,42 +128,57 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspection);
         }
 
-        [HttpPut("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/chemigationInspections/{chemigationInspectionID}")]
+        [HttpPut("/api/chemigationInspections/{chemigationInspectionID}")]
         [AdminFeature]
-        public ActionResult<ChemigationInspectionSimpleDto>
-            UpdateChemigationInspectionByAnnualRecordIDAndInspectionID([FromRoute] int chemigationPermitAnnualRecordID, [FromRoute] int chemigationInspectionID,
-                [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
+        public ActionResult
+            UpdateChemigationInspectionByAnnualRecordIDAndInspectionID([FromRoute] int chemigationInspectionID, [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
         {
-            var chemigationPermitAnnualRecord = _dbContext.ChemigationPermitAnnualRecords.SingleOrDefault(x =>
-                x.ChemigationPermitAnnualRecordID == chemigationPermitAnnualRecordID);
-
-            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord",
-                chemigationPermitAnnualRecordID, out var actionResult))
+            var chemigationInspection = _dbContext.ChemigationInspections.SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);
+            if (ThrowNotFound(chemigationInspection, "ChemigationInspection",
+                chemigationInspectionID, out var actionResult))
             {
                 return actionResult;
             }
 
-            var chemigationInspection = ChemigationInspections.UpdateChemigationInspectionByID(_dbContext,
-                chemigationInspectionID, chemigationInspectionUpsertDto);
-
-            return Ok(chemigationInspection);
-        }
-
-        [HttpDelete("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/chemigationInspections/{chemigationInspectionID}")]
-        [AdminFeature]
-        public ActionResult DeleteChemigationInspectionByID([FromRoute] int chemigationPermitAnnualRecordID, [FromRoute] int chemigationInspectionID)
-        {
-            var chemigationInspection = ChemigationInspections.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
-
-            if (ThrowNotFound(chemigationInspection, "ChemigationInspection", chemigationInspectionID, out var actionResult))
-            {
-                return actionResult;
-            }
-
-            ChemigationInspections.DeleteByInspectionID(_dbContext, chemigationInspectionID);
+            chemigationInspection.ChemigationInspectionStatusID =
+                chemigationInspectionUpsertDto.ChemigationInspectionStatusID;
+            chemigationInspection.ChemigationInspectionFailureReasonID =
+                chemigationInspectionUpsertDto.ChemigationInspectionFailureReasonID;
+            chemigationInspection.ChemigationInspectionTypeID =
+                chemigationInspectionUpsertDto.ChemigationInspectionTypeID;
+            chemigationInspection.InspectionDate = chemigationInspectionUpsertDto.InspectionDate?.AddHours(8);
+            chemigationInspection.InspectorUserID = chemigationInspectionUpsertDto.InspectorUserID;
+            chemigationInspection.ChemigationMainlineCheckValveID =
+                chemigationInspectionUpsertDto.ChemigationMainlineCheckValveID;
+            chemigationInspection.ChemigationLowPressureValveID =
+                chemigationInspectionUpsertDto.ChemigationLowPressureValveID;
+            chemigationInspection.ChemigationInjectionValveID =
+                chemigationInspectionUpsertDto.ChemigationInjectionValveID;
+            chemigationInspection.HasVacuumReliefValve = chemigationInspectionUpsertDto.HasVacuumReliefValve;
+            chemigationInspection.HasInspectionPort = chemigationInspectionUpsertDto.HasInspectionPort;
+            chemigationInspection.TillageID = chemigationInspectionUpsertDto.TillageID;
+            chemigationInspection.CropTypeID = chemigationInspectionUpsertDto.CropTypeID;
+            chemigationInspection.InspectionNotes = chemigationInspectionUpsertDto.InspectionNotes;
+            _dbContext.SaveChanges();
 
             return Ok();
         }
 
+        [HttpDelete("/api/chemigationInspections/{chemigationInspectionID}")]
+        [AdminFeature]
+        public ActionResult DeleteChemigationInspectionByID([FromRoute] int chemigationInspectionID)
+        {
+            var chemigationInspection = _dbContext.ChemigationInspections.SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);
+            if (ThrowNotFound(chemigationInspection, "ChemigationInspection",
+                chemigationInspectionID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            _dbContext.ChemigationInspections.Remove(chemigationInspection);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
     }
 }

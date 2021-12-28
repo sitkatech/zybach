@@ -108,7 +108,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
 
   public deleteInspectionByID(): void {
     this.isPerformingAction = true;
-    this.chemigationInspectionService.deleteChemigationInspectionByID(this.currentYearAnnualRecord.ChemigationPermitAnnualRecordID, this.inspectionIDToDelete).subscribe(() => {
+    this.chemigationInspectionService.deleteChemigationInspectionByID(this.inspectionIDToDelete).subscribe(() => {
       this.modalReference.close();
       this.isPerformingAction = false;
       this.router.onSameUrlNavigation = 'reload';
