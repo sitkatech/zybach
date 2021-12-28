@@ -45,7 +45,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<ChemigationPermitDto> GetChemigationPermitByPermitNumber([FromRoute] int chemigationPermitNumber)
         {
-            var chemigationPermitDto = ChemigationPermits.GetChemigationPermitByNumber(_dbContext, chemigationPermitNumber);
+            var chemigationPermitDto = ChemigationPermits.GetByPermitNumberAsDto(_dbContext, chemigationPermitNumber);
             return RequireNotNullThrowNotFound(chemigationPermitDto, "ChemigationPermit", chemigationPermitNumber);
         }
 
@@ -53,18 +53,13 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitNewDto chemigationPermitNewDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var chemigationPermit = ChemigationPermits.CreateNewChemigationPermit(_dbContext, chemigationPermitNewDto);
             return Ok(chemigationPermit);
         }
 
         [HttpPut("api/chemigationPermits/{chemigationPermitID}")]
         [AdminFeature]
-        public ActionResult<ChemigationPermitDto> UpdateChemigationPermit([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
+        public ActionResult UpdateChemigationPermit([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
             var chemigationPermit = _dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
 
@@ -73,27 +68,26 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
+            chemigationPermit.CountyID = chemigationPermitUpsertDto.CountyID;
+            _dbContext.SaveChanges();
 
-            var updatedChemigationPermitDto = ChemigationPermits.UpdateChemigationPermit(_dbContext, chemigationPermit, chemigationPermitUpsertDto);
-            return Ok(updatedChemigationPermitDto);
+            return Ok();
         }
 
         [HttpDelete("/api/chemigationPermits/{chemigationPermitID}")]
         [AdminFeature]
         public ActionResult DeleteChemigationPermitByID([FromRoute] int chemigationPermitID)
         {
-            var chemigationPermitDto = ChemigationPermits.GetChemigationPermitByID(_dbContext, chemigationPermitID);
+            var chemigationPermit = _dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
 
-            if (ThrowNotFound(chemigationPermitDto, "ChemigationPermit", chemigationPermitID, out var actionResult))
+            if (ThrowNotFound(chemigationPermit, "ChemigationPermit", chemigationPermitID, out var actionResult))
             {
                 return actionResult;
             }
 
-            ChemigationPermits.DeleteByChemigationPermitID(_dbContext, chemigationPermitID);
+            _dbContext.ChemigationPermits.Remove(chemigationPermit);
+            _dbContext.SaveChanges();
 
             return Ok();
         }

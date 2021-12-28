@@ -10,12 +10,6 @@ namespace Zybach.EFModels.Entities
 {
     public static class ChemigationPermits
     {
-        public static IEnumerable<ChemigationPermitDto> List(ZybachDbContext dbContext)
-        {
-            return GetChemigationPermitImpl(dbContext)
-                .Select(x => x.AsDto()).ToList();
-        }
-
         public static IEnumerable<ChemigationPermitDetailedDto> ListWithLatestAnnualRecordAsDto(ZybachDbContext dbContext)
         {
             var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecords.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
@@ -60,10 +54,10 @@ namespace Zybach.EFModels.Entities
 
             dbContext.Entry(chemigationPermit).Reload();
 
-            return GetChemigationPermitByID(dbContext, chemigationPermitID);
+            return GetByIDAsDto(dbContext, chemigationPermitID);
         }
 
-        public static ChemigationPermitDto GetChemigationPermitByID(ZybachDbContext dbContext, int chemigationPermitID)
+        public static ChemigationPermitDto GetByIDAsDto(ZybachDbContext dbContext, int chemigationPermitID)
         {
             var chemigationPermit = GetChemigationPermitImpl(dbContext)
                 .SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
@@ -71,7 +65,7 @@ namespace Zybach.EFModels.Entities
             return chemigationPermit?.AsDto();
         }
 
-        public static ChemigationPermitDto GetChemigationPermitByNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
+        public static ChemigationPermitDto GetByPermitNumberAsDto(ZybachDbContext dbContext, int chemigationPermitNumber)
         {
             var chemigationPermit = GetChemigationPermitImpl(dbContext)
                 .SingleOrDefault(x => x.ChemigationPermitNumber == chemigationPermitNumber);
@@ -79,34 +73,13 @@ namespace Zybach.EFModels.Entities
             return chemigationPermit?.AsDto();
         }
 
-        public static IQueryable<ChemigationPermit> GetChemigationPermitImpl(ZybachDbContext dbContext)
+        private static IQueryable<ChemigationPermit> GetChemigationPermitImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermits
                 .Include(x => x.ChemigationPermitStatus)
                 .Include(x => x.County)
                 .Include(x => x.Well)
                 .AsNoTracking();
-        }
-
-        public static ChemigationPermitDto UpdateChemigationPermit(ZybachDbContext dbContext, ChemigationPermit chemigationPermit, ChemigationPermitUpsertDto chemigationPermitUpsertDto)
-        {
-            chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
-            chemigationPermit.CountyID = chemigationPermitUpsertDto.CountyID;
-
-            dbContext.SaveChanges();
-            dbContext.Entry(chemigationPermit).Reload();
-            return GetChemigationPermitByID(dbContext, chemigationPermit.ChemigationPermitID);
-        }
-
-        public static void DeleteByChemigationPermitID(ZybachDbContext dbContext, int chemigationPermitID)
-        {
-            var chemigationPermitToRemove = dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
-
-            if (chemigationPermitToRemove != null)
-            {
-                dbContext.ChemigationPermits.Remove(chemigationPermitToRemove);
-                dbContext.SaveChanges();
-            }
         }
 
 
