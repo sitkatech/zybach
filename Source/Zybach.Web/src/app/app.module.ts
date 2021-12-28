@@ -123,7 +123,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationInspectionsListComponent,
     ChemigationInspectionUpsertComponent,
     ChemigationInspectionNewComponent,
-    ChemigationInspectionEditComponent    
+    ChemigationInspectionEditComponent,
     WaterQualityInspectionListComponent,
     WaterQualityInspectionDetailComponent    
   ],
