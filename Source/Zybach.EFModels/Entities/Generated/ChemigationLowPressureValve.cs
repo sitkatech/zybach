@@ -17,7 +17,7 @@ namespace Zybach.EFModels.Entities
     {
         public ChemigationLowPressureValve()
         {
-            ChemigationInspections = new HashSet<ChemigationInspection>();
+            ChemigationInspections = new HashSet<ChemigationInspections>();
         }
 
         [Key]
@@ -29,12 +29,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(50)]
         public string ChemigationLowPressureValveDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationInspection.ChemigationLowPressureValve))]
-        public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
-
-        public static IEnumerable<ChemigationLowPressureValveDto> List(ZybachDbContext dbContext)
-        {
-            return dbContext.ChemigationLowPressureValves.AsNoTracking().Select(x => x.AsDto()).ToList();
-        }
+        [InverseProperty(nameof(Entities.ChemigationInspections.ChemigationLowPressureValve))]
+        public virtual ICollection<ChemigationInspections> ChemigationInspections { get; set; }
     }
 }

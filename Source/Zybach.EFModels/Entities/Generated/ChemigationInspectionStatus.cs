@@ -17,7 +17,7 @@ namespace Zybach.EFModels.Entities
     {
         public ChemigationInspectionStatus()
         {
-            ChemigationInspections = new HashSet<ChemigationInspection>();
+            ChemigationInspections = new HashSet<ChemigationInspections>();
         }
 
         [Key]
@@ -29,15 +29,8 @@ namespace Zybach.EFModels.Entities
         [StringLength(50)]
         public string ChemigationInspectionStatusDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationInspection.ChemigationInspectionStatus))]
-        public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
+        [InverseProperty(nameof(Entities.ChemigationInspections.ChemigationInspectionStatus))]
+        public virtual ICollection<ChemigationInspections> ChemigationInspections { get; set; }
 
-        public static IEnumerable<ChemigationInspectionStatusDto> List(ZybachDbContext dbContext)
-        {
-            return dbContext.ChemigationInspectionStatuses
-                .AsNoTracking()
-                .Select(x => x.AsDto()).ToList();
-        }
-        
     }
 }

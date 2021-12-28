@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemigationInspection")]
-    public partial class ChemigationInspection
+    public partial class ChemigationInspections
     {
         [Key]
         public int ChemigationInspectionID { get; set; }

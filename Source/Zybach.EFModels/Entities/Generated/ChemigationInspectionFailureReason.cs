@@ -17,7 +17,7 @@ namespace Zybach.EFModels.Entities
     {
         public ChemigationInspectionFailureReason()
         {
-            ChemigationInspections = new HashSet<ChemigationInspection>();
+            ChemigationInspections = new HashSet<ChemigationInspections>();
         }
 
         [Key]
@@ -29,14 +29,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(50)]
         public string ChemigationInspectionFailureReasonDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationInspection.ChemigationInspectionFailureReason))]
-        public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
-
-        public static IEnumerable<ChemigationInspectionFailureReasonDto> List(ZybachDbContext dbContext)
-        {
-            return dbContext.ChemigationInspectionFailureReasons
-                .AsNoTracking()
-                .Select(x => x.AsDto()).ToList();
-        }
+        [InverseProperty(nameof(Entities.ChemigationInspections.ChemigationInspectionFailureReason))]
+        public virtual ICollection<ChemigationInspections> ChemigationInspections { get; set; }
     }
 }

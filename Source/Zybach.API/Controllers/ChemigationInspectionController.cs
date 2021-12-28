@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionTypeDto>> GetChemigationInspectionTypes()
         {
-            var chemigationInspectionTypeDtos = ChemigationInspectionType.List(_dbContext);
+            var chemigationInspectionTypeDtos = ChemigationInspectionTypes.List(_dbContext);
             return Ok(chemigationInspectionTypeDtos);
         }
 
@@ -31,7 +31,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionStatusDto>> GetChemigationInspectionStatuses()
         {
-            var chemigationInspectionStatusDtos = ChemigationInspectionStatus.List(_dbContext);
+            var chemigationInspectionStatusDtos = ChemigationInspectionStatuses.List(_dbContext);
             return Ok(chemigationInspectionStatusDtos);
         }
 
@@ -39,7 +39,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionFailureReasonDto>> GetChemigationInspectionFailureReasons()
         {
-            var chemigationInspectionFailureReasonDtos = ChemigationInspectionFailureReason.List(_dbContext);
+            var chemigationInspectionFailureReasonDtos = ChemigationInspectionFailureReasons.List(_dbContext);
             return Ok(chemigationInspectionFailureReasonDtos);
         }
 
@@ -47,7 +47,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<TillageDto>> GetTillageTypes()
         {
-            var tillageTypeDtos = Tillage.List(_dbContext);
+            var tillageTypeDtos = Tillages.List(_dbContext);
             return Ok(tillageTypeDtos);
         }
 
@@ -55,7 +55,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<CropTypeDto>> GetCropTypes()
         {
-            var cropTypeDtos = CropType.List(_dbContext);
+            var cropTypeDtos = CropTypes.List(_dbContext);
             return Ok(cropTypeDtos);
         }
 
@@ -63,7 +63,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationMainlineCheckValveDto>> GetMainlineCheckValves()
         {
-            var mainlineCheckValveDtos = ChemigationMainlineCheckValve.List(_dbContext);
+            var mainlineCheckValveDtos = ChemigationMainlineCheckValves.List(_dbContext);
             return Ok(mainlineCheckValveDtos);
         }
 
@@ -71,7 +71,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationLowPressureValveDto>> GetLowPressureValves()
         {
-            var lowPressureValveDtos = ChemigationLowPressureValve.List(_dbContext);
+            var lowPressureValveDtos = ChemigationLowPressureValves.List(_dbContext);
             return Ok(lowPressureValveDtos);
         }
 
@@ -79,7 +79,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInjectionValveDto>> GetChemigationInjectionValves()
         {
-            var injectionValveDtos = ChemigationInjectionValve.List(_dbContext);
+            var injectionValveDtos = ChemigationInjectionValves.List(_dbContext);
             return Ok(injectionValveDtos);
         }
 
@@ -88,7 +88,7 @@ namespace Zybach.API.Controllers
         public ActionResult<List<ChemigationInspectionSimpleDto>> GetAllChemigationInspections()
         {
             var chemigationInspections =
-                ChemigationInspection.List(_dbContext);
+                ChemigationInspections.List(_dbContext);
             return Ok(chemigationInspections);
         }
 
@@ -97,7 +97,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<ChemigationInspectionSimpleDto> GetChemigationInspectionByID([FromRoute] int chemigationInspectionID)
         {
-            var chemigationInspection = ChemigationInspection.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
+            var chemigationInspection = ChemigationInspections.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
 
             if (ThrowNotFound(chemigationInspection, "ChemigationInspection", chemigationInspectionID, out var actionResult))
             {
@@ -122,7 +122,7 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            var chemigationInspection = ChemigationInspection.CreateChemigationInspection(_dbContext,
+            var chemigationInspection = ChemigationInspections.CreateChemigationInspection(_dbContext,
                 chemigationInspectionUpsertDto);
 
             return Ok(chemigationInspection);
@@ -143,7 +143,7 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            var chemigationInspection = ChemigationInspection.UpdateChemigationInspectionByID(_dbContext,
+            var chemigationInspection = ChemigationInspections.UpdateChemigationInspectionByID(_dbContext,
                 chemigationInspectionID, chemigationInspectionUpsertDto);
 
             return Ok(chemigationInspection);
@@ -153,14 +153,14 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult DeleteChemigationInspectionByID([FromRoute] int chemigationPermitAnnualRecordID, [FromRoute] int chemigationInspectionID)
         {
-            var chemigationInspection = ChemigationInspection.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
+            var chemigationInspection = ChemigationInspections.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
 
             if (ThrowNotFound(chemigationInspection, "ChemigationInspection", chemigationInspectionID, out var actionResult))
             {
                 return actionResult;
             }
 
-            ChemigationInspection.DeleteByInspectionID(_dbContext, chemigationInspectionID);
+            ChemigationInspections.DeleteByInspectionID(_dbContext, chemigationInspectionID);
 
             return Ok();
         }

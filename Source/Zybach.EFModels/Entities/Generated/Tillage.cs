@@ -17,7 +17,7 @@ namespace Zybach.EFModels.Entities
     {
         public Tillage()
         {
-            ChemigationInspections = new HashSet<ChemigationInspection>();
+            ChemigationInspections = new HashSet<ChemigationInspections>();
         }
 
         [Key]
@@ -29,14 +29,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(50)]
         public string TillageDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationInspection.Tillage))]
-        public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
-
-        public static IEnumerable<TillageDto> List(ZybachDbContext dbContext)
-        {
-            return dbContext.Tillages
-                .AsNoTracking()
-                .Select(x => x.AsDto()).ToList();
-        }
+        [InverseProperty(nameof(Entities.ChemigationInspections.Tillage))]
+        public virtual ICollection<ChemigationInspections> ChemigationInspections { get; set; }
     }
 }
