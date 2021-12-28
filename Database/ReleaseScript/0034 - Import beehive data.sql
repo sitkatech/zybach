@@ -151,7 +151,7 @@ join
 update cp
 set cp.ChemigationPermitStatusID = 2
 from dbo.ChemigationPermit cp
-left join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.ChemigationPermitID and cpar.RecordYear = 2021
+left join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.ChemigationPermitID and cpar.RecordYear in (2021, 2022)
 where cpar.ChemigationPermitAnnualRecordID is null
 
 update cp
@@ -160,6 +160,16 @@ from dbo.ChemigationPermit cp
 join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.ChemigationPermitID and cpar.RecordYear = 2021
 join dbo.Well w on cp.WellID = w.WellID
 join dbo.BeehivePermit bp on w.WellRegistrationID = bp.WellRegistrationID and cp.ChemigationPermitNumber = bp.PermitNumber and cpar.RecordYear = bp.ChemigationYear
+
+update cp
+set cp.ChemigationPermitStatusID = 3
+from dbo.ChemigationPermit cp
+join dbo.Well w on cp.WellID = w.WellID
+join dbo.BeehivePermit bp on 
+w.WellRegistrationID = bp.WellRegistrationID 
+and cp.ChemigationPermitNumber = bp.PermitNumber 
+and bp.[Status] = 'Perm Inact'
+
 
 -- updating more applicant names
 update cpar
