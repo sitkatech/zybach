@@ -25,7 +25,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<ChemicalUnit> ChemicalUnits { get; set; }
         public virtual DbSet<ChemigationInjectionUnitType> ChemigationInjectionUnitTypes { get; set; }
         public virtual DbSet<ChemigationInjectionValve> ChemigationInjectionValves { get; set; }
-        public virtual DbSet<ChemigationInspections> ChemigationInspections { get; set; }
+        public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<ChemigationInspectionFailureReason> ChemigationInspectionFailureReasons { get; set; }
         public virtual DbSet<ChemigationInspectionStatus> ChemigationInspectionStatuses { get; set; }
         public virtual DbSet<ChemigationInspectionType> ChemigationInspectionTypes { get; set; }
@@ -153,7 +153,7 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.ChemigationInjectionValveName).IsUnicode(false);
             });
 
-            modelBuilder.Entity<ChemigationInspections>(entity =>
+            modelBuilder.Entity<ChemigationInspection>(entity =>
             {
                 entity.Property(e => e.InspectionNotes).IsUnicode(false);
 

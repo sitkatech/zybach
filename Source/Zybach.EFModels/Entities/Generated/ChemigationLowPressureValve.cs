@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Zybach.Models.DataTransferObjects;
 
 #nullable disable
 
@@ -17,7 +15,7 @@ namespace Zybach.EFModels.Entities
     {
         public ChemigationLowPressureValve()
         {
-            ChemigationInspections = new HashSet<ChemigationInspections>();
+            ChemigationInspections = new HashSet<ChemigationInspection>();
         }
 
         [Key]
@@ -29,7 +27,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(50)]
         public string ChemigationLowPressureValveDisplayName { get; set; }
 
-        [InverseProperty(nameof(Entities.ChemigationInspections.ChemigationLowPressureValve))]
-        public virtual ICollection<ChemigationInspections> ChemigationInspections { get; set; }
+        [InverseProperty(nameof(ChemigationInspection.ChemigationLowPressureValve))]
+        public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
     }
 }

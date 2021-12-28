@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class ChemigationInspections
+    public static class ChemigationInspections
     {
-        public static IQueryable<ChemigationInspections> GetChemigationInspectionsImpl(ZybachDbContext dbContext)
+        public static IQueryable<ChemigationInspection> GetChemigationInspectionsImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationInspections
                 .Include(x => x.ChemigationPermitAnnualRecord)
@@ -47,7 +46,7 @@ namespace Zybach.EFModels.Entities
             return GetChemigationInspectionByIDImpl(dbContext, chemigationInspectionID)?.AsSimpleDto();
         }
 
-        private static ChemigationInspections GetChemigationInspectionByIDImpl(ZybachDbContext dbContext,
+        private static ChemigationInspection GetChemigationInspectionByIDImpl(ZybachDbContext dbContext,
             int chemigationInspectionID)
         {
             return GetChemigationInspectionsImpl(dbContext)
@@ -61,7 +60,7 @@ namespace Zybach.EFModels.Entities
                 return null;
             }
 
-            var chemigationInspection = new ChemigationInspections()
+            var chemigationInspection = new ChemigationInspection()
             {
                 ChemigationPermitAnnualRecordID = chemigationInspectionUpsertDto.ChemigationPermitAnnualRecordID,
                 ChemigationInspectionStatusID = chemigationInspectionUpsertDto.ChemigationInspectionStatusID,

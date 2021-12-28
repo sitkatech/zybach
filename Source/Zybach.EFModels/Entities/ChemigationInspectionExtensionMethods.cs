@@ -4,7 +4,7 @@ namespace Zybach.EFModels.Entities
 {
     public partial class ChemigationInspectionExtensionMethods
     {
-        static partial void DoCustomSimpleDtoMappings(ChemigationInspections chemigationInspections,
+        static partial void DoCustomSimpleDtoMappings(ChemigationInspection chemigationInspections,
             ChemigationInspectionSimpleDto chemigationInspectionSimpleDto)
         {
             chemigationInspectionSimpleDto.ChemigationPermitNumber = chemigationInspections.ChemigationPermitAnnualRecord
