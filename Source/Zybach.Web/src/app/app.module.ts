@@ -73,6 +73,7 @@ import { WaterQualityInspectionListComponent } from './pages/water-quality-inspe
 import { WaterQualityInspectionDetailComponent } from './pages/water-quality-inspection-detail/water-quality-inspection-detail.component';
 import { WaterQualityInspectionNewComponent } from './pages/water-quality-inspection-new/water-quality-inspection-new.component';
 import { WaterQualityInspectionUpsertComponent } from './shared/components/water-quality-inspection-upsert/water-quality-inspection-upsert.component';
+import { WaterQualityInspectionEditComponent } from './pages/water-quality-inspection-edit/water-quality-inspection-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -129,7 +130,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WaterQualityInspectionListComponent,
     WaterQualityInspectionDetailComponent,
     WaterQualityInspectionUpsertComponent, 
-    WaterQualityInspectionNewComponent    
+    WaterQualityInspectionNewComponent, WaterQualityInspectionEditComponent    
   ],
   imports: [
     AppRoutingModule,
