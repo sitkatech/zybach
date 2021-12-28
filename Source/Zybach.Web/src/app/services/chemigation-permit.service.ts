@@ -129,4 +129,5 @@ export class ChemigationPermitService {
     let route = `/chemigationInspections`;
     return this.apiService.getFromApi(route);
   }
+
 }

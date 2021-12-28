@@ -11,22 +11,3 @@
 h4, h5 {
     color: $primary;
 }
-
-
-li.list-group-item.header {
-    cursor:pointer;
-    background-color: #dfdfdf;
-    color: #000;
-    border-top:0;
-}
-
-li.list-group-item.header:hover {
-    background-color:#EEE;
-    color: #fff;
-    background-color: $button-toggle-hover;
-}
-
-li.list-group-item.header.selected {
-    background-color:  $button-border-and-background;
-    color: #EEE;
-}

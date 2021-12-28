@@ -1,0 +1,53 @@
+<nav aria-label="breadcrumb" *ngIf="annualRecord">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/chemigation-permits">Chemigation Permits</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a routerLink="/chemigation-permits/{{annualRecord?.ChemigationPermit?.ChemigationPermitNumber}}">
+                Chemigation Permit #{{annualRecord?.ChemigationPermit.ChemigationPermitNumberDisplay}}
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Edit Inspection for {{annualRecord?.RecordYear}}
+        </li>
+    </ol>
+</nav>
+
+
+<div class="container" *ngIf="inspection">
+    <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">Edit Inspection</h2>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <p>Edit chemigation inspection record for #{{annualRecord?.ChemigationPermit.ChemigationPermitNumberDisplay}} for {{annualRecord?.RecordYear}} using the form below
+            </p>
+        </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit(updateChemigationInspectionForm)" #updateChemigationInspectionForm="ngForm" class="container">
+
+        <zybach-chemigation-inspection-upsert #inspectionUpsertForm
+        [(inspection)]="inspection">
+        </zybach-chemigation-inspection-upsert >
+
+        <div class="col-12 text-right mt-3 mr-3">
+            <button type="submit" class="btn btn-zybach mr-1">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+            <a class="btn btn-secondary ml-1"
+                routerLink="/chemigation-permits/{{annualRecord?.ChemigationPermit.ChemigationPermitNumber}}">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
