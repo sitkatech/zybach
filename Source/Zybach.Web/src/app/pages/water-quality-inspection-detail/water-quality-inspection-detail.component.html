@@ -1,0 +1,265 @@
+<nav aria-label="breadcrumb" *ngIf="waterQualityInspection">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/water-quality-inspections">Water Quality Inspections</a>
+        </li>
+        <li class="breadcrumb-item active">Well
+            #{{waterQualityInspection?.Well.WellRegistrationID }}</li>
+        <li class="breadcrumb-item" aria-current="page">
+            {{waterQualityInspection.InspectionDate | date:'MM/dd/yyyy'}}
+        </li>
+    </ol>
+</nav>
+<app-alert-display></app-alert-display>
+<div class="row container" *ngIf="waterQualityInspection">
+    <div class="col-12">
+        <h2 class="d-inline-block">{{waterQualityInspection.InspectionDate | date:'MM/dd/yyyy'}}</h2>
+    </div>
+    <div class="row container" *ngIf="waterQualityInspection">
+        <div class="col-12 col-sm-6 label"><strong>Well: </strong></div>
+        <div class="col-12 col-sm-6"><a *ngIf="waterQualityInspection.Well" routerLink="/wells/{{waterQualityInspection.Well.WellRegistrationID}}">{{waterQualityInspection.Well.WellRegistrationID}}</a></div>
+        <div class="col-12 col-sm-6 label"><strong>Inspected By: </strong></div>
+        <div class="col-12 col-sm-6"><a *ngIf="waterQualityInspection.Inspector" routerLink="/users/{{waterQualityInspection.Inspector.UserID}}">{{waterQualityInspection.Inspector.FullNameLastFirst}}</a></div>
+        <div class="col-12 col-sm-6 label"><strong>Inspection Type: </strong></div>
+        <div class="col-12 col-sm-6">{{waterQualityInspection.WaterQualityInspectionTypeName}}</div>
+    </div>
+</div>
+<div class="row mt-4 container" *ngIf="waterQualityInspection">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row col-12">
+                    <div class="row col-6">
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Temperature: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterQualityInspection.Temperature}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>PH: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterQualityInspection.PH}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Conductivity: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterQualityInspection.Conductivity}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Field Alkilinity: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterQualityInspection.FieldAlkilinity}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Field Nitrates: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterQualityInspection.FieldNitrates}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Lab Nitrates: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterQualityInspection.LabNitrates}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Salinity: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterQualityInspection.Salinity}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Crop: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.CropTypeName}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Notes: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.InspectionNotes}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row col-6">
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>MV: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.MV}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Na: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.Sodium}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Ca: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.Calcium}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Mg: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.Magnesium}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>K: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.Potassium}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>HCO<sub>3-</sub>: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.HydrogenCarbonate}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>CaCO<sub>3-</sub>: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.CalciumCarbonate}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>SO<sub>4</sub><sup>2-</sup>: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.Sulfate}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Cl: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.Chloride}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>SiO<sup>2</sup>: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.SiliconDioxide}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Pre Water Level: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.PreWaterLevel}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Post Water Level: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterQualityInspection.PostWaterLevel}}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

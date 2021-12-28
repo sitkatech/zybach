@@ -40,7 +40,8 @@ export class ChemigationInspectionsListComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
     private cdr: ChangeDetectorRef,
-    private utilityFunctionsService: UtilityFunctionsService
+    private utilityFunctionsService: UtilityFunctionsService,
+    private datePipe: DatePipe,  
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +53,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
   }
 
   initializeGrid() {
+    let datePipe = this.datePipe;
     this.columnDefs = [
       {
         headerName: 'Permit #',
@@ -86,7 +88,31 @@ export class ChemigationInspectionsListComponent implements OnInit {
         resizable: true, sortable: true 
       },
       { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true },
-      this.createDateColumnDef('Inspection Date', 'InspectionDate', 'M/d/yyyy'),
+      {
+        headerName: "Date", 
+        valueGetter: function (params: any) {
+          return datePipe.transform(params.data.InspectionDate, "M/d/yyyy");
+        },
+        comparator: function (id1: any, id2: any) {
+          const date1 = Date.parse(id1);
+          const date2 = Date.parse(id2);
+          if (date1 < date2) {
+            return -1;
+          }
+          return (date1 > date2)  ?  1 : 0;
+        },
+        filterValueGetter: function (params: any) {
+          return datePipe.transform(params.data.InspectionDate, "M/d/yyyy");
+        },
+        filter: 'agDateColumnFilter',
+        filterParams: {
+          filterOptions: ['inRange'],
+          comparator: this.dateFilterComparator
+        }, 
+        width: 110,
+        resizable: true,
+        sortable: true
+      },
       { headerName: 'Status', field: 'ChemigationInspectionStatusName', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
@@ -94,12 +120,37 @@ export class ChemigationInspectionsListComponent implements OnInit {
         },
         width: 100, resizable: true, sortable: true 
       },
-      { headerName: 'Inspected By', field: "Inspector.FullNameLastFirst",
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'Inspector.FullNameLastFirst'
+      {
+        headerName: 'Inspected By', valueGetter: function (params: any) {
+          if(params.data.Inspector)
+          {
+            return { LinkValue: params.data.Inspector.UserID, LinkDisplay: params.data.Inspector.FullNameLastFirst };
+          }
+          else
+          {
+            return { LinkValue: null, LinkDisplay: null };
+          }
+        }, 
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/users/" },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkValue;
+          let link2 = id2.LinkValue;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
         },
-        width: 130, resizable: true, sortable: true 
+        filterValueGetter: function (params: any) {
+          return params.data.Inspector.FullNameLastFirst;
+        },
+        filter: true,
+        width: 130,
+        resizable: true,
+        sortable: true
       },
       { headerName: 'Mainline Check Valve', field: 'ChemigationMainlineCheckValveName',
         filterFramework: CustomDropdownFilterComponent,
@@ -134,33 +185,15 @@ export class ChemigationInspectionsListComponent implements OnInit {
     ]; 
   }
 
-  private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+  private dateFilterComparator(filterLocalDate, cellValue) {
     const cellDate = Date.parse(cellValue);
+    const filterLocalDateAtMidnight = filterLocalDate.getTime();
     if (cellDate == filterLocalDateAtMidnight) {
       return 0;
     }
     return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
   }
-  
-  private createDateColumnDef(headerName: string, fieldName: string, dateFormat: string): ColDef {
-    let datePipe = new DatePipe('en-US');
-  
-    return {
-      headerName: headerName, valueGetter: function (params: any) {
-        return datePipe.transform(params.data[fieldName], dateFormat);
-      },
-      comparator: this.dateFilterComparator,
-      filter: 'agDateColumnFilter',
-      filterParams: {
-        filterOptions: ['inRange'],
-        comparator: this.dateFilterComparator
-      }, 
-      width: 110,
-      resizable: true,
-      sortable: true
-    };
-  }
-  
+    
   public exportToCsv() {
     this.utilityFunctionsService.exportGridToCsv(this.chemigationInspectionsGrid, 'chemigation-inspections-report.csv', null);
   }

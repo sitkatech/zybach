@@ -145,7 +145,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
-      this.createDateColumnDef('Created', 'DateCreated', 'M/d/yyyy'),
+      this.createDateColumnDef(datePipe, 'Created', 'DateCreated', 'M/d/yyyy'),
       {
         headerName: 'Latest Inspection',
         children: [
@@ -160,7 +160,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
                 return "";
               }
             },
-            comparator: this.dateFilterComparator,
+            comparator: this.dateSortComparer,
             filter: 'agDateColumnFilter',
             filterParams: {
               filterOptions: ['inRange'],
@@ -205,10 +205,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               }
               else
               {
-                return "";
+                return null;
               }
             },
-            comparator: this.dateFilterComparator,
+            comparator: this.dateSortComparer,
             filter: 'agDateColumnFilter',
             filterParams: {
               filterOptions: ['inRange'],
@@ -226,10 +226,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               }
               else
               {
-                return "";
+                return null;
               }
             },
-            comparator: this.dateFilterComparator,
+            comparator: this.dateSortComparer,
             filter: 'agDateColumnFilter',
             filterParams: {
               filterOptions: ['inRange'],
@@ -247,10 +247,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               }
               else
               {
-                return "";
+                return null;
               }
             },
-            comparator: this.dateFilterComparator,
+            comparator: this.dateSortComparer,
             filter: 'agDateColumnFilter',
             filterParams: {
               filterOptions: ['inRange'],
@@ -304,22 +304,30 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
 
   }
 
+  private dateSortComparer (id1: any, id2: any) {
+      const date1 = id1 ? Date.parse(id1) : Date.parse("1/1/1900");
+      const date2 = id2 ? Date.parse(id2) : Date.parse("1/1/1900");
+      if (date1 < date2) {
+        return -1;
+      }
+      return (date1 > date2)  ?  1 : 0;
+  }
+  
   private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+    if(cellValue === null) return -1;
     const cellDate = Date.parse(cellValue);
     if (cellDate == filterLocalDateAtMidnight) {
       return 0;
     }
     return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
   }
-  
-  private createDateColumnDef(headerName: string, fieldName: string, dateFormat: string): ColDef {
-    let datePipe = new DatePipe('en-US');
-  
+
+  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string): ColDef {
     return {
       headerName: headerName, valueGetter: function (params: any) {
         return datePipe.transform(params.data[fieldName], dateFormat);
       },
-      comparator: this.dateFilterComparator,
+      comparator: this.dateSortComparer,
       filter: 'agDateColumnFilter',
       filterParams: {
         filterOptions: ['inRange'],

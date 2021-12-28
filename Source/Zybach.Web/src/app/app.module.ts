@@ -69,6 +69,8 @@ import { ChemigationInspectionsListComponent } from './pages/chemigation-inspect
 import { ChemigationInspectionUpsertComponent } from './shared/components/chemigation-inspection-upsert/chemigation-inspection-upsert.component';
 import { ChemigationInspectionNewComponent } from './pages/chemigation-inspection-new/chemigation-inspection-new.component';
 import { ChemigationInspectionEditComponent } from './pages/chemigation-inspection-edit/chemigation-inspection-edit.component';
+import { WaterQualityInspectionListComponent } from './pages/water-quality-inspection-list/water-quality-inspection-list.component';
+import { WaterQualityInspectionDetailComponent } from './pages/water-quality-inspection-detail/water-quality-inspection-detail.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -122,6 +124,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     ChemigationInspectionUpsertComponent,
     ChemigationInspectionNewComponent,
     ChemigationInspectionEditComponent    
+    WaterQualityInspectionListComponent,
+    WaterQualityInspectionDetailComponent    
   ],
   imports: [
     AppRoutingModule,

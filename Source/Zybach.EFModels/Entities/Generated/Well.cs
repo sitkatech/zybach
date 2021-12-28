@@ -16,6 +16,7 @@ namespace Zybach.EFModels.Entities
         {
             ChemigationPermits = new HashSet<ChemigationPermit>();
             Sensors = new HashSet<Sensor>();
+            WaterQualityInspections = new HashSet<WaterQualityInspection>();
         }
 
         [Key]
@@ -43,5 +44,7 @@ namespace Zybach.EFModels.Entities
         public virtual ICollection<ChemigationPermit> ChemigationPermits { get; set; }
         [InverseProperty(nameof(Sensor.Well))]
         public virtual ICollection<Sensor> Sensors { get; set; }
+        [InverseProperty(nameof(WaterQualityInspection.Well))]
+        public virtual ICollection<WaterQualityInspection> WaterQualityInspections { get; set; }
     }
 }
