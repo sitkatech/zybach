@@ -13,6 +13,15 @@ join
 left join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
 where w.WellID is null AND bw.[Long/Lat] is not null
 
+-- no well reg ids but have sitenumbers and don't exist in zybach
+insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
+select bw.SiteNumber as WellRegistrationID, 'POINT (' + replace([Long/Lat], ',', '') + ')' as WKT, @dateCreated, @dateCreated
+from dbo.BeehiveWell bw
+left join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
+where bw.SiteNumber is not null and ((bw.WellRegistrationID not like 'a%' and bw.WellRegistrationID not like 'g%') or bw.WellRegistrationID is null)
+and w.WellID is null
+order by bw.SiteNumber
+
 /*
 update dbo.BeehivePermit
 set Township = '13N', [Range] = '33W'

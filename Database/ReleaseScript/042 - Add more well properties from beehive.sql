@@ -118,7 +118,6 @@ from dbo.BeehiveWell bw
 join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
 left join dbo.WellUse wu on bw.SecondaryWellUse = wu.WellUseDisplayName
 left join dbo.County c on bw.County = c.CountyDisplayName
-where bw.WellType like '%quantity%'
 
 insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTypeID)
 select w.WellID, 1 as WaterQualityInspectionTypeID
@@ -130,5 +129,73 @@ select w.WellID, 2 as WaterQualityInspectionTypeID
 from dbo.BeehiveWell bw
 join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
 where bw.WellUse like '%summer%'
+
+update w
+set w.OwnerName = bw.OwnerName, w.OwnerAddress = bw.OwnerAddress, w.OwnerCity = bw.OwnerCity, w.OwnerState = bw.OwnerState, w.OwnerZipCode = bw.OwnerZip
+, w.AdditionalContactName = bw.ContactName, w.AdditionalContactAddress = bw.ContactAddress, w.AdditionalContactCity = bw.ContactCity, w.AdditionalContactState = bw.ContactState, w.AdditionalContactZipCode = bw.ContactZip
+, w.IsReplacement = isnull(bw.Replacement, 0), w.WellDepth = bw.WellDepth, w.ClearingHouse = bw.ClearingHouse, w.PageNumber = bw.[Page]
+, w.SiteName = bw.SiteName, w.SiteNumber = bw.SiteNumber
+, w.WellUseID = wu.WellUseID
+, w.WellParticipationID = case 
+	when bw.WellUse like '%ggs%' then 1
+	when bw.WellUse like '%kelly%' then 2
+	when bw.WellUse like '%Alluvial%' then 3
+	when bw.WellUse like '%Target%' then 4
+	when bw.WellUse like '%Transect%' then 5
+	when bw.WellUse like '%Month%' then 6
+	when bw.WellUse like '%Cohyst%' then 7
+	else null
+  end
+, w.RequiresChemigation = case when bw.WellType like '%chemigation%' then 1 else 0 end
+, w.RequiresWaterLevelInspection = case when bw.WellType like '%quantity%' then 1 else 0 end
+, w.Notes = case 
+	when bw.LocationNote is not null and bw.Comment is not null then bw.LocationNote + CHAR(13)+CHAR(10) + bw.Comment
+	when bw.LocationNote is not null then bw.LocationNote 
+	else bw.Comment end
+, w.CountyID = c.CountyID
+, w.TownshipRangeSection = ltrim(rtrim(bw.[Quarter] + ' ' + bw.Section + ' ' + bw.Township + ' ' + bw.[Range]))
+, w.WellNickName = bw.WellName
+
+--select bw.WellRegistrationID, bw.OwnerName, bw.OwnerAddress, bw.OwnerCity, bw.OwnerState, bw.OwnerZip
+--, bw.ContactName, bw.ContactAddress, bw.ContactCity, bw.ContactState, bw.ContactZip
+--, bw.Replacement as IsReplacement, bw.WellDepth, bw.ClearingHouse, bw.[Page] as PageNumber, bw.SiteName, bw.SiteNumber
+--, bw.SecondaryWellUse, wu.WellUseID, bw.WellUse
+--, case 
+--	when bw.WellUse like '%ggs%' then 1
+--	when bw.WellUse like '%kelly%' then 2
+--	when bw.WellUse like '%Alluvial%' then 3
+--	when bw.WellUse like '%Target%' then 4
+--	when bw.WellUse like '%Transect%' then 5
+--	when bw.WellUse like '%Month%' then 6
+--	when bw.WellUse like '%Cohyst%' then 7
+--	else null
+--  end as WellParticipationID
+--, bw.WellType
+--, case 
+--	when bw.WellType like '%chemigation%' then 1
+--	else 0
+--end as RequiresChemigation
+--, case 
+--	when bw.WellType like '%quantity%' then 1
+--	else 0
+--end as RequiresWaterLevelInspection
+from dbo.BeehiveWell bw
+join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
+left join dbo.WellUse wu on bw.SecondaryWellUse = wu.WellUseDisplayName
+left join dbo.County c on bw.County = c.CountyDisplayName
+where bw.SiteNumber is not null and ((bw.WellRegistrationID not like 'a%' and bw.WellRegistrationID not like 'g%') or bw.WellRegistrationID is null)
+
+insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTypeID)
+select w.WellID, 1 as WaterQualityInspectionTypeID
+from dbo.BeehiveWell bw
+join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
+where bw.WellUse like '%spring%'
+and bw.SiteNumber is not null and ((bw.WellRegistrationID not like 'a%' and bw.WellRegistrationID not like 'g%') or bw.WellRegistrationID is null)
+union all
+select w.WellID, 2 as WaterQualityInspectionTypeID
+from dbo.BeehiveWell bw
+join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
+where bw.WellUse like '%summer%'
+and bw.SiteNumber is not null and ((bw.WellRegistrationID not like 'a%' and bw.WellRegistrationID not like 'g%') or bw.WellRegistrationID is null)
 
 drop table dbo.BeehiveWell
