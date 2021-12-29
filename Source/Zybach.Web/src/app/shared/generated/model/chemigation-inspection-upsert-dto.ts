@@ -22,6 +22,7 @@ export class ChemigationInspectionUpsertDto {
     ChemigationMainlineCheckValveID?: number;
     ChemigationLowPressureValveID?: number;
     ChemigationInjectionValveID?: number;
+    ChemigationInterlockTypeID?: number;
     HasVacuumReliefValve?: boolean;
     HasInspectionPort?: boolean;
     InspectionNotes?: string;

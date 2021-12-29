@@ -44,7 +44,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/chemigationInspections/inspectionTypes": {
+    "/api/chemigationInspections/inspectionTypes": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -82,7 +82,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/chemigationInspections/inspectionStatuses": {
+    "/api/chemigationInspections/inspectionStatuses": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -120,7 +120,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/chemigationInspections/failureReasons": {
+    "/api/chemigationInspections/failureReasons": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -234,7 +234,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/chemigationInspections/mainlineCheckValves": {
+    "/api/chemigationInspections/mainlineCheckValves": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -272,7 +272,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/chemigationInspections/lowPressureValves": {
+    "/api/chemigationInspections/lowPressureValves": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -310,7 +310,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/chemigationInspections/injectionValves": {
+    "/api/chemigationInspections/injectionValves": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -340,6 +340,44 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ChemigationInjectionValveDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/interlockTypes": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInterlockTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInterlockTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInterlockTypeDto"
                   }
                 }
               }
@@ -3770,6 +3808,11 @@
             "format": "int32",
             "nullable": true
           },
+          "ChemigationInterlockTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "HasVacuumReliefValve": {
             "type": "boolean",
             "nullable": true
@@ -3779,6 +3822,24 @@
             "nullable": true
           },
           "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInterlockTypeDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInterlockTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInterlockTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInterlockTypeDisplayName": {
             "type": "string",
             "nullable": true
           }

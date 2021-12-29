@@ -46,7 +46,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<ChemigationPermitAnnualRecordDetailedDto> ListAsDetailedDto(ZybachDbContext dbContext)
         {
-            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).OrderBy(x => x.ChemigationPermit.ChemigationPermitNumber)
                 .Select(x => x.AsDetailedDto()).ToList();
         }
 

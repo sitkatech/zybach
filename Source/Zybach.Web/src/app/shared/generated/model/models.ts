@@ -11,6 +11,7 @@ export * from '././chemigation-inspection-simple-dto';
 export * from '././chemigation-inspection-status-dto';
 export * from '././chemigation-inspection-type-dto';
 export * from '././chemigation-inspection-upsert-dto';
+export * from '././chemigation-interlock-type-dto';
 export * from '././chemigation-low-pressure-valve-dto';
 export * from '././chemigation-mainline-check-valve-dto';
 export * from '././chemigation-permit-annual-record-applicator-simple-dto';

@@ -66,6 +66,7 @@ namespace Zybach.EFModels.Entities
                 ChemigationMainlineCheckValveID = chemigationInspectionUpsertDto.ChemigationMainlineCheckValveID,
                 ChemigationLowPressureValveID = chemigationInspectionUpsertDto.ChemigationLowPressureValveID,
                 ChemigationInjectionValveID = chemigationInspectionUpsertDto.ChemigationInjectionValveID,
+                ChemigationInterlockTypeID = chemigationInspectionUpsertDto.ChemigationInterlockTypeID,
                 HasVacuumReliefValve = chemigationInspectionUpsertDto.HasVacuumReliefValve,
                 HasInspectionPort = chemigationInspectionUpsertDto.HasInspectionPort,
                 TillageID = chemigationInspectionUpsertDto.TillageID,
@@ -78,53 +79,6 @@ namespace Zybach.EFModels.Entities
             dbContext.Entry(chemigationInspection).Reload();
 
             return GetChemigationInspectionSimpleDtoByID(dbContext, chemigationInspection.ChemigationInspectionID);
-        }
-
-        public static ChemigationInspectionSimpleDto UpdateChemigationInspectionByID(ZybachDbContext dbContext, int chemigationInspectionID, ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
-        {
-            var chemigationInspection = dbContext.ChemigationInspections.SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);
-
-            if (chemigationInspection == null || chemigationInspectionUpsertDto == null)
-            {
-                return null;
-            }
-
-            chemigationInspection.ChemigationPermitAnnualRecordID =
-                chemigationInspectionUpsertDto.ChemigationPermitAnnualRecordID;
-            chemigationInspection.ChemigationInspectionStatusID =
-                chemigationInspectionUpsertDto.ChemigationInspectionStatusID;
-            chemigationInspection.ChemigationInspectionFailureReasonID =
-                chemigationInspectionUpsertDto.ChemigationInspectionFailureReasonID;
-            chemigationInspection.ChemigationInspectionTypeID =
-                chemigationInspectionUpsertDto.ChemigationInspectionTypeID;
-            chemigationInspection.InspectionDate = chemigationInspectionUpsertDto.InspectionDate;
-            chemigationInspection.InspectorUserID = chemigationInspectionUpsertDto.InspectorUserID;
-            chemigationInspection.ChemigationMainlineCheckValveID =
-                chemigationInspectionUpsertDto.ChemigationMainlineCheckValveID;
-            chemigationInspection.ChemigationLowPressureValveID =
-                chemigationInspectionUpsertDto.ChemigationLowPressureValveID;
-            chemigationInspection.ChemigationInjectionValveID =
-                chemigationInspectionUpsertDto.ChemigationInjectionValveID;
-            chemigationInspection.HasVacuumReliefValve = chemigationInspectionUpsertDto.HasVacuumReliefValve;
-            chemigationInspection.HasInspectionPort = chemigationInspectionUpsertDto.HasInspectionPort;
-            chemigationInspection.TillageID = chemigationInspectionUpsertDto.TillageID;
-            chemigationInspection.CropTypeID = chemigationInspectionUpsertDto.CropTypeID;
-            chemigationInspection.InspectionNotes = chemigationInspectionUpsertDto.InspectionNotes;
-            
-            dbContext.SaveChanges();
-
-            return chemigationInspection.AsSimpleDto();
-        }
-
-        public static void DeleteByInspectionID(ZybachDbContext dbContext, int chemigationInspectionID)
-        {
-            var chemigationInspectionToRemove = dbContext.ChemigationInspections.SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);
-
-            if (chemigationInspectionToRemove != null)
-            {
-                dbContext.ChemigationInspections.Remove(chemigationInspectionToRemove);
-                dbContext.SaveChanges();
-            }
         }
     }
 }
