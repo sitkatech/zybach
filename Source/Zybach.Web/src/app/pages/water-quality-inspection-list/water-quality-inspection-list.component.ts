@@ -126,50 +126,10 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
-      {
-        headerName: 'Inspected By', valueGetter: function (params: any) {
-          if(params.data.Inspector)
-          {
-            return { LinkValue: params.data.Inspector.UserID, LinkDisplay: params.data.Inspector.FullNameLastFirst };
-          }
-          else
-          {
-            return { LinkValue: null, LinkDisplay: null };
-          }
-        }, 
-        cellRendererFramework: LinkRendererComponent,
-        cellRendererParams: { inRouterLink: "/users/" },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkValue;
-          let link2 = id2.LinkValue;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
-        filterValueGetter: function (params: any) {
-          return params.data.Inspector.FullNameLastFirst;
-        },
-        filter: true,
-        width: 130,
-        resizable: true,
-        sortable: true
-      },
       { headerName: 'Type', field: 'WaterQualityInspectionTypeName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'WaterQualityInspectionTypeName'
-        }, 
-        width: 100,
-        resizable: true, sortable: true 
-      },
-      { headerName: 'Crop Type', field: 'CropTypeName',
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'CropTypeName'
         }, 
         width: 100,
         resizable: true, sortable: true 
@@ -211,26 +171,8 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         sortable: true
       },
       { 
-        headerName: 'Field Nitrates', 
-        field: 'FieldNitrates',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 130,
-        resizable: true,
-        sortable: true
-      },
-      { 
         headerName: 'Lab Nitrates', 
         field: 'LabNitrates',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 110,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Salinity', 
-        field: 'Salinity',
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
         width: 110,
@@ -279,15 +221,6 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
         width: 60,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'HCO3-', 
-        field: 'HydrogenCarbonate',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 90,
         resizable: true,
         sortable: true
       },
