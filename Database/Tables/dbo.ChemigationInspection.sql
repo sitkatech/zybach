@@ -14,6 +14,7 @@ CREATE TABLE [dbo].[ChemigationInspection](
 	[HasInspectionPort] [bit] NULL,
 	[ChemigationLowPressureValveID] [int] NULL,
 	[ChemigationInjectionValveID] [int] NULL,
+	[ChemigationInterlockTypeID] [int] NULL,
 	[TillageID] [int] NULL,
 	[CropTypeID] [int] NULL,
 	[InspectionNotes] [varchar](500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -44,6 +45,11 @@ ALTER TABLE [dbo].[ChemigationInspection]  WITH CHECK ADD  CONSTRAINT [FK_Chemig
 REFERENCES [dbo].[ChemigationInspectionType] ([ChemigationInspectionTypeID])
 GO
 ALTER TABLE [dbo].[ChemigationInspection] CHECK CONSTRAINT [FK_ChemigationInspection_ChemigationInspectionType_ChemigationInspectionTypeID]
+GO
+ALTER TABLE [dbo].[ChemigationInspection]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationInspection_ChemigationInterlockType_ChemigationInterlockTypeID] FOREIGN KEY([ChemigationInterlockTypeID])
+REFERENCES [dbo].[ChemigationInterlockType] ([ChemigationInterlockTypeID])
+GO
+ALTER TABLE [dbo].[ChemigationInspection] CHECK CONSTRAINT [FK_ChemigationInspection_ChemigationInterlockType_ChemigationInterlockTypeID]
 GO
 ALTER TABLE [dbo].[ChemigationInspection]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationInspection_ChemigationLowPressureValve_ChemigationLowPressureValveID] FOREIGN KEY([ChemigationLowPressureValveID])
 REFERENCES [dbo].[ChemigationLowPressureValve] ([ChemigationLowPressureValveID])

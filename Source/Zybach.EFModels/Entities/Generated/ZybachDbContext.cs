@@ -29,6 +29,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<ChemigationInspectionFailureReason> ChemigationInspectionFailureReasons { get; set; }
         public virtual DbSet<ChemigationInspectionStatus> ChemigationInspectionStatuses { get; set; }
         public virtual DbSet<ChemigationInspectionType> ChemigationInspectionTypes { get; set; }
+        public virtual DbSet<ChemigationInterlockType> ChemigationInterlockTypes { get; set; }
         public virtual DbSet<ChemigationLowPressureValve> ChemigationLowPressureValves { get; set; }
         public virtual DbSet<ChemigationMainlineCheckValve> ChemigationMainlineCheckValves { get; set; }
         public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
@@ -201,6 +202,15 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.ChemigationInspectionTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.ChemigationInspectionTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<ChemigationInterlockType>(entity =>
+            {
+                entity.Property(e => e.ChemigationInterlockTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.ChemigationInterlockTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.ChemigationInterlockTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<ChemigationLowPressureValve>(entity =>

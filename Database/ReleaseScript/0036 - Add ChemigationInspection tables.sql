@@ -29,6 +29,14 @@ create table dbo.ChemigationInjectionValve
 	ChemigationInjectionValveDisplayName varchar(50) not null constraint AK_ChemigationInjectionValve_ChemigationInjectionValveDisplayName unique
 )
 
+create table dbo.ChemigationInterlockType
+(
+	ChemigationInterlockTypeID int not null constraint PK_ChemigationInterlockType_ChemigationInterlockTypeID primary key,
+	ChemigationInterlockTypeName varchar(50) not null constraint AK_ChemigationInterlockType_ChemigationInterlockTypeName unique,
+	ChemigationInterlockTypeDisplayName varchar(50) not null constraint AK_ChemigationInterlockType_ChemigationInterlockTypeDisplayName unique
+)
+
+
 create table dbo.Tillage
 (
 	TillageID int not null constraint PK_Tillage_TillageID primary key,
@@ -70,6 +78,7 @@ create table dbo.ChemigationInspection
 	HasInspectionPort bit null,
 	ChemigationLowPressureValveID int null constraint FK_ChemigationInspection_ChemigationLowPressureValve_ChemigationLowPressureValveID foreign key references dbo.ChemigationLowPressureValve(ChemigationLowPressureValveID),
 	ChemigationInjectionValveID int null constraint FK_ChemigationInspection_ChemigationInjectionValve_ChemigationInjectionValveID foreign key references dbo.ChemigationInjectionValve (ChemigationInjectionValveID),
+	ChemigationInterlockTypeID int null constraint FK_ChemigationInspection_ChemigationInterlockType_ChemigationInterlockTypeID foreign key references dbo.ChemigationInterlockType (ChemigationInterlockTypeID),
 	TillageID int null constraint FK_ChemigationInspection_Tillage_TillageID foreign key references dbo.Tillage (TillageID),
 	CropTypeID int null constraint FK_ChemigationInspection_CropType_CropTypeID foreign key references dbo.CropType (CropTypeID),
 	InspectionNotes varchar(500) null
@@ -124,6 +133,11 @@ values
 (1, 'RUBBER DAM', 'RUBBER DAM'),
 (2, 'SPRING LOADED', 'SPRING LOADED')
 
+insert into dbo.ChemigationInterlockType(ChemigationInterlockTypeID, ChemigationInterlockTypeName, ChemigationInterlockTypeDisplayName)
+values
+(1, 'MECHANICAL', 'MECHANICAL'),
+(2, 'ELECTRICAL', 'ELECTRICAL')
+
 insert into dbo.Tillage(TillageID, TillageName, TillageDisplayName)
 values
 (1, 'No-till',  'No-till'),
@@ -143,9 +157,11 @@ values
 
 
 insert into dbo.ChemigationInspection(ChemigationPermitAnnualRecordID,  ChemigationInspectionTypeID, ChemigationInspectionStatusID,  InspectionDate, InspectorUserID, 
-ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes)
-select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, case when a.Reinspected1 is not null or a.Reinspected2 is not null then 3 else 2 end as ChemigationInspectionStatusID, a.Inspected as InspectionDate, iu.UserID as InspectorUserID,
+ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes, ChemigationInterlockTypeID)
+select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, case when a.Reinspected1 is not null or a.Reinspected2 is not null then 3 else 2 end as ChemigationInspectionStatusID, 
+dateadd(hour, 8, concat(month(a.Inspected), '-', day(a.Inspected), '-', year(a.Inspected))) as InspectionDate, iu.UserID as InspectorUserID,
 cmcv.ChemigationMainlineCheckValveID, 1 as HasVacuumReliefValve, 1 as HasInspectionPort, clpv.ChemigationLowPressureValveID, civ.ChemigationInjectionValveID, t.TillageID, ct.CropTypeID, a.ReasonFailed as InspectionNotes
+, city.ChemigationInterlockTypeID
 from dbo.BeehivePermit a
 join dbo.Well w on a.WellRegistrationID = w.WellRegistrationID
 join dbo.ChemigationPermit cp on w.WellID = cp.WellID and cast(a.PermitNumber as int) = cp.ChemigationPermitNumber
@@ -155,14 +171,17 @@ left join dbo.ChemigationInspectionType cit on a.InspectionType = cit.Chemigatio
 left join dbo.ChemigationMainlineCheckValve cmcv on a.MainlineValve = cmcv.ChemigationMainlineCheckValveDisplayName
 left join dbo.ChemigationLowPressureValve clpv on a.LowPressureDrain = clpv.ChemigationLowPressureValveDisplayName
 left join dbo.ChemigationInjectionValve civ on a.ChemicalValve = civ.ChemigationInjectionValveDisplayName
+left join dbo.ChemigationInterlockType city on a.InterlockType = city.ChemigationInterlockTypeDisplayName
 left join dbo.Tillage t on a.Tillage = t.TillageDisplayName
 left join dbo.CropType ct on a.Crop = ct.CropTypeDisplayName
 where a.Inspected is not null
 
 insert into dbo.ChemigationInspection(ChemigationPermitAnnualRecordID,  ChemigationInspectionTypeID, ChemigationInspectionStatusID,  InspectionDate, InspectorUserID, 
-ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes)
-select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, case when a.Reinspected2 is not null then 3 else 2 end as ChemigationInspectionStatusID, a.Reinspected1 as InspectionDate, iu.UserID as InspectorUserID,
+ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes, ChemigationInterlockTypeID)
+select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, case when a.Reinspected2 is not null then 3 else 2 end as ChemigationInspectionStatusID, 
+dateadd(hour, 8, concat(month(a.Reinspected1), '-', day(a.Reinspected1), '-', year(a.Reinspected1))) as InspectionDate, iu.UserID as InspectorUserID,
 cmcv.ChemigationMainlineCheckValveID, 1 as HasVacuumReliefValve, 1 as HasInspectionPort, clpv.ChemigationLowPressureValveID, civ.ChemigationInjectionValveID, t.TillageID, ct.CropTypeID, a.ReasonFailed as InspectionNotes
+, city.ChemigationInterlockTypeID
 from dbo.BeehivePermit a
 join dbo.Well w on a.WellRegistrationID = w.WellRegistrationID
 join dbo.ChemigationPermit cp on w.WellID = cp.WellID and cast(a.PermitNumber as int) = cp.ChemigationPermitNumber
@@ -172,14 +191,17 @@ left join dbo.ChemigationInspectionType cit on a.InspectionType = cit.Chemigatio
 left join dbo.ChemigationMainlineCheckValve cmcv on a.MainlineValve = cmcv.ChemigationMainlineCheckValveDisplayName
 left join dbo.ChemigationLowPressureValve clpv on a.LowPressureDrain = clpv.ChemigationLowPressureValveDisplayName
 left join dbo.ChemigationInjectionValve civ on a.ChemicalValve = civ.ChemigationInjectionValveDisplayName
+left join dbo.ChemigationInterlockType city on a.InterlockType = city.ChemigationInterlockTypeDisplayName
 left join dbo.Tillage t on a.Tillage = t.TillageDisplayName
 left join dbo.CropType ct on a.Crop = ct.CropTypeDisplayName
 where a.Inspected is not null and a.Reinspected1 is not null
 
 insert into dbo.ChemigationInspection(ChemigationPermitAnnualRecordID,  ChemigationInspectionTypeID, ChemigationInspectionStatusID,  InspectionDate, InspectorUserID, 
-ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes)
-select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, 2 as ChemigationInspectionStatusID, a.Reinspected2 as InspectionDate, iu.UserID as InspectorUserID,
+ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes, ChemigationInterlockTypeID)
+select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, 2 as ChemigationInspectionStatusID, 
+dateadd(hour, 8, concat(month(a.Reinspected2), '-', day(a.Reinspected2), '-', year(a.Reinspected2))) as InspectionDate, iu.UserID as InspectorUserID,
 cmcv.ChemigationMainlineCheckValveID, 1 as HasVacuumReliefValve, 1 as HasInspectionPort, clpv.ChemigationLowPressureValveID, civ.ChemigationInjectionValveID, t.TillageID, ct.CropTypeID, a.ReasonFailed as InspectionNotes
+, city.ChemigationInterlockTypeID
 from dbo.BeehivePermit a
 join dbo.Well w on a.WellRegistrationID = w.WellRegistrationID
 join dbo.ChemigationPermit cp on w.WellID = cp.WellID and cast(a.PermitNumber as int) = cp.ChemigationPermitNumber
@@ -189,6 +211,7 @@ left join dbo.ChemigationInspectionType cit on a.InspectionType = cit.Chemigatio
 left join dbo.ChemigationMainlineCheckValve cmcv on a.MainlineValve = cmcv.ChemigationMainlineCheckValveDisplayName
 left join dbo.ChemigationLowPressureValve clpv on a.LowPressureDrain = clpv.ChemigationLowPressureValveDisplayName
 left join dbo.ChemigationInjectionValve civ on a.ChemicalValve = civ.ChemigationInjectionValveDisplayName
+left join dbo.ChemigationInterlockType city on a.InterlockType = city.ChemigationInterlockTypeDisplayName
 left join dbo.Tillage t on a.Tillage = t.TillageDisplayName
 left join dbo.CropType ct on a.Crop = ct.CropTypeDisplayName
 where a.Inspected is not null and a.Reinspected1 is not null and a.Reinspected2 is not null

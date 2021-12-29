@@ -24,6 +24,7 @@ namespace Zybach.EFModels.Entities
         public bool? HasInspectionPort { get; set; }
         public int? ChemigationLowPressureValveID { get; set; }
         public int? ChemigationInjectionValveID { get; set; }
+        public int? ChemigationInterlockTypeID { get; set; }
         public int? TillageID { get; set; }
         public int? CropTypeID { get; set; }
         [StringLength(500)]
@@ -42,6 +43,9 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(ChemigationInspectionTypeID))]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInspectionType ChemigationInspectionType { get; set; }
+        [ForeignKey(nameof(ChemigationInterlockTypeID))]
+        [InverseProperty("ChemigationInspections")]
+        public virtual ChemigationInterlockType ChemigationInterlockType { get; set; }
         [ForeignKey(nameof(ChemigationLowPressureValveID))]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationLowPressureValve ChemigationLowPressureValve { get; set; }

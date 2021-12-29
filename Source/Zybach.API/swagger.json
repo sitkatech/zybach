@@ -3586,6 +3586,10 @@
             "type": "string",
             "nullable": true
           },
+          "ChemigationInterlockTypeName": {
+            "type": "string",
+            "nullable": true
+          },
           "TillageName": {
             "type": "string",
             "nullable": true
@@ -3643,6 +3647,11 @@
             "nullable": true
           },
           "ChemigationInjectionValveID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationInterlockTypeID": {
             "type": "integer",
             "format": "int32",
             "nullable": true

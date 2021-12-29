@@ -153,6 +153,12 @@ export class ChemigationInspectionsListComponent implements OnInit {
         resizable: true,
         sortable: true
       },
+      { headerName: 'Inspection Type', field: 'ChemigationInspectionTypeName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemigationInspectionTypeName'
+        }, 
+       resizable: true, sortable: true },
       { headerName: 'Mainline Check Valve', field: 'ChemigationMainlineCheckValveName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
@@ -169,6 +175,12 @@ export class ChemigationInspectionsListComponent implements OnInit {
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationInjectionValveName'
+        }, 
+        resizable: true, sortable: true },
+      { headerName: 'Interlock Type', field: 'ChemigationInterlockTypeName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'ChemigationInterlockTypeName'
         }, 
         resizable: true, sortable: true },
       { headerName: 'Tillage', field: 'TillageName',

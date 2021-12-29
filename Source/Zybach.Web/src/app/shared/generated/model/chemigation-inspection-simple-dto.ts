@@ -22,6 +22,7 @@ export class ChemigationInspectionSimpleDto {
     ChemigationMainlineCheckValveName?: string;
     ChemigationLowPressureValveName?: string;
     ChemigationInjectionValveName?: string;
+    ChemigationInterlockTypeName?: string;
     TillageName?: string;
     CropTypeName?: string;
     Inspector?: UserSimpleDto;
@@ -36,6 +37,7 @@ export class ChemigationInspectionSimpleDto {
     HasInspectionPort?: boolean;
     ChemigationLowPressureValveID?: number;
     ChemigationInjectionValveID?: number;
+    ChemigationInterlockTypeID?: number;
     TillageID?: number;
     CropTypeID?: number;
     InspectionNotes?: string;

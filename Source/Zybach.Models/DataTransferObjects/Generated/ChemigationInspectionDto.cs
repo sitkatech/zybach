@@ -20,6 +20,7 @@ namespace Zybach.Models.DataTransferObjects
         public bool? HasInspectionPort { get; set; }
         public ChemigationLowPressureValveDto ChemigationLowPressureValve { get; set; }
         public ChemigationInjectionValveDto ChemigationInjectionValve { get; set; }
+        public ChemigationInterlockTypeDto ChemigationInterlockType { get; set; }
         public TillageDto Tillage { get; set; }
         public CropTypeDto CropType { get; set; }
         public string InspectionNotes { get; set; }
@@ -39,6 +40,7 @@ namespace Zybach.Models.DataTransferObjects
         public bool? HasInspectionPort { get; set; }
         public int? ChemigationLowPressureValveID { get; set; }
         public int? ChemigationInjectionValveID { get; set; }
+        public int? ChemigationInterlockTypeID { get; set; }
         public int? TillageID { get; set; }
         public int? CropTypeID { get; set; }
         public string InspectionNotes { get; set; }

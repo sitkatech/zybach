@@ -12,6 +12,7 @@
         public string ChemigationMainlineCheckValveName { get; set; }
         public string ChemigationLowPressureValveName { get; set; }
         public string ChemigationInjectionValveName { get; set; }
+        public string ChemigationInterlockTypeName { get; set; }
         public string TillageName { get; set; }
         public string CropTypeName { get; set; }
         public UserSimpleDto Inspector { get; set; }
