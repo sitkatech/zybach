@@ -82,7 +82,6 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking();
         }
 
-
         public static int BulkCreateRenewalRecords(ZybachDbContext dbContext, int recordYear)
         {
             var sqlParameter = new SqlParameter("recordYear", recordYear);

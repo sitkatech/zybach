@@ -37,6 +37,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public isPerformingAction: boolean = false;
   public closeResult: string;
   public inspectionIDToDelete: number;
+  
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
@@ -62,6 +63,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
       }).subscribe(({ chemigationPermit, annualRecords}) => {
         this.chemigationPermit = chemigationPermit;
         this.annualRecords = annualRecords;
+
         this.updateAnnualData();
         this.cdr.detectChanges();
       });

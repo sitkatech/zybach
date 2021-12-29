@@ -23,7 +23,7 @@
         </div>
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.County.CountyDisplayName}}</div>
-        <!-- <div class="col-12 col-sm-6 label"><strong>Last Inspected: </strong></div>
+        <!-- <div class="col-12 col-sm-6 label"><strong>Last Inspected Date: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.LatestInspection.InspectionDate}}</div> -->
     </div>
     <div class="row container">
@@ -344,7 +344,7 @@
                             <p>Chemigation inspections for the current record year</p>
                             
                             <div class="row col-2 float-right">
-                                <a class="btn btn-zybach btn-md float-right mr-3"
+                                <a class="btn btn-zybach btn-md float-right mb-3 mr-3"
                                     routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/{{yearToDisplay}}/add-inspection">
                                     <span class="fas fa-plus"></span> Add Inspection
                                 </a>
@@ -533,12 +533,12 @@
                                         </div>
                                         
                                         <div *ngIf="isFirst" class="row col-6 mt-3 mr-3">
-                                            <a class="btn btn-zybach btn-md mr-3"
+                                            <a class="btn btn-zybach btn-md mt-3 mr-3"
                                             routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/{{yearToDisplay}}/{{inspection.ChemigationInspectionID}}/edit">
                                             <span class="fas fa-edit"></span> Edit Inspection
                                             </a>
                                             
-                                            <button type="button" class="btn btn-zybach btn-md mr-3" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(inspection.ChemigationInspectionID)">
+                                            <button type="button" class="btn btn-zybach btn-md mt-3 mr-3" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(inspection.ChemigationInspectionID)">
                                                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                                                 <span class="fas fa-trash"></span> Delete Inspection
                                             </button>
