@@ -281,7 +281,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
       { 
         headerName: 'Notes', 
         field: 'InspectionNotes',
-        filterable: true,
+        filter: true,
         resizable: true,
         sortable: true
       },
