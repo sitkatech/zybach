@@ -47,13 +47,14 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
-            var wellID = _dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == waterQualityInspectionUpsert.WellRegistrationID)?.WellID;
-            if (ThrowNotFound(waterQualityInspectionUpsert, "WaterQualityInspection",
-                wellID, out var actionResult))
+            var well = Wells.GetByWellRegistrationID(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
+            if (well == null)
             {
-                return actionResult;
+                ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{waterQualityInspectionUpsert.WellRegistrationID}' not found!");
+                return BadRequest();
             }
-            var waterQualityInspectionSimpleDto = WaterQualityInspections.CreateWaterQualityInspection(_dbContext, waterQualityInspectionUpsert);
+
+            var waterQualityInspectionSimpleDto = WaterQualityInspections.CreateWaterQualityInspection(_dbContext, waterQualityInspectionUpsert, well.WellID);
             return Ok(waterQualityInspectionSimpleDto);
         }
 
@@ -62,8 +63,7 @@ namespace Zybach.API.Controllers
         public ActionResult UpdateWaterQualityInspection([FromRoute] int waterQualityInspectionID,
             [FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
-            var waterQualityInspection = _dbContext.WaterQualityInspections.SingleOrDefault(x =>
-                x.WaterQualityInspectionID == waterQualityInspectionID);
+            var waterQualityInspection = WaterQualityInspections.GetByID(_dbContext, waterQualityInspectionID);
 
             if (ThrowNotFound(waterQualityInspection, "WaterQualityInspection",
                 waterQualityInspectionID, out var actionResult))
@@ -71,7 +71,14 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            WaterQualityInspections.UpdateWaterQualityInspection(_dbContext, waterQualityInspection, waterQualityInspectionUpsert);
+            var well = Wells.GetByWellRegistrationID(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
+            if (well == null)
+            {
+                ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{waterQualityInspectionUpsert.WellRegistrationID}' not found!");
+                return BadRequest();
+            }
+
+            WaterQualityInspections.UpdateWaterQualityInspection(_dbContext, waterQualityInspection, waterQualityInspectionUpsert, well.WellID);
             return Ok();
         }
 
@@ -79,7 +86,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult DeleteWaterQualityInspectionByID([FromRoute] int waterQualityInspectionID)
         {
-            var waterQualityInspection = _dbContext.WaterQualityInspections.SingleOrDefault(x => x.WaterQualityInspectionID == waterQualityInspectionID);
+            var waterQualityInspection = WaterQualityInspections.GetByID(_dbContext, waterQualityInspectionID);
 
             if (ThrowNotFound(waterQualityInspection, "WaterQualityInspection",
                 waterQualityInspectionID, out var actionResult))

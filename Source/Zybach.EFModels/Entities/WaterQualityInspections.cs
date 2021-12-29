@@ -29,10 +29,8 @@ namespace Zybach.EFModels.Entities
         }
 
         public static WaterQualityInspectionSimpleDto CreateWaterQualityInspection(ZybachDbContext dbContext,
-            WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
+            WaterQualityInspectionUpsertDto waterQualityInspectionUpsert, int wellID)
         {
-            var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == waterQualityInspectionUpsert.WellRegistrationID).WellID;
-
             var waterQualityInspection = new WaterQualityInspection
             {
                 WellID = wellID,
@@ -68,10 +66,8 @@ namespace Zybach.EFModels.Entities
             return GetByIDAsSimpleDto(dbContext, waterQualityInspection.WaterQualityInspectionID);
         }
 
-        public static void UpdateWaterQualityInspection(ZybachDbContext dbContext, WaterQualityInspection waterQualityInspection, WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
+        public static void UpdateWaterQualityInspection(ZybachDbContext dbContext, WaterQualityInspection waterQualityInspection, WaterQualityInspectionUpsertDto waterQualityInspectionUpsert, int wellID)
         {
-            var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == waterQualityInspectionUpsert.WellRegistrationID).WellID;
-
             waterQualityInspection.WellID = wellID;
             waterQualityInspection.WaterQualityInspectionTypeID = waterQualityInspectionUpsert.WaterQualityInspectionTypeID;
             waterQualityInspection.InspectionDate = waterQualityInspectionUpsert.InspectionDate;
@@ -99,6 +95,11 @@ namespace Zybach.EFModels.Entities
             waterQualityInspection.InspectionNotes = waterQualityInspectionUpsert.InspectionNotes;
             
             dbContext.SaveChanges();
+        }
+
+        public static WaterQualityInspection GetByID(ZybachDbContext dbContext, int waterQualityInspectionID)
+        {
+            return dbContext.WaterQualityInspections.SingleOrDefault(x => x.WaterQualityInspectionID == waterQualityInspectionID);
         }
     }
 }
