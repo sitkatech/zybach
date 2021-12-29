@@ -110,7 +110,10 @@ values
 (24, 'VALMONT', 'VALMONT'),
 (18, 'PIERCE', 'PIERCE'),
 (10, 'MIDWEST', 'MIDWEST'),
-(25, 'KROY-MIDWEST', 'KROY-MIDWEST')
+(25, 'KROY-MIDWEST', 'KROY-MIDWEST'),
+(26, 'LINDSEY', 'LINDSEY'),
+(27, 'T&L', 'T&L'),
+(28, 'WATERMAN', 'WATERMAN')
 
 insert into dbo.ChemigationInjectionValve(ChemigationInjectionValveID, ChemigationInjectionValveName, ChemigationInjectionValveDisplayName)
 values
