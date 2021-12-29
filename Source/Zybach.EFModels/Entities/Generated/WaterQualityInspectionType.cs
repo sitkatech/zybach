@@ -16,6 +16,7 @@ namespace Zybach.EFModels.Entities
         public WaterQualityInspectionType()
         {
             WaterQualityInspections = new HashSet<WaterQualityInspection>();
+            WellWaterQualityInspectionTypes = new HashSet<WellWaterQualityInspectionType>();
         }
 
         [Key]
@@ -29,5 +30,7 @@ namespace Zybach.EFModels.Entities
 
         [InverseProperty(nameof(WaterQualityInspection.WaterQualityInspectionType))]
         public virtual ICollection<WaterQualityInspection> WaterQualityInspections { get; set; }
+        [InverseProperty(nameof(WellWaterQualityInspectionType.WaterQualityInspectionType))]
+        public virtual ICollection<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
     }
 }

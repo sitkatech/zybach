@@ -7,7 +7,6 @@ using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Zybach.API.Models;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -35,7 +34,7 @@ namespace Zybach.API.Controllers
             return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
         }
 
-        [HttpGet("/api/wells/{wellRegistrationID}/details")]
+        [HttpGet("/api/wells/{wellRegistrationID}")]
         [ZybachViewFeature]
         public WellDetailDto GetWellDetails([FromRoute] string wellRegistrationID)
         {
@@ -51,7 +50,34 @@ namespace Zybach.API.Controllers
                 WellRegistrationID = well.WellRegistrationID,
                 Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
                 InAgHub = well.AgHubWell != null,
-                InGeoOptix = well.GeoOptixWell != null
+                InGeoOptix = well.GeoOptixWell != null,
+                TownshipRangeSection = well.TownshipRangeSection,
+                County = well.County?.CountyDisplayName,
+                WellParticipationID = well.WellParticipationID,
+                WellParticipationName = well.WellParticipation?.WellParticipationDisplayName,
+                WellUseID = well.WellUseID,
+                WellUseName = well.WellUse?.WellUseDisplayName,
+                RequiresChemigation = well.RequiresChemigation,
+                RequiresWaterLevelInspection = well.RequiresWaterLevelInspection,
+                WellDepth = well.WellDepth,
+                ClearingHouse = well.ClearingHouse,
+                PageNumber = well.PageNumber,
+                SiteName = well.SiteName,
+                SiteNumber = well.SiteNumber,
+                OwnerName = well.OwnerName,
+                OwnerAddress = well.OwnerAddress,
+                OwnerCity = well.OwnerCity,
+                OwnerState = well.OwnerState,
+                OwnerZipCode = well.OwnerZipCode,
+                AdditionalContactName = well.AdditionalContactName,
+                AdditionalContactAddress = well.AdditionalContactAddress,
+                AdditionalContactCity = well.AdditionalContactCity,
+                AdditionalContactState = well.AdditionalContactState,
+                AdditionalContactZipCode = well.AdditionalContactZipCode,
+                IsReplacement = well.IsReplacement,
+                WellNickname = well.WellNickname,
+                Notes = well.Notes,
+                WaterQualityInspectionTypes = string.Join(", ", well.WellWaterQualityInspectionTypes.Select(x => x.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName)),
             };
 
             var agHubWell = well.AgHubWell;

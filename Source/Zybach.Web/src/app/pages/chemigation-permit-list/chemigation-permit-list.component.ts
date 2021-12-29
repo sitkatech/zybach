@@ -195,7 +195,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName'
             },
             width: 120, resizable: true, sortable: true },
-          { headerName: 'Township-Range-Section', field: 'LatestAnnualRecord.TownshipRangeSection', filter: true, resizable: true, sortable: true },
+          { headerName: 'TRS', field: 'LatestAnnualRecord.TownshipRangeSection', filter: true, resizable: true, sortable: true },
           { headerName: 'Pivot', field: 'LatestAnnualRecord.PivotName', width: 100, filter: true, resizable: true, sortable: true },
           {
             headerName: 'Received', valueGetter: function (params: any) {

@@ -278,6 +278,76 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return `${value} ${this.unitsShown}`;
   }
 
+  getWellOwner() {
+    let contactParts:string[] = [];
+    if(this.well.OwnerName && this.well.OwnerName.length > 0)
+    {
+      contactParts.push(this.well.OwnerName);
+    }
+    if(this.well.OwnerAddress && this.well.OwnerAddress.length > 0)
+    {
+      contactParts.push(this.well.OwnerAddress);
+    }
+    let cityStateZipParts:string[] = [];
+    if(this.well.OwnerCity && this.well.OwnerCity.length > 0)
+    {
+      cityStateZipParts.push(this.well.OwnerCity);
+    }
+    let stateZipParts:string[] = [];
+    if(this.well.OwnerState && this.well.OwnerState.length > 0)
+    {
+      stateZipParts.push(this.well.OwnerState);
+    }
+    if(this.well.OwnerZipCode && this.well.OwnerZipCode.length > 0)
+    {
+      stateZipParts.push(this.well.OwnerZipCode);
+    }
+    if(stateZipParts.length > 0)
+    {
+      cityStateZipParts.push(stateZipParts.join(" "));
+    }
+    if(cityStateZipParts.length > 0)
+    {
+      contactParts.push(cityStateZipParts.join(", "));
+    }
+    return contactParts.join("<br>");
+  }
+
+  getWellAdditionalContact() {
+    let contactParts:string[] = [];
+    if(this.well.AdditionalContactName && this.well.AdditionalContactName.length > 0)
+    {
+      contactParts.push(this.well.AdditionalContactName);
+    }
+    if(this.well.AdditionalContactAddress && this.well.AdditionalContactAddress.length > 0)
+    {
+      contactParts.push(this.well.AdditionalContactAddress);
+    }
+    let cityStateZipParts:string[] = [];
+    if(this.well.AdditionalContactCity && this.well.AdditionalContactCity.length > 0)
+    {
+      cityStateZipParts.push(this.well.AdditionalContactCity);
+    }
+    let stateZipParts:string[] = [];
+    if(this.well.AdditionalContactState && this.well.AdditionalContactState.length > 0)
+    {
+      stateZipParts.push(this.well.AdditionalContactState);
+    }
+    if(this.well.AdditionalContactZipCode && this.well.AdditionalContactZipCode.length > 0)
+    {
+      stateZipParts.push(this.well.AdditionalContactZipCode);
+    }
+    if(stateZipParts.length > 0)
+    {
+      cityStateZipParts.push(stateZipParts.join(" "));
+    }
+    if(cityStateZipParts.length > 0)
+    {
+      contactParts.push(cityStateZipParts.join(", "));
+    }
+    return contactParts.join("<br>");
+  }
+
   displayIrrigatedAcres(): boolean {
     if (!this.well || ! this.well.IrrigatedAcresPerYear) {
       return false;

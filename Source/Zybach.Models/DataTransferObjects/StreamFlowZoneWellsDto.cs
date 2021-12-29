@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeoJSON.Net.Feature;
 
 namespace Zybach.Models.DataTransferObjects
 {
@@ -49,6 +48,34 @@ namespace Zybach.Models.DataTransferObjects
     public class WellDetailDto : WellWithSensorSummaryDto
     {
         public List<AnnualPumpedVolume> AnnualPumpedVolume { get; set; }
+        public string TownshipRangeSection { get; set; }
+        public string County { get; set; }
+        public int? WellParticipationID { get; set; }
+        public string WellParticipationName { get; set; }
+        public int? WellUseID { get; set; }
+        public string WellUseName { get; set; }
+        public bool RequiresChemigation { get; set; }
+        public bool RequiresWaterLevelInspection { get; set; }
+        public decimal? WellDepth { get; set; }
+        public string ClearingHouse { get; set; }
+        public int? PageNumber { get; set; }
+        public string SiteName { get; set; }
+        public string SiteNumber { get; set; }
+        public string OwnerName { get; set; }
+        public string OwnerAddress { get; set; }
+        public string OwnerCity { get; set; }
+        public string OwnerState { get; set; }
+        public string OwnerZipCode { get; set; }
+        public string AdditionalContactName { get; set; }
+        public string AdditionalContactAddress { get; set; }
+        public string AdditionalContactCity { get; set; }
+        public string AdditionalContactState { get; set; }
+        public string AdditionalContactZipCode { get; set; }
+        public bool IsReplacement { get; set; }
+        public string WellNickname { get; set; }
+        public string Notes { get; set; }
+        public string WaterQualityInspectionTypes { get; set; }
+
     }
 
 

@@ -194,5 +194,4 @@ left join dbo.CropType ct on a.Crop = ct.CropTypeDisplayName
 where a.Inspected is not null and a.Reinspected1 is not null and a.Reinspected2 is not null
 
 
-drop table dbo.BeehiveWell
 drop table dbo.BeehivePermit

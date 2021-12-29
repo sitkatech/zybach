@@ -9,7 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { CountyDto } from '././county-dto';
+import { WellUseDto } from '././well-use-dto';
 import { StreamFlowZoneDto } from '././stream-flow-zone-dto';
+import { WellParticipationDto } from '././well-participation-dto';
 
 export class WellDto { 
     WellID?: number;
@@ -17,6 +20,30 @@ export class WellDto {
     StreamflowZone?: StreamFlowZoneDto;
     CreateDate?: string;
     LastUpdateDate?: string;
+    WellNickname?: string;
+    TownshipRangeSection?: string;
+    County?: CountyDto;
+    WellParticipation?: WellParticipationDto;
+    WellUse?: WellUseDto;
+    RequiresChemigation?: boolean;
+    RequiresWaterLevelInspection?: boolean;
+    WellDepth?: number;
+    ClearingHouse?: string;
+    PageNumber?: number;
+    SiteName?: string;
+    SiteNumber?: string;
+    OwnerName?: string;
+    OwnerAddress?: string;
+    OwnerCity?: string;
+    OwnerState?: string;
+    OwnerZipCode?: string;
+    AdditionalContactName?: string;
+    AdditionalContactAddress?: string;
+    AdditionalContactCity?: string;
+    AdditionalContactState?: string;
+    AdditionalContactZipCode?: string;
+    IsReplacement?: boolean;
+    Notes?: string;
     Longitude?: number;
     Latitude?: number;
     constructor(obj?: any) {

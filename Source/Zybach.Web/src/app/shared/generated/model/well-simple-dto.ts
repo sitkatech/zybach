@@ -16,6 +16,30 @@ export class WellSimpleDto {
     StreamflowZoneID?: number;
     CreateDate?: string;
     LastUpdateDate?: string;
+    WellNickname?: string;
+    TownshipRangeSection?: string;
+    CountyID?: number;
+    WellParticipationID?: number;
+    WellUseID?: number;
+    RequiresChemigation?: boolean;
+    RequiresWaterLevelInspection?: boolean;
+    WellDepth?: number;
+    ClearingHouse?: string;
+    PageNumber?: number;
+    SiteName?: string;
+    SiteNumber?: string;
+    OwnerName?: string;
+    OwnerAddress?: string;
+    OwnerCity?: string;
+    OwnerState?: string;
+    OwnerZipCode?: string;
+    AdditionalContactName?: string;
+    AdditionalContactAddress?: string;
+    AdditionalContactCity?: string;
+    AdditionalContactState?: string;
+    AdditionalContactZipCode?: string;
+    IsReplacement?: boolean;
+    Notes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

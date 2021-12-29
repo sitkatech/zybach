@@ -73,7 +73,7 @@ case when bp.PermitNumber = '1944' then 1 when bp.[Status] in ('Inactive', 'Perm
 	when bp.[Status] = 'Pending' and bp.ChemigationYear < 2021 then 5 
 	when bp.[Status] = 'Pending' and bp.ChemigationYear >= 2021 then 1 
 	else 4 end as [ChemigationPermitAnnualRecordStatusID]
-, case when len(bw.[Pivot Name]) = 0 then null else bw.[Pivot Name] end as PivotName, 1 as [ChemigationInjectionUnitTypeID]
+, case when len(bw.PivotName) = 0 then null else bw.PivotName end as PivotName, 1 as [ChemigationInjectionUnitTypeID]
 , PermitHolderFirstName, PermitHolderLastName, PermitHolderCompany, PermitHolderAdd, PermitHolderCity, PermitHolderState, PermitHolderZip, PermitHolderHomePhone, case when len(PermitHolderMobilePhone) = 8 then '(308) ' + PermitHolderMobilePhone when len(PermitHolderMobilePhone) = 0 then null else PermitHolderMobilePhone end
 , case when bp.ReceivedDate is null then null else dateadd(hour, 8, concat(month(bp.ReceivedDate), '-', day(bp.ReceivedDate), '-', year(bp.ReceivedDate))) end as DateReceived, case when bp.DatePaid is null then null else dateadd(hour, 8, concat(month(bp.DatePaid), '-', day(bp.DatePaid), '-', year(bp.DatePaid))) end as DatePaid, DEQAmount
 , ltrim(rtrim(bp.[Quarter] + ' ' + bp.Section + ' ' + bp.Township + ' ' + bp.[Range])) as TownshipRangeSection, bp.Note as AnnualNotes

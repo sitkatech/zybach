@@ -63,8 +63,11 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WaterQualityInspection> WaterQualityInspections { get; set; }
         public virtual DbSet<WaterQualityInspectionType> WaterQualityInspectionTypes { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
+        public virtual DbSet<WellParticipation> WellParticipations { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
+        public virtual DbSet<WellUse> WellUses { get; set; }
+        public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -597,12 +600,53 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<Well>(entity =>
             {
+                entity.Property(e => e.AdditionalContactAddress).IsUnicode(false);
+
+                entity.Property(e => e.AdditionalContactCity).IsUnicode(false);
+
+                entity.Property(e => e.AdditionalContactName).IsUnicode(false);
+
+                entity.Property(e => e.AdditionalContactState).IsUnicode(false);
+
+                entity.Property(e => e.AdditionalContactZipCode).IsUnicode(false);
+
+                entity.Property(e => e.ClearingHouse).IsUnicode(false);
+
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.Property(e => e.OwnerAddress).IsUnicode(false);
+
+                entity.Property(e => e.OwnerCity).IsUnicode(false);
+
+                entity.Property(e => e.OwnerName).IsUnicode(false);
+
+                entity.Property(e => e.OwnerState).IsUnicode(false);
+
+                entity.Property(e => e.OwnerZipCode).IsUnicode(false);
+
+                entity.Property(e => e.SiteName).IsUnicode(false);
+
+                entity.Property(e => e.SiteNumber).IsUnicode(false);
+
+                entity.Property(e => e.TownshipRangeSection).IsUnicode(false);
+
+                entity.Property(e => e.WellNickname).IsUnicode(false);
+
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
 
                 entity.HasOne(d => d.StreamflowZone)
                     .WithMany(p => p.Wells)
                     .HasForeignKey(d => d.StreamflowZoneID)
                     .HasConstraintName("FK_Well_StreamFlowZone_StreamFlowZoneID");
+            });
+
+            modelBuilder.Entity<WellParticipation>(entity =>
+            {
+                entity.Property(e => e.WellParticipationID).ValueGeneratedNever();
+
+                entity.Property(e => e.WellParticipationDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.WellParticipationName).IsUnicode(false);
             });
 
             modelBuilder.Entity<WellSensorMeasurement>(entity =>
@@ -626,6 +670,28 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.MeasurementType)
                     .WithMany(p => p.WellSensorMeasurementStagings)
                     .HasForeignKey(d => d.MeasurementTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<WellUse>(entity =>
+            {
+                entity.Property(e => e.WellUseID).ValueGeneratedNever();
+
+                entity.Property(e => e.WellUseDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.WellUseName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<WellWaterQualityInspectionType>(entity =>
+            {
+                entity.HasOne(d => d.WaterQualityInspectionType)
+                    .WithMany(p => p.WellWaterQualityInspectionTypes)
+                    .HasForeignKey(d => d.WaterQualityInspectionTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.Well)
+                    .WithMany(p => p.WellWaterQualityInspectionTypes)
+                    .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

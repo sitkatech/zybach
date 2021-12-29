@@ -29,7 +29,7 @@ export class WellService {
   }
 
   public getWellDetails(wellRegistrationID: string): Observable<WellDetailDto> {
-    return this.apiService.getFromApi(`wells/${wellRegistrationID}/details`);
+    return this.apiService.getFromApi(`wells/${wellRegistrationID}`);
   }
 
   public getInstallationDetails(wellRegistrationID: string): Observable<InstallationRecordDto[]> {

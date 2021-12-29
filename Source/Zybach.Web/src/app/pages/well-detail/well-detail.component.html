@@ -65,6 +65,37 @@
             </div>
             <div class="row mt-2">
                 <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Contact Information
+                        </div>
+                        <div class="card-body">
+                            <div class="row" *ngIf="well">
+                                <div class="col-12  col-sm-6 label"><strong>Owner: </strong> </div>
+                                <div class="col-12  col-sm-6" [innerHtml]="getWellOwner()"></div>
+                                <div class="col-12  col-sm-6 label"><strong>Additional Contact: </strong></div>
+                                <div class="col-12  col-sm-6" [innerHtml]="getWellAdditionalContact()"></div>
+                                <div class="col-12  col-sm-6 label"><strong>Township, Range, Section </strong></div>
+                                <div class="col-12  col-sm-6">{{well.TownshipRangeSection}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>County: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.County}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Nickname: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.WellNickname}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Notes: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.Notes}}</div>
+                            </div>
+                            <div class="row" *ngIf="!well">
+                                <div class="col text-center">
+                                    <span class="fas fa-spinner loading-spinner"></span>
+                                    <p>Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
     
                     <div class="card">
                         <div class="card-header">
@@ -107,8 +138,8 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <div class=row>
-                <div class=col>
+            <div class="row">
+                <div class="col">
                     <div class="card">
                         <div class="card-header">
                             Location
@@ -117,8 +148,60 @@
                             <div id="{{mapID}}" style="height:300px;"></div>
                         </div>
                     </div>
+                </div>                
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Program Participation
+                        </div>
+                        <div class="card-body">
+                            <div class="row" *ngIf="well">
+                                <div class="col-12 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 label"><strong>Participation? </strong> </div>
+                                        <div class="col-12 col-sm-6">{{well.WellParticipationName}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Well Use: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.WellUseName}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Chemigation? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.RequiresChemigation ? "Yes" : "No"}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Water Level? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.RequiresWaterLevelInspection ? "Yes" : "No"}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Water Quality? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.WaterQualityInspectionTypes}}</div>
+                                    </div>  
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 label"><strong>Clearinghouse ID: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.Clearinghouse}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Site Name: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.SiteName}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Site Number: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.SiteNumber}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Replacement Well? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.IsReplacement ? "Yes" : "No"}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Well Depth: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.WellDepth}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Screen Interval: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.ScreenInterval}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Screen Depth: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.ScreenDepth}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Page #: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.PageNumber}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="!well">
+                                <div class="col text-center">
+                                    <span class="fas fa-spinner loading-spinner"></span>
+                                    <p>Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
             </div>
             <div class="row mt-2">
                 <div class="col">

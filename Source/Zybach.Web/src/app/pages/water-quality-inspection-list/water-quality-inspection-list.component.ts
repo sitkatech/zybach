@@ -119,6 +119,14 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         sortable: true
       },
       {
+        headerName: 'TRS', 
+        field: 'Well.TownshipRangeSection',
+        filter: true,
+        width: 100,
+        resizable: true,
+        sortable: true
+      },
+      {
         headerName: 'Inspected By', valueGetter: function (params: any) {
           if(params.data.Inspector)
           {
@@ -343,7 +351,44 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filterable: true,
         resizable: true,
         sortable: true
-      }
+      },
+      {
+        headerName: 'Site Name', 
+        field: 'Well.SiteName',
+        filter: true,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Site Number', 
+        field: 'Well.SiteNumber',
+        filter: true,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Page #', 
+        field: 'Well.PageNumber',
+        filter: true,
+        width: 80,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Replacement Well?', 
+        valueGetter: function (params) {
+          if (params.data.IsReplacement) {
+            return "Yes";
+          } else {
+            return "No";
+          }
+        },
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.IsReplacement'
+        },
+        sortable: true, resizable: true
+      },
     ];
   }
 

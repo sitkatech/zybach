@@ -3079,7 +3079,7 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/details": {
+    "/api/wells/{wellRegistrationID}": {
       "get": {
         "tags": [
           "Well"
@@ -5923,6 +5923,115 @@
             },
             "nullable": true
           },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "County": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellUseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ClearingHouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SiteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterQualityInspectionTypes": {
+            "type": "string",
+            "nullable": true
+          },
           "Sensors": {
             "type": "array",
             "items": {
@@ -6010,6 +6119,98 @@
             "format": "date-time",
             "nullable": true
           },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "County": {
+            "$ref": "#/components/schemas/CountyDto"
+          },
+          "WellParticipation": {
+            "$ref": "#/components/schemas/WellParticipationDto"
+          },
+          "WellUse": {
+            "$ref": "#/components/schemas/WellUseDto"
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ClearingHouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SiteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
           "Longitude": {
             "type": "number",
             "format": "double"
@@ -6043,6 +6244,24 @@
         },
         "additionalProperties": false
       },
+      "WellParticipationDto": {
+        "type": "object",
+        "properties": {
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellParticipationDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellSimpleDto": {
         "type": "object",
         "properties": {
@@ -6066,6 +6285,122 @@
           "LastUpdateDate": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountyID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ClearingHouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SiteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellUseDto": {
+        "type": "object",
+        "properties": {
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellUseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUseDisplayName": {
+            "type": "string",
             "nullable": true
           }
         },

@@ -16,6 +16,7 @@ namespace Zybach.EFModels.Entities
         public County()
         {
             ChemigationPermits = new HashSet<ChemigationPermit>();
+            Wells = new HashSet<Well>();
         }
 
         [Key]
@@ -29,5 +30,7 @@ namespace Zybach.EFModels.Entities
 
         [InverseProperty(nameof(ChemigationPermit.County))]
         public virtual ICollection<ChemigationPermit> ChemigationPermits { get; set; }
+        [InverseProperty(nameof(Well.County))]
+        public virtual ICollection<Well> Wells { get; set; }
     }
 }

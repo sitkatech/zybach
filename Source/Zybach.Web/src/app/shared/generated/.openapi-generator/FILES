@@ -78,6 +78,8 @@ model/well-chart-data-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
 model/well-new-dto.ts
+model/well-participation-dto.ts
 model/well-simple-dto.ts
+model/well-use-dto.ts
 model/well-with-sensor-message-age-dto.ts
 model/well-with-sensor-summary-dto.ts

@@ -76,6 +76,8 @@ export * from '././well-chart-data-dto';
 export * from '././well-detail-dto';
 export * from '././well-dto';
 export * from '././well-new-dto';
+export * from '././well-participation-dto';
 export * from '././well-simple-dto';
+export * from '././well-use-dto';
 export * from '././well-with-sensor-message-age-dto';
 export * from '././well-with-sensor-summary-dto';
