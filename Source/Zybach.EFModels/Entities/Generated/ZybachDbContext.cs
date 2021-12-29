@@ -61,6 +61,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<Tillage> Tillages { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<WaterLevelInspection> WaterLevelInspections { get; set; }
         public virtual DbSet<WaterQualityInspection> WaterQualityInspections { get; set; }
         public virtual DbSet<WaterQualityInspectionType> WaterQualityInspectionTypes { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
@@ -575,6 +576,48 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<WaterLevelInspection>(entity =>
+            {
+                entity.Property(e => e.Access).IsUnicode(false);
+
+                entity.Property(e => e.Accuracy).IsUnicode(false);
+
+                entity.Property(e => e.AgencyCode).IsUnicode(false);
+
+                entity.Property(e => e.Crop).IsUnicode(false);
+
+                entity.Property(e => e.InspectionNotes).IsUnicode(false);
+
+                entity.Property(e => e.LevelTypeCode).IsUnicode(false);
+
+                entity.Property(e => e.MeasuringEquipment).IsUnicode(false);
+
+                entity.Property(e => e.Method).IsUnicode(false);
+
+                entity.Property(e => e.Party).IsUnicode(false);
+
+                entity.Property(e => e.SourceAgency).IsUnicode(false);
+
+                entity.Property(e => e.SourceCode).IsUnicode(false);
+
+                entity.Property(e => e.TimeDatumCode).IsUnicode(false);
+
+                entity.Property(e => e.TimeDatumReliability).IsUnicode(false);
+
+                entity.Property(e => e.WaterLevelInspectionStatus).IsUnicode(false);
+
+                entity.HasOne(d => d.InspectorUser)
+                    .WithMany(p => p.WaterLevelInspections)
+                    .HasForeignKey(d => d.InspectorUserID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WaterLevelInspection_User_InspectorUserID_UserID");
+
+                entity.HasOne(d => d.Well)
+                    .WithMany(p => p.WaterLevelInspections)
+                    .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

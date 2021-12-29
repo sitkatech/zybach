@@ -12,7 +12,8 @@ USING (VALUES
 (10, 'NDEEChemicalsReport', 'NDEE Chemicals Report'),
 (11, 'ChemigationPermitReport', 'Chemigation Permit Report'),
 (12, 'ChemigationInspections', 'Chemigation Inspections'),
-(13, 'WaterQualityInspections', 'Water Quality Inspections')
+(13, 'WaterQualityInspections', 'Water Quality Inspections'),
+(14, 'WaterLevelInspections', 'Water Level Inspections')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

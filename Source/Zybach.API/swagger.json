@@ -2853,6 +2853,84 @@
         }
       }
     },
+    "/api/waterLevelInspections": {
+      "get": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/waterLevelInspections/{waterLevelInspectionID}": {
+      "get": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterLevelInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/waterQualityInspectionTypes": {
       "get": {
         "tags": [
@@ -5666,6 +5744,134 @@
             "type": "integer",
             "format": "int32",
             "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterLevelInspectionSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelInspectionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterLevelInspectionStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasuringEquipment": {
+            "type": "string",
+            "nullable": true
+          },
+          "Crop": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasOil": {
+            "type": "boolean"
+          },
+          "HasBrokenTape": {
+            "type": "boolean"
+          },
+          "Accuracy": {
+            "type": "string",
+            "nullable": true
+          },
+          "Method": {
+            "type": "string",
+            "nullable": true
+          },
+          "Party": {
+            "type": "string",
+            "nullable": true
+          },
+          "SourceAgency": {
+            "type": "string",
+            "nullable": true
+          },
+          "SourceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "TimeDatumCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "TimeDatumReliability": {
+            "type": "string",
+            "nullable": true
+          },
+          "LevelTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AgencyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "Access": {
+            "type": "string",
+            "nullable": true
+          },
+          "Hold": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Cut": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MP": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Measurement": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "IsPrimary": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "WaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "CropTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Inspector": {
+            "$ref": "#/components/schemas/UserSimpleDto"
           }
         },
         "additionalProperties": false
