@@ -19,7 +19,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/inspectionTypes")]
+        [HttpGet("/api/chemigationInspections/inspectionTypes")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionTypeDto>> GetChemigationInspectionTypes()
         {
@@ -27,7 +27,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspectionTypeDtos);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/inspectionStatuses")]
+        [HttpGet("/api/chemigationInspections/inspectionStatuses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionStatusDto>> GetChemigationInspectionStatuses()
         {
@@ -35,7 +35,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspectionStatusDtos);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/failureReasons")]
+        [HttpGet("/api/chemigationInspections/failureReasons")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionFailureReasonDto>> GetChemigationInspectionFailureReasons()
         {
@@ -59,7 +59,7 @@ namespace Zybach.API.Controllers
             return Ok(cropTypeDtos);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/mainlineCheckValves")]
+        [HttpGet("/api/chemigationInspections/mainlineCheckValves")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationMainlineCheckValveDto>> GetMainlineCheckValves()
         {
@@ -67,7 +67,7 @@ namespace Zybach.API.Controllers
             return Ok(mainlineCheckValveDtos);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/lowPressureValves")]
+        [HttpGet("/api/chemigationInspections/lowPressureValves")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationLowPressureValveDto>> GetLowPressureValves()
         {
@@ -75,12 +75,20 @@ namespace Zybach.API.Controllers
             return Ok(lowPressureValveDtos);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/chemigationInspections/injectionValves")]
+        [HttpGet("/api/chemigationInspections/injectionValves")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInjectionValveDto>> GetChemigationInjectionValves()
         {
             var injectionValveDtos = ChemigationInjectionValves.ListAsDto(_dbContext);
             return Ok(injectionValveDtos);
+        }
+
+        [HttpGet("/api/chemigationInspections/interlockTypes")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationInterlockTypeDto>> GetInterlockTypes()
+        {
+            var interlockTypeDtos = ChemigationInterlockTypes.ListAsDto(_dbContext);
+            return Ok(interlockTypeDtos);
         }
 
         [HttpGet("/api/chemigationInspections")]
@@ -91,7 +99,6 @@ namespace Zybach.API.Controllers
                 ChemigationInspections.ListAsDto(_dbContext);
             return Ok(chemigationInspections);
         }
-
 
         [HttpGet("/api/chemigationInspections/{chemigationInspectionID}")]
         [AdminFeature]
@@ -154,6 +161,8 @@ namespace Zybach.API.Controllers
                 chemigationInspectionUpsertDto.ChemigationLowPressureValveID;
             chemigationInspection.ChemigationInjectionValveID =
                 chemigationInspectionUpsertDto.ChemigationInjectionValveID;
+            chemigationInspection.ChemigationInterlockTypeID =
+                chemigationInspectionUpsertDto.ChemigationInterlockTypeID;
             chemigationInspection.HasVacuumReliefValve = chemigationInspectionUpsertDto.HasVacuumReliefValve;
             chemigationInspection.HasInspectionPort = chemigationInspectionUpsertDto.HasInspectionPort;
             chemigationInspection.TillageID = chemigationInspectionUpsertDto.TillageID;

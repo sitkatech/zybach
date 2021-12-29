@@ -111,8 +111,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
         }, 
         width: 110,
         resizable: true,
-        sortable: true,
-        sort: 'desc'
+        sortable: true
       },
       { headerName: 'Status', field: 'ChemigationInspectionStatusName', 
         filterFramework: CustomDropdownFilterComponent,

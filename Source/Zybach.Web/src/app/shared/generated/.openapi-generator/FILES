@@ -11,6 +11,7 @@ model/chemigation-inspection-simple-dto.ts
 model/chemigation-inspection-status-dto.ts
 model/chemigation-inspection-type-dto.ts
 model/chemigation-inspection-upsert-dto.ts
+model/chemigation-interlock-type-dto.ts
 model/chemigation-low-pressure-valve-dto.ts
 model/chemigation-mainline-check-valve-dto.ts
 model/chemigation-permit-annual-record-applicator-simple-dto.ts

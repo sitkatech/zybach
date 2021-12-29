@@ -10,7 +10,7 @@ namespace Zybach.EFModels.Entities
 
         public static IEnumerable<ChemigationInjectionValveDto> ListAsDto(ZybachDbContext dbContext)
         {
-            return dbContext.ChemigationInjectionValves.AsNoTracking().Select(x => x.AsDto()).ToList();
+            return dbContext.ChemigationInjectionValves.AsNoTracking().OrderBy(x => x.ChemigationInjectionValveName).Select(x => x.AsDto()).ToList();
         }
     }
 }

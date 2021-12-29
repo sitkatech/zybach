@@ -343,15 +343,17 @@
                         <ng-template #hasInspections>
                             <p>Chemigation inspections for the current record year</p>
                             
-                            <div class="row float-right">
+                            <div class="row col-2 float-right">
                                 <a class="btn btn-zybach btn-md float-right mr-3"
                                     routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/{{yearToDisplay}}/add-inspection">
                                     <span class="fas fa-plus"></span> Add Inspection
                                 </a>
 
                             </div>
+
+                            <div class="row col-12"></div>
                             
-                            <div class="row">
+                            <div class="col-12">
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a [ngClass]="{'nav-link': true, 'active': isFirst}" *ngFor="let inspection of getInspections(); first as isFirst"
@@ -415,7 +417,7 @@
                                                 </div>
                                             </div>
             
-                                            <div class="row col-12" *ngIf="inspection.ChemigationInspectionFailureReasonName">
+                                            <div class="row col-12">
                                                 <div class="col-6 text-right">
                                                     <p><strong>Failure Reason: </strong></p>
                                                 </div>
@@ -471,6 +473,17 @@
                                                 <div class="col-6 text-left">
                                                     <p>{{inspection.ChemigationInjectionValveName}}
                                                         <em *ngIf="!inspection.ChemigationInjectionValveName" class="text-muted">N/A</em>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row col-12">
+                                                <div class="col-6 text-right">
+                                                    <p><strong>Interlock Type: </strong></p>
+                                                </div>
+                                                <div class="col-6 text-left">
+                                                    <p>{{inspection.ChemigationInterlockTypeName}}
+                                                        <em *ngIf="!inspection.ChemigationInterlockTypeName" class="text-muted">N/A</em>
                                                     </p>
                                                 </div>
                                             </div>

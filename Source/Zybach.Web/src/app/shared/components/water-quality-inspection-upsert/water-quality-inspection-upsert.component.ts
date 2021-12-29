@@ -11,7 +11,6 @@ import { WaterQualityInspectionUpsertDto } from '../../generated/model/water-qua
 import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { WellService } from 'src/app/services/well.service';
-import { WaterQualityInspectionSimpleDto } from '../../generated/model/water-quality-inspection-simple-dto';
 import { WaterQualityInspectionTypeDto } from '../../generated/model/water-quality-inspection-type-dto';
 
 @Component({

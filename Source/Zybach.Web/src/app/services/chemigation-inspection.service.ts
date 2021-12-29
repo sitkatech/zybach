@@ -11,6 +11,7 @@ import { ChemigationLowPressureValveDto } from '../shared/generated/model/chemig
 import { ChemigationInjectionValveDto } from '../shared/generated/model/chemigation-injection-valve-dto';
 import { ChemigationInspectionUpsertDto } from '../shared/generated/model/chemigation-inspection-upsert-dto';
 import { ChemigationInspectionSimpleDto } from '../shared/generated/model/chemigation-inspection-simple-dto';
+import { ChemigationInterlockTypeDto } from '../shared/generated/model/chemigation-interlock-type-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,17 +26,17 @@ export class ChemigationInspectionService {
   }
 
   public getChemigationInspectionTypes(): Observable<Array<ChemigationInspectionTypeDto>> {
-    let route = `/chemigationPermits/annualRecords/chemigationInspections/inspectionTypes`;
+    let route = `/chemigationInspections/inspectionTypes`;
     return this.apiService.getFromApi(route);
   }
 
   public getChemigationInspectionStatuses(): Observable<Array<ChemigationInspectionStatusDto>> {
-    let route = `/chemigationPermits/annualRecords/chemigationInspections/inspectionStatuses`;
+    let route = `/chemigationInspections/inspectionStatuses`;
     return this.apiService.getFromApi(route);
   }
 
   public getChemigationInspectionFailureReasons(): Observable<Array<ChemigationInspectionFailureReasonDto>> {
-    let route = `/chemigationPermits/annualRecords/chemigationInspections/failureReasons`;
+    let route = `/chemigationInspections/failureReasons`;
     return this.apiService.getFromApi(route);
   }
 
@@ -50,17 +51,22 @@ export class ChemigationInspectionService {
   }
 
   public getMainlineCheckValves(): Observable<Array<ChemigationMainlineCheckValveDto>> {
-    let route = `/chemigationPermits/annualRecords/chemigationInspections/mainlineCheckValves`;
+    let route = `/chemigationInspections/mainlineCheckValves`;
     return this.apiService.getFromApi(route);
   }
 
   public getLowPressureValves(): Observable<Array<ChemigationLowPressureValveDto>> {
-    let route = `/chemigationPermits/annualRecords/chemigationInspections/lowPressureValves`;
+    let route = `/chemigationInspections/lowPressureValves`;
     return this.apiService.getFromApi(route);
   }
 
   public getChemigationInjectionValves(): Observable<Array<ChemigationInjectionValveDto>> {
-    let route = `/chemigationPermits/annualRecords/chemigationInspections/injectionValves`;
+    let route = `/chemigationInspections/injectionValves`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getChemigationInterlockTypes(): Observable<Array<ChemigationInterlockTypeDto>> {
+    let route = `/chemigationInspections/interlockTypes`;
     return this.apiService.getFromApi(route);
   }
 

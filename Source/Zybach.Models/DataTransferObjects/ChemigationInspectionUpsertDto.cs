@@ -18,6 +18,7 @@ namespace Zybach.Models.DataTransferObjects
         public int? ChemigationMainlineCheckValveID { get; set; }
         public int? ChemigationLowPressureValveID { get; set; }
         public int? ChemigationInjectionValveID { get; set; }
+        public int? ChemigationInterlockTypeID { get; set; }
         public bool? HasVacuumReliefValve { get; set; }
         public bool? HasInspectionPort { get; set; }
 

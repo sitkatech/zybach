@@ -10,7 +10,7 @@ namespace Zybach.EFModels.Entities
 
         public static IEnumerable<CropTypeDto> ListAsDto(ZybachDbContext dbContext)
         {
-            return dbContext.CropTypes.AsNoTracking().Select(x => x.AsDto()).ToList();
+            return dbContext.CropTypes.AsNoTracking().OrderBy(x => x.CropTypeName).Select(x => x.AsDto()).ToList();
         }
     }
 }

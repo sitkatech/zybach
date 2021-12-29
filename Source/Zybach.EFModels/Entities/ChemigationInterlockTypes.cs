@@ -5,13 +5,13 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public static class Tillages
+    public static class ChemigationInterlockTypes
     {
-        public static IEnumerable<TillageDto> ListAsDto(ZybachDbContext dbContext)
+        public static IEnumerable<ChemigationInterlockTypeDto> ListAsDto(ZybachDbContext dbContext)
         {
-            return dbContext.Tillages
+            return dbContext.ChemigationInterlockTypes
                 .AsNoTracking()
-                .OrderBy(x => x.TillageName)
+                .OrderBy(x => x.ChemigationInterlockTypeName)
                 .Select(x => x.AsDto()).ToList();
         }
     }

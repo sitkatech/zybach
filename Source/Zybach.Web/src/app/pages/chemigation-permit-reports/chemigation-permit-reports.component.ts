@@ -104,8 +104,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         },
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        sort: 'asc',
+        sortable: true
       },
       { headerName: 'Permit Status', field: 'ChemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
         filterFramework: CustomDropdownFilterComponent,
