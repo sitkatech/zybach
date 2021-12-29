@@ -62,7 +62,7 @@
 
                         <div class="row col-12">
                             <div class="col-6 text-right">
-                                <p><strong>Field Alkilinity: </strong></p>
+                                <p><strong>Field Alkalinity: </strong></p>
                             </div>
                             <div class="col-6 text-left">
                                 <p>{{waterQualityInspection.FieldAlkilinity}}
@@ -226,7 +226,7 @@
 
                         <div class="row col-12">
                             <div class="col-6 text-right">
-                                <p><strong>SiO<sup>2</sup>: </strong></p>
+                                <p><strong>SiO<sub>2</sub>: </strong></p>
                             </div>
                             <div class="col-6 text-left">
                                 <p>
@@ -261,5 +261,38 @@
                 </div>
             </div>
         </div>
+        <div class="row float-right mt-3">
+            <a class="btn btn-zybach btn-md float-right mr-3"
+                routerLink="/water-quality-inspections/{{waterQualityInspection.WaterQualityInspectionID}}/edit">
+                <span class="fas fa-edit"></span> Edit Inspection
+            </a>
+            
+            <button type="button" class="btn btn-zybach btn-md mr-3" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(waterQualityInspection.WaterQualityInspectionID)">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                <span class="fas fa-trash"></span> Delete Inspection
+            </button>
+        </div>
     </div>
 </div>
+
+<ng-template #deleteInspectionModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Confirm Delete</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to delete this inspection? This action cannot be undone
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-zybach btn-sm" [disabled]="isPerformingAction" (click)="deleteInspectionByID()">
+            <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+            Confirm
+        </button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="modal.close('Cancel click')"
+            [disabled]="isPerformingAction">
+            Cancel
+        </button>
+    </div>
+</ng-template>

@@ -72,6 +72,8 @@ model/user-simple-dto.ts
 model/user-upsert-dto.ts
 model/volume-by-well.ts
 model/water-quality-inspection-simple-dto.ts
+model/water-quality-inspection-type-dto.ts
+model/water-quality-inspection-upsert-dto.ts
 model/well-chart-data-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts

@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';

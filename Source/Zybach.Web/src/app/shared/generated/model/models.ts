@@ -70,6 +70,8 @@ export * from '././user-simple-dto';
 export * from '././user-upsert-dto';
 export * from '././volume-by-well';
 export * from '././water-quality-inspection-simple-dto';
+export * from '././water-quality-inspection-type-dto';
+export * from '././water-quality-inspection-upsert-dto';
 export * from '././well-chart-data-dto';
 export * from '././well-detail-dto';
 export * from '././well-dto';
