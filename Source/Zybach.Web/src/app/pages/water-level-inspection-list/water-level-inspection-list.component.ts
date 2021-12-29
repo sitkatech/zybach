@@ -123,60 +123,110 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         sortable: true
       },
       { 
-        headerName: 'Status', field: 'WaterLevelInspectionStatus', 
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'WaterLevelInspectionStatus'
-        }, resizable: true, sortable: true 
+        headerName: 'Well Depth', 
+        field: 'Well.WellDepth',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 110,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Screen Interval', 
+        field: 'Well.ScreenInterval',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 130,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Screen Depth', 
+        field: 'Well.ScreenDepth',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 120,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Page #', 
+        field: 'Well.PageNumber',
+        filter: true,
+        type: 'rightAligned',
+        width: 80,
+        resizable: true,
+        sortable: true
       },
       { 
         headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'MeasuringEquipment'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 170,
+        resizable: true,
+         sortable: true 
       },
       { 
         headerName: 'Accuracy', field: 'Accuracy', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Accuracy'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 100,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Method', field: 'Method', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Method'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 90,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Party', field: 'Party', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Party'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 70,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Source Agency', field: 'SourceAgency', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'SourceAgency'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 130,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Source Code', field: 'SourceCode', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'SourceCode'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 120,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Time Datum Code', field: 'TimeDatumCode', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'TimeDatumCode'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 140,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Time Datum Reliability', field: 'TimeDatumReliability', 
@@ -190,20 +240,29 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'LevelTypeCode'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 130,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Agency Code', field: 'AgencyCode', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'AgencyCode'
-        }, resizable: true, sortable: true 
+        }, 
+        width: 120,
+        resizable: true, 
+        sortable: true 
       },
       { 
         headerName: 'Access', 
         field: 'Access',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Access'
+        }, 
+        width: 110,
         resizable: true,
         sortable: true
       },
@@ -212,6 +271,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         field: 'Hold',
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
+        width: 70,
         resizable: true,
         sortable: true
       },
@@ -220,6 +280,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         field: 'Cut',
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
+        width: 70,
         resizable: true,
         sortable: true
       },
@@ -228,6 +289,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         field: 'MP',
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
+        width: 60,
         resizable: true,
         sortable: true
       },
@@ -236,6 +298,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         field: 'Measurement',
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
+        width: 120,
         resizable: true,
         sortable: true
       },
@@ -244,15 +307,26 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         field: 'WaterLevel',
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
+        width: 110,
         resizable: true,
         sortable: true
       },
       { 
         headerName: 'Notes', 
         field: 'InspectionNotes',
-        filterable: true,
+        filter: true,
         resizable: true,
         sortable: true
+      },
+      { 
+        headerName: 'Status', field: 'WaterLevelInspectionStatus', 
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'WaterLevelInspectionStatus'
+        }, 
+        width: 90,
+        resizable: true, 
+        sortable: true 
       },
     ];
   }
