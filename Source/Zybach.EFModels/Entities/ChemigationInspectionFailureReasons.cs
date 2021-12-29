@@ -11,6 +11,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.ChemigationInspectionFailureReasons
                 .AsNoTracking()
+                .OrderBy(x => x.ChemigationInspectionFailureReasonName)
                 .Select(x => x.AsDto()).ToList();
         }
     }

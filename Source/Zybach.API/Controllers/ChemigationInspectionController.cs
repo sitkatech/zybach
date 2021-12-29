@@ -92,7 +92,6 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspections);
         }
 
-
         [HttpGet("/api/chemigationInspections/{chemigationInspectionID}")]
         [AdminFeature]
         public ActionResult<ChemigationInspectionSimpleDto> GetChemigationInspectionByID([FromRoute] int chemigationInspectionID)

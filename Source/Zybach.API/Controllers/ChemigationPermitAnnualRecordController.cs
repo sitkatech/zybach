@@ -40,7 +40,7 @@ namespace Zybach.API.Controllers
         public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetAllChemigationPermitAnnualRecords()
         {
             var chemigationPermitAnnualRecords =
-                ChemigationPermitAnnualRecords.ListAsDto(_dbContext);
+                ChemigationPermitAnnualRecords.ListAsDetailedDto(_dbContext);
             return Ok(chemigationPermitAnnualRecords);
         }
 

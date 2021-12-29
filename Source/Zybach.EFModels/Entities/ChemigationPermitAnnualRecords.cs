@@ -44,6 +44,12 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).ToList();
         }
 
+        public static List<ChemigationPermitAnnualRecordDetailedDto> ListAsDetailedDto(ZybachDbContext dbContext)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Select(x => x.AsDetailedDto()).ToList();
+        }
+
         public static ChemigationPermitAnnualRecord CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
         {
             if (chemigationPermitAnnualRecordUpsertDto == null)

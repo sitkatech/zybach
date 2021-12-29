@@ -9,7 +9,7 @@ namespace Zybach.EFModels.Entities
     {
         public static IEnumerable<ChemigationLowPressureValveDto> ListAsDto(ZybachDbContext dbContext)
         {
-            return dbContext.ChemigationLowPressureValves.AsNoTracking().Select(x => x.AsDto()).ToList();
+            return dbContext.ChemigationLowPressureValves.AsNoTracking().OrderBy(x => x.ChemigationLowPressureValveName).Select(x => x.AsDto()).ToList();
         }
     }
 }

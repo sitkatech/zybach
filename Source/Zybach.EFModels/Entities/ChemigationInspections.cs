@@ -39,7 +39,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<ChemigationInspectionSimpleDto> ListAsDto(ZybachDbContext dbContext)
         {
-            return GetChemigationInspectionsImpl(dbContext).Select(x => x.AsSimpleDto()).ToList();
+            return GetChemigationInspectionsImpl(dbContext).OrderByDescending(x => x.InspectionDate).Select(x => x.AsSimpleDto()).ToList();
         }
 
         public static ChemigationInspectionSimpleDto GetChemigationInspectionSimpleDtoByID(ZybachDbContext dbContext, int chemigationInspectionID)

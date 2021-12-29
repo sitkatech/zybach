@@ -11,6 +11,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.Tillages
                 .AsNoTracking()
+                .OrderBy(x => x.TillageName)
                 .Select(x => x.AsDto()).ToList();
         }
     }

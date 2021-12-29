@@ -11,6 +11,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.ChemigationInspectionTypes
                 .AsNoTracking()
+                .OrderBy(x => x.ChemigationInspectionTypeName)
                 .Select(x => x.AsDto()).ToList();
         }
 
