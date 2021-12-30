@@ -32,6 +32,7 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationMainlineCheckValve)
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationLowPressureValve)
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationInjectionValve)
+                .Include(x => x.ChemigationInspections).ThenInclude(x => x.ChemigationInterlockType)
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.Tillage)
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.CropType)
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.InspectorUser)

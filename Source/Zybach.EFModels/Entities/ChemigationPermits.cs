@@ -50,7 +50,13 @@ namespace Zybach.EFModels.Entities
 
             chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount = ChemigationPermitAnnualRecords.NDEEAmounts.New;
 
-            ChemigationPermitAnnualRecords.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
+            var chemigationPermitAnnualRecord = 
+                ChemigationPermitAnnualRecords.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
+
+            var chemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
+
+            ChemigationInspections.CreateDefaultNewChemigationInspection(dbContext,
+                chemigationPermitAnnualRecordID);
 
             dbContext.Entry(chemigationPermit).Reload();
 
@@ -81,7 +87,6 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.Well)
                 .AsNoTracking();
         }
-
 
         public static int BulkCreateRenewalRecords(ZybachDbContext dbContext, int recordYear)
         {

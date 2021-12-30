@@ -530,6 +530,46 @@
         }
       }
     },
+    "/api/chemigationPermits/{chemigationPermitNumber}/latestChemigationInspection": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection": {
       "post": {
         "tags": [
@@ -3036,7 +3076,24 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              }
+            }
           }
         }
       }

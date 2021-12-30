@@ -83,7 +83,7 @@ export class WaterQualityInspectionNewComponent implements OnInit {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addWaterQualityInspectionForm.reset();
-        this.router.navigateByUrl("/water-quality-inspections").then(() => {
+        this.router.navigateByUrl("/water-quality-inspections/" + response.WaterQualityInspectionID).then(() => {
           this.alertService.pushAlert(new Alert(`Water Quality Inspection Record added.`, AlertContext.Success));
         });
       }

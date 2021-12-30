@@ -7,6 +7,13 @@ namespace Zybach.EFModels.Entities
 {
     public static class ChemigationInspectionStatuses
     {
+        public enum ChemigationInspectionStatusEnum
+        {
+            Pending = 1,
+            Pass = 2,
+            Fail = 3
+        }
+
         public static IEnumerable<ChemigationInspectionStatusDto> ListAsDto(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationInspectionStatuses

@@ -25,7 +25,7 @@ export class ChemigationPermitService {
 
   constructor(private apiService: ApiService) { }
  
-  public getChemigationPermitByPermitNumber(chemigationPermitNumber: number): Observable<ChemigationPermitDto> {
+  public getChemigationPermitByPermitNumber(chemigationPermitNumber: number): Observable<ChemigationPermitDetailedDto> {
     let route = `/chemigationPermits/${chemigationPermitNumber}`;
     return this.apiService.getFromApi(route);
   }
@@ -127,6 +127,11 @@ export class ChemigationPermitService {
 
   public getAllChemigationInspections(): Observable<Array<ChemigationInspectionSimpleDto>> {
     let route = `/chemigationInspections`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getLatestChemigationInspectionByPermitNumber(chemigationPermitNumber: number) : Observable<ChemigationInspectionSimpleDto> {
+    let route = `/chemigationPermits/${chemigationPermitNumber}/latestChemigationInspection`;
     return this.apiService.getFromApi(route);
   }
 

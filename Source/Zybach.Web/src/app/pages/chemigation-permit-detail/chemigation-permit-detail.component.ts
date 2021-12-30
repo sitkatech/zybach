@@ -7,6 +7,7 @@ import { ChemigationInspectionService } from 'src/app/services/chemigation-inspe
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
+import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
@@ -32,11 +33,13 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public yearToDisplay: number;
   public currentYear: number;
   public currentYearAnnualRecord: ChemigationPermitAnnualRecordDetailedDto;
+  public latestInspection: ChemigationInspectionSimpleDto;
 
   public modalReference: NgbModalRef;
   public isPerformingAction: boolean = false;
   public closeResult: string;
   public inspectionIDToDelete: number;
+  
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
@@ -58,10 +61,13 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       forkJoin({
         chemigationPermit: this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber),
-        annualRecords: this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber)
-      }).subscribe(({ chemigationPermit, annualRecords}) => {
+        annualRecords: this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber),
+        latestInspection: this.chemigationPermitService.getLatestChemigationInspectionByPermitNumber(this.chemigationPermitNumber)
+      }).subscribe(({ chemigationPermit, annualRecords, latestInspection }) => {
         this.chemigationPermit = chemigationPermit;
         this.annualRecords = annualRecords;
+        this.latestInspection = latestInspection;
+        
         this.updateAnnualData();
         this.cdr.detectChanges();
       });

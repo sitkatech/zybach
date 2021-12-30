@@ -75,6 +75,7 @@ export class ChemigationInspectionEditComponent implements OnInit {
     chemigationInspectionUpsertDto.ChemigationMainlineCheckValveID = chemigationInspection.ChemigationMainlineCheckValveID;
     chemigationInspectionUpsertDto.ChemigationLowPressureValveID = chemigationInspection.ChemigationLowPressureValveID;
     chemigationInspectionUpsertDto.ChemigationInjectionValveID = chemigationInspection.ChemigationInjectionValveID;
+    chemigationInspectionUpsertDto.ChemigationInterlockTypeID = chemigationInspection.ChemigationInterlockTypeID;
     chemigationInspectionUpsertDto.HasVacuumReliefValve = chemigationInspection.HasVacuumReliefValve;
     chemigationInspectionUpsertDto.HasInspectionPort = chemigationInspection.HasInspectionPort;
     chemigationInspectionUpsertDto.InspectionNotes = chemigationInspection.InspectionNotes;

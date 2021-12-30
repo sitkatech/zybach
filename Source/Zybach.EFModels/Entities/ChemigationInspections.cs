@@ -42,6 +42,14 @@ namespace Zybach.EFModels.Entities
             return GetChemigationInspectionsImpl(dbContext).OrderByDescending(x => x.InspectionDate).Select(x => x.AsSimpleDto()).ToList();
         }
 
+        public static ChemigationInspectionSimpleDto GetLatestChemigationInspectionByPermitNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
+        {
+            return GetChemigationInspectionsImpl(dbContext)
+                .Where(x => x.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber == chemigationPermitNumber)
+                .OrderByDescending(y => y.InspectionDate)
+                .FirstOrDefault()?.AsSimpleDto();
+        }
+
         public static ChemigationInspectionSimpleDto GetChemigationInspectionSimpleDtoByID(ZybachDbContext dbContext, int chemigationInspectionID)
         {
             return GetChemigationInspectionsImpl(dbContext)
@@ -79,6 +87,20 @@ namespace Zybach.EFModels.Entities
             dbContext.Entry(chemigationInspection).Reload();
 
             return GetChemigationInspectionSimpleDtoByID(dbContext, chemigationInspection.ChemigationInspectionID);
+        }
+
+        public static void CreateDefaultNewChemigationInspection(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
+        {
+            var blankChemigationInspectionUpsertDto = new ChemigationInspectionUpsertDto()
+            {
+                ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecordID,
+                ChemigationInspectionStatusID = (int)ChemigationInspectionStatuses.ChemigationInspectionStatusEnum.Pending,
+                ChemigationInspectionTypeID = (int)ChemigationInspectionTypes.ChemigationInspectionTypeEnum.NewInitialOrReactivation,
+                HasVacuumReliefValve = true,
+                HasInspectionPort = true
+            };
+
+            CreateChemigationInspection(dbContext, blankChemigationInspectionUpsertDto);
         }
     }
 }

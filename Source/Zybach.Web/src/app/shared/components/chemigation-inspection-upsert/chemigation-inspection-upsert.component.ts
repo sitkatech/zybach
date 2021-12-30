@@ -9,6 +9,7 @@ import { ChemigationInspectionFailureReasonDto } from '../../generated/model/che
 import { ChemigationInspectionStatusDto } from '../../generated/model/chemigation-inspection-status-dto';
 import { ChemigationInspectionTypeDto } from '../../generated/model/chemigation-inspection-type-dto';
 import { ChemigationInspectionUpsertDto } from '../../generated/model/chemigation-inspection-upsert-dto';
+import { ChemigationInterlockTypeDto } from '../../generated/model/chemigation-interlock-type-dto';
 import { ChemigationLowPressureValveDto } from '../../generated/model/chemigation-low-pressure-valve-dto';
 import { ChemigationMainlineCheckValveDto } from '../../generated/model/chemigation-mainline-check-valve-dto';
 import { CropTypeDto } from '../../generated/model/crop-type-dto';
@@ -37,6 +38,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
   public chemigationMainlineCheckValves: ChemigationMainlineCheckValveDto[];
   public chemigationLowPressureValves: ChemigationLowPressureValveDto[];
   public chemigationInjectionValves: ChemigationInjectionValveDto[];
+  public chemigationInterlockTypes: ChemigationInterlockTypeDto[];
 
   constructor(
     private chemigationInspectionService: ChemigationInspectionService,
@@ -54,10 +56,11 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
       users: this.userService.getUsers(),
       chemigationMainlineCheckValves: this.chemigationInspectionService.getMainlineCheckValves(),
       chemigationLowPressureValves: this.chemigationInspectionService.getLowPressureValves(),
-      chemigationInjectionValves: this.chemigationInspectionService.getChemigationInjectionValves()
+      chemigationInjectionValves: this.chemigationInspectionService.getChemigationInjectionValves(),
+      chemigationInterlockTypes: this.chemigationInspectionService.getChemigationInterlockTypes()
     }).subscribe(({ chemigationInspectionTypes, chemigationInspectionStatuses,
       chemigationInspectionFailureReasons, tillages, cropTypes, users,
-      chemigationMainlineCheckValves, chemigationLowPressureValves, chemigationInjectionValves}) => {
+      chemigationMainlineCheckValves, chemigationLowPressureValves, chemigationInjectionValves, chemigationInterlockTypes}) => {
       this.chemigationInspectionTypes = chemigationInspectionTypes;
       this.chemigationInspectionStatuses = chemigationInspectionStatuses;
       this.chemigationInspectionFailureReasons = chemigationInspectionFailureReasons;
@@ -67,6 +70,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
       this.chemigationMainlineCheckValves = chemigationMainlineCheckValves;
       this.chemigationLowPressureValves = chemigationLowPressureValves;
       this.chemigationInjectionValves = chemigationInjectionValves;
+      this.chemigationInterlockTypes = chemigationInterlockTypes;
       this.cdr.detectChanges();
     });
     this.validateForm();

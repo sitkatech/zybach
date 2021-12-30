@@ -101,6 +101,16 @@
             </div>
 
             <div class="col-6 control-label text-right mb-2">
+                <label><strong>Chemigation Interlock Type: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <ng-select [(ngModel)]="inspection.ChemigationInterlockTypeID"
+                    [items]="chemigationInterlockTypes" bindLabel="ChemigationInterlockTypeDisplayName" bindValue="ChemigationInterlockTypeID" 
+                    placeholder="Choose One" name="ChemigationInterlockTypeID">
+                </ng-select>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
                 <label><strong>Vacuum Relief Valve?: </strong></label>
             </div>
             <div class="col-6 text-left mb-2 form-group">
