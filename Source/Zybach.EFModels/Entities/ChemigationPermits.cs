@@ -50,7 +50,13 @@ namespace Zybach.EFModels.Entities
 
             chemigationPermitNewDto.ChemigationPermitAnnualRecord.NDEEAmount = ChemigationPermitAnnualRecords.NDEEAmounts.New;
 
-            ChemigationPermitAnnualRecords.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
+            var chemigationPermitAnnualRecord = 
+                ChemigationPermitAnnualRecords.CreateAnnualRecord(dbContext, chemigationPermitNewDto.ChemigationPermitAnnualRecord, chemigationPermitID);
+
+            var chemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
+
+            ChemigationInspections.CreateBlankChemigationInspection(dbContext,
+                chemigationPermitAnnualRecordID);
 
             dbContext.Entry(chemigationPermit).Reload();
 
