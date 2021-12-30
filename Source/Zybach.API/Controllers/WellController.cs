@@ -34,6 +34,14 @@ namespace Zybach.API.Controllers
             return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
         }
 
+        [HttpGet("/api/wells/search/{wellRegistrationID}/hasInspectionType")]
+        [ZybachViewFeature]
+        public ActionResult<List<string>> SearchByWellRegistrationIDHasInspectionType([FromRoute] string wellRegistrationID)
+        {
+            var wellSimpleDtos = Wells.SearchByWellRegistrationIDHasInspectionType(_dbContext, wellRegistrationID);
+            return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
+        }
+
         [HttpGet("/api/wells/{wellRegistrationID}")]
         [ZybachViewFeature]
         public WellDetailDto GetWellDetails([FromRoute] string wellRegistrationID)

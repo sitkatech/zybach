@@ -54,8 +54,13 @@ export class WellService {
     return this.apiService.postToApi(route, wellNewDto);
   }
 
-  public searchByWellRegistrationID(wellRegistrationID: string): Observable<WellSimpleDto> {
+  public searchByWellRegistrationID(wellRegistrationID: string): Observable<Array<string>> {
     let route = `/wells/search/${wellRegistrationID}`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public searchByWellRegistrationIDHasInspectionType(wellRegistrationID: string): Observable<Array<string>> {
+    let route = `/wells/search/${wellRegistrationID}/hasInspectionType`;
     return this.apiService.getFromApi(route);
   }
 }

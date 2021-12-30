@@ -107,6 +107,14 @@ namespace Zybach.EFModels.Entities
             return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText)).Select(x => x.AsSimpleDto()).ToList();
         }
 
+        public static List<WellSimpleDto> SearchByWellRegistrationIDHasInspectionType(ZybachDbContext dbContext, string searchText)
+        {
+            var wellIDsWithInspectionTypes = dbContext.WellWaterQualityInspectionTypes.AsNoTracking().Select(x => x.WellID).Distinct();
+            return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText))
+                .Where(x => wellIDsWithInspectionTypes.Contains(x.WellID))
+                .Select(x => x.AsSimpleDto()).ToList();
+        }
+
         public static List<WellSimpleDto> SearchByAghubRegisteredUser(ZybachDbContext dbContext, string searchText)
         {
             return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.AgHubRegisteredUser.Contains(searchText)).Select(x => x.Well.AsSimpleDto()).ToList();
