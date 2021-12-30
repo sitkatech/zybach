@@ -88,7 +88,7 @@ set w.OwnerName = bw.OwnerName, w.OwnerAddress = bw.OwnerAddress, w.OwnerCity = 
 	when bw.LocationNote is not null then bw.LocationNote 
 	else bw.Comment end
 , w.CountyID = c.CountyID
-, w.TownshipRangeSection = ltrim(rtrim(bw.[Quarter] + ' ' + bw.Section + ' ' + bw.Township + ' ' + bw.[Range]))
+, w.TownshipRangeSection = ltrim(rtrim(bw.Township + ' ' + bw.[Range] + ' ' + bw.Section + ' ' + bw.[Quarter]))
 , w.WellNickName = bw.WellName
 
 --select bw.WellRegistrationID, bw.OwnerName, bw.OwnerAddress, bw.OwnerCity, bw.OwnerState, bw.OwnerZip
