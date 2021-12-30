@@ -87,7 +87,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
         }, 
         resizable: true, sortable: true 
       },
-      { headerName: 'Township-Range-Section', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true },
+      { headerName: 'TRS', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true },
       {
         headerName: "Date", 
         valueGetter: function (params: any) {
