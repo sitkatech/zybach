@@ -95,8 +95,8 @@ namespace Zybach.EFModels.Entities
                 ChemigationLowPressureValveID = null,
                 ChemigationInjectionValveID = null,
                 ChemigationInterlockTypeID = null,
-                HasVacuumReliefValve = null,
-                HasInspectionPort = null,
+                HasVacuumReliefValve = true,
+                HasInspectionPort = true,
                 TillageID = null,
                 CropTypeID = null,
                 InspectionNotes = null
