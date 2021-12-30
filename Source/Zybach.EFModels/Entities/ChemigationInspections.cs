@@ -89,25 +89,15 @@ namespace Zybach.EFModels.Entities
             return GetChemigationInspectionSimpleDtoByID(dbContext, chemigationInspection.ChemigationInspectionID);
         }
 
-        public static void CreateBlankChemigationInspection(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
+        public static void CreateDefaultNewChemigationInspection(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID)
         {
             var blankChemigationInspectionUpsertDto = new ChemigationInspectionUpsertDto()
             {
                 ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecordID,
                 ChemigationInspectionStatusID = (int)ChemigationInspectionStatuses.ChemigationInspectionStatusEnum.Pending,
-                ChemigationInspectionFailureReasonID = null,
                 ChemigationInspectionTypeID = (int)ChemigationInspectionTypes.ChemigationInspectionTypeEnum.NewInitialOrReactivation,
-                InspectionDate = null,
-                InspectorUserID = null,
-                ChemigationMainlineCheckValveID = null,
-                ChemigationLowPressureValveID = null,
-                ChemigationInjectionValveID = null,
-                ChemigationInterlockTypeID = null,
                 HasVacuumReliefValve = true,
-                HasInspectionPort = true,
-                TillageID = null,
-                CropTypeID = null,
-                InspectionNotes = null
+                HasInspectionPort = true
             };
 
             CreateChemigationInspection(dbContext, blankChemigationInspectionUpsertDto);

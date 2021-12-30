@@ -55,7 +55,7 @@ namespace Zybach.EFModels.Entities
 
             var chemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID;
 
-            ChemigationInspections.CreateBlankChemigationInspection(dbContext,
+            ChemigationInspections.CreateDefaultNewChemigationInspection(dbContext,
                 chemigationPermitAnnualRecordID);
 
             dbContext.Entry(chemigationPermit).Reload();
