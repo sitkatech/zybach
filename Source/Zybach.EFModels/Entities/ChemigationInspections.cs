@@ -44,13 +44,8 @@ namespace Zybach.EFModels.Entities
 
         public static ChemigationInspectionSimpleDto GetLatestChemigationInspectionByPermitNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
         {
-            var chemigationPermitAnnualRecordIDs = ChemigationPermitAnnualRecords
-                .GetChemigationPermitAnnualRecordsImpl(dbContext)
-                .Where(x => x.ChemigationPermit.ChemigationPermitNumber == chemigationPermitNumber)
-                .Select(x => x.ChemigationPermitAnnualRecordID).ToList();
-
             return GetChemigationInspectionsImpl(dbContext)
-                .Where(x => chemigationPermitAnnualRecordIDs.Contains(x.ChemigationPermitAnnualRecordID))
+                .Where(x => x.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber == chemigationPermitNumber)
                 .OrderByDescending(y => y.InspectionDate)
                 .FirstOrDefault()?.AsSimpleDto();
         }
