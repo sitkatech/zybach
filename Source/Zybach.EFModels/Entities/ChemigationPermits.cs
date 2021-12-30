@@ -71,12 +71,29 @@ namespace Zybach.EFModels.Entities
             return chemigationPermit?.AsDto();
         }
 
-        public static ChemigationPermitDto GetByPermitNumberAsDto(ZybachDbContext dbContext, int chemigationPermitNumber)
+        public static ChemigationPermitDetailedDto GetByPermitNumberAsDetailedDto(ZybachDbContext dbContext, int chemigationPermitNumber)
         {
-            var chemigationPermit = GetChemigationPermitImpl(dbContext)
-                .SingleOrDefault(x => x.ChemigationPermitNumber == chemigationPermitNumber);
+            var latestChemigationInspectionSimpleDto = ChemigationInspections
+                .GetLatestChemigationInspectionByPermitNumber(dbContext, chemigationPermitNumber);
 
-            return chemigationPermit?.AsDto();
+            var chemigationPermitAnnualRecordDetailedDto = new ChemigationPermitAnnualRecordDetailedDto();
+
+            if (latestChemigationInspectionSimpleDto == null)
+            {
+                chemigationPermitAnnualRecordDetailedDto = null;
+            }
+            else
+            {
+                chemigationPermitAnnualRecordDetailedDto =
+                    ChemigationPermitAnnualRecords.GetByPermitNumberAndRecordYearAsDetailedDto(dbContext,
+                        chemigationPermitNumber, latestChemigationInspectionSimpleDto.InspectionDate.Value.Year);
+            }
+
+            var chemigationPermitWithLatestAnnualRecordAsDto = GetChemigationPermitImpl(dbContext)
+                .SingleOrDefault(x => x.ChemigationPermitNumber == chemigationPermitNumber)
+                .AsDetailedDto(chemigationPermitAnnualRecordDetailedDto, latestChemigationInspectionSimpleDto);
+
+            return chemigationPermitWithLatestAnnualRecordAsDto;
         }
 
         private static IQueryable<ChemigationPermit> GetChemigationPermitImpl(ZybachDbContext dbContext)

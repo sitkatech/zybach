@@ -7,6 +7,7 @@ import { ChemigationInspectionService } from 'src/app/services/chemigation-inspe
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
+import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
@@ -25,7 +26,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
   public chemigationPermitNumber: number;
-  public chemigationPermit: ChemigationPermitDto;
+  public chemigationPermit: ChemigationPermitDetailedDto;
   public annualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
 
   public allYearsSelected: boolean = false;
@@ -60,10 +61,10 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
       forkJoin({
         chemigationPermit: this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber),
         annualRecords: this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber)
-      }).subscribe(({ chemigationPermit, annualRecords}) => {
+      }).subscribe(({ chemigationPermit, annualRecords }) => {
         this.chemigationPermit = chemigationPermit;
         this.annualRecords = annualRecords;
-
+        
         this.updateAnnualData();
         this.cdr.detectChanges();
       });

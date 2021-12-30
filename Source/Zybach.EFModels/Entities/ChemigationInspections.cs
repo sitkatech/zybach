@@ -42,6 +42,19 @@ namespace Zybach.EFModels.Entities
             return GetChemigationInspectionsImpl(dbContext).OrderByDescending(x => x.InspectionDate).Select(x => x.AsSimpleDto()).ToList();
         }
 
+        public static ChemigationInspectionSimpleDto GetLatestChemigationInspectionByPermitNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
+        {
+            var chemigationPermitAnnualRecordIDs = ChemigationPermitAnnualRecords
+                .GetChemigationPermitAnnualRecordsImpl(dbContext)
+                .Where(x => x.ChemigationPermit.ChemigationPermitNumber == chemigationPermitNumber)
+                .Select(x => x.ChemigationPermitAnnualRecordID).ToList();
+
+            return GetChemigationInspectionsImpl(dbContext)
+                .Where(x => chemigationPermitAnnualRecordIDs.Contains(x.ChemigationPermitAnnualRecordID))
+                .OrderByDescending(y => y.InspectionDate)
+                .FirstOrDefault()?.AsSimpleDto();
+        }
+
         public static ChemigationInspectionSimpleDto GetChemigationInspectionSimpleDtoByID(ZybachDbContext dbContext, int chemigationInspectionID)
         {
             return GetChemigationInspectionsImpl(dbContext)
