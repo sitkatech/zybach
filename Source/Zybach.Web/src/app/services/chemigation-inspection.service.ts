@@ -89,4 +89,9 @@ export class ChemigationInspectionService {
     let route = `/chemigationInspections/${chemigationInspectionID}`;
     return this.apiService.getFromApi(route);
   }
+
+  public getLatestChemigationInspectionByPermitNumber(chemigationPermitNumber: number) : Observable<ChemigationInspectionSimpleDto> {
+    let route = `/chemigationPermits/${chemigationPermitNumber}/latestChemigationInspection`;
+    return this.apiService.getFromApi(route);
+  }
 }

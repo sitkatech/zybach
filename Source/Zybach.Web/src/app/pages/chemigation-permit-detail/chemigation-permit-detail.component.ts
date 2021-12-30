@@ -26,13 +26,14 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
   public chemigationPermitNumber: number;
-  public chemigationPermit: ChemigationPermitDetailedDto;
+  public chemigationPermit: ChemigationPermitDto;
   public annualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
 
   public allYearsSelected: boolean = false;
   public yearToDisplay: number;
   public currentYear: number;
   public currentYearAnnualRecord: ChemigationPermitAnnualRecordDetailedDto;
+  public latestInspection: ChemigationInspectionSimpleDto;
 
   public modalReference: NgbModalRef;
   public isPerformingAction: boolean = false;
@@ -60,10 +61,12 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       forkJoin({
         chemigationPermit: this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber),
-        annualRecords: this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber)
-      }).subscribe(({ chemigationPermit, annualRecords }) => {
+        annualRecords: this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber),
+        latestInspection: this.chemigationPermitService.getLatestChemigationInspectionByPermitNumber(this.chemigationPermitNumber)
+      }).subscribe(({ chemigationPermit, annualRecords, latestInspection }) => {
         this.chemigationPermit = chemigationPermit;
         this.annualRecords = annualRecords;
+        this.latestInspection = latestInspection;
         
         this.updateAnnualData();
         this.cdr.detectChanges();

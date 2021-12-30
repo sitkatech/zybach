@@ -24,8 +24,8 @@
         <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.County.CountyDisplayName}}</div>
         <div class="col-12 col-sm-6 label"><strong>Last Inspected Date: </strong></div>
-        <div class="col-12 col-sm-6">{{chemigationPermit.LatestInspection?.InspectionDate | date:'shortDate'}}
-            <em *ngIf="!chemigationPermit.LatestInspection?.InspectionDate" class="text-muted">N/A</em>
+        <div class="col-12 col-sm-6">{{latestInspection?.InspectionDate | date:'shortDate'}}
+            <em *ngIf="!latestInspection?.InspectionDate" class="text-muted">N/A</em>
         </div>
     </div>
     <div class="row container">

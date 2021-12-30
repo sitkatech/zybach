@@ -43,10 +43,10 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}")]
         [ZybachViewFeature]
-        public ActionResult<ChemigationPermitDetailedDto> GetChemigationPermitByPermitNumberAsDetailedDto([FromRoute] int chemigationPermitNumber)
+        public ActionResult<ChemigationPermitDto> GetChemigationPermitByPermitNumberAsDto([FromRoute] int chemigationPermitNumber)
         {
-            var chemigationPermitDetailedDto = ChemigationPermits.GetByPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber);
-            return RequireNotNullThrowNotFound(chemigationPermitDetailedDto, "ChemigationPermit", chemigationPermitNumber);
+            var chemigationPermitDto = ChemigationPermits.GetByPermitNumberAsDto(_dbContext, chemigationPermitNumber);
+            return RequireNotNullThrowNotFound(chemigationPermitDto, "ChemigationPermit", chemigationPermitNumber);
         }
 
         [HttpPost("/api/chemigationPermits")]

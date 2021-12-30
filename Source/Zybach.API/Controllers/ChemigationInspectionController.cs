@@ -114,6 +114,22 @@ namespace Zybach.API.Controllers
             return chemigationInspection;
         }
 
+        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/latestChemigationInspection")]
+        [ZybachViewFeature]
+        public ActionResult<ChemigationInspectionSimpleDto> GetLatestChemigationInspectionByPermitNumber(
+            [FromRoute] int chemigationPermitNumber)
+        {
+            var chemigationInspection = ChemigationInspections.GetLatestChemigationInspectionByPermitNumber(_dbContext, chemigationPermitNumber);
+
+            if (chemigationInspection == null)
+            {
+                ModelState.AddModelError("Chemigation Permit Number", $"Chemigation Inspection for Chemigation Permit with Permit Number '{chemigationPermitNumber}' not found!");
+                return BadRequest();
+            }
+
+            return chemigationInspection;
+        }
+
         [HttpPost("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection")]
         [AdminFeature]
         public ActionResult<ChemigationInspectionSimpleDto>
