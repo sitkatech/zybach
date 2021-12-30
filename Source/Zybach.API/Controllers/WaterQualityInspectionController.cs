@@ -45,7 +45,7 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/api/waterQualityInspections")]
         [AdminFeature]
-        public ActionResult CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
+        public ActionResult<WaterQualityInspectionSimpleDto> CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
             var well = Wells.GetByWellRegistrationID(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
             if (well == null)

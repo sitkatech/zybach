@@ -27,7 +27,7 @@ export class WaterQualityInspectionService {
     return this.apiService.getFromApi(route);
   }
   
-  public createWaterQualityInspection(waterQualityInspectionUpsertDto: WaterQualityInspectionUpsertDto): Observable<any> {
+  public createWaterQualityInspection(waterQualityInspectionUpsertDto: WaterQualityInspectionUpsertDto): Observable<WaterQualityInspectionSimpleDto> {
     let route = `/waterQualityInspections`;
     return this.apiService.postToApi(route, waterQualityInspectionUpsertDto);
   }
