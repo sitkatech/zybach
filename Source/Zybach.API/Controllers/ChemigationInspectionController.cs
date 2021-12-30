@@ -121,12 +121,6 @@ namespace Zybach.API.Controllers
         {
             var chemigationInspection = ChemigationInspections.GetLatestChemigationInspectionByPermitNumber(_dbContext, chemigationPermitNumber);
 
-            if (chemigationInspection == null)
-            {
-                ModelState.AddModelError("Chemigation Permit Number", $"Chemigation Inspection for Chemigation Permit with Permit Number '{chemigationPermitNumber}' not found!");
-                return BadRequest();
-            }
-
             return chemigationInspection;
         }
 
