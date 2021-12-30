@@ -52,8 +52,11 @@ export class WaterQualityInspectionUpsertComponent implements OnInit {
 
       this.cdr.detectChanges();
     });
-
     this.validateForm();
+    this.inspectionUpsertForm.valueChanges.subscribe(() => {
+      this.validateForm();
+    });
+
   }
 
   public validateForm(): void {
