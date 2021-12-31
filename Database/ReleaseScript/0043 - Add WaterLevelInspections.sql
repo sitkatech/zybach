@@ -54,7 +54,7 @@ insert into dbo.WaterLevelInspection(WellID, InspectionDate,
 	InspectionNotes
 )
 select w.WellID,
-	dateadd(hour, 8, concat(month(bwli.InspectionDate), '-', day(bwli.InspectionDate), '-', year(bwli.InspectionDate))) as InspectionDate,
+	bwli.InspectionDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC',
 	case when bwli.[Status] = '' then null else bwli.[Status] end,
 	case when bwli.MeasuringEquipment = '' then null else bwli.MeasuringEquipment end,
 	bwli.Oil,

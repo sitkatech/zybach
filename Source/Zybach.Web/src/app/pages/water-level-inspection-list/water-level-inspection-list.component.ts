@@ -63,7 +63,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       {
         headerName: "Date", 
         valueGetter: function (params: any) {
-          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy");
+          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a");
         },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1);
@@ -78,7 +78,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
           filterOptions: ['inRange'],
           comparator: this.dateFilterComparator
         }, 
-        width: 110,
+        width: 140,
         resizable: true,
         sortable: true
       },
@@ -354,7 +354,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
   }
 
   private dateFilterComparator(filterLocalDate, cellValue) {
-    const cellDate = Date.parse(cellValue.LinkDisplay);
+    const cellDate = Date.parse(cellValue);
     const filterLocalDateAtMidnight = filterLocalDate.getTime();
     if (cellDate == filterLocalDateAtMidnight) {
       return 0;
