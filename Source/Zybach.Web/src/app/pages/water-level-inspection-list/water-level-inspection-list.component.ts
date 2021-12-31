@@ -158,6 +158,38 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
+      {
+        headerName: 'Oil?', 
+        valueGetter: function (params) {
+          if (params.data.HasOil) {
+            return "Yes";
+          } else {
+            return "No";
+          }
+        },
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.IsReplacement'
+        },
+        width: 70,
+        sortable: true, resizable: true
+      },
+      {
+        headerName: 'Broken Tape?', 
+        valueGetter: function (params) {
+          if (params.data.HasBrokenTape) {
+            return "Yes";
+          } else {
+            return "No";
+          }
+        },
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.IsReplacement'
+        },
+        width: 120,
+        sortable: true, resizable: true
+      },
       { 
         headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
         filterFramework: CustomDropdownFilterComponent,
@@ -317,16 +349,6 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         filter: true,
         resizable: true,
         sortable: true
-      },
-      { 
-        headerName: 'Status', field: 'WaterLevelInspectionStatus', 
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'WaterLevelInspectionStatus'
-        }, 
-        width: 90,
-        resizable: true, 
-        sortable: true 
       },
     ];
   }
