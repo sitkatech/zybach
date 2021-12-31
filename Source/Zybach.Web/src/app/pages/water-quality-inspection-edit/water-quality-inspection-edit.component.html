@@ -27,7 +27,7 @@
 
     <form (ngSubmit)="onSubmit(editWaterQualityInspectionForm)" #editWaterQualityInspectionForm="ngForm" class="container">
 
-        <zybach-water-quality-inspection-upsert #inspectionUpsertForm
+        <zybach-water-quality-inspection-upsert #inspectionUpsertForm (isFormValid)="isInspectionUpsertFormValid($event)"
         [(inspection)]="waterQualityInspection">
         </zybach-water-quality-inspection-upsert >
 
@@ -35,7 +35,8 @@
             <div class="col-sm text-left float-right">
                 <i class="fas fa-bolt"></i> Required field
             </div>
-            <button type="submit" class="btn btn-zybach mr-1">
+            <button type="submit" class="btn btn-zybach mr-1"
+                [disabled]="isFormValid(editWaterQualityInspectionForm)">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                 Save
             </button>

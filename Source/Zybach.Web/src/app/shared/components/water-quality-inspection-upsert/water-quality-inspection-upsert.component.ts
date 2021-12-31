@@ -52,8 +52,11 @@ export class WaterQualityInspectionUpsertComponent implements OnInit {
 
       this.cdr.detectChanges();
     });
-
     this.validateForm();
+    this.inspectionUpsertForm.valueChanges.subscribe(() => {
+      this.validateForm();
+    });
+
   }
 
   public validateForm(): void {
@@ -69,7 +72,7 @@ export class WaterQualityInspectionUpsertComponent implements OnInit {
         debounceTime(200), 
         distinctUntilChanged(),
         tap(() => this.searchFailed = false),
-        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationID(searchText) : ([])), 
+        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationIDHasInspectionType(searchText) : ([])), 
         catchError(() => {
           this.searchFailed = true;
           return of([]);

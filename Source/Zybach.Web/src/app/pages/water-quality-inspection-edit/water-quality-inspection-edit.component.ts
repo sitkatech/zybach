@@ -25,6 +25,7 @@ export class WaterQualityInspectionEditComponent implements OnInit {
   public waterQualityInspection: WaterQualityInspectionUpsertDto;
 
   public isLoadingSubmit: boolean;
+  public isInspectionUpsertFormValidCheck: boolean;
 
   constructor(
     private waterQualityInspectionService: WaterQualityInspectionService,
@@ -84,6 +85,15 @@ export class WaterQualityInspectionEditComponent implements OnInit {
     this.authenticationService.dispose();
     this.cdr.detach();
   }
+
+  public isInspectionUpsertFormValid(formValid: any): void {
+    this.isInspectionUpsertFormValidCheck = formValid;
+  }
+
+  public isFormValid(editWaterQualityInspectionForm: any) : boolean{
+    return this.isLoadingSubmit || !this.isInspectionUpsertFormValidCheck || !editWaterQualityInspectionForm.form.valid;
+  }
+
   
   public onSubmit(editWaterQualityInspectionForm: HTMLFormElement): void {
       this.isLoadingSubmit = true;
