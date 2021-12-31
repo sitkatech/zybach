@@ -6765,6 +6765,10 @@
           "Notes": {
             "type": "string",
             "nullable": true
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

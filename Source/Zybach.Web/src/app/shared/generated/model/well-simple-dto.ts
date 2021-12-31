@@ -40,6 +40,7 @@ export class WellSimpleDto {
     AdditionalContactZipCode?: string;
     IsReplacement?: boolean;
     Notes?: string;
+    WellParticipationName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -10,7 +10,7 @@ namespace Zybach.EFModels.Entities
         public static IQueryable<WaterLevelInspection> ListImpl(ZybachDbContext dbContext)
         {
             return dbContext.WaterLevelInspections
-                .Include(x => x.Well)
+                .Include(x => x.Well).ThenInclude(x => x.WellParticipation)
                 .Include(x => x.CropType)
                 .Include(x => x.InspectorUser)
                 .ThenInclude(x => x.Role)

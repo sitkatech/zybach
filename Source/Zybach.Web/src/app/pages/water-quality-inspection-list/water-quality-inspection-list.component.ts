@@ -126,6 +126,62 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
+      {
+        headerName: 'Nickname', 
+        field: 'Well.WellNickname',
+        filter: true,
+        width: 140,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Site Name', 
+        field: 'Well.SiteName',
+        filter: true,
+        width: 120,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Site #', 
+        field: 'Well.SiteNumber',
+        filter: true,
+        width: 120,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Page #', 
+        field: 'Well.PageNumber',
+        filter: true,
+        width: 80,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'Replacement?', 
+        valueGetter: function (params) {
+          if (params.data.IsReplacement) {
+            return "Yes";
+          } else {
+            return "No";
+          }
+        },
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.IsReplacement'
+        },
+        width: 120,
+        sortable: true, resizable: true
+      },
+      { headerName: 'Participation', field: 'Well.WellParticipationName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Well.WellParticipationName'
+        }, 
+        width: 120,
+        resizable: true, sortable: true 
+      },
       { headerName: 'Type', field: 'WaterQualityInspectionTypeName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
@@ -284,43 +340,6 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filter: true,
         resizable: true,
         sortable: true
-      },
-      {
-        headerName: 'Site Name', 
-        field: 'Well.SiteName',
-        filter: true,
-        resizable: true,
-        sortable: true
-      },
-      {
-        headerName: 'Site Number', 
-        field: 'Well.SiteNumber',
-        filter: true,
-        resizable: true,
-        sortable: true
-      },
-      {
-        headerName: 'Page #', 
-        field: 'Well.PageNumber',
-        filter: true,
-        width: 80,
-        resizable: true,
-        sortable: true
-      },
-      {
-        headerName: 'Replacement Well?', 
-        valueGetter: function (params) {
-          if (params.data.IsReplacement) {
-            return "Yes";
-          } else {
-            return "No";
-          }
-        },
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'params.data.IsReplacement'
-        },
-        sortable: true, resizable: true
       },
     ];
   }

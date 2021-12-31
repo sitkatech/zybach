@@ -9,5 +9,10 @@ namespace Zybach.EFModels.Entities
             wellDto.Longitude = well.Longitude;
             wellDto.Latitude = well.Latitude;
         }
+
+        static partial void DoCustomSimpleDtoMappings(Well well, WellSimpleDto wellSimpleDto)
+        {
+            wellSimpleDto.WellParticipationName = well.WellParticipation?.WellParticipationDisplayName;
+        }
     }
 }
