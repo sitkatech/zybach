@@ -123,12 +123,14 @@ insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTyp
 select w.WellID, 1 as WaterQualityInspectionTypeID
 from dbo.BeehiveWell bw
 join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
-where bw.WellUse like '%spring%'
+where bw.WellUse not like '%summer%' 
+and bw.WellType like '%quality%' 
 union all
 select w.WellID, 2 as WaterQualityInspectionTypeID
 from dbo.BeehiveWell bw
 join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
 where bw.WellUse like '%summer%'
+and bw.WellType like '%quality%' 
 
 update w
 set w.OwnerName = bw.OwnerName, w.OwnerAddress = bw.OwnerAddress, w.OwnerCity = bw.OwnerCity, w.OwnerState = bw.OwnerState, w.OwnerZipCode = bw.OwnerZip
@@ -189,13 +191,15 @@ insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTyp
 select w.WellID, 1 as WaterQualityInspectionTypeID
 from dbo.BeehiveWell bw
 join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
-where bw.WellUse like '%spring%'
+where bw.WellUse not like '%summer%' 
+and bw.WellType like '%quality%' 
 and bw.SiteNumber is not null and ((bw.WellRegistrationID not like 'a%' and bw.WellRegistrationID not like 'g%') or bw.WellRegistrationID is null)
 union all
 select w.WellID, 2 as WaterQualityInspectionTypeID
 from dbo.BeehiveWell bw
 join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
 where bw.WellUse like '%summer%'
+and bw.WellType like '%quality%' 
 and bw.SiteNumber is not null and ((bw.WellRegistrationID not like 'a%' and bw.WellRegistrationID not like 'g%') or bw.WellRegistrationID is null)
 
 drop table dbo.BeehiveWell
