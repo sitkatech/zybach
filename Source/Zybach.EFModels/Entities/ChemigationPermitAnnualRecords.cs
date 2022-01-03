@@ -128,6 +128,11 @@ namespace Zybach.EFModels.Entities
                 .AsDetailedDto();
         }
 
+        public static IQueryable<ChemigationPermitAnnualRecord> ListByChemigationPermitID(ZybachDbContext dbContext, int chemigationPermitID)
+        {
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.ChemigationPermitID == chemigationPermitID);
+        }
+
         public static IQueryable<ChemigationPermitAnnualRecord> ListByChemigationPermitNumber(ZybachDbContext dbContext, int chemigationPermitNumber)
         {
             return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.ChemigationPermitNumber == chemigationPermitNumber);

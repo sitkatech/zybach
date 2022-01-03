@@ -1030,68 +1030,6 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "parameters": [
-          {
-            "name": "chemigationPermitNumber",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
-                }
-              }
-            }
-          }
-        }
       }
     },
     "/api/chemigationPermits/{chemigationPermitNumber}/getLatestRecordYear": {
@@ -1191,6 +1129,70 @@
         "parameters": [
           {
             "name": "chemigationPermitAnnualRecordID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/{chemigationPermitID}/annualRecords": {
+      "post": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
             "in": "path",
             "required": true,
             "schema": {

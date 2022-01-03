@@ -53,7 +53,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult UpdateChemigationPermit([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
-            var chemigationPermit = _dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
+            var chemigationPermit = ChemigationPermits.GetByID(_dbContext, chemigationPermitID);
 
             if (ThrowNotFound(chemigationPermit, "ChemigationPermit", chemigationPermitID, out var actionResult))
             {
@@ -71,7 +71,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult DeleteChemigationPermitByID([FromRoute] int chemigationPermitID)
         {
-            var chemigationPermit = _dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
+            var chemigationPermit = ChemigationPermits.GetByID(_dbContext, chemigationPermitID);
 
             if (ThrowNotFound(chemigationPermit, "ChemigationPermit", chemigationPermitID, out var actionResult))
             {

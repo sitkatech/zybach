@@ -63,6 +63,11 @@ namespace Zybach.EFModels.Entities
             return GetByIDAsDto(dbContext, chemigationPermitID);
         }
 
+        public static ChemigationPermit GetByID(ZybachDbContext dbContext, int chemigationPermitID)
+        {
+            return dbContext.ChemigationPermits.SingleOrDefault(x => x.ChemigationPermitID == chemigationPermitID);
+        }
+
         public static ChemigationPermitDto GetByIDAsDto(ZybachDbContext dbContext, int chemigationPermitID)
         {
             var chemigationPermit = GetChemigationPermitImpl(dbContext)

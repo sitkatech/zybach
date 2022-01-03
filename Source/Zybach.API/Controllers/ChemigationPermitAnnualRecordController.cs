@@ -99,31 +99,30 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpPost("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
+        [HttpPost("/api/chemigationPermits/{chemigationPermitID}/annualRecords")]
         [AdminFeature]
-        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitNumber, [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
-            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecords.ListByChemigationPermitNumber(_dbContext, chemigationPermitNumber);
-            if (!chemigationPermitAnnualRecords.Any())
+            var chemigationPermit = ChemigationPermits.GetByID(_dbContext, chemigationPermitID);
+
+            if (ThrowNotFound(chemigationPermit, "ChemigationPermit", chemigationPermitID, out var actionResult))
             {
-                return BadRequest($"No Annual Records found for Permit # {chemigationPermitNumber}");
+                return actionResult;
             }
+
+            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecords.ListByChemigationPermitID(_dbContext, chemigationPermitID);
             if (chemigationPermitAnnualRecords.Any(x => x.RecordYear == chemigationPermitAnnualRecordUpsertDto.RecordYear))
             {
                 ModelState.AddModelError("ChemigationPermitAnnualRecord", "Annual record already exists for this year");
-            }
-
-            if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
             }
 
-            var mostRecentChemigationPermitAnnualRecord = chemigationPermitAnnualRecords.OrderByDescending(x => x.RecordYear).First();
+            var mostRecentChemigationPermitAnnualRecord = chemigationPermitAnnualRecords.OrderByDescending(x => x.RecordYear).FirstOrDefault();
 
-            chemigationPermitAnnualRecordUpsertDto.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentChemigationPermitAnnualRecord.RecordYear == 1 ? 
+            chemigationPermitAnnualRecordUpsertDto.NDEEAmount = mostRecentChemigationPermitAnnualRecord != null &&  chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentChemigationPermitAnnualRecord.RecordYear == 1 ? 
                 ChemigationPermitAnnualRecords.NDEEAmounts.Renewal : ChemigationPermitAnnualRecords.NDEEAmounts.New;
 
-            ChemigationPermitAnnualRecords.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, mostRecentChemigationPermitAnnualRecord.ChemigationPermitID);
+            ChemigationPermitAnnualRecords.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
             return Ok();
         }
 
