@@ -983,14 +983,14 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}/annualRecords": {
-      "get": {
+    "/api/chemigationPermitAnnualRecords/{recordYear}": {
+      "post": {
         "tags": [
           "ChemigationPermitAnnualRecord"
         ],
         "parameters": [
           {
-            "name": "chemigationPermitNumber",
+            "name": "recordYear",
             "in": "path",
             "required": true,
             "schema": {
@@ -1005,26 +1005,20 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
-                  }
+                  "type": "integer",
+                  "format": "int32"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
-                  }
+                  "type": "integer",
+                  "format": "int32"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
-                  }
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -1121,14 +1115,14 @@
         }
       }
     },
-    "/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}": {
-      "put": {
+    "/api/chemigationPermits/{chemigationPermitNumber}/annualRecords": {
+      "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
         ],
         "parameters": [
           {
-            "name": "chemigationPermitAnnualRecordID",
+            "name": "chemigationPermitNumber",
             "in": "path",
             "required": true,
             "schema": {
@@ -1137,47 +1131,32 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
                 }
               }
             }
@@ -1249,14 +1228,14 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecordsBulkCreate/{recordYear}": {
-      "post": {
+    "/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}": {
+      "put": {
         "tags": [
           "ChemigationPermitAnnualRecord"
         ],
         "parameters": [
           {
-            "name": "recordYear",
+            "name": "chemigationPermitAnnualRecordID",
             "in": "path",
             "required": true,
             "schema": {
@@ -1265,26 +1244,47 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDto"
                 }
               }
             }

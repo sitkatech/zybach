@@ -121,7 +121,7 @@ export class ChemigationPermitService {
   }
 
   public bulkCreateChemigationPermitAnnualRecordsByRecordYear(recordYear: number): Observable<number> {
-    let route = `/chemigationPermits/annualRecordsBulkCreate/${recordYear}`;
+    let route = `/chemigationPermitAnnualRecords/${recordYear}`;
     return this.apiService.postToApi(route, null);
   }
 

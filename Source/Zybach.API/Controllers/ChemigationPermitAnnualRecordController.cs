@@ -44,12 +44,12 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecords);
         }
 
-        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
-        [ZybachViewFeature]
-        public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetChemigationPermitAnnualRecordsByPermitNumber([FromRoute] int chemigationPermitNumber)
+        [HttpPost("/api/chemigationPermitAnnualRecords/{recordYear}")]
+        [AdminFeature]
+        public ActionResult<int> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
         {
-            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecords.ListByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber);
-            return Ok(chemigationPermitAnnualRecords);
+            var chemigationPermitsRenewed = ChemigationPermits.BulkCreateRenewalRecords(_dbContext, recordYear);
+            return Ok(chemigationPermitsRenewed);
         }
 
         [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/getLatestRecordYear")]
@@ -81,22 +81,12 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecord);
         }
 
-        [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
-        [AdminFeature]
-        public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
-            [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
+        [ZybachViewFeature]
+        public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetChemigationPermitAnnualRecordsByPermitNumber([FromRoute] int chemigationPermitNumber)
         {
-            var chemigationPermitAnnualRecord = _dbContext.ChemigationPermitAnnualRecords.SingleOrDefault(x =>
-                    x.ChemigationPermitAnnualRecordID == chemigationPermitAnnualRecordID);
-
-            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord",
-                chemigationPermitAnnualRecordID, out var actionResult))
-            {
-                return actionResult;
-            }
-
-            ChemigationPermitAnnualRecords.UpdateAnnualRecord(_dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
-            return Ok();
+            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecords.ListByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber);
+            return Ok(chemigationPermitAnnualRecords);
         }
 
         [HttpPost("/api/chemigationPermits/{chemigationPermitID}/annualRecords")]
@@ -119,21 +109,29 @@ namespace Zybach.API.Controllers
 
             var mostRecentChemigationPermitAnnualRecord = chemigationPermitAnnualRecords.OrderByDescending(x => x.RecordYear).FirstOrDefault();
 
-            chemigationPermitAnnualRecordUpsertDto.NDEEAmount = mostRecentChemigationPermitAnnualRecord != null &&  chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentChemigationPermitAnnualRecord.RecordYear == 1 ? 
+            chemigationPermitAnnualRecordUpsertDto.NDEEAmount = mostRecentChemigationPermitAnnualRecord != null && chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentChemigationPermitAnnualRecord.RecordYear == 1 ?
                 ChemigationPermitAnnualRecords.NDEEAmounts.Renewal : ChemigationPermitAnnualRecords.NDEEAmounts.New;
 
             ChemigationPermitAnnualRecords.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
             return Ok();
         }
 
-
-        [HttpPost("/api/chemigationPermits/annualRecordsBulkCreate/{recordYear}")]
+        [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
         [AdminFeature]
-        public ActionResult<int> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
+        public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
+            [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
-            var chemigationPermitsRenewed = ChemigationPermits.BulkCreateRenewalRecords(_dbContext, recordYear);
-            return Ok(chemigationPermitsRenewed);
+            var chemigationPermitAnnualRecord = _dbContext.ChemigationPermitAnnualRecords.SingleOrDefault(x =>
+                    x.ChemigationPermitAnnualRecordID == chemigationPermitAnnualRecordID);
+
+            if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord",
+                chemigationPermitAnnualRecordID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            ChemigationPermitAnnualRecords.UpdateAnnualRecord(_dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            return Ok();
         }
     }
-
 }
