@@ -21,16 +21,8 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitStatusDto>> GetChemigationPermitStatuses()
         {
-            var chemigationPermitStatusesDto = ChemigationPermitStatus.List(_dbContext);
+            var chemigationPermitStatusesDto = ChemigationPermitStatuses.ListAsDto(_dbContext);
             return Ok(chemigationPermitStatusesDto);
-        }
-
-        [HttpGet("/api/counties")]
-        [ZybachViewFeature]
-        public ActionResult<IEnumerable<CountyDto>> GetCounties()
-        {
-            var counties = Counties.ListAsDto(_dbContext);
-            return Ok(counties);
         }
 
         [HttpGet("/api/chemigationPermits")]

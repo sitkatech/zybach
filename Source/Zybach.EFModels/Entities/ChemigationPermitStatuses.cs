@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class ChemigationPermitStatus
+    public static class ChemigationPermitStatuses
     {
 
         public enum ChemigationPermitStatusEnum
@@ -16,7 +15,7 @@ namespace Zybach.EFModels.Entities
             PermanentlyInactive = 3
         }
 
-        public static IEnumerable<ChemigationPermitStatusDto> List(ZybachDbContext dbContext)
+        public static IEnumerable<ChemigationPermitStatusDto> ListAsDto(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermitStatuses
                 .AsNoTracking()
