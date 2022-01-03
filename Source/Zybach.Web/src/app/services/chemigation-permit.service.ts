@@ -81,7 +81,7 @@ export class ChemigationPermitService {
   }
 
   public getAllChemigationInjectionUnitTypes(): Observable<Array<ChemigationInjectionUnitTypeDto>> {
-    let route = `/chemigationPermitInjectionUnitTypes`;
+    let route = `/chemigationInjectionUnitTypes`;
     return this.apiService.getFromApi(route);
   }
 

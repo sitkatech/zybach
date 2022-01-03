@@ -51,7 +51,7 @@ namespace Zybach.API.Controllers
             if (well == null)
             {
                 ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{waterQualityInspectionUpsert.WellRegistrationID}' not found!");
-                return BadRequest();
+                return BadRequest(ModelState);
             }
 
             var waterQualityInspectionSimpleDto = WaterQualityInspections.CreateWaterQualityInspection(_dbContext, waterQualityInspectionUpsert, well.WellID);
