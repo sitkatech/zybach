@@ -1,4 +1,5 @@
 ﻿using Zybach.EFModels.Entities;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.ReportTemplates.Models
 {
@@ -10,7 +11,7 @@ namespace Zybach.API.ReportTemplates.Models
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
 
-        public ReportTemplateApplicatorModel(ChemigationPermitAnnualRecordApplicator applicator)
+        public ReportTemplateApplicatorModel(ChemigationPermitAnnualRecordApplicatorSimpleDto applicator)
         {
             ApplicatorName = applicator.ApplicatorName;
             CertificationNumber = applicator.CertificationNumber;

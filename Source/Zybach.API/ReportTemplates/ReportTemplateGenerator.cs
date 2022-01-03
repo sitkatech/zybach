@@ -73,9 +73,9 @@ namespace Zybach.API.ReportTemplates
             switch (ReportTemplateModelEnum)
             {
                 case ReportTemplateModelEnum.ChemigationPermitAnnualRecord:
-                    var baseCPARViewModel = new ReportTemplateChemigationPermitAnnualRecordBaseViewModel()
+                    var baseCPARViewModel = new ReportTemplateChemigationPermitDetailedBaseViewModel()
                     {
-                        ReportModel = GetListOfChemigationPermitAnnualRecordModels(dbContext)
+                        ReportModel = GetListOfChemigationPermitDetailedModels(dbContext)
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, baseCPARViewModel);
                     break;
@@ -242,6 +242,15 @@ namespace Zybach.API.ReportTemplates
                 .Where(x => SelectedModelIDs.Contains(x.ChemigationPermitAnnualRecordID)).ToList()
                 .OrderBy(x => SelectedModelIDs.IndexOf(x.ChemigationPermitAnnualRecordID)).ToList()
                 .Select(x => new ReportTemplateChemigationPermitAnnualRecordModel(x)).ToList();
+            return listOfModels;
+        }
+
+        private List<ReportTemplateChemigationPermitDetailedModel> GetListOfChemigationPermitDetailedModels(ZybachDbContext dbContext)
+        {
+            var listOfModels = ChemigationPermits.ListWithLatestAnnualRecordAsDto(dbContext)
+                .Where(x => SelectedModelIDs.Contains(x.LatestAnnualRecord.ChemigationPermitAnnualRecordID)).ToList()
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.LatestAnnualRecord.ChemigationPermitAnnualRecordID)).ToList()
+                .Select(x => new ReportTemplateChemigationPermitDetailedModel(x)).ToList();
             return listOfModels;
         }
 

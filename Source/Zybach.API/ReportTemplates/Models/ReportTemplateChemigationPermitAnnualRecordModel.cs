@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Zybach.EFModels.Entities;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.ReportTemplates.Models
 {
@@ -24,7 +25,7 @@ namespace Zybach.API.ReportTemplates.Models
         public string WellLatitude { get; set; }
         public string WellLongitude{ get; set; }
 
-        public List<ChemigationPermitAnnualRecordApplicator> Applicators { get; set; }
+        public List<ChemigationPermitAnnualRecordApplicatorSimpleDto> Applicators { get; set; }
 
         public ReportTemplateChemigationPermitAnnualRecordModel(ChemigationPermitAnnualRecord chemigationPermitAnnualRecord)
         {
@@ -41,7 +42,7 @@ namespace Zybach.API.ReportTemplates.Models
             ApplicantPhone = chemigationPermitAnnualRecord.ApplicantPhone;
             ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone;
             ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail;
-            Applicators = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators.ToList();
+            Applicators = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators.Select(x => x.AsSimpleDto()).ToList();
             County = chemigationPermitAnnualRecord.ChemigationPermit.County.CountyDisplayName;
             WellName = chemigationPermitAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
             WellLatitude = chemigationPermitAnnualRecord.ChemigationPermit.Well.Latitude.ToString("F4");
