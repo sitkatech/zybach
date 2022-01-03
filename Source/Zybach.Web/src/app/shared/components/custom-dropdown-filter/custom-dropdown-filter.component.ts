@@ -76,6 +76,11 @@ export class CustomDropdownFilterComponent implements AgFilterComponent {
     }
   }
 
+  getDropdownValues()
+  {
+    return this.dropdownValues.sort();
+  }
+
   updateFilter() {
     this.state.selectAll = true;
     this.state.deselectAll = true;
