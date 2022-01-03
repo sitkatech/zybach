@@ -7,7 +7,6 @@ import { ChemigationPermitService } from 'src/app/services/chemigation-permit.se
 import { ChemigationInspectionUpsertComponent } from 'src/app/shared/components/chemigation-inspection-upsert/chemigation-inspection-upsert.component';
 import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
 import { ChemigationInspectionUpsertDto } from 'src/app/shared/generated/model/chemigation-inspection-upsert-dto';
-import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
@@ -25,11 +24,9 @@ export class ChemigationInspectionEditComponent implements OnInit {
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
 
-  public chemigationPermitNumber: number;
-  public recordYear: number;
+  public chemigationPermitNumber: string;
   public chemigationInspectionID: number;
 
-  public annualRecord: ChemigationPermitAnnualRecordDetailedDto;
   public inspection: ChemigationInspectionSimpleDto;
   public isLoadingSubmit: boolean;
   
@@ -46,15 +43,12 @@ export class ChemigationInspectionEditComponent implements OnInit {
   ngOnInit(): void {
     this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
-      this.recordYear = parseInt(this.route.snapshot.paramMap.get("record-year"));
       this.chemigationInspectionID = parseInt(this.route.snapshot.paramMap.get("inspection-id"));
 
       forkJoin({
-        annualRecord: this.chemigationPermitService.getAnnualRecordByPermitNumberAndRecordYear(this.chemigationPermitNumber, this.recordYear),
         chemigationInspection: this.chemigationInspectionService.getChemigationInspectionByID(this.chemigationInspectionID)
-      }).subscribe(({ annualRecord, chemigationInspection }) => {
-        this.annualRecord = annualRecord;
+      }).subscribe(({ chemigationInspection }) => {
+        this.chemigationPermitNumber = chemigationInspection.ChemigationPermitNumberDisplay;
         this.initializeInspectionModel(chemigationInspection)
         this.cdr.detectChanges();
       });

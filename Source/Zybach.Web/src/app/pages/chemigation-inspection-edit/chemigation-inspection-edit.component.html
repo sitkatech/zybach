@@ -1,15 +1,15 @@
-<nav aria-label="breadcrumb" *ngIf="annualRecord">
+<nav aria-label="breadcrumb" *ngIf="inspection">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a routerLink="/chemigation-permits">Chemigation Permits</a>
         </li>
         <li class="breadcrumb-item">
-            <a routerLink="/chemigation-permits/{{annualRecord?.ChemigationPermit?.ChemigationPermitNumber}}">
-                Chemigation Permit #{{annualRecord?.ChemigationPermit.ChemigationPermitNumberDisplay}}
+            <a routerLink="/chemigation-permits/{{chemigationPermitNumberDisplay}}">
+                Chemigation Permit #{{chemigationPermitNumber}}
             </a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
-            Edit Inspection for {{annualRecord?.RecordYear}}
+            Edit Inspection
         </li>
     </ol>
 </nav>
@@ -26,7 +26,7 @@
 
     <div class="row mt-2">
         <div class="col-12">
-            <p>Edit chemigation inspection record for Permit #{{annualRecord?.ChemigationPermit.ChemigationPermitNumberDisplay}} for {{annualRecord?.RecordYear}} using the form below
+            <p>Edit chemigation inspection record for Permit #{{chemigationPermitNumber}} using the form below
             </p>
         </div>
     </div>

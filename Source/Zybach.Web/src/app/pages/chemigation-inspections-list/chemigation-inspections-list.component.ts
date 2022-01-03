@@ -56,6 +56,14 @@ export class ChemigationInspectionsListComponent implements OnInit {
     let datePipe = this.datePipe;
     this.columnDefs = [
       {
+        headerName: '', valueGetter: function (params: any) {
+          return { LinkValue: params.data.ChemigationInspectionID, LinkDisplay: "Edit", CssClasses: "btn-sm btn-zybach" };
+        }, cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/chemigation-inspections/" },
+        width: 100,
+        resizable: true
+      },
+      {
         headerName: 'Permit #',
         valueGetter: function (params: any) {
           return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermitNumberDisplay };
