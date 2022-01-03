@@ -373,10 +373,10 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
 
   public bulkCreateAnnualRenewals(): void {
     this.isPerformingAction = true;
-    this.chemigationPermitService.bulkCreateChemigationPermitAnnualRecordsByRecordYear(this.currentYear).subscribe((responseCount) => {
+    this.chemigationPermitService.bulkCreateChemigationPermitAnnualRecordsByRecordYear(this.currentYear).subscribe((response) => {
       this.modalReference.close();
       this.isPerformingAction = false;
-      this.alertService.pushAlert(new Alert(`${responseCount} Annual Renewal Applications successfully created`, AlertContext.Success, true));
+      this.alertService.pushAlert(new Alert(`${response.ChemigationPermitsRenewed} Annual Renewal Applications successfully created, of which ${response.ChemigationInspectionsCreated} have a Chemigation Inspection due and auto-created for them`, AlertContext.Success, true));
       this.updateGridData();
     }, error => {
       this.modalReference.close();

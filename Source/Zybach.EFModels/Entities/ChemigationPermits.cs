@@ -93,13 +93,15 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking();
         }
 
-        public static int BulkCreateRenewalRecords(ZybachDbContext dbContext, int recordYear)
+        public static BulkChemigationPermitAnnualRecordCreationResult BulkCreateRenewalRecords(ZybachDbContext dbContext, int recordYear)
         {
             var sqlParameter = new SqlParameter("recordYear", recordYear);
-            var sqlParameterOutput = new SqlParameter("recordsCreated", SqlDbType.Int);
-            sqlParameterOutput.Direction = ParameterDirection.Output;
-            dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear @recordYear, @recordsCreated OUTPUT", sqlParameter, sqlParameterOutput);
-            return (int)sqlParameterOutput.Value;
+            var chemigationPermitsRenewed = new SqlParameter("chemigationPermitsRenewed", SqlDbType.Int);
+            chemigationPermitsRenewed.Direction = ParameterDirection.Output;
+            var chemigationInspectionsCreated = new SqlParameter("chemigationInspectionsCreated", SqlDbType.Int);
+            chemigationInspectionsCreated.Direction = ParameterDirection.Output;
+            dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear @recordYear, @chemigationPermitsRenewed OUTPUT, @chemigationInspectionsCreated OUTPUT", sqlParameter, chemigationPermitsRenewed, chemigationInspectionsCreated);
+            return new BulkChemigationPermitAnnualRecordCreationResult((int) chemigationPermitsRenewed.Value, (int)chemigationInspectionsCreated.Value);
         }
     }
 }

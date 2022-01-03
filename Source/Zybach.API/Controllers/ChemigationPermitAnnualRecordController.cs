@@ -46,10 +46,10 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/api/chemigationPermitAnnualRecords/{recordYear}")]
         [AdminFeature]
-        public ActionResult<int> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
+        public ActionResult<BulkChemigationPermitAnnualRecordCreationResult> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
         {
-            var chemigationPermitsRenewed = ChemigationPermits.BulkCreateRenewalRecords(_dbContext, recordYear);
-            return Ok(chemigationPermitsRenewed);
+            var bulkChemigationPermitAnnualRecordCreationResult = ChemigationPermits.BulkCreateRenewalRecords(_dbContext, recordYear);
+            return Ok(bulkChemigationPermitAnnualRecordCreationResult);
         }
 
         [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/getLatestRecordYear")]

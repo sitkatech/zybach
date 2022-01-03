@@ -1005,20 +1005,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/BulkChemigationPermitAnnualRecordCreationResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/BulkChemigationPermitAnnualRecordCreationResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/BulkChemigationPermitAnnualRecordCreationResult"
                 }
               }
             }
@@ -3643,6 +3640,20 @@
               "$ref": "#/components/schemas/StreamFlowZonePumpingDepthDto"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BulkChemigationPermitAnnualRecordCreationResult": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitsRenewed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionsCreated": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
