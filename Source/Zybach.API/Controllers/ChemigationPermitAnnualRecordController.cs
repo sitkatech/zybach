@@ -19,7 +19,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/chemigationPermits/injectionUnitTypes")]
+        [HttpGet("/api/chemigationInjectionUnitTypes")]
         [ZybachViewFeature]
         public ActionResult<List<ChemigationInjectionUnitTypeDto>> GetChemigationInjectionUnitTypes()
         {
@@ -27,7 +27,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInjectionUnitTypes);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/annualRecordStatuses")]
+        [HttpGet("/api/chemigationPermitAnnualRecordStatuses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitAnnualRecordStatusDto>> GetChemigationPermitAnnualRecordStatuses()
         {
@@ -35,7 +35,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecordStatusesDto);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords")]
+        [HttpGet("/api/chemigationPermitAnnualRecords")]
         [ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetAllChemigationPermitAnnualRecords()
         {
@@ -81,7 +81,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecord);
         }
 
-        [HttpPut("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}")]
+        [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
         [AdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
             [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)

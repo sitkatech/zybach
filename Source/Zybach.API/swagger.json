@@ -869,7 +869,7 @@
         }
       }
     },
-    "/api/chemigationPermits/injectionUnitTypes": {
+    "/api/chemigationInjectionUnitTypes": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -907,7 +907,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/annualRecordStatuses": {
+    "/api/chemigationPermitAnnualRecordStatuses": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -945,7 +945,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords": {
+    "/api/chemigationPermitAnnualRecords": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1183,7 +1183,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}": {
+    "/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}": {
       "put": {
         "tags": [
           "ChemigationPermitAnnualRecord"
