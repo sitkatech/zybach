@@ -59,21 +59,24 @@ namespace Zybach.API.ReportTemplates.Models
             WellName = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
             WellLatitude = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.Latitude.ToString("F4");
             WellLongitude = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.Longitude.ToString("F4");
-            LastInspectionDate = chemigationPermit.LatestInspection.InspectionDate.HasValue
-                ? chemigationPermit.LatestInspection.InspectionDate.Value.ToShortDateString()
-                : "N/A";
-            ChemigationMainlineCheckValveName = chemigationPermit.LatestInspection.ChemigationMainlineCheckValveName;
-            ChemigationLowPressureValveName = chemigationPermit.LatestInspection.ChemigationLowPressureValveName;
-            ChemigationInjectionValveName = chemigationPermit.LatestInspection.ChemigationInjectionValveName;
-            ChemigationInterlockTypeName = chemigationPermit.LatestInspection.ChemigationInterlockTypeName;
-            VacuumReliefValve = chemigationPermit.LatestInspection.HasVacuumReliefValve.HasValue
-                ? chemigationPermit.LatestInspection.HasVacuumReliefValve.Value ? "Yes" : "No"
-                : "N/A";
-            InspectionPort = chemigationPermit.LatestInspection.HasInspectionPort.HasValue
-                ? chemigationPermit.LatestInspection.HasInspectionPort.Value ? "Yes" : "No"
-                : "N/A";
-            TillageName = chemigationPermit.LatestInspection.TillageName;
-            CropTypeName = chemigationPermit.LatestInspection.CropTypeName;
+            if (chemigationPermit.LatestInspection != null)
+            {
+                LastInspectionDate = chemigationPermit.LatestInspection.InspectionDate.HasValue
+                    ? chemigationPermit.LatestInspection.InspectionDate.Value.ToShortDateString()
+                    : "N/A";
+                ChemigationMainlineCheckValveName = chemigationPermit.LatestInspection.ChemigationMainlineCheckValveName;
+                ChemigationLowPressureValveName = chemigationPermit.LatestInspection.ChemigationLowPressureValveName;
+                ChemigationInjectionValveName = chemigationPermit.LatestInspection.ChemigationInjectionValveName;
+                ChemigationInterlockTypeName = chemigationPermit.LatestInspection.ChemigationInterlockTypeName;
+                VacuumReliefValve = chemigationPermit.LatestInspection.HasVacuumReliefValve.HasValue
+                    ? chemigationPermit.LatestInspection.HasVacuumReliefValve.Value ? "Yes" : "No"
+                    : "N/A";
+                InspectionPort = chemigationPermit.LatestInspection.HasInspectionPort.HasValue
+                    ? chemigationPermit.LatestInspection.HasInspectionPort.Value ? "Yes" : "No"
+                    : "N/A";
+                TillageName = chemigationPermit.LatestInspection.TillageName;
+                CropTypeName = chemigationPermit.LatestInspection.CropTypeName;
+            }
         }
 
         public List<ReportTemplateApplicatorModel> GetApplicators()
