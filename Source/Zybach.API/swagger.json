@@ -6414,10 +6414,6 @@
           "IsReplacement": {
             "type": "boolean"
           },
-          "WellNickname": {
-            "type": "string",
-            "nullable": true
-          },
           "Notes": {
             "type": "string",
             "nullable": true
@@ -6484,6 +6480,10 @@
             "nullable": true
           },
           "FieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
             "type": "string",
             "nullable": true
           }
@@ -6867,6 +6867,10 @@
           "FieldName": {
             "type": "string",
             "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -6932,6 +6936,10 @@
             "nullable": true
           },
           "FieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
             "type": "string",
             "nullable": true
           }

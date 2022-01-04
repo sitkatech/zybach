@@ -103,8 +103,13 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerName: "Registration #",
         field: "WellRegistrationID",
         width: 125,
-        sortable: true, filter: true, resizable: true,
-        
+        sortable: true, filter: true, resizable: true,        
+      },
+      {
+        headerName: "Nickname",
+        field: "WellNickname",
+        width: 125,
+        sortable: true, filter: true, resizable: true,        
       },
       {
         headerName: "TPID",

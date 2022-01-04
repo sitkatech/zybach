@@ -135,6 +135,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
+      {
+        headerName: "Nickname",
+        field: "Well.WellNickname",
+        width: 125,
+        sortable: true, filter: true, resizable: true,        
+      },
       { 
         headerName: 'County', field: 'County.CountyDisplayName',
         filterFramework: CustomDropdownFilterComponent,

@@ -67,6 +67,7 @@ namespace Zybach.EFModels.Entities
             wellWithSensorSummaryDto.FetchDate = well.LastUpdateDate;
             wellWithSensorSummaryDto.InGeoOptix = well.GeoOptixWell != null;
             wellWithSensorSummaryDto.InAgHub = well.AgHubWell != null;
+            wellWithSensorSummaryDto.WellNickname = well.WellNickname;
 
             var sensors = well.Sensors.Select(x => new SensorSummaryDto()
             {

@@ -25,6 +25,7 @@ namespace Zybach.Models.DataTransferObjects
         public List<IrrigatedAcresPerYearDto> IrrigatedAcresPerYear { get; set; }
         public string AgHubRegisteredUser { get; set; }
         public string FieldName { get; set; }
+        public string WellNickname { get; set; }
     }
 
     public class SensorSummaryDto
@@ -72,7 +73,6 @@ namespace Zybach.Models.DataTransferObjects
         public string AdditionalContactState { get; set; }
         public string AdditionalContactZipCode { get; set; }
         public bool IsReplacement { get; set; }
-        public string WellNickname { get; set; }
         public string Notes { get; set; }
         public string WaterQualityInspectionTypes { get; set; }
 
