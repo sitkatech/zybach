@@ -1,24 +1,85 @@
 declare @dateCreated datetime
 set @dateCreated = '12/9/2021'
 insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
-select bw.WellRegistrationID, geometry::STGeomFromText(WKT, 4326) as WellGeometry, @dateCreated, @dateCreated
+select bw.WellRegistrationID, geometry::STGeomFromText('POINT (' + replace(bw.[Long/Lat], ',', '') + ')', 4326) as WellGeometry, @dateCreated, @dateCreated
 from dbo.BeehiveWell bw
-join
-(
-	select distinct bw.WellFeatureID, bw.WellRegistrationID, 'POINT (' + replace([Long/Lat], ',', '') + ')' as WKT
-	from dbo.BeehiveWell bw
-	join dbo.BeehivePermit bp on bw.WellFeatureID = bp.WellFeatureID
-	where len(bw.WellRegistrationID) > 0
-) a on bw.WellFeatureID = a.WellFeatureID
 left join dbo.Well w on bw.WellRegistrationID = w.WellRegistrationID
 where w.WellID is null AND bw.[Long/Lat] is not null
+-- ignore these wells that have duplicate Reg #s
+and bw.WellRegistrationID not in
+(
+ 'G-048825'
+, 'G-050193'
+, 'G-056876'
+, 'G-064390'
+, 'G-067335'
+, 'G-068902'
+, 'G-069354'
+, 'G-101544'
+, 'G-102628'
+, 'G-120728'
+, 'L-01-02'
+, 'L-03-03'
+, 'M-01-02'
+)
+-- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
+and bw.WellRegistrationID not in
+(
+ 'Vote'
+, '36A/4'
+, '56-C-81/3'
+, '56-C-81/2'
+, '30-C-81/1'
+, '64-C-81/1'
+, '05-C-81/1'
+, '06-C-81/1'
+, '58-C-81/1'
+, '57-C-81/1'
+, '32-C-81/2'
+, 'USGS-p12'
+, 'NPPD-p27'
+, 'USGS-p104'
+, 'USGS-p15'
+, 'Monthly-3'
+, 'USGS-p2'
+, 'Nichols Son'
+, 'Monthly-1'
+, 'Monthly-2'
+, '07-C-81/1'
+)
+
 
 -- no well reg ids but have sitenumbers and don't exist in zybach
 insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
 select bw.SiteNumber as WellRegistrationID, 'POINT (' + replace([Long/Lat], ',', '') + ')' as WKT, @dateCreated, @dateCreated
 from dbo.BeehiveWell bw
 left join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
-where bw.SiteNumber is not null and ((bw.WellRegistrationID not like 'a%' and bw.WellRegistrationID not like 'g%') or bw.WellRegistrationID is null)
+where bw.SiteNumber is not null
+-- handle these wells that are in there as SiteNumber until we get closure on how to proceed
+and bw.WellRegistrationID not in
+(
+ 'Vote'
+, '36A/4'
+, '56-C-81/3'
+, '56-C-81/2'
+, '30-C-81/1'
+, '64-C-81/1'
+, '05-C-81/1'
+, '06-C-81/1'
+, '58-C-81/1'
+, '57-C-81/1'
+, '32-C-81/2'
+, 'USGS-p12'
+, 'NPPD-p27'
+, 'USGS-p104'
+, 'USGS-p15'
+, 'Monthly-3'
+, 'USGS-p2'
+, 'Nichols Son'
+, 'Monthly-1'
+, 'Monthly-2'
+, '07-C-81/1'
+)
 and w.WellID is null
 order by bw.SiteNumber
 
