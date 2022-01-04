@@ -1,7 +1,6 @@
 MERGE INTO dbo.ReportTemplateModel AS Target
 USING (VALUES
-(1, 'Well', 'Well', 'Templates will be with the "Well" model.'),
-(2, 'ChemigationPermitAnnualRecord', 'Chemigation Permit Annual Record', 'Templates will be with the "ChemigationPermitAnnualRecord" model.')
+(1, 'ChemigationPermit', 'Chemigation Permit', 'Templates will be with the "ChemigationPermit" model.')
 )
 AS Source (ReportTemplateModelID, ReportTemplateModelName, ReportTemplateModelDisplayName, ReportTemplateModelDescription)
 ON Target.ReportTemplateModelID = Source.ReportTemplateModelID

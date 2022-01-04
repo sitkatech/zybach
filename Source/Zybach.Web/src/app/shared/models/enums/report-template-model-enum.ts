@@ -1,5 +1,4 @@
 export enum ReportTemplateModelEnum {
-    Well = 1,
-    ChemigationPermitAnnualRecord = 2
+    ChemigationPermit = 1
 }
   

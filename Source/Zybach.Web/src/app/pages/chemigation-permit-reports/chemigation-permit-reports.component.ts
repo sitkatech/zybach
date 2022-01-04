@@ -62,7 +62,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear(); 
     
-    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.ChemigationPermitAnnualRecord).subscribe(reportTemplates => {
+    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.ChemigationPermit).subscribe(reportTemplates => {
       this.reportTemplates = reportTemplates;
       if (this.reportTemplates.length == 1) {
         this.selectedReportTemplateID = reportTemplates[0].ReportTemplateID;

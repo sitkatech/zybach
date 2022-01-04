@@ -72,7 +72,7 @@ namespace Zybach.API.ReportTemplates
 
             switch (ReportTemplateModelEnum)
             {
-                case ReportTemplateModelEnum.ChemigationPermitAnnualRecord:
+                case ReportTemplateModelEnum.ChemigationPermit:
                     var chemigationPermitDetailedBaseViewModel = new ReportTemplateChemigationPermitDetailedBaseViewModel()
                     {
                         ReportModel = GetListOfChemigationPermitDetailedModels(dbContext)
@@ -253,10 +253,10 @@ namespace Zybach.API.ReportTemplates
             List<int> selectedModelIDs;
             switch (reportTemplateModel)
             {
-                case ReportTemplateModelEnum.Well:
+                case ReportTemplateModelEnum.ChemigationPermit:
                     // select 10 random models to test the report with
                     // SMG 2/17/2020 this can cause problems with templates failing only some of the time, but it feels costly to validate against every single model in the system
-                    selectedModelIDs = dbContext.Wells.Select(x => x.WellID).Take(10).ToList();
+                    selectedModelIDs = dbContext.ChemigationPermits.Select(x => x.ChemigationPermitID).Take(10).ToList();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
