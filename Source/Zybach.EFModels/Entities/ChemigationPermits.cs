@@ -25,7 +25,7 @@ namespace Zybach.EFModels.Entities
             return listWithLatestAnnualRecordAsDto;
         }
 
-        public static IEnumerable<ChemigationPermitDetailedDto> GetChemigationPermitDetailedDtosByPermitIDs(ZybachDbContext dbContext, List<int> chemigationPermitIDs)
+        public static IEnumerable<ChemigationPermitDetailedDto> GetDetailedDtosByListOfPermitIDs(ZybachDbContext dbContext, List<int> chemigationPermitIDs)
         {
             var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecords.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
             var chemigationInspectionSimpleDtos = ChemigationInspections.GetChemigationInspectionsImpl(dbContext).ToList()
