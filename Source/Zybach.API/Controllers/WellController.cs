@@ -136,6 +136,104 @@ namespace Zybach.API.Controllers
             return wellDetailDto;
         }
 
+        [HttpGet("/api/wells/{wellRegistrationID}/contactInfo")]
+        [ZybachViewFeature]
+        public ActionResult<WellContactInfoDto> GetWellContactDetails([FromRoute] string wellRegistrationID)
+        {
+            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+
+            if (well == null)
+            {
+                throw new Exception($"Well with {wellRegistrationID} not found!");
+            }
+
+            var wellContactInfoDto = new WellContactInfoDto()
+            {
+                TownshipRangeSection = well.TownshipRangeSection,
+                County = well.County?.CountyDisplayName,
+                OwnerName = well.OwnerName,
+                OwnerAddress = well.OwnerAddress,
+                OwnerCity = well.OwnerCity,
+                OwnerState = well.OwnerState,
+                OwnerZipCode = well.OwnerZipCode,
+                AdditionalContactName = well.AdditionalContactName,
+                AdditionalContactAddress = well.AdditionalContactAddress,
+                AdditionalContactCity = well.AdditionalContactCity,
+                AdditionalContactState = well.AdditionalContactState,
+                AdditionalContactZipCode = well.AdditionalContactZipCode,
+                WellNickname = well.WellNickname,
+                Notes = well.Notes
+            };
+
+            return Ok(wellContactInfoDto);
+        }
+
+        [HttpPut("/api/wells/{wellRegistrationID}/contactInfo")]
+        [AdminFeature]
+        public ActionResult UpsertWellContactDetails([FromRoute] string wellRegistrationID,
+            [FromBody] WellContactInfoDto wellContactInfoDto)
+        {
+            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+
+            if (well == null)
+            {
+                throw new Exception($"Well with {wellRegistrationID} not found!");
+            }
+
+            Wells.MapFromContactUpsert(well, wellContactInfoDto);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpGet("/api/wells/{wellRegistrationID}/participationInfo")]
+        [ZybachViewFeature]
+        public ActionResult<WellParticipationInfoDto> GetWellParticipationDetails([FromRoute] string wellRegistrationID)
+        {
+            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+
+            if (well == null)
+            {
+                throw new Exception($"Well with {wellRegistrationID} not found!");
+            }
+
+            var wellParticipationInfoDto = new WellParticipationInfoDto()
+            {
+                WellParticipationID = well.WellParticipationID,
+                WellParticipationName = well.WellParticipation.WellParticipationDisplayName,
+                WellUseID = well.WellUseID,
+                WellUseName = well.WellUse.WellUseDisplayName, 
+                RequiresChemigation = well.RequiresChemigation,
+                RequiresWaterLevelInspection = well.RequiresWaterLevelInspection,
+                IsReplacement = well.IsReplacement, 
+                WellDepth = well.WellDepth,
+                ClearingHouse = well.ClearingHouse,
+                PageNumber = well.PageNumber, 
+                SiteName = well.SiteName,
+                SiteNumber = well.SiteNumber
+
+            };
+
+            return Ok(wellParticipationInfoDto);
+        }
+
+        [HttpPut("/api/wells/{wellRegistrationID}/participationInfo")]
+        [AdminFeature]
+        public ActionResult UpsertWellParticipationDetails([FromRoute] string wellRegistrationID, [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
+        {
+            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+
+            if (well == null)
+            {
+                throw new Exception($"Well with {wellRegistrationID} not found!");
+            }
+
+            Wells.MapFromParticipationUpsert(well, wellParticipationInfoDto);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
         [HttpGet("/api/wells/{wellRegistrationID}/installation")]
         [ZybachViewFeature]
         public async Task<List<InstallationRecordDto>> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
