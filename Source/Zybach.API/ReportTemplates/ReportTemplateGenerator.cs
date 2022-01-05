@@ -72,12 +72,12 @@ namespace Zybach.API.ReportTemplates
 
             switch (ReportTemplateModelEnum)
             {
-                case ReportTemplateModelEnum.ChemigationPermitAnnualRecord:
-                    var baseCPARViewModel = new ReportTemplateChemigationPermitAnnualRecordBaseViewModel()
+                case ReportTemplateModelEnum.ChemigationPermit:
+                    var chemigationPermitDetailedBaseViewModel = new ReportTemplateChemigationPermitDetailedBaseViewModel()
                     {
-                        ReportModel = GetListOfChemigationPermitAnnualRecordModels(dbContext)
+                        ReportModel = GetListOfChemigationPermitDetailedModels(dbContext)
                     };
-                    document = DocumentFactory.Create<DocxDocument>(templatePath, baseCPARViewModel);
+                    document = DocumentFactory.Create<DocxDocument>(templatePath, chemigationPermitDetailedBaseViewModel);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -236,12 +236,11 @@ namespace Zybach.API.ReportTemplates
             return fileName.FullName;
         }
 
-        private List<ReportTemplateChemigationPermitAnnualRecordModel> GetListOfChemigationPermitAnnualRecordModels(ZybachDbContext dbContext)
+        private List<ReportTemplateChemigationPermitDetailedModel> GetListOfChemigationPermitDetailedModels(ZybachDbContext dbContext)
         {
-            var listOfModels = ChemigationPermitAnnualRecords.GetChemigationPermitAnnualRecordsImpl(dbContext)
-                .Where(x => SelectedModelIDs.Contains(x.ChemigationPermitAnnualRecordID)).ToList()
-                .OrderBy(x => SelectedModelIDs.IndexOf(x.ChemigationPermitAnnualRecordID)).ToList()
-                .Select(x => new ReportTemplateChemigationPermitAnnualRecordModel(x)).ToList();
+            var listOfModels = ChemigationPermits.GetDetailedDtosByListOfPermitIDs(dbContext, SelectedModelIDs)
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.ChemigationPermitID))
+                .Select(x => new ReportTemplateChemigationPermitDetailedModel(x)).ToList();
             return listOfModels;
         }
 
@@ -254,10 +253,10 @@ namespace Zybach.API.ReportTemplates
             List<int> selectedModelIDs;
             switch (reportTemplateModel)
             {
-                case ReportTemplateModelEnum.Well:
+                case ReportTemplateModelEnum.ChemigationPermit:
                     // select 10 random models to test the report with
                     // SMG 2/17/2020 this can cause problems with templates failing only some of the time, but it feels costly to validate against every single model in the system
-                    selectedModelIDs = dbContext.Wells.Select(x => x.WellID).Take(10).ToList();
+                    selectedModelIDs = dbContext.ChemigationPermits.Select(x => x.ChemigationPermitID).Take(10).ToList();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

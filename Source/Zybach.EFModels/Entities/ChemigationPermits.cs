@@ -25,6 +25,23 @@ namespace Zybach.EFModels.Entities
             return listWithLatestAnnualRecordAsDto;
         }
 
+        public static IEnumerable<ChemigationPermitDetailedDto> GetDetailedDtosByListOfPermitIDs(ZybachDbContext dbContext, List<int> chemigationPermitIDs)
+        {
+            var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecords.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
+            var chemigationInspectionSimpleDtos = ChemigationInspections.GetChemigationInspectionsImpl(dbContext).ToList()
+                .GroupBy(x => x.ChemigationPermitAnnualRecord.ChemigationPermitID).ToDictionary(x => x.Key, x =>
+                    x.OrderByDescending(y => y.InspectionDate).ThenByDescending(y => y.ChemigationInspectionID).FirstOrDefault()?.AsSimpleDto());
+            var listWithLatestAnnualRecordAsDto = GetChemigationPermitImpl(dbContext)
+                .Where(x => chemigationPermitIDs.Contains(x.ChemigationPermitID))
+                .ToList()
+                .Select(x =>
+                    x.AsDetailedDto(
+                        chemigationPermitAnnualRecordDetailedDtos.ContainsKey(x.ChemigationPermitID) ? chemigationPermitAnnualRecordDetailedDtos[x.ChemigationPermitID] : null,
+                        chemigationInspectionSimpleDtos.ContainsKey(x.ChemigationPermitID) ? chemigationInspectionSimpleDtos[x.ChemigationPermitID] : null))
+                .OrderBy(x => x.ChemigationPermitNumber).ToList();
+            return listWithLatestAnnualRecordAsDto;
+        }
+
         public static ChemigationPermitDto CreateNewChemigationPermit(ZybachDbContext dbContext, ChemigationPermitNewDto chemigationPermitNewDto)
         {
             if (chemigationPermitNewDto == null)

@@ -62,7 +62,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear(); 
     
-    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.ChemigationPermitAnnualRecord).subscribe(reportTemplates => {
+    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.ChemigationPermit).subscribe(reportTemplates => {
       this.reportTemplates = reportTemplates;
       if (this.reportTemplates.length == 1) {
         this.selectedReportTemplateID = reportTemplates[0].ReportTemplateID;
@@ -211,7 +211,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     if(this.chemigationPermitReportGrid){
       this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
         if(node.isSelected()){
-          selectedFilteredSortedRows.push(node.data.ChemigationPermitAnnualRecordID);
+          selectedFilteredSortedRows.push(node.data.ChemigationPermit.ChemigationPermitID);
         }
       });
     }
@@ -239,7 +239,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
       let selectedFilteredSortedRows = [];
       this.chemigationPermitReportGrid.api.forEachNodeAfterFilterAndSort(node => {
         if(node.isSelected()){
-          selectedFilteredSortedRows.push(parseInt(node.data.ChemigationPermitAnnualRecordID));
+          selectedFilteredSortedRows.push(parseInt(node.data.ChemigationPermit.ChemigationPermitID));
         }
       });
   
@@ -247,10 +247,10 @@ export class ChemigationPermitReportsComponent implements OnInit {
         this.alertService.pushAlert(new Alert("No permit record selected.", AlertContext.Danger));
       } else {
         this.isLoadingSubmit = true;
-        var generateCPARReportsDto = new GenerateReportsDto();
-        generateCPARReportsDto.ReportTemplateID = this.selectedReportTemplateID;
-        generateCPARReportsDto.ModelIDList = selectedFilteredSortedRows;
-        this.reportTemplateService.generateReport(generateCPARReportsDto)
+        var generateChemigationPermitReportsDto = new GenerateReportsDto();
+        generateChemigationPermitReportsDto.ReportTemplateID = this.selectedReportTemplateID;
+        generateChemigationPermitReportsDto.ModelIDList = selectedFilteredSortedRows;
+        this.reportTemplateService.generateReport(generateChemigationPermitReportsDto)
           .subscribe(response => {
             this.isLoadingSubmit = false;
     
