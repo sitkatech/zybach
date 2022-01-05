@@ -23,7 +23,7 @@ alter table dbo.Well add WellNickname varchar(100), TownshipRangeSection varchar
 alter table dbo.Well add CountyID int null constraint FK_Well_County_CountyID foreign key references dbo.County(CountyID)
 alter table dbo.Well add WellParticipationID int null constraint FK_Well_WellParticipation_WellParticipationID foreign key references dbo.WellParticipation(WellParticipationID)
 alter table dbo.Well add WellUseID int null constraint FK_Well_WellUse_WellUseID foreign key references dbo.WellUse(WellUseID)
-alter table dbo.Well add RequiresChemigation bit null, RequiresWaterLevelInspection bit null, WellDepth decimal(10,4), ClearingHouse varchar(100), PageNumber int, SiteName varchar(100), SiteNumber varchar(100)
+alter table dbo.Well add RequiresChemigation bit null, RequiresWaterLevelInspection bit null, WellDepth decimal(10,4), Clearinghouse varchar(100), PageNumber int, SiteName varchar(100), SiteNumber varchar(100)
 alter table dbo.Well add OwnerName varchar(100), OwnerAddress varchar(100), OwnerCity varchar(100), OwnerState varchar(20), OwnerZipCode varchar(10)
 alter table dbo.Well add AdditionalContactName varchar(100), AdditionalContactAddress varchar(100), AdditionalContactCity varchar(100), AdditionalContactState varchar(20), AdditionalContactZipCode varchar(10)
 alter table dbo.Well add IsReplacement bit null, Notes varchar(1000)
@@ -68,7 +68,7 @@ where OwnerZip = '0.000000000000000000'
 update w
 set w.OwnerName = bw.OwnerName, w.OwnerAddress = bw.OwnerAddress, w.OwnerCity = bw.OwnerCity, w.OwnerState = bw.OwnerState, w.OwnerZipCode = bw.OwnerZip
 , w.AdditionalContactName = bw.ContactName, w.AdditionalContactAddress = bw.ContactAddress, w.AdditionalContactCity = bw.ContactCity, w.AdditionalContactState = bw.ContactState, w.AdditionalContactZipCode = bw.ContactZip
-, w.IsReplacement = isnull(bw.Replacement, 0), w.WellDepth = bw.WellDepth, w.ClearingHouse = bw.ClearingHouse, w.PageNumber = bw.[Page]
+, w.IsReplacement = isnull(bw.Replacement, 0), w.WellDepth = bw.WellDepth, w.Clearinghouse = bw.Clearinghouse, w.PageNumber = bw.[Page]
 , w.SiteName = bw.SiteName, w.SiteNumber = bw.SiteNumber
 , w.WellUseID = wu.WellUseID
 , w.WellParticipationID = case 

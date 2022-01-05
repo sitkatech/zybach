@@ -6354,7 +6354,7 @@
             "format": "double",
             "nullable": true
           },
-          "ClearingHouse": {
+          "Clearinghouse": {
             "type": "string",
             "nullable": true
           },
@@ -6541,7 +6541,7 @@
             "format": "double",
             "nullable": true
           },
-          "ClearingHouse": {
+          "Clearinghouse": {
             "type": "string",
             "nullable": true
           },
@@ -6715,7 +6715,7 @@
             "format": "double",
             "nullable": true
           },
-          "ClearingHouse": {
+          "Clearinghouse": {
             "type": "string",
             "nullable": true
           },

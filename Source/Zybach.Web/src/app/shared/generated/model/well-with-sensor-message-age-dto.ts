@@ -27,6 +27,7 @@ export class WellWithSensorMessageAgeDto {
     IrrigatedAcresPerYear?: Array<IrrigatedAcresPerYearDto>;
     AgHubRegisteredUser?: string;
     FieldName?: string;
+    WellNickname?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

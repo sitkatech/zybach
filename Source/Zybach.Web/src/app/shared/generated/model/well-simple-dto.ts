@@ -24,7 +24,7 @@ export class WellSimpleDto {
     RequiresChemigation?: boolean;
     RequiresWaterLevelInspection?: boolean;
     WellDepth?: number;
-    ClearingHouse?: string;
+    Clearinghouse?: string;
     PageNumber?: number;
     SiteName?: string;
     SiteNumber?: string;

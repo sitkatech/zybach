@@ -46,7 +46,7 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "decimal(10, 4)")]
         public decimal? WellDepth { get; set; }
         [StringLength(100)]
-        public string ClearingHouse { get; set; }
+        public string Clearinghouse { get; set; }
         public int? PageNumber { get; set; }
         [StringLength(100)]
         public string SiteName { get; set; }
