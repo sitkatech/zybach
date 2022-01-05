@@ -42,11 +42,13 @@
     <div class="modal-body">
         <div *ngIf="countOfActivePermitsWithoutRenewalRecordsForCurrentYear > 0; then havePermits else noPermits"></div>
         <ng-template #havePermits>
-            <p>
-                There are {{countOfActivePermitsWithoutRenewalRecordsForCurrentYear | number: "1.0"}} active Chemigation Permits that do not have a renewal record for year {{currentYear}}. 
-                Would you like to create renewal records for these permits?<br />
-                The renewal records will be assigned the status "Pending Renewal".  Note: this action cannot be undone.
-            </p>
+            There are {{countOfActivePermitsWithoutRenewalRecordsForCurrentYear | number: "1.0"}} active Chemigation Permits that do not have a renewal record for year {{currentYear}}.
+            Would you like to create renewal records for these permits?
+            <ul>
+                <li>The renewal records will be assigned the status "Pending Renewal".</li>
+                <li>If a renewal is due for an inspection, an inspection record will be created and set to "Pending".</li>
+            </ul>
+            Note: this action cannot be undone.
         </ng-template>
         <ng-template #noPermits>
             <p>
