@@ -15,15 +15,6 @@ namespace Zybach.EFModels.Entities
 
             return reportTemplateModels;
         }
-
-        public static ReportTemplateModelDto GetByReportTemplateModelID(ZybachDbContext dbContext, int reportTemplateModelID)
-        {
-            var reportTemplateModel = dbContext.ReportTemplateModels
-                .AsNoTracking()
-                .FirstOrDefault(x => x.ReportTemplateModelID == reportTemplateModelID);
-
-            return reportTemplateModel?.AsDto();
-        }
     }
 
     public enum ReportTemplateModelEnum

@@ -239,7 +239,7 @@ namespace Zybach.API.ReportTemplates
         private List<ReportTemplateChemigationPermitDetailedModel> GetListOfChemigationPermitDetailedModels(ZybachDbContext dbContext)
         {
             var listOfModels = ChemigationPermits.GetDetailedDtosByListOfPermitIDs(dbContext, SelectedModelIDs)
-                .OrderBy(x => SelectedModelIDs.IndexOf(x.ChemigationPermitID))
+                .OrderBy(x => SelectedModelIDs.Contains(x.ChemigationPermitID))
                 .Select(x => new ReportTemplateChemigationPermitDetailedModel(x)).ToList();
             return listOfModels;
         }

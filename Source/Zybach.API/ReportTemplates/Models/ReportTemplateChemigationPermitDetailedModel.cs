@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.ReportTemplates.Models
@@ -77,11 +74,6 @@ namespace Zybach.API.ReportTemplates.Models
                 TillageName = chemigationPermit.LatestInspection.TillageName;
                 CropTypeName = chemigationPermit.LatestInspection.CropTypeName;
             }
-        }
-
-        public List<ReportTemplateApplicatorModel> GetApplicators()
-        {
-            return Applicators.Select(x => new ReportTemplateApplicatorModel(x)).OrderBy(x => x.ApplicatorName).ToList();
         }
     }
 }
