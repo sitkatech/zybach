@@ -43,6 +43,7 @@ export class WaterLevelInspectionSimpleDto {
     Well?: WellSimpleDto;
     CropTypeName?: string;
     Inspector?: UserSimpleDto;
+    InspectionYear?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

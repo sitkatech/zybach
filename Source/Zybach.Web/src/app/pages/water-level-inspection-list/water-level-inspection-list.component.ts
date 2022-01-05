@@ -61,6 +61,16 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
     let datePipe = this.datePipe;
     this.columnDefs = [
       {
+        headerName: "Year", field: "InspectionYear",
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'InspectionYear'
+        },
+        width: 80,
+        resizable: true,
+        sortable: true
+      },
+      {
         headerName: "Date", 
         valueGetter: function (params: any) {
           return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a");

@@ -677,6 +677,8 @@ namespace Zybach.EFModels.Entities
 
                 entity.Property(e => e.OwnerZipCode).IsUnicode(false);
 
+                entity.Property(e => e.ScreenInterval).IsUnicode(false);
+
                 entity.Property(e => e.SiteName).IsUnicode(false);
 
                 entity.Property(e => e.SiteNumber).IsUnicode(false);

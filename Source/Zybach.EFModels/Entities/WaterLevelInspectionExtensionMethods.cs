@@ -10,6 +10,7 @@ namespace Zybach.EFModels.Entities
             waterLevelInspectionSimpleDto.Well = waterLevelInspection.Well.AsSimpleDto();
             waterLevelInspectionSimpleDto.CropTypeName = waterLevelInspection.CropType?.CropTypeDisplayName;
             waterLevelInspectionSimpleDto.Inspector = waterLevelInspection.InspectorUser?.AsSimpleDto();
+            waterLevelInspectionSimpleDto.InspectionYear = waterLevelInspection.InspectionDate.Year;
         }
     }
 }

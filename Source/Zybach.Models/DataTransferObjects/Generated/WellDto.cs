@@ -26,6 +26,8 @@ namespace Zybach.Models.DataTransferObjects
         public int? PageNumber { get; set; }
         public string SiteName { get; set; }
         public string SiteNumber { get; set; }
+        public string ScreenInterval { get; set; }
+        public decimal? ScreenDepth { get; set; }
         public string OwnerName { get; set; }
         public string OwnerAddress { get; set; }
         public string OwnerCity { get; set; }
@@ -59,6 +61,8 @@ namespace Zybach.Models.DataTransferObjects
         public int? PageNumber { get; set; }
         public string SiteName { get; set; }
         public string SiteNumber { get; set; }
+        public string ScreenInterval { get; set; }
+        public decimal? ScreenDepth { get; set; }
         public string OwnerName { get; set; }
         public string OwnerAddress { get; set; }
         public string OwnerCity { get; set; }
