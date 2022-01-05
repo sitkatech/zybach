@@ -128,33 +128,6 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
-      { 
-        headerName: 'Well Depth', 
-        field: 'Well.WellDepth',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 110,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Screen Interval', 
-        field: 'Well.ScreenInterval',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 130,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Screen Depth', 
-        field: 'Well.ScreenDepth',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 120,
-        resizable: true,
-        sortable: true
-      },
       {
         headerName: 'Page #', 
         field: 'Well.PageNumber',
@@ -163,38 +136,6 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         width: 80,
         resizable: true,
         sortable: true
-      },
-      {
-        headerName: 'Oil?', 
-        valueGetter: function (params) {
-          if (params.data.HasOil) {
-            return "Yes";
-          } else {
-            return "No";
-          }
-        },
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'params.data.IsReplacement'
-        },
-        width: 70,
-        sortable: true, resizable: true
-      },
-      {
-        headerName: 'Broken Tape?', 
-        valueGetter: function (params) {
-          if (params.data.HasBrokenTape) {
-            return "Yes";
-          } else {
-            return "No";
-          }
-        },
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'params.data.IsReplacement'
-        },
-        width: 120,
-        sortable: true, resizable: true
       },
       { 
         headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
@@ -294,17 +235,6 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         sortable: true 
       },
       { 
-        headerName: 'Access', 
-        field: 'Access',
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'Access'
-        }, 
-        width: 110,
-        resizable: true,
-        sortable: true
-      },
-      { 
         headerName: 'Hold', 
         field: 'Hold',
         filter: 'agNumberColumnFilter',
@@ -337,15 +267,6 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         filter: 'agNumberColumnFilter',
         type: 'rightAligned',
         width: 120,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Water Level', 
-        field: 'WaterLevel',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 110,
         resizable: true,
         sortable: true
       },
