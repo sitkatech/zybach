@@ -24,7 +24,7 @@ export class WellDetailDto {
     RequiresChemigation?: boolean;
     RequiresWaterLevelInspection?: boolean;
     WellDepth?: number;
-    ClearingHouse?: string;
+    Clearinghouse?: string;
     PageNumber?: number;
     SiteName?: string;
     SiteNumber?: string;
@@ -39,7 +39,6 @@ export class WellDetailDto {
     AdditionalContactState?: string;
     AdditionalContactZipCode?: string;
     IsReplacement?: boolean;
-    WellNickname?: string;
     Notes?: string;
     WaterQualityInspectionTypes?: string;
     Sensors?: Array<SensorSummaryDto>;
@@ -56,6 +55,7 @@ export class WellDetailDto {
     IrrigatedAcresPerYear?: Array<IrrigatedAcresPerYearDto>;
     AgHubRegisteredUser?: string;
     FieldName?: string;
+    WellNickname?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

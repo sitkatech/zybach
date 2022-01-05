@@ -17,7 +17,7 @@ CREATE TABLE [dbo].[Well](
 	[RequiresChemigation] [bit] NOT NULL,
 	[RequiresWaterLevelInspection] [bit] NOT NULL,
 	[WellDepth] [decimal](10, 4) NULL,
-	[ClearingHouse] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Clearinghouse] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[PageNumber] [int] NULL,
 	[SiteName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[SiteNumber] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,

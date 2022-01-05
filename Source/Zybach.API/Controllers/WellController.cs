@@ -67,7 +67,7 @@ namespace Zybach.API.Controllers
                 RequiresChemigation = well.RequiresChemigation,
                 RequiresWaterLevelInspection = well.RequiresWaterLevelInspection,
                 WellDepth = well.WellDepth,
-                ClearingHouse = well.ClearingHouse,
+                Clearinghouse = well.Clearinghouse,
                 PageNumber = well.PageNumber,
                 SiteName = well.SiteName,
                 SiteNumber = well.SiteNumber,

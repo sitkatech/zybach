@@ -159,6 +159,14 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         sortable: true
       },
       {
+        headerName: 'Clearinghouse', 
+        field: 'Well.Clearinghouse',
+        filter: true,
+        width: 120,
+        resizable: true,
+        sortable: true
+      },
+      {
         headerName: 'Replacement?', 
         valueGetter: function (params) {
           if (params.data.IsReplacement) {

@@ -663,7 +663,7 @@ namespace Zybach.EFModels.Entities
 
                 entity.Property(e => e.AdditionalContactZipCode).IsUnicode(false);
 
-                entity.Property(e => e.ClearingHouse).IsUnicode(false);
+                entity.Property(e => e.Clearinghouse).IsUnicode(false);
 
                 entity.Property(e => e.Notes).IsUnicode(false);
 
