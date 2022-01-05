@@ -75,5 +75,14 @@ namespace Zybach.API.ReportTemplates.Models
                 CropTypeName = chemigationPermit.LatestInspection.CropTypeName;
             }
         }
+
+        /// <summary>
+        /// Used in SharpDocx template
+        /// </summary>
+        /// <returns></returns>
+        public List<ReportTemplateApplicatorModel> GetApplicators()
+        {
+            return Applicators.Select(x => new ReportTemplateApplicatorModel(x)).OrderBy(x => x.ApplicatorName).ToList();
+        }
     }
 }
