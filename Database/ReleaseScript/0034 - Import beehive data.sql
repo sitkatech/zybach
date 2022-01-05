@@ -8,19 +8,13 @@ where w.WellID is null AND bw.[Long/Lat] is not null
 -- ignore these wells that have duplicate Reg #s
 and bw.WellRegistrationID not in
 (
- 'G-048825'
-, 'G-050193'
+  'G-067335'
+, 'G-102628'
+
+, 'G-048825'
 , 'G-056876'
 , 'G-064390'
-, 'G-067335'
-, 'G-068902'
-, 'G-069354'
-, 'G-101544'
-, 'G-102628'
 , 'G-120728'
-, 'L-01-02'
-, 'L-03-03'
-, 'M-01-02'
 )
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bw.WellRegistrationID not in
@@ -82,6 +76,13 @@ and bw.WellRegistrationID not in
 )
 and w.WellID is null
 order by bw.SiteNumber
+
+insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
+select 'G-067335', geometry::STGeomFromText('POINT (-100.94860656 40.9203941983)', 4326), @dateCreated, @dateCreated
+
+insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
+select 'G-102628', geometry::STGeomFromText('POINT (-100.761191547 41.169212296)', 4326), @dateCreated, @dateCreated
+
 
 /*
 update dbo.BeehivePermit
