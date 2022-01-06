@@ -24,7 +24,8 @@ export class ChemigationInspectionEditComponent implements OnInit {
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
 
-  public chemigationPermitNumber: string;
+  public chemigationPermitNumber: number;
+  public chemigationPermitNumberDisplay: string;
   public chemigationInspectionID: number;
 
   public inspection: ChemigationInspectionSimpleDto;
@@ -48,7 +49,8 @@ export class ChemigationInspectionEditComponent implements OnInit {
       forkJoin({
         chemigationInspection: this.chemigationInspectionService.getChemigationInspectionByID(this.chemigationInspectionID)
       }).subscribe(({ chemigationInspection }) => {
-        this.chemigationPermitNumber = chemigationInspection.ChemigationPermitNumberDisplay;
+        this.chemigationPermitNumber = chemigationInspection.ChemigationPermitNumber;
+        this.chemigationPermitNumberDisplay = chemigationInspection.ChemigationPermitNumberDisplay;
         this.initializeInspectionModel(chemigationInspection)
         this.cdr.detectChanges();
       });

@@ -4,8 +4,8 @@
             <a routerLink="/chemigation-permits">Chemigation Permits</a>
         </li>
         <li class="breadcrumb-item">
-            <a routerLink="/chemigation-permits/{{chemigationPermitNumberDisplay}}">
-                Chemigation Permit #{{chemigationPermitNumber}}
+            <a routerLink="/chemigation-permits/{{chemigationPermitNumber}}">
+                Chemigation Permit #{{chemigationPermitNumberDisplay}}
             </a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
@@ -26,7 +26,7 @@
 
     <div class="row mt-2">
         <div class="col-12">
-            <p>Edit chemigation inspection record for Permit #{{chemigationPermitNumber}} using the form below
+            <p>Edit chemigation inspection record for Permit #{{chemigationPermitNumberDisplay}} using the form below
             </p>
         </div>
     </div>
@@ -43,7 +43,7 @@
                 Save
             </button>
             <a class="btn btn-secondary ml-1"
-                routerLink="/chemigation-permits/{{annualRecord?.ChemigationPermit.ChemigationPermitNumber}}">
+                routerLink="/chemigation-permits/{{chemigationPermitNumber}}">
                 Cancel
             </a>
         </div>

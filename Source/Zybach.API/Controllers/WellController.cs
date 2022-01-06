@@ -151,6 +151,7 @@ namespace Zybach.API.Controllers
             {
                 TownshipRangeSection = well.TownshipRangeSection,
                 County = well.County?.CountyDisplayName,
+                CountyID = well.County?.CountyID,
                 OwnerName = well.OwnerName,
                 OwnerAddress = well.OwnerAddress,
                 OwnerCity = well.OwnerCity,

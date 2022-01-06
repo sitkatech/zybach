@@ -4,6 +4,9 @@ import { forkJoin } from 'rxjs';
 import { WellService } from 'src/app/services/well.service';
 import { CountyDto } from 'src/app/shared/generated/model/county-dto';
 import { WellContactInfoDto } from 'src/app/shared/generated/model/well-contact-info-dto';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { States } from 'src/app/shared/models/enums/states.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -13,9 +16,13 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 export class WellContactEditComponent implements OnInit {
 
-  public wellContactInfo: WellContactInfoDto;
-  public counties: Array<CountyDto>;
   public wellRegistrationID: string;
+  public wellContactInfo: WellContactInfoDto;
+
+  public counties: Array<CountyDto>;
+  public states: Object;
+  
+  public isLoadingSubmit: boolean;
 
   constructor(
     private wellService: WellService,
@@ -27,6 +34,7 @@ export class WellContactEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
+    this.states = States.statesList;
 
     forkJoin({
       wellContactInfo: this.wellService.getWellContactDetails(this.wellRegistrationID),
@@ -38,4 +46,23 @@ export class WellContactEditComponent implements OnInit {
     });
 
   }
+
+  public onSubmit(editWellContactForm: HTMLFormElement): void {
+    this.isLoadingSubmit = true;
+  
+    this.wellService.updateWellContactDetails(this.wellRegistrationID, this.wellContactInfo)
+      .subscribe(response => {
+        this.isLoadingSubmit = false;
+        editWellContactForm.reset();
+        this.router.navigateByUrl("/wells/" + this.wellRegistrationID).then(() => {
+          this.alertService.pushAlert(new Alert(`Well contact details updated.`, AlertContext.Success));
+        });
+      }
+        ,
+        error => {
+          this.isLoadingSubmit = false;
+          this.cdr.detectChanges();
+        }
+      );
+}
 }

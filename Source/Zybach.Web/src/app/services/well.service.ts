@@ -39,8 +39,16 @@ export class WellService {
     return this.apiService.getFromApi(`wells/${wellRegistrationID}/contactInfo`);
   }
 
+  public updateWellContactDetails(wellRegistrationID: string, wellContactInfoDto: WellContactInfoDto): Observable<any> {
+    return this.apiService.putToApi(`wells/${wellRegistrationID}/contactInfo`, wellContactInfoDto);
+  }
+
   public getWellParticipationDetails(wellRegistrationID: string): Observable<WellParticipationInfoDto> {
     return this.apiService.getFromApi(`wells/${wellRegistrationID}/participationInfo`);
+  }
+
+  public updateWellParticipationDetails(wellRegistrationID: string, wellParticipationInfoDto: WellParticipationInfoDto): Observable<any> {
+    return this.apiService.putToApi(`wells/${wellRegistrationID}/participationInfo`, wellParticipationInfoDto);
   }
 
   public getCounties(): Observable<Array<CountyDto>> {

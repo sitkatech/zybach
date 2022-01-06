@@ -6957,6 +6957,15 @@
           "SiteNumber": {
             "type": "string",
             "nullable": true
+          },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
