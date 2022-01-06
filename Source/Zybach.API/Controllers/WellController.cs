@@ -174,7 +174,7 @@ namespace Zybach.API.Controllers
         public ActionResult UpsertWellContactDetails([FromRoute] string wellRegistrationID,
             [FromBody] WellContactInfoDto wellContactInfoDto)
         {
-            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellRegistrationID);
 
             if (well == null)
             {
@@ -223,7 +223,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult UpsertWellParticipationDetails([FromRoute] string wellRegistrationID, [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
         {
-            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellRegistrationID);
 
             if (well == null)
             {

@@ -43,6 +43,17 @@ namespace Zybach.EFModels.Entities
             return GetWellsImpl(dbContext).SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
         }
 
+        public static Well GetByWellRegistrationIDWithTracking(ZybachDbContext dbContext, string wellRegistrationID)
+        {
+            return dbContext.Wells
+                    .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                    .Include(x => x.WellParticipation)
+                    .Include(x => x.WellUse)
+                    .Include(x => x.County)
+                    .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                    .SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+        }
+
         private static IQueryable<Well> GetWellsImpl(ZybachDbContext dbContext)
         {
             return dbContext.Wells
