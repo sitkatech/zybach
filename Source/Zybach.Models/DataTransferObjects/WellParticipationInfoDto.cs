@@ -14,5 +14,7 @@
         public int? PageNumber { get; set; }
         public string? SiteName { get; set; }
         public string? SiteNumber { get; set; }
+        public string? ScreenInterval { get; set; }
+        public decimal? ScreenDepth { get; set; }
     }
 }

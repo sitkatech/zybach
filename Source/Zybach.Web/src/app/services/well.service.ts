@@ -3,10 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/model/chemigation-permit-annual-record-detailed-dto';
+import { CountyDto } from '../shared/generated/model/county-dto';
 import { InstallationRecordDto } from '../shared/generated/model/installation-record-dto';
 import { WellChartDataDto } from '../shared/generated/model/well-chart-data-dto';
+import { WellContactInfoDto } from '../shared/generated/model/well-contact-info-dto';
 import { WellDetailDto } from '../shared/generated/model/well-detail-dto';
 import { WellNewDto } from '../shared/generated/model/well-new-dto';
+import { WellParticipationInfoDto } from '../shared/generated/model/well-participation-info-dto';
 import { WellSimpleDto } from '../shared/generated/model/well-simple-dto';
 import { WellWithSensorSummaryDto } from '../shared/generated/model/well-with-sensor-summary-dto';
 import { ApiService } from '../shared/services';
@@ -30,6 +33,18 @@ export class WellService {
 
   public getWellDetails(wellRegistrationID: string): Observable<WellDetailDto> {
     return this.apiService.getFromApi(`wells/${wellRegistrationID}`);
+  }
+
+  public getWellContactDetails(wellRegistrationID: string): Observable<WellContactInfoDto> {
+    return this.apiService.getFromApi(`wells/${wellRegistrationID}/contactInfo`);
+  }
+
+  public getWellParticipationDetails(wellRegistrationID: string): Observable<WellParticipationInfoDto> {
+    return this.apiService.getFromApi(`wells/${wellRegistrationID}/participationInfo`);
+  }
+
+  public getCounties(): Observable<Array<CountyDto>> {
+    return this.apiService.getFromApi(`/counties`);
   }
 
   public getInstallationDetails(wellRegistrationID: string): Observable<InstallationRecordDto[]> {

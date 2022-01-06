@@ -1,0 +1,23 @@
+<div class="row mt-2">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Contact Information
+            </div>
+            <div class="card-body">
+                <div class="row" *ngIf="wellContactInfo">
+                    <div class="col-12  col-sm-6 label"><strong>Owner: </strong> </div>
+                    <div class="col-12  col-sm-6">{{wellContactInfo.OwnerName}}</div>
+                    <div class="col-12  col-sm-6 label"><strong>Township, Range, Section:</strong></div>
+                    <div class="col-12  col-sm-6">{{wellContactInfo.TownshipRangeSection}}</div>
+                    <div class="col-12  col-sm-6 label"><strong>County: </strong></div>
+                    <div class="col-12  col-sm-6">{{wellContactInfo.County}}</div>
+                    <div class="col-12  col-sm-6 label"><strong>Nickname: </strong></div>
+                    <div class="col-12  col-sm-6">{{wellContactInfo.WellNickname}}</div>
+                    <div class="col-12  col-sm-6 label"><strong>Notes: </strong></div>
+                    <div class="col-12  col-sm-6">{{wellContactInfo.Notes}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

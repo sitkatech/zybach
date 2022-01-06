@@ -3338,6 +3338,172 @@
         }
       }
     },
+    "/api/wells/{wellRegistrationID}/contactInfo": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellContactInfoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellContactInfoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellContactInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wells/{wellRegistrationID}/participationInfo": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellParticipationInfoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellParticipationInfoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellParticipationInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/wells/{wellRegistrationID}/installation": {
       "get": {
         "tags": [
@@ -6315,6 +6481,73 @@
         },
         "additionalProperties": false
       },
+      "WellContactInfoDto": {
+        "type": "object",
+        "properties": {
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountyID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "County": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellDetailDto": {
         "type": "object",
         "properties": {
@@ -6667,6 +6900,61 @@
             "nullable": true
           },
           "WellParticipationDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellParticipationInfoDto": {
+        "type": "object",
+        "properties": {
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellUseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Clearinghouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SiteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
             "type": "string",
             "nullable": true
           }

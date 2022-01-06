@@ -210,8 +210,9 @@ namespace Zybach.API.Controllers
                 Clearinghouse = well.Clearinghouse,
                 PageNumber = well.PageNumber, 
                 SiteName = well.SiteName,
-                SiteNumber = well.SiteNumber
-
+                SiteNumber = well.SiteNumber,
+                ScreenInterval = well.ScreenInterval,
+                ScreenDepth = well.ScreenDepth
             };
 
             return Ok(wellParticipationInfoDto);
