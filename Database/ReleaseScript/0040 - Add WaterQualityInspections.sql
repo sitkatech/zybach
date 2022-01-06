@@ -32,7 +32,8 @@ create table dbo.WaterQualityInspection
 	CropTypeID int NULL constraint FK_WaterQualityInspection_CropType_CropTypeID foreign key references dbo.CropType(CropTypeID),
 	PreWaterLevel decimal(12, 4) NULL,
 	PostWaterLevel decimal(12, 4) NULL,
-	InspectionNotes varchar(500) null
+	InspectionNotes varchar(500) null,
+	InspectionNickname varchar(100) null
 )
 
 
@@ -65,10 +66,11 @@ PreWaterLevel,
 PostWaterLevel,
 InspectorUserID,
 WaterQualityInspectionTypeID,
-InspectionNotes
+InspectionNotes,
+InspectionNickname
 )
 select w.WellID,
-dateadd(hour, 8, concat(month(bwqi.SampleDate), '-', day(bwqi.SampleDate), '-', year(bwqi.SampleDate))) as InspectionDate,
+bwqi.InspectionDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as InspectionDate,
 bwqi.Temperature,
 bwqi.PH,
 bwqi.Conductivity,
@@ -91,13 +93,14 @@ bwqi.PreWaterLevel,
 bwqi.PostWaterLevel,
 u.UserID as InspectorUserID,
 1 as WaterQualityInspectionTypeID,
-bwqi.Comment
+bwqi.Comment,
+bwqi.InspectionName
 
 from dbo.[BeehiveWaterQualityInspection] bwqi
 join dbo.Well w on bwqi.WellRegistrationID = w.WellRegistrationID
 left join dbo.CropType ct on bwqi.Crop = ct.CropTypeDisplayName
 join dbo.[User] u on case when bwqi.InspectorUser = 'system' then 'Phil Heimann' when bwqi.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwqi.InspectorUser end = u.FirstName + ' ' + u.LastName
-where bwqi.SampleDate is not null
+where bwqi.InspectionDate is not null
 
 update dbo.WaterQualityInspection
 set WaterQualityInspectionTypeID = 2

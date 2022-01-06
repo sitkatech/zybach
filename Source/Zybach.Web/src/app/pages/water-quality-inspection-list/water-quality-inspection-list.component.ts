@@ -129,18 +129,26 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         sortable: true
       },
       {
-        headerName: 'TRS', 
-        field: 'Well.TownshipRangeSection',
+        headerName: 'Well Nickname', 
+        field: 'Well.WellNickname',
         filter: true,
-        width: 100,
+        width: 140,
         resizable: true,
         sortable: true
       },
       {
         headerName: 'Nickname', 
-        field: 'Well.WellNickname',
+        field: 'InspectionNickname',
         filter: true,
-        width: 140,
+        width: 125,
+        resizable: true,
+        sortable: true
+      },
+      {
+        headerName: 'TRS', 
+        field: 'Well.TownshipRangeSection',
+        filter: true,
+        width: 100,
         resizable: true,
         sortable: true
       },

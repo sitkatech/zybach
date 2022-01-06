@@ -76,6 +76,7 @@ export class WaterQualityInspectionEditComponent implements OnInit {
     waterQualityInspectionUpsertDto.PreWaterLevel = waterQualityInspectionSimpleDto.PreWaterLevel;
     waterQualityInspectionUpsertDto.PostWaterLevel = waterQualityInspectionSimpleDto.PostWaterLevel;
     waterQualityInspectionUpsertDto.InspectionNotes = waterQualityInspectionSimpleDto.InspectionNotes;
+    waterQualityInspectionUpsertDto.InspectionNickname = waterQualityInspectionSimpleDto.InspectionNickname;
   
     this.waterQualityInspection = waterQualityInspectionUpsertDto;
   }

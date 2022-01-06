@@ -23,6 +23,8 @@
         <div class="col-12 col-sm-6"><a *ngIf="waterQualityInspection.Inspector" routerLink="/users/{{waterQualityInspection.Inspector.UserID}}">{{waterQualityInspection.Inspector.FullNameLastFirst}}</a></div>
         <div class="col-12 col-sm-6 label"><strong>Inspection Type: </strong></div>
         <div class="col-12 col-sm-6">{{waterQualityInspection.WaterQualityInspectionTypeName}}</div>
+        <div class="col-12 col-sm-6 label"><strong>Nickname: </strong></div>
+        <div class="col-12 col-sm-6">{{waterQualityInspection.InspectionNickname}}</div>
     </div>
 </div>
 <div class="row mt-4 container" *ngIf="waterQualityInspection">

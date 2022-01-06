@@ -39,6 +39,7 @@ export class WaterQualityInspectionSimpleDto {
     PreWaterLevel?: number;
     PostWaterLevel?: number;
     InspectionNotes?: string;
+    InspectionNickname?: string;
     Well?: WellSimpleDto;
     WaterQualityInspectionTypeName?: string;
     CropTypeName?: string;

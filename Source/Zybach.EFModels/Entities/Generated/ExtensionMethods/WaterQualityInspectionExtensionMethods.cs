@@ -38,7 +38,8 @@ namespace Zybach.EFModels.Entities
                 CropType = waterQualityInspection.CropType?.AsDto(),
                 PreWaterLevel = waterQualityInspection.PreWaterLevel,
                 PostWaterLevel = waterQualityInspection.PostWaterLevel,
-                InspectionNotes = waterQualityInspection.InspectionNotes
+                InspectionNotes = waterQualityInspection.InspectionNotes,
+                InspectionNickname = waterQualityInspection.InspectionNickname
             };
             DoCustomMappings(waterQualityInspection, waterQualityInspectionDto);
             return waterQualityInspectionDto;
@@ -75,7 +76,8 @@ namespace Zybach.EFModels.Entities
                 CropTypeID = waterQualityInspection.CropTypeID,
                 PreWaterLevel = waterQualityInspection.PreWaterLevel,
                 PostWaterLevel = waterQualityInspection.PostWaterLevel,
-                InspectionNotes = waterQualityInspection.InspectionNotes
+                InspectionNotes = waterQualityInspection.InspectionNotes,
+                InspectionNickname = waterQualityInspection.InspectionNickname
             };
             DoCustomSimpleDtoMappings(waterQualityInspection, waterQualityInspectionSimpleDto);
             return waterQualityInspectionSimpleDto;

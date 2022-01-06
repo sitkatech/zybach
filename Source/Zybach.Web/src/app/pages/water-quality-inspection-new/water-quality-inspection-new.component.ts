@@ -67,6 +67,7 @@ export class WaterQualityInspectionNewComponent implements OnInit {
     waterQualityInspectionUpsertDto.PreWaterLevel = null;
     waterQualityInspectionUpsertDto.PostWaterLevel = null;
     waterQualityInspectionUpsertDto.InspectionNotes = null;
+    waterQualityInspectionUpsertDto.InspectionNickname = null;
 
     this.inspection = waterQualityInspectionUpsertDto;
   }

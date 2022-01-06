@@ -26,7 +26,8 @@ create table dbo.WaterLevelInspection
 	IsPrimary bit NULL,
 	WaterLevel decimal(12, 2) NULL,
 	CropTypeID int NULL constraint FK_WaterLevelInspection_CropType_CropTypeID foreign key references dbo.CropType(CropTypeID),
-	InspectionNotes varchar(500) null
+	InspectionNotes varchar(500) null,
+	InspectionNickname varchar(100) null
 )
 
 insert into dbo.WaterLevelInspection(WellID, InspectionDate,
@@ -51,7 +52,8 @@ insert into dbo.WaterLevelInspection(WellID, InspectionDate,
 	WaterLevel,
 	CropTypeID,
 	InspectorUserID,
-	InspectionNotes
+	InspectionNotes,
+	InspectionNickname
 )
 select w.WellID,
 	bwli.InspectionDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC',
@@ -76,7 +78,8 @@ select w.WellID,
 	bwli.WaterLevel,
 	ct.CropTypeID,
 	u.UserID as InspectorUserID,
-	bwli.Comment
+	bwli.Comment,
+	bwli.InspectionName
 
 from dbo.BeehiveWaterLevelInspection bwli
 join dbo.Well w on bwli.WellRegistrationID = w.WellRegistrationID

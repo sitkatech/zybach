@@ -36,6 +36,7 @@ namespace Zybach.Models.DataTransferObjects
         public decimal? WaterLevel { get; set; }
         public CropTypeDto CropType { get; set; }
         public string InspectionNotes { get; set; }
+        public string InspectionNickname { get; set; }
     }
 
     public partial class WaterLevelInspectionSimpleDto
@@ -67,6 +68,7 @@ namespace Zybach.Models.DataTransferObjects
         public decimal? WaterLevel { get; set; }
         public int? CropTypeID { get; set; }
         public string InspectionNotes { get; set; }
+        public string InspectionNickname { get; set; }
     }
 
 }

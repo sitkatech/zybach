@@ -57,7 +57,8 @@ namespace Zybach.EFModels.Entities
                 CropTypeID = waterQualityInspectionUpsert.CropTypeID,
                 PreWaterLevel = waterQualityInspectionUpsert.PreWaterLevel,
                 PostWaterLevel = waterQualityInspectionUpsert.PostWaterLevel,
-                InspectionNotes = waterQualityInspectionUpsert.InspectionNotes
+                InspectionNotes = waterQualityInspectionUpsert.InspectionNotes,
+                InspectionNickname = waterQualityInspectionUpsert.InspectionNickname
             };
 
             dbContext.WaterQualityInspections.Add(waterQualityInspection);
@@ -93,6 +94,7 @@ namespace Zybach.EFModels.Entities
             waterQualityInspection.PreWaterLevel = waterQualityInspectionUpsert.PreWaterLevel;
             waterQualityInspection.PostWaterLevel = waterQualityInspectionUpsert.PostWaterLevel;
             waterQualityInspection.InspectionNotes = waterQualityInspectionUpsert.InspectionNotes;
+            waterQualityInspection.InspectionNickname = waterQualityInspectionUpsert.InspectionNickname;
             
             dbContext.SaveChanges();
         }

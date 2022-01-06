@@ -125,8 +125,14 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         sortable: true
       },
       {
-        headerName: "Nickname",
+        headerName: "Well Nickname",
         field: "Well.WellNickname",
+        width: 140,
+        sortable: true, filter: true, resizable: true,        
+      },
+      {
+        headerName: "Nickname",
+        field: "InspectionNickname",
         width: 125,
         sortable: true, filter: true, resizable: true,        
       },
