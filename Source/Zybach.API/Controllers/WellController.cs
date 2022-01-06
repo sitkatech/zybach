@@ -26,6 +26,22 @@ namespace Zybach.API.Controllers
             _wellService = wellService;
         }
 
+        [HttpGet("/api/wells/wellUses")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<WellUseDto>> GetWellUses()
+        {
+            var wellUseDtos = WellUses.ListAsDto(_dbContext);
+            return Ok(wellUseDtos);
+        }
+
+        [HttpGet("/api/wells/wellParticipations")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<WellUseDto>> GetWellParticipations()
+        {
+            var wellParticipationDtos = WellParticipations.ListAsDto(_dbContext);
+            return Ok(wellParticipationDtos);
+        }
+
         [HttpGet("/api/wells/search/{wellRegistrationID}")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
@@ -201,9 +217,9 @@ namespace Zybach.API.Controllers
             var wellParticipationInfoDto = new WellParticipationInfoDto()
             {
                 WellParticipationID = well.WellParticipationID,
-                WellParticipationName = well.WellParticipation.WellParticipationDisplayName,
+                WellParticipationName = well.WellParticipation?.WellParticipationDisplayName,
                 WellUseID = well.WellUseID,
-                WellUseName = well.WellUse.WellUseDisplayName, 
+                WellUseName = well.WellUse?.WellUseDisplayName, 
                 RequiresChemigation = well.RequiresChemigation,
                 RequiresWaterLevelInspection = well.RequiresWaterLevelInspection,
                 IsReplacement = well.IsReplacement, 

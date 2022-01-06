@@ -21,6 +21,7 @@ export class WellContactEditComponent implements OnInit {
 
   public counties: Array<CountyDto>;
   public states: Object;
+  public defaultState: string = 'NE';
   
   public isLoadingSubmit: boolean;
 
@@ -36,11 +37,18 @@ export class WellContactEditComponent implements OnInit {
     this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
     this.states = States.statesList;
 
+
     forkJoin({
       wellContactInfo: this.wellService.getWellContactDetails(this.wellRegistrationID),
       counties: this.wellService.getCounties()
     }).subscribe(({ wellContactInfo, counties }) => {
       this.wellContactInfo = wellContactInfo;
+      if (!this.wellContactInfo.OwnerState) {
+        this.wellContactInfo.OwnerState = this.defaultState;
+      }
+      if (!this.wellContactInfo.AdditionalContactState) {
+        this.wellContactInfo.AdditionalContactState = this.defaultState;
+      }
       this.counties = counties;
       this.cdr.detectChanges();
     });

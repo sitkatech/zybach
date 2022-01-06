@@ -23,6 +23,8 @@ export class WellParticipationInfoDto {
     PageNumber?: number;
     SiteName?: string;
     SiteNumber?: string;
+    ScreenInterval?: string;
+    ScreenDepth?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
