@@ -21,6 +21,8 @@ CREATE TABLE [dbo].[Well](
 	[PageNumber] [int] NULL,
 	[SiteName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[SiteNumber] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ScreenInterval] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ScreenDepth] [decimal](10, 4) NULL,
 	[OwnerName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[OwnerAddress] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[OwnerCity] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,

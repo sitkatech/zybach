@@ -11,6 +11,7 @@ namespace Zybach.EFModels.Entities
             waterQualityInspectionSimpleDto.WaterQualityInspectionTypeName = waterQualityInspection.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName;
             waterQualityInspectionSimpleDto.CropTypeName = waterQualityInspection.CropType?.CropTypeDisplayName;
             waterQualityInspectionSimpleDto.Inspector = waterQualityInspection.InspectorUser?.AsSimpleDto();
+            waterQualityInspectionSimpleDto.InspectionYear = waterQualityInspection.InspectionDate.Year;
         }
     }
 }

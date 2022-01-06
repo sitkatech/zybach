@@ -162,7 +162,7 @@ values
 insert into dbo.ChemigationInspection(ChemigationPermitAnnualRecordID,  ChemigationInspectionTypeID, ChemigationInspectionStatusID,  InspectionDate, InspectorUserID, 
 ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes, ChemigationInterlockTypeID)
 select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, case when a.Reinspected1 is not null or a.Reinspected2 is not null then 3 else 2 end as ChemigationInspectionStatusID, 
-dateadd(hour, 8, concat(month(a.Inspected), '-', day(a.Inspected), '-', year(a.Inspected))) as InspectionDate, iu.UserID as InspectorUserID,
+a.Inspected at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as InspectionDate, iu.UserID as InspectorUserID,
 cmcv.ChemigationMainlineCheckValveID, 1 as HasVacuumReliefValve, 1 as HasInspectionPort, clpv.ChemigationLowPressureValveID, civ.ChemigationInjectionValveID, t.TillageID, ct.CropTypeID, a.ReasonFailed as InspectionNotes
 , city.ChemigationInterlockTypeID
 from dbo.BeehivePermit a
@@ -182,7 +182,7 @@ where a.Inspected is not null
 insert into dbo.ChemigationInspection(ChemigationPermitAnnualRecordID,  ChemigationInspectionTypeID, ChemigationInspectionStatusID,  InspectionDate, InspectorUserID, 
 ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes, ChemigationInterlockTypeID)
 select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, case when a.Reinspected2 is not null then 3 else 2 end as ChemigationInspectionStatusID, 
-dateadd(hour, 8, concat(month(a.Reinspected1), '-', day(a.Reinspected1), '-', year(a.Reinspected1))) as InspectionDate, iu.UserID as InspectorUserID,
+a.Reinspected1 at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as InspectionDate, iu.UserID as InspectorUserID,
 cmcv.ChemigationMainlineCheckValveID, 1 as HasVacuumReliefValve, 1 as HasInspectionPort, clpv.ChemigationLowPressureValveID, civ.ChemigationInjectionValveID, t.TillageID, ct.CropTypeID, a.ReasonFailed as InspectionNotes
 , city.ChemigationInterlockTypeID
 from dbo.BeehivePermit a
@@ -202,7 +202,7 @@ where a.Inspected is not null and a.Reinspected1 is not null
 insert into dbo.ChemigationInspection(ChemigationPermitAnnualRecordID,  ChemigationInspectionTypeID, ChemigationInspectionStatusID,  InspectionDate, InspectorUserID, 
 ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort, ChemigationLowPressureValveID, ChemigationInjectionValveID, TillageID, CropTypeID, InspectionNotes, ChemigationInterlockTypeID)
 select cpar.ChemigationPermitAnnualRecordID, cit.ChemigationInspectionTypeID, 2 as ChemigationInspectionStatusID, 
-dateadd(hour, 8, concat(month(a.Reinspected2), '-', day(a.Reinspected2), '-', year(a.Reinspected2))) as InspectionDate, iu.UserID as InspectorUserID,
+a.Reinspected2 at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as InspectionDate, iu.UserID as InspectorUserID,
 cmcv.ChemigationMainlineCheckValveID, 1 as HasVacuumReliefValve, 1 as HasInspectionPort, clpv.ChemigationLowPressureValveID, civ.ChemigationInjectionValveID, t.TillageID, ct.CropTypeID, a.ReasonFailed as InspectionNotes
 , city.ChemigationInterlockTypeID
 from dbo.BeehivePermit a

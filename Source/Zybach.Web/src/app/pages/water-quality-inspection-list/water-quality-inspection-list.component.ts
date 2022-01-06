@@ -63,6 +63,16 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
     let decimalPipe = this.decimalPipe;
     this.columnDefs = [
       {
+        headerName: "Year", field: "InspectionYear",
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'InspectionYear'
+        },
+        width: 80,
+        resizable: true,
+        sortable: true
+      },
+      {
         headerName: "Date", 
         valueGetter: function (params: any) {
           return { LinkValue: params.data.WaterQualityInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy") };
@@ -166,6 +176,24 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         resizable: true,
         sortable: true
       },
+      { 
+        headerName: 'Screen Interval', 
+        field: 'Well.ScreenInterval',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 130,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Screen Depth', 
+        field: 'Well.ScreenDepth',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 120,
+        resizable: true,
+        sortable: true
+      },
       {
         headerName: 'Replacement?', 
         valueGetter: function (params) {
@@ -177,7 +205,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         },
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'params.data.IsReplacement'
+          field: 'IsReplacement'
         },
         width: 120,
         sortable: true, resizable: true

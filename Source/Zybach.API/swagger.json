@@ -5990,6 +5990,10 @@
           },
           "Inspector": {
             "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "InspectionYear": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -6134,6 +6138,10 @@
           },
           "Inspector": {
             "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "InspectionYear": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -6558,6 +6566,15 @@
             "type": "string",
             "nullable": true
           },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "OwnerName": {
             "type": "string",
             "nullable": true
@@ -6730,6 +6747,15 @@
           },
           "SiteNumber": {
             "type": "string",
+            "nullable": true
+          },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "OwnerName": {

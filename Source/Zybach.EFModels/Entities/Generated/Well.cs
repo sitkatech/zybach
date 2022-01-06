@@ -53,6 +53,10 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         public string SiteNumber { get; set; }
         [StringLength(100)]
+        public string ScreenInterval { get; set; }
+        [Column(TypeName = "decimal(10, 4)")]
+        public decimal? ScreenDepth { get; set; }
+        [StringLength(100)]
         public string OwnerName { get; set; }
         [StringLength(100)]
         public string OwnerAddress { get; set; }

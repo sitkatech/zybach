@@ -28,6 +28,8 @@ export class WellSimpleDto {
     PageNumber?: number;
     SiteName?: string;
     SiteNumber?: string;
+    ScreenInterval?: string;
+    ScreenDepth?: number;
     OwnerName?: string;
     OwnerAddress?: string;
     OwnerCity?: string;
