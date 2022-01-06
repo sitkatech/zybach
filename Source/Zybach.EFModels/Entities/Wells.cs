@@ -157,6 +157,7 @@ namespace Zybach.EFModels.Entities
         {
             well.TownshipRangeSection = wellContactInfoDto.TownshipRangeSection;
             well.CountyID = wellContactInfoDto.CountyID;
+
             well.OwnerName = wellContactInfoDto.OwnerName;
             well.OwnerAddress = wellContactInfoDto.OwnerAddress;
             well.OwnerCity = wellContactInfoDto.OwnerCity;
@@ -181,7 +182,7 @@ namespace Zybach.EFModels.Entities
             well.RequiresWaterLevelInspection = wellParticipationInfoDto.RequiresWaterLevelInspection;
             well.IsReplacement = wellParticipationInfoDto.IsReplacement;
             well.WellDepth = wellParticipationInfoDto.WellDepth;
-            well.ClearingHouse = wellParticipationInfoDto.ClearingHouse;
+            well.Clearinghouse = wellParticipationInfoDto.Clearinghouse;
             well.PageNumber = wellParticipationInfoDto.PageNumber;
             well.SiteName = wellParticipationInfoDto.SiteName;
             well.SiteNumber = wellParticipationInfoDto.SiteNumber;

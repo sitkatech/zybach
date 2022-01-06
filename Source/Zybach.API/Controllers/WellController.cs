@@ -207,7 +207,7 @@ namespace Zybach.API.Controllers
                 RequiresWaterLevelInspection = well.RequiresWaterLevelInspection,
                 IsReplacement = well.IsReplacement, 
                 WellDepth = well.WellDepth,
-                ClearingHouse = well.ClearingHouse,
+                Clearinghouse = well.Clearinghouse,
                 PageNumber = well.PageNumber, 
                 SiteName = well.SiteName,
                 SiteNumber = well.SiteNumber
