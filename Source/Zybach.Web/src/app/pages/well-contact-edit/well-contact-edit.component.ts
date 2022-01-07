@@ -37,7 +37,6 @@ export class WellContactEditComponent implements OnInit {
     this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
     this.states = States.statesList;
 
-
     forkJoin({
       wellContactInfo: this.wellService.getWellContactDetails(this.wellRegistrationID),
       counties: this.wellService.getCounties()
@@ -46,9 +45,7 @@ export class WellContactEditComponent implements OnInit {
       if (!this.wellContactInfo.OwnerState) {
         this.wellContactInfo.OwnerState = this.defaultState;
       }
-      if (!this.wellContactInfo.AdditionalContactState) {
-        this.wellContactInfo.AdditionalContactState = this.defaultState;
-      }
+
       this.counties = counties;
       this.cdr.detectChanges();
     });

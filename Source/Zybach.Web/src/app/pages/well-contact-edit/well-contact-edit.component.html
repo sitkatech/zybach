@@ -34,27 +34,6 @@
 
                             <div class="row col-12">
                                 <div class="row col-6">
-                    
-                                    <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>Township-Range-Section: </strong></label>
-                                    </div>
-                                    <div class="col-6 text-left mb-2">
-                                        <input type="text" class="form-control" name="TownshipRangeSection"
-                                        [(ngModel)]="wellContactInfo.TownshipRangeSection" placeholder="Legal Description" />
-                                    </div>
-                    
-                                    <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>County: </strong></label>
-                                    </div>
-                                    <div class="col-6 text-left mb-2">
-                                        <ng-select [(ngModel)]="wellContactInfo.CountyID"
-                                            [items]="counties" bindLabel="CountyDisplayName" bindValue="CountyID" 
-                                            placeholder="Choose One" name="CountyID">
-                                        </ng-select>
-                                    </div>
-
-                                    <hr class="col-12 w-80 mt-2" />
-
                                     <div class="col-12 text-center mb-2">
                                         <h5 class="d-inline-block">Owner Contact Details</h5>
                                     </div>
@@ -101,33 +80,14 @@
                                             placeholder="Zip Code" [(ngModel)]="wellContactInfo.OwnerZipCode" />
                                     </div>
 
-                                    <hr class="col-12 w-80 mt-2" />
-
-                                    <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>Well Nickname: </strong></label>
-                                    </div>
-                                    <div class="col-6 text-left mb-2">
-                                        <input type="text" class="form-control" name="WellNickname"
-                                        placeholder="Nickname" [(ngModel)]="wellContactInfo.WellNickname" />
-                                    </div>
-
-                                    <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>Notes: </strong></label>
-                                    </div>
-                                    <div class="col-6 text-left mb-2">
-                                        <textarea class="form-control" name="Notes"
-                                            placeholder="Notes" [(ngModel)]="wellContactInfo.Notes">
-                                        </textarea>
-                                    </div>
-                    
                                 </div>
-                    
+                                
                                 <div class="row col-6">
-
+                                    
                                     <div class="col-12 text-center mb-2">
                                         <h5 class="d-inline-block">Additional Contact Details</h5>
                                     </div>
-
+                                    
                                     <div class="col-6 control-label text-right mb-2">
                                         <label><strong>Name: </strong></label>
                                     </div>
@@ -135,7 +95,7 @@
                                         <input type="text" class="form-control" name="AdditionalContactName"
                                         [(ngModel)]="wellContactInfo.AdditionalContactName" placeholder="Last, First" />
                                     </div>
-
+                                    
                                     <div class="col-6 control-label text-right mb-2">
                                         <label><strong>Address: </strong></label>
                                     </div>
@@ -143,7 +103,7 @@
                                         <input type="text" class="form-control" name="AdditionalContactAddress"
                                         [(ngModel)]="wellContactInfo.AdditionalContactAddress" placeholder="Street Address" />
                                     </div>
-
+                                    
                                     <div class="col-6 control-label text-right mb-2">
                                         <label><strong>City: </strong></label>
                                     </div>
@@ -151,14 +111,14 @@
                                         <input type="text" class="form-control" name="AdditionalContactCity"
                                         [(ngModel)]="wellContactInfo.AdditionalContactCity" placeholder="City" />
                                     </div>
-
+                                    
                                     <div class="col-6 control-label text-right mb-2">
                                         <label><strong>State: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
                                         <ng-select [(ngModel)]="wellContactInfo.AdditionalContactState"
-                                            [items]="states | keyvalue" bindLabel="key" bindValue="value" 
-                                            placeholder="Choose One" name="AdditionalContactState">
+                                        [items]="states | keyvalue" bindLabel="key" bindValue="value" 
+                                        placeholder="Choose One" name="AdditionalContactState">
                                         </ng-select>
                                     </div>
 
@@ -167,13 +127,56 @@
                                     </div>
                                     <div class="col-6 text-left mb-2">
                                         <input type="text" class="form-control" name="AdditionalContactZipCode"
-                                            placeholder="Zip Code" [(ngModel)]="wellContactInfo.AdditionalContactZipCode" />
+                                        placeholder="Zip Code" [(ngModel)]="wellContactInfo.AdditionalContactZipCode" />
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <hr class="row col-12 w-80 mt-2" />
+
+                            <div class="row col-12 mt-4">
+                                <div class="row col-6">
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Township-Range-Section: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="text" class="form-control" name="TownshipRangeSection"
+                                        [(ngModel)]="wellContactInfo.TownshipRangeSection" placeholder="Legal Description" />
                                     </div>
                     
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>County: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <ng-select [(ngModel)]="wellContactInfo.CountyID"
+                                            [items]="counties" bindLabel="CountyDisplayName" bindValue="CountyID" 
+                                            placeholder="Choose One" name="CountyID">
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="row col-6">
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Well Nickname: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="text" class="form-control" name="WellNickname"
+                                        placeholder="Nickname" [(ngModel)]="wellContactInfo.WellNickname" />
+                                    </div>
+            
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Notes: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <textarea class="form-control" name="Notes"
+                                            placeholder="Notes" [(ngModel)]="wellContactInfo.Notes">
+                                        </textarea>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                
+
                         <div class="col-12 text-right mt-3 mr-3">
                             <button type="submit" class="btn btn-zybach mr-1">
                                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>

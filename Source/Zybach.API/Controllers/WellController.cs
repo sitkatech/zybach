@@ -152,6 +152,24 @@ namespace Zybach.API.Controllers
             return wellDetailDto;
         }
 
+        [HttpPut("/api/wells/{wellRegistrationID}/edit")]
+        //[AdminFeature]
+        public ActionResult<WellSimpleDto> UpsertWellRegistrationID([FromRoute] string wellRegistrationID,
+            [FromBody] string newWellRegistrationID)
+        {
+            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellRegistrationID);
+
+            if (well == null)
+            {
+                throw new Exception($"Well with {wellRegistrationID} not found!");
+            }
+
+            Wells.UpdateWellRegistrationID(well, newWellRegistrationID);
+            _dbContext.SaveChanges();
+
+            return Wells.GetByWellRegistrationID(_dbContext, newWellRegistrationID).AsSimpleDto();
+        }
+
         [HttpGet("/api/wells/{wellRegistrationID}/contactInfo")]
         [ZybachViewFeature]
         public ActionResult<WellContactInfoDto> GetWellContactDetails([FromRoute] string wellRegistrationID)

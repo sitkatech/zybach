@@ -198,5 +198,10 @@ namespace Zybach.EFModels.Entities
             well.SiteName = wellParticipationInfoDto.SiteName;
             well.SiteNumber = wellParticipationInfoDto.SiteNumber;
         }
+
+        public static void UpdateWellRegistrationID(Well well, string newWellRegistrationID)
+        {
+            well.WellRegistrationID = newWellRegistrationID;
+        }
     }
 }
