@@ -25,7 +25,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   @ViewChild('permitGrid') permitGrid: AgGridAngular;
   @ViewChild('createAnnualRenewalsModal') renewalEntity: any;
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public richTextTypeID : number = CustomRichTextType.Chemigation;
@@ -54,12 +54,12 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.initializeGrid();
 
       this.currentYear = new Date().getFullYear();
-      this.permitGrid.api.showLoadingOverlay();
+      this.permitGrid?.api.showLoadingOverlay();
       this.updateGridData();
     });
   }
@@ -392,8 +392,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+    
     this.cdr.detach();
   }
 }

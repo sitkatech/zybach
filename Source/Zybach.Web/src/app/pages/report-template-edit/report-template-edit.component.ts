@@ -19,7 +19,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   @ViewChild('fileUpload') fileUpload: any;
 
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public reportTemplateID: number;
@@ -47,7 +47,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.model = new ReportTemplateUpdateDto();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
         this.router.navigateByUrl("/not-found")
@@ -80,9 +80,8 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   fileEvent() {

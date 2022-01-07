@@ -17,7 +17,7 @@ import { UserDto } from '../../generated/model/user-dto';
 })
 
 export class HeaderNavComponent implements OnInit, OnDestroy {
-    private watchUserChangeSubscription: any;
+    
     private currentUser: UserDto;
 
     searchSuggestions: any[];
@@ -43,7 +43,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+        this.authenticationService.getCurrentUser().subscribe(currentUser => {
             this.currentUser = currentUser;
 
             if (currentUser && this.isAdministrator()){
@@ -57,9 +57,8 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.watchUserChangeSubscription.unsubscribe();
-        this.authenticationService.dispose();
-        this.cdr.detach();
+        
+               this.cdr.detach();
     }
 
     public isDashboardCurrentPage(){
@@ -111,6 +110,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
     }
 
     public login(): void {
+        this.authenticationService.setAuthRedirectUrl(this.router.url);
         this.authenticationService.login();
     }
 

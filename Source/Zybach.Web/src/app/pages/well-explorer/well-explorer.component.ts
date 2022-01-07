@@ -36,7 +36,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.makeColumnDefs();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
         this.wells = wells;
@@ -62,7 +62,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
+    
     this.wellsObservable.unsubscribe();
   }
 

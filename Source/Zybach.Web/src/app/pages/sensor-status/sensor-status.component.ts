@@ -79,7 +79,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     ];
 
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.getSensorStatusByWell().subscribe(wells => {
         this.wellsGeoJson =
@@ -106,7 +106,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
+    
     this.wellsObservable.unsubscribe();
   }
   

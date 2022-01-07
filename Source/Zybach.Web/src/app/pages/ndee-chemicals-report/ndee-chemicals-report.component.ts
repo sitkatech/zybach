@@ -18,7 +18,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     @ViewChild('chemicalReportGrid') chemicalReportGrid: AgGridAngular;
   
-    private watchUserChangeSubscription: any;
+    
     private currentUser: UserDto;
 
     public richTextTypeID : number = CustomRichTextType.NDEEChemicalsReport;
@@ -37,9 +37,9 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.chemicalReportGrid.api.showLoadingOverlay();
+      this.chemicalReportGrid?.api.showLoadingOverlay();
       this.initializeGrid();
     });
   }
@@ -124,8 +124,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 }

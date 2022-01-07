@@ -49,8 +49,7 @@ export class FieldDefinitionComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.authenticationService.dispose();
-    this.cdr.detach();
+       this.cdr.detach();
   }
 
   // tell CkEditor to use the class below as its upload adapter

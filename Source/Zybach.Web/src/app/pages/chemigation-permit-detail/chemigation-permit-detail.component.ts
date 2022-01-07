@@ -56,7 +56,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear();    
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       forkJoin({
@@ -75,9 +75,8 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   public currentUserIsAdmin(): boolean {

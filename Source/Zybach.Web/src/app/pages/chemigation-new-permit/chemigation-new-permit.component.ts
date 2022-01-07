@@ -27,7 +27,7 @@ import { CountyDto } from 'src/app/shared/generated/model/county-dto';
 export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent: ChemigationPermitAnnualRecordUpsertComponent;
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public permitStatuses: Array<ChemigationPermitStatusDto>;
@@ -80,7 +80,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     };
     this.model.ChemigationPermitAnnualRecord.Applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
         this.router.navigateByUrl("/not-found")
@@ -99,8 +99,8 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+    
+    
     this.cdr.detach();
   }
 

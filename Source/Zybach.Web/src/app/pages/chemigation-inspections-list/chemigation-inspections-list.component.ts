@@ -22,7 +22,7 @@ import { DatePipe } from '@angular/common';
 export class ChemigationInspectionsListComponent implements OnInit {
   @ViewChild('chemigationInspectionsGrid') chemigationInspectionsGrid: AgGridAngular;
   
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
   
   public richTextTypeID : number = CustomRichTextType.ChemigationInspections;
@@ -45,9 +45,9 @@ export class ChemigationInspectionsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.chemigationInspectionsGrid.api.showLoadingOverlay();
+      this.chemigationInspectionsGrid?.api.showLoadingOverlay();
       this.initializeGrid();
     });
   }
@@ -231,8 +231,8 @@ export class ChemigationInspectionsListComponent implements OnInit {
   }
   
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+    
+    
     this.cdr.detach();
   }
 
