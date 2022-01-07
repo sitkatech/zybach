@@ -59,6 +59,8 @@ namespace Zybach.EFModels.Entities
         public int? CropTypeID { get; set; }
         [StringLength(500)]
         public string InspectionNotes { get; set; }
+        [StringLength(100)]
+        public string InspectionNickname { get; set; }
 
         [ForeignKey(nameof(CropTypeID))]
         [InverseProperty("WaterLevelInspections")]

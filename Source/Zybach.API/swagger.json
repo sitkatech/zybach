@@ -6223,6 +6223,10 @@
             "type": "string",
             "nullable": true
           },
+          "InspectionNickname": {
+            "type": "string",
+            "nullable": true
+          },
           "Well": {
             "$ref": "#/components/schemas/WellSimpleDto"
           },
@@ -6364,6 +6368,10 @@
             "nullable": true
           },
           "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNickname": {
             "type": "string",
             "nullable": true
           },
@@ -6531,6 +6539,10 @@
             "nullable": true
           },
           "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNickname": {
             "type": "string",
             "nullable": true
           }

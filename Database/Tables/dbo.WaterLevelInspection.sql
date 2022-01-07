@@ -30,6 +30,7 @@ CREATE TABLE [dbo].[WaterLevelInspection](
 	[WaterLevel] [decimal](12, 2) NULL,
 	[CropTypeID] [int] NULL,
 	[InspectionNotes] [varchar](500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[InspectionNickname] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_WaterLevelInspection_WaterLevelInspectionID] PRIMARY KEY CLUSTERED 
 (
 	[WaterLevelInspectionID] ASC

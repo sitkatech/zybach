@@ -40,6 +40,7 @@ export class WaterLevelInspectionSimpleDto {
     WaterLevel?: number;
     CropTypeID?: number;
     InspectionNotes?: string;
+    InspectionNickname?: string;
     Well?: WellSimpleDto;
     CropTypeName?: string;
     Inspector?: UserSimpleDto;

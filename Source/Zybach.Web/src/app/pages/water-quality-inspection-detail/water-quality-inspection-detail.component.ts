@@ -39,7 +39,7 @@ export class WaterQualityInspectionDetailComponent implements OnInit, OnDestroy 
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.waterQualityInspectionID = parseInt(this.route.snapshot.paramMap.get("id"));
       forkJoin({
@@ -81,9 +81,8 @@ export class WaterQualityInspectionDetailComponent implements OnInit, OnDestroy 
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   public currentUserIsAdmin(): boolean {

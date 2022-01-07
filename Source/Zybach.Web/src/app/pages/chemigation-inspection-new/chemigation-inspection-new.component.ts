@@ -18,7 +18,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./chemigation-inspection-new.component.scss']
 })
 export class ChemigationInspectionNewComponent implements OnInit {
-  @ViewChild('inspectionUpsertForm') private chemigationInspectionUpsertComponent : ChemigationInspectionUpsertComponent;
+  @ViewChild('inspectionUpsertForm') private chemigationInspectionUpsertComponent: ChemigationInspectionUpsertComponent;
 
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
@@ -29,7 +29,7 @@ export class ChemigationInspectionNewComponent implements OnInit {
 
   public inspection: ChemigationInspectionUpsertDto;
   public isLoadingSubmit: boolean;
-  
+
   constructor(
     private chemigationPermitService: ChemigationPermitService,
     private chemigationInspectionService: ChemigationInspectionService,
@@ -41,21 +41,21 @@ export class ChemigationInspectionNewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       this.recordYear = parseInt(this.route.snapshot.paramMap.get("record-year"));
-      
+
       this.chemigationPermitService.getAnnualRecordByPermitNumberAndRecordYear(this.chemigationPermitNumber, this.recordYear).subscribe(annualRecord => {
         this.annualRecord = annualRecord;
         this.initializeInspectionModel(this.annualRecord.ChemigationPermitAnnualRecordID)
         this.cdr.detectChanges();
       });
-      
+
     })
   }
 
-  private initializeInspectionModel(annualRecordID: number) : void {
+  private initializeInspectionModel(annualRecordID: number): void {
     var chemigationInspectionUpsertDto = new ChemigationInspectionUpsertDto();
     chemigationInspectionUpsertDto.ChemigationPermitAnnualRecordID = annualRecordID;
     chemigationInspectionUpsertDto.ChemigationInspectionStatusID = ChemigationInspectionStatusEnum.Pending;
@@ -77,14 +77,14 @@ export class ChemigationInspectionNewComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+
+
     this.cdr.detach();
   }
 
   public onSubmit(addChemigationInspectionForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-  
+
     this.chemigationInspectionService.createChemigationInspectionByAnnualRecordID(this.annualRecord.ChemigationPermitAnnualRecordID, this.inspection)
       .subscribe(response => {
         this.isLoadingSubmit = false;

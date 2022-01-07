@@ -46,7 +46,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.robustReviewScenarioService.checkGETAPIHealth().subscribe(response => {
           this.isGETAPIResponsive = response;
@@ -64,16 +64,15 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
+    
     this.updateRobustReviewScenarioGETHistoriesSubscription?.unsubscribe();
-    this.authenticationService.dispose();
-    this.stopUpdatePolling.next();
+       this.stopUpdatePolling.next();
     this.cdr.detach();
   }
 
   updateRobustReviewScenarioGETHistories() {
     this.robustReviewScenarioService.getRobustReviewScenarioGETRunHistories().subscribe(response => {
-      this.robustReviewScenarioGETRunHistoryGrid.api.showLoadingOverlay();
+      this.robustReviewScenarioGETRunHistoryGrid?.api.showLoadingOverlay();
       this.robustReviewScenarioGETRunHistories = response;
       this.robustReviewScenarioGETRunHistoryGrid.api.sizeColumnsToFit();
     });

@@ -34,5 +34,6 @@ namespace Zybach.Models.DataTransferObjects
         public decimal? PreWaterLevel { get; set; }
         public decimal? PostWaterLevel { get; set; }
         public string InspectionNotes { get; set; }
+        public string InspectionNickname { get; set; }
     }
 }

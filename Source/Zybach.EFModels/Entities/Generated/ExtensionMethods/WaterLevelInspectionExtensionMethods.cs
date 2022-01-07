@@ -39,7 +39,8 @@ namespace Zybach.EFModels.Entities
                 IsPrimary = waterLevelInspection.IsPrimary,
                 WaterLevel = waterLevelInspection.WaterLevel,
                 CropType = waterLevelInspection.CropType?.AsDto(),
-                InspectionNotes = waterLevelInspection.InspectionNotes
+                InspectionNotes = waterLevelInspection.InspectionNotes,
+                InspectionNickname = waterLevelInspection.InspectionNickname
             };
             DoCustomMappings(waterLevelInspection, waterLevelInspectionDto);
             return waterLevelInspectionDto;
@@ -77,7 +78,8 @@ namespace Zybach.EFModels.Entities
                 IsPrimary = waterLevelInspection.IsPrimary,
                 WaterLevel = waterLevelInspection.WaterLevel,
                 CropTypeID = waterLevelInspection.CropTypeID,
-                InspectionNotes = waterLevelInspection.InspectionNotes
+                InspectionNotes = waterLevelInspection.InspectionNotes,
+                InspectionNickname = waterLevelInspection.InspectionNickname
             };
             DoCustomSimpleDtoMappings(waterLevelInspection, waterLevelInspectionSimpleDto);
             return waterLevelInspectionSimpleDto;

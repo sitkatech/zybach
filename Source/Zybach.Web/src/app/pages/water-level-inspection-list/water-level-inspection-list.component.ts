@@ -20,7 +20,7 @@ import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text
 export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
   @ViewChild('waterLevelInspectionsGrid') waterLevelInspectionsGrid: AgGridAngular;
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public richTextTypeID : number = CustomRichTextType.WaterLevelInspections;
@@ -47,12 +47,12 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.initializeGrid();
 
       this.currentYear = new Date().getFullYear();
-      this.waterLevelInspectionsGrid.api.showLoadingOverlay();
+      this.waterLevelInspectionsGrid?.api.showLoadingOverlay();
       this.updateGridData();
     });
   }
@@ -125,8 +125,14 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         sortable: true
       },
       {
-        headerName: "Nickname",
+        headerName: "Well Nickname",
         field: "Well.WellNickname",
+        width: 140,
+        sortable: true, filter: true, resizable: true,        
+      },
+      {
+        headerName: "Nickname",
+        field: "InspectionNickname",
         width: 125,
         sortable: true, filter: true, resizable: true,        
       },
@@ -316,9 +322,8 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 }
 

@@ -589,6 +589,8 @@ namespace Zybach.EFModels.Entities
 
                 entity.Property(e => e.Crop).IsUnicode(false);
 
+                entity.Property(e => e.InspectionNickname).IsUnicode(false);
+
                 entity.Property(e => e.InspectionNotes).IsUnicode(false);
 
                 entity.Property(e => e.LevelTypeCode).IsUnicode(false);
@@ -623,6 +625,8 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<WaterQualityInspection>(entity =>
             {
+                entity.Property(e => e.InspectionNickname).IsUnicode(false);
+
                 entity.Property(e => e.InspectionNotes).IsUnicode(false);
 
                 entity.HasOne(d => d.InspectorUser)

@@ -36,6 +36,7 @@ export class WaterQualityInspectionUpsertDto {
     PreWaterLevel?: number;
     PostWaterLevel?: number;
     InspectionNotes?: string;
+    InspectionNickname?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

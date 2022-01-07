@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment';
 export class ReportsListComponent implements OnInit, OnDestroy {
 
   @ViewChild("reportTemplatesGrid") reportTemplatesGrid: AgGridAngular;
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public richTextTypeID : number = CustomRichTextType.ReportsList;
@@ -39,9 +39,9 @@ export class ReportsListComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.reportTemplatesGrid.api.showLoadingOverlay();
+      this.reportTemplatesGrid?.api.showLoadingOverlay();
       this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
         this.rowData = reportTemplates;
         this.reportTemplatesGrid.api.hideOverlay();
@@ -107,9 +107,8 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
 }

@@ -29,6 +29,7 @@ CREATE TABLE [dbo].[WaterQualityInspection](
 	[PreWaterLevel] [decimal](12, 4) NULL,
 	[PostWaterLevel] [decimal](12, 4) NULL,
 	[InspectionNotes] [varchar](500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[InspectionNickname] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_WaterQualityInspection_WaterQualityInspectionID] PRIMARY KEY CLUSTERED 
 (
 	[WaterQualityInspectionID] ASC

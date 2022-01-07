@@ -17,7 +17,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
   
   public chemigationPermitNumber: number;
@@ -39,7 +39,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.model = new ChemigationPermitUpsertDto();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
   
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
@@ -64,9 +64,8 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   onSubmit(editChemigationPermitForm: HTMLFormElement): void {

@@ -123,14 +123,16 @@ where PermitNumber = '1910'
 */
 -- permit 1913 has two different counties
 insert into dbo.ChemigationPermit([ChemigationPermitNumber], [ChemigationPermitStatusID], [ChemigationCountyID], WellID, [DateCreated])
-select PermitNumber, 1 as [ChemigationPermitStatusID], c.ChemigationCountyID, w.WellID, dateadd(hour, 8, min(bp.[Date])) as DateCreated
+select PermitNumber, 1 as [ChemigationPermitStatusID], c.ChemigationCountyID, w.WellID
+, min(bp.[Date]) at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as DateCreated
 from dbo.BeehivePermit bp
 join dbo.ChemigationCounty c on bp.County = c.ChemigationCountyDisplayName
 join dbo.Well w on bp.WellRegistrationID = w.WellRegistrationID
 where PermitNumber != '1913'-- and ChemigationYear != 2019
 group by PermitNumber, c.ChemigationCountyID, w.WellID
 union all
-select PermitNumber, 1 as [ChemigationPermitStatusID], c.ChemigationCountyID, w.WellID, dateadd(hour, 8, min(bp.[Date])) as DateCreated
+select PermitNumber, 1 as [ChemigationPermitStatusID], c.ChemigationCountyID, w.WellID
+, min(bp.[Date]) at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as DateCreated
 from dbo.BeehivePermit bp
 join dbo.ChemigationCounty c on bp.County = c.ChemigationCountyDisplayName
 join dbo.Well w on bp.WellRegistrationID = w.WellRegistrationID
@@ -146,9 +148,11 @@ case when bp.PermitNumber = '1944' then 1 when bp.[Status] in ('Inactive', 'Perm
 	else 4 end as [ChemigationPermitAnnualRecordStatusID]
 , case when len(bw.PivotName) = 0 then null else bw.PivotName end as PivotName, 1 as [ChemigationInjectionUnitTypeID]
 , PermitHolderFirstName, PermitHolderLastName, PermitHolderCompany, PermitHolderAdd, PermitHolderCity, PermitHolderState, PermitHolderZip, PermitHolderHomePhone, case when len(PermitHolderMobilePhone) = 8 then '(308) ' + PermitHolderMobilePhone when len(PermitHolderMobilePhone) = 0 then null else PermitHolderMobilePhone end
-, case when bp.ReceivedDate is null then null else dateadd(hour, 8, concat(month(bp.ReceivedDate), '-', day(bp.ReceivedDate), '-', year(bp.ReceivedDate))) end as DateReceived, case when bp.DatePaid is null then null else dateadd(hour, 8, concat(month(bp.DatePaid), '-', day(bp.DatePaid), '-', year(bp.DatePaid))) end as DatePaid, DEQAmount
+, bp.ReceivedDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as DateReceived
+, bp.DatePaid at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as DatePaid
+, DEQAmount
 , ltrim(rtrim(bp.[Township] + ' ' + bp.[Range] + ' ' + bp.Section + ' ' + bp.[Quarter])) as TownshipRangeSection, bp.Note as AnnualNotes
-, case when bp.ApprovedDate is null then null else dateadd(hour, 8, concat(month(bp.ApprovedDate), '-', day(bp.ApprovedDate), '-', year(bp.ApprovedDate))) end as DateApproved
+, bp.ApprovedDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as DateApproved
 from dbo.BeehivePermit bp
 join dbo.ChemigationPermit cp on cast(bp.PermitNumber as int) = cp.ChemigationPermitNumber
 join dbo.BeehiveWell bw on bp.WellFeatureID = bw.WellFeatureID

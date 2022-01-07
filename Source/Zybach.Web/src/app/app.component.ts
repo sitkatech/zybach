@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
-import { OAuthService, OAuthSuccessEvent } from 'angular-oauth2-oidc';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
-import { Subject, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationEnd } from '@angular/router';
 import { BusyService } from './shared/services';
@@ -19,10 +18,17 @@ declare var require: any
 export class AppComponent {
 
     userClaimsUpsertStarted = false;
-    ignoreSessionTerminated = false;
-    public currentYear: number = new Date().getFullYear();
-    
-    constructor(private router: Router, private oauthService: OAuthService, private busyService: BusyService, private authenticationService: AuthenticationService, private titleService: Title, @Inject(DOCUMENT) private _document: HTMLDocument) {
+
+    constructor(
+        private router: Router,
+        private oauthService: OAuthService,
+        private busyService: BusyService,
+        private authenticationService: AuthenticationService,
+        private titleService: Title,
+        @Inject(DOCUMENT) private _document: HTMLDocument
+    ) {
+        this.configureOAuthService();
+        this.authenticationService.initialLoginSequence();
     }
 
     ngOnInit() {
@@ -35,49 +41,14 @@ export class AppComponent {
                 window.scrollTo(0, 0);
             }
         });
-        
-        this.configureAuthService().subscribe(() => {
-            this.oauthService.tryLogin();
-        });
 
         this.titleService.setTitle(`${environment.leadOrganizationShortName} ${environment.platformShortName}`)
         this.setAppFavicon();
     }
 
-    private configureAuthService(): Observable<void> {
-        const subject = new Subject<void>();
+    private configureOAuthService() {
         this.oauthService.configure(environment.keystoneAuthConfiguration);
-        this.oauthService.setupAutomaticSilentRefresh();
         this.oauthService.tokenValidationHandler = new JwksValidationHandler();
-        this.oauthService.loadDiscoveryDocument();
-        this.oauthService.events.subscribe((e) => {
-            console.log(e.type);
-            switch (e.type) {
-                case 'discovery_document_loaded':
-                    console.log("discovery_document_loaded");
-                    if ((e as OAuthSuccessEvent).info) {
-                        subject.next();
-                        subject.complete();
-                    }
-                    break;
-                case 'token_received':
-                    console.log("token_received");
-                    subject.next();
-                    subject.complete();
-                    break;
-                case 'token_refreshed':
-                    subject.next();
-                    subject.complete();
-                    this.authenticationService.checkAuthentication();
-                    break;
-                case 'token_refresh_error':
-                    console.log("token_refresh_error");
-                    this.authenticationService.forcedLogout();
-                    break;
-            }
-
-        });
-        return subject.asObservable();
     }
 
     setAppFavicon(){
