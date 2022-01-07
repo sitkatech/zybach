@@ -82,6 +82,7 @@ export * from '././well-dto';
 export * from '././well-new-dto';
 export * from '././well-participation-dto';
 export * from '././well-participation-info-dto';
+export * from '././well-registration-id-dto';
 export * from '././well-simple-dto';
 export * from '././well-use-dto';
 export * from '././well-with-sensor-message-age-dto';

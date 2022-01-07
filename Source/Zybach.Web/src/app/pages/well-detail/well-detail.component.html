@@ -15,6 +15,12 @@
                     <div class="card">
                         <div class="card-header">
                             Basics
+                            <div class="float-right">
+                                <a class="btn btn-zybach btn-sm float-right"
+                                    routerLink="/wells/{{well?.WellRegistrationID}}/edit-registration-id">
+                                    <span class="fas fa-edit"></span> Edit Reg. ID
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row" *ngIf="well">

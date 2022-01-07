@@ -3414,7 +3414,7 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/edit": {
+    "/api/wells/{wellRegistrationID}/editRegistrationID": {
       "put": {
         "tags": [
           "Well"
@@ -3433,22 +3433,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
               }
             },
             "application/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
               }
             },
             "text/json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "string"
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
               }
             }
           }
@@ -7084,6 +7084,10 @@
           "RequiresWaterLevelInspection": {
             "type": "boolean"
           },
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "IsReplacement": {
             "type": "boolean"
           },
@@ -7116,6 +7120,16 @@
           "ScreenDepth": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellRegistrationIDDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
             "nullable": true
           }
         },

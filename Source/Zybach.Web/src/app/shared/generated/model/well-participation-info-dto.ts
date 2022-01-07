@@ -17,6 +17,7 @@ export class WellParticipationInfoDto {
     WellUseName?: string;
     RequiresChemigation?: boolean;
     RequiresWaterLevelInspection?: boolean;
+    WaterQualityInspectionTypeID?: number;
     IsReplacement?: boolean;
     WellDepth?: number;
     Clearinghouse?: string;

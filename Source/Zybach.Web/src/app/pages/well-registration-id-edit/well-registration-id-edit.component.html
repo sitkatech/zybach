@@ -1,0 +1,63 @@
+<nav aria-label="breadcrumb" *ngIf="wellRegistrationID">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/well-map">Wells</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a routerLink="/wells/{{wellRegistrationID}}">{{wellRegistrationID}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Edit Registration ID for Well {{wellRegistrationID}}
+        </li>
+    </ol>
+</nav>
+
+<div class="container" *ngIf="wellRegistrationID">
+    <app-alert-display></app-alert-display>
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">Edit Registration ID for Well {{wellRegistrationID}}</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+
+        <div class="card ml-4">
+            <div class="card-header">
+                Well Registration ID
+            </div>
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit(editWellRegistrationIDForm)" #editWellRegistrationIDForm="ngForm" class="container">
+                
+                    <div class="row col-12 mt-4 text-center">
+
+                            <div class="col-6 control-label text-right mb-2">
+                                <label><strong>Well Registration ID: </strong></label>
+                            </div>
+                            <div class="col-6 text-left mb-2">
+                                <input type="text" class="form-control" name="WellRegistrationID"
+                                [(ngModel)]="newWellRegistrationIDDto.WellRegistrationID" />
+                            </div>
+
+        
+                            <div class="col-12 text-right mt-3 mr-3">
+                                <button type="submit" class="btn btn-zybach mr-1">
+                                    <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                                    Save
+                                </button>
+                                <a class="btn btn-secondary ml-1"
+                                    routerLink="/wells/{{wellRegistrationID}}">
+                                    Cancel
+                                </a>
+                            </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

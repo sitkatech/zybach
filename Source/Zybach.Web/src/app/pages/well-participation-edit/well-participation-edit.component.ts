@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
 import { WellService } from 'src/app/services/well.service';
-import { CountyDto } from 'src/app/shared/generated/model/county-dto';
+import { WaterQualityInspectionTypeDto } from 'src/app/shared/generated/model/water-quality-inspection-type-dto';
 import { WellParticipationDto } from 'src/app/shared/generated/model/well-participation-dto';
 import { WellParticipationInfoDto } from 'src/app/shared/generated/model/well-participation-info-dto';
 import { WellUseDto } from 'src/app/shared/generated/model/well-use-dto';
@@ -22,10 +23,12 @@ export class WellParticipationEditComponent implements OnInit {
 
   public wellUses: Array<WellUseDto>;
   public wellParticipations: Array<WellParticipationDto>;
+  public waterQualityInspectionTypes: Array<WaterQualityInspectionTypeDto>;
 
   public isLoadingSubmit: boolean;
 
   constructor(
+    private waterQualityInspectionService: WaterQualityInspectionService,
     private wellService: WellService,
     private route: ActivatedRoute,
     private router: Router,
@@ -39,11 +42,13 @@ export class WellParticipationEditComponent implements OnInit {
     forkJoin({
       wellParticipationInfo: this.wellService.getWellParticipationDetails(this.wellRegistrationID),
       wellUses: this.wellService.getWellUses(),
-      wellParticipations: this.wellService.getWellParticipations()
-    }).subscribe(({ wellParticipationInfo, wellUses, wellParticipations }) => {
+      wellParticipations: this.wellService.getWellParticipations(),
+      waterQualityInspectionTypes: this.waterQualityInspectionService.getWaterQualityInspectionTypes()
+    }).subscribe(({ wellParticipationInfo, wellUses, wellParticipations, waterQualityInspectionTypes }) => {
       this.wellParticipationInfo = wellParticipationInfo;
       this.wellUses = wellUses;
       this.wellParticipations = wellParticipations;
+      this.waterQualityInspectionTypes = waterQualityInspectionTypes;
 
       this.cdr.detectChanges();
     });

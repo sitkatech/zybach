@@ -11,6 +11,7 @@ import { WellDetailDto } from '../shared/generated/model/well-detail-dto';
 import { WellNewDto } from '../shared/generated/model/well-new-dto';
 import { WellParticipationDto } from '../shared/generated/model/well-participation-dto';
 import { WellParticipationInfoDto } from '../shared/generated/model/well-participation-info-dto';
+import { WellRegistrationIDDto } from '../shared/generated/model/well-registration-id-dto';
 import { WellSimpleDto } from '../shared/generated/model/well-simple-dto';
 import { WellUseDto } from '../shared/generated/model/well-use-dto';
 import { WellWithSensorSummaryDto } from '../shared/generated/model/well-with-sensor-summary-dto';
@@ -43,6 +44,10 @@ export class WellService {
 
   public getWellParticipations(): Observable<Array<WellParticipationDto>> {
     return this.apiService.getFromApi(`wells/wellParticipations`);
+  }
+
+  public updateWellRegistrationID(wellRegistrationID: string, newWellRegistrationIDDto: WellRegistrationIDDto): Observable<WellSimpleDto> {
+    return this.apiService.putToApi(`wells/${wellRegistrationID}/editRegistrationID`, newWellRegistrationIDDto);
   }
 
   public getWellContactDetails(wellRegistrationID: string): Observable<WellContactInfoDto> {

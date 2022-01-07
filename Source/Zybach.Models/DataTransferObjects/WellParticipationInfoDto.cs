@@ -8,6 +8,7 @@
         public string? WellUseName { get; set; }
         public bool RequiresChemigation { get; set; }
         public bool RequiresWaterLevelInspection { get; set; }
+        public int WaterQualityInspectionTypeID { get; set; }
         public bool IsReplacement { get; set; }
         public decimal? WellDepth { get; set; }
         public string? Clearinghouse { get; set; }

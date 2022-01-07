@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
@@ -152,10 +153,10 @@ namespace Zybach.API.Controllers
             return wellDetailDto;
         }
 
-        [HttpPut("/api/wells/{wellRegistrationID}/edit")]
-        //[AdminFeature]
+        [HttpPut("/api/wells/{wellRegistrationID}/editRegistrationID")]
+        [AdminFeature]
         public ActionResult<WellSimpleDto> UpsertWellRegistrationID([FromRoute] string wellRegistrationID,
-            [FromBody] string newWellRegistrationID)
+            [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
         {
             var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellRegistrationID);
 
@@ -164,10 +165,10 @@ namespace Zybach.API.Controllers
                 throw new Exception($"Well with {wellRegistrationID} not found!");
             }
 
-            Wells.UpdateWellRegistrationID(well, newWellRegistrationID);
+            well.WellRegistrationID = wellRegistrationIDDto.WellRegistrationID;
             _dbContext.SaveChanges();
 
-            return Wells.GetByWellRegistrationID(_dbContext, newWellRegistrationID).AsSimpleDto();
+            return Wells.GetByWellRegistrationID(_dbContext, wellRegistrationIDDto.WellRegistrationID).AsSimpleDto();
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/contactInfo")]
@@ -231,6 +232,8 @@ namespace Zybach.API.Controllers
             {
                 throw new Exception($"Well with {wellRegistrationID} not found!");
             }
+
+            // Add WellWaterQualityInspectionType lookup here
 
             var wellParticipationInfoDto = new WellParticipationInfoDto()
             {
