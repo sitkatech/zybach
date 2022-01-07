@@ -24,13 +24,13 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
             localStorage.removeItem("loginOnReturn");
             this.authenticationService.login();
         }
-        this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => { 
+        this.authenticationService.getCurrentUser().subscribe(currentUser => { 
             this.currentUser = currentUser;
         });
     }
 
     ngOnDestroy(): void {
-      this.watchUserChangeSubscription.unsubscribe();
+      
     }
 
     public userIsUnassigned(){

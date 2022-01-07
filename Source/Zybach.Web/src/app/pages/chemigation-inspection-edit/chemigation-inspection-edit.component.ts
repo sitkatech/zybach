@@ -41,7 +41,7 @@ export class ChemigationInspectionEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.chemigationInspectionID = parseInt(this.route.snapshot.paramMap.get("inspection-id"));
 
@@ -97,8 +97,6 @@ export class ChemigationInspectionEditComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
     this.cdr.detach();
   }
 }

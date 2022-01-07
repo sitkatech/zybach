@@ -21,7 +21,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
   @ViewChild('waterQualityInspectionsGrid') waterQualityInspectionsGrid: AgGridAngular;
   @ViewChild('createAnnualRenewalsModal') renewalEntity: any;
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public richTextTypeID : number = CustomRichTextType.WaterQualityInspections;
@@ -48,12 +48,12 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.initializeGrid();
 
       this.currentYear = new Date().getFullYear();
-      this.waterQualityInspectionsGrid.api.showLoadingOverlay();
+      this.waterQualityInspectionsGrid?.api.showLoadingOverlay();
       this.updateGridData();
     });
   }
@@ -414,9 +414,8 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 }
 

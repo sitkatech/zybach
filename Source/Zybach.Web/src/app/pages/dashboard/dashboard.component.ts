@@ -215,8 +215,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       pumpingDepths = this.allYearsPumpingDepths;
     }
 
-    ;
-
+   
     const featureCollection = {type: "FeatureCollection", features: this.streamFlowZones.map(x=>x.StreamFlowZoneFeature)};
 
     this.streamFlowZoneLayer = geoJSON(featureCollection as any, {

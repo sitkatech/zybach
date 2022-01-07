@@ -37,7 +37,7 @@ export class WaterQualityInspectionEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.waterQualityInspectionID = parseInt(this.route.snapshot.paramMap.get("id"));
 
@@ -82,9 +82,8 @@ export class WaterQualityInspectionEditComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   public isInspectionUpsertFormValid(formValid: any): void {

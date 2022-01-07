@@ -27,7 +27,7 @@ import { WellNewDto } from 'src/app/shared/generated/model/well-new-dto';
   styleUrls: ['./well-new.component.scss']
 })
 export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   private maxZoom: number = 17;
@@ -54,7 +54,7 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.model = new WellNewDto();
     this.initMapConstants();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
         this.router.navigateByUrl("/not-found")
@@ -65,9 +65,8 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   // Begin section: location map

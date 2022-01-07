@@ -23,7 +23,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent : ChemigationPermitAnnualRecordUpsertComponent;
   
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
   
   public chemigationPermitNumber: number;
@@ -48,7 +48,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.newRecordYear = new Date().getFullYear();
   
@@ -117,8 +117,8 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
+    
+    
     this.cdr.detach();
   }
   

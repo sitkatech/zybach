@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./report-template-detail.component.scss']
 })
 export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public reportTemplate: ReportTemplateDto;
@@ -30,7 +30,7 @@ export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-      this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+      this.authenticationService.getCurrentUser().subscribe(currentUser => {
           this.currentUser = currentUser;
           const mainAppApiUrl = environment.mainAppApiUrl
 
@@ -46,9 +46,8 @@ export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-      this.watchUserChangeSubscription.unsubscribe();
-      this.authenticationService.dispose();
-      this.cdr.detach();
+      
+           this.cdr.detach();
   }
 
   public currentUserIsAdmin(): boolean {

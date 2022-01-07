@@ -26,7 +26,7 @@ import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-repo
 export class ChemigationPermitReportsComponent implements OnInit {
   @ViewChild('chemigationPermitReportGrid') chemigationPermitReportGrid: AgGridAngular;
   
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public richTextTypeID : number = CustomRichTextType.ChemigationPermitReport;
@@ -69,9 +69,9 @@ export class ChemigationPermitReportsComponent implements OnInit {
       }
     });
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.chemigationPermitReportGrid.api.showLoadingOverlay();
+      this.chemigationPermitReportGrid?.api.showLoadingOverlay();
       this.initializeGrid();
     });
   }
@@ -274,9 +274,8 @@ export class ChemigationPermitReportsComponent implements OnInit {
   }
   
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
 }
