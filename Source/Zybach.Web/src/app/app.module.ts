@@ -75,6 +75,9 @@ import { WaterQualityInspectionNewComponent } from './pages/water-quality-inspec
 import { WaterQualityInspectionUpsertComponent } from './shared/components/water-quality-inspection-upsert/water-quality-inspection-upsert.component';
 import { WaterQualityInspectionEditComponent } from './pages/water-quality-inspection-edit/water-quality-inspection-edit.component';
 import { WaterLevelInspectionListComponent } from './pages/water-level-inspection-list/water-level-inspection-list.component';
+import { WellContactEditComponent } from './pages/well-contact-edit/well-contact-edit.component';
+import { WellParticipationEditComponent } from './pages/well-participation-edit/well-participation-edit.component';
+import { WellRegistrationIdEditComponent } from './pages/well-registration-id-edit/well-registration-id-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -133,7 +136,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WaterQualityInspectionUpsertComponent, 
     WaterQualityInspectionNewComponent, 
     WaterQualityInspectionEditComponent, 
-    WaterLevelInspectionListComponent
+    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent
   ],
   imports: [
     AppRoutingModule,

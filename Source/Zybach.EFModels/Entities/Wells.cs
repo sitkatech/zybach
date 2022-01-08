@@ -43,6 +43,17 @@ namespace Zybach.EFModels.Entities
             return GetWellsImpl(dbContext).SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
         }
 
+        public static Well GetByWellRegistrationIDWithTracking(ZybachDbContext dbContext, string wellRegistrationID)
+        {
+            return dbContext.Wells
+                    .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                    .Include(x => x.WellParticipation)
+                    .Include(x => x.WellUse)
+                    .Include(x => x.County)
+                    .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                    .SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+        }
+
         private static IQueryable<Well> GetWellsImpl(ZybachDbContext dbContext)
         {
             return dbContext.Wells
@@ -152,5 +163,41 @@ namespace Zybach.EFModels.Entities
             };
             return point;
         }
+
+        public static void MapFromContactUpsert(Well well, WellContactInfoDto wellContactInfoDto)
+        {
+            well.TownshipRangeSection = wellContactInfoDto.TownshipRangeSection;
+            well.CountyID = wellContactInfoDto.CountyID;
+
+            well.OwnerName = wellContactInfoDto.OwnerName;
+            well.OwnerAddress = wellContactInfoDto.OwnerAddress;
+            well.OwnerCity = wellContactInfoDto.OwnerCity;
+            well.OwnerState = wellContactInfoDto.OwnerState;
+            well.OwnerZipCode = wellContactInfoDto.OwnerZipCode;
+
+            well.AdditionalContactName = wellContactInfoDto.AdditionalContactName;
+            well.AdditionalContactAddress = wellContactInfoDto.AdditionalContactAddress;
+            well.AdditionalContactCity = wellContactInfoDto.AdditionalContactCity;
+            well.AdditionalContactState = wellContactInfoDto.AdditionalContactState;
+            well.AdditionalContactZipCode = wellContactInfoDto.AdditionalContactZipCode;
+
+            well.WellNickname = wellContactInfoDto.WellNickname;
+            well.Notes = wellContactInfoDto.Notes;
+        }
+
+        public static void MapFromParticipationUpsert(Well well, WellParticipationInfoDto wellParticipationInfoDto)
+        {
+            well.WellParticipationID = wellParticipationInfoDto.WellParticipationID;
+            well.WellUseID = wellParticipationInfoDto.WellUseID;
+            well.RequiresChemigation = wellParticipationInfoDto.RequiresChemigation;
+            well.RequiresWaterLevelInspection = wellParticipationInfoDto.RequiresWaterLevelInspection;
+            well.IsReplacement = wellParticipationInfoDto.IsReplacement;
+            well.WellDepth = wellParticipationInfoDto.WellDepth;
+            well.Clearinghouse = wellParticipationInfoDto.Clearinghouse;
+            well.PageNumber = wellParticipationInfoDto.PageNumber;
+            well.SiteName = wellParticipationInfoDto.SiteName;
+            well.SiteNumber = wellParticipationInfoDto.SiteNumber;
+        }
+
     }
 }

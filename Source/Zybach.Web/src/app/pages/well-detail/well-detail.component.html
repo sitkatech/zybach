@@ -15,6 +15,12 @@
                     <div class="card">
                         <div class="card-header">
                             Basics
+                            <div class="float-right">
+                                <a [ngClass]="{'btn': true, 'btn-zybach': true, 'btn-sm': true, 'float-right': true, 'disabled': isInAgHubOrGeoOptix}"
+                                    routerLink="/wells/{{well?.WellRegistrationID}}/edit-registration-id">
+                                    <span class="fas fa-edit"></span> Edit Reg. ID
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row" *ngIf="well">
@@ -68,6 +74,12 @@
                     <div class="card">
                         <div class="card-header">
                             Contact Information
+                            <div class="float-right">
+                                <a class="btn btn-zybach btn-sm float-right"
+                                    routerLink="/wells/{{well?.WellRegistrationID}}/edit-contact">
+                                    <span class="fas fa-edit"></span> Edit
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row" *ngIf="well">
@@ -155,6 +167,12 @@
                     <div class="card">
                         <div class="card-header">
                             Program Participation
+                            <div class="float-right">
+                                <a class="btn btn-zybach btn-sm float-right"
+                                    routerLink="/wells/{{well?.WellRegistrationID}}/edit-participation">
+                                    <span class="fas fa-edit"></span> Edit
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row" *ngIf="well">

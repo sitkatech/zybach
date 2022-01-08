@@ -81,6 +81,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   dateRange: any;
   public unitsShown: string = "gal";
 
+  public isInAgHubOrGeoOptix: boolean;
+
   public isLoadingSubmit: boolean = false;
 
   public chemigationPermitAnnualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
@@ -142,7 +144,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getWellDetails(){
     this.wellService.getWellDetails(this.wellRegistrationID).subscribe((well: WellDetailDto)=>{
       this.well = well;
-      
+      this.isInAgHubOrGeoOptix = this.well.InAgHub || this.well.InGeoOptix;
       this.cdr.detectChanges();
       
       if (well.Location != null && well.Location != undefined) {

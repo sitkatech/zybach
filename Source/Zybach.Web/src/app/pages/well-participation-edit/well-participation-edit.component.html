@@ -1,0 +1,194 @@
+<nav aria-label="breadcrumb" *ngIf="wellRegistrationID">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/well-map">Wells</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a routerLink="/wells/{{wellRegistrationID}}">{{wellRegistrationID}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Edit Participation Details for Well {{wellRegistrationID}}
+        </li>
+    </ol>
+</nav>
+
+<div class="container" *ngIf="wellParticipationInfo">
+    <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">Edit Well Participation Details</h2>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    Participation Information
+                </div>
+                <div class="card-body">
+                    <form (ngSubmit)="onSubmit(editWellParticipationForm)" #editWellParticipationForm="ngForm" class="container">
+                    
+                        <div class="row col-12 mt-4">
+
+                            <div class="row col-12">
+                                <div class="row col-6">
+                    
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Well Participation: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <ng-select [(ngModel)]="wellParticipationInfo.WellParticipationID"
+                                            [items]="wellParticipations" bindLabel="WellParticipationDisplayName" bindValue="WellParticipationID" 
+                                            placeholder="Choose One" name="WellParticipationID">
+                                        </ng-select>
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Well Use: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <ng-select [(ngModel)]="wellParticipationInfo.WellUseID"
+                                            [items]="wellUses" bindLabel="WellUseDisplayName" bindValue="WellUseID" 
+                                            placeholder="Choose One" name="WellUseID">
+                                        </ng-select>
+                                    </div>
+                                    
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Requires Chemigation Inspection?: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2 form-group">
+                                        <div class="input-group">
+                                            <input type="radio" id="requiresChemigation" class="mr-2" name="RequiresChemigation"
+                                                [value]="true" [(ngModel)]="wellParticipationInfo.RequiresChemigation" />
+                                            <label for="requiresChemigation" class="mr-4">Yes</label>
+                                            <input type="radio" id="notRequiresChemigation" class="mr-2" name="RequiresChemigation"
+                                                [value]="false" [(ngModel)]="wellParticipationInfo.RequiresChemigation" />
+                                            <label for="notRequiresChemigation">No</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Requires Water Level Inspection?: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2 form-group">
+                                        <div class="input-group">
+                                            <input type="radio" id="requiresWaterLevelInspection" class="mr-2" name="RequiresWaterLevelInspection"
+                                                [value]="true" [(ngModel)]="wellParticipationInfo.RequiresWaterLevelInspection" />
+                                            <label for="requiresWaterLevelInspection" class="mr-4">Yes</label>
+                                            <input type="radio" id="notRequiresWaterLevelInspection" class="mr-2" name="RequiresWaterLevelInspection"
+                                                [value]="false" [(ngModel)]="wellParticipationInfo.RequiresWaterLevelInspection" />
+                                            <label for="notRequiresWaterLevelInspection">No</label>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Water Quality Inspection Type: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <ng-select [multiple]="true" [(ngModel)]="wellParticipationInfo.WaterQualityInspectionTypeIDs"
+                                            name="WaterQualityInspectionTypeIDs">
+                                            <ng-option *ngFor="let waterQualityInspectionType of waterQualityInspectionTypes" 
+                                            [value]="waterQualityInspectionType.WaterQualityInspectionTypeID">
+                                                {{waterQualityInspectionType.WaterQualityInspectionTypeDisplayName}}
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                    
+                                </div>
+                    
+                                <div class="row col-6">
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Clearinghouse ID: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="number" step="1" class="form-control" name="Clearinghouse"
+                                        [(ngModel)]="wellParticipationInfo.Clearinghouse" placeholder="Clearinghouse ID" />
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Site Name: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="text" class="form-control" name="SiteName"
+                                        [(ngModel)]="wellParticipationInfo.SiteName" placeholder="Site Name" />
+                                    </div>
+                                    
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Site Number: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="number" step="1" class="form-control" name="SiteNumber"
+                                        [(ngModel)]="wellParticipationInfo.SiteNumber" placeholder="Site Number" />
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Replacement Well?: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2 form-group">
+                                        <div class="input-group">
+                                            <input type="radio" id="isReplacement" class="mr-2" name="IsReplacement"
+                                                [value]="true" [(ngModel)]="wellParticipationInfo.IsReplacement" />
+                                            <label for="isReplacement" class="mr-4">Yes</label>
+                                            <input type="radio" id="isNotReplacement" class="mr-2" name="IsReplacement"
+                                                [value]="false" [(ngModel)]="wellParticipationInfo.IsReplacement" />
+                                            <label for="isNotReplacement">No</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Well Depth: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="number" step="1" class="form-control" name="WellDepth"
+                                        [(ngModel)]="wellParticipationInfo.WellDepth" placeholder="Well Depth" />
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Screen Interval: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="text" class="form-control" name="ScreenInterval"
+                                        [(ngModel)]="wellParticipationInfo.ScreenInterval" placeholder="Screen Interval" />
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Screen Depth: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="number" step="1" class="form-control" name="ScreenDepth"
+                                        [(ngModel)]="wellParticipationInfo.ScreenDepth" placeholder="Screen Depth" />
+                                    </div>
+
+                                    <div class="col-6 control-label text-right mb-2">
+                                        <label><strong>Page Number: </strong></label>
+                                    </div>
+                                    <div class="col-6 text-left mb-2">
+                                        <input type="number" step="1" class="form-control" name="PageNumber"
+                                        [(ngModel)]="wellParticipationInfo.PageNumber" placeholder="Page #" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div class="col-12 text-right mt-3 mr-3">
+                            <button type="submit" class="btn btn-zybach mr-1">
+                                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                                Save
+                            </button>
+                            <a class="btn btn-secondary ml-1"
+                                routerLink="/wells/{{wellRegistrationID}}">
+                                Cancel
+                            </a>
+                        </div>
+                
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
