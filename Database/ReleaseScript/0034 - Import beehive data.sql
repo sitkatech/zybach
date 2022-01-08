@@ -15,6 +15,7 @@ and bw.WellRegistrationID not in
 , 'G-056876'
 , 'G-064390'
 , 'G-120728'
+, 'Kelly-1'
 )
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bw.WellRegistrationID not in
@@ -50,7 +51,7 @@ from dbo.BeehiveWell bw
 left join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
 where bw.SiteNumber is not null
 -- handle these wells that are in there as SiteNumber until we get closure on how to proceed
-and bw.WellRegistrationID not in
+and bw.WellRegistrationID in
 (
  'Vote'
 , '36A/4'
@@ -82,6 +83,10 @@ select 'G-067335', geometry::STGeomFromText('POINT (-100.94860656 40.9203941983)
 
 insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
 select 'G-102628', geometry::STGeomFromText('POINT (-100.761191547 41.169212296)', 4326), @dateCreated, @dateCreated
+
+
+insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
+select 'Kelly-1', geometry::STGeomFromText('POINT (-101.15560843 41.206458296)', 4326), @dateCreated, @dateCreated
 
 
 /*

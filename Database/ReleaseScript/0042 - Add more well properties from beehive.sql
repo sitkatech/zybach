@@ -104,7 +104,6 @@ where bw.WellRegistrationID not in
 ,'G-050193'
 , 'G-068902'
 , 'G-069354'
-, 'G-101544'
 
 , 'G-048825'
 , 'G-056876'
@@ -151,7 +150,6 @@ and bw.WellRegistrationID not in
 ,'G-050193'
 , 'G-068902'
 , 'G-069354'
-, 'G-101544'
 
 , 'G-048825'
 , 'G-056876'
@@ -198,7 +196,6 @@ and bw.WellRegistrationID not in
 ,'G-050193'
 , 'G-068902'
 , 'G-069354'
-, 'G-101544'
 
 , 'G-048825'
 , 'G-056876'
@@ -424,6 +421,25 @@ insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTyp
 select w.WellID, 1
 from dbo.Well w
 where w.WellRegistrationID = 'G-102628'
+
+
+update w
+set w.IsReplacement = 0
+, w.RequiresChemigation = 0
+, w.RequiresWaterLevelInspection = 1
+, w.CountyID = 3
+, w.TownshipRangeSection = '14 33 07'
+, w.WellNickName = '143307 (Kelly)(#1)'
+, w.Notes = 'South'
+, w.WellParticipationID = 2
+
+from dbo.Well w
+where w.WellRegistrationID = 'Kelly-1'
+
+insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTypeID)
+select w.WellID, 1
+from dbo.Well w
+where w.WellRegistrationID = 'Kelly-1'
 
 
 drop table dbo.BeehiveWell
