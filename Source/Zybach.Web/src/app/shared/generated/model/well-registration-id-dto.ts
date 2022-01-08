@@ -11,7 +11,7 @@
  */
 
 export class WellRegistrationIDDto { 
-    WellRegistrationID?: string;
+    WellRegistrationID: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -1,4 +1,7 @@
-﻿namespace Zybach.Models.DataTransferObjects
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace Zybach.Models.DataTransferObjects
 {
     public class WellParticipationInfoDto
     {
@@ -6,9 +9,12 @@
         public string? WellParticipationName { get; set; }
         public int? WellUseID { get; set; }
         public string? WellUseName { get; set; }
+        [Required]
         public bool RequiresChemigation { get; set; }
+        [Required]
         public bool RequiresWaterLevelInspection { get; set; }
-        public int WaterQualityInspectionTypeID { get; set; }
+        [Required]
+        public List<int> WaterQualityInspectionTypeIDs { get; set; }
         public bool IsReplacement { get; set; }
         public decimal? WellDepth { get; set; }
         public string? Clearinghouse { get; set; }

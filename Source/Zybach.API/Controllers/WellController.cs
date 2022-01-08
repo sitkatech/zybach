@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
@@ -233,7 +234,11 @@ namespace Zybach.API.Controllers
                 throw new Exception($"Well with {wellRegistrationID} not found!");
             }
 
-            // Add WellWaterQualityInspectionType lookup here
+            var waterQualityInspectionTypeIDs = _dbContext.WellWaterQualityInspectionTypes
+                .AsNoTracking()
+                .Where(x => x.WellID == well.WellID)
+                .Select(x => x.WaterQualityInspectionTypeID)
+                .ToList();
 
             var wellParticipationInfoDto = new WellParticipationInfoDto()
             {
@@ -243,6 +248,7 @@ namespace Zybach.API.Controllers
                 WellUseName = well.WellUse?.WellUseDisplayName, 
                 RequiresChemigation = well.RequiresChemigation,
                 RequiresWaterLevelInspection = well.RequiresWaterLevelInspection,
+                WaterQualityInspectionTypeIDs = waterQualityInspectionTypeIDs,
                 IsReplacement = well.IsReplacement, 
                 WellDepth = well.WellDepth,
                 Clearinghouse = well.Clearinghouse,
@@ -268,9 +274,28 @@ namespace Zybach.API.Controllers
             }
 
             Wells.MapFromParticipationUpsert(well, wellParticipationInfoDto);
+
+            UpdateWaterQualityInspectionTypesForWell(well, wellParticipationInfoDto);
+
             _dbContext.SaveChanges();
 
             return Ok();
+        }
+
+        private void UpdateWaterQualityInspectionTypesForWell(Well well, WellParticipationInfoDto wellParticipationInfoDto)
+        {
+            _dbContext.WellWaterQualityInspectionTypes.RemoveRange(
+                _dbContext.WellWaterQualityInspectionTypes.Where(x => x.WellID == well.WellID));
+
+            foreach (var waterQualityInspectionTypeID in wellParticipationInfoDto.WaterQualityInspectionTypeIDs)
+            {
+                var wellWaterQualityInspectionType = new WellWaterQualityInspectionType()
+                {
+                    WellID = well.WellID,
+                    WaterQualityInspectionTypeID = waterQualityInspectionTypeID
+                };
+                _dbContext.WellWaterQualityInspectionTypes.Add(wellWaterQualityInspectionType);
+            }
         }
 
         [HttpGet("/api/wells/{wellRegistrationID}/installation")]

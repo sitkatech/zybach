@@ -7058,6 +7058,11 @@
         "additionalProperties": false
       },
       "WellParticipationInfoDto": {
+        "required": [
+          "RequiresChemigation",
+          "RequiresWaterLevelInspection",
+          "WaterQualityInspectionTypeIDs"
+        ],
         "type": "object",
         "properties": {
           "WellParticipationID": {
@@ -7084,9 +7089,12 @@
           "RequiresWaterLevelInspection": {
             "type": "boolean"
           },
-          "WaterQualityInspectionTypeID": {
-            "type": "integer",
-            "format": "int32"
+          "WaterQualityInspectionTypeIDs": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
           },
           "IsReplacement": {
             "type": "boolean"
@@ -7126,11 +7134,13 @@
         "additionalProperties": false
       },
       "WellRegistrationIDDto": {
+        "required": [
+          "WellRegistrationID"
+        ],
         "type": "object",
         "properties": {
           "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false

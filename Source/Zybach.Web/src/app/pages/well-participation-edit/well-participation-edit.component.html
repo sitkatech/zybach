@@ -87,9 +87,12 @@
                                         <label><strong>Water Quality Inspection Type: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <ng-select [(ngModel)]="wellParticipationInfo.WaterQualityInspectionTypeID"
-                                            [items]="waterQualityInspectionTypes" bindLabel="WaterQualityInspectionTypeDisplayName" bindValue="WaterQualityInspectionTypeID" 
-                                            placeholder="Choose One" name="WaterQualityInspectionTypeID">
+                                        <ng-select [multiple]="true" [(ngModel)]="wellParticipationInfo.WaterQualityInspectionTypeIDs"
+                                            name="WaterQualityInspectionTypeIDs">
+                                            <ng-option *ngFor="let waterQualityInspectionType of waterQualityInspectionTypes" 
+                                            [value]="waterQualityInspectionType.WaterQualityInspectionTypeID">
+                                                {{waterQualityInspectionType.WaterQualityInspectionTypeDisplayName}}
+                                            </ng-option>
                                         </ng-select>
                                     </div>
                                     
