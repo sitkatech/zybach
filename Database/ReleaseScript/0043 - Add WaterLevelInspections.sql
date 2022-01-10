@@ -88,8 +88,6 @@ join dbo.[User] u on case when bwli.InspectorUser = 'system' then 'Phil Heimann'
 where bwli.InspectionDate is not null and bwli.IsPrimary = 1
 
 
-drop table dbo.BeehiveWaterLevelInspection
-
 Insert into dbo.CustomRichTextType (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 values
 

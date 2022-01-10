@@ -10,6 +10,7 @@ using NetTopologySuite.Geometries;
 namespace Zybach.EFModels.Entities
 {
     [Table("Well")]
+    [Index(nameof(WellRegistrationID), Name = "AK_Well_WellRegistrationID", IsUnique = true)]
     public partial class Well
     {
         public Well()

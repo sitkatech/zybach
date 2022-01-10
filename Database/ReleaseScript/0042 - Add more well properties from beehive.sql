@@ -441,5 +441,3 @@ select w.WellID, 1
 from dbo.Well w
 where w.WellRegistrationID = 'Kelly-1'
 
-
-drop table dbo.BeehiveWell

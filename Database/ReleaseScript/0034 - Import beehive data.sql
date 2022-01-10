@@ -282,7 +282,3 @@ from dbo.ChemigationPermitAnnualRecord cpar
 join dbo.ChemigationPermit cp on cpar.ChemigationPermitID = cp.ChemigationPermitID
 where ApplicantFirstName in ('Farmer''s National Co') and ApplicantLastName = 'Rick Johnson'
 
-
-
-drop table dbo.BeehivePermitApplicator
-drop table dbo.BeehivePermitChemical

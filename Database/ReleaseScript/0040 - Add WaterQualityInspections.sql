@@ -105,5 +105,3 @@ where bwqi.InspectionDate is not null
 update dbo.WaterQualityInspection
 set WaterQualityInspectionTypeID = 2
 where Month(InspectionDate) in (7, 8)
-
-drop table dbo.[BeehiveWaterQualityInspection]
