@@ -6838,6 +6838,15 @@
             "type": "string",
             "nullable": true
           },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "Sensors": {
             "type": "array",
             "items": {
@@ -7172,6 +7181,8 @@
         "type": "object",
         "properties": {
           "WellRegistrationID": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string"
           }
         },

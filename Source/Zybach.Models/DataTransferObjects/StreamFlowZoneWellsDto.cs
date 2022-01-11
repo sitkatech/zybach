@@ -75,7 +75,8 @@ namespace Zybach.Models.DataTransferObjects
         public bool IsReplacement { get; set; }
         public string Notes { get; set; }
         public string WaterQualityInspectionTypes { get; set; }
-
+        public string? ScreenInterval { get; set; }
+        public decimal? ScreenDepth { get; set; }
     }
 
 

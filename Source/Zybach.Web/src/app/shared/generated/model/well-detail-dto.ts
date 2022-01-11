@@ -41,6 +41,8 @@ export class WellDetailDto {
     IsReplacement?: boolean;
     Notes?: string;
     WaterQualityInspectionTypes?: string;
+    ScreenInterval?: string;
+    ScreenDepth?: number;
     Sensors?: Array<SensorSummaryDto>;
     WellRegistrationID?: string;
     WellTPID?: string;
