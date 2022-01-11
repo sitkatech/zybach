@@ -65,7 +65,10 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Contaminant',
         field: 'Contaminant',
-        filter: true,
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Contaminant'
+        },
         resizable: true,
         sortable: true
       },
@@ -106,7 +109,10 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Laboratory',
         field: 'Laboratory',
-        filter: true,
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Laboratory'
+        },
         resizable: true,
         sortable: true
       },
