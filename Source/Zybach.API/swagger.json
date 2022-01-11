@@ -6636,6 +6636,8 @@
         "type": "object",
         "properties": {
           "TownshipRangeSection": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
@@ -6649,50 +6651,72 @@
             "nullable": true
           },
           "OwnerName": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "OwnerAddress": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "OwnerCity": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "OwnerState": {
+            "maxLength": 20,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "OwnerZipCode": {
+            "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
             "type": "string",
             "nullable": true
           },
           "AdditionalContactName": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "AdditionalContactAddress": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "AdditionalContactCity": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "AdditionalContactState": {
+            "maxLength": 20,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "AdditionalContactZipCode": {
+            "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
             "type": "string",
             "nullable": true
           },
           "WellNickname": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "Notes": {
+            "maxLength": 1000,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           }
@@ -7105,6 +7129,8 @@
             "nullable": true
           },
           "Clearinghouse": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
@@ -7114,14 +7140,20 @@
             "nullable": true
           },
           "SiteName": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "SiteNumber": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },
           "ScreenInterval": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           },

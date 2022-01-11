@@ -195,6 +195,8 @@ namespace Zybach.EFModels.Entities
             well.WellDepth = wellParticipationInfoDto.WellDepth;
             well.Clearinghouse = wellParticipationInfoDto.Clearinghouse;
             well.PageNumber = wellParticipationInfoDto.PageNumber;
+            well.ScreenDepth = wellParticipationInfoDto.ScreenDepth;
+            well.ScreenInterval = wellParticipationInfoDto.ScreenInterval;
             well.SiteName = wellParticipationInfoDto.SiteName;
             well.SiteNumber = wellParticipationInfoDto.SiteNumber;
         }
