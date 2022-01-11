@@ -35,6 +35,14 @@ namespace Zybach.API.Controllers
             return Ok(waterQualityInspectionSimpleDtos);
         }
 
+        [HttpGet("/api/clearinghouseWaterQualityInspections")]
+        [ZybachViewFeature]
+        public ActionResult<List<ClearinghouseWaterQualityInspectionDto>> GetClearinghouseWaterQualityInspections()
+        {
+            var clearinghouseWaterQualityInspectionDtos = WaterQualityInspections.ListAsClearinghouseDto(_dbContext);
+            return Ok(clearinghouseWaterQualityInspectionDtos);
+        }
+
         [HttpGet("/api/waterQualityInspections/{waterQualityInspectionID}")]
         [ZybachViewFeature]
         public ActionResult<WaterQualityInspectionSimpleDto> GetWaterQualityInspection([FromRoute] int waterQualityInspectionID)

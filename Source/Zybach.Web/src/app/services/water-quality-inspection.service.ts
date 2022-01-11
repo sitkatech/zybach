@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ClearinghouseWaterQualityInspectionDto } from '../shared/generated/model/clearinghouse-water-quality-inspection-dto';
 import { WaterQualityInspectionSimpleDto } from '../shared/generated/model/water-quality-inspection-simple-dto';
 import { WaterQualityInspectionTypeDto } from '../shared/generated/model/water-quality-inspection-type-dto';
 import { WaterQualityInspectionUpsertDto } from '../shared/generated/model/water-quality-inspection-upsert-dto';
@@ -19,6 +20,11 @@ export class WaterQualityInspectionService {
  
   public getWaterQualityInspections(): Observable<Array<WaterQualityInspectionSimpleDto>> {
     let route = `/waterQualityInspections`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getClearinghouseWaterQualityInspections(): Observable<Array<ClearinghouseWaterQualityInspectionDto>> {
+    let route = `/clearinghouseWaterQualityInspections`;
     return this.apiService.getFromApi(route);
   }
 

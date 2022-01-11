@@ -103,5 +103,22 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.WaterQualityInspections.SingleOrDefault(x => x.WaterQualityInspectionID == waterQualityInspectionID);
         }
+
+        public static List<ClearinghouseWaterQualityInspectionDto> ListAsClearinghouseDto(ZybachDbContext dbContext)
+        {
+            var clearinghouseWaterQualityInspections = dbContext.WaterQualityInspections
+                .Include(x => x.Well)
+                    .ThenInclude(x => x.WellParticipation)
+                .Include(x => x.Well)
+                    .ThenInclude(x => x.WellUse)
+                .Include(x => x.WaterQualityInspectionType)
+                .Where(x => x.Well.Clearinghouse != null)
+                .OrderByDescending(x => x.InspectionDate)
+                .AsNoTracking()
+                .Select(x => x.AsClearinghouseDto())
+                .ToList();
+
+            return clearinghouseWaterQualityInspections;
+        }
     }
 }

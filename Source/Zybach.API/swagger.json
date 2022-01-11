@@ -3097,6 +3097,44 @@
         }
       }
     },
+    "/api/clearinghouseWaterQualityInspections": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClearinghouseWaterQualityInspectionDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClearinghouseWaterQualityInspectionDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClearinghouseWaterQualityInspectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/waterQualityInspections/{waterQualityInspectionID}": {
       "get": {
         "tags": [
@@ -5032,6 +5070,90 @@
           "CountyID": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ClearinghouseWaterQualityInspectionDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "Clearinghouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "Contaminant": {
+            "type": "string",
+            "nullable": true
+          },
+          "SamplingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LabConcentration": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldConcentration": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ReportingLimit": {
+            "type": "number",
+            "format": "double"
+          },
+          "Laboratory": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "RequiresChemigationInspection": {
+            "type": "boolean"
+          },
+          "RequiresWaterQualityInspection": {
+            "type": "boolean"
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "WellParticipation": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUse": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellPreLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "WellPostLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

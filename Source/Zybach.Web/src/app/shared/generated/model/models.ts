@@ -29,6 +29,7 @@ export * from '././chemigation-permit-new-dto';
 export * from '././chemigation-permit-status-dto';
 export * from '././chemigation-permit-status-simple-dto';
 export * from '././chemigation-permit-upsert-dto';
+export * from '././clearinghouse-water-quality-inspection-dto';
 export * from '././county-dto';
 export * from '././county-simple-dto';
 export * from '././crop-type-dto';
