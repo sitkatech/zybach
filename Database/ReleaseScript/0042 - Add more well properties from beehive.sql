@@ -247,10 +247,11 @@ set w.OwnerName = bw.OwnerName, w.OwnerAddress = bw.OwnerAddress, w.OwnerCity = 
   end
 , w.RequiresChemigation = case when bw.WellType like '%chemigation%' then 1 else 0 end
 , w.RequiresWaterLevelInspection = case when bw.WellType like '%quantity%' then 1 else 0 end
-, w.Notes = case 
+, w.Notes = bw.WellRegistrationID + + CHAR(13)+CHAR(10) + 
+	case 
 	when bw.LocationNote is not null and bw.Comment is not null then bw.LocationNote + CHAR(13)+CHAR(10) + bw.Comment
 	when bw.LocationNote is not null then bw.LocationNote 
-	else bw.Comment end
+	else isnull(bw.Comment, '') end
 , w.CountyID = c.CountyID
 , w.TownshipRangeSection = ltrim(rtrim(bw.Township + ' ' + bw.[Range] + isnull(bw.[Range Direction], '') + ' ' + bw.Section + ' ' + isnull(bw.[Quarter], '')))
 , w.WellNickName = bw.WellName
