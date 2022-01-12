@@ -154,7 +154,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
               filterOptions: ['inRange'],
               comparator: this.dateFilterComparator
             }, 
-            width: 120,
+            width: 140,
             resizable: true,
             sortable: true
           },          
