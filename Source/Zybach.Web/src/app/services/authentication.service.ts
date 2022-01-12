@@ -37,6 +37,15 @@ export class AuthenticationService {
       .subscribe(e => this.oauthService.loadUserProfile());
 
     this.oauthService.events
+      .pipe(filter(e => ['invalid_nonce_in_state'].includes(e.type)))
+      .subscribe(e => {
+        //During user creation our nonce can get into an invalid state, but just signing in again mitigates the issue
+        if (this.router.url.includes("signin-oidc")) {
+          this.oauthService.initCodeFlow();
+        }
+      });
+
+    this.oauthService.events
       .pipe(filter(e => ['token_refresh_error'].includes(e.type)))
       .subscribe(e => {
         //If we're still authenticated, don't worry about the error
@@ -59,7 +68,7 @@ export class AuthenticationService {
     this.oauthService.setupAutomaticSilentRefresh();
   }
 
-  public initialLoginSequence() : Promise<void> {
+  public initialLoginSequence(): Promise<void> {
     return this.oauthService.loadDiscoveryDocument()
       .then(() => this.oauthService.tryLogin())
       .then(() => {
@@ -67,7 +76,7 @@ export class AuthenticationService {
           return Promise.resolve();
         }
         return this.oauthService.silentRefresh().then(() => Promise.resolve());
-      }).catch(() => {});
+      }).catch(() => { });
   }
 
   public checkAuthentication() {
@@ -78,11 +87,11 @@ export class AuthenticationService {
     }
   }
 
-  public getUser(claims:any) {
+  public getUser(claims: any) {
     var globalID = claims["sub"];
 
     this.userService.getUserFromGlobalID(globalID).subscribe(
-      result => { this.updateUser(result);},
+      result => { this.updateUser(result); },
       error => { this.onGetUserError(error, claims) }
     );
   }
@@ -97,6 +106,7 @@ export class AuthenticationService {
         FirstName: claims["given_name"],
         LastName: claims["family_name"],
         Email: claims["email"],
+        RoleID: RoleEnum.Unassigned,
         LoginName: claims["login_name"],
         UserGuid: claims["sub"],
       });
