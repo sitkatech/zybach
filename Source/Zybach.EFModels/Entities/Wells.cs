@@ -12,12 +12,7 @@ namespace Zybach.EFModels.Entities
 {
     public class Wells
     {
-        public static List<WellDto> ListAsDtos(ZybachDbContext dbContext)
-        {
-            return dbContext.Wells.AsNoTracking().Select(x => x.AsDto()).ToList();
-        }
-
-        public static WellDto GetByWellIDAsDto(ZybachDbContext dbContext, int wellID)
+        public static WellDto GetByIDAsDto(ZybachDbContext dbContext, int wellID)
         {
             var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
             return well?.AsDto();
@@ -28,9 +23,9 @@ namespace Zybach.EFModels.Entities
             return GetWellsImpl(dbContext).OrderBy(x => x.WellRegistrationID).Select(x => WellWithSensorSummaryDtoFromWell(x)).ToList();
         }
 
-        public static WellWithSensorSummaryDto GetAsWellWithSensorSummaryDtoByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
+        public static WellWithSensorSummaryDto GetByIDAsWellWithSensorSummaryDto(ZybachDbContext dbContext, int wellID)
         {
-            var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+            var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
             if (well != null)
             {
                 return WellWithSensorSummaryDtoFromWell(well);
@@ -38,20 +33,19 @@ namespace Zybach.EFModels.Entities
             return null;
         }
 
-        public static Well GetByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
-        {
-            return GetWellsImpl(dbContext).SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
-        }
-
         public static Well GetByWellRegistrationIDWithTracking(ZybachDbContext dbContext, string wellRegistrationID)
         {
-            return dbContext.Wells
-                    .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
-                    .Include(x => x.WellParticipation)
-                    .Include(x => x.WellUse)
-                    .Include(x => x.County)
-                    .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
-                    .SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+            return dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+        }
+
+        public static Well GetByID(ZybachDbContext dbContext, int wellID)
+        {
+            return GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
+        }
+
+        public static Well GetByIDWithTracking(ZybachDbContext dbContext, int wellID)
+        {
+            return dbContext.Wells.SingleOrDefault(x => x.WellID == wellID);
         }
 
         private static IQueryable<Well> GetWellsImpl(ZybachDbContext dbContext)
@@ -73,6 +67,7 @@ namespace Zybach.EFModels.Entities
         private static WellWithSensorSummaryDto WellWithSensorSummaryDtoFromWell(Well well)
         {
             var wellWithSensorSummaryDto = new WellWithSensorSummaryDto();
+            wellWithSensorSummaryDto.WellID = well.WellID;
             wellWithSensorSummaryDto.WellRegistrationID = well.WellRegistrationID;
             wellWithSensorSummaryDto.Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X)));
             wellWithSensorSummaryDto.FetchDate = well.LastUpdateDate;
@@ -152,7 +147,7 @@ namespace Zybach.EFModels.Entities
             dbContext.Wells.Add(well);
             dbContext.SaveChanges();
             dbContext.Entry(well).Reload();
-            return GetByWellIDAsDto(dbContext, well.WellID);
+            return GetByIDAsDto(dbContext, well.WellID);
         }
 
         private static Geometry CreateWellGeometryFromLatLong(double latitude, double longitude)

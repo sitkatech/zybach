@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
@@ -20,15 +17,13 @@ namespace Zybach.API.Controllers
     public class WellController : SitkaController<WellController>
     {
         private readonly GeoOptixService _geoOptixService;
-        private readonly WellService _wellService;
 
-        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _geoOptixService = geoOptixService;
-            _wellService = wellService;
         }
 
-        [HttpGet("/api/wells/wellUses")]
+        [HttpGet("/api/wellUses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<WellUseDto>> GetWellUses()
         {
@@ -36,7 +31,7 @@ namespace Zybach.API.Controllers
             return Ok(wellUseDtos);
         }
 
-        [HttpGet("/api/wells/wellParticipations")]
+        [HttpGet("/api/wellParticipations")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<WellUseDto>> GetWellParticipations()
         {
@@ -44,7 +39,7 @@ namespace Zybach.API.Controllers
             return Ok(wellParticipationDtos);
         }
 
-        [HttpGet("/api/wells/search/{wellRegistrationID}")]
+        [HttpGet("/api/wells/search/{wellID}")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
         {
@@ -52,27 +47,24 @@ namespace Zybach.API.Controllers
             return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
         }
 
-        [HttpGet("/api/wells/search/{wellRegistrationID}/hasInspectionType")]
+        [HttpGet("/api/wells/search/{wellID}/hasInspectionType")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationIDHasInspectionType([FromRoute] string wellRegistrationID)
         {
             return Ok(Wells.SearchByWellRegistrationIDHasInspectionType(_dbContext, wellRegistrationID));
         }
 
-        [HttpGet("/api/wells/{wellRegistrationID}")]
+        [HttpGet("/api/wells/{wellID}")]
         [ZybachViewFeature]
-        public WellDetailDto GetWellDetails([FromRoute] string wellRegistrationID)
+        public ActionResult<WellDetailDto> GetWellDetails([FromRoute] int wellID)
         {
-            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 
-            if (well == null)
-            {
-                throw new Exception($"Well with {wellRegistrationID} not found!");
-            }
-
+            var wellRegistrationID = well.WellRegistrationID;
             var wellDetailDto = new WellDetailDto
             {
-                WellRegistrationID = well.WellRegistrationID,
+                WellID = well.WellID,
+                WellRegistrationID = wellRegistrationID,
                 Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
                 InAgHub = well.AgHubWell != null,
                 InGeoOptix = well.GeoOptixWell != null,
@@ -156,37 +148,39 @@ namespace Zybach.API.Controllers
             return wellDetailDto;
         }
 
-        [HttpPut("/api/wells/{wellRegistrationID}/editRegistrationID")]
-        [AdminFeature]
-        public ActionResult<WellSimpleDto> UpsertWellRegistrationID([FromRoute] string wellRegistrationID,
-            [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
+        private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
         {
-            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellRegistrationID);
+            well = Wells.GetByID(_dbContext, wellID);
+            return ThrowNotFound(well, "Well", wellID, out actionResult);
+        }
 
-            if (well == null)
-            {
-                throw new Exception($"Well with {wellRegistrationID} not found!");
-            }
+        private bool GetWellWithTrackingAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
+        {
+            well = Wells.GetByIDWithTracking(_dbContext, wellID);
+            return ThrowNotFound(well, "Well", wellID, out actionResult);
+        }
+
+        [HttpPut("/api/wells/{wellID}/editRegistrationID")]
+        [AdminFeature]
+        public ActionResult UpsertWellRegistrationID([FromRoute] int wellID, [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
+        {
+            if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 
             well.WellRegistrationID = wellRegistrationIDDto.WellRegistrationID;
             _dbContext.SaveChanges();
 
-            return Wells.GetByWellRegistrationID(_dbContext, wellRegistrationIDDto.WellRegistrationID).AsSimpleDto();
+            return Ok();
         }
 
-        [HttpGet("/api/wells/{wellRegistrationID}/contactInfo")]
+        [HttpGet("/api/wells/{wellID}/contactInfo")]
         [ZybachViewFeature]
-        public ActionResult<WellContactInfoDto> GetWellContactDetails([FromRoute] string wellRegistrationID)
+        public ActionResult<WellContactInfoDto> GetWellContactDetails([FromRoute] int wellID)
         {
-            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
-
-            if (well == null)
-            {
-                throw new Exception($"Well with {wellRegistrationID} not found!");
-            }
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 
             var wellContactInfoDto = new WellContactInfoDto()
             {
+                WellRegistrationID = well.WellRegistrationID,
                 TownshipRangeSection = well.TownshipRangeSection,
                 County = well.County?.CountyDisplayName,
                 CountyID = well.County?.CountyID,
@@ -207,17 +201,11 @@ namespace Zybach.API.Controllers
             return Ok(wellContactInfoDto);
         }
 
-        [HttpPut("/api/wells/{wellRegistrationID}/contactInfo")]
+        [HttpPut("/api/wells/{wellID}/contactInfo")]
         [AdminFeature]
-        public ActionResult UpsertWellContactDetails([FromRoute] string wellRegistrationID,
-            [FromBody] WellContactInfoDto wellContactInfoDto)
+        public ActionResult UpsertWellContactDetails([FromRoute] int wellID, [FromBody] WellContactInfoDto wellContactInfoDto)
         {
-            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellRegistrationID);
-
-            if (well == null)
-            {
-                throw new Exception($"Well with {wellRegistrationID} not found!");
-            }
+            if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 
             Wells.MapFromContactUpsert(well, wellContactInfoDto);
             _dbContext.SaveChanges();
@@ -225,25 +213,19 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpGet("/api/wells/{wellRegistrationID}/participationInfo")]
+        [HttpGet("/api/wells/{wellID}/participationInfo")]
         [ZybachViewFeature]
-        public ActionResult<WellParticipationInfoDto> GetWellParticipationDetails([FromRoute] string wellRegistrationID)
+        public ActionResult<WellParticipationInfoDto> GetWellParticipationDetails([FromRoute] int wellID)
         {
-            var well = Wells.GetByWellRegistrationID(_dbContext, wellRegistrationID);
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 
-            if (well == null)
-            {
-                throw new Exception($"Well with {wellRegistrationID} not found!");
-            }
-
-            var waterQualityInspectionTypeIDs = _dbContext.WellWaterQualityInspectionTypes
-                .AsNoTracking()
-                .Where(x => x.WellID == well.WellID)
+            var waterQualityInspectionTypeIDs = well.WellWaterQualityInspectionTypes
                 .Select(x => x.WaterQualityInspectionTypeID)
                 .ToList();
 
             var wellParticipationInfoDto = new WellParticipationInfoDto()
             {
+                WellRegistrationID = well.WellRegistrationID,
                 WellParticipationID = well.WellParticipationID,
                 WellParticipationName = well.WellParticipation?.WellParticipationDisplayName,
                 WellUseID = well.WellUseID,
@@ -264,23 +246,14 @@ namespace Zybach.API.Controllers
             return Ok(wellParticipationInfoDto);
         }
 
-        [HttpPut("/api/wells/{wellRegistrationID}/participationInfo")]
+        [HttpPut("/api/wells/{wellID}/participationInfo")]
         [AdminFeature]
-        public ActionResult UpsertWellParticipationDetails([FromRoute] string wellRegistrationID, [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
+        public ActionResult UpsertWellParticipationDetails([FromRoute] int wellID, [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
         {
-            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellRegistrationID);
-
-            if (well == null)
-            {
-                throw new Exception($"Well with {wellRegistrationID} not found!");
-            }
-
+            if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             Wells.MapFromParticipationUpsert(well, wellParticipationInfoDto);
-
             UpdateWaterQualityInspectionTypesForWell(well, wellParticipationInfoDto);
-
             _dbContext.SaveChanges();
-
             return Ok();
         }
 
@@ -300,20 +273,22 @@ namespace Zybach.API.Controllers
             }
         }
 
-        [HttpGet("/api/wells/{wellRegistrationID}/installation")]
+        [HttpGet("/api/wells/{wellID}/installation")]
         [ZybachViewFeature]
-        public async Task<List<InstallationRecordDto>> GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
+        public async Task<ActionResult<List<InstallationRecordDto>>> GetInstallationRecordForWell([FromRoute] int wellID)
         {
-            return await _geoOptixService.GetInstallationRecords(wellRegistrationID);
+            if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            return await _geoOptixService.GetInstallationRecords(well.WellRegistrationID);
         }
 
-        [HttpGet("/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
+        [HttpGet("/api/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
         [ZybachViewFeature]
-        public async Task<IActionResult> GetPhoto([FromRoute] string wellRegistrationID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
+        public async Task<IActionResult> GetPhoto([FromRoute] int wellID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
         {
+            if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             try
             {
-                var photoBuffer = await _geoOptixService.GetPhoto(wellRegistrationID, installationCanonicalName,
+                var photoBuffer = await _geoOptixService.GetPhoto(well.WellRegistrationID, installationCanonicalName,
                     photoCanonicalName);
                 return File(photoBuffer, "image/jpeg");
             }
@@ -344,7 +319,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public IActionResult NewWell([FromBody] WellNewDto wellNewDto)
         {
-            var existingWell = Wells.GetByWellRegistrationID(_dbContext, wellNewDto.WellRegistrationID);
+            var existingWell = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellNewDto.WellRegistrationID);
             if (existingWell != null)
             {
                 ModelState.AddModelError("Well Registration ID", $"'{wellNewDto.WellRegistrationID}' already exists!");
@@ -358,11 +333,11 @@ namespace Zybach.API.Controllers
             return Ok(wellDto);
         }
 
-        [HttpGet("/api/wells/{wellRegistrationID}/chemigationPermits")]
+        [HttpGet("/api/wells/{wellID}/chemigationPermits")]
         [ZybachViewFeature]
-        public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] string wellRegistrationID)
+        public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] int wellID)
         {
-            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecords.GetByWellRegistrationIDAsDetailedDto(_dbContext, wellRegistrationID);
+            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecords.GetByWellIDAsDetailedDto(_dbContext, wellID);
             return Ok(chemigationPermitDetailedDtos);
         }
     }

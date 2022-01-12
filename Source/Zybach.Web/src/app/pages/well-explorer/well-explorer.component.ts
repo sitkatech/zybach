@@ -49,6 +49,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             wells.filter(x => x.Location != null && x.Location != undefined).map(x => {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
+                wellID: x.WellID,
                 wellRegistrationID: x.WellRegistrationID,
                 sensors: x.Sensors || [],
                 AgHubRegisteredUser: x.AgHubRegisteredUser,
@@ -82,7 +83,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellRegistrationID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {

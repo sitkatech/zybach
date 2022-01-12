@@ -288,7 +288,8 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
           const popupEl: NgElement & WithProperties<SensorStatusMapPopupComponent> = document.createElement('sensor-status-map-popup-element') as any;
-          popupEl.registrationID = feature.properties.wellRegistrationID;
+          popupEl.wellID = feature.properties.wellID;
+          popupEl.wellRegistrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
           popupEl.AgHubRegisteredUser = feature.properties.AgHubRegisteredUser;
           popupEl.fieldName = feature.properties.fieldName;

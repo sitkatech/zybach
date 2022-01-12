@@ -38,6 +38,7 @@ namespace Zybach.API.Controllers
             {
                 AgHubRegisteredUser = well.AgHubRegisteredUser,
                 FieldName = well.FieldName,
+                WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
                 Sensors = well.Sensors.Where(x=>x.SensorType != MeasurementTypes.ElectricalUsage).Select(sensor =>
@@ -63,17 +64,18 @@ namespace Zybach.API.Controllers
             }).ToList();
         }
 
-        [HttpGet("/api/sensorStatus/{wellRegistrationID}")]
+        [HttpGet("/api/sensorStatus/{wellID}")]
         [ZybachViewFeature]
-        public async Task<WellWithSensorMessageAgeDto> GetSensorMessageAgesForWell([FromRoute] string wellRegistrationID)
+        public async Task<WellWithSensorMessageAgeDto> GetSensorMessageAgesForWell([FromRoute] int wellID)
         {
-            var well = Wells.GetAsWellWithSensorSummaryDtoByWellRegistrationID(_dbContext, wellRegistrationID);
+            var well = Wells.GetByIDAsWellWithSensorSummaryDto(_dbContext, wellID);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
             return new WellWithSensorMessageAgeDto
             {
                 AgHubRegisteredUser = well.AgHubRegisteredUser,
                 FieldName = well.FieldName,
+                WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
                 Sensors = well.Sensors.Where(x => x.SensorType != MeasurementTypes.ElectricalUsage).Select(sensor =>
@@ -104,7 +106,6 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public IActionResult UpdateSensorIsActive([FromBody] SensorSummaryDto sensorSummaryDto)
         {
-            // var sensor = Sensors.GetBySensorName(_dbContext, sensorSummaryDto.SensorName);
             var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorName.Equals(sensorSummaryDto.SensorName));
             if (sensor == null)
             {

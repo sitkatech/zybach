@@ -16,6 +16,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 export class WellContactEditComponent implements OnInit {
 
+  public wellID: number;
   public wellRegistrationID: string;
   public wellContactInfo: WellContactInfoDto;
 
@@ -34,14 +35,15 @@ export class WellContactEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
+    this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.states = States.statesList;
 
     forkJoin({
-      wellContactInfo: this.wellService.getWellContactDetails(this.wellRegistrationID),
+      wellContactInfo: this.wellService.getWellContactDetails(this.wellID),
       counties: this.wellService.getCounties()
     }).subscribe(({ wellContactInfo, counties }) => {
       this.wellContactInfo = wellContactInfo;
+      this.wellRegistrationID = wellContactInfo.WellRegistrationID;
       if (!this.wellContactInfo.OwnerState) {
         this.wellContactInfo.OwnerState = this.defaultState;
       }
@@ -55,11 +57,11 @@ export class WellContactEditComponent implements OnInit {
   public onSubmit(editWellContactForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.wellService.updateWellContactDetails(this.wellRegistrationID, this.wellContactInfo)
+    this.wellService.updateWellContactDetails(this.wellID, this.wellContactInfo)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editWellContactForm.reset();
-        this.router.navigateByUrl("/wells/" + this.wellRegistrationID).then(() => {
+        this.router.navigateByUrl("/wells/" + this.wellID).then(() => {
           this.alertService.pushAlert(new Alert(`Well contact details updated.`, AlertContext.Success));
         });
       }

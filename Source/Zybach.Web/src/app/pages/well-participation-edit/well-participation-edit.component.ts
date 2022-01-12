@@ -18,6 +18,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 export class WellParticipationEditComponent implements OnInit {
 
+  public wellID: number;
   public wellRegistrationID: string;
   public wellParticipationInfo: WellParticipationInfoDto;
 
@@ -37,15 +38,15 @@ export class WellParticipationEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
-    
+    this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
     forkJoin({
-      wellParticipationInfo: this.wellService.getWellParticipationDetails(this.wellRegistrationID),
+      wellParticipationInfo: this.wellService.getWellParticipationDetails(this.wellID),
       wellUses: this.wellService.getWellUses(),
       wellParticipations: this.wellService.getWellParticipations(),
       waterQualityInspectionTypes: this.waterQualityInspectionService.getWaterQualityInspectionTypes()
     }).subscribe(({ wellParticipationInfo, wellUses, wellParticipations, waterQualityInspectionTypes }) => {
       this.wellParticipationInfo = wellParticipationInfo;
+      this.wellRegistrationID = wellParticipationInfo.WellRegistrationID; 
       this.wellUses = wellUses;
       this.wellParticipations = wellParticipations;
       this.waterQualityInspectionTypes = waterQualityInspectionTypes;
@@ -58,11 +59,11 @@ export class WellParticipationEditComponent implements OnInit {
   public onSubmit(editWellParticipationForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.wellService.updateWellParticipationDetails(this.wellRegistrationID, this.wellParticipationInfo)
+    this.wellService.updateWellParticipationDetails(this.wellID, this.wellParticipationInfo)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editWellParticipationForm.reset();
-        this.router.navigateByUrl("/wells/" + this.wellRegistrationID).then(() => {
+        this.router.navigateByUrl("/wells/" + this.wellID).then(() => {
           this.alertService.pushAlert(new Alert(`Well participation details updated.`, AlertContext.Success));
         });
       }

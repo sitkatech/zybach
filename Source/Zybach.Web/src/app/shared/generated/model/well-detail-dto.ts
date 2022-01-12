@@ -44,6 +44,7 @@ export class WellDetailDto {
     ScreenInterval?: string;
     ScreenDepth?: number;
     Sensors?: Array<SensorSummaryDto>;
+    WellID?: number;
     WellRegistrationID?: string;
     WellTPID?: string;
     Description?: string;

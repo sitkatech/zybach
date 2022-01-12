@@ -14,6 +14,7 @@ import { SensorMessageAgeDto } from '././sensor-message-age-dto';
 
 export class WellWithSensorMessageAgeDto { 
     Sensors?: Array<SensorMessageAgeDto>;
+    WellID?: number;
     WellRegistrationID?: string;
     WellTPID?: string;
     Description?: string;

@@ -5,18 +5,19 @@
     "version": "v1"
   },
   "paths": {
-    "/api/chartData/{wellRegistrationID}": {
+    "/api/chartData/{wellID}": {
       "get": {
         "tags": [
           "ChartData"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -2427,18 +2428,19 @@
         }
       }
     },
-    "/api/sensorStatus/{wellRegistrationID}": {
+    "/api/sensorStatus/{wellID}": {
       "get": {
         "tags": [
           "SensorStatus"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3241,7 +3243,7 @@
         }
       }
     },
-    "/api/wells/wellUses": {
+    "/api/wellUses": {
       "get": {
         "tags": [
           "Well"
@@ -3279,7 +3281,7 @@
         }
       }
     },
-    "/api/wells/wellParticipations": {
+    "/api/wellParticipations": {
       "get": {
         "tags": [
           "Well"
@@ -3317,7 +3319,7 @@
         }
       }
     },
-    "/api/wells/search/{wellRegistrationID}": {
+    "/api/wells/search/{wellID}": {
       "get": {
         "tags": [
           "Well"
@@ -3325,6 +3327,14 @@
         "parameters": [
           {
             "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
@@ -3365,7 +3375,7 @@
         }
       }
     },
-    "/api/wells/search/{wellRegistrationID}/hasInspectionType": {
+    "/api/wells/search/{wellID}/hasInspectionType": {
       "get": {
         "tags": [
           "Well"
@@ -3373,6 +3383,14 @@
         "parameters": [
           {
             "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
@@ -3413,18 +3431,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}": {
+    "/api/wells/{wellID}": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3452,18 +3471,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/editRegistrationID": {
+    "/api/wells/{wellID}/editRegistrationID": {
       "put": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3493,40 +3513,24 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/WellSimpleDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WellSimpleDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WellSimpleDto"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/contactInfo": {
+    "/api/wells/{wellID}/contactInfo": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3559,11 +3563,12 @@
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3598,18 +3603,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/participationInfo": {
+    "/api/wells/{wellID}/participationInfo": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3642,11 +3648,12 @@
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3681,18 +3688,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/installation": {
+    "/api/wells/{wellID}/installation": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -3729,18 +3737,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}": {
+    "/api/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           },
           {
@@ -3803,18 +3812,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/chemigationPermits": {
+    "/api/wells/{wellID}/chemigationPermits": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -6758,6 +6768,10 @@
       "WellContactInfoDto": {
         "type": "object",
         "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
           "TownshipRangeSection": {
             "maxLength": 100,
             "minLength": 0,
@@ -6976,6 +6990,10 @@
               "$ref": "#/components/schemas/SensorSummaryDto"
             },
             "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
           },
           "WellRegistrationID": {
             "type": "string",
@@ -7221,6 +7239,10 @@
         ],
         "type": "object",
         "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
           "WellParticipationID": {
             "type": "integer",
             "format": "int32",
@@ -7478,6 +7500,10 @@
             },
             "nullable": true
           },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
@@ -7548,6 +7574,10 @@
               "$ref": "#/components/schemas/SensorSummaryDto"
             },
             "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
           },
           "WellRegistrationID": {
             "type": "string",

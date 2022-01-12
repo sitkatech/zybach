@@ -58,6 +58,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   timeSeries: any[];
   vegaView: any;
   rangeMax: number;
+  wellID: number;
   wellRegistrationID: string;
   tooltipFields: any;
   noTimeSeriesData: boolean = false;
@@ -125,9 +126,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.initMapConstants();
 
+    this.wellID = parseInt(this.route.snapshot.paramMap.get("id"))
+
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
       this.getWellDetails();
       this.getInstallationDetails();
       this.getSenorsWithAgeMessages();
@@ -142,8 +144,9 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getWellDetails(){
-    this.wellService.getWellDetails(this.wellRegistrationID).subscribe((well: WellDetailDto)=>{
+    this.wellService.getWellDetails(this.wellID).subscribe((well: WellDetailDto)=>{
       this.well = well;
+      this.wellRegistrationID = well.WellRegistrationID;
       this.isInAgHubOrGeoOptix = this.well.InAgHub || this.well.InGeoOptix;
       this.cdr.detectChanges();
       
@@ -161,7 +164,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getInstallationDetails(){
-    this.wellService.getInstallationDetails(this.wellRegistrationID).subscribe(installations => {
+    this.wellService.getInstallationDetails(this.wellID).subscribe(installations => {
       this.installations = installations;
       this.installationPhotos = new Map();
       for (const installation of installations) {
@@ -173,7 +176,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getSenorsWithAgeMessages(){
-    this.sensorService.getSensorStatusForWell(this.wellRegistrationID).subscribe(wellWithSensorMessageAge => {
+    this.sensorService.getSensorStatusForWell(this.wellID).subscribe(wellWithSensorMessageAge => {
       this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
 
       for (var sensor of this.sensorsWithStatus){
@@ -183,7 +186,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getChemigationPermits(){
-    this.wellService.getChemigationPermts(this.wellRegistrationID).subscribe(chemigationPermitAnnualRecords => {
+    this.wellService.getChemigationPermts(this.wellID).subscribe(chemigationPermitAnnualRecords => {
       this.chemigationPermitAnnualRecords = chemigationPermitAnnualRecords;
     });
   }
@@ -203,7 +206,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     const photos = installation.Photos;
 
     const photoObservables = photos.map(
-      photo => this.wellService.getPhoto(this.wellRegistrationID, installation.InstallationCanonicalName, photo)
+      photo => this.wellService.getPhoto(this.wellID, installation.InstallationCanonicalName, photo)
     );
 
     let foundPhoto = false;
@@ -464,7 +467,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getChartDataAndBuildChart() {
 
-    this.chartSubscription = this.wellService.getChartData(this.wellRegistrationID).subscribe(response => {
+    this.chartSubscription = this.wellService.getChartData(this.wellID).subscribe(response => {
       if (!response.TimeSeries || response.TimeSeries.length == 0) {
         this.noTimeSeriesData = true;
         this.timeSeries = [];

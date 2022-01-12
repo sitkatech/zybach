@@ -19,17 +19,18 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("/api/chartData/{wellRegistrationID}")]
+        [HttpGet("/api/chartData/{wellID}")]
         [ZybachViewFeature]
-        public WellChartDataDto GetInstallationRecordForWell([FromRoute] string wellRegistrationID)
+        public ActionResult<WellChartDataDto> GetInstallationRecordForWell([FromRoute] int wellID)
         {
+            var well = Wells.GetByIDAsWellWithSensorSummaryDto(_dbContext, wellID);
             var wellChartDataDto = new WellChartDataDto();
-            var well = Wells.GetAsWellWithSensorSummaryDtoByWellRegistrationID(_dbContext, wellRegistrationID);
             var sensors = well.Sensors;
             var hasElectricalData = well.HasElectricalData;
 
             var dailyPumpedVolumes = new List<DailyPumpedVolume>();
 
+            var wellRegistrationID = well.WellRegistrationID;
             dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
             dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 

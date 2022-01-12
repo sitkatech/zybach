@@ -11,6 +11,7 @@
  */
 
 export class WellParticipationInfoDto { 
+    WellRegistrationID?: string;
     WellParticipationID?: number;
     WellParticipationName?: string;
     WellUseID?: number;

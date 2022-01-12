@@ -145,9 +145,9 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDetailedDto()).ToList();
         }
 
-        public static List<ChemigationPermitAnnualRecordDetailedDto> GetByWellRegistrationIDAsDetailedDto(ZybachDbContext dbContext, string wellRegistrationID)
+        public static List<ChemigationPermitAnnualRecordDetailedDto> GetByWellIDAsDetailedDto(ZybachDbContext dbContext, int wellID)
         {
-            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.Well != null && x.ChemigationPermit.Well.WellRegistrationID == wellRegistrationID).Select(x => x.AsDetailedDto()).ToList();
+            return GetChemigationPermitAnnualRecordsImpl(dbContext).Where(x => x.ChemigationPermit.WellID != null && x.ChemigationPermit.WellID == wellID).Select(x => x.AsDetailedDto()).ToList();
         }
     }
 }

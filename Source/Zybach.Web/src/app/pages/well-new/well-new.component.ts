@@ -158,7 +158,7 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         newWellForm.reset();
-        this.router.navigateByUrl("/wells/" + response.WellRegistrationID).then(x => {
+        this.router.navigateByUrl("/wells/" + response.WellID).then(x => {
           this.alertService.pushAlert(new Alert("Well '" + response.WellRegistrationID + "' successfully created.", AlertContext.Success));
         });
       }

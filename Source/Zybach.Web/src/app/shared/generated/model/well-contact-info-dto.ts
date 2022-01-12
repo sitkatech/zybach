@@ -11,6 +11,7 @@
  */
 
 export class WellContactInfoDto { 
+    WellRegistrationID?: string;
     TownshipRangeSection?: string;
     CountyID?: number;
     County?: string;

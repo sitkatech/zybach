@@ -258,7 +258,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   }
 
   public selectWell(wellRegistrationID: string): void {
-    const wellFeature = this.wellsGeoJson.features.find(x=>x.properties.wellRegistrationID === wellRegistrationID);
+    const wellFeature = this.wellsGeoJson.features.find(x => x.properties.wellRegistrationID === wellRegistrationID);
     this.selectFeature(wellFeature);
   }
 
@@ -277,7 +277,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
           const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-          popupEl.registrationID = feature.properties.wellRegistrationID;
+          popupEl.wellID = feature.properties.wellID;
+          popupEl.wellRegistrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
           popupEl.AgHubRegisteredUser = feature.properties.AgHubRegisteredUser;
           popupEl.fieldName = feature.properties.fieldName;
@@ -297,7 +298,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
   public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
     const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-    popupEl.registrationID = feature.properties.wellRegistrationID;
+    popupEl.wellID = feature.properties.wellID;
+    popupEl.wellRegistrationID = feature.properties.wellRegistrationID;
     popupEl.sensors = feature.properties.sensors;
     return popupEl;
   }

@@ -8,7 +8,8 @@ import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-
 })
 export class WellMapPopupComponent implements OnInit {
 
-  @Input() registrationID: string;
+  @Input() wellID: number;
+  @Input() wellRegistrationID: string;
   @Input() sensors: SensorSummaryDto[];
   @Input() AgHubRegisteredUser: string;
   @Input() fieldName: string;

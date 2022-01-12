@@ -6,10 +6,11 @@ namespace Zybach.Models.DataTransferObjects
 {
     public class WellParticipationInfoDto
     {
+        public string WellRegistrationID { get; set; }
         public int? WellParticipationID { get; set; }
-        public string? WellParticipationName { get; set; }
+        public string WellParticipationName { get; set; }
         public int? WellUseID { get; set; }
-        public string? WellUseName { get; set; }
+        public string WellUseName { get; set; }
         [Required]
         public bool RequiresChemigation { get; set; }
         [Required]
@@ -20,15 +21,15 @@ namespace Zybach.Models.DataTransferObjects
         [Column(TypeName = "decimal(10, 4)")]
         public decimal? WellDepth { get; set; }
         [StringLength(100, ErrorMessage = "Clearinghouse cannot exceed 100 characters. ")]
-        public string? Clearinghouse { get; set; }
+        public string Clearinghouse { get; set; }
         [Column(TypeName = "int")]
         public int? PageNumber { get; set; }
         [StringLength(100, ErrorMessage = "Site Name cannot exceed 100 characters. ")]
-        public string? SiteName { get; set; }
+        public string SiteName { get; set; }
         [StringLength(100, ErrorMessage = "Site Number cannot exceed 100 characters. ")]
-        public string? SiteNumber { get; set; }
+        public string SiteNumber { get; set; }
         [StringLength(100, ErrorMessage = "Screen Interval cannot exceed 100 characters. ")]
-        public string? ScreenInterval { get; set; }
+        public string ScreenInterval { get; set; }
         [Column(TypeName = "decimal(10, 4)")]
         public decimal? ScreenDepth { get; set; }
     }

@@ -96,7 +96,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         headerName: 'Well', valueGetter: function (params: any) {
           if(params.data.Well)
           {
-            return { LinkValue: params.data.Well.WellRegistrationID, LinkDisplay: params.data.Well.WellRegistrationID };
+            return { LinkValue: params.data.Well.WellID, LinkDisplay: params.data.Well.WellRegistrationID };
           }
           else
           {

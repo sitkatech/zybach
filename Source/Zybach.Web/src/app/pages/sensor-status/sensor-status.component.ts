@@ -33,7 +33,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellRegistrationID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
@@ -90,6 +90,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             wells.map(x => {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
+                wellID: x.WellID,
                 wellRegistrationID: x.WellRegistrationID,
                 sensors: x.Sensors.filter(y => y.IsActive) || [],
                 AgHubRegisteredUser: x.AgHubRegisteredUser,

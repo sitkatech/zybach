@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { WellService } from 'src/app/services/well.service';
 import { WellRegistrationIDDto } from 'src/app/shared/generated/model/well-registration-id-dto';
 import { Alert } from 'src/app/shared/models/alert';
@@ -13,6 +14,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./well-registration-id-edit.component.scss']
 })
 export class WellRegistrationIdEditComponent implements OnInit {
+  public wellID: number;
   public wellRegistrationID: string;
   public newWellRegistrationIDDto: WellRegistrationIDDto;
   
@@ -28,19 +30,27 @@ export class WellRegistrationIdEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.wellRegistrationID = this.route.snapshot.paramMap.get("wellRegistrationID");
-    this.newWellRegistrationIDDto = new WellRegistrationIDDto()
-    this.newWellRegistrationIDDto.WellRegistrationID = this.wellRegistrationID;
+    
+    this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
+    forkJoin({
+      well: this.wellService.getWellDetails(this.wellID),
+    }).subscribe(({ well }) => {
+      this.wellRegistrationID = well.WellRegistrationID;
+      this.newWellRegistrationIDDto = new WellRegistrationIDDto()
+      this.newWellRegistrationIDDto.WellRegistrationID = this.wellRegistrationID;
+      this.cdr.detectChanges();
+    });
+
   }
 
   public onSubmit(editWellRegistrationIDForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.wellService.updateWellRegistrationID(this.wellRegistrationID, this.newWellRegistrationIDDto)
+    this.wellService.updateWellRegistrationID(this.wellID, this.newWellRegistrationIDDto)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editWellRegistrationIDForm.reset();
-        this.router.navigateByUrl("/wells/" + response.WellRegistrationID).then(() => {
+        this.router.navigateByUrl("/wells/" + this.wellID).then(() => {
           this.alertService.pushAlert(new Alert(`Well Registration ID updated.`, AlertContext.Success));
         });
       }
@@ -52,12 +62,3 @@ export class WellRegistrationIdEditComponent implements OnInit {
       );
   }
 }
-
-
- 
-
-
-
-
-
-

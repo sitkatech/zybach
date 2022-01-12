@@ -30,60 +30,60 @@ export class WellService {
     return this.apiService.getFromApi("mapData/wells")
   }
 
-  public getChartData(wellRegistrationID: string): Observable<WellChartDataDto> {
-    return this.apiService.getFromApi(`chartData/${wellRegistrationID}`);
+  public getChartData(wellID: number): Observable<WellChartDataDto> {
+    return this.apiService.getFromApi(`chartData/${wellID}`);
   }
 
-  public getWellDetails(wellRegistrationID: string): Observable<WellDetailDto> {
-    return this.apiService.getFromApi(`wells/${wellRegistrationID}`);
+  public getWellDetails(wellID: number): Observable<WellDetailDto> {
+    return this.apiService.getFromApi(`wells/${wellID}`);
   }
 
   public getWellUses(): Observable<Array<WellUseDto>> {
-    return this.apiService.getFromApi(`wells/wellUses`);
+    return this.apiService.getFromApi(`wellUses`);
   }
 
   public getWellParticipations(): Observable<Array<WellParticipationDto>> {
-    return this.apiService.getFromApi(`wells/wellParticipations`);
+    return this.apiService.getFromApi(`wellParticipations`);
   }
 
-  public updateWellRegistrationID(wellRegistrationID: string, newWellRegistrationIDDto: WellRegistrationIDDto): Observable<WellSimpleDto> {
-    return this.apiService.putToApi(`wells/${wellRegistrationID}/editRegistrationID`, newWellRegistrationIDDto);
+  public updateWellRegistrationID(wellID: number, newWellRegistrationIDDto: WellRegistrationIDDto): Observable<WellSimpleDto> {
+    return this.apiService.putToApi(`wells/${wellID}/editRegistrationID`, newWellRegistrationIDDto);
   }
 
-  public getWellContactDetails(wellRegistrationID: string): Observable<WellContactInfoDto> {
-    return this.apiService.getFromApi(`wells/${wellRegistrationID}/contactInfo`);
+  public getWellContactDetails(wellID: number): Observable<WellContactInfoDto> {
+    return this.apiService.getFromApi(`wells/${wellID}/contactInfo`);
   }
 
-  public updateWellContactDetails(wellRegistrationID: string, wellContactInfoDto: WellContactInfoDto): Observable<any> {
-    return this.apiService.putToApi(`wells/${wellRegistrationID}/contactInfo`, wellContactInfoDto);
+  public updateWellContactDetails(wellID: number, wellContactInfoDto: WellContactInfoDto): Observable<any> {
+    return this.apiService.putToApi(`wells/${wellID}/contactInfo`, wellContactInfoDto);
   }
 
-  public getWellParticipationDetails(wellRegistrationID: string): Observable<WellParticipationInfoDto> {
-    return this.apiService.getFromApi(`wells/${wellRegistrationID}/participationInfo`);
+  public getWellParticipationDetails(wellID: number): Observable<WellParticipationInfoDto> {
+    return this.apiService.getFromApi(`wells/${wellID}/participationInfo`);
   }
 
-  public updateWellParticipationDetails(wellRegistrationID: string, wellParticipationInfoDto: WellParticipationInfoDto): Observable<any> {
-    return this.apiService.putToApi(`wells/${wellRegistrationID}/participationInfo`, wellParticipationInfoDto);
+  public updateWellParticipationDetails(wellID: number, wellParticipationInfoDto: WellParticipationInfoDto): Observable<any> {
+    return this.apiService.putToApi(`wells/${wellID}/participationInfo`, wellParticipationInfoDto);
   }
 
   public getCounties(): Observable<Array<CountyDto>> {
     return this.apiService.getFromApi(`/counties`);
   }
 
-  public getInstallationDetails(wellRegistrationID: string): Observable<InstallationRecordDto[]> {
-    return this.apiService.getFromApi(`wells/${wellRegistrationID}/installation`);
+  public getInstallationDetails(wellID: number): Observable<InstallationRecordDto[]> {
+    return this.apiService.getFromApi(`wells/${wellID}/installation`);
   }
 
-  public getChemigationPermts(wellRegistrationID: string): Observable<Array<ChemigationPermitAnnualRecordDetailedDto>> {
-    return this.apiService.getFromApi(`wells/${wellRegistrationID}/chemigationPermits`);
+  public getChemigationPermts(wellID: number): Observable<Array<ChemigationPermitAnnualRecordDetailedDto>> {
+    return this.apiService.getFromApi(`wells/${wellID}/chemigationPermits`);
   }
 
   public getPhoto(
-    wellRegistrationID: string,
+    wellID: number,
     installationCanonicalName: string,
     photoCanonicalName: any
   ): Observable<any> {
-    const route = `${environment.mainAppApiUrl}/wells/${wellRegistrationID}/installation/${installationCanonicalName}/photo/${photoCanonicalName}`
+    const route = `${environment.mainAppApiUrl}/wells/${wellID}/installation/${installationCanonicalName}/photo/${photoCanonicalName}`
     return this.httpClient.get(route, { responseType: "blob" });
   }
 

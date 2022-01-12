@@ -55,7 +55,7 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult<WaterQualityInspectionSimpleDto> CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
-            var well = Wells.GetByWellRegistrationID(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
+            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
             if (well == null)
             {
                 ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{waterQualityInspectionUpsert.WellRegistrationID}' not found!");
@@ -79,7 +79,7 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            var well = Wells.GetByWellRegistrationID(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
+            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
             if (well == null)
             {
                 ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{waterQualityInspectionUpsert.WellRegistrationID}' not found!");

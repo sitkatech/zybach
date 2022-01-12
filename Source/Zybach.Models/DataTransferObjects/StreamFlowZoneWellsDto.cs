@@ -12,6 +12,7 @@ namespace Zybach.Models.DataTransferObjects
 
     public class WellSummaryDto
     {
+        public int WellID { get; set; }
         public string WellRegistrationID { get; set; }
         public string WellTPID { get; set; }
         public string Description { get; set; }

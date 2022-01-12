@@ -16,7 +16,7 @@
     </div>
     <div class="row container" *ngIf="chemigationPermit">
         <div class="col-12 col-sm-6 label"><strong>Well: </strong></div>
-        <div class="col-12 col-sm-6"><a *ngIf="chemigationPermit.Well" routerLink="/wells/{{chemigationPermit.Well.WellRegistrationID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
+        <div class="col-12 col-sm-6"><a *ngIf="chemigationPermit.Well" routerLink="/wells/{{chemigationPermit.Well.WellID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
         </div>
         <div class="col-12 col-sm-6 label"><strong>Permit Status: </strong></div>
         <div class="col-12 col-sm-6">{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}

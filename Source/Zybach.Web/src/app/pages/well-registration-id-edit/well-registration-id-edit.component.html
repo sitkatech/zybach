@@ -4,7 +4,7 @@
             <a routerLink="/well-map">Wells</a>
         </li>
         <li class="breadcrumb-item">
-            <a routerLink="/wells/{{wellRegistrationID}}">{{wellRegistrationID}}</a>
+            <a routerLink="/wells/{{wellID}}">{{wellRegistrationID}}</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
             Edit Registration ID for Well {{wellRegistrationID}}
@@ -12,7 +12,7 @@
     </ol>
 </nav>
 
-<div class="container" *ngIf="wellRegistrationID">
+<div class="container" *ngIf="wellID">
     <app-alert-display></app-alert-display>
 
     <div class="row mt-2">
@@ -48,7 +48,7 @@
                                     Save
                                 </button>
                                 <a class="btn btn-secondary ml-1"
-                                    routerLink="/wells/{{wellRegistrationID}}">
+                                    routerLink="/wells/{{wellID}}">
                                     Cancel
                                 </a>
                             </div>
