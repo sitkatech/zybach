@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
@@ -40,7 +40,7 @@ import { InstallationRecordDto } from 'src/app/shared/generated/model/installati
 })
 export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dp') mydp: AngularMyDatePickerDirective;
-  
+  @ViewChild('wellLocation') mapContainer;  
   public chartID: string = "wellChart";
 
 
@@ -66,7 +66,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   boundingBox: any;
   tileLayers: any;
   map: LeafletMap;
-  mapID = "wellLocation";
   photoDataUrl: string | ArrayBuffer;
   years: number[];
   legendNames: any[];
@@ -93,10 +92,14 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private sensorService: SensorStatusService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
+    private router: Router,
     private cdr: ChangeDetectorRef,
     private decimalPipe: DecimalPipe,
     private alertService: AlertService
-  ) { }
+  ) {
+    // force route reload whenever params change;
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  }
 
   initDateRange(startDate: Date, endDate: Date) {
     this.dateRange = {
@@ -126,8 +129,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.initMapConstants();
 
-    this.wellID = parseInt(this.route.snapshot.paramMap.get("id"))
-
+    this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.getWellDetails();
@@ -138,8 +140,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     })
   }
 
-  ngOnDestroy() {
-    
+  ngOnDestroy() {    
     this.chartSubscription.unsubscribe();
   }
 
@@ -390,6 +391,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   // Begin section: location map
 
   public ngAfterViewInit(): void {
+    
     LeafletMap.addInitHook("addHandler", "gestureHandling", GestureHandling);
     const mapOptions: MapOptions = {
       maxZoom: this.maxZoom,
@@ -399,7 +401,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       gestureHandling: true,
       fullscreenControl: true
     } as MapOptions;
-    this.map = map(this.mapID, mapOptions);
+    this.map = map(this.mapContainer.nativeElement, mapOptions);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], null);
 
