@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UserService } from './user/user.service';
 import { Observable, race, Subject } from 'rxjs';
-import { filter, first } from 'rxjs/operators';
+import { filter, finalize, first } from 'rxjs/operators';
 import { CookieStorageService } from '../shared/services/cookies/cookie-storage.service';
 import { Router } from '@angular/router';
 import { RoleEnum } from '../shared/models/enums/role.enum';
@@ -21,6 +21,7 @@ export class AuthenticationService {
 
   private _currentUserSetSubject = new Subject<UserDto>();
   private currentUserSetObservable = this._currentUserSetSubject.asObservable();
+  attemptingToCreateUser: any;
 
 
   constructor(private router: Router,
@@ -100,7 +101,10 @@ export class AuthenticationService {
     if (error.status !== 404) {
       this.alertService.pushAlert(new Alert("There was an error logging into the application.", AlertContext.Danger));
       this.router.navigate(['/']);
-    } else {
+    }
+
+    if (!this.attemptingToCreateUser) {
+      this.attemptingToCreateUser = true;
       this.alertService.clearAlerts();
       const newUser = new UserCreateDto({
         FirstName: claims["given_name"],
@@ -111,9 +115,11 @@ export class AuthenticationService {
         UserGuid: claims["sub"],
       });
 
-      this.userService.createNewUser(newUser).subscribe(user => {
+      this.userService.createNewUser(newUser).pipe(
+        finalize(() => this.attemptingToCreateUser = false)
+      ).subscribe(user => {
         this.updateUser(user);
-      })
+      });
     }
   }
 
