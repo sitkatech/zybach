@@ -22,7 +22,7 @@ export class ClearinghouseWaterQualityInspectionDto {
     Laboratory?: string;
     IsReplacement?: boolean;
     RequiresChemigationInspection?: boolean;
-    RequiresWaterQualityInspection?: boolean;
+    WaterQualityInspectionType?: string;
     TownshipRangeSection?: string;
     WellDepth?: number;
     WellParticipation?: string;

@@ -40,7 +40,7 @@ namespace Zybach.EFModels.Entities
                 Laboratory = ClearinghouseConstants.DefaultLaboratory,
                 IsReplacement = waterQualityInspection.Well.IsReplacement,
                 RequiresChemigationInspection = waterQualityInspection.Well.RequiresChemigation,
-                RequiresWaterQualityInspection = waterQualityInspection.Well.RequiresWaterLevelInspection,
+                WaterQualityInspectionType = waterQualityInspection.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName,
                 TownshipRangeSection = waterQualityInspection.Well.TownshipRangeSection,
                 WellDepth = waterQualityInspection.Well.WellDepth,
                 WellParticipation = waterQualityInspection.Well.WellParticipation?.WellParticipationDisplayName,

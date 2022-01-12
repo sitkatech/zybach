@@ -15,7 +15,7 @@ namespace Zybach.Models.DataTransferObjects
         public string Laboratory { get; set; }
         public bool IsReplacement { get; set; }
         public bool RequiresChemigationInspection { get; set; }
-        public bool RequiresWaterQualityInspection { get; set; }
+        public string WaterQualityInspectionType { get; set; }
         public string TownshipRangeSection { get; set; }
         public decimal? WellDepth { get; set; }
         public string? WellParticipation { get; set; }

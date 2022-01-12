@@ -5121,8 +5121,9 @@
           "RequiresChemigationInspection": {
             "type": "boolean"
           },
-          "RequiresWaterQualityInspection": {
-            "type": "boolean"
+          "WaterQualityInspectionType": {
+            "type": "string",
+            "nullable": true
           },
           "TownshipRangeSection": {
             "type": "string",

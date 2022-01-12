@@ -208,21 +208,15 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
         width: 120 
       },
       {
-        headerName: 'Water Quality?', 
-        valueGetter: function (params) {
-          if (params.data.RequiresWaterQualityInspection) {
-            return "Yes";
-          } else {
-            return "No";
-          }
-        },
+        headerName: 'Inspection Type', 
+        field: 'WaterQualityInspectionType',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'RequiresWaterQualityInspection'
+          field: 'WaterQualityInspectionType'
         },
-        sortable: true, 
         resizable: true,
-        width: 120 
+        sortable: true,
+        width: 130 
       },
       { 
         headerName: 'Well Use',
