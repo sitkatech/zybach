@@ -56,7 +56,8 @@ insert into dbo.WaterLevelInspection(WellID, InspectionDate,
 	InspectionNickname
 )
 select w.WellID,
-	bwli.InspectionDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC',
+	case when bwli.InspectionDate is null then bwli.StartDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC'
+		else bwli.InspectionDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' end as InspectionDate,
 	case when bwli.[Status] = '' then null else bwli.[Status] end,
 	case when bwli.MeasuringEquipment = '' then null else bwli.MeasuringEquipment end,
 	bwli.Oil,
@@ -85,7 +86,7 @@ from dbo.BeehiveWaterLevelInspection bwli
 join dbo.Well w on bwli.WellRegistrationID = w.WellRegistrationID
 left join dbo.CropType ct on bwli.Crop = ct.CropTypeDisplayName
 join dbo.[User] u on case when bwli.InspectorUser = 'system' then 'Phil Heimann' when bwli.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwli.InspectorUser end = u.FirstName + ' ' + u.LastName
-where bwli.InspectionDate is not null and bwli.IsPrimary = 1
+where (bwli.InspectionDate is not null or bwli.StartDate is not null) and bwli.IsPrimary = 1
 
 
 Insert into dbo.CustomRichTextType (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)

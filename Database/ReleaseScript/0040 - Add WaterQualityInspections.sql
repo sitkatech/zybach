@@ -70,7 +70,8 @@ InspectionNotes,
 InspectionNickname
 )
 select w.WellID,
-bwqi.InspectionDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as InspectionDate,
+case when bwqi.InspectionDate is null then bwqi.StartDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC'
+	else bwqi.InspectionDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' end as InspectionDate,
 bwqi.Temperature,
 bwqi.PH,
 bwqi.Conductivity,
@@ -100,7 +101,7 @@ from dbo.[BeehiveWaterQualityInspection] bwqi
 join dbo.Well w on bwqi.WellRegistrationID = w.WellRegistrationID
 left join dbo.CropType ct on bwqi.Crop = ct.CropTypeDisplayName
 join dbo.[User] u on case when bwqi.InspectorUser = 'system' then 'Phil Heimann' when bwqi.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwqi.InspectorUser end = u.FirstName + ' ' + u.LastName
-where bwqi.InspectionDate is not null
+where bwqi.InspectionDate is not null or bwqi.StartDate is not null
 
 update dbo.WaterQualityInspection
 set WaterQualityInspectionTypeID = 2
