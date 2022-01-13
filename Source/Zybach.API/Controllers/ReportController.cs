@@ -84,7 +84,7 @@ namespace Zybach.API.Controllers
         public async Task<ActionResult<ReportTemplateDto>> UpdateReport([FromRoute] int reportTemplateID,
             [FromForm] ReportTemplateUpdateDto reportUpdateDto)
         {
-            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
+            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateIDWithTracking(_dbContext, reportTemplateID);
             if (ThrowNotFound(reportTemplate, "ReportTemplate", reportTemplateID, out var actionResult))
             {
                 return actionResult;
