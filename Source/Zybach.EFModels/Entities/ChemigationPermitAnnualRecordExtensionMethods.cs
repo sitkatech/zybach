@@ -18,6 +18,8 @@ namespace Zybach.EFModels.Entities
                 PivotName = chemigationPermitAnnualRecord.PivotName,
                 ChemigationInjectionUnitTypeID = chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID,
                 ChemigationInjectionUnitTypeName = chemigationPermitAnnualRecord.ChemigationInjectionUnitType.ChemigationInjectionUnitTypeDisplayName,
+                ChemigationPermitAnnualRecordFeeTypeID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeTypeID,
+                ChemigationPermitAnnualRecordFeeTypeName = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeType?.ChemigationPermitAnnualRecordFeeTypeDisplayName,
                 ApplicantName = chemigationPermitAnnualRecord.ApplicantName,
                 ApplicantFirstName = chemigationPermitAnnualRecord.ApplicantFirstName,
                 ApplicantLastName = chemigationPermitAnnualRecord.ApplicantLastName,

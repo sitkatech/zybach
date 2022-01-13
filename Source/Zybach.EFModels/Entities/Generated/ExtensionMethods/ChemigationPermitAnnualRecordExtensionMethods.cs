@@ -34,7 +34,8 @@ namespace Zybach.EFModels.Entities
                 TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection,
                 ApplicantCompany = chemigationPermitAnnualRecord.ApplicantCompany,
                 AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes,
-                DateApproved = chemigationPermitAnnualRecord.DateApproved
+                DateApproved = chemigationPermitAnnualRecord.DateApproved,
+                ChemigationPermitAnnualRecordFeeType = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeType?.AsDto()
             };
             DoCustomMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordDto);
             return chemigationPermitAnnualRecordDto;
@@ -67,7 +68,8 @@ namespace Zybach.EFModels.Entities
                 TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection,
                 ApplicantCompany = chemigationPermitAnnualRecord.ApplicantCompany,
                 AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes,
-                DateApproved = chemigationPermitAnnualRecord.DateApproved
+                DateApproved = chemigationPermitAnnualRecord.DateApproved,
+                ChemigationPermitAnnualRecordFeeTypeID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeTypeID
             };
             DoCustomSimpleDtoMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordSimpleDto);
             return chemigationPermitAnnualRecordSimpleDto;

@@ -4627,6 +4627,15 @@
             "type": "string",
             "nullable": true
           },
+          "ChemigationPermitAnnualRecordFeeTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordFeeTypeName": {
+            "type": "string",
+            "nullable": true
+          },
           "ApplicantFirstName": {
             "type": "string",
             "nullable": true
@@ -4810,6 +4819,31 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "ChemigationPermitAnnualRecordFeeType": {
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordFeeTypeDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordFeeTypeDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordFeeTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordFeeTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordFeeTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FeeAmount": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

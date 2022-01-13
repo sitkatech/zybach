@@ -145,7 +145,7 @@ where PermitNumber = '1913' and ChemigationYear != 2019
 group by PermitNumber, c.ChemigationCountyID, w.WellID
 order by PermitNumber, c.ChemigationCountyID, w.WellID
 
-insert into dbo.ChemigationPermitAnnualRecord([ChemigationPermitID], [RecordYear], [ChemigationPermitAnnualRecordStatusID], [PivotName], [ChemigationInjectionUnitTypeID], [ApplicantFirstName], [ApplicantLastName], [ApplicantCompany], [ApplicantMailingAddress], [ApplicantCity], [ApplicantState], [ApplicantZipCode], ApplicantPhone, ApplicantMobilePhone, [DateReceived], [DatePaid], NDEEAmount, TownshipRangeSection, AnnualNotes, DateApproved)
+insert into dbo.ChemigationPermitAnnualRecord([ChemigationPermitID], [RecordYear], [ChemigationPermitAnnualRecordStatusID], [PivotName], [ChemigationInjectionUnitTypeID], [ApplicantFirstName], [ApplicantLastName], [ApplicantCompany], [ApplicantMailingAddress], [ApplicantCity], [ApplicantState], [ApplicantZipCode], ApplicantPhone, ApplicantMobilePhone, [DateReceived], [DatePaid], NDEEAmount, TownshipRangeSection, AnnualNotes, DateApproved, ChemigationPermitAnnualRecordFeeTypeID)
 select cp.ChemigationPermitID, case when bp.PermitNumber = '1944' then 2022 else bp.ChemigationYear end as RecordYear, 
 case when bp.PermitNumber = '1944' then 1 when bp.[Status] in ('Inactive', 'Perm Inact') then 5 
 	when bp.[Status] = 'Pending' and bp.ChemigationYear < 2021 then 5 
@@ -158,6 +158,7 @@ case when bp.PermitNumber = '1944' then 1 when bp.[Status] in ('Inactive', 'Perm
 , DEQAmount
 , ltrim(rtrim(bp.[Township] + ' ' + bp.[Range] + ' ' + bp.Section + ' ' + bp.[Quarter])) as TownshipRangeSection, bp.Note as AnnualNotes
 , bp.ApprovedDate at TIME ZONE 'Central Standard Time' AT TIME ZONE 'UTC' as DateApproved
+, case when bp.[Permit Type] = 'RENEWAL ($20) Fee' then 2 when bp.[Permit Type] = 'NEW ($40) Fee' then 1  when bp.[Permit Type] = 'EMERGENCY ($100) Fee' then 3 else null end
 from dbo.BeehivePermit bp
 join dbo.ChemigationPermit cp on cast(bp.PermitNumber as int) = cp.ChemigationPermitNumber
 join dbo.BeehiveWell bw on bp.WellFeatureID = bw.WellFeatureID

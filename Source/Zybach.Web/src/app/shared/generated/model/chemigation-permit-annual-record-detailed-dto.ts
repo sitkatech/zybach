@@ -24,6 +24,8 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     PivotName?: string;
     ChemigationInjectionUnitTypeID?: number;
     ChemigationInjectionUnitTypeName?: string;
+    ChemigationPermitAnnualRecordFeeTypeID?: number;
+    ChemigationPermitAnnualRecordFeeTypeName?: string;
     ApplicantFirstName?: string;
     ApplicantLastName?: string;
     ApplicantCompany?: string;

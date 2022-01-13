@@ -14,6 +14,8 @@ namespace Zybach.Models.DataTransferObjects
         public string PivotName { get; set; }
         public int ChemigationInjectionUnitTypeID { get; set; }
         public string ChemigationInjectionUnitTypeName { get; set; }
+        public int? ChemigationPermitAnnualRecordFeeTypeID { get; set; }
+        public string ChemigationPermitAnnualRecordFeeTypeName { get; set; }
         public string ApplicantFirstName { get; set; }
         public string ApplicantLastName { get; set; }
         public string ApplicantCompany { get; set; }

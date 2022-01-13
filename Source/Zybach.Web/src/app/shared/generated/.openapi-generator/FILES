@@ -21,6 +21,7 @@ model/chemigation-permit-annual-record-chemical-formulation-simple-dto.ts
 model/chemigation-permit-annual-record-chemical-formulation-upsert-dto.ts
 model/chemigation-permit-annual-record-detailed-dto.ts
 model/chemigation-permit-annual-record-dto.ts
+model/chemigation-permit-annual-record-fee-type-dto.ts
 model/chemigation-permit-annual-record-status-dto.ts
 model/chemigation-permit-annual-record-upsert-dto.ts
 model/chemigation-permit-detailed-dto.ts
