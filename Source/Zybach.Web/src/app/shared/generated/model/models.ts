@@ -21,6 +21,7 @@ export * from '././chemigation-permit-annual-record-chemical-formulation-simple-
 export * from '././chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 export * from '././chemigation-permit-annual-record-detailed-dto';
 export * from '././chemigation-permit-annual-record-dto';
+export * from '././chemigation-permit-annual-record-fee-type-dto';
 export * from '././chemigation-permit-annual-record-status-dto';
 export * from '././chemigation-permit-annual-record-upsert-dto';
 export * from '././chemigation-permit-detailed-dto';

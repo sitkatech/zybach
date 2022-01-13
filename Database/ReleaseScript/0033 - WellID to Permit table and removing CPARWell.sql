@@ -38,8 +38,18 @@ create table dbo.ChemigationInjectionUnitType
 	ChemigationInjectionUnitTypeDisplayName varchar(50) not null constraint AK_ChemigationInjectionUnitType_ChemigationInjectionUnitTypeDisplayName unique
 )
 
+create table dbo.ChemigationPermitAnnualRecordFeeType
+(
+	ChemigationPermitAnnualRecordFeeTypeID int not null constraint PK_ChemigationPermitAnnualRecordFeeType_ChemigationPermitAnnualRecordFeeTypeID primary key,
+	ChemigationPermitAnnualRecordFeeTypeName varchar(50) not null constraint AK_ChemigationPermitAnnualRecordFeeType_ChemigationPermitAnnualRecordFeeTypeName unique,
+	ChemigationPermitAnnualRecordFeeTypeDisplayName varchar(50) not null constraint AK_ChemigationPermitAnnualRecordFeeType_ChemigationPermitAnnualRecordFeeTypeDisplayName unique,
+	FeeAmount money not null
+)
+
+
 alter table dbo.ChemigationPermitAnnualRecord add constraint FK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordStatus_ChemigationPermitAnnualRecordStatusID foreign key (ChemigationPermitAnnualRecordStatusID) references dbo.ChemigationPermitAnnualRecordStatus(ChemigationPermitAnnualRecordStatusID)
 alter table dbo.ChemigationPermitAnnualRecord add constraint FK_ChemigationPermitAnnualRecord_ChemigationInjectionUnitType_ChemigationInjectionUnitTypeID foreign key (ChemigationInjectionUnitTypeID) references dbo.ChemigationInjectionUnitType(ChemigationInjectionUnitTypeID)
+alter table dbo.ChemigationPermitAnnualRecord add ChemigationPermitAnnualRecordFeeTypeID int null constraint FK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordFeeType_ChemigationPermitAnnualRecordFeeTypeID foreign key (ChemigationPermitAnnualRecordFeeTypeID) references dbo.ChemigationPermitAnnualRecordFeeType(ChemigationPermitAnnualRecordFeeTypeID)
 GO
 
 INSERT INTO dbo.ChemigationPermitAnnualRecordStatus(ChemigationPermitAnnualRecordStatusID, ChemigationPermitAnnualRecordStatusName, ChemigationPermitAnnualRecordStatusDisplayName)
@@ -58,3 +68,9 @@ VALUES
 INSERT INTO dbo.ChemigationPermitAnnualRecordStatus(ChemigationPermitAnnualRecordStatusID, ChemigationPermitAnnualRecordStatusName, ChemigationPermitAnnualRecordStatusDisplayName)
 VALUES
 (5, 'Canceled', 'Canceled')
+
+INSERT INTO dbo.ChemigationPermitAnnualRecordFeeType(ChemigationPermitAnnualRecordFeeTypeID, ChemigationPermitAnnualRecordFeeTypeName, ChemigationPermitAnnualRecordFeeTypeDisplayName, FeeAmount)
+VALUES
+(1, 'New', 'New ($40)', 40),
+(2, 'Renewal', 'Renewal ($20)', 20),
+(3, 'Emergency', 'Emergency ($100)', 100)

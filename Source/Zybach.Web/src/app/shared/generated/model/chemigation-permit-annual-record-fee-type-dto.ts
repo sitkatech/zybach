@@ -10,10 +10,11 @@
  * Do not edit the class manually.
  */
 
-export class SearchSummaryDto { 
-    ObjectName?: string;
-    ObjectType?: string;
-    WellID?: number;
+export class ChemigationPermitAnnualRecordFeeTypeDto { 
+    ChemigationPermitAnnualRecordFeeTypeID?: number;
+    ChemigationPermitAnnualRecordFeeTypeName?: string;
+    ChemigationPermitAnnualRecordFeeTypeDisplayName?: string;
+    FeeAmount?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -19,8 +19,8 @@ begin
 	where cp.ChemigationPermitStatusID = 1
 	group by cp.ChemigationPermitID having max(RecordYear) = @recordYear - 1
 
-	insert into dbo.ChemigationPermitAnnualRecord(ChemigationPermitID, RecordYear, TownshipRangeSection, ChemigationPermitAnnualRecordStatusID, PivotName, ChemigationInjectionUnitTypeID, ApplicantCompany, ApplicantFirstName, ApplicantLastName, ApplicantMailingAddress, ApplicantCity, ApplicantState, ApplicantZipCode, ApplicantPhone, ApplicantMobilePhone, ApplicantEmail, NDEEAmount)
-	select cpar.ChemigationPermitID, @recordYear, cpar.TownshipRangeSection, 1 as ChemigationPermitAnnualRecordStatusID, cpar.PivotName, cpar.ChemigationInjectionUnitTypeID, cpar.ApplicantCompany, cpar.ApplicantFirstName, cpar.ApplicantLastName, cpar.ApplicantMailingAddress, cpar.ApplicantCity, cpar.ApplicantState, cpar.ApplicantZipCode, cpar.ApplicantPhone, cpar.ApplicantMobilePhone, cpar.ApplicantEmail, 2.0 -- renewal amount
+	insert into dbo.ChemigationPermitAnnualRecord(ChemigationPermitID, RecordYear, TownshipRangeSection, ChemigationPermitAnnualRecordStatusID, PivotName, ChemigationInjectionUnitTypeID, ApplicantCompany, ApplicantFirstName, ApplicantLastName, ApplicantMailingAddress, ApplicantCity, ApplicantState, ApplicantZipCode, ApplicantPhone, ApplicantMobilePhone, ApplicantEmail, ChemigationPermitAnnualRecordFeeTypeID, NDEEAmount)
+	select cpar.ChemigationPermitID, @recordYear, cpar.TownshipRangeSection, 1 as ChemigationPermitAnnualRecordStatusID, cpar.PivotName, cpar.ChemigationInjectionUnitTypeID, cpar.ApplicantCompany, cpar.ApplicantFirstName, cpar.ApplicantLastName, cpar.ApplicantMailingAddress, cpar.ApplicantCity, cpar.ApplicantState, cpar.ApplicantZipCode, cpar.ApplicantPhone, cpar.ApplicantMobilePhone, cpar.ApplicantEmail, 2 as ChemigationPermitAnnualRecordFeeTypeID, 2.0 -- renewal amount
 	from dbo.ChemigationPermit cp
 	join #chemigationPermitsToRenew a on cp.ChemigationPermitID = a.ChemigationPermitID
 	join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.ChemigationPermitID and cpar.RecordYear = a.LatestRecordYear

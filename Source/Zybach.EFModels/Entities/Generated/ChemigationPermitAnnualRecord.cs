@@ -60,6 +60,7 @@ namespace Zybach.EFModels.Entities
         public string AnnualNotes { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DateApproved { get; set; }
+        public int? ChemigationPermitAnnualRecordFeeTypeID { get; set; }
 
         [ForeignKey(nameof(ChemigationInjectionUnitTypeID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]
@@ -67,6 +68,9 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(ChemigationPermitID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]
         public virtual ChemigationPermit ChemigationPermit { get; set; }
+        [ForeignKey(nameof(ChemigationPermitAnnualRecordFeeTypeID))]
+        [InverseProperty("ChemigationPermitAnnualRecords")]
+        public virtual ChemigationPermitAnnualRecordFeeType ChemigationPermitAnnualRecordFeeType { get; set; }
         [ForeignKey(nameof(ChemigationPermitAnnualRecordStatusID))]
         [InverseProperty("ChemigationPermitAnnualRecords")]
         public virtual ChemigationPermitAnnualRecordStatus ChemigationPermitAnnualRecordStatus { get; set; }

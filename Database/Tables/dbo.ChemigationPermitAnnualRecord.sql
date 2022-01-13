@@ -25,6 +25,7 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecord](
 	[ApplicantCompany] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[AnnualNotes] [varchar](500) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[DateApproved] [datetime] NULL,
+	[ChemigationPermitAnnualRecordFeeTypeID] [int] NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationPermitAnnualRecordID] ASC
@@ -46,6 +47,11 @@ ALTER TABLE [dbo].[ChemigationPermitAnnualRecord]  WITH CHECK ADD  CONSTRAINT [F
 REFERENCES [dbo].[ChemigationPermit] ([ChemigationPermitID])
 GO
 ALTER TABLE [dbo].[ChemigationPermitAnnualRecord] CHECK CONSTRAINT [FK_ChemigationPermitAnnualRecord_ChemigationPermit_ChemigationPermitID]
+GO
+ALTER TABLE [dbo].[ChemigationPermitAnnualRecord]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordFeeType_ChemigationPermitAnnualRecordFeeTypeID] FOREIGN KEY([ChemigationPermitAnnualRecordFeeTypeID])
+REFERENCES [dbo].[ChemigationPermitAnnualRecordFeeType] ([ChemigationPermitAnnualRecordFeeTypeID])
+GO
+ALTER TABLE [dbo].[ChemigationPermitAnnualRecord] CHECK CONSTRAINT [FK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordFeeType_ChemigationPermitAnnualRecordFeeTypeID]
 GO
 ALTER TABLE [dbo].[ChemigationPermitAnnualRecord]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermitAnnualRecord_ChemigationPermitAnnualRecordStatus_ChemigationPermitAnnualRecordStatusID] FOREIGN KEY([ChemigationPermitAnnualRecordStatusID])
 REFERENCES [dbo].[ChemigationPermitAnnualRecordStatus] ([ChemigationPermitAnnualRecordStatusID])

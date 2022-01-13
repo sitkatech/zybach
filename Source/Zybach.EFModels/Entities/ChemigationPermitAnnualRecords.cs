@@ -24,6 +24,7 @@ namespace Zybach.EFModels.Entities
                     .ThenInclude(x => x.Well)
                 .Include(x => x.ChemigationPermitAnnualRecordStatus)
                 .Include(x => x.ChemigationInjectionUnitType)
+                .Include(x => x.ChemigationPermitAnnualRecordFeeType)
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalUnit)
                 .Include(x => x.ChemigationPermitAnnualRecordChemicalFormulations).ThenInclude(x => x.ChemicalFormulation)
                 .Include(x => x.ChemigationPermitAnnualRecordApplicators)
@@ -38,12 +39,6 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.CropType)
                 .Include(x => x.ChemigationInspections).ThenInclude(x => x.InspectorUser)
                 .AsNoTracking();
-        }
-
-        public static List<ChemigationPermitAnnualRecordDto> ListAsDto(ZybachDbContext dbContext)
-        {
-            return GetChemigationPermitAnnualRecordsImpl(dbContext)
-                .Select(x => x.AsDto()).ToList();
         }
 
         public static List<ChemigationPermitAnnualRecordDetailedDto> ListAsDetailedDto(ZybachDbContext dbContext)
