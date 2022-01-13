@@ -50,7 +50,7 @@ values
 (4, 'Monitoring', 'Monitoring')
 
 update dbo.Well
-set RequiresChemigation = 0, RequiresWaterLevelInspection = 0, IsReplacement = 0
+set RequiresChemigation = 0, RequiresWaterLevelInspection = 0, IsReplacement = 0, LastUpdateDate = GETUTCDATE()
 
 alter table dbo.Well alter column RequiresChemigation bit not null
 alter table dbo.Well alter column RequiresWaterLevelInspection bit not null
@@ -64,6 +64,10 @@ where OwnerZip = '68509.000000000000000000'
 update dbo.BeehiveWell
 set OwnerZip = null
 where OwnerZip = '0.000000000000000000'
+
+update dbo.Well
+set WellGeometry = geometry::STGeomFromText('POINT (101.1857 40.9267)', 4326)
+where WellRegistrationID = 'G-069878'
 
 update w
 set w.OwnerName = bw.OwnerName, w.OwnerAddress = bw.OwnerAddress, w.OwnerCity = bw.OwnerCity, w.OwnerState = bw.OwnerState, w.OwnerZipCode = bw.OwnerZip
@@ -442,3 +446,13 @@ select w.WellID, 1
 from dbo.Well w
 where w.WellRegistrationID = 'Kelly-1'
 
+
+update dbo.Well
+set RequiresWaterLevelInspection = 1
+where WellRegistrationID = 'G-048520'
+
+
+insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTypeID)
+select w.WellID, 2
+from dbo.Well w
+where w.WellRegistrationID = 'G-107985'
