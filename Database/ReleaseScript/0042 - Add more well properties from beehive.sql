@@ -110,9 +110,7 @@ where bw.WellRegistrationID not in
 , 'G-069354'
 
 , 'G-048825'
-, 'G-056876'
 , 'G-064390'
-, 'G-120728'
 )
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bw.WellRegistrationID not in
@@ -156,9 +154,7 @@ and bw.WellRegistrationID not in
 , 'G-069354'
 
 , 'G-048825'
-, 'G-056876'
 , 'G-064390'
-, 'G-120728'
 )
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bw.WellRegistrationID not in
@@ -202,9 +198,7 @@ and bw.WellRegistrationID not in
 , 'G-069354'
 
 , 'G-048825'
-, 'G-056876'
 , 'G-064390'
-, 'G-120728'
 )
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bw.WellRegistrationID not in
@@ -456,3 +450,32 @@ insert into dbo.WellWaterQualityInspectionType(WellID, WaterQualityInspectionTyp
 select w.WellID, 2
 from dbo.Well w
 where w.WellRegistrationID = 'G-107985'
+
+
+
+update w
+set w.OwnerName = 'L & W, Inc', w.OwnerAddress = '658 Road West F South', w.OwnerCity = 'Brule', w.OwnerState = 'NE', w.OwnerZipCode = '69127'
+, w.IsReplacement = 0, w.WellDepth = 300
+, w.RequiresChemigation = 1
+, w.RequiresWaterLevelInspection = 0
+, w.Notes = 'http://data.dnr.ne.gov/Wells/MapConnector.aspx?wellid=G-048825'
+, w.CountyID = 2
+, w.TownshipRangeSection = '12 39W 6'
+, w.WellNickName = '123906 (L & W)(NW)'
+
+from dbo.Well w
+where w.WellRegistrationID = 'G-048825'
+
+
+update w
+set w.OwnerName = 'McPheeters, LTD', w.OwnerAddress = '261185 S McNickle Rd', w.OwnerCity = 'Gothenburg', w.OwnerState = 'NE', w.OwnerZipCode = '69138'
+, w.IsReplacement = 0, w.WellDepth = 320
+, w.RequiresChemigation = 1
+, w.RequiresWaterLevelInspection = 0
+, w.Notes = 'http://data.dnr.ne.gov/Wells/MapConnector.aspx?wellid=G-064390'
+, w.CountyID = 3
+, w.TownshipRangeSection = '12 27W 22'
+, w.WellNickName = '122722 (McPheeters)(NE)'
+
+from dbo.Well w
+where w.WellRegistrationID = 'G-064390'
