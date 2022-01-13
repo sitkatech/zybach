@@ -103,12 +103,12 @@ namespace Zybach.API.Controllers
                 _dbContext.FileResources.Add(fileResource);
             }
 
-            ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
-            if (!reportIsValid)
-            {
-                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
-                return BadRequest(errorMessageAndSourceCode);
-            }
+            //ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            //if (!reportIsValid)
+            //{
+            //    var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+            //    return BadRequest(errorMessageAndSourceCode);
+            //}
 
             var updatedReportTemplateDto = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
             return Ok(updatedReportTemplateDto);
