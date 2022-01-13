@@ -1,5 +1,5 @@
 declare @dateCreated datetime
-set @dateCreated = '12/9/2021'
+set @dateCreated = GETUTCDATE()
 update dbo.BeehiveWell
 set [Long/Lat] = '-101.370669927, 41.1704551546'
 where WellRegistrationID = 'G-038284'
@@ -16,9 +16,7 @@ and bw.WellRegistrationID not in
 , 'G-102628'
 
 , 'G-048825'
-, 'G-056876'
 , 'G-064390'
-, 'G-120728'
 , 'Kelly-1'
 )
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
