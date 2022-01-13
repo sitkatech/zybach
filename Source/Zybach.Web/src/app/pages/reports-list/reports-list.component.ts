@@ -44,6 +44,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
       this.reportTemplatesGrid?.api.showLoadingOverlay();
       this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
         this.rowData = reportTemplates;
+        this.reportTemplatesGrid.api.sizeColumnsToFit();
         this.reportTemplatesGrid.api.hideOverlay();
         this.cdr.detectChanges();
       });
@@ -68,15 +69,15 @@ export class ReportsListComponent implements OnInit, OnDestroy {
             }
             return 0;
           },
-          sortable: true, filter: true, width: 500
+          sortable: true, filter: true, width: 300
         },
-        { headerName: 'Description', field: 'Description', sortable: true, filter: true, width: 500 },
+        { headerName: 'Description', field: 'Description', sortable: true, filter: true, width: 400 },
         { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', 
           filterFramework: CustomDropdownFilterComponent,
           filterParams: {
             field: 'ReportTemplateModel.ReportTemplateModelDisplayName'
           },
-          sortable: true, width: 268 },
+          sortable: true, width: 200 },
         {
           headerName: 'Template File', valueGetter: function (params: any) {
             return { LinkValue: `${mainAppApiUrl}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
@@ -96,7 +97,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
             }
             return 0;
           },
-          sortable: true, filter: true, width: 500
+          sortable: true, filter: true, width: 400
         },
       ];
 

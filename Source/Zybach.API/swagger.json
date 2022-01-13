@@ -2049,9 +2049,13 @@
                     "format": "binary"
                   },
                   "DisplayName": {
+                    "maxLength": 50,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "Description": {
+                    "maxLength": 250,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "ReportTemplateModelID": {
@@ -2122,9 +2126,13 @@
                     "format": "binary"
                   },
                   "DisplayName": {
+                    "maxLength": 50,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "Description": {
+                    "maxLength": 250,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "ReportTemplateModelID": {
