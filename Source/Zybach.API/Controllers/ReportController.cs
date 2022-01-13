@@ -78,6 +78,8 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("api/reportTemplates/{reportTemplateID}")]
+        [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]
         [AdminFeature]
         public async Task<ActionResult<ReportTemplateDto>> UpdateReport([FromRoute] int reportTemplateID,
             [FromForm] ReportTemplateUpdateDto reportUpdateDto)
@@ -100,11 +102,17 @@ namespace Zybach.API.Controllers
 
                 _dbContext.FileResources.Add(fileResource);
             }
-        
+
+            ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            if (!reportIsValid)
+            {
+                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+                return BadRequest(errorMessageAndSourceCode);
+            }
+
             var updatedReportTemplateDto = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
             return Ok(updatedReportTemplateDto);
         }
-
 
         private ReportTemplateDto CreateNew(ZybachDbContext dbContext, ReportTemplateNewDto reportTemplateNewDto, FileResource newFileResource)
         {

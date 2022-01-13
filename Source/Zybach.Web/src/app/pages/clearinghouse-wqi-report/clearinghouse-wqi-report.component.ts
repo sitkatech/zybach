@@ -57,7 +57,10 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
             return "-";
           }
         },
-        filter: 'agNumberColumnFilter',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Year'
+        },
         resizable: true,
         sortable: true,
         width: 100
