@@ -148,7 +148,9 @@
                     placeholder="Registration #" (click)="getSearchSuggestions()"> -->
                 <p-autoComplete #geoOptixSearch field="Name" placeholder="Search..." emptyMessage="No Results"
                     [(ngModel)]="text" [suggestions]="searchSuggestions" (completeMethod)="search($event)"
-                    (onFocus)="reFocus(geoOptixSearch)" (onSelect)="select($event)" type="search">
+                    (onFocus)="reFocus(geoOptixSearch)" (onSelect)="select($event)" type="search"
+                    minLength="3"
+                    >
                     <ng-template let-result pTemplate="item">
                         <div style="border-bottom:1px solid #D5D5D5">
                             <div class="objectType">
