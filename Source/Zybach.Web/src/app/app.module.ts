@@ -79,6 +79,7 @@ import { WellContactEditComponent } from './pages/well-contact-edit/well-contact
 import { WellParticipationEditComponent } from './pages/well-participation-edit/well-participation-edit.component';
 import { WellRegistrationIdEditComponent } from './pages/well-registration-id-edit/well-registration-id-edit.component';
 import { ClearinghouseWqiReportComponent } from './pages/clearinghouse-wqi-report/clearinghouse-wqi-report.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -156,7 +157,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
       positionClass: "toast-top-right"
     }),
     AngularMyDatePickerModule,
-    NgSelectModule
+    NgSelectModule,
+    NgxMaskModule.forRoot(),
   ],  
   providers: [
     CookieService,

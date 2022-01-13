@@ -22,6 +22,7 @@ import { WaterYearSelectComponent } from './components/water-year-select/water-y
 import { CustomDropdownFilterComponent } from './components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
 import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,7 @@ import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pi
         CKEditorModule,
         NgbModule,
         AutoCompleteModule,
+        NgxMaskModule.forChild(),
     ],
     exports: [
         AlertDisplayComponent,

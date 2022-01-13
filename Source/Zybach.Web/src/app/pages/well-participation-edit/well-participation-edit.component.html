@@ -104,7 +104,7 @@
                                         <label><strong>Clearinghouse ID: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="number" step="1" class="form-control" name="Clearinghouse"
+                                        <input type="text" class="form-control" name="Clearinghouse" mask="0000000000"
                                         [(ngModel)]="wellParticipationInfo.Clearinghouse" placeholder="Clearinghouse ID" />
                                     </div>
 
@@ -120,7 +120,7 @@
                                         <label><strong>Site Number: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="number" step="1" class="form-control" name="SiteNumber"
+                                        <input type="text" class="form-control" name="SiteNumber" mask="0000000000"
                                         [(ngModel)]="wellParticipationInfo.SiteNumber" placeholder="Site Number" />
                                     </div>
 
@@ -142,7 +142,7 @@
                                         <label><strong>Well Depth: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="number" step="1" class="form-control" name="WellDepth"
+                                        <input type="text" class="form-control" name="WellDepth" mask="000000.0000"
                                         [(ngModel)]="wellParticipationInfo.WellDepth" placeholder="Well Depth" />
                                     </div>
 
@@ -158,7 +158,7 @@
                                         <label><strong>Screen Depth: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="number" step="1" class="form-control" name="ScreenDepth"
+                                        <input type="text" class="form-control" name="ScreenDepth" mask="000000.0000"
                                         [(ngModel)]="wellParticipationInfo.ScreenDepth" placeholder="Screen Depth" />
                                     </div>
 
@@ -166,7 +166,7 @@
                                         <label><strong>Page Number: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="number" step="1" class="form-control" name="PageNumber"
+                                        <input type="text" class="form-control" name="PageNumber" mask="0000000000"
                                         [(ngModel)]="wellParticipationInfo.PageNumber" placeholder="Page #" />
                                     </div>
 

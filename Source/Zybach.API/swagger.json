@@ -7320,6 +7320,9 @@
             "type": "boolean"
           },
           "WellDepth": {
+            "maximum": 999999.9999,
+            "minimum": 0,
+            "pattern": "^\\d{0,6}\\.?\\d{0,4}|\\.\\d{0,4}$",
             "type": "number",
             "format": "double",
             "nullable": true
@@ -7331,6 +7334,7 @@
             "nullable": true
           },
           "PageNumber": {
+            "pattern": "^\\d+$",
             "type": "integer",
             "format": "int32",
             "nullable": true
@@ -7354,6 +7358,7 @@
             "nullable": true
           },
           "ScreenDepth": {
+            "pattern": "^\\d{0,6}\\.?\\d{0,4}|\\.\\d{0,4}$",
             "type": "number",
             "format": "double",
             "nullable": true
