@@ -908,6 +908,44 @@
         }
       }
     },
+    "/api/chemigationPermitAnnualRecordFeeTypes": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/chemigationPermitAnnualRecordStatuses": {
       "get": {
         "tags": [
@@ -7334,6 +7372,8 @@
             "nullable": true
           },
           "PageNumber": {
+            "maximum": 2147483647,
+            "minimum": 0,
             "pattern": "^\\d+$",
             "type": "integer",
             "format": "int32",
@@ -7358,6 +7398,8 @@
             "nullable": true
           },
           "ScreenDepth": {
+            "maximum": 999999.9999,
+            "minimum": 0,
             "pattern": "^\\d{0,6}\\.?\\d{0,4}|\\.\\d{0,4}$",
             "type": "number",
             "format": "double",
