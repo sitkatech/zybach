@@ -24,7 +24,7 @@ namespace Zybach.Models.DataTransferObjects
         [StringLength(100, ErrorMessage = "Clearinghouse cannot exceed 100 characters. ")]
         public string Clearinghouse { get; set; }
         [RegularExpression(@"^\d+$", ErrorMessage = "Page number must be a positive number")]
-        [Range(typeof(int), "0", "2,147,483,647", ErrorMessage = "Page number must be a positive number")]
+        [Range(typeof(int), "0", "2147483647", ErrorMessage = "Page number must be a positive number")]
         public int? PageNumber { get; set; }
         [StringLength(100, ErrorMessage = "Site Name cannot exceed 100 characters. ")]
         public string SiteName { get; set; }
