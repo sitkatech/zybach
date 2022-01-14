@@ -30,7 +30,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   public requiredFileIsUploaded: boolean = false;
 
   public displayErrors: any = {};
-  public displayFileErrors: any = {};
+  public displayFileErrors: boolean = false;
 
   public fileName: string;
 
@@ -90,11 +90,11 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
     this.displayErrors = false;
     this.requiredFileIsUploaded = true;
 
-    // if (file && file.name.split(".").pop().toUpperCase() != "DOCX") {
-    //   this.displayFileErrors = true;
-    // } else {
-    //   this.displayFileErrors = false;
-    // }
+    if (file && file.name.split(".").pop().toUpperCase() != "DOCX") {
+      this.displayFileErrors = true;
+    } else {
+      this.displayFileErrors = false;
+    }
 
     this.cdr.detectChanges();
   }
