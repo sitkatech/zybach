@@ -161,15 +161,17 @@
 
                             <div class="row col-12">
                                 <div class="col-6 text-right">
-                                    <p><strong>Permit Type: </strong></p>
+                                    <p><strong>Fee Type: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <p *ngIf="currentYearAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName">
+                                    <p *ngIf="currentYearAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName; else noFeeType">
                                         {{ currentYearAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName }}
                                     </p>
-                                    <em *ngIf="!currentYearAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName" class="text-muted">
-                                        N/A
-                                    </em>
+                                    <ng-template #noFeeType>
+                                        <em class="text-muted">
+                                            N/A
+                                        </em>
+                                    </ng-template>
                                 </div>
                             </div>
 
