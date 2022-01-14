@@ -161,6 +161,22 @@
 
                             <div class="row col-12">
                                 <div class="col-6 text-right">
+                                    <p><strong>Fee Type: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p *ngIf="currentYearAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName; else noFeeType">
+                                        {{ currentYearAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName }}
+                                    </p>
+                                    <ng-template #noFeeType>
+                                        <em class="text-muted">
+                                            N/A
+                                        </em>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
                                     <p><strong>NDEE Amount: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">

@@ -8,6 +8,8 @@ namespace Zybach.Models.DataTransferObjects
     {
         [Required]
         public int ChemigationPermitAnnualRecordStatusID { get; set; }
+        [Required]
+        public int ChemigationPermitAnnualRecordFeeTypeID { get; set; }
         public string ApplicantFirstName { get; set; }
         public string ApplicantLastName { get; set; }
         public string ApplicantCompany { get; set; }

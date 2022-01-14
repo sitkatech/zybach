@@ -8,6 +8,7 @@ import { ChemigationPermitAnnualRecordStatusDto } from '../../generated/model/ch
 import { ChemigationPermitAnnualRecordUpsertDto } from '../../generated/model/chemigation-permit-annual-record-upsert-dto';
 import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 import { States } from '../../models/enums/states.enum';
+import { ChemigationPermitAnnualRecordFeeTypeDto } from '../../generated/model/chemigation-permit-annual-record-fee-type-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-annual-record-upsert',
@@ -23,6 +24,7 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
   
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
   public annualRecordStatuses: Array<ChemigationPermitAnnualRecordStatusDto>;
+  public feeTypes: Array<ChemigationPermitAnnualRecordFeeTypeDto>;
   public states: Object;
 
   constructor(
@@ -33,10 +35,12 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
   ngOnInit(): void {
     forkJoin({
       annualRecordStatuses: this.chemigationPermitService.getAnnualRecordStatusTypes(),
-      injectionUnitTypes: this.chemigationPermitService.getAllChemigationInjectionUnitTypes()
-    }).subscribe(({ annualRecordStatuses, injectionUnitTypes }) => {
+      injectionUnitTypes: this.chemigationPermitService.getAllChemigationInjectionUnitTypes(),
+      feeTypes: this.chemigationPermitService.getAnnualRecordFeeTypes()
+    }).subscribe(({ annualRecordStatuses, injectionUnitTypes, feeTypes }) => {
       this.annualRecordStatuses = annualRecordStatuses;
       this.injectionUnitTypes = injectionUnitTypes;
+      this.feeTypes = feeTypes;
       this.cdr.detectChanges();
     });
     this.states = States.statesList;

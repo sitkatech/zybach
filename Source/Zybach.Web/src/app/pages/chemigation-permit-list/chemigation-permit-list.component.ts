@@ -248,6 +248,14 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
             },
             width: 120, resizable: true, sortable: true 
           },
+          { 
+            headerName: 'Fee Type', field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName', 
+            filterFramework: CustomDropdownFilterComponent,
+            filterParams: {
+              field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName'
+            },
+            width: 130, resizable: true, sortable: true 
+          },
           { headerName: 'Notes', field: "LatestAnnualRecord.AnnualNotes", filter: true, resizable: true, sortable: true },
           { 
             headerName: 'Applied Chemicals', 

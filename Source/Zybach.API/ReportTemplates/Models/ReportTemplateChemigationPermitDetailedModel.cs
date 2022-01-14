@@ -8,6 +8,7 @@ namespace Zybach.API.ReportTemplates.Models
     {
         public int ChemigationPermitAnnualRecordID { get; set; }
         public string ChemigationPermitNumber { get; set; }
+        public string PermitFeeType { get; set; }
         public string TownshipRangeSection { get; set; }
         public string County { get; set; }
         public int RecordYear { get; set; }
@@ -40,6 +41,8 @@ namespace Zybach.API.ReportTemplates.Models
         {
             ChemigationPermitAnnualRecordID = chemigationPermit.LatestAnnualRecord.ChemigationPermitAnnualRecordID;
             ChemigationPermitNumber = chemigationPermit.LatestAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay;
+            PermitFeeType =
+                chemigationPermit.LatestAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName;
             TownshipRangeSection = chemigationPermit.LatestAnnualRecord.TownshipRangeSection;
             RecordYear = chemigationPermit.LatestAnnualRecord.RecordYear;
             PivotName = chemigationPermit.LatestAnnualRecord.PivotName;
@@ -53,9 +56,12 @@ namespace Zybach.API.ReportTemplates.Models
             ApplicantEmail = chemigationPermit.LatestAnnualRecord.ApplicantEmail;
             Applicators = chemigationPermit.LatestAnnualRecord.Applicators.ToList();
             County = chemigationPermit.LatestAnnualRecord.ChemigationPermit.County.CountyDisplayName;
-            WellName = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
-            WellLatitude = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.Latitude.ToString("F4");
-            WellLongitude = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.Longitude.ToString("F4");
+            if (chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well != null)
+            {
+                WellName = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
+                WellLatitude = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.Latitude.ToString("F4");
+                WellLongitude = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.Longitude.ToString("F4");
+            }
             if (chemigationPermit.LatestInspection != null)
             {
                 LastInspectionDate = chemigationPermit.LatestInspection.InspectionDate.HasValue

@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { GenerateReportsDto } from '../generated/model/generate-reports-dto';
 import { ReportTemplateDto } from '../generated/model/report-template-dto';
 import { ReportTemplateUpdateDto } from '../models/report-template-update-dto';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,14 @@ export class ReportTemplateService {
      var result = this.httpClient.post<any>(
          route,
          formData
-     );
+     ).pipe(
+      map((response: any) => {
+        return this.apiService.handleResponse(response);
+      }),
+      catchError((error: any) => {
+        return this.apiService.handleError(error);
+      })
+    );
      return result;
   }
 
@@ -69,7 +77,14 @@ export class ReportTemplateService {
      var result = this.httpClient.put<any>(
          route,
          formData
-     );
+     ).pipe(
+      map((response: any) => {
+        return this.apiService.handleResponse(response);
+      }),
+      catchError((error: any) => {
+        return this.apiService.handleError(error);
+      })
+    );
      return result;
   }
 
@@ -83,6 +98,20 @@ export class ReportTemplateService {
           // need to set the response type so it is not defaulted to json
           responseType: 'blob'
         }
+    ).pipe(
+      map((response: any) => {
+        return this.apiService.handleResponse(response);
+      }),
+      catchError((error: any) => {
+        if (error.error instanceof Blob ){
+          error.error.text().then(errorMessage => {
+            error.error = errorMessage;
+            return this.apiService.handleError(error);
+          });
+        } else {
+          return this.apiService.handleError(error);
+        }
+      })
     );
     return result;
   }

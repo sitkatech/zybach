@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharpDocx;
 using Zybach.API.ReportTemplates.Models;
@@ -35,7 +36,6 @@ namespace Zybach.API.ReportTemplates
         public ReportTemplateGenerator(ReportTemplate reportTemplate, List<int> selectedModelIDs)
         {
             ReportTemplate = reportTemplate;
-            // ReportTemplateModelEnum = reportTemplate.ReportTemplateModel;
             ReportTemplateModelEnum = (ReportTemplateModelEnum) reportTemplate.ReportTemplateModelID;
             ReportTemplateModelTypeEnum = (ReportTemplateModelTypeEnum) reportTemplate.ReportTemplateModelTypeID;
             SelectedModelIDs = selectedModelIDs;
@@ -45,7 +45,6 @@ namespace Zybach.API.ReportTemplates
 
         private void InitializeTempFolders(DirectoryInfo directoryInfo)
         {
-            // var tempPath = new DirectoryInfo(SitkaConfiguration.GetRequiredAppSetting("TempFolder"));
             var tempPath = directoryInfo;
             var baseTempDirectory = new DirectoryInfo($"{tempPath.FullName}\\{TemplateTempDirectoryName}\\");
             baseTempDirectory.Create();
@@ -239,7 +238,7 @@ namespace Zybach.API.ReportTemplates
         private List<ReportTemplateChemigationPermitDetailedModel> GetListOfChemigationPermitDetailedModels(ZybachDbContext dbContext)
         {
             var listOfModels = ChemigationPermits.GetDetailedDtosByListOfPermitIDs(dbContext, SelectedModelIDs)
-                .OrderBy(x => SelectedModelIDs.Contains(x.ChemigationPermitID))
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.ChemigationPermitID))
                 .Select(x => new ReportTemplateChemigationPermitDetailedModel(x)).ToList();
             return listOfModels;
         }
@@ -249,14 +248,14 @@ namespace Zybach.API.ReportTemplates
             errorMessage = "";
             sourceCode = "";
 
-            var reportTemplateModel = (ReportTemplateModelEnum) reportTemplate.ReportTemplateModelID;
+            var reportTemplateModel = (ReportTemplateModelEnum)reportTemplate.ReportTemplateModelID;
             List<int> selectedModelIDs;
             switch (reportTemplateModel)
             {
                 case ReportTemplateModelEnum.ChemigationPermit:
                     // select 10 random models to test the report with
                     // SMG 2/17/2020 this can cause problems with templates failing only some of the time, but it feels costly to validate against every single model in the system
-                    selectedModelIDs = dbContext.ChemigationPermits.Select(x => x.ChemigationPermitID).Take(10).ToList();
+                    selectedModelIDs = dbContext.ChemigationPermits.AsNoTracking().Where(x => x.ChemigationPermitAnnualRecords.Count > 0).Select(x => x.ChemigationPermitID).Take(10).ToList();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -281,7 +280,8 @@ namespace Zybach.API.ReportTemplates
                 errorMessage = exception.Errors;
                 sourceCode = exception.SourceCode;
                 reportIsValid = false;
-                logger.LogError($"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\" Error Message: \"{errorMessage}\". Source Code: \"{sourceCode}\"", exception);
+                logger.LogError(
+                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\" Error Message: \"{errorMessage}\". Source Code: \"{sourceCode}\"");
             }
             catch (Exception exception)
             {
@@ -303,8 +303,11 @@ namespace Zybach.API.ReportTemplates
                 }
 
                 sourceCode = exception.StackTrace;
-                logger.LogError($"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\". Error Message: \"{errorMessage}\".", exception);
+                logger.LogError(
+                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\". Error Message: \"{errorMessage}\".",
+                    exception);
             }
+        
         }
 
     }

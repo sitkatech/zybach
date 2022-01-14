@@ -62,6 +62,10 @@
                                     class="fas fa-folder-open"></i></button>
                         </div>
                     </div>
+                    <div class="col">
+                        <em class="text-small mt-2">Allowed extensions: DOCX, DOC. Max file size: 25 MB.</em>
+                        <em class="text-danger mt-2" *ngIf="displayFileErrors"><br/>File must be one of: DOCX, DOC</em>
+                    </div>
                 </div>
                 
             </div>
@@ -71,7 +75,7 @@
                 <i class="fas fa-bolt"></i> Required field
             </div>
             <div class="col-sm text-right">
-                <button type="submit" class="btn btn-zybach" [disabled]="!newReportTemplateForm.form.valid || isLoadingSubmit || !requiredFileIsUploaded">
+                <button type="submit" class="btn btn-zybach" [disabled]="!newReportTemplateForm.form.valid || isLoadingSubmit || !requiredFileIsUploaded || displayFileErrors">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Save
                 </button>
