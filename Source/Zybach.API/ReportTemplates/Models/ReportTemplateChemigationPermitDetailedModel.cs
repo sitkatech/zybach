@@ -8,7 +8,7 @@ namespace Zybach.API.ReportTemplates.Models
     {
         public int ChemigationPermitAnnualRecordID { get; set; }
         public string ChemigationPermitNumber { get; set; }
-        public string ChemigationPermitFeeTypeDisplayName { get; set; }
+        public string PermitFeeType { get; set; }
         public string TownshipRangeSection { get; set; }
         public string County { get; set; }
         public int RecordYear { get; set; }
@@ -41,7 +41,7 @@ namespace Zybach.API.ReportTemplates.Models
         {
             ChemigationPermitAnnualRecordID = chemigationPermit.LatestAnnualRecord.ChemigationPermitAnnualRecordID;
             ChemigationPermitNumber = chemigationPermit.LatestAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay;
-            ChemigationPermitFeeTypeDisplayName =
+            PermitFeeType =
                 chemigationPermit.LatestAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName;
             TownshipRangeSection = chemigationPermit.LatestAnnualRecord.TownshipRangeSection;
             RecordYear = chemigationPermit.LatestAnnualRecord.RecordYear;
