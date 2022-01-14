@@ -282,7 +282,8 @@ namespace Zybach.API.ReportTemplates
                 errorMessage = exception.Errors;
                 sourceCode = exception.SourceCode;
                 reportIsValid = false;
-                logger.LogError($"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\" Error Message: \"{errorMessage}\". Source Code: \"{sourceCode}\"", exception);
+                logger.LogError(
+                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\" Error Message: \"{errorMessage}\". Source Code: \"{sourceCode}\"");
             }
             catch (Exception exception)
             {
@@ -304,8 +305,11 @@ namespace Zybach.API.ReportTemplates
                 }
 
                 sourceCode = exception.StackTrace;
-                logger.LogError($"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\". Error Message: \"{errorMessage}\".", exception);
+                logger.LogError(
+                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\". Error Message: \"{errorMessage}\".",
+                    exception);
             }
+        
         }
 
     }
