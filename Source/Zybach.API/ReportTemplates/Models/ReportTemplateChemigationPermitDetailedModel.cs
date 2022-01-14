@@ -56,7 +56,7 @@ namespace Zybach.API.ReportTemplates.Models
             ApplicantEmail = chemigationPermit.LatestAnnualRecord.ApplicantEmail;
             Applicators = chemigationPermit.LatestAnnualRecord.Applicators.ToList();
             County = chemigationPermit.LatestAnnualRecord.ChemigationPermit.County.CountyDisplayName;
-            if (chemigationPermit.Well != null && chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well != null)
+            if (chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well != null)
             {
                 WellName = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.WellRegistrationID;
                 WellLatitude = chemigationPermit.LatestAnnualRecord.ChemigationPermit.Well.Latitude.ToString("F4");
