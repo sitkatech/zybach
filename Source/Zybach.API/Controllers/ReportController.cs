@@ -71,9 +71,21 @@ namespace Zybach.API.Controllers
             var fileResource = await HttpUtilities.MakeFileResourceFromFormFile(reportTemplateNewDto.FileResource, _dbContext, HttpContext);
 
             _dbContext.FileResources.Add(fileResource);
-            // _dbContext.SaveChanges();
 
-            var reportTemplateDto = CreateNew(_dbContext, reportTemplateNewDto, fileResource);
+            var reportTemplate = CreateNew(_dbContext, reportTemplateNewDto, fileResource);
+
+            ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            if (!reportIsValid)
+            {
+                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+                return BadRequest(errorMessageAndSourceCode);
+            }
+
+            _dbContext.ReportTemplates.Add(reportTemplate);
+            _dbContext.SaveChanges();
+            _dbContext.Entry(reportTemplate).Reload();
+
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplate.ReportTemplateID);
             return Ok(reportTemplateDto);
         }
 
@@ -103,18 +115,23 @@ namespace Zybach.API.Controllers
                 _dbContext.FileResources.Add(fileResource);
             }
 
-            //ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
-            //if (!reportIsValid)
-            //{
-            //    var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
-            //    return BadRequest(errorMessageAndSourceCode);
-            //}
+            var updatedReportTemplate = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
 
-            var updatedReportTemplateDto = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
-            return Ok(updatedReportTemplateDto);
+            ReportTemplateGenerator.ValidateReportTemplate(updatedReportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            if (!reportIsValid)
+            {
+                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+                return BadRequest(errorMessageAndSourceCode);
+            }
+
+            _dbContext.SaveChanges();
+            _dbContext.Entry(reportTemplate).Reload();
+
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplate.ReportTemplateID);
+            return Ok(reportTemplateDto);
         }
 
-        private ReportTemplateDto CreateNew(ZybachDbContext dbContext, ReportTemplateNewDto reportTemplateNewDto, FileResource newFileResource)
+        private ReportTemplate CreateNew(ZybachDbContext dbContext, ReportTemplateNewDto reportTemplateNewDto, FileResource newFileResource)
         {
             var reportTemplateModelType = dbContext.ReportTemplateModelTypes.Single(x => x.ReportTemplateModelTypeName == "MultipleModels");
             var reportTemplate = new ReportTemplate()
@@ -125,14 +142,15 @@ namespace Zybach.API.Controllers
                 ReportTemplateModelTypeID = reportTemplateModelType.ReportTemplateModelTypeID,
                 ReportTemplateModelID = reportTemplateNewDto.ReportTemplateModelID
             };
-        
-            dbContext.ReportTemplates.Add(reportTemplate);
-            dbContext.SaveChanges();
-            dbContext.Entry(reportTemplate).Reload();
-            return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
+
+            return reportTemplate;
+            //dbContext.ReportTemplates.Add(reportTemplate);
+            //dbContext.SaveChanges();
+            //dbContext.Entry(reportTemplate).Reload();
+            //return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
-        private ReportTemplateDto UpdateReportTemplate(ZybachDbContext dbContext, ReportTemplate reportTemplate, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
+        private ReportTemplate UpdateReportTemplate(ZybachDbContext dbContext, ReportTemplate reportTemplate, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
         {
             // null check occurs in calling endpoint method.
             reportTemplate.DisplayName = reportTemplateUpdateDto.DisplayName;
@@ -143,8 +161,9 @@ namespace Zybach.API.Controllers
                 reportTemplate.FileResource = newFileResource;
             }
 
-            dbContext.SaveChanges();
-            return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
+            return reportTemplate;
+            //dbContext.SaveChanges();
+            //return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
         [HttpPost("/api/reportTemplates/generateReports")]
