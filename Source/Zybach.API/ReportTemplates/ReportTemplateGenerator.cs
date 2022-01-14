@@ -36,7 +36,6 @@ namespace Zybach.API.ReportTemplates
         public ReportTemplateGenerator(ReportTemplate reportTemplate, List<int> selectedModelIDs)
         {
             ReportTemplate = reportTemplate;
-            // ReportTemplateModelEnum = reportTemplate.ReportTemplateModel;
             ReportTemplateModelEnum = (ReportTemplateModelEnum) reportTemplate.ReportTemplateModelID;
             ReportTemplateModelTypeEnum = (ReportTemplateModelTypeEnum) reportTemplate.ReportTemplateModelTypeID;
             SelectedModelIDs = selectedModelIDs;
@@ -46,7 +45,6 @@ namespace Zybach.API.ReportTemplates
 
         private void InitializeTempFolders(DirectoryInfo directoryInfo)
         {
-            // var tempPath = new DirectoryInfo(SitkaConfiguration.GetRequiredAppSetting("TempFolder"));
             var tempPath = directoryInfo;
             var baseTempDirectory = new DirectoryInfo($"{tempPath.FullName}\\{TemplateTempDirectoryName}\\");
             baseTempDirectory.Create();

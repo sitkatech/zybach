@@ -144,10 +144,6 @@ namespace Zybach.API.Controllers
             };
 
             return reportTemplate;
-            //dbContext.ReportTemplates.Add(reportTemplate);
-            //dbContext.SaveChanges();
-            //dbContext.Entry(reportTemplate).Reload();
-            //return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
         private ReportTemplate UpdateReportTemplate(ZybachDbContext dbContext, ReportTemplate reportTemplate, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
@@ -162,8 +158,6 @@ namespace Zybach.API.Controllers
             }
 
             return reportTemplate;
-            //dbContext.SaveChanges();
-            //return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
         }
 
         [HttpPost("/api/reportTemplates/generateReports")]
