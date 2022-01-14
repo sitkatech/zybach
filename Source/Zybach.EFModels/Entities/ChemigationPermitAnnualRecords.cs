@@ -83,6 +83,8 @@ namespace Zybach.EFModels.Entities
         {
             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID =
                 chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
+            chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeTypeID =
+                chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordFeeTypeID;
             chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID =
                 chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID;
             chemigationPermitAnnualRecord.TownshipRangeSection = chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection;

@@ -79,6 +79,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.chemigationPermitAnnualRecordID = annualRecord.ChemigationPermitAnnualRecordID
     var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto();
     chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID = annualRecord.ChemigationPermitAnnualRecordStatusID;
+    chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordFeeTypeID = annualRecord.ChemigationPermitAnnualRecordFeeTypeID;
     chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitTypeID;
     chemigationPermitAnnualRecordUpsertDto.RecordYear = annualRecord.RecordYear;
     chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;

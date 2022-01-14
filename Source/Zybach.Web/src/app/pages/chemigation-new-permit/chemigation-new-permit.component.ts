@@ -17,6 +17,7 @@ import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { WellService } from 'src/app/services/well.service';
 import { CountyDto } from 'src/app/shared/generated/model/county-dto';
+import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-fee-type.enum';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -57,6 +58,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.model.ChemigationPermitAnnualRecord =
     {
       ChemigationPermitAnnualRecordStatusID: ChemigationPermitAnnualRecordStatusEnum.PendingPayment,
+      ChemigationPermitAnnualRecordFeeTypeID: ChemigationPermitAnnualRecordFeeTypeEnum.New,
       // default to portable injection unit type
       ChemigationInjectionUnitTypeID: ChemigationInjectionUnitTypeEnum.Portable,
       PivotName: null,

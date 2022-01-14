@@ -13,6 +13,16 @@
             </div>
 
             <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Permit Type: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <ng-select [(ngModel)]="model.ChemigationPermitAnnualRecordFeeTypeID"
+                    [items]="feeTypes" bindLabel="ChemigationPermitAnnualRecordFeeTypeDisplayName" bindValue="ChemigationPermitAnnualRecordFeeTypeID" 
+                    placeholder="Choose One" name="ChemigationPermitAnnualRecordFeeTypeID" required>
+                </ng-select>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
                 <label class="required"><strong>Township-Range-Section: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">

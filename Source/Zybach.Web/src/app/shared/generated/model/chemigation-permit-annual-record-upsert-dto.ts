@@ -14,6 +14,7 @@ import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '././c
 
 export class ChemigationPermitAnnualRecordUpsertDto { 
     ChemigationPermitAnnualRecordStatusID: number;
+    ChemigationPermitAnnualRecordFeeTypeID: number;
     ApplicantFirstName?: string;
     ApplicantLastName?: string;
     ApplicantCompany?: string;

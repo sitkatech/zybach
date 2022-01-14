@@ -12,6 +12,7 @@ import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemi
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-fee-type.enum';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
@@ -72,6 +73,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
   private initializeModel(annualRecord: ChemigationPermitAnnualRecordDetailedDto) : void {
     var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto();
     chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID = ChemigationPermitAnnualRecordStatusEnum.PendingPayment;
+    chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordFeeTypeID = ChemigationPermitAnnualRecordFeeTypeEnum.Renewal;
     chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitTypeID;
     chemigationPermitAnnualRecordUpsertDto.RecordYear = this.newRecordYear;
     chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;

@@ -4907,6 +4907,7 @@
       "ChemigationPermitAnnualRecordUpsertDto": {
         "required": [
           "ChemigationInjectionUnitTypeID",
+          "ChemigationPermitAnnualRecordFeeTypeID",
           "ChemigationPermitAnnualRecordStatusID",
           "PivotName",
           "RecordYear",
@@ -4915,6 +4916,10 @@
         "type": "object",
         "properties": {
           "ChemigationPermitAnnualRecordStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordFeeTypeID": {
             "type": "integer",
             "format": "int32"
           },

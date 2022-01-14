@@ -18,6 +18,7 @@ import { ChemigationPermitUpsertDto } from '../shared/generated/model/chemigatio
 import { CountyDto } from '../shared/generated/model/county-dto';
 import { ChemigationInspectionSimpleDto } from '../shared/generated/model/chemigation-inspection-simple-dto';
 import { BulkChemigationPermitAnnualRecordCreationResult } from '../shared/generated/model/bulk-chemigation-permit-annual-record-creation-result';
+import { ChemigationPermitAnnualRecordFeeTypeDto } from '../shared/generated/model/chemigation-permit-annual-record-fee-type-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,11 @@ export class ChemigationPermitService {
 
   public getAllChemigationInjectionUnitTypes(): Observable<Array<ChemigationInjectionUnitTypeDto>> {
     let route = `/chemigationInjectionUnitTypes`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getAnnualRecordFeeTypes(): Observable<Array<ChemigationPermitAnnualRecordFeeTypeDto>> {
+    let route = `/chemigationPermitAnnualRecordFeeTypes`;
     return this.apiService.getFromApi(route);
   }
 
