@@ -12,5 +12,18 @@ namespace Zybach.EFModels.Entities
             waterLevelInspectionSimpleDto.Inspector = waterLevelInspection.InspectorUser?.AsSimpleDto();
             waterLevelInspectionSimpleDto.InspectionYear = waterLevelInspection.InspectionDate.Year;
         }
+
+        public static WaterLevelInspectionSummaryDto AsSummaryDto(this WaterLevelInspection waterLevelInspection)
+        {
+            var waterLevelInspectionSummaryDto = new WaterLevelInspectionSummaryDto()
+            {
+                WaterLevelInspectionID = waterLevelInspection.WaterLevelInspectionID,
+                InspectionDate = waterLevelInspection.InspectionDate,
+                Measurement = waterLevelInspection.Measurement,
+                MeasuringEquipment = waterLevelInspection.MeasuringEquipment
+            };
+
+            return waterLevelInspectionSummaryDto;
+        }
     }
 }

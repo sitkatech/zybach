@@ -15,6 +15,19 @@ namespace Zybach.EFModels.Entities
             waterQualityInspectionSimpleDto.InspectionYear = waterQualityInspection.InspectionDate.Year;
         }
 
+        public static WaterQualityInspectionSummaryDto AsSummaryDto(this WaterQualityInspection waterQualityInspection)
+        {
+            var waterQualityInspectionSummaryDto = new WaterQualityInspectionSummaryDto()
+            {
+                WaterQualityInspectionID = waterQualityInspection.WaterQualityInspectionID,
+                InspectionDate = waterQualityInspection.InspectionDate,
+                InspectionType = waterQualityInspection.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName,
+                InspectionNotes = waterQualityInspection.InspectionNotes
+            };
+
+            return waterQualityInspectionSummaryDto;
+        }
+
         public static class ClearinghouseConstants
         {
             // Setting these here to keep track
