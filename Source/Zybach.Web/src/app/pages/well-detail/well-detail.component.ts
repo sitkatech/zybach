@@ -19,7 +19,7 @@ import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
-import { DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -32,6 +32,11 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
+import { AgGridAngular } from 'ag-grid-angular';
+import { WaterLevelInspectionSummaryDto } from 'src/app/shared/generated/model/water-level-inspection-summary-dto';
+import { WaterQualityInspectionSummaryDto } from 'src/app/shared/generated/model/water-quality-inspection-summary-dto';
+import { ColDef } from 'ag-grid-community';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -41,8 +46,12 @@ import { InstallationRecordDto } from 'src/app/shared/generated/model/installati
 export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dp') mydp: AngularMyDatePickerDirective;
   @ViewChild('wellLocation') mapContainer;  
+  @ViewChild('waterLevelInspectionsGrid') waterLevelInspectionsGrid: AgGridAngular;
+  
   public chartID: string = "wellChart";
 
+  public waterLevelInspectionColumnDefs: any[];
+  public defaultColDef: ColDef;
 
   public watchUserChangeSubscription: any;
 
@@ -87,6 +96,9 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public chemigationPermitAnnualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
 
+  public waterLevelInspections: Array<WaterLevelInspectionSummaryDto>;
+  public waterQualityInspections: Array<WaterQualityInspectionSummaryDto>;
+
   constructor(
     private wellService: WellService,
     private sensorService: SensorStatusService,
@@ -94,6 +106,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
+    private datePipe: DatePipe,
     private decimalPipe: DecimalPipe,
     private alertService: AlertService
   ) {
@@ -129,6 +142,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.initMapConstants();
 
+    this.initializeWaterLevelInspectionsGrid()
+
     this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -137,7 +152,77 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getSenorsWithAgeMessages();
       this.getChartDataAndBuildChart();
       this.getChemigationPermits();
+      this.getInspections()
     })
+  }
+
+  private initializeWaterLevelInspectionsGrid(): void {
+    let datePipe = this.datePipe;
+    this.waterLevelInspectionColumnDefs = [
+      {
+        headerName: "Inspection Date", 
+        valueGetter: function (params: any) {
+          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a");
+        },
+        comparator: function (id1: any, id2: any) {
+          const date1 = Date.parse(id1);
+          const date2 = Date.parse(id2);
+          if (date1 < date2) {
+            return -1;
+          }
+          return (date1 > date2)  ?  1 : 0;
+        },
+        filter: 'agDateColumnFilter',
+        filterParams: {
+          filterOptions: ['inRange'],
+          comparator: this.dateFilterComparator
+        }, 
+        width: 140,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Measurement', 
+        field: 'Measurement',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 120,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'MeasuringEquipment'
+        }, 
+        width: 170,
+        resizable: true,
+        sortable: true 
+      }
+    ];
+  }
+
+  private dateFilterComparator(filterLocalDate, cellValue) {
+    const cellDate = Date.parse(cellValue);
+    const filterLocalDateAtMidnight = filterLocalDate.getTime();
+    if (cellDate == filterLocalDateAtMidnight) {
+      return 0;
+    }
+    return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
+  }
+
+  getInspections() {
+    forkJoin({
+      waterLevelInspections: this.wellService.listWaterLevelInspectionsByWellID(this.wellID),
+      waterQualityInspections: this.wellService.listWaterQualityInspectionsByWellID(this.wellID)
+    }).subscribe(({ waterLevelInspections, waterQualityInspections }) => {
+      this.waterLevelInspections = waterLevelInspections;
+      this.waterQualityInspections = waterQualityInspections;
+
+      this.waterLevelInspectionsGrid ? this.waterLevelInspectionsGrid.api.setRowData(waterLevelInspections) : null;
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnDestroy() {    

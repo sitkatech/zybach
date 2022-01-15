@@ -307,12 +307,48 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
+
     <div class="row mt-4">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Permits & Inspections
+                    Inspections
+                </div>
+                <div class="card-body">
+                    <div class="row col-12">
+                        <div class="container col-6 m-2">
+                            <div class="row">
+                                <div class="col">
+                                    <!-- <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button> -->
+                                    <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="waterLevelInspectionsGrid">
+                                    </fresca-clear-grid-filters-button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <ag-grid-angular #waterLevelInspectionsGrid style="width: 100%; height: 100%;" 
+                                    class="ag-theme-balham"
+                                    [columnDefs]="waterLevelInspectionColumnDefs" 
+                                    [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                                </ag-grid-angular>
+                                <!-- [defaultColDef]="defaultColDef" -->
+                            </div>
+                        </div>
+                        <div class="col-6 m-2">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Chemigation
                 </div>
                 <div class="card-body">
 
@@ -345,9 +381,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col">
+        <div class="col-8">
             <div class="card">
                 <div class="card-header">
                     Installation Details

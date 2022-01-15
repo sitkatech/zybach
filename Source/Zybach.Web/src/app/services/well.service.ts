@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { CountyDto } from '../shared/generated/model/county-dto';
 import { InstallationRecordDto } from '../shared/generated/model/installation-record-dto';
+import { WaterLevelInspectionSummaryDto } from '../shared/generated/model/water-level-inspection-summary-dto';
+import { WaterQualityInspectionSummaryDto } from '../shared/generated/model/water-quality-inspection-summary-dto';
 import { WellChartDataDto } from '../shared/generated/model/well-chart-data-dto';
 import { WellContactInfoDto } from '../shared/generated/model/well-contact-info-dto';
 import { WellDetailDto } from '../shared/generated/model/well-detail-dto';
@@ -101,4 +103,15 @@ export class WellService {
     let route = `/wells/search/${wellRegistrationID}/hasInspectionType`;
     return this.apiService.getFromApi(route);
   }
+
+  public listWaterLevelInspectionsByWellID(wellID: number): Observable<Array<WaterLevelInspectionSummaryDto>> {
+    let route = `wells/${wellID}/getWaterLevelInspectionSummaries`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public listWaterQualityInspectionsByWellID(wellID: number): Observable<Array<WaterQualityInspectionSummaryDto>> {
+    let route = `wells/${wellID}/getWaterQualityInspectionSummaries`;
+    return this.apiService.getFromApi(route);
+  }
+
 }
