@@ -182,6 +182,15 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         width: 90,
         resizable: true, 
         sortable: true 
+      },      
+      { 
+        headerName: 'Participation', field: 'Well.WellParticipationName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Well.WellParticipationName'
+        }, 
+        width: 120,
+        resizable: true, sortable: true 
       },
       { 
         headerName: 'Party', field: 'Party', 
