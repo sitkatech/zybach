@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ChemigationPermitAnnualRecordDetailedDto } from '../shared/generated/model/chemigation-permit-annual-record-detailed-dto';
+import { ChemigationPermitDetailedDto } from '../shared/generated/model/chemigation-permit-detailed-dto';
 import { CountyDto } from '../shared/generated/model/county-dto';
 import { InstallationRecordDto } from '../shared/generated/model/installation-record-dto';
 import { WaterLevelInspectionSummaryDto } from '../shared/generated/model/water-level-inspection-summary-dto';
@@ -76,7 +76,7 @@ export class WellService {
     return this.apiService.getFromApi(`wells/${wellID}/installation`);
   }
 
-  public getChemigationPermts(wellID: number): Observable<Array<ChemigationPermitAnnualRecordDetailedDto>> {
+  public getChemigationPermits(wellID: number): Observable<Array<ChemigationPermitDetailedDto>> {
     return this.apiService.getFromApi(`wells/${wellID}/chemigationPermits`);
   }
 

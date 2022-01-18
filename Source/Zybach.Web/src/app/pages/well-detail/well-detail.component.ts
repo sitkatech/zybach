@@ -37,6 +37,9 @@ import { WaterLevelInspectionSummaryDto } from 'src/app/shared/generated/model/w
 import { WaterQualityInspectionSummaryDto } from 'src/app/shared/generated/model/water-quality-inspection-summary-dto';
 import { ColDef } from 'ag-grid-community';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -47,10 +50,12 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dp') mydp: AngularMyDatePickerDirective;
   @ViewChild('wellLocation') mapContainer;  
   @ViewChild('waterLevelInspectionsGrid') waterLevelInspectionsGrid: AgGridAngular;
+  @ViewChild('waterQualityInspectionsGrid') waterQualityInspectionsGrid: AgGridAngular;
   
   public chartID: string = "wellChart";
 
   public waterLevelInspectionColumnDefs: any[];
+  public waterQualityInspectionColumnDefs: any[];
   public defaultColDef: ColDef;
 
   public watchUserChangeSubscription: any;
@@ -94,7 +99,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public isLoadingSubmit: boolean = false;
 
-  public chemigationPermitAnnualRecords: Array<ChemigationPermitAnnualRecordDetailedDto>;
+  public chemigationPermits: Array<ChemigationPermitDetailedDto>;
 
   public waterLevelInspections: Array<WaterLevelInspectionSummaryDto>;
   public waterQualityInspections: Array<WaterQualityInspectionSummaryDto>;
@@ -108,6 +113,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private datePipe: DatePipe,
     private decimalPipe: DecimalPipe,
+    private utilityFunctionsService: UtilityFunctionsService,
     private alertService: AlertService
   ) {
     // force route reload whenever params change;
@@ -142,7 +148,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.initMapConstants();
 
-    this.initializeWaterLevelInspectionsGrid()
+    this.initializeWaterLevelInspectionsGrid();
+    this.initializeWaterQualityInspectionsGrid();
 
     this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
@@ -162,7 +169,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       {
         headerName: "Inspection Date", 
         valueGetter: function (params: any) {
-          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a");
+          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy");
         },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1);
@@ -203,6 +210,54 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     ];
   }
 
+  private initializeWaterQualityInspectionsGrid(): void {
+    let datePipe = this.datePipe;
+    this.waterQualityInspectionColumnDefs = [
+      {
+        headerName: "Inspection Date", 
+        valueGetter: function (params: any) {
+          return { LinkValue: params.data.WaterQualityInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy") };
+        },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/water-quality-inspections/" },
+        comparator: function (id1: any, id2: any) {
+          const date1 = Date.parse(id1.LinkDisplay);
+          const date2 = Date.parse(id2.LinkDisplay);
+          if (date1 < date2) {
+            return -1;
+          }
+          return (date1 > date2)  ?  1 : 0;
+        },
+        filter: 'agDateColumnFilter',
+        filterParams: {
+          filterOptions: ['inRange'],
+          comparator: this.dateFilterComparator
+        }, 
+        width: 130,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Inspection Type', field: 'InspectionType', 
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'InspectionType'
+        }, 
+        width: 170,
+        resizable: true,
+        sortable: true 
+      },
+      { 
+        headerName: 'Notes', 
+        field: 'InspectionNotes',
+        width: 180,
+        filter: true,
+        resizable: true,
+        sortable: true
+      },
+    ];
+  }
+
   private dateFilterComparator(filterLocalDate, cellValue) {
     const cellDate = Date.parse(cellValue);
     const filterLocalDateAtMidnight = filterLocalDate.getTime();
@@ -221,8 +276,21 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.waterQualityInspections = waterQualityInspections;
 
       this.waterLevelInspectionsGrid ? this.waterLevelInspectionsGrid.api.setRowData(waterLevelInspections) : null;
+      this.waterQualityInspectionsGrid ? this.waterQualityInspectionsGrid.api.setRowData(waterQualityInspections) : null;
+
+      this.waterLevelInspectionsGrid.api.sizeColumnsToFit();
+      this.waterQualityInspectionsGrid.api.sizeColumnsToFit();
+
       this.cdr.detectChanges();
     });
+  }
+
+  public exportWLIToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.waterLevelInspectionsGrid, `${this.wellRegistrationID}-water-level-inspections.csv`, null);
+  }
+
+  public exportWQIToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.waterQualityInspectionsGrid, `${this.wellRegistrationID}-water-quality-inspections.csv`, null);
   }
 
   ngOnDestroy() {    
@@ -272,8 +340,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getChemigationPermits(){
-    this.wellService.getChemigationPermts(this.wellID).subscribe(chemigationPermitAnnualRecords => {
-      this.chemigationPermitAnnualRecords = chemigationPermitAnnualRecords;
+    this.wellService.getChemigationPermits(this.wellID).subscribe(chemigationPermits => {
+      this.chemigationPermits = chemigationPermits;
     });
   }
 

@@ -120,5 +120,15 @@ namespace Zybach.EFModels.Entities
             dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear @recordYear, @chemigationPermitsRenewed OUTPUT, @chemigationInspectionsCreated OUTPUT", sqlParameter, chemigationPermitsRenewed, chemigationInspectionsCreated);
             return new BulkChemigationPermitAnnualRecordCreationResult((int) chemigationPermitsRenewed.Value, (int)chemigationInspectionsCreated.Value);
         }
+
+        public static IEnumerable<ChemigationPermitDetailedDto> GetByWellIDAsDetailedDto(ZybachDbContext dbContext, int wellID)
+        { 
+            var permitIDs = GetChemigationPermitImpl(dbContext)
+                .Where(x => x.WellID != null && x.WellID == wellID)
+                .Select(x => x.ChemigationPermitID)
+                .ToList();
+
+            return GetDetailedDtosByListOfPermitIDs(dbContext, permitIDs);
+        }
     }
 }
