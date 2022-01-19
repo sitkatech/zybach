@@ -3477,7 +3477,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/waterLevelInspectionSummaries": {
+    "/api/wells/{wellID}/waterLevelInspections": {
       "get": {
         "tags": [
           "Well"
@@ -3526,7 +3526,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/waterQualityInspectionSummaries": {
+    "/api/wells/{wellID}/waterQualityInspections": {
       "get": {
         "tags": [
           "Well"
