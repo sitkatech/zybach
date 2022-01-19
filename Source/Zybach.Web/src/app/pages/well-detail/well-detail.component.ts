@@ -30,7 +30,6 @@ import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-messa
 import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
-import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
 import { AgGridAngular } from 'ag-grid-angular';
 import { WaterLevelInspectionSummaryDto } from 'src/app/shared/generated/model/water-level-inspection-summary-dto';
@@ -159,7 +158,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.getSenorsWithAgeMessages();
       this.getChartDataAndBuildChart();
       this.getChemigationPermits();
-      this.getInspections()
+      this.getInspections();
     })
   }
 
@@ -231,7 +230,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         filter: 'agDateColumnFilter',
         filterParams: {
           filterOptions: ['inRange'],
-          comparator: this.dateFilterComparator
+          comparator: this.waterQualityDateFilterComparator
         }, 
         width: 130,
         resizable: true,
@@ -256,6 +255,16 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         sortable: true
       },
     ];
+  }
+
+  // using a separate comparator for the LinkDisplay on WQI grid
+  private waterQualityDateFilterComparator(filterLocalDate, cellValue) {
+    const cellDate = Date.parse(cellValue.LinkDisplay);
+    const filterLocalDateAtMidnight = filterLocalDate.getTime();
+    if (cellDate == filterLocalDateAtMidnight) {
+      return 0;
+    }
+    return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
   }
 
   private dateFilterComparator(filterLocalDate, cellValue) {
