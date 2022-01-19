@@ -123,7 +123,8 @@ namespace Zybach.EFModels.Entities
 
         public static IEnumerable<ChemigationPermitDetailedDto> GetByWellIDAsDetailedDto(ZybachDbContext dbContext, int wellID)
         { 
-            var permitIDs = GetChemigationPermitImpl(dbContext)
+            var permitIDs = dbContext.ChemigationPermits
+                .AsNoTracking()
                 .Where(x => x.WellID != null && x.WellID == wellID)
                 .Select(x => x.ChemigationPermitID)
                 .ToList();
