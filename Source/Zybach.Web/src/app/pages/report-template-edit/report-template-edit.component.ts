@@ -147,7 +147,6 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
         ,
         error => {
           this.isLoadingSubmit = false;
-          this.alertService.pushAlert(new Alert(error.error, AlertContext.Danger));
           this.cdr.detectChanges();
         }
       );
