@@ -54,7 +54,7 @@ namespace Zybach.API.Controllers
             return Ok(Wells.SearchByWellRegistrationIDHasInspectionType(_dbContext, wellRegistrationID));
         }
 
-        [HttpGet("/api/wells/{wellID}/getWaterLevelInspectionSummaries")]
+        [HttpGet("/api/wells/{wellID}/waterLevelInspectionSummaries")]
         [ZybachViewFeature]
         public ActionResult<List<WaterLevelInspectionSummaryDto>> GetWaterLevelInspectionSummariesByWellID([FromRoute] int wellID)
         {
@@ -62,7 +62,7 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelInspectionSummaryDtos);
         }
 
-        [HttpGet("/api/wells/{wellID}/getWaterQualityInspectionSummaries")]
+        [HttpGet("/api/wells/{wellID}/waterQualityInspectionSummaries")]
         [ZybachViewFeature]
         public ActionResult<List<WaterQualityInspectionSummaryDto>> GetWaterQualityInspectionSummariesByWellID([FromRoute] int wellID)
         {
