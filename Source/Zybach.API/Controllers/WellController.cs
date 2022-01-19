@@ -58,7 +58,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<WaterLevelInspectionSummaryDto>> GetWaterLevelInspectionSummariesByWellID([FromRoute] int wellID)
         {
-            var waterLevelInspectionSummaryDtos = WaterLevelInspections.ListByWellIDAsSummaryDtos(_dbContext, wellID);
+            var waterLevelInspectionSummaryDtos = WaterLevelInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
             return Ok(waterLevelInspectionSummaryDtos);
         }
 
@@ -66,7 +66,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<WaterQualityInspectionSummaryDto>> GetWaterQualityInspectionSummariesByWellID([FromRoute] int wellID)
         {
-            var waterQualityInspectionSummaryDtos = WaterQualityInspections.ListByWellIDAsSummaryDtos(_dbContext, wellID);
+            var waterQualityInspectionSummaryDtos = WaterQualityInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
             return Ok(waterQualityInspectionSummaryDtos);
         }
 

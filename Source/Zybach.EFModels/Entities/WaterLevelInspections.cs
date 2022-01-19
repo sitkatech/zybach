@@ -32,7 +32,7 @@ namespace Zybach.EFModels.Entities
             return dbContext.WaterLevelInspections.SingleOrDefault(x => x.WaterLevelInspectionID == waterLevelInspectionID);
         }
 
-        public static List<WaterLevelInspectionSummaryDto> ListByWellIDAsSummaryDtos(ZybachDbContext dbContext, int wellID)
+        public static List<WaterLevelInspectionSummaryDto> ListByWellIDAsSummaryDto(ZybachDbContext dbContext, int wellID)
         {
             return dbContext.WaterLevelInspections
                 .AsNoTracking()
