@@ -25,7 +25,7 @@ namespace Zybach.EFModels.Entities
             return listWithLatestAnnualRecordAsDto;
         }
 
-        public static IEnumerable<ChemigationPermitDetailedDto> GetDetailedDtosByListOfPermitIDs(ZybachDbContext dbContext, List<int> chemigationPermitIDs)
+        public static IEnumerable<ChemigationPermitDetailedDto> ListByPermitIDsAsDetailedDto(ZybachDbContext dbContext, List<int> chemigationPermitIDs)
         {
             var chemigationPermitAnnualRecordDetailedDtos = ChemigationPermitAnnualRecords.GetLatestAsDetailedDto(dbContext).ToDictionary(x => x.ChemigationPermit.ChemigationPermitID);
             var chemigationInspectionSimpleDtos = ChemigationInspections.GetChemigationInspectionsImpl(dbContext).ToList()
@@ -119,6 +119,17 @@ namespace Zybach.EFModels.Entities
             chemigationInspectionsCreated.Direction = ParameterDirection.Output;
             dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear @recordYear, @chemigationPermitsRenewed OUTPUT, @chemigationInspectionsCreated OUTPUT", sqlParameter, chemigationPermitsRenewed, chemigationInspectionsCreated);
             return new BulkChemigationPermitAnnualRecordCreationResult((int) chemigationPermitsRenewed.Value, (int)chemigationInspectionsCreated.Value);
+        }
+
+        public static IEnumerable<ChemigationPermitDetailedDto> GetByWellIDAsDetailedDto(ZybachDbContext dbContext, int wellID)
+        { 
+            var permitIDs = dbContext.ChemigationPermits
+                .AsNoTracking()
+                .Where(x => x.WellID != null && x.WellID == wellID)
+                .Select(x => x.ChemigationPermitID)
+                .ToList();
+
+            return ListByPermitIDsAsDetailedDto(dbContext, permitIDs);
         }
     }
 }

@@ -54,6 +54,22 @@ namespace Zybach.API.Controllers
             return Ok(Wells.SearchByWellRegistrationIDHasInspectionType(_dbContext, wellRegistrationID));
         }
 
+        [HttpGet("/api/wells/{wellID}/waterLevelInspections")]
+        [ZybachViewFeature]
+        public ActionResult<List<WaterLevelInspectionSummaryDto>> GetWaterLevelInspectionSummariesByWellID([FromRoute] int wellID)
+        {
+            var waterLevelInspectionSummaryDtos = WaterLevelInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
+            return Ok(waterLevelInspectionSummaryDtos);
+        }
+
+        [HttpGet("/api/wells/{wellID}/waterQualityInspections")]
+        [ZybachViewFeature]
+        public ActionResult<List<WaterQualityInspectionSummaryDto>> GetWaterQualityInspectionSummariesByWellID([FromRoute] int wellID)
+        {
+            var waterQualityInspectionSummaryDtos = WaterQualityInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
+            return Ok(waterQualityInspectionSummaryDtos);
+        }
+
         [HttpGet("/api/wells/{wellID}")]
         [ZybachViewFeature]
         public ActionResult<WellDetailDto> GetWellDetails([FromRoute] int wellID)
@@ -337,7 +353,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] int wellID)
         {
-            var chemigationPermitDetailedDtos = ChemigationPermitAnnualRecords.GetByWellIDAsDetailedDto(_dbContext, wellID);
+            var chemigationPermitDetailedDtos = ChemigationPermits.GetByWellIDAsDetailedDto(_dbContext, wellID);
             return Ok(chemigationPermitDetailedDtos);
         }
     }

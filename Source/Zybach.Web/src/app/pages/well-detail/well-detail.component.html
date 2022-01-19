@@ -307,37 +307,89 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
+
     <div class="row mt-4">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Permits & Inspections
+                    Inspections
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                            <div class="col-sm">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="d-inline-block">Water Level Inspections</h5>
+                                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWLIToCsv()" placement="top"
+                                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterLevelInspectionsGrid">
+                                        </fresca-clear-grid-filters-button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <ag-grid-angular #waterLevelInspectionsGrid style="width: 100%; height: 200px;" 
+                                        class="ag-theme-balham"
+                                        [columnDefs]="waterLevelInspectionColumnDefs" [defaultColDef]="defaultColDef"
+                                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+
+                            <div class="col-sm">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="d-inline-block">Water Quality Inspections</h5>
+                                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWQIToCsv()" placement="top"
+                                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterQualityInspectionsGrid">
+                                        </fresca-clear-grid-filters-button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <ag-grid-angular #waterQualityInspectionsGrid style="width: 100%; height: 200px;" 
+                                        class="ag-theme-balham"
+                                        [columnDefs]="waterQualityInspectionColumnDefs" [defaultColDef]="defaultColDef"
+                                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Chemigation
                 </div>
                 <div class="card-body">
 
-                    <div *ngIf="chemigationPermitAnnualRecords && chemigationPermitAnnualRecords.length > 0; then hasChemigationPermitAnnualRecords else noChemigationPermitAnnualRecords"></div>
-                    <ng-template #hasChemigationPermitAnnualRecords>
+                    <div *ngIf="chemigationPermits && chemigationPermits.length > 0; then hasChemigationPermits else noChemigationPermits"></div>
+                    <ng-template #hasChemigationPermits>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Permit #</th>
-                                    <th>Year</th>
                                     <th>Status</th>
-                                    <th>Township, Range, Section</th>
+                                    <th>Last Inspected</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let chemigationPermitAnnualRecord of chemigationPermitAnnualRecords">
-                                    <td><a routerLink="/chemigation-permits/{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}">{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay}}</a></td>
-                                    <td>{{chemigationPermitAnnualRecord.RecordYear}}</td>
-                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusName}}</td>
-                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection}}</td>
+                                <tr *ngFor="let chemigationPermit of chemigationPermits">
+                                    <td><a routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}">{{chemigationPermit.ChemigationPermitNumberDisplay}}</a></td>
+                                    <td>{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</td>
+                                    <td>{{chemigationPermit.LatestInspection.InspectionDate | date:'MM/dd/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </ng-template>
-                    <ng-template #noChemigationPermitAnnualRecords>
+                    <ng-template #noChemigationPermits>
                         <p class="font-italic">
                             No Chemigation Permits were found for this well.
                         </p>                        
@@ -345,9 +397,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col">
+        <div class="col-8">
             <div class="card">
                 <div class="card-header">
                     Installation Details

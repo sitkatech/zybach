@@ -23,6 +23,17 @@ namespace Zybach.EFModels.Entities
             return ListImpl(dbContext).OrderByDescending(x => x.InspectionDate).ThenBy(x => x.Well.WellRegistrationID).Select(x => x.AsSimpleDto()).ToList();
         }
 
+        public static List<WaterQualityInspectionSummaryDto> ListByWellIDAsSummaryDto(ZybachDbContext dbContext, int wellID)
+        {
+            return dbContext.WaterQualityInspections
+                .Include(x => x.WaterQualityInspectionType)
+                .AsNoTracking()
+                .OrderByDescending(x => x.InspectionDate)
+                .Where(x => x.WellID == wellID)
+                .Select(x => x.AsSummaryDto())
+                .ToList();
+        }
+
         public static WaterQualityInspectionSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int waterQualityInspectionID)
         {
             return ListImpl(dbContext).SingleOrDefault(x => x.WaterQualityInspectionID == waterQualityInspectionID)?.AsSimpleDto();
