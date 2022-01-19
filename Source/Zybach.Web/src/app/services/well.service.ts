@@ -105,12 +105,12 @@ export class WellService {
   }
 
   public listWaterLevelInspectionsByWellID(wellID: number): Observable<Array<WaterLevelInspectionSummaryDto>> {
-    let route = `wells/${wellID}/waterLevelInspectionSummaries`;
+    let route = `wells/${wellID}/waterLevelInspections`;
     return this.apiService.getFromApi(route);
   }
 
   public listWaterQualityInspectionsByWellID(wellID: number): Observable<Array<WaterQualityInspectionSummaryDto>> {
-    let route = `wells/${wellID}/waterQualityInspectionSummaries`;
+    let route = `wells/${wellID}/waterQualityInspections`;
     return this.apiService.getFromApi(route);
   }
 
