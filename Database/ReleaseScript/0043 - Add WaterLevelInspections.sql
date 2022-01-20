@@ -117,8 +117,8 @@ select w.WellID,
 from dbo.BeehiveWaterLevelInspection bwli
 join dbo.Well w on bwli.WellRegistrationID = w.WellRegistrationID
 left join dbo.CropType ct on bwli.Crop = ct.CropTypeDisplayName
-join dbo.[User] u on case when bwli.InspectorUser = 'system' then 'Phil Heimann' when bwli.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwli.InspectorUser end = u.FirstName + ' ' + u.LastName
-where (bwli.InspectionDate is not null or bwli.StartDate is not null) and bwli.IsPrimary = 1
+join dbo.[User] u on case when bwli.InspectorUser in ('system', 'Phil - Surface') then 'Phil Heimann' when bwli.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwli.InspectorUser end = u.FirstName + ' ' + u.LastName
+where (bwli.InspectionDate is not null or bwli.StartDate is not null) and isnull(bwli.IsPrimary, 1) = 1
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bwli.WellRegistrationID not in
 (
@@ -201,8 +201,8 @@ from dbo.BeehiveWaterLevelInspection bwli
 join dbo.BeehiveWell bw on bwli.WellRegistrationID = bw.WellRegistrationID
 join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
 left join dbo.CropType ct on bwli.Crop = ct.CropTypeDisplayName
-join dbo.[User] u on case when bwli.InspectorUser = 'system' then 'Phil Heimann' when bwli.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwli.InspectorUser end = u.FirstName + ' ' + u.LastName
-where (bwli.InspectionDate is not null or bwli.StartDate is not null) and bwli.IsPrimary = 1
+join dbo.[User] u on case when bwli.InspectorUser in ('system', 'Phil - Surface') then 'Phil Heimann' when bwli.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwli.InspectorUser end = u.FirstName + ' ' + u.LastName
+where (bwli.InspectionDate is not null or bwli.StartDate is not null) and isnull(bwli.IsPrimary, 1) = 1
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bwli.WellRegistrationID in
 (
@@ -300,7 +300,7 @@ bwqi.InspectionName
 from dbo.[BeehiveWaterQualityInspection] bwqi
 join dbo.Well w on bwqi.WellRegistrationID = w.WellRegistrationID
 left join dbo.CropType ct on bwqi.Crop = ct.CropTypeDisplayName
-join dbo.[User] u on case when bwqi.InspectorUser = 'system' then 'Phil Heimann' when bwqi.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwqi.InspectorUser end = u.FirstName + ' ' + u.LastName
+join dbo.[User] u on case when bwqi.InspectorUser in ('system', 'Phil - Surface') then 'Phil Heimann' when bwqi.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwqi.InspectorUser end = u.FirstName + ' ' + u.LastName
 where bwqi.InspectionDate is not null or bwqi.StartDate is not null
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bwqi.WellRegistrationID not in
@@ -386,7 +386,7 @@ from dbo.[BeehiveWaterQualityInspection] bwqi
 join dbo.BeehiveWell bw on bwqi.WellRegistrationID = bw.WellRegistrationID
 join dbo.Well w on bw.SiteNumber = w.WellRegistrationID
 left join dbo.CropType ct on bwqi.Crop = ct.CropTypeDisplayName
-join dbo.[User] u on case when bwqi.InspectorUser = 'system' then 'Phil Heimann' when bwqi.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwqi.InspectorUser end = u.FirstName + ' ' + u.LastName
+join dbo.[User] u on case when bwqi.InspectorUser in ('system', 'Phil - Surface') then 'Phil Heimann' when bwqi.InspectorUser = 'Glen - Surface' then 'Glen Bowers' else bwqi.InspectorUser end = u.FirstName + ' ' + u.LastName
 where bwqi.InspectionDate is not null or bwqi.StartDate is not null
 -- ignore these wells that are in there as SiteNumber until we get closure on how to proceed
 and bwqi.WellRegistrationID in
