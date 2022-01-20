@@ -121,6 +121,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
 
   public onSubmit(newReportTemplateForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+    this.alertService.clearAlerts();
     if(this.reportTemplateID !== undefined){
       this.reportTemplateService.updateReportTemplate(this.reportTemplateID, this.model)
       .subscribe(response => {
