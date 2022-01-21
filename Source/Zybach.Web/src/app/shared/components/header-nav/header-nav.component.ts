@@ -61,16 +61,13 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
                this.cdr.detach();
     }
 
-    public isDashboardCurrentPage(){
-        return this.router.url === '/dashboard';
+    public isDataProgramCurrentPage(){
+        return this.router.url.startsWith('/dashboard') 
+        || this.router.url.startsWith('/sensor-status');
     }
 
     public isMapCurrentPage(){
         return this.router.url === '/well-map';
-    }
-
-    public isSensorStatusCurrentPage(){
-        return this.router.url === '/sensor-status';
     }
 
     public isChemigationCurrentPage(){
