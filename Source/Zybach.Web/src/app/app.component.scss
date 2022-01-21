@@ -23,3 +23,15 @@ header-nav::after{
     position:absolute;
     z-index: -1;
 }
+
+.footer-text {
+    color: $base-text;
+}
+
+.footer-link {
+    color: $link-color;
+}
+
+.footer-hr {
+    background-color: $primary;
+}
