@@ -158,19 +158,6 @@ Subject: {mm.Subject}
             return String.Join("; ", addresses.Select(x => x.ToString()));
         }
 
-        public string GetDefaultEmailSignature()
-        {
-            string defaultEmailSignature = $@"<br /><br />
-Respectfully, the {_zybachConfiguration.PlatformLongName} team
-<br /><br />
-***
-<br /><br />
-You have received this email because you are a registered user of the {_zybachConfiguration.PlatformLongName}. 
-<br /><br />
-<a href=""mailto:{_zybachConfiguration.LeadOrganizationEmail}"">{_zybachConfiguration.LeadOrganizationEmail}</a>";
-            return defaultEmailSignature;
-        }
-
         public string GetSupportNotificationEmailSignature()
         {
             string supportNotificationEmailSignature = $@"<br /><br />
@@ -180,13 +167,13 @@ Respectfully, the {_zybachConfiguration.PlatformLongName} team
 <br /><br />
 You have received this email because you are assigned to receive support notifications within the {_zybachConfiguration.PlatformLongName}. 
 <br /><br />
-<a href=""mailto:{_zybachConfiguration.LeadOrganizationEmail}"">{_zybachConfiguration.LeadOrganizationEmail}</a>";
+<a href=""mailto:{_zybachConfiguration.SupportEmail}"">{_zybachConfiguration.SupportEmail}</a>";
             return supportNotificationEmailSignature;
         }
 
         public MailAddress GetDefaultEmailFrom()
         {
-            return new MailAddress("donotreply@sitkatech.com", $"{_zybachConfiguration.PlatformLongName}");
+            return new MailAddress($"{_zybachConfiguration.DoNotReplyEmail}", $"{_zybachConfiguration.PlatformLongName}");
         }
 
         public static void AddBccRecipientsToEmail(MailMessage mailMessage, IEnumerable<string> recipients)

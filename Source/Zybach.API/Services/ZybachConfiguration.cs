@@ -11,10 +11,8 @@
         public string KEYSTONE_REDIRECT_URL { get; set; }
         public string PlatformLongName { get; set; }
         public string PlatformShortName { get; set; }
-        public string LeadOrganizationLongName { get; set; }
-        public string LeadOrganizationShortName { get; set; }
-        public string LeadOrganizationHomeUrl { get; set; }
-        public string LeadOrganizationEmail { get; set; }
+        public string SupportEmail { get; set; }
+        public string DoNotReplyEmail { get; set; }
         public string APPINSIGHTS_INSTRUMENTATIONKEY { get; set; }
         public string API_KEY_VALUE { get; set; }
         public string INFLUXDB_URL { get; set; }

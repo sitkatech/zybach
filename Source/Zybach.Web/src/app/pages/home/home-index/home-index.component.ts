@@ -91,16 +91,4 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     public platformShortName():string{
         return environment.platformShortName;
     }
-
-    public leadOrganizationShortName():string{
-        return environment.leadOrganizationShortName;
-    }
-
-    public leadOrganizationLongName(): string{
-        return environment.leadOrganizationLongName;
-    }
-
-    public leadOrganizationHomeUrl(): string{
-        return environment.leadOrganizationHomeUrl;
-    }
 }
