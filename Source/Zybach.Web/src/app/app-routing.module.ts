@@ -46,10 +46,12 @@ import { WellContactEditComponent } from './pages/well-contact-edit/well-contact
 import { WellParticipationEditComponent } from './pages/well-participation-edit/well-participation-edit.component';
 import { WellRegistrationIdEditComponent } from './pages/well-registration-id-edit/well-registration-id-edit.component';
 import { ClearinghouseWqiReportComponent } from './pages/clearinghouse-wqi-report/clearinghouse-wqi-report.component';
+import { SensorListComponent } from './pages/sensor-list/sensor-list.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "dashboard", component: DashboardComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
+  { path: "sensors", component: SensorListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },

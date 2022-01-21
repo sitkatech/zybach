@@ -2436,6 +2436,84 @@
         }
       }
     },
+    "/api/sensors": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensors/{sensorID}": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sensorStatus": {
       "get": {
         "tags": [
@@ -6046,6 +6124,40 @@
         },
         "additionalProperties": false
       },
+      "SensorDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorType": {
+            "$ref": "#/components/schemas/SensorTypeDto"
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellDto"
+          },
+          "InGeoOptix": {
+            "type": "boolean"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
@@ -6068,6 +6180,48 @@
         },
         "additionalProperties": false
       },
+      "SensorSimpleDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "InGeoOptix": {
+            "type": "boolean"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "SensorTypeName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorSummaryDto": {
         "type": "object",
         "properties": {
@@ -6085,6 +6239,24 @@
           },
           "IsActive": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorTypeDto": {
+        "type": "object",
+        "properties": {
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorTypeDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

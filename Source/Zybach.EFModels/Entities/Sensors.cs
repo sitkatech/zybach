@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
@@ -16,6 +18,21 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.SensorType)
                 .Include(x => x.Well)
                 .AsNoTracking();
+        }
+
+        public static IEnumerable<SensorSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
+        {
+            return GetSensorsImpl(dbContext)
+                .Select(x => x.AsSimpleDto())
+                .ToList();
+        }
+
+        public static SensorDto GetBySensorID(ZybachDbContext dbContext, int sensorID)
+        {
+            var sensor = GetSensorsImpl(dbContext)
+                .SingleOrDefault(x => x.SensorID == sensorID);
+
+            return sensor?.AsDto();
         }
     }
 }
