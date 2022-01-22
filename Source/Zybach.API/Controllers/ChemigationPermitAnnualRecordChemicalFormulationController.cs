@@ -40,7 +40,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>> GetChemigationPermitAnnualRecordChemicalFormulationByPermitNumberAndRecordYear([FromRoute] int chemigationPermitNumber, [FromRoute] int recordYear)
         {
-            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.GetByPermitNumberAndRecordYearAsDetailedDto(_dbContext, chemigationPermitNumber, recordYear);
+            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecords.GetByPermitNumberAndRecordYearAsDetailedDto(_dbContext, chemigationPermitNumber, recordYear);
             if (chemigationPermitAnnualRecordDto == null)
             {
                 var notFoundMessage = $"There is no annual record found for Chemigation Permit #{chemigationPermitNumber}, Year {recordYear}!";
@@ -58,6 +58,42 @@ namespace Zybach.API.Controllers
                 .ToList();
 
             return Ok(chemigationPermitAnnualRecordChemicalFormulations);
+        }
+
+        [HttpGet("/api/chemicalFormulationYearlyTotals")]
+        [ZybachViewFeature]
+        public ActionResult<List<ChemicalFormulationYearlyTotalDto>> GetChemicalFormulationYearlyTotals()
+        {
+            var chemigationPermitAnnualRecordChemicalFormulations = _dbContext
+                .ChemigationPermitAnnualRecordChemicalFormulations
+                .Include(x => x.ChemigationPermitAnnualRecord)
+                .Include(x => x.ChemicalFormulation)
+                .Include(x => x.ChemicalUnit)
+                .ToList();
+
+            var chemicalFormulationYearlyTotals = chemigationPermitAnnualRecordChemicalFormulations
+                .GroupBy(x => new
+                    { x.ChemigationPermitAnnualRecord.RecordYear, x.ChemicalFormulation, x.ChemicalUnit })
+                .Select(x =>
+                {
+                    var permitAnnualRecordChemicalFormulations = x.Where(z =>
+                        z.ChemicalFormulation.ChemicalFormulationID == x.Key.ChemicalFormulation.ChemicalFormulationID &&
+                        z.ChemigationPermitAnnualRecord.RecordYear == x.Key.RecordYear &&
+                        z.ChemicalUnit.ChemicalUnitID == x.Key.ChemicalUnit.ChemicalUnitID).ToList();
+
+                    return new ChemicalFormulationYearlyTotalDto()
+                    {
+                        RecordYear = x.Key.RecordYear,
+                        ChemicalFormulation = x.Key.ChemicalFormulation.ChemicalFormulationDisplayName,
+                        ChemicalUnit = x.Key.ChemicalUnit.AsDto(),
+                        TotalApplied = permitAnnualRecordChemicalFormulations
+                            .Sum(y => y.TotalApplied ?? 0),
+                        AcresTreated = permitAnnualRecordChemicalFormulations
+                            .Sum(y => y.AcresTreated)
+                    };
+                }).ToList();
+
+            return Ok(chemicalFormulationYearlyTotals);
         }
     }
 }

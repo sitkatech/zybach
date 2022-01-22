@@ -15,7 +15,36 @@ import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 
 export class WellDetailDto { 
     AnnualPumpedVolume?: Array<AnnualPumpedVolume>;
+    TownshipRangeSection?: string;
+    County?: string;
+    WellParticipationID?: number;
+    WellParticipationName?: string;
+    WellUseID?: number;
+    WellUseName?: string;
+    RequiresChemigation?: boolean;
+    RequiresWaterLevelInspection?: boolean;
+    WellDepth?: number;
+    Clearinghouse?: string;
+    PageNumber?: number;
+    SiteName?: string;
+    SiteNumber?: string;
+    OwnerName?: string;
+    OwnerAddress?: string;
+    OwnerCity?: string;
+    OwnerState?: string;
+    OwnerZipCode?: string;
+    AdditionalContactName?: string;
+    AdditionalContactAddress?: string;
+    AdditionalContactCity?: string;
+    AdditionalContactState?: string;
+    AdditionalContactZipCode?: string;
+    IsReplacement?: boolean;
+    Notes?: string;
+    WaterQualityInspectionTypes?: string;
+    ScreenInterval?: string;
+    ScreenDepth?: number;
     Sensors?: Array<SensorSummaryDto>;
+    WellID?: number;
     WellRegistrationID?: string;
     WellTPID?: string;
     Description?: string;
@@ -29,6 +58,7 @@ export class WellDetailDto {
     IrrigatedAcresPerYear?: Array<IrrigatedAcresPerYearDto>;
     AgHubRegisteredUser?: string;
     FieldName?: string;
+    WellNickname?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -14,10 +14,21 @@ namespace Zybach.EFModels.Entities
             var chemigationInspectionDto = new ChemigationInspectionDto()
             {
                 ChemigationInspectionID = chemigationInspection.ChemigationInspectionID,
-                WellRegistrationID = chemigationInspection.WellRegistrationID,
-                ProtocolCanonicalName = chemigationInspection.ProtocolCanonicalName,
-                Status = chemigationInspection.Status,
-                LastUpdate = chemigationInspection.LastUpdate
+                ChemigationPermitAnnualRecord = chemigationInspection.ChemigationPermitAnnualRecord.AsDto(),
+                ChemigationInspectionStatus = chemigationInspection.ChemigationInspectionStatus.AsDto(),
+                ChemigationInspectionType = chemigationInspection.ChemigationInspectionType?.AsDto(),
+                InspectionDate = chemigationInspection.InspectionDate,
+                InspectorUser = chemigationInspection.InspectorUser?.AsDto(),
+                ChemigationMainlineCheckValve = chemigationInspection.ChemigationMainlineCheckValve?.AsDto(),
+                HasVacuumReliefValve = chemigationInspection.HasVacuumReliefValve,
+                HasInspectionPort = chemigationInspection.HasInspectionPort,
+                ChemigationLowPressureValve = chemigationInspection.ChemigationLowPressureValve?.AsDto(),
+                ChemigationInjectionValve = chemigationInspection.ChemigationInjectionValve?.AsDto(),
+                ChemigationInterlockType = chemigationInspection.ChemigationInterlockType?.AsDto(),
+                Tillage = chemigationInspection.Tillage?.AsDto(),
+                CropType = chemigationInspection.CropType?.AsDto(),
+                InspectionNotes = chemigationInspection.InspectionNotes,
+                ChemigationInspectionFailureReason = chemigationInspection.ChemigationInspectionFailureReason?.AsDto()
             };
             DoCustomMappings(chemigationInspection, chemigationInspectionDto);
             return chemigationInspectionDto;
@@ -30,10 +41,21 @@ namespace Zybach.EFModels.Entities
             var chemigationInspectionSimpleDto = new ChemigationInspectionSimpleDto()
             {
                 ChemigationInspectionID = chemigationInspection.ChemigationInspectionID,
-                WellRegistrationID = chemigationInspection.WellRegistrationID,
-                ProtocolCanonicalName = chemigationInspection.ProtocolCanonicalName,
-                Status = chemigationInspection.Status,
-                LastUpdate = chemigationInspection.LastUpdate
+                ChemigationPermitAnnualRecordID = chemigationInspection.ChemigationPermitAnnualRecordID,
+                ChemigationInspectionStatusID = chemigationInspection.ChemigationInspectionStatusID,
+                ChemigationInspectionTypeID = chemigationInspection.ChemigationInspectionTypeID,
+                InspectionDate = chemigationInspection.InspectionDate,
+                InspectorUserID = chemigationInspection.InspectorUserID,
+                ChemigationMainlineCheckValveID = chemigationInspection.ChemigationMainlineCheckValveID,
+                HasVacuumReliefValve = chemigationInspection.HasVacuumReliefValve,
+                HasInspectionPort = chemigationInspection.HasInspectionPort,
+                ChemigationLowPressureValveID = chemigationInspection.ChemigationLowPressureValveID,
+                ChemigationInjectionValveID = chemigationInspection.ChemigationInjectionValveID,
+                ChemigationInterlockTypeID = chemigationInspection.ChemigationInterlockTypeID,
+                TillageID = chemigationInspection.TillageID,
+                CropTypeID = chemigationInspection.CropTypeID,
+                InspectionNotes = chemigationInspection.InspectionNotes,
+                ChemigationInspectionFailureReasonID = chemigationInspection.ChemigationInspectionFailureReasonID
             };
             DoCustomSimpleDtoMappings(chemigationInspection, chemigationInspectionSimpleDto);
             return chemigationInspectionSimpleDto;

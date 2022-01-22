@@ -1,0 +1,27 @@
+<div class="container navCaretMargin">
+    <app-alert-display></app-alert-display>
+    <div class="row">
+        <div class="col-12">
+            <h2 class="d-inline-block">NDEE Chemicals Report</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container col-12">
+            <div class="row my-2">
+                <div class="col">
+                    <a class="btn btn-secondary btn-md float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    ngbTooltip="Download Report as CSV"><i class="fas fa-download"></i></a>
+                    <fresca-clear-grid-filters-button class="float-right mr-2" [grid]="chemicalReportGrid">
+                    </fresca-clear-grid-filters-button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <ag-grid-angular #chemicalReportGrid style="width: 100%; height: 500px;" class="ag-theme-balham" [rowData]="rowData"
+                    [columnDefs]="columnDefs" [pagination]="true" [suppressMenuHide]="true" [paginationPageSize]="100" [pinnedBottomRowData]="pinnedBottomRowData"
+                    (filterChanged)="onFilterChanged($event)" (gridReady)="onGridReady($event)">
+                </ag-grid-angular>
+            </div>
+        </div>
+    </div>
+</div>

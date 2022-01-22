@@ -12,9 +12,9 @@
 
 
 <nav class="navbar navbar-expand-xl justify-content-start navbar-zybach-secondary logoPadding">
-    <a href="{{leadOrganizationHomeUrl()}}" class="navbar-logo pt-0" target="_blank"
+    <a href="https://tpnrd.org" class="navbar-logo pt-0" target="_blank"
         style="float:left; position:absolute; z-index:1025; left:0; top: 0">
-        <img src="{{leadOrganizationLogoSrc()}}" />
+        <img src="assets/main/logos/logo_crop.png" />
     </a>
 
     <div class="flex-row navbar-collapse collapse" id="navbar2">
@@ -74,7 +74,7 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAdministrator()">
+            <li class="nav-item dropdown" routerLinkActive="active">
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     Report
@@ -82,6 +82,15 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a routerLink="/reports" class="dropdown-item">
                         Report Center
+                    </a>
+                    <a routerLink="/reports/chemigation-permit-reports" class="dropdown-item">
+                        Chemigation Permit Reports
+                    </a>
+                    <a routerLink="reports/clearinghouse-report" class="dropdown-item">
+                        Clearinghouse Report
+                    </a>
+                    <a routerLink="/reports/ndee-report" class="dropdown-item">
+                        NDEE Chemicals Report
                     </a>
                 </div>
             </li>
@@ -122,10 +131,13 @@
                     <a routerLink="/chemigation-permits" class="dropdown-item">
                         Chemigation Permits
                     </a>
-                    <a routerLink="/" class="dropdown-item disabled">
+                    <a routerLink="/chemigation-inspections" class="dropdown-item">
+                        Chemigation Inspections
+                    </a>
+                    <a routerLink="/water-quality-inspections" class="dropdown-item">
                         Water Quality Inspections
                     </a>
-                    <a routerLink="/" class="dropdown-item disabled">
+                    <a routerLink="/water-level-inspections" class="dropdown-item">
                         Water Level Inspections
                     </a>
                 </div>
@@ -136,7 +148,9 @@
                     placeholder="Registration #" (click)="getSearchSuggestions()"> -->
                 <p-autoComplete #geoOptixSearch field="Name" placeholder="Search..." emptyMessage="No Results"
                     [(ngModel)]="text" [suggestions]="searchSuggestions" (completeMethod)="search($event)"
-                    (onFocus)="reFocus(geoOptixSearch)" (onSelect)="select($event)" type="search">
+                    (onFocus)="reFocus(geoOptixSearch)" (onSelect)="select($event)" type="search"
+                    minLength="3"
+                    >
                     <ng-template let-result pTemplate="item">
                         <div style="border-bottom:1px solid #D5D5D5">
                             <div class="objectType">

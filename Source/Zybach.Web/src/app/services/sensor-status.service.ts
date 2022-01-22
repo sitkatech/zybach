@@ -15,8 +15,8 @@ export class SensorStatusService {
     return this.apiService.getFromApi(`/sensorStatus`);
   }
 
-  public getSensorStatusForWell(wellRegistrationID : string): Observable<WellWithSensorMessageAgeDto>{
-    return this.apiService.getFromApi(`/sensorStatus/${wellRegistrationID}`);
+  public getSensorStatusForWell(wellID : number): Observable<WellWithSensorMessageAgeDto>{
+    return this.apiService.getFromApi(`/sensorStatus/${wellID}`);
   }
 
   public updateSensorIsActive(sensorSummaryDto: SensorSummaryDto){

@@ -19,15 +19,23 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/chemigationPermits/injectionUnitTypes")]
+        [HttpGet("/api/chemigationInjectionUnitTypes")]
         [ZybachViewFeature]
         public ActionResult<List<ChemigationInjectionUnitTypeDto>> GetChemigationInjectionUnitTypes()
         {
-            var chemigationInjectionUnitTypes = ChemigationPermitAnnualRecord.GetChemigationInjectionUnitTypes(_dbContext);
+            var chemigationInjectionUnitTypes = ChemigationInjectionUnitTypes.ListAsDto(_dbContext);
             return Ok(chemigationInjectionUnitTypes);
         }
 
-        [HttpGet("/api/chemigationPermits/annualRecords/annualRecordStatuses")]
+        [HttpGet("/api/chemigationPermitAnnualRecordFeeTypes")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<ChemigationPermitAnnualRecordStatusDto>> GetChemigationPermitAnnualRecordFeeTypes()
+        {
+            var chemigationPermitAnnualRecordFeeTypesDto = ChemigationPermitAnnualRecordFeeTypes.List(_dbContext);
+            return Ok(chemigationPermitAnnualRecordFeeTypesDto);
+        }
+
+        [HttpGet("/api/chemigationPermitAnnualRecordStatuses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitAnnualRecordStatusDto>> GetChemigationPermitAnnualRecordStatuses()
         {
@@ -35,12 +43,21 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecordStatusesDto);
         }
 
-        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
+        [HttpGet("/api/chemigationPermitAnnualRecords")]
         [ZybachViewFeature]
-        public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetChemigationPermitAnnualRecordsByPermitNumber([FromRoute] int chemigationPermitNumber)
+        public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetAllChemigationPermitAnnualRecords()
         {
-            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecord.ListByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber);
+            var chemigationPermitAnnualRecords =
+                ChemigationPermitAnnualRecords.ListAsDetailedDto(_dbContext);
             return Ok(chemigationPermitAnnualRecords);
+        }
+
+        [HttpPost("/api/chemigationPermitAnnualRecords/{recordYear}")]
+        [AdminFeature]
+        public ActionResult<BulkChemigationPermitAnnualRecordCreationResult> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
+        {
+            var bulkChemigationPermitAnnualRecordCreationResult = ChemigationPermits.BulkCreateRenewalRecords(_dbContext, recordYear);
+            return Ok(bulkChemigationPermitAnnualRecordCreationResult);
         }
 
         [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/getLatestRecordYear")]
@@ -48,7 +65,7 @@ namespace Zybach.API.Controllers
         public ActionResult<ChemigationPermitAnnualRecordDetailedDto> GetLatestAnnualRecordByChemigationPermitNumber([FromRoute] int chemigationPermitNumber)
         {
             var latestAnnualRecordDto =
-                ChemigationPermitAnnualRecord.GetLatestByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber);
+                ChemigationPermitAnnualRecords.GetLatestByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber);
 
             if (ThrowNotFound(latestAnnualRecordDto, "ChemigationPermitAnnualRecord", chemigationPermitNumber, out var actionResult))
             {
@@ -62,7 +79,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<ChemigationPermitAnnualRecordDetailedDto> GetChemigationPermitAnnualRecordByPermitNumberAndRecordYear([FromRoute] int chemigationPermitNumber, [FromRoute] int recordYear)
         {
-            var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecord.GetByPermitNumberAndRecordYearAsDetailedDto(_dbContext, chemigationPermitNumber, recordYear);
+            var chemigationPermitAnnualRecord = ChemigationPermitAnnualRecords.GetByPermitNumberAndRecordYearAsDetailedDto(_dbContext, chemigationPermitNumber, recordYear);
 
             if (ThrowNotFound(chemigationPermitAnnualRecord, "ChemigationPermitAnnualRecord", chemigationPermitNumber, out var actionResult))
             {
@@ -72,7 +89,42 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecord);
         }
 
-        [HttpPut("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}")]
+        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/annualRecords")]
+        [ZybachViewFeature]
+        public ActionResult<List<ChemigationPermitAnnualRecordDetailedDto>> GetChemigationPermitAnnualRecordsByPermitNumber([FromRoute] int chemigationPermitNumber)
+        {
+            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecords.ListByChemigationPermitNumberAsDetailedDto(_dbContext, chemigationPermitNumber);
+            return Ok(chemigationPermitAnnualRecords);
+        }
+
+        [HttpPost("/api/chemigationPermits/{chemigationPermitID}/annualRecords")]
+        [AdminFeature]
+        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
+        {
+            var chemigationPermit = ChemigationPermits.GetByID(_dbContext, chemigationPermitID);
+
+            if (ThrowNotFound(chemigationPermit, "ChemigationPermit", chemigationPermitID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            var chemigationPermitAnnualRecords = ChemigationPermitAnnualRecords.ListByChemigationPermitID(_dbContext, chemigationPermitID);
+            if (chemigationPermitAnnualRecords.Any(x => x.RecordYear == chemigationPermitAnnualRecordUpsertDto.RecordYear))
+            {
+                ModelState.AddModelError("ChemigationPermitAnnualRecord", "Annual record already exists for this year");
+                return BadRequest(ModelState);
+            }
+
+            var mostRecentChemigationPermitAnnualRecord = chemigationPermitAnnualRecords.OrderByDescending(x => x.RecordYear).FirstOrDefault();
+
+            chemigationPermitAnnualRecordUpsertDto.NDEEAmount = mostRecentChemigationPermitAnnualRecord != null && chemigationPermitAnnualRecordUpsertDto.RecordYear - mostRecentChemigationPermitAnnualRecord.RecordYear == 1 ?
+                ChemigationPermitAnnualRecords.NDEEAmounts.Renewal : ChemigationPermitAnnualRecords.NDEEAmounts.New;
+
+            ChemigationPermitAnnualRecords.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
+            return Ok();
+        }
+
+        [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
         [AdminFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
             [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
@@ -86,32 +138,8 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            var updatedChemigationPermitAnnualRecordDto =
-                ChemigationPermitAnnualRecord.UpdateAnnualRecord(_dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
-
-            return Ok(updatedChemigationPermitAnnualRecordDto);
+            ChemigationPermitAnnualRecords.UpdateAnnualRecord(_dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto);
+            return Ok();
         }
-
-        [HttpPost("/api/chemigationPermits/{chemigationPermitID}/annualRecords")]
-        [AdminFeature]
-        public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
-        {
-            if (ChemigationPermitAnnualRecord.DoesChemigationPermitAnnualRecordExistForYear(_dbContext,
-                chemigationPermitID,
-                chemigationPermitAnnualRecordUpsertDto.RecordYear))
-            {
-                ModelState.AddModelError("ChemigationPermitAnnualRecord", "Annual record already exists for this year");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var chemigationPermitAnnualRecordDto = ChemigationPermitAnnualRecord.CreateAnnualRecord(_dbContext, chemigationPermitAnnualRecordUpsertDto, chemigationPermitID);
-            return Ok(chemigationPermitAnnualRecordDto);
-        }
-
     }
-
 }

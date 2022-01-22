@@ -2,6 +2,7 @@
 {
     public partial class UserDto
     {
-        public string FullName => $"{FirstName} {LastName}";
+        public string FullName { get; set; }
+        public string FullNameLastFirst { get; set; }
     }
 }

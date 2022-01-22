@@ -1,3 +1,5 @@
+@import "~src/scss/_variables.scss";
+
 th {
     width: 25%;
     text-align: right;
@@ -10,4 +12,8 @@ td {
 #dateRangeInput{
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
+}
+
+h5 {
+    color: $primary;
 }

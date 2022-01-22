@@ -5,7 +5,7 @@
         </li>
         <li class="breadcrumb-item">
             <a routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
-                Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumber}}
+                Chemigation Permit #{{chemigationPermit?.ChemigationPermitNumberDisplay}}
             </a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">Edit</li>
@@ -36,7 +36,14 @@
                                     <label><strong>Chemigation Permit Number: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    {{chemigationPermit?.ChemigationPermitNumber}}
+                                    {{chemigationPermit?.ChemigationPermitNumberDisplay}}
+                                </div>
+
+                                <div class="col-6 control-label text-right mb-2">
+                                    <label><strong>Well: </strong></label>
+                                </div>
+                                <div class="col-6 text-left mb-2">
+                                    <a *ngIf="chemigationPermit?.Well" routerLink="/wells/{{chemigationPermit?.Well.WellID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">
@@ -51,23 +58,15 @@
                                         </option>
                                     </select>
                                 </div>
-
+ 
                             </div>
     
                             <div class="row col-6 mt-4">
-
-                                <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Township-Range-Section: </strong></label>
-                                </div>
-                                <div class="col-6 text-left mb-2">
-                                    {{chemigationPermit?.TownshipRangeSection}}
-                                </div>
-
                                 <div class="col-6 control-label text-right mb-2">
                                     <label><strong>County: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    {{chemigationPermit?.ChemigationCounty.ChemigationCountyDisplayName}}
+                                    {{chemigationPermit?.County.CountyDisplayName}}
                                 </div>
                             
                             </div>

@@ -9,16 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { CountyDto } from '././county-dto';
 import { ChemigationPermitStatusDto } from '././chemigation-permit-status-dto';
-import { ChemigationCountyDto } from '././chemigation-county-dto';
+import { WellDto } from '././well-dto';
 
 export class ChemigationPermitDto { 
+    ChemigationPermitNumberDisplay?: string;
     ChemigationPermitID?: number;
     ChemigationPermitNumber?: number;
     ChemigationPermitStatus?: ChemigationPermitStatusDto;
     DateCreated?: string;
-    TownshipRangeSection?: string;
-    ChemigationCounty?: ChemigationCountyDto;
+    County?: CountyDto;
+    Well?: WellDto;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -9,20 +9,24 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         public int ChemigationPermitAnnualRecordStatusID { get; set; }
         [Required]
+        public int ChemigationPermitAnnualRecordFeeTypeID { get; set; }
         public string ApplicantFirstName { get; set; }
-        [Required]
         public string ApplicantLastName { get; set; }
+        public string ApplicantCompany { get; set; }
         [Required]
         public string PivotName { get; set; }
         [Required]
         public int RecordYear { get; set; }
+        [Required]
+        public string TownshipRangeSection { get; set; }
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
+        public DateTime? DateApproved { get; set; }
         [Required]
         public int ChemigationInjectionUnitTypeID { get; set; }
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
+        [RegularExpression(@"^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
         public string ApplicantPhone { get; set; }
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
+        [RegularExpression(@"^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
         public string ApplicantMobilePhone { get; set; }
         public string ApplicantMailingAddress { get; set; }
         public string ApplicantEmail { get; set; }
@@ -30,8 +34,9 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantState { get; set; }
         [RegularExpression(@"^[0-9]{5}(?:-[0-9]{4})?$", ErrorMessage = "Zip codes must be formatted in either 5 digit or hyphenated 5+4 digit format")]
         public string ApplicantZipCode { get; set; }
+        public decimal? NDEEAmount { get; set; }
+        public string AnnualNotes { get; set; }
         public List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto> ChemicalFormulations { get; set; }
         public List<ChemigationPermitAnnualRecordApplicatorUpsertDto> Applicators { get; set; }
-        public List<ChemigationPermitAnnualRecordWellUpsertDto> Wells { get; set; }
     }
 }

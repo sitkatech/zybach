@@ -17,7 +17,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
   
   public chemigationPermitNumber: number;
@@ -39,7 +39,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.model = new ChemigationPermitUpsertDto();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
   
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
@@ -55,10 +55,8 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber).subscribe(chemigationPermit => {
         this.chemigationPermit = chemigationPermit;
-        this.model.ChemigationPermitNumber = this.chemigationPermit.ChemigationPermitNumber;
         this.model.ChemigationPermitStatusID = this.chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusID;
-        this.model.TownshipRangeSection = this.chemigationPermit.TownshipRangeSection;
-        this.model.ChemigationCountyID = this.chemigationPermit.ChemigationCounty.ChemigationCountyID;
+        this.model.CountyID = this.chemigationPermit.County.CountyID;
         this.cdr.detectChanges();
       });
 
@@ -66,9 +64,8 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   }
   
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   onSubmit(editChemigationPermitForm: HTMLFormElement): void {
@@ -78,8 +75,8 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editChemigationPermitForm.reset();
-        this.router.navigateByUrl("/chemigation-permits/" + response.ChemigationPermitNumber).then(() => {
-          this.alertService.pushAlert(new Alert(`Chemigation Permit ${response.ChemigationPermitNumber} was successfully updated.`, AlertContext.Success));
+        this.router.navigateByUrl("/chemigation-permits/" + this.chemigationPermitNumber).then(() => {
+          this.alertService.pushAlert(new Alert(`Chemigation Permit ${this.chemigationPermitNumber} was successfully updated.`, AlertContext.Success));
         });
       }
         ,
@@ -90,8 +87,3 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
       );
   }
 }
-
-
-
-
-

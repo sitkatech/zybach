@@ -14,6 +14,7 @@ import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 
 export class WellWithSensorSummaryDto { 
     Sensors?: Array<SensorSummaryDto>;
+    WellID?: number;
     WellRegistrationID?: string;
     WellTPID?: string;
     Description?: string;
@@ -27,6 +28,7 @@ export class WellWithSensorSummaryDto {
     IrrigatedAcresPerYear?: Array<IrrigatedAcresPerYearDto>;
     AgHubRegisteredUser?: string;
     FieldName?: string;
+    WellNickname?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

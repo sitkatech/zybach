@@ -29,7 +29,13 @@ namespace Zybach.EFModels.Entities
                 ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone,
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
-                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail
+                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
+                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount,
+                TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection,
+                ApplicantCompany = chemigationPermitAnnualRecord.ApplicantCompany,
+                AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes,
+                DateApproved = chemigationPermitAnnualRecord.DateApproved,
+                ChemigationPermitAnnualRecordFeeType = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeType?.AsDto()
             };
             DoCustomMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordDto);
             return chemigationPermitAnnualRecordDto;
@@ -57,7 +63,13 @@ namespace Zybach.EFModels.Entities
                 ApplicantMobilePhone = chemigationPermitAnnualRecord.ApplicantMobilePhone,
                 DateReceived = chemigationPermitAnnualRecord.DateReceived,
                 DatePaid = chemigationPermitAnnualRecord.DatePaid,
-                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail
+                ApplicantEmail = chemigationPermitAnnualRecord.ApplicantEmail,
+                NDEEAmount = chemigationPermitAnnualRecord.NDEEAmount,
+                TownshipRangeSection = chemigationPermitAnnualRecord.TownshipRangeSection,
+                ApplicantCompany = chemigationPermitAnnualRecord.ApplicantCompany,
+                AnnualNotes = chemigationPermitAnnualRecord.AnnualNotes,
+                DateApproved = chemigationPermitAnnualRecord.DateApproved,
+                ChemigationPermitAnnualRecordFeeTypeID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeTypeID
             };
             DoCustomSimpleDtoMappings(chemigationPermitAnnualRecord, chemigationPermitAnnualRecordSimpleDto);
             return chemigationPermitAnnualRecordSimpleDto;

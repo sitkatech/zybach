@@ -12,6 +12,7 @@
 import { ChemigationPermitDto } from '././chemigation-permit-dto';
 import { ChemigationInjectionUnitTypeDto } from '././chemigation-injection-unit-type-dto';
 import { ChemigationPermitAnnualRecordStatusDto } from '././chemigation-permit-annual-record-status-dto';
+import { ChemigationPermitAnnualRecordFeeTypeDto } from '././chemigation-permit-annual-record-fee-type-dto';
 
 export class ChemigationPermitAnnualRecordDto { 
     ChemigationPermitAnnualRecordID?: number;
@@ -31,6 +32,12 @@ export class ChemigationPermitAnnualRecordDto {
     DateReceived?: string;
     DatePaid?: string;
     ApplicantEmail?: string;
+    NDEEAmount?: number;
+    TownshipRangeSection?: string;
+    ApplicantCompany?: string;
+    AnnualNotes?: string;
+    DateApproved?: string;
+    ChemigationPermitAnnualRecordFeeType?: ChemigationPermitAnnualRecordFeeTypeDto;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

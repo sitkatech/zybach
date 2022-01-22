@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@ang
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorMessageAgeDto } from 'src/app/shared/generated/model/well-with-sensor-message-age-dto';
@@ -32,7 +33,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellRegistrationID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
@@ -63,12 +64,22 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         sortable: true, filter: true, resizable: true
       },
       { headerName: 'Sensor Number', field: 'SensorName', sortable: true, filter: true, resizable: true},
-      { headerName: 'Last Message Age (Hours)', sortable: true, filter: true, resizable: true, valueGetter: (params) => Math.floor(params.data.MessageAge / 3600)},
-      { headerName: 'Sensor Type', field: 'SensorType', sortable: true, filter: true, resizable: true},
+      { headerName: 'Last Message Age (Hours)',
+        valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
+        filter: 'agNumberColumnFilter',
+        sortable: true, resizable: true
+      },
+      { headerName: 'Sensor Type', field: 'SensorType',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'SensorType'
+        },
+        resizable: true, sortable: true
+      }
     ];
 
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.getSensorStatusByWell().subscribe(wells => {
         this.wellsGeoJson =
@@ -79,6 +90,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             wells.map(x => {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
+                wellID: x.WellID,
                 wellRegistrationID: x.WellRegistrationID,
                 sensors: x.Sensors.filter(y => y.IsActive) || [],
                 AgHubRegisteredUser: x.AgHubRegisteredUser,
@@ -89,13 +101,13 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }
 
 
-        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8 && sensor.IsActive);
+        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8 && sensor.IsActive);
       })
     });
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
+    
     this.wellsObservable.unsubscribe();
   }
   

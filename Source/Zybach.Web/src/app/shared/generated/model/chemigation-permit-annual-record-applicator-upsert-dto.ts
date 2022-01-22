@@ -13,9 +13,9 @@
 export class ChemigationPermitAnnualRecordApplicatorUpsertDto { 
     ChemigationPermitAnnualRecordApplicatorID?: number;
     ChemigationPermitAnnualRecordID?: number;
-    ApplicatorName?: string;
-    CertificationNumber?: number;
-    ExpirationYear?: number;
+    ApplicatorName: string;
+    CertificationNumber: number;
+    ExpirationYear: number;
     HomePhone?: string;
     MobilePhone?: string;
     constructor(obj?: any) {

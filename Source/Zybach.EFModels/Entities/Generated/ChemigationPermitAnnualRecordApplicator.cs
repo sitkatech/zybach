@@ -17,8 +17,8 @@ namespace Zybach.EFModels.Entities
         [Required]
         [StringLength(100)]
         public string ApplicatorName { get; set; }
-        public int CertificationNumber { get; set; }
-        public int ExpirationYear { get; set; }
+        public int? CertificationNumber { get; set; }
+        public int? ExpirationYear { get; set; }
         [StringLength(30)]
         public string HomePhone { get; set; }
         [StringLength(30)]

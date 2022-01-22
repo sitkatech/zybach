@@ -6,8 +6,13 @@ namespace Zybach.EFModels.Entities
     {
         static partial void DoCustomMappings(Well well, WellDto wellDto)
         {
-            wellDto.Longitude = well.WellGeometry.Coordinate.X;
-            wellDto.Latitude = well.WellGeometry.Coordinate.Y;
+            wellDto.Longitude = well.Longitude;
+            wellDto.Latitude = well.Latitude;
+        }
+
+        static partial void DoCustomSimpleDtoMappings(Well well, WellSimpleDto wellSimpleDto)
+        {
+            wellSimpleDto.WellParticipationName = well.WellParticipation?.WellParticipationDisplayName;
         }
     }
 }

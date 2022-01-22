@@ -7,7 +7,7 @@ namespace Zybach.EFModels.Entities
 {
     public static class ChemigationPermitAnnualRecordApplicators
     {
-        public static void UpdateApplicators(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID,
+        public static void UpdateApplicators(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
             List<ChemigationPermitAnnualRecordApplicatorUpsertDto> chemigationPermitAnnualRecordApplicatorsDto)
         {
             if (chemigationPermitAnnualRecordApplicatorsDto != null && chemigationPermitAnnualRecordApplicatorsDto.Any())
@@ -16,8 +16,7 @@ namespace Zybach.EFModels.Entities
                     chemigationPermitAnnualRecordApplicatorsDto.GroupBy(x => new { x.ApplicatorName, x.CertificationNumber }).Select(x =>
                         new ChemigationPermitAnnualRecordApplicator
                         {
-                            ChemigationPermitAnnualRecordID =
-                                chemigationPermitAnnualRecordID,
+                            ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
                             ApplicatorName = x.Key.ApplicatorName,
                             CertificationNumber = x.Key.CertificationNumber,
                             ExpirationYear = x.First().ExpirationYear,
@@ -27,7 +26,7 @@ namespace Zybach.EFModels.Entities
                 var existingChemigationPermitAnnualRecordApplicators = dbContext
                     .ChemigationPermitAnnualRecordApplicators.Where(x =>
                         x.ChemigationPermitAnnualRecordID ==
-                        chemigationPermitAnnualRecordID)
+                        chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID)
                     .ToList();
                 existingChemigationPermitAnnualRecordApplicators.Merge(
                     newChemigationPermitAnnualRecordApplicators,
@@ -41,7 +40,6 @@ namespace Zybach.EFModels.Entities
                         x.HomePhone = y.HomePhone;
                         x.MobilePhone = y.MobilePhone;
                     });
-                dbContext.SaveChanges();
             }
         }
     }

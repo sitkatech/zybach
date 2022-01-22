@@ -1,7 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
 import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
@@ -27,12 +30,13 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   public gridApi: any;
 
   constructor(private authenticationService: AuthenticationService,
+    private datePipe: DatePipe,
     private wellService: WellService) { }
 
   ngOnInit(): void {
     this.makeColumnDefs();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
         this.wells = wells;
@@ -45,6 +49,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             wells.filter(x => x.Location != null && x.Location != undefined).map(x => {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
+                wellID: x.WellID,
                 wellRegistrationID: x.WellRegistrationID,
                 sensors: x.Sensors || [],
                 AgHubRegisteredUser: x.AgHubRegisteredUser,
@@ -58,7 +63,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
+    
     this.wellsObservable.unsubscribe();
   }
 
@@ -74,10 +79,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   private makeColumnDefs() {
+    let datePipe = this.datePipe;
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellRegistrationID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
@@ -98,8 +104,13 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerName: "Registration #",
         field: "WellRegistrationID",
         width: 125,
-        sortable: true, filter: true, resizable: true,
-        
+        sortable: true, filter: true, resizable: true,        
+      },
+      {
+        headerName: "Nickname",
+        field: "WellNickname",
+        width: 125,
+        sortable: true, filter: true, resizable: true,        
       },
       {
         headerName: "TPID",
@@ -119,20 +130,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         width: 115,
         sortable: true, filter: true, resizable: true
       },
-      {
-        headerName: "Last Reading Date",
-        field: "LastReadingDate",
-        valueFormatter: agGridDateFormatter,
-        width: 150,
-        sortable: true, filter: true, resizable: true
-      },
-      {
-        headerName: "First Reading Date",
-        field: "FirstReadingDate",
-        valueFormatter: agGridDateFormatter,
-        width: 150,
-        sortable: true, filter: true, resizable: true
-      },
+      this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
+      this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
       {
         headerName: "Has Flow Meter?",
         valueGetter: function (params) {
@@ -156,7 +155,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        sortable: true, filter: true, resizable: true,
+        filter: true,
+        sortable: true, resizable: true,
         width: 170
       },
       {
@@ -168,7 +168,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        sortable: true, filter: true, resizable: true
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.HasElectricalData'
+        },
+        sortable: true, resizable: true
       },
       {
         headerName: "In AgHub?",
@@ -179,7 +183,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        sortable: true, filter: true, resizable: true, width: 110
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.InAgHub'
+        },
+        sortable: true, resizable: true, width: 110
       },
       {
         headerName: "In GeoOptix?",
@@ -190,17 +198,52 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        sortable: true, filter: true, resizable: true, width: 115
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'params.data.InGeoOptix'
+        },
+        sortable: true, resizable: true, width: 115
       },
-      {
-        headerName: "Last Fetched from AgHub",
-        field: "FetchDate",
-        valueFormatter: agGridDateFormatter,
-        sortable: true, filter: true, resizable: true
-      }
+      this.createDateColumnDef(datePipe, 'Last Fetched from AgHub', 'FetchDate', 'M/d/yyyy')
     ]
   }
 
+  
+  private dateSortComparer (id1: any, id2: any) {
+    const date1 = id1 ? Date.parse(id1) : Date.parse("1/1/1900");
+    const date2 = id2 ? Date.parse(id2) : Date.parse("1/1/1900");
+    if (date1 < date2) {
+      return -1;
+    }
+    return (date1 > date2)  ?  1 : 0;
+  }
+
+  private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+    if(cellValue === null) return -1;
+    const cellDate = Date.parse(cellValue);
+    if (cellDate == filterLocalDateAtMidnight) {
+      return 0;
+    }
+    return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
+  }
+
+  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string): ColDef {
+    return {
+      headerName: headerName, valueGetter: function (params: any) {
+        return datePipe.transform(params.data[fieldName], dateFormat);
+      },
+      comparator: this.dateSortComparer,
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        filterOptions: ['inRange'],
+        comparator: this.dateFilterComparator
+      }, 
+      width: 110,
+      resizable: true,
+      sortable: true
+    };
+  }
+  
   public onSelectionChanged(event: Event) {
     const selectedNode = this.gridApi.getSelectedNodes()[0];
     if (!selectedNode) {

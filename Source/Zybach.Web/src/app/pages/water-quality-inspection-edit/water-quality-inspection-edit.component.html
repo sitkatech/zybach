@@ -1,0 +1,51 @@
+<nav aria-label="breadcrumb" *ngIf="waterQualityInspection">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/water-quality-inspections">Water Quality Inspections</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a routerLink="/wells/{{waterQualityInspection.WellID}}">Well #{{waterQualityInspection.WellRegistrationID}}</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a routerLink="/water-quality-inspections/{{waterQualityInspectionID}}">{{waterQualityInspection.InspectionDate | date:'MM/dd/yyyy'}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Edit Inspection
+        </li>
+    </ol>
+</nav>
+<app-alert-display></app-alert-display>
+<div class="row container" *ngIf="waterQualityInspection">
+    <div class="row col-12 mt-2 ml-2">
+        <h2 class="d-inline-block">Edit Inspection</h2>
+    </div>
+
+    <div class="row col-12 mt-2 ml-2">
+        <p>Edit water quality inspection record using the form below
+        </p>
+    </div>
+
+    <form (ngSubmit)="onSubmit(editWaterQualityInspectionForm)" #editWaterQualityInspectionForm="ngForm" class="container">
+
+        <zybach-water-quality-inspection-upsert #inspectionUpsertForm (isFormValid)="isInspectionUpsertFormValid($event)"
+        [(inspection)]="waterQualityInspection">
+        </zybach-water-quality-inspection-upsert >
+
+        <div class="col-12 text-right mt-3 mr-3">
+            <div class="col-sm text-left float-right">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
+            <button type="submit" class="btn btn-zybach mr-1"
+                [disabled]="isFormValid(editWaterQualityInspectionForm)">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+            <a class="btn btn-secondary ml-1"
+                routerLink="/water-quality-inspections/{{waterQualityInspectionID}}">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>

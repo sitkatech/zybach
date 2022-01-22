@@ -32,24 +32,47 @@ import { ChemigationPermitDetailComponent } from './pages/chemigation-permit-det
 import { ChemigationPermitEditComponent } from './pages/chemigation-permit-edit/chemigation-permit-edit.component';
 import { ChemigationPermitAddRecordComponent } from './pages/chemigation-permit-add-record/chemigation-permit-add-record.component';
 import { ChemigationPermitEditRecordComponent } from './pages/chemigation-permit-edit-record/chemigation-permit-edit-record.component';
+import { NdeeChemicalsReportComponent } from './pages/ndee-chemicals-report/ndee-chemicals-report.component';
+import { ChemigationPermitReportsComponent } from './pages/chemigation-permit-reports/chemigation-permit-reports.component';
+import { ChemigationInspectionsListComponent } from './pages/chemigation-inspections-list/chemigation-inspections-list.component';
+import { ChemigationInspectionNewComponent } from './pages/chemigation-inspection-new/chemigation-inspection-new.component';
+import { ChemigationInspectionEditComponent } from './pages/chemigation-inspection-edit/chemigation-inspection-edit.component';
+import { WaterQualityInspectionListComponent } from './pages/water-quality-inspection-list/water-quality-inspection-list.component';
+import { WaterQualityInspectionDetailComponent } from './pages/water-quality-inspection-detail/water-quality-inspection-detail.component';
+import { WaterQualityInspectionNewComponent } from './pages/water-quality-inspection-new/water-quality-inspection-new.component';
+import { WaterQualityInspectionEditComponent } from './pages/water-quality-inspection-edit/water-quality-inspection-edit.component';
+import { WaterLevelInspectionListComponent } from './pages/water-level-inspection-list/water-level-inspection-list.component';
+import { WellContactEditComponent } from './pages/well-contact-edit/well-contact-edit.component';
+import { WellParticipationEditComponent } from './pages/well-participation-edit/well-participation-edit.component';
+import { WellRegistrationIdEditComponent } from './pages/well-registration-id-edit/well-registration-id-edit.component';
+import { ClearinghouseWqiReportComponent } from './pages/clearinghouse-wqi-report/clearinghouse-wqi-report.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "dashboard", component: DashboardComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "wells/:wellRegistrationID", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
-  { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard,AcknowledgedDisclaimerGuard]},
+  { path: "wells/:id", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
+  { path: "wells/:id/edit-registration-id", component: WellRegistrationIdEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "wells/:id/edit-contact", component: WellContactEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
+  { path: "wells/:id/edit-participation", component: WellParticipationEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
+  { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports",  component: ReportsListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/chemigation-permit-reports",  component: ChemigationPermitReportsComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/clearinghouse-report",  component: ClearinghouseWqiReportComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/ndee-report",  component: NdeeChemicalsReportComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/new",  component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "reports/:id/edit", component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "chemigation-inspections",  component: ChemigationInspectionsListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "chemigation-inspections/:inspection-id",  component: ChemigationInspectionEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits",  component: ChemigationPermitListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/new",  component: ChemigationNewPermitComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/:permit-number",  component: ChemigationPermitDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/:permit-number/edit",  component: ChemigationPermitEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/:permit-number/add-record",  component: ChemigationPermitAddRecordComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "chemigation-permits/:permit-number/:record-year/edit",  component: ChemigationPermitEditRecordComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "chemigation-permits/:permit-number/:record-year/add-inspection",  component: ChemigationInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "labels-and-definitions/:id", component: FieldDefinitionEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "labels-and-definitions", component: FieldDefinitionListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "users", component: UserListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
@@ -57,6 +80,11 @@ const routes: Routes = [
   { path: "users/:id/edit", component: UserEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "invite-user/:userID", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "invite-user", component: UserInviteComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "water-quality-inspections",  component: WaterQualityInspectionListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "water-quality-inspections/new",  component: WaterQualityInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "water-quality-inspections/:id",  component: WaterQualityInspectionDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "water-quality-inspections/:id/edit",  component: WaterQualityInspectionEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "water-level-inspections",  component: WaterLevelInspectionListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "", component: HomeIndexComponent},
   { path: "disclaimer", component: DisclaimerComponent },
   { path: "disclaimer/:forced", component: DisclaimerComponent },

@@ -5,18 +5,19 @@
     "version": "v1"
   },
   "paths": {
-    "/api/chartData/{wellRegistrationID}": {
+    "/api/chartData/{wellID}": {
       "get": {
         "tags": [
           "ChartData"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -44,7 +45,7 @@
         }
       }
     },
-    "/api/chemigation/summaries": {
+    "/api/chemigationInspections/inspectionTypes": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -57,7 +58,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/ChemigationInspectionTypeDto"
                   }
                 }
               },
@@ -65,7 +66,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/ChemigationInspectionTypeDto"
                   }
                 }
               },
@@ -73,8 +74,560 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/ChemigationInspectionTypeDto"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/inspectionStatuses": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionStatusDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionStatusDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/failureReasons": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionFailureReasonDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionFailureReasonDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionFailureReasonDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tillageTypes": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TillageDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TillageDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TillageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cropTypes": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CropTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CropTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CropTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/mainlineCheckValves": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationMainlineCheckValveDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationMainlineCheckValveDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationMainlineCheckValveDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/lowPressureValves": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationLowPressureValveDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationLowPressureValveDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationLowPressureValveDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/injectionValves": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionValveDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionValveDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInjectionValveDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/interlockTypes": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInterlockTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInterlockTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInterlockTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationInspections/{chemigationInspectionID}": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/{chemigationPermitNumber}/latestChemigationInspection": {
+      "get": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection": {
+      "post": {
+        "tags": [
+          "ChemigationInspection"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitAnnualRecordID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChemigationInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
                 }
               }
             }
@@ -112,44 +665,6 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ChemigationPermitStatusDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/counties": {
-      "get": {
-        "tags": [
-          "ChemigationPermit"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationCountyDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationCountyDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationCountyDto"
                   }
                 }
               }
@@ -329,24 +844,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChemigationPermitDto"
-                }
-              }
-            }
+            "description": "Success"
           }
         }
       },
@@ -372,7 +870,7 @@
         }
       }
     },
-    "/api/chemigationPermits/injectionUnitTypes": {
+    "/api/chemigationInjectionUnitTypes": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -410,7 +908,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/annualRecordStatuses": {
+    "/api/chemigationPermitAnnualRecordFeeTypes": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -448,14 +946,90 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}/annualRecords": {
+    "/api/chemigationPermitAnnualRecordStatuses": {
       "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermitAnnualRecords": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermitAnnualRecords/{recordYear}": {
+      "post": {
         "tags": [
           "ChemigationPermitAnnualRecord"
         ],
         "parameters": [
           {
-            "name": "chemigationPermitNumber",
+            "name": "recordYear",
             "in": "path",
             "required": true,
             "schema": {
@@ -470,26 +1044,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
-                  }
+                  "$ref": "#/components/schemas/BulkChemigationPermitAnnualRecordCreationResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
-                  }
+                  "$ref": "#/components/schemas/BulkChemigationPermitAnnualRecordCreationResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
-                  }
+                  "$ref": "#/components/schemas/BulkChemigationPermitAnnualRecordCreationResult"
                 }
               }
             }
@@ -586,14 +1151,63 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}": {
-      "put": {
+    "/api/chemigationPermits/{chemigationPermitNumber}/annualRecords": {
+      "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
         ],
         "parameters": [
           {
-            "name": "chemigationPermitAnnualRecordID",
+            "name": "chemigationPermitNumber",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemigationPermits/{chemigationPermitID}/annualRecords": {
+      "post": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "parameters": [
+          {
+            "name": "chemigationPermitID",
             "in": "path",
             "required": true,
             "schema": {
@@ -650,14 +1264,14 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitID}/annualRecords": {
-      "post": {
+    "/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}": {
+      "put": {
         "tags": [
           "ChemigationPermitAnnualRecord"
         ],
         "parameters": [
           {
-            "name": "chemigationPermitID",
+            "name": "chemigationPermitAnnualRecordID",
             "in": "path",
             "required": true,
             "schema": {
@@ -840,6 +1454,82 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/ChemigationPermitAnnualRecordChemicalFormulationSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chemicalFormulationYearlyTotals": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecordChemicalFormulation"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationYearlyTotalDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationYearlyTotalDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemicalFormulationYearlyTotalDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/counties": {
+      "get": {
+        "tags": [
+          "County"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CountyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CountyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CountyDto"
                   }
                 }
               }
@@ -1267,6 +1957,55 @@
         }
       }
     },
+    "/api/reportTemplatesByModelID/{reportTemplateModelID}": {
+      "get": {
+        "tags": [
+          "Report"
+        ],
+        "parameters": [
+          {
+            "name": "reportTemplateModelID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportTemplateDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportTemplateDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReportTemplateDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/reportTemplateModels": {
       "get": {
         "tags": [
@@ -1348,9 +2087,13 @@
                     "format": "binary"
                   },
                   "DisplayName": {
+                    "maxLength": 50,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "Description": {
+                    "maxLength": 250,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "ReportTemplateModelID": {
@@ -1421,9 +2164,13 @@
                     "format": "binary"
                   },
                   "DisplayName": {
+                    "maxLength": 50,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "Description": {
+                    "maxLength": 250,
+                    "minLength": 0,
                     "type": "string"
                   },
                   "ReportTemplateModelID": {
@@ -1474,7 +2221,7 @@
       }
     },
     "/api/reportTemplates/generateReports": {
-      "put": {
+      "post": {
         "tags": [
           "Report"
         ],
@@ -1505,6 +2252,126 @@
         "responses": {
           "200": {
             "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/robustReviewScenario/download/robustReviewScenarioJson": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Comprehensive data download to support Robust Review processes",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/robustReviewScenario/checkGETAPIHealth": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/robustReviewScenario/new": {
+      "post": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Trigger a new Robust Review Scenario GET Run",
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/robustReviewScenarios": {
+      "get": {
+        "tags": [
+          "RobustReviewScenario"
+        ],
+        "summary": "Return a list of all Robust Review Scenario Runs triggered by GWMA",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RobustReviewScenarioGETRunHistoryDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1607,18 +2474,19 @@
         }
       }
     },
-    "/api/sensorStatus/{wellRegistrationID}": {
+    "/api/sensorStatus/{wellID}": {
       "get": {
         "tags": [
           "SensorStatus"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -2072,7 +2940,432 @@
         }
       }
     },
-    "/api/wells/search/{wellRegistrationID}": {
+    "/api/waterLevelInspections": {
+      "get": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/waterLevelInspections/{waterLevelInspectionID}": {
+      "get": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterLevelInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/waterQualityInspectionTypes": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/waterQualityInspections": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/clearinghouseWaterQualityInspections": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClearinghouseWaterQualityInspectionDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClearinghouseWaterQualityInspectionDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClearinghouseWaterQualityInspectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/waterQualityInspections/{waterQualityInspectionID}": {
+      "get": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterQualityInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterQualityInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterQualityInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterQualityInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "WaterQualityInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterQualityInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wellUses": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellUseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellUseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellUseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wellParticipations": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellUseDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellUseDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellUseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/search/{wellID}": {
       "get": {
         "tags": [
           "Well"
@@ -2080,6 +3373,14 @@
         "parameters": [
           {
             "name": "wellRegistrationID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
@@ -2120,7 +3421,7 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/details": {
+    "/api/wells/search/{wellID}/hasInspectionType": {
       "get": {
         "tags": [
           "Well"
@@ -2132,6 +3433,161 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellID}/waterLevelInspections": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelInspectionSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellID}/waterQualityInspections": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterQualityInspectionSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellID}": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -2159,18 +3615,236 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/installation": {
+    "/api/wells/{wellID}/editRegistrationID": {
+      "put": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellRegistrationIDDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wells/{wellID}/contactInfo": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellContactInfoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellContactInfoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellContactInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellContactInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wells/{wellID}/participationInfo": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellParticipationInfoDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellParticipationInfoDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellParticipationInfoDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellParticipationInfoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/wells/{wellID}/installation": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -2207,18 +3881,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}": {
+    "/api/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           },
           {
@@ -2241,45 +3916,6 @@
         "responses": {
           "200": {
             "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/wells/download/robustReviewScenarioJson": {
-      "get": {
-        "tags": [
-          "Well"
-        ],
-        "summary": "Comprehensive data download to support Robust Review processes",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -2320,18 +3956,19 @@
         }
       }
     },
-    "/api/wells/{wellRegistrationID}/chemigationPermits": {
+    "/api/wells/{wellID}/chemigationPermits": {
       "get": {
         "tags": [
           "Well"
         ],
         "parameters": [
           {
-            "name": "wellRegistrationID",
+            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -2504,6 +4141,20 @@
         },
         "additionalProperties": false
       },
+      "BulkChemigationPermitAnnualRecordCreationResult": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitsRenewed": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionsCreated": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "ChemicalFormulationDto": {
         "type": "object",
         "properties": {
@@ -2518,6 +4169,31 @@
           "ChemicalFormulationDisplayName": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemicalFormulationYearlyTotalDto": {
+        "type": "object",
+        "properties": {
+          "RecordYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemicalFormulation": {
+            "type": "string",
+            "nullable": true
+          },
+          "TotalApplied": {
+            "type": "number",
+            "format": "double"
+          },
+          "ChemicalUnit": {
+            "$ref": "#/components/schemas/ChemicalUnitDto"
+          },
+          "AcresTreated": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -2544,24 +4220,6 @@
         },
         "additionalProperties": false
       },
-      "ChemigationCountyDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationCountyID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationCountyName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationCountyDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "ChemigationInjectionUnitTypeDto": {
         "type": "object",
         "properties": {
@@ -2574,6 +4232,343 @@
             "nullable": true
           },
           "ChemigationInjectionUnitTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInjectionValveDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInjectionValveID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInjectionValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInjectionValveDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInspectionFailureReasonDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInspectionFailureReasonID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionFailureReasonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionFailureReasonDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInspectionSimpleDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitNumberDisplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "County": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionFailureReasonName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationMainlineCheckValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationLowPressureValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInjectionValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInterlockTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TillageName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CropTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Inspector": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "ChemigationInspectionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationMainlineCheckValveID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "HasVacuumReliefValve": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasInspectionPort": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "ChemigationLowPressureValveID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationInjectionValveID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationInterlockTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "TillageID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionFailureReasonID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInspectionStatusDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInspectionStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInspectionTypeDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInspectionTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInspectionUpsertDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInspectionTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationInspectionStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ChemigationInspectionFailureReasonID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "TillageID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationMainlineCheckValveID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationLowPressureValveID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationInjectionValveID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationInterlockTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "HasVacuumReliefValve": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasInspectionPort": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationInterlockTypeDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationInterlockTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationInterlockTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationInterlockTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationLowPressureValveDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationLowPressureValveID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationLowPressureValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationLowPressureValveDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationMainlineCheckValveDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationMainlineCheckValveID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationMainlineCheckValveName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationMainlineCheckValveDisplayName": {
             "type": "string",
             "nullable": true
           }
@@ -2597,11 +4592,13 @@
           },
           "CertificationNumber": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "ExpirationYear": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "HomePhone": {
             "type": "string",
@@ -2615,6 +4612,11 @@
         "additionalProperties": false
       },
       "ChemigationPermitAnnualRecordApplicatorUpsertDto": {
+        "required": [
+          "ApplicatorName",
+          "CertificationNumber",
+          "ExpirationYear"
+        ],
         "type": "object",
         "properties": {
           "ChemigationPermitAnnualRecordApplicatorID": {
@@ -2626,8 +4628,7 @@
             "format": "int32"
           },
           "ApplicatorName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "CertificationNumber": {
             "type": "integer",
@@ -2638,12 +4639,12 @@
             "format": "int32"
           },
           "HomePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
           "MobilePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           }
@@ -2679,7 +4680,8 @@
           },
           "TotalApplied": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "AcresTreated": {
             "type": "number",
@@ -2711,7 +4713,8 @@
             "maximum": 999999,
             "minimum": 0,
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "AcresTreated": {
             "maximum": 999999,
@@ -2736,6 +4739,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
           "ChemigationPermitAnnualRecordStatusID": {
             "type": "integer",
             "format": "int32"
@@ -2756,11 +4763,24 @@
             "type": "string",
             "nullable": true
           },
+          "ChemigationPermitAnnualRecordFeeTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordFeeTypeName": {
+            "type": "string",
+            "nullable": true
+          },
           "ApplicantFirstName": {
             "type": "string",
             "nullable": true
           },
           "ApplicantLastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantCompany": {
             "type": "string",
             "nullable": true
           },
@@ -2798,7 +4818,25 @@
             "format": "date-time",
             "nullable": true
           },
+          "DateApproved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "ApplicantEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "NDEEAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "AnnualNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantName": {
             "type": "string",
             "nullable": true
           },
@@ -2816,10 +4854,10 @@
             },
             "nullable": true
           },
-          "Wells": {
+          "Inspections": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellSimpleDto"
+              "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
             },
             "nullable": true
           }
@@ -2895,6 +4933,53 @@
           "ApplicantEmail": {
             "type": "string",
             "nullable": true
+          },
+          "NDEEAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantCompany": {
+            "type": "string",
+            "nullable": true
+          },
+          "AnnualNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "DateApproved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordFeeType": {
+            "$ref": "#/components/schemas/ChemigationPermitAnnualRecordFeeTypeDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitAnnualRecordFeeTypeDto": {
+        "type": "object",
+        "properties": {
+          "ChemigationPermitAnnualRecordFeeTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitAnnualRecordFeeTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitAnnualRecordFeeTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FeeAmount": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -2919,12 +5004,12 @@
       },
       "ChemigationPermitAnnualRecordUpsertDto": {
         "required": [
-          "ApplicantFirstName",
-          "ApplicantLastName",
           "ChemigationInjectionUnitTypeID",
+          "ChemigationPermitAnnualRecordFeeTypeID",
           "ChemigationPermitAnnualRecordStatusID",
           "PivotName",
-          "RecordYear"
+          "RecordYear",
+          "TownshipRangeSection"
         ],
         "type": "object",
         "properties": {
@@ -2932,11 +5017,21 @@
             "type": "integer",
             "format": "int32"
           },
+          "ChemigationPermitAnnualRecordFeeTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "ApplicantFirstName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "ApplicantLastName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "ApplicantCompany": {
+            "type": "string",
+            "nullable": true
           },
           "PivotName": {
             "type": "string"
@@ -2944,6 +5039,9 @@
           "RecordYear": {
             "type": "integer",
             "format": "int32"
+          },
+          "TownshipRangeSection": {
+            "type": "string"
           },
           "DateReceived": {
             "type": "string",
@@ -2955,17 +5053,22 @@
             "format": "date-time",
             "nullable": true
           },
+          "DateApproved": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "ChemigationInjectionUnitTypeID": {
             "type": "integer",
             "format": "int32"
           },
           "ApplicantPhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
           "ApplicantMobilePhone": {
-            "pattern": "^\\(?([0-9]{3})\\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+            "pattern": "^\\(?\\d{3}\\)?-? *\\d{3}-? *-?\\d{4}",
             "type": "string",
             "nullable": true
           },
@@ -2990,6 +5093,15 @@
             "type": "string",
             "nullable": true
           },
+          "NDEEAmount": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "AnnualNotes": {
+            "type": "string",
+            "nullable": true
+          },
           "ChemicalFormulations": {
             "type": "array",
             "items": {
@@ -3002,53 +5114,6 @@
             "items": {
               "$ref": "#/components/schemas/ChemigationPermitAnnualRecordApplicatorUpsertDto"
             },
-            "nullable": true
-          },
-          "Wells": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChemigationPermitAnnualRecordWellUpsertDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationPermitAnnualRecordWellSimpleDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChemigationPermitAnnualRecordWellID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationPermitAnnualRecordID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellID": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "ChemigationPermitAnnualRecordWellUpsertDto": {
-        "type": "object",
-        "properties": {
-          "ChemigationPermitAnnualRecordWellID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ChemigationPermitAnnualRecordID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellRegistrationID": {
-            "type": "string",
             "nullable": true
           }
         },
@@ -3065,22 +5130,28 @@
             "type": "integer",
             "format": "int32"
           },
+          "ChemigationPermitNumberDisplay": {
+            "type": "string",
+            "nullable": true
+          },
           "ChemigationPermitStatus": {
-            "$ref": "#/components/schemas/ChemigationPermitStatusDto"
+            "$ref": "#/components/schemas/ChemigationPermitStatusSimpleDto"
           },
           "DateCreated": {
             "type": "string",
             "format": "date-time"
           },
-          "TownshipRangeSection": {
-            "type": "string",
-            "nullable": true
+          "County": {
+            "$ref": "#/components/schemas/CountySimpleDto"
           },
-          "ChemigationCounty": {
-            "$ref": "#/components/schemas/ChemigationCountyDto"
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
           },
           "LatestAnnualRecord": {
             "$ref": "#/components/schemas/ChemigationPermitAnnualRecordDetailedDto"
+          },
+          "LatestInspection": {
+            "$ref": "#/components/schemas/ChemigationInspectionSimpleDto"
           }
         },
         "additionalProperties": false
@@ -3088,6 +5159,10 @@
       "ChemigationPermitDto": {
         "type": "object",
         "properties": {
+          "ChemigationPermitNumberDisplay": {
+            "type": "string",
+            "nullable": true
+          },
           "ChemigationPermitID": {
             "type": "integer",
             "format": "int32"
@@ -3103,40 +5178,34 @@
             "type": "string",
             "format": "date-time"
           },
-          "TownshipRangeSection": {
-            "type": "string",
-            "nullable": true
+          "County": {
+            "$ref": "#/components/schemas/CountyDto"
           },
-          "ChemigationCounty": {
-            "$ref": "#/components/schemas/ChemigationCountyDto"
+          "Well": {
+            "$ref": "#/components/schemas/WellDto"
           }
         },
         "additionalProperties": false
       },
       "ChemigationPermitNewDto": {
         "required": [
-          "ChemigationCountyID",
           "ChemigationPermitAnnualRecord",
-          "ChemigationPermitNumber",
           "ChemigationPermitStatusID",
-          "TownshipRangeSection"
+          "CountyID"
         ],
         "type": "object",
         "properties": {
-          "ChemigationPermitNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
           "ChemigationPermitStatusID": {
             "type": "integer",
             "format": "int32"
           },
-          "TownshipRangeSection": {
-            "type": "string"
-          },
-          "ChemigationCountyID": {
+          "CountyID": {
             "type": "integer",
             "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
           },
           "ChemigationPermitAnnualRecord": {
             "$ref": "#/components/schemas/ChemigationPermitAnnualRecordUpsertDto"
@@ -3162,27 +5231,177 @@
         },
         "additionalProperties": false
       },
-      "ChemigationPermitUpsertDto": {
-        "required": [
-          "ChemigationPermitStatusID"
-        ],
+      "ChemigationPermitStatusSimpleDto": {
         "type": "object",
         "properties": {
-          "ChemigationPermitNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
           "ChemigationPermitStatusID": {
             "type": "integer",
             "format": "int32"
+          },
+          "ChemigationPermitStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChemigationPermitUpsertDto": {
+        "required": [
+          "ChemigationPermitStatusID",
+          "CountyID"
+        ],
+        "type": "object",
+        "properties": {
+          "ChemigationPermitStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CountyID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ClearinghouseWaterQualityInspectionDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "Clearinghouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "Contaminant": {
+            "type": "string",
+            "nullable": true
+          },
+          "SamplingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LabConcentration": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldConcentration": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ReportingLimit": {
+            "type": "number",
+            "format": "double"
+          },
+          "Laboratory": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "RequiresChemigationInspection": {
+            "type": "boolean"
+          },
+          "WaterQualityInspectionType": {
+            "type": "string",
+            "nullable": true
           },
           "TownshipRangeSection": {
             "type": "string",
             "nullable": true
           },
-          "ChemigationCountyID": {
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "WellParticipation": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUse": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellPreLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "WellPostLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CountyDto": {
+        "type": "object",
+        "properties": {
+          "CountyID": {
             "type": "integer",
             "format": "int32"
+          },
+          "CountyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountyDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CountySimpleDto": {
+        "type": "object",
+        "properties": {
+          "CountyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CountyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountyDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CropTypeDto": {
+        "type": "object",
+        "properties": {
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CropTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CropTypeDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3443,7 +5662,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "WellIDList": {
+          "ModelIDList": {
             "type": "array",
             "items": {
               "type": "integer",
@@ -3740,6 +5959,49 @@
         },
         "additionalProperties": false
       },
+      "RobustReviewScenarioGETRunHistoryDto": {
+        "type": "object",
+        "properties": {
+          "RobustReviewScenarioGETRunHistoryID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CreateByUser": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "GETRunID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SuccessfulStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "IsTerminal": {
+            "type": "boolean"
+          },
+          "StatusMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "StatusHexColor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "RoleDto": {
         "type": "object",
         "properties": {
@@ -3778,8 +6040,8 @@
             "nullable": true
           },
           "WellID": {
-            "type": "string",
-            "nullable": true
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -3912,6 +6174,24 @@
         },
         "additionalProperties": false
       },
+      "TillageDto": {
+        "type": "object",
+        "properties": {
+          "TillageID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "TillageName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TillageDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "UnassignedUserReportDto": {
         "type": "object",
         "properties": {
@@ -4033,8 +6313,11 @@
           },
           "FullName": {
             "type": "string",
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
+          },
+          "FullNameLastFirst": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4060,6 +6343,82 @@
           "RoleID": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserSimpleDto": {
+        "type": "object",
+        "properties": {
+          "UserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "UserGuid": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "FirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Email": {
+            "type": "string",
+            "nullable": true
+          },
+          "Phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "RoleID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "UpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastActivityDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "ReceiveSupportEmails": {
+            "type": "boolean"
+          },
+          "LoginName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Company": {
+            "type": "string",
+            "nullable": true
+          },
+          "DisclaimerAcknowledgedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FullNameLastFirst": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4128,6 +6487,492 @@
         },
         "additionalProperties": false
       },
+      "WaterLevelInspectionSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelInspectionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterLevelInspectionStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasuringEquipment": {
+            "type": "string",
+            "nullable": true
+          },
+          "Crop": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasOil": {
+            "type": "boolean"
+          },
+          "HasBrokenTape": {
+            "type": "boolean"
+          },
+          "Accuracy": {
+            "type": "string",
+            "nullable": true
+          },
+          "Method": {
+            "type": "string",
+            "nullable": true
+          },
+          "Party": {
+            "type": "string",
+            "nullable": true
+          },
+          "SourceAgency": {
+            "type": "string",
+            "nullable": true
+          },
+          "SourceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "TimeDatumCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "TimeDatumReliability": {
+            "type": "string",
+            "nullable": true
+          },
+          "LevelTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AgencyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "Access": {
+            "type": "string",
+            "nullable": true
+          },
+          "Hold": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Cut": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MP": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Measurement": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "IsPrimary": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "WaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "CropTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Inspector": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "InspectionYear": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterLevelInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelInspectionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Measurement": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MeasuringEquipment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterQualityInspectionSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WaterQualityInspectionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Temperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PH": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Conductivity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldAlkilinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "LabNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Salinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MV": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sodium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Calcium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Magnesium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Potassium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "HydrogenCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CalciumCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sulfate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Chloride": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "SiliconDioxide": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "PreWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PostWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "WaterQualityInspectionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CropTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Inspector": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "InspectionYear": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterQualityInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WaterQualityInspectionID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectionType": {
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterQualityInspectionTypeDto": {
+        "type": "object",
+        "properties": {
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterQualityInspectionTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterQualityInspectionTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterQualityInspectionUpsertDto": {
+        "required": [
+          "InspectionDate",
+          "InspectorUserID",
+          "WaterQualityInspectionTypeID",
+          "WellRegistrationID"
+        ],
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string"
+          },
+          "WaterQualityInspectionTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Temperature": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PH": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Conductivity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldAlkilinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FieldNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "LabNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Salinity": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MV": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sodium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Calcium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Magnesium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Potassium": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "HydrogenCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CalciumCarbonate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Sulfate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Chloride": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "SiliconDioxide": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CropTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "PreWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PostWaterLevel": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNickname": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellChartDataDto": {
         "type": "object",
         "properties": {
@@ -4148,6 +6993,101 @@
         },
         "additionalProperties": false
       },
+      "WellContactInfoDto": {
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "CountyID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "County": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "Notes": {
+            "maxLength": 1000,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellDetailDto": {
         "type": "object",
         "properties": {
@@ -4158,12 +7098,130 @@
             },
             "nullable": true
           },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "County": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellUseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Clearinghouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SiteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterQualityInspectionTypes": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "Sensors": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/SensorSummaryDto"
             },
             "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
           },
           "WellRegistrationID": {
             "type": "string",
@@ -4218,41 +7276,145 @@
           "FieldName": {
             "type": "string",
             "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "WellInspectionSummaryDto": {
+      "WellDto": {
         "type": "object",
         "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
           },
-          "LastChemigationDate": {
+          "StreamflowZone": {
+            "$ref": "#/components/schemas/StreamFlowZoneDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
             "type": "string",
             "format": "date-time",
             "nullable": true
           },
-          "LastNitratesDate": {
+          "WellNickname": {
             "type": "string",
-            "format": "date-time",
             "nullable": true
           },
-          "LastWaterLevelDate": {
+          "TownshipRangeSection": {
             "type": "string",
-            "format": "date-time",
             "nullable": true
           },
-          "LastWaterQualityDate": {
-            "type": "string",
-            "format": "date-time",
+          "County": {
+            "$ref": "#/components/schemas/CountyDto"
+          },
+          "WellParticipation": {
+            "$ref": "#/components/schemas/WellParticipationDto"
+          },
+          "WellUse": {
+            "$ref": "#/components/schemas/WellUseDto"
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
-          "PendingInspectionsCount": {
+          "Clearinghouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "SiteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -4279,6 +7441,292 @@
         },
         "additionalProperties": false
       },
+      "WellParticipationDto": {
+        "type": "object",
+        "properties": {
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellParticipationDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellParticipationInfoDto": {
+        "required": [
+          "RequiresChemigation",
+          "RequiresWaterLevelInspection",
+          "WaterQualityInspectionTypeIDs"
+        ],
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellUseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "WaterQualityInspectionTypeIDs": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "maximum": 999999.9999,
+            "minimum": 0,
+            "pattern": "^\\d{0,6}\\.?\\d{0,4}|\\.\\d{0,4}$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Clearinghouse": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "maximum": 2147483647,
+            "minimum": 0,
+            "pattern": "^\\d+$",
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SiteName": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenInterval": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "maximum": 999999.9999,
+            "minimum": 0,
+            "pattern": "^\\d{0,6}\\.?\\d{0,4}|\\.\\d{0,4}$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellRegistrationIDDto": {
+        "required": [
+          "WellRegistrationID"
+        ],
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "StreamflowZoneID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "CountyID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "RequiresChemigation": {
+            "type": "boolean"
+          },
+          "RequiresWaterLevelInspection": {
+            "type": "boolean"
+          },
+          "WellDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "Clearinghouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SiteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenInterval": {
+            "type": "string",
+            "nullable": true
+          },
+          "ScreenDepth": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerState": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactName": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactState": {
+            "type": "string",
+            "nullable": true
+          },
+          "AdditionalContactZipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsReplacement": {
+            "type": "boolean"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellUseDto": {
+        "type": "object",
+        "properties": {
+          "WellUseID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellUseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellUseDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellWithSensorMessageAgeDto": {
         "type": "object",
         "properties": {
@@ -4288,6 +7736,10 @@
               "$ref": "#/components/schemas/SensorMessageAgeDto"
             },
             "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
           },
           "WellRegistrationID": {
             "type": "string",
@@ -4340,6 +7792,10 @@
             "nullable": true
           },
           "FieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
             "type": "string",
             "nullable": true
           }
@@ -4356,6 +7812,10 @@
             },
             "nullable": true
           },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
@@ -4407,6 +7867,10 @@
             "nullable": true
           },
           "FieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
             "type": "string",
             "nullable": true
           }

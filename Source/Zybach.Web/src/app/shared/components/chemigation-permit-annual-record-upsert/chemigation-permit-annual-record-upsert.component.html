@@ -6,13 +6,28 @@
                 <label class="required"><strong>Annual Renewal Status: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <select name="ChemigationPermitAnnualRecordStatusID" class="form-control" 
-                    [(ngModel)]="model.ChemigationPermitAnnualRecordStatusID" required>
-                    <option *ngFor="let annualRecordStatus of annualRecordStatuses"
-                        [value]="annualRecordStatus.ChemigationPermitAnnualRecordStatusID">
-                        {{annualRecordStatus.ChemigationPermitAnnualRecordStatusDisplayName}}
-                    </option>
-                </select>
+                <ng-select [(ngModel)]="model.ChemigationPermitAnnualRecordStatusID"
+                    [items]="annualRecordStatuses" bindLabel="ChemigationPermitAnnualRecordStatusDisplayName" bindValue="ChemigationPermitAnnualRecordStatusID" 
+                    placeholder="Choose One" name="ChemigationPermitAnnualRecordStatusID" required>
+                </ng-select>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Fee Type: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <ng-select [(ngModel)]="model.ChemigationPermitAnnualRecordFeeTypeID"
+                    [items]="feeTypes" bindLabel="ChemigationPermitAnnualRecordFeeTypeDisplayName" bindValue="ChemigationPermitAnnualRecordFeeTypeID" 
+                    placeholder="Choose One" name="ChemigationPermitAnnualRecordFeeTypeID" required>
+                </ng-select>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Township-Range-Section: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <input type="text" class="form-control" name="TownshipRangeSection"
+                    placeholder="Township-Range-Section" required [(ngModel)]="model.TownshipRangeSection" />
             </div>
 
             <div class="col-6 control-label text-right mb-2">
@@ -27,14 +42,10 @@
                 <label class="required"><strong>Injection Unit Type: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <select name="ChemigationInjectionUnitTypeID" class="form-control" 
-                    [(ngModel)]="model.ChemigationInjectionUnitTypeID" required>
-                    <option selected disabled [value]="">Choose One</option>
-                    <option *ngFor="let injectionUnitType of injectionUnitTypes"
-                        [value]="injectionUnitType.ChemigationInjectionUnitTypeID">
-                        {{injectionUnitType.ChemigationInjectionUnitTypeDisplayName}}
-                    </option>
-                </select>
+                <ng-select [(ngModel)]="model.ChemigationInjectionUnitTypeID"
+                    [items]="injectionUnitTypes" bindLabel="ChemigationInjectionUnitTypeDisplayName" bindValue="ChemigationInjectionUnitTypeID" 
+                    placeholder="Choose One" name="ChemigationInjectionUnitTypeID" required>
+                </ng-select>
             </div>
             
             <div class="col-6 control-label text-right mb-2">
@@ -65,23 +76,54 @@
                 </div>
             </div>
 
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Date Approved: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2 form-group">
+                <div class="input-group">
+                    <input class="form-control" name="dp3"
+                    placeholder="yyyy-mm-dd"
+                    [(ngModel)]="model.DateApproved" ngbDatepicker #d3="ngbDatepicker" />
+                    <div class="input-group-append">
+                        <button class="btn btn-zybach far fa-calendar" (click)="d3.toggle()" type="button"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Notes: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <textarea class="form-control" name="AnnualNotes"
+                    placeholder="Notes" [(ngModel)]="model.AnnualNotes">
+                </textarea>
+            </div>
+
         </div>
 
         <div class="row col-6 mt-4">
             <div class="col-6 control-label text-right mb-2">
-                <label class="required"><strong>Applicant First Name: </strong></label>
+                <label><strong>Applicant Company: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <input type="text" class="form-control" name="ApplicantFirstName"
-                    placeholder="First Name" required [(ngModel)]="model.ApplicantFirstName" />
+                <input type="text" class="form-control" name="ApplicantCompany"
+                    placeholder="Company" [(ngModel)]="model.ApplicantCompany" />
             </div>
 
             <div class="col-6 control-label text-right mb-2">
-                <label class="required"><strong>Applicant Last Name: </strong></label>
+                <label><strong>Applicant First Name: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <input type="text" class="form-control" name="ApplicantFirstName"
+                    placeholder="First Name" [(ngModel)]="model.ApplicantFirstName" />
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Applicant Last Name: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
                 <input type="text" class="form-control" name="ApplicantLastName"
-                    placeholder="Last Name" required [(ngModel)]="model.ApplicantLastName" />
+                    placeholder="Last Name" [(ngModel)]="model.ApplicantLastName" />
             </div>
 
             <div class="col-6 control-label text-right mb-2">
@@ -104,13 +146,10 @@
                 <label class="required"><strong>State: </strong></label>
             </div>
             <div class="col-6 text-left mb-2">
-                <select name="ApplicantState" class="form-control" 
-                    [(ngModel)]="model.ApplicantState" required>
-                    <option *ngFor="let state of states | keyvalue"
-                        [value]="state.value">
-                        {{state.key}}
-                    </option>
-                </select>
+                <ng-select [(ngModel)]="model.ApplicantState"
+                    [items]="states | keyvalue" bindLabel="key" bindValue="value" 
+                    placeholder="Choose One" name="ApplicantState" required>
+                </ng-select>
             </div>
 
             <div class="col-6 control-label text-right mb-2">

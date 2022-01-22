@@ -7,7 +7,8 @@ namespace Zybach.EFModels.Entities
 {
     public static class ChemigationPermitAnnualRecordChemicalFormulations
     {
-        public static void UpdateChemicalFormulations(ZybachDbContext dbContext, int chemigationPermitAnnualRecordID,
+        public static void UpdateChemicalFormulations(ZybachDbContext dbContext,
+            ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
             List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>
                 chemigationPermitAnnualRecordChemicalFormulationsDto)
         {
@@ -15,19 +16,30 @@ namespace Zybach.EFModels.Entities
             {
                 var newChemigationPermitAnnualRecordChemicalFormulations =
                     chemigationPermitAnnualRecordChemicalFormulationsDto.GroupBy(x => new {x.ChemicalFormulationID, x.ChemicalUnitID}).Select(x =>
-                        new ChemigationPermitAnnualRecordChemicalFormulation
+                    {
+                        var formulation = new ChemigationPermitAnnualRecordChemicalFormulation
+                            {
+                                ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
+                                ChemicalFormulationID = x.Key.ChemicalFormulationID,
+                                ChemicalUnitID = x.Key.ChemicalUnitID,
+                                AcresTreated = x.Sum(y => y.AcresTreated)
+                            };
+
+                        var hasTotalAppliedValues = x.Where(y => y.TotalApplied.HasValue).ToList();
+                        if (hasTotalAppliedValues.Any())
                         {
-                            ChemigationPermitAnnualRecordID =
-                                chemigationPermitAnnualRecordID,
-                            ChemicalFormulationID = x.Key.ChemicalFormulationID,
-                            ChemicalUnitID = x.Key.ChemicalUnitID,
-                            TotalApplied = x.Sum(y => y.TotalApplied),
-                            AcresTreated = x.Sum(y => y.AcresTreated)
-                        }).ToList();
+                            formulation.TotalApplied = hasTotalAppliedValues.Sum(y => y.TotalApplied.Value);
+                        }
+                        else
+                        {
+                            formulation.TotalApplied = null;
+                        }
+                        return formulation;
+                    }).ToList();
                 var existingChemigationPermitAnnualRecordChemicalFormulations = dbContext
                     .ChemigationPermitAnnualRecordChemicalFormulations.Where(x =>
                         x.ChemigationPermitAnnualRecordID ==
-                        chemigationPermitAnnualRecordID)
+                        chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID)
                     .ToList();
                 existingChemigationPermitAnnualRecordChemicalFormulations.Merge(
                     newChemigationPermitAnnualRecordChemicalFormulations,
@@ -40,7 +52,6 @@ namespace Zybach.EFModels.Entities
                         x.TotalApplied = y.TotalApplied;
                         x.AcresTreated = y.AcresTreated;
                     });
-                dbContext.SaveChanges();
             }
         }
     }

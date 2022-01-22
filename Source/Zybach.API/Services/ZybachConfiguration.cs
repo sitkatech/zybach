@@ -11,10 +11,8 @@
         public string KEYSTONE_REDIRECT_URL { get; set; }
         public string PlatformLongName { get; set; }
         public string PlatformShortName { get; set; }
-        public string LeadOrganizationLongName { get; set; }
-        public string LeadOrganizationShortName { get; set; }
-        public string LeadOrganizationHomeUrl { get; set; }
-        public string LeadOrganizationEmail { get; set; }
+        public string SupportEmail { get; set; }
+        public string DoNotReplyEmail { get; set; }
         public string APPINSIGHTS_INSTRUMENTATIONKEY { get; set; }
         public string API_KEY_VALUE { get; set; }
         public string INFLUXDB_URL { get; set; }
@@ -28,5 +26,11 @@
         public string GEOOPTIX_SEARCH_HOSTNAME { get; set; }
         public string AGHUB_API_BASE_URL { get; set; }
         public string AGHUB_API_KEY { get; set; }
+        public string GET_API_BASE_URL { get; set; }
+        public string GET_API_SUBSCRIPTION_KEY { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID { get; set; }
+        public int GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID { get; set; }
     }
 }

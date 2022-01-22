@@ -19,7 +19,6 @@ import {GestureHandling} from 'leaflet-gesture-handling'
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
 import { TwinPlatteBoundaryGeoJson } from '../../shared/models/tpnrd-boundary';
 
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { NominatimService } from 'src/app/services/nominatim.service';
 
 import { point, polygon } from '@turf/helpers';
@@ -68,9 +67,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public wellsLayer: GeoJSON<any>;
   selectedFeatureLayer: any;
 
-  public dataSourceDropdownList: { item_id: number, item_text: string }[] = [];
-  public selectedDataSources: { item_id: number, item_text: string }[] = [];
-  public dataSourceDropdownSettings: IDropdownSettings = {};
+  public dataSourceDropdownList: { group_name: string, item_id: number, item_text: string }[];
+  public selectedDataSources: DataSourceFilterOption[];
 
   public mapSearchQuery: string;
   public maxZoom: number = 17;
@@ -108,25 +106,12 @@ export class WellMapComponent implements OnInit, AfterViewInit {
     this.compileService.configure(this.appRef);
 
     this.dataSourceDropdownList = [
-      { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
-      { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
-      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Usage" },
-      { item_id: DataSourceFilterOption.NODATA, item_text: "No Estimate Available" }
+      { group_name: "Select All", item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
+      { group_name: "Select All", item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
+      { group_name: "Select All", item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Usage" },
+      { group_name: "Select All", item_id: DataSourceFilterOption.NODATA, item_text: "No Estimate Available" }
     ];
-    this.selectedDataSources = [
-      { item_id: DataSourceFilterOption.FLOW, item_text: "Flow Meter" },
-      { item_id: DataSourceFilterOption.CONTINUITY, item_text: "Continuity Meter" },
-      { item_id: DataSourceFilterOption.ELECTRICAL, item_text: "Electrical Usage" },
-    ];
-    this.dataSourceDropdownSettings = {
-      singleSelection: false,
-      idField: "item_id",
-      textField: "item_text",
-      selectAllText: "Select All",
-      unSelectAllText: "Unselect All",
-      allowSearchFilter: false,
-      enableCheckAll: true
-    }
+    this.selectedDataSources = [DataSourceFilterOption.FLOW, DataSourceFilterOption.CONTINUITY, DataSourceFilterOption.ELECTRICAL];
   }
 
   public ngAfterViewInit(): void {
@@ -230,8 +215,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       .addTo(this.map);
   }
 
-  public onDataSourceFilterChange(event: Event) {
-    const selectedDataSourceOptions = this.selectedDataSources.map(x=>x.item_id);
+  public onDataSourceFilterChange() {
+    const selectedDataSourceOptions = this.selectedDataSources;
 
     this.showFlowMeters = selectedDataSourceOptions.includes(DataSourceFilterOption.FLOW)
     this.showContinuityMeters = selectedDataSourceOptions.includes(DataSourceFilterOption.CONTINUITY)
@@ -248,19 +233,6 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
-  }
-
-  // the select-all/deselect-all events fire before the model updates.
-  // not sure if this is a fundamental limitation or just an annoying bug in the multiselect library,
-  // but manually filling/clearing the selectedDataSources array lets select/deselect all work
-  public onDataSourceFilterSelectAll(event) {
-    this.selectedDataSources = [...this.dataSourceDropdownList];
-    this.onDataSourceFilterChange(event)
-  }
-
-  public onDataSourceFilterDeselectAll(event) {
-    this.selectedDataSources = [];
-    this.onDataSourceFilterChange(event);
   }
 
   public mapSearch() {
@@ -286,7 +258,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   }
 
   public selectWell(wellRegistrationID: string): void {
-    const wellFeature = this.wellsGeoJson.features.find(x=>x.properties.wellRegistrationID === wellRegistrationID);
+    const wellFeature = this.wellsGeoJson.features.find(x => x.properties.wellRegistrationID === wellRegistrationID);
     this.selectFeature(wellFeature);
   }
 
@@ -305,7 +277,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
       onEachFeature: (feature, layer) => {
         layer.bindPopup(() => {
           const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-          popupEl.registrationID = feature.properties.wellRegistrationID;
+          popupEl.wellID = feature.properties.wellID;
+          popupEl.wellRegistrationID = feature.properties.wellRegistrationID;
           popupEl.sensors = feature.properties.sensors;
           popupEl.AgHubRegisteredUser = feature.properties.AgHubRegisteredUser;
           popupEl.fieldName = feature.properties.fieldName;
@@ -325,7 +298,8 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
   public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
     const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-    popupEl.registrationID = feature.properties.wellRegistrationID;
+    popupEl.wellID = feature.properties.wellID;
+    popupEl.wellRegistrationID = feature.properties.wellRegistrationID;
     popupEl.sensors = feature.properties.sensors;
     return popupEl;
   }

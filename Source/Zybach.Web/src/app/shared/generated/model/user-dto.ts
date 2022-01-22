@@ -27,7 +27,8 @@ export class UserDto {
     LoginName?: string;
     Company?: string;
     DisclaimerAcknowledgedDate?: string;
-    readonly FullName?: string;
+    FullName?: string;
+    FullNameLastFirst?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

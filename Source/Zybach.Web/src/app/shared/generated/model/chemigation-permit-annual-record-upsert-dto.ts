@@ -10,17 +10,20 @@
  * Do not edit the class manually.
  */
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from '././chemigation-permit-annual-record-applicator-upsert-dto';
-import { ChemigationPermitAnnualRecordWellUpsertDto } from '././chemigation-permit-annual-record-well-upsert-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '././chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 
 export class ChemigationPermitAnnualRecordUpsertDto { 
     ChemigationPermitAnnualRecordStatusID: number;
-    ApplicantFirstName: string;
-    ApplicantLastName: string;
+    ChemigationPermitAnnualRecordFeeTypeID: number;
+    ApplicantFirstName?: string;
+    ApplicantLastName?: string;
+    ApplicantCompany?: string;
     PivotName: string;
     RecordYear: number;
+    TownshipRangeSection: string;
     DateReceived?: string;
     DatePaid?: string;
+    DateApproved?: string;
     ChemigationInjectionUnitTypeID: number;
     ApplicantPhone?: string;
     ApplicantMobilePhone?: string;
@@ -29,9 +32,10 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ApplicantCity?: string;
     ApplicantState?: string;
     ApplicantZipCode?: string;
+    NDEEAmount?: number;
+    AnnualNotes?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>;
-    Wells?: Array<ChemigationPermitAnnualRecordWellUpsertDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

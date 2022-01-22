@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { GenerateReportsDto } from '../generated/model/generate-reports-dto';
 import { ReportTemplateDto } from '../generated/model/report-template-dto';
 import { ReportTemplateUpdateDto } from '../models/report-template-update-dto';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,10 @@ export class ReportTemplateService {
     return this.apiService.getFromApi(route);
   }
 
-  
+  public getReportTemplatesByModelID(reportTemplateModelID: number): Observable<Array<ReportTemplateDto>> {
+    return this.apiService.getFromApi(`/reportTemplatesByModelID/${reportTemplateModelID}`);
+  }
+
   public newReportTemplate(reportTemplateUpdateDto: ReportTemplateUpdateDto) {
     // return this.apiService.postToApi(`/reportTemplates/new`, reportTemplateNewDto);
 
@@ -45,7 +49,14 @@ export class ReportTemplateService {
      var result = this.httpClient.post<any>(
          route,
          formData
-     );
+     ).pipe(
+      map((response: any) => {
+        return this.apiService.handleResponse(response);
+      }),
+      catchError((error: any) => {
+        return this.apiService.handleError(error);
+      })
+    );
      return result;
   }
 
@@ -66,20 +77,41 @@ export class ReportTemplateService {
      var result = this.httpClient.put<any>(
          route,
          formData
-     );
+     ).pipe(
+      map((response: any) => {
+        return this.apiService.handleResponse(response);
+      }),
+      catchError((error: any) => {
+        return this.apiService.handleError(error);
+      })
+    );
      return result;
   }
 
   public generateReport(generateReportsDto: GenerateReportsDto):  Observable<Blob> {
     const mainAppApiUrl = environment.mainAppApiUrl;
     const route = `${mainAppApiUrl}/reportTemplates/generateReports`;
-    var result = this.httpClient.put(
+    var result = this.httpClient.post(
         route,
         generateReportsDto,
         {
-          // need to set the response type so it is not defauled to json
+          // need to set the response type so it is not defaulted to json
           responseType: 'blob'
         }
+    ).pipe(
+      map((response: any) => {
+        return this.apiService.handleResponse(response);
+      }),
+      catchError((error: any) => {
+        if (error.error instanceof Blob ){
+          error.error.text().then(errorMessage => {
+            error.error = errorMessage;
+            return this.apiService.handleError(error);
+          });
+        } else {
+          return this.apiService.handleError(error);
+        }
+      })
     );
     return result;
   }

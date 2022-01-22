@@ -12,8 +12,8 @@ namespace Zybach.Models.DataTransferObjects
         public int ChemigationPermitAnnualRecordApplicatorID { get; set; }
         public ChemigationPermitAnnualRecordDto ChemigationPermitAnnualRecord { get; set; }
         public string ApplicatorName { get; set; }
-        public int CertificationNumber { get; set; }
-        public int ExpirationYear { get; set; }
+        public int? CertificationNumber { get; set; }
+        public int? ExpirationYear { get; set; }
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
     }
@@ -23,8 +23,8 @@ namespace Zybach.Models.DataTransferObjects
         public int ChemigationPermitAnnualRecordApplicatorID { get; set; }
         public int ChemigationPermitAnnualRecordID { get; set; }
         public string ApplicatorName { get; set; }
-        public int CertificationNumber { get; set; }
-        public int ExpirationYear { get; set; }
+        public int? CertificationNumber { get; set; }
+        public int? ExpirationYear { get; set; }
         public string HomePhone { get; set; }
         public string MobilePhone { get; set; }
     }

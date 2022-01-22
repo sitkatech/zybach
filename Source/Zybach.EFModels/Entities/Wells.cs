@@ -12,12 +12,7 @@ namespace Zybach.EFModels.Entities
 {
     public class Wells
     {
-        public static List<WellDto> ListAsDtos(ZybachDbContext dbContext)
-        {
-            return dbContext.Wells.AsNoTracking().Select(x => x.AsDto()).ToList();
-        }
-
-        public static WellDto GetByWellIDAsDto(ZybachDbContext dbContext, int wellID)
+        public static WellDto GetByIDAsDto(ZybachDbContext dbContext, int wellID)
         {
             var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
             return well?.AsDto();
@@ -28,9 +23,9 @@ namespace Zybach.EFModels.Entities
             return GetWellsImpl(dbContext).OrderBy(x => x.WellRegistrationID).Select(x => WellWithSensorSummaryDtoFromWell(x)).ToList();
         }
 
-        public static WellWithSensorSummaryDto GetAsWellWithSensorSummaryDtoByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
+        public static WellWithSensorSummaryDto GetByIDAsWellWithSensorSummaryDto(ZybachDbContext dbContext, int wellID)
         {
-            var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+            var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
             if (well != null)
             {
                 return WellWithSensorSummaryDtoFromWell(well);
@@ -38,9 +33,19 @@ namespace Zybach.EFModels.Entities
             return null;
         }
 
-        public static Well GetByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
+        public static Well GetByWellRegistrationIDWithTracking(ZybachDbContext dbContext, string wellRegistrationID)
         {
-            return GetWellsImpl(dbContext).SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+            return dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+        }
+
+        public static Well GetByID(ZybachDbContext dbContext, int wellID)
+        {
+            return GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
+        }
+
+        public static Well GetByIDWithTracking(ZybachDbContext dbContext, int wellID)
+        {
+            return dbContext.Wells.SingleOrDefault(x => x.WellID == wellID);
         }
 
         private static IQueryable<Well> GetWellsImpl(ZybachDbContext dbContext)
@@ -51,17 +56,24 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.AgHubWell.AgHubWellIrrigatedAcres)
                 .Include(x => x.Sensors)
                 .Include(x => x.Sensors).ThenInclude(x => x.SensorType)
+                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellParticipation)
+                .Include(x => x.WellUse)
+                .Include(x => x.County)
+                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
                 .AsNoTracking();
         }
 
         private static WellWithSensorSummaryDto WellWithSensorSummaryDtoFromWell(Well well)
         {
             var wellWithSensorSummaryDto = new WellWithSensorSummaryDto();
+            wellWithSensorSummaryDto.WellID = well.WellID;
             wellWithSensorSummaryDto.WellRegistrationID = well.WellRegistrationID;
             wellWithSensorSummaryDto.Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X)));
             wellWithSensorSummaryDto.FetchDate = well.LastUpdateDate;
             wellWithSensorSummaryDto.InGeoOptix = well.GeoOptixWell != null;
             wellWithSensorSummaryDto.InAgHub = well.AgHubWell != null;
+            wellWithSensorSummaryDto.WellNickname = well.WellNickname;
 
             var sensors = well.Sensors.Select(x => new SensorSummaryDto()
             {
@@ -102,6 +114,15 @@ namespace Zybach.EFModels.Entities
             return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText)).Select(x => x.AsSimpleDto()).ToList();
         }
 
+        public static List<string> SearchByWellRegistrationIDHasInspectionType(ZybachDbContext dbContext, string searchText)
+        {
+            return dbContext.WellWaterQualityInspectionTypes
+                .Include(x => x.Well)
+                .AsNoTracking()
+                .Select(x => x.Well.WellRegistrationID).Distinct()
+                .Where(x => x.Contains(searchText)).ToList();
+        }
+
         public static List<WellSimpleDto> SearchByAghubRegisteredUser(ZybachDbContext dbContext, string searchText)
         {
             return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.AgHubRegisteredUser.Contains(searchText)).Select(x => x.Well.AsSimpleDto()).ToList();
@@ -126,7 +147,7 @@ namespace Zybach.EFModels.Entities
             dbContext.Wells.Add(well);
             dbContext.SaveChanges();
             dbContext.Entry(well).Reload();
-            return GetByWellIDAsDto(dbContext, well.WellID);
+            return GetByIDAsDto(dbContext, well.WellID);
         }
 
         private static Geometry CreateWellGeometryFromLatLong(double latitude, double longitude)
@@ -137,5 +158,43 @@ namespace Zybach.EFModels.Entities
             };
             return point;
         }
+
+        public static void MapFromContactUpsert(Well well, WellContactInfoDto wellContactInfoDto)
+        {
+            well.TownshipRangeSection = wellContactInfoDto.TownshipRangeSection;
+            well.CountyID = wellContactInfoDto.CountyID;
+
+            well.OwnerName = wellContactInfoDto.OwnerName;
+            well.OwnerAddress = wellContactInfoDto.OwnerAddress;
+            well.OwnerCity = wellContactInfoDto.OwnerCity;
+            well.OwnerState = wellContactInfoDto.OwnerState;
+            well.OwnerZipCode = wellContactInfoDto.OwnerZipCode;
+
+            well.AdditionalContactName = wellContactInfoDto.AdditionalContactName;
+            well.AdditionalContactAddress = wellContactInfoDto.AdditionalContactAddress;
+            well.AdditionalContactCity = wellContactInfoDto.AdditionalContactCity;
+            well.AdditionalContactState = wellContactInfoDto.AdditionalContactState;
+            well.AdditionalContactZipCode = wellContactInfoDto.AdditionalContactZipCode;
+
+            well.WellNickname = wellContactInfoDto.WellNickname;
+            well.Notes = wellContactInfoDto.Notes;
+        }
+
+        public static void MapFromParticipationUpsert(Well well, WellParticipationInfoDto wellParticipationInfoDto)
+        {
+            well.WellParticipationID = wellParticipationInfoDto.WellParticipationID;
+            well.WellUseID = wellParticipationInfoDto.WellUseID;
+            well.RequiresChemigation = wellParticipationInfoDto.RequiresChemigation;
+            well.RequiresWaterLevelInspection = wellParticipationInfoDto.RequiresWaterLevelInspection;
+            well.IsReplacement = wellParticipationInfoDto.IsReplacement;
+            well.WellDepth = wellParticipationInfoDto.WellDepth;
+            well.Clearinghouse = wellParticipationInfoDto.Clearinghouse;
+            well.PageNumber = wellParticipationInfoDto.PageNumber;
+            well.ScreenDepth = wellParticipationInfoDto.ScreenDepth;
+            well.ScreenInterval = wellParticipationInfoDto.ScreenInterval;
+            well.SiteName = wellParticipationInfoDto.SiteName;
+            well.SiteNumber = wellParticipationInfoDto.SiteNumber;
+        }
+
     }
 }

@@ -11,7 +11,6 @@ import { RouterModule } from '@angular/router';
 import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-renderer.component';
 import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { MultiLinkRendererComponent } from './components/ag-grid/multi-link-renderer/multi-link-renderer.component';
-import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { CustomRichTextComponent } from './components/custom-rich-text/custom-rich-text.component'
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FieldDefinitionComponent } from './components/field-definition/field-definition.component';
@@ -22,6 +21,8 @@ import { AutoCompleteModule } from "primeng/autocomplete";
 import { WaterYearSelectComponent } from './components/water-year-select/water-year-select.component'
 import { CustomDropdownFilterComponent } from './components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
+import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
         CustomDropdownFilterComponent,
-        ClearGridFiltersButtonComponent
+        ClearGridFiltersButtonComponent,
+        CustomPinnedRowRendererComponent
     ],
     imports: [
         CommonModule,
@@ -46,10 +48,10 @@ import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters
         HttpClientModule,
         NgProgressModule,
         RouterModule,
-        SelectDropDownModule,
         CKEditorModule,
         NgbModule,
         AutoCompleteModule,
+        NgxMaskModule.forChild(),
     ],
     exports: [
         AlertDisplayComponent,

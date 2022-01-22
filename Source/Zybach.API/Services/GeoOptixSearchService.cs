@@ -30,10 +30,10 @@ namespace Zybach.API.Services
             return new JsonSerializer().Deserialize<TV>(jsonTextReader);
         }
 
-        public async Task<List<SearchSummaryDto>> GetSearchSuggestions(string textToSearch)
+        public async Task<List<GeoOptixDocument>> GetSearchSuggestions(string textToSearch)
         {
             var geoOptixSearchResults = await GetJsonFromCatalogImpl<GeoOptixSearchResults>($"suggest/{textToSearch}?pageSize=-1");
-            return geoOptixSearchResults.Results.AsParallel().Select(x => new SearchSummaryDto(x.Document)).ToList();
+            return geoOptixSearchResults.Results.AsParallel().Select(x => x.Document).ToList();
         }
     }
 
@@ -63,24 +63,24 @@ namespace Zybach.API.Services
     {
         public string ObjectName { get; set; }
         public string ObjectType { get; set; }
-        public string WellID { get; set; }
+        public int WellID { get; set; }
 
         public SearchSummaryDto()
         {
         }
 
-        public SearchSummaryDto(GeoOptixDocument geoOptixDocument)
+        public SearchSummaryDto(GeoOptixDocument geoOptixDocument, int wellID)
         {
             ObjectName = geoOptixDocument.Name;
             ObjectType = GeoOptixObjectTypeToZybachObjectType(geoOptixDocument.ObjectType);
-            WellID = geoOptixDocument.SiteCanonicalName;
+            WellID = wellID;
         }
 
         public SearchSummaryDto(WellSimpleDto wellDto)
         {
             ObjectName = wellDto.WellRegistrationID;
             ObjectType = ZybachObjectTypeEnum.Well.ToString();
-            WellID = wellDto.WellRegistrationID;
+            WellID = wellDto.WellID;
         }
 
         private string GeoOptixObjectTypeToZybachObjectType(string objectType)

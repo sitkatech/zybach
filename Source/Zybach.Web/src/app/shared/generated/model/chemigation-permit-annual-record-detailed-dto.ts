@@ -11,20 +11,24 @@
  */
 import { ChemigationPermitDto } from '././chemigation-permit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationSimpleDto } from '././chemigation-permit-annual-record-chemical-formulation-simple-dto';
-import { ChemigationPermitAnnualRecordWellSimpleDto } from '././chemigation-permit-annual-record-well-simple-dto';
+import { ChemigationInspectionSimpleDto } from '././chemigation-inspection-simple-dto';
 import { ChemigationPermitAnnualRecordApplicatorSimpleDto } from '././chemigation-permit-annual-record-applicator-simple-dto';
 
 export class ChemigationPermitAnnualRecordDetailedDto { 
     ChemigationPermitAnnualRecordID?: number;
     ChemigationPermit?: ChemigationPermitDto;
     RecordYear?: number;
+    TownshipRangeSection?: string;
     ChemigationPermitAnnualRecordStatusID?: number;
     ChemigationPermitAnnualRecordStatusName?: string;
     PivotName?: string;
     ChemigationInjectionUnitTypeID?: number;
     ChemigationInjectionUnitTypeName?: string;
+    ChemigationPermitAnnualRecordFeeTypeID?: number;
+    ChemigationPermitAnnualRecordFeeTypeName?: string;
     ApplicantFirstName?: string;
     ApplicantLastName?: string;
+    ApplicantCompany?: string;
     ApplicantMailingAddress?: string;
     ApplicantCity?: string;
     ApplicantState?: string;
@@ -33,10 +37,14 @@ export class ChemigationPermitAnnualRecordDetailedDto {
     ApplicantMobilePhone?: string;
     DateReceived?: string;
     DatePaid?: string;
+    DateApproved?: string;
     ApplicantEmail?: string;
+    NDEEAmount?: number;
+    AnnualNotes?: string;
+    ApplicantName?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>;
     Applicators?: Array<ChemigationPermitAnnualRecordApplicatorSimpleDto>;
-    Wells?: Array<ChemigationPermitAnnualRecordWellSimpleDto>;
+    Inspections?: Array<ChemigationInspectionSimpleDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

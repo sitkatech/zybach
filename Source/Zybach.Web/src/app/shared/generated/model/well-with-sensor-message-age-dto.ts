@@ -14,6 +14,7 @@ import { SensorMessageAgeDto } from '././sensor-message-age-dto';
 
 export class WellWithSensorMessageAgeDto { 
     Sensors?: Array<SensorMessageAgeDto>;
+    WellID?: number;
     WellRegistrationID?: string;
     WellTPID?: string;
     Description?: string;
@@ -27,6 +28,7 @@ export class WellWithSensorMessageAgeDto {
     IrrigatedAcresPerYear?: Array<IrrigatedAcresPerYearDto>;
     AgHubRegisteredUser?: string;
     FieldName?: string;
+    WellNickname?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

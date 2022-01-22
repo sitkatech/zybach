@@ -4,6 +4,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -22,17 +23,13 @@ import { environment } from 'src/environments/environment';
 export class ReportsListComponent implements OnInit, OnDestroy {
 
   @ViewChild("reportTemplatesGrid") reportTemplatesGrid: AgGridAngular;
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
-  public reportTemplates: Array<ReportTemplateDto>
   public richTextTypeID : number = CustomRichTextType.ReportsList;
 
-  public rowData = [];
+  public rowData: Array<ReportTemplateDto>;
   public columnDefs: ColDef[];
-
-  public selectedReportTemplateID: string;
-  public isLoadingSubmit: boolean = false;
 
   constructor(
     private reportTemplateService: ReportTemplateService,
@@ -42,12 +39,12 @@ export class ReportsListComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.reportTemplatesGrid.api.showLoadingOverlay();
+      this.reportTemplatesGrid?.api.showLoadingOverlay();
       this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
-        this.reportTemplates = reportTemplates;
         this.rowData = reportTemplates;
+        this.reportTemplatesGrid.api.sizeColumnsToFit();
         this.reportTemplatesGrid.api.hideOverlay();
         this.cdr.detectChanges();
       });
@@ -72,10 +69,15 @@ export class ReportsListComponent implements OnInit, OnDestroy {
             }
             return 0;
           },
-          sortable: true, filter: true, width: 500
+          sortable: true, filter: true, width: 300
         },
-        { headerName: 'Description', field: 'Description', sortable: true, filter: true, width: 500 },
-        { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', sortable: true, filter: true, width: 268 },
+        { headerName: 'Description', field: 'Description', sortable: true, filter: true, width: 400 },
+        { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', 
+          filterFramework: CustomDropdownFilterComponent,
+          filterParams: {
+            field: 'ReportTemplateModel.ReportTemplateModelDisplayName'
+          },
+          sortable: true, width: 200 },
         {
           headerName: 'Template File', valueGetter: function (params: any) {
             return { LinkValue: `${mainAppApiUrl}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
@@ -95,7 +97,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
             }
             return 0;
           },
-          sortable: true, filter: true, width: 500
+          sortable: true, filter: true, width: 400
         },
       ];
 
@@ -106,38 +108,8 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
-  public generateReport(): void {
-    if(!this.selectedReportTemplateID){
-      this.alertService.pushAlert(new Alert("No report template selected.", AlertContext.Warning));
-    } else {
-      this.isLoadingSubmit = true;
-      var reportTemplateID = parseInt(this.selectedReportTemplateID);
-      var reportTemplate = this.reportTemplates.find(x => x.ReportTemplateID === reportTemplateID);
-      var generateReportsDto = new GenerateReportsDto();
-      generateReportsDto.ReportTemplateID = reportTemplateID;
-      this.reportTemplateService.generateReport(generateReportsDto)
-        .subscribe(response => {
-          this.isLoadingSubmit = false;
-  
-          var a = document.createElement("a");
-          a.href = URL.createObjectURL(response);
-          a.download = reportTemplate.DisplayName + " Generated Report";
-          // start download
-          a.click();
-  
-          this.alertService.pushAlert(new Alert("Report Generated from Report Template '" + reportTemplate.DisplayName + "'", AlertContext.Success));
-        }
-          ,
-          error => {
-            this.isLoadingSubmit = false;
-            this.cdr.detectChanges();
-          }
-        );
-    }
-  }
 }

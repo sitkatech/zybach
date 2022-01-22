@@ -26,6 +26,12 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
+        public decimal? NDEEAmount { get; set; }
+        public string TownshipRangeSection { get; set; }
+        public string ApplicantCompany { get; set; }
+        public string AnnualNotes { get; set; }
+        public DateTime? DateApproved { get; set; }
+        public ChemigationPermitAnnualRecordFeeTypeDto ChemigationPermitAnnualRecordFeeType { get; set; }
     }
 
     public partial class ChemigationPermitAnnualRecordSimpleDto
@@ -47,6 +53,12 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DateReceived { get; set; }
         public DateTime? DatePaid { get; set; }
         public string ApplicantEmail { get; set; }
+        public decimal? NDEEAmount { get; set; }
+        public string TownshipRangeSection { get; set; }
+        public string ApplicantCompany { get; set; }
+        public string AnnualNotes { get; set; }
+        public DateTime? DateApproved { get; set; }
+        public int? ChemigationPermitAnnualRecordFeeTypeID { get; set; }
     }
 
 }

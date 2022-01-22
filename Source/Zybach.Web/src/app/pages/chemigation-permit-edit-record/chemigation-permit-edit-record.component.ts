@@ -8,7 +8,6 @@ import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { ChemigationPermitAnnualRecordUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-upsert-dto';
-import { ChemigationPermitAnnualRecordWellUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-well-upsert-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -25,7 +24,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent : ChemigationPermitAnnualRecordUpsertComponent;
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
   
   public chemigationPermitNumber: number;
@@ -40,7 +39,6 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   public isAnnualRecordFormValidCheck: boolean;
   public isChemicalFormulationsFormValidCheck: boolean;
   public isApplicatorsFormValidCheck: boolean;
-  public isWellsFormValidCheck: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +50,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
   
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
@@ -67,6 +65,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
       forkJoin({
         annualRecord: this.chemigationPermitService.getAnnualRecordByPermitNumberAndRecordYear(this.chemigationPermitNumber, this.recordYear),
       }).subscribe(({ annualRecord }) => {
+        //this.model = annualRecord;
         this.initializeModel(annualRecord);
         this.cdr.detectChanges();
       });
@@ -80,9 +79,11 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.chemigationPermitAnnualRecordID = annualRecord.ChemigationPermitAnnualRecordID
     var chemigationPermitAnnualRecordUpsertDto = new ChemigationPermitAnnualRecordUpsertDto();
     chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID = annualRecord.ChemigationPermitAnnualRecordStatusID;
+    chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordFeeTypeID = annualRecord.ChemigationPermitAnnualRecordFeeTypeID;
     chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID = annualRecord.ChemigationInjectionUnitTypeID;
     chemigationPermitAnnualRecordUpsertDto.RecordYear = annualRecord.RecordYear;
     chemigationPermitAnnualRecordUpsertDto.PivotName = annualRecord.PivotName;
+    chemigationPermitAnnualRecordUpsertDto.ApplicantCompany = annualRecord.ApplicantCompany;
     chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName = annualRecord.ApplicantFirstName;
     chemigationPermitAnnualRecordUpsertDto.ApplicantLastName = annualRecord.ApplicantLastName;
     chemigationPermitAnnualRecordUpsertDto.ApplicantMailingAddress = annualRecord.ApplicantMailingAddress;
@@ -94,6 +95,10 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.ApplicantEmail = annualRecord.ApplicantEmail;
     chemigationPermitAnnualRecordUpsertDto.DateReceived = annualRecord.DateReceived;
     chemigationPermitAnnualRecordUpsertDto.DatePaid = annualRecord.DatePaid;
+    chemigationPermitAnnualRecordUpsertDto.DateApproved = annualRecord.DateApproved;
+    chemigationPermitAnnualRecordUpsertDto.AnnualNotes = annualRecord.AnnualNotes;
+    chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection = annualRecord.TownshipRangeSection;
+    
     const chemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>();
     annualRecord.ChemicalFormulations.map(x => {
       const chemicalFormulation = new ChemigationPermitAnnualRecordChemicalFormulationUpsertDto();
@@ -101,11 +106,12 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
       chemicalFormulation.ChemigationPermitAnnualRecordID = x.ChemigationPermitAnnualRecordID;
       chemicalFormulation.ChemicalFormulationID = x.ChemicalFormulationID;
       chemicalFormulation.ChemicalUnitID = x.ChemicalUnitID;
-      chemicalFormulation.TotalApplied = x.ChemicalUnitID;
-      chemicalFormulation.AcresTreated = x.ChemicalUnitID;
+      chemicalFormulation.TotalApplied = x.TotalApplied;
+      chemicalFormulation.AcresTreated = x.AcresTreated;
       chemicalFormulations.push(chemicalFormulation);
     });
     chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = chemicalFormulations;
+
     const applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
     annualRecord.Applicators.map(x => {
       const applicator = new ChemigationPermitAnnualRecordApplicatorUpsertDto();
@@ -119,27 +125,12 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
       applicators.push(applicator);
     });
     chemigationPermitAnnualRecordUpsertDto.Applicators = applicators;
-
-    const wells = new Array<ChemigationPermitAnnualRecordWellUpsertDto>();
-    annualRecord.Wells.map(x => {
-      const well = new ChemigationPermitAnnualRecordWellUpsertDto();
-      well.ChemigationPermitAnnualRecordWellID = x.ChemigationPermitAnnualRecordWellID;
-      well.ChemigationPermitAnnualRecordID = x.ChemigationPermitAnnualRecordID;
-      well.WellRegistrationID = x.WellRegistrationID;
-      wells.push(well);
-    });
-    chemigationPermitAnnualRecordUpsertDto.Wells = wells;
-
-
-    chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = annualRecord.ChemicalFormulations;
-    chemigationPermitAnnualRecordUpsertDto.Applicators = annualRecord.Applicators;
     this.model = chemigationPermitAnnualRecordUpsertDto;
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   public isAnnualRecordFormValid(formValid: any) : void {
@@ -154,13 +145,9 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.isApplicatorsFormValidCheck = formValid;
   }
 
-  public isWellsFormValid(formValid: any): void {
-    this.isWellsFormValidCheck = formValid;
-  }
-
   public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
     return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck
-     || !this.isApplicatorsFormValidCheck || !this.isWellsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
+     || !this.isApplicatorsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
   }
 
   onSubmit(editChemigationPermitAnnualRecordForm: HTMLFormElement): void {
@@ -170,8 +157,8 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editChemigationPermitAnnualRecordForm.reset();
-        this.router.navigateByUrl("/chemigation-permits/" + response.ChemigationPermit.ChemigationPermitNumber).then(() => {
-          this.alertService.pushAlert(new Alert(`Annual Record updated for ${response.RecordYear}.`, AlertContext.Success));
+        this.router.navigateByUrl("/chemigation-permits/" + this.chemigationPermit.ChemigationPermitNumber).then(() => {
+          this.alertService.pushAlert(new Alert(`Annual Record updated for ${this.recordYear}.`, AlertContext.Success));
         });
       }
         ,

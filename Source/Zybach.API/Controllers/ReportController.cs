@@ -28,6 +28,13 @@ namespace Zybach.API.Controllers
             return reportTemplateDtos;
         }
 
+        [HttpGet("api/reportTemplatesByModelID/{reportTemplateModelID}")]
+        [AdminFeature]
+        public ActionResult<List<ReportTemplateDto>> ListAllReportsByModelID([FromRoute] int reportTemplateModelID)
+        {
+            var reportTemplateDtos = EFModels.Entities.ReportTemplates.ListByModelIDAsDtos(_dbContext, reportTemplateModelID);
+            return reportTemplateDtos;
+        }
 
         [HttpGet("api/reportTemplateModels")]
         [AdminFeature]
@@ -61,21 +68,36 @@ namespace Zybach.API.Controllers
             {
                 return BadRequest($"Report Template with Name '{reportTemplateNewDto.DisplayName}' already exists.");
             }
+
             var fileResource = await HttpUtilities.MakeFileResourceFromFormFile(reportTemplateNewDto.FileResource, _dbContext, HttpContext);
 
             _dbContext.FileResources.Add(fileResource);
-            // _dbContext.SaveChanges();
 
-            var reportTemplateDto = CreateNew(_dbContext, reportTemplateNewDto, fileResource);
+            var reportTemplate = CreateNew(_dbContext, reportTemplateNewDto, fileResource);
+
+            ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            if (!reportIsValid)
+            {
+                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+                return BadRequest(errorMessageAndSourceCode);
+            }
+
+            _dbContext.ReportTemplates.Add(reportTemplate);
+            _dbContext.SaveChanges();
+            _dbContext.Entry(reportTemplate).Reload();
+
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplate.ReportTemplateID);
             return Ok(reportTemplateDto);
         }
 
         [HttpPut("api/reportTemplates/{reportTemplateID}")]
+        [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
+        [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]
         [AdminFeature]
         public async Task<ActionResult<ReportTemplateDto>> UpdateReport([FromRoute] int reportTemplateID,
             [FromForm] ReportTemplateUpdateDto reportUpdateDto)
         {
-            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
+            var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateIDWithTracking(_dbContext, reportTemplateID);
             if (ThrowNotFound(reportTemplate, "ReportTemplate", reportTemplateID, out var actionResult))
             {
                 return actionResult;
@@ -93,13 +115,24 @@ namespace Zybach.API.Controllers
 
                 _dbContext.FileResources.Add(fileResource);
             }
-        
-            var updatedReportTemplateDto = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
-            return Ok(updatedReportTemplateDto);
+
+            var updatedReportTemplate = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
+
+            ReportTemplateGenerator.ValidateReportTemplate(updatedReportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            if (!reportIsValid)
+            {
+                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+                return BadRequest(errorMessageAndSourceCode);
+            }
+
+            _dbContext.SaveChanges();
+            _dbContext.Entry(reportTemplate).Reload();
+
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplate.ReportTemplateID);
+            return Ok(reportTemplateDto);
         }
 
-
-        private ReportTemplateDto CreateNew(ZybachDbContext dbContext, ReportTemplateNewDto reportTemplateNewDto, FileResource newFileResource)
+        private ReportTemplate CreateNew(ZybachDbContext dbContext, ReportTemplateNewDto reportTemplateNewDto, FileResource newFileResource)
         {
             var reportTemplateModelType = dbContext.ReportTemplateModelTypes.Single(x => x.ReportTemplateModelTypeName == "MultipleModels");
             var reportTemplate = new ReportTemplate()
@@ -110,14 +143,11 @@ namespace Zybach.API.Controllers
                 ReportTemplateModelTypeID = reportTemplateModelType.ReportTemplateModelTypeID,
                 ReportTemplateModelID = reportTemplateNewDto.ReportTemplateModelID
             };
-        
-            dbContext.ReportTemplates.Add(reportTemplate);
-            dbContext.SaveChanges();
-            dbContext.Entry(reportTemplate).Reload();
-            return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
+
+            return reportTemplate;
         }
 
-        private ReportTemplateDto UpdateReportTemplate(ZybachDbContext dbContext, ReportTemplate reportTemplate, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
+        private ReportTemplate UpdateReportTemplate(ZybachDbContext dbContext, ReportTemplate reportTemplate, ReportTemplateUpdateDto reportTemplateUpdateDto, FileResource newFileResource)
         {
             // null check occurs in calling endpoint method.
             reportTemplate.DisplayName = reportTemplateUpdateDto.DisplayName;
@@ -128,19 +158,23 @@ namespace Zybach.API.Controllers
                 reportTemplate.FileResource = newFileResource;
             }
 
-            dbContext.SaveChanges();
-            return EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(dbContext, reportTemplate.ReportTemplateID);
+            return reportTemplate;
         }
 
-        [HttpPut("/api/reportTemplates/generateReports")]
+        [HttpPost("/api/reportTemplates/generateReports")]
         [AdminFeature]
-        public ActionResult GenerateReportsFromSelectedProjects([FromBody] GenerateReportsDto generateReportsDto)
+        public ActionResult GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {
             var reportTemplateID = generateReportsDto.ReportTemplateID;
             var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
 
-            var selectedModelIDs = generateReportsDto.WellIDList ?? _dbContext.Wells.Select(x => x.WellID).ToList();
-            
+            var selectedModelIDs = generateReportsDto.ModelIDList;
+            if (selectedModelIDs == null)
+            {
+                return RequireNotNullThrowNotFound(generateReportsDto,
+                    "GenerateReportsDto", selectedModelIDs);
+            }
+
             var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
             return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
         }

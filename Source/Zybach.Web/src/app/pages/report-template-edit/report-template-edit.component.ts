@@ -19,7 +19,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   @ViewChild('fileUpload') fileUpload: any;
 
 
-  private watchUserChangeSubscription: any;
+  
   private currentUser: UserDto;
 
   public reportTemplateID: number;
@@ -30,7 +30,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   public requiredFileIsUploaded: boolean = false;
 
   public displayErrors: any = {};
-  public displayFileErrors: any = {};
+  public displayFileErrors: boolean = false;
 
   public fileName: string;
 
@@ -47,7 +47,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.model = new ReportTemplateUpdateDto();
 
-    this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
         this.router.navigateByUrl("/not-found")
@@ -80,9 +80,8 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.watchUserChangeSubscription.unsubscribe();
-    this.authenticationService.dispose();
-    this.cdr.detach();
+    
+       this.cdr.detach();
   }
 
   fileEvent() {
@@ -91,11 +90,11 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
     this.displayErrors = false;
     this.requiredFileIsUploaded = true;
 
-    // if (file && file.name.split(".").pop().toUpperCase() != "DOCX") {
-    //   this.displayFileErrors = true;
-    // } else {
-    //   this.displayFileErrors = false;
-    // }
+    if (file && file.name.split(".").pop().toUpperCase() != "DOCX") {
+      this.displayFileErrors = true;
+    } else {
+      this.displayFileErrors = false;
+    }
 
     this.cdr.detectChanges();
   }
@@ -122,6 +121,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
 
   public onSubmit(newReportTemplateForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+    this.alertService.clearAlerts();
     if(this.reportTemplateID !== undefined){
       this.reportTemplateService.updateReportTemplate(this.reportTemplateID, this.model)
       .subscribe(response => {
@@ -148,7 +148,6 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
         ,
         error => {
           this.isLoadingSubmit = false;
-          this.alertService.pushAlert(new Alert(error.error, AlertContext.Danger));
           this.cdr.detectChanges();
         }
       );

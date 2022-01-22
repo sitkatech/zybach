@@ -1,12 +1,18 @@
 <div class="row mb-2">
     <div class="col-12 col-lg-6">
-        <ng-multiselect-dropdown  [placeholder]="'No Data Source Selected'" [(ngModel)]="selectedDataSources"
-            [settings]="dataSourceDropdownSettings" [data]="dataSourceDropdownList" name="dataSourceFilter"
-            (onSelect)="onDataSourceFilterChange($event)" (onDeSelect)="onDataSourceFilterChange($event)"
-            (onSelectAll)="onDataSourceFilterSelectAll($event)" (onDeSelectAll)="onDataSourceFilterDeselectAll($event)">
-        </ng-multiselect-dropdown>
+        <ng-select [(ngModel)]="selectedDataSources" placeholder="No Data Source Selected" [multiple]="true"
+            [closeOnSelect]="false" (change)="onDataSourceFilterChange()" [selectableGroup]="true"
+            [selectableGroupAsModel]="false" groupBy="group_name" [items]="dataSourceDropdownList" bindLabel="item_text"
+            bindValue="item_id">
+            <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> Select All
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.item_text}}
+            </ng-template>
+        </ng-select>
     </div>
-    <div class="col-12 col-lg-6 py-1">
+    <div class="col-12 col-lg-6">
         <div class="input-group">
             <input type="text" name="mapSearchQuery" class="form-control" placeholder="Search map by address..." [(ngModel)]="mapSearchQuery" (keyup.enter)="mapSearch()"/>
             <div class="input-group-append">

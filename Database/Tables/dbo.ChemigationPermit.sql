@@ -7,8 +7,8 @@ CREATE TABLE [dbo].[ChemigationPermit](
 	[ChemigationPermitNumber] [int] NOT NULL,
 	[ChemigationPermitStatusID] [int] NOT NULL,
 	[DateCreated] [datetime] NOT NULL,
-	[TownshipRangeSection] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ChemigationCountyID] [int] NOT NULL,
+	[CountyID] [int] NOT NULL,
+	[WellID] [int] NULL,
  CONSTRAINT [PK_ChemigationPermit_ChemigationPermitID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationPermitID] ASC
@@ -20,12 +20,17 @@ CREATE TABLE [dbo].[ChemigationPermit](
 ) ON [PRIMARY]
 
 GO
-ALTER TABLE [dbo].[ChemigationPermit]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID] FOREIGN KEY([ChemigationCountyID])
-REFERENCES [dbo].[ChemigationCounty] ([ChemigationCountyID])
-GO
-ALTER TABLE [dbo].[ChemigationPermit] CHECK CONSTRAINT [FK_ChemigationPermit_ChemigationCounty_ChemigationCountyID]
-GO
 ALTER TABLE [dbo].[ChemigationPermit]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermit_ChemigationPermitStatus_ChemigationPermitStatusID] FOREIGN KEY([ChemigationPermitStatusID])
 REFERENCES [dbo].[ChemigationPermitStatus] ([ChemigationPermitStatusID])
 GO
 ALTER TABLE [dbo].[ChemigationPermit] CHECK CONSTRAINT [FK_ChemigationPermit_ChemigationPermitStatus_ChemigationPermitStatusID]
+GO
+ALTER TABLE [dbo].[ChemigationPermit]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermit_County_CountyID] FOREIGN KEY([CountyID])
+REFERENCES [dbo].[County] ([CountyID])
+GO
+ALTER TABLE [dbo].[ChemigationPermit] CHECK CONSTRAINT [FK_ChemigationPermit_County_CountyID]
+GO
+ALTER TABLE [dbo].[ChemigationPermit]  WITH CHECK ADD  CONSTRAINT [FK_ChemigationPermit_Well_WellID] FOREIGN KEY([WellID])
+REFERENCES [dbo].[Well] ([WellID])
+GO
+ALTER TABLE [dbo].[ChemigationPermit] CHECK CONSTRAINT [FK_ChemigationPermit_Well_WellID]

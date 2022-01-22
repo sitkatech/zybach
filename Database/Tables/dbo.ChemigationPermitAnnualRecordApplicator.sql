@@ -6,8 +6,8 @@ CREATE TABLE [dbo].[ChemigationPermitAnnualRecordApplicator](
 	[ChemigationPermitAnnualRecordApplicatorID] [int] IDENTITY(1,1) NOT NULL,
 	[ChemigationPermitAnnualRecordID] [int] NOT NULL,
 	[ApplicatorName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[CertificationNumber] [int] NOT NULL,
-	[ExpirationYear] [int] NOT NULL,
+	[CertificationNumber] [int] NULL,
+	[ExpirationYear] [int] NULL,
 	[HomePhone] [varchar](30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[MobilePhone] [varchar](30) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecordApplicator_ChemigationPermitAnnualRecordApplicatorID] PRIMARY KEY CLUSTERED 

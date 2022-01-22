@@ -15,6 +15,12 @@
                     <div class="card">
                         <div class="card-header">
                             Basics
+                            <div class="float-right">
+                                <a [ngClass]="{'btn': true, 'btn-zybach': true, 'btn-sm': true, 'float-right': true, 'disabled': isInAgHubOrGeoOptix}"
+                                    routerLink="/wells/{{wellID}}/edit-registration-id">
+                                    <span class="fas fa-edit"></span> Edit Reg. ID
+                                </a>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row" *ngIf="well">
@@ -52,6 +58,43 @@
                                         <em>Irrigated Acres are not available for this parcel</em>
                                     </ng-template>
                                 </div>
+                            </div>
+                            <div class="row" *ngIf="!well">
+                                <div class="col text-center">
+                                    <span class="fas fa-spinner loading-spinner"></span>
+                                    <p>Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Contact Information
+                            <div class="float-right">
+                                <a class="btn btn-zybach btn-sm float-right"
+                                    routerLink="/wells/{{wellID}}/edit-contact">
+                                    <span class="fas fa-edit"></span> Edit
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" *ngIf="well">
+                                <div class="col-12  col-sm-6 label"><strong>Owner: </strong> </div>
+                                <div class="col-12  col-sm-6" [innerHtml]="getWellOwner()"></div>
+                                <div class="col-12  col-sm-6 label"><strong>Additional Contact: </strong></div>
+                                <div class="col-12  col-sm-6" [innerHtml]="getWellAdditionalContact()"></div>
+                                <div class="col-12  col-sm-6 label"><strong>Township, Range, Section:</strong></div>
+                                <div class="col-12  col-sm-6">{{well.TownshipRangeSection}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>County: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.County}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Nickname: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.WellNickname}}</div>
+                                <div class="col-12  col-sm-6 label"><strong>Notes: </strong></div>
+                                <div class="col-12  col-sm-6">{{well.Notes}}</div>
                             </div>
                             <div class="row" *ngIf="!well">
                                 <div class="col text-center">
@@ -107,18 +150,76 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <div class=row>
-                <div class=col>
+            <div class="row">
+                <div class="col">
                     <div class="card">
                         <div class="card-header">
                             Location
                         </div>
                         <div class="card-body">
-                            <div id="{{mapID}}" style="height:300px;"></div>
+                            <div #wellLocation style="height:300px;"></div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            Program Participation
+                            <div class="float-right">
+                                <a class="btn btn-zybach btn-sm float-right"
+                                    routerLink="/wells/{{wellID}}/edit-participation">
+                                    <span class="fas fa-edit"></span> Edit
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" *ngIf="well">
+                                <div class="col-12 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 label"><strong>Participation? </strong> </div>
+                                        <div class="col-12 col-sm-6">{{well.WellParticipationName}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Well Use: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.WellUseName}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Chemigation? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.RequiresChemigation ? "Yes" : "No"}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Water Level? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.RequiresWaterLevelInspection ? "Yes" : "No"}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Water Quality? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.WaterQualityInspectionTypes}}</div>
+                                    </div>  
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 label"><strong>Clearinghouse ID: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.Clearinghouse}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Site Name: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.SiteName}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Site Number: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.SiteNumber}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Replacement Well? </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.IsReplacement ? "Yes" : "No"}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Well Depth: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.WellDepth}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Screen Interval: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.ScreenInterval}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Screen Depth: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.ScreenDepth}}</div>
+                                        <div class="col-12 col-sm-6 label"><strong>Page #: </strong></div>
+                                        <div class="col-12 col-sm-6">{{well.PageNumber}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="!well">
+                                <div class="col text-center">
+                                    <span class="fas fa-spinner loading-spinner"></span>
+                                    <p>Loading...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
             </div>
             <div class="row mt-2">
                 <div class="col">
@@ -206,37 +307,89 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
+
     <div class="row mt-4">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    Permits & Inspections
+                    Inspections
+                </div>
+                <div class="card-body">
+                    <div class="row">
+
+                            <div class="col-sm">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="d-inline-block">Water Level Inspections</h5>
+                                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWLIToCsv()" placement="top"
+                                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterLevelInspectionsGrid">
+                                        </fresca-clear-grid-filters-button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <ag-grid-angular #waterLevelInspectionsGrid style="width: 100%; height: 200px;" 
+                                        class="ag-theme-balham"
+                                        [columnDefs]="waterLevelInspectionColumnDefs" [defaultColDef]="defaultColDef"
+                                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+
+                            <div class="col-sm">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="d-inline-block">Water Quality Inspections</h5>
+                                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWQIToCsv()" placement="top"
+                                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterQualityInspectionsGrid">
+                                        </fresca-clear-grid-filters-button>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <ag-grid-angular #waterQualityInspectionsGrid style="width: 100%; height: 200px;" 
+                                        class="ag-theme-balham"
+                                        [columnDefs]="waterQualityInspectionColumnDefs" [defaultColDef]="defaultColDef"
+                                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header">
+                    Chemigation
                 </div>
                 <div class="card-body">
 
-                    <div *ngIf="chemigationPermitAnnualRecords && chemigationPermitAnnualRecords.length > 0; then hasChemigationPermitAnnualRecords else noChemigationPermitAnnualRecords"></div>
-                    <ng-template #hasChemigationPermitAnnualRecords>
+                    <div *ngIf="chemigationPermits && chemigationPermits.length > 0; then hasChemigationPermits else noChemigationPermits"></div>
+                    <ng-template #hasChemigationPermits>
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>Permit #</th>
                                     <th>Status</th>
-                                    <th>Township, Range, Section</th>
-                                    <th>Year</th>
+                                    <th>Last Inspected</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let chemigationPermitAnnualRecord of chemigationPermitAnnualRecords">
-                                    <td><a routerLink="/chemigationPermits/{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}">{{chemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber}}</a></td>
-                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusName}}</td>
-                                    <td>{{chemigationPermitAnnualRecord.ChemigationPermit.TownshipRangeSection}}</td>
-                                    <td>{{chemigationPermitAnnualRecord.RecordYear}}</td>
+                                <tr *ngFor="let chemigationPermit of chemigationPermits">
+                                    <td><a routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}">{{chemigationPermit.ChemigationPermitNumberDisplay}}</a></td>
+                                    <td>{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</td>
+                                    <td>{{chemigationPermit.LatestInspection.InspectionDate | date:'MM/dd/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </ng-template>
-                    <ng-template #noChemigationPermitAnnualRecords>
+                    <ng-template #noChemigationPermits>
                         <p class="font-italic">
                             No Chemigation Permits were found for this well.
                         </p>                        
@@ -244,9 +397,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-4">
-        <div class="col">
+        <div class="col-8">
             <div class="card">
                 <div class="card-header">
                     Installation Details
@@ -255,54 +406,56 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    <ng-container *ngFor="let installation of installations; index as i">
-                        <div class="row">
-                            <div class="col-12 col-md-6">
+                    <ng-container *ngIf="installations; else installationsLoading">
+                        <ng-container *ngIf="installations.length === 0; else installationsDetails">
+                            <p class="font-italic">
+                                No Installations Records were found for this well.
+                            </p>
+                        </ng-container>
+                        <ng-template #installationsDetails>
+                            <ng-container *ngFor="let installation of installations; index as i">
                                 <div class="row">
-                                    <div class="col-12  col-sm-6 label"><strong>Installation Name: </strong> </div>
-                                    <div class="col-12  col-sm-6">{{installation.InstallationCanonicalName}}</div>
-                                    <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
-                                    <div class="col-12  col-sm-6">{{installation.Status}}</div>
-                                    <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
-                                    <div class="col-12  col-sm-6">{{getInstallationDate(installation)}}</div>
-                                    <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
-                                    <div class="col-12  col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
-                                        {{installation.Longitude | number: '1.0-3'}}</div>
-                                    <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
-                                    <div class="col-12  col-sm-6">{{installation.FlowmeterSerialNumber}}</div>
-                                    <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
-                                    <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="row">
+                                            <div class="col-12  col-sm-6 label"><strong>Installation Name: </strong> </div>
+                                            <div class="col-12  col-sm-6">{{installation.InstallationCanonicalName}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
+                                            <div class="col-12  col-sm-6">{{installation.Status}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
+                                            <div class="col-12  col-sm-6">{{getInstallationDate(installation)}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
+                                            <div class="col-12  col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
+                                                {{installation.Longitude | number: '1.0-3'}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
+                                            <div class="col-12  col-sm-6">{{installation.FlowmeterSerialNumber}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
+                                            <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 text-center">
+                                        <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName] && installationPhotos[installation.InstallationCanonicalName].length > 0; else noInstallationPhotos">
+                                            <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 1; else manyInstallationPhotos">
+                                                <img class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}" style="height: 300px" />
+                                            </ng-container>
+                                            <ng-template #manyInstallationPhotos>
+                                                <carousel [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1" [objectFit]="contain" [dots]="true"></carousel>
+                                            </ng-template>
+                                        </ng-container>
+                                        <ng-template #noInstallationPhotos>
+                                            <img class="img img-fluid" style="height:300px" src="/assets/main/no-photo-available.jpg" />
+                                        </ng-template>        
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-6 text-center">
-                                <carousel *ngIf="installationPhotos[installation.InstallationCanonicalName].length > 1"
-                                    [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1"
-                                    [objectFit]="contain" [dots]="true">
-                                </carousel>
-
-                                <img *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 1" class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}"
-                                    style="height: 300px" />
-
-                                <ng-container *ngIf="!installationPhotos[installation.InstallationCanonicalName].length">
-                                    <span class="fas fa-spinner loading-spinner"></span>
-                                    <p>Loading...</p>
-                                </ng-container>
-
-                                <img *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 0" class="img img-fluid" style="height:300px"
-                                    src="/assets/main/no-photo-available.jpg" />
-                            </div>
-                        </div>
-                        <hr *ngIf="i != installations.length - 1" />
+                                <hr *ngIf="i != installations.length - 1" />
+                            </ng-container>
+                        </ng-template>
                     </ng-container>
-                    <ng-container *ngIf="!installations">
+                    <ng-template #installationsLoading>
                         <div class="row text-center">
                             <span class="fas fa-spinner loading-spinner"></span>
                             <p>Loading...</p>
                         </div>
-                    </ng-container>
-                    <p class="font-italic" *ngIf="installations?.length === 0">
-                        No Installations Records were found for this well.
-                    </p>
+                    </ng-template>
                 </div>
             </div>
         </div>

@@ -41,16 +41,14 @@ namespace Zybach.API.Controllers
             }
 
             var applicationName = $"{_zybachConfiguration.PlatformLongName}";
-            var leadOrganizationLongName = $"{_zybachConfiguration.LeadOrganizationLongName}";
             var inviteModel = new KeystoneService.KeystoneInviteModel
             {
                 FirstName = inviteDto.FirstName,
                 LastName = inviteDto.LastName,
                 Email = inviteDto.Email,
                 Subject = $"Invitation to the {applicationName}",
-                WelcomeText = $"You are receiving this notification because an administrator of the {applicationName}, an online service of the {leadOrganizationLongName}, has invited you to create an account.",
+                WelcomeText = $"You are receiving this notification because an administrator of the {applicationName} has invited you to create an account.",
                 SiteName = applicationName,
-                SignatureBlock = $"{leadOrganizationLongName}<br /><a href='mailto:{_zybachConfiguration.LeadOrganizationEmail}'>{_zybachConfiguration.LeadOrganizationEmail}</a><a href='{_zybachConfiguration.LeadOrganizationHomeUrl}'>{_zybachConfiguration.LeadOrganizationHomeUrl}</a>",
                 RedirectURL = _zybachConfiguration.KEYSTONE_REDIRECT_URL
             };
 
@@ -224,7 +222,7 @@ As an administrator of the {_zybachConfiguration.PlatformShortName}, you can ass
         {
             mailMessage.IsBodyHtml = true;
             mailMessage.From = smtpClient.GetDefaultEmailFrom();
-            mailMessage.ReplyToList.Add(!String.IsNullOrWhiteSpace(_zybachConfiguration.LeadOrganizationEmail) ? _zybachConfiguration.LeadOrganizationEmail : "donotreply@sitkatech.com");
+            mailMessage.ReplyToList.Add("donotreply@sitkatech.com");
             smtpClient.Send(mailMessage);
         }
     }

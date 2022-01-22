@@ -4,6 +4,7 @@ import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
 import { environment } from 'src/environments/environment';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-home-index',
@@ -16,21 +17,31 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
 
     public richTextTypeID : number = CustomRichTextType.Homepage;
 
-    constructor(private authenticationService: AuthenticationService) {
+    constructor(private authenticationService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
     }
 
     public ngOnInit(): void {
-        if (localStorage.getItem("loginOnReturn")){
-            localStorage.removeItem("loginOnReturn");
-            this.authenticationService.login();
-        }
-        this.watchUserChangeSubscription = this.authenticationService.currentUserSetObservable.subscribe(currentUser => { 
-            this.currentUser = currentUser;
+        this.route.queryParams.subscribe(params => {
+            //We're logging in
+            if (params.hasOwnProperty("code")) {
+                this.router.navigate(["/signin-oidc"], { queryParams: params });
+                return;
+            }
+
+            if (localStorage.getItem("loginOnReturn")) {
+                localStorage.removeItem("loginOnReturn");
+                this.authenticationService.login();
+            }
+
+            this.authenticationService.getCurrentUser().subscribe(currentUser => {
+                this.currentUser = currentUser;
+            });
+
         });
     }
 
     ngOnDestroy(): void {
-      this.watchUserChangeSubscription.unsubscribe();
+      
     }
 
     public userIsUnassigned(){
@@ -79,17 +90,5 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
 
     public platformShortName():string{
         return environment.platformShortName;
-    }
-
-    public leadOrganizationShortName():string{
-        return environment.leadOrganizationShortName;
-    }
-
-    public leadOrganizationLongName(): string{
-        return environment.leadOrganizationLongName;
-    }
-
-    public leadOrganizationHomeUrl(): string{
-        return environment.leadOrganizationHomeUrl;
     }
 }
