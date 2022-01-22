@@ -1,4 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AgGridAngular } from 'ag-grid-angular';
+import { ColDef } from 'ag-grid-community';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { SensorService } from 'src/app/services/sensor.service';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'zybach-sensor-list',
@@ -6,10 +18,114 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sensor-list.component.scss']
 })
 export class SensorListComponent implements OnInit {
+  @ViewChild('sensorsGrid') sensorsGrid: AgGridAngular;
+  public gridApi: any;
 
-  constructor() { }
+  public currentUser: UserDto;
+  
+  public sensorColumnDefs: any[];
+  public defaultColDef: ColDef;
+
+  public sensors: Array<SensorSimpleDto>;
+
+  constructor(
+    private authenticationService: AuthenticationService,
+    private sensorService: SensorService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    private datePipe: DatePipe,
+    private utilityFunctionsService: UtilityFunctionsService,
+    private alertService: AlertService
+  ) { }
 
   ngOnInit(): void {
+    this.initializeSensorsGrid();
+
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
+      this.currentUser = currentUser;
+      this.sensorService.listSensors().subscribe(sensors => {
+        this.sensors = sensors;
+
+        this.sensorsGrid ? this.sensorsGrid.api.setRowData(sensors) : null;
+  
+        this.sensorsGrid.api.sizeColumnsToFit();
+      });
+    });
   }
 
+  public exportToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.sensorsGrid, 'sensor-list.csv', null);
+  }
+
+  public onGridReady(params) {
+    this.gridApi = params.api;
+  }
+
+  private initializeSensorsGrid(): void {
+    let datePipe = this.datePipe;
+
+    this.sensorColumnDefs = [
+    {
+      headerName: 'Sensor Name', 
+      field: 'SensorName', 
+      sortable: true, filter: true, resizable: true
+    },
+    { 
+      headerName: 'Sensor Type', field: 'SensorTypeName',
+      filterFramework: CustomDropdownFilterComponent,
+      filterParams: {
+      field: 'SensorTypeName'
+      },
+      resizable: true, sortable: true, width: 120
+    },
+    { 
+      headerName: 'Last Update',
+      field: 'LastUpdateDate',
+      sortable: true, resizable: true, width: 130
+    },
+    {
+      headerName: 'Well', valueGetter: function (params: any) {
+        if(params.data.WellID)
+        {
+          return { LinkValue: params.data.WellID, LinkDisplay: params.data.WellRegistrationID };
+        }
+        else
+        {
+          return { LinkValue: null, LinkDisplay: null };
+        }
+      }, 
+      cellRendererFramework: LinkRendererComponent,
+      cellRendererParams: { inRouterLink: "/wells/" },
+      comparator: function (id1: any, id2: any) {
+        let link1 = id1.LinkValue;
+        let link2 = id2.LinkValue;
+        if (link1 < link2) {
+          return -1;
+        }
+        if (link1 > link2) {
+          return 1;
+        }
+        return 0;
+      },
+      filterValueGetter: function (params: any) {
+        return params.data.WellRegistrationID;
+      },
+      filter: true,
+      width: 120,
+      resizable: true,
+      sortable: true
+    },
+  ];
+    
+    //Button to navigate to sensor detail page
+
+    //Sensor Name (aka Serial Number)
+
+    // TODO: Last Message Age
+  }
+
+  ngOnDestroy(): void {
+    this.cdr.detach();
+  }
 }

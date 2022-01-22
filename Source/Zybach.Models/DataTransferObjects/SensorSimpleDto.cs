@@ -2,6 +2,7 @@
 {
     public partial class SensorSimpleDto
     {
+        public string WellRegistrationID { get; set; }
         public string SensorTypeName { get; set; }
     }
 }

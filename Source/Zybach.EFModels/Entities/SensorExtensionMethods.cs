@@ -8,6 +8,7 @@ namespace Zybach.EFModels.Entities
             SensorSimpleDto sensorSimpleDto)
         {
             sensorSimpleDto.SensorTypeName = sensor.SensorType?.SensorTypeDisplayName;
+            sensorSimpleDto.WellRegistrationID = sensor.Well?.WellRegistrationID;
         }
     }
 }
