@@ -81,6 +81,7 @@ import { WellRegistrationIdEditComponent } from './pages/well-registration-id-ed
 import { ClearinghouseWqiReportComponent } from './pages/clearinghouse-wqi-report/clearinghouse-wqi-report.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { SensorListComponent } from './pages/sensor-list/sensor-list.component';
+import { SensorDetailComponent } from './pages/sensor-detail/sensor-detail.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -139,7 +140,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WaterQualityInspectionUpsertComponent, 
     WaterQualityInspectionNewComponent, 
     WaterQualityInspectionEditComponent, 
-    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent
+    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent
   ],
   imports: [
     AppRoutingModule,

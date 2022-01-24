@@ -27,12 +27,11 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
-        public static SensorDto GetBySensorID(ZybachDbContext dbContext, int sensorID)
+        public static SensorSimpleDto GetBySensorIDAsSimpleDto(ZybachDbContext dbContext, int sensorID)
         {
-            var sensor = GetSensorsImpl(dbContext)
-                .SingleOrDefault(x => x.SensorID == sensorID);
-
-            return sensor?.AsDto();
+            return GetSensorsImpl(dbContext)
+                .SingleOrDefault(x => x.SensorID == sensorID)
+                .AsSimpleDto();
         }
     }
 }

@@ -63,6 +63,25 @@ export class SensorListComponent implements OnInit {
   private initializeSensorsGrid(): void {
     this.sensorColumnDefs = [
     {
+      headerName: '', valueGetter: function (params: any) {
+        return { LinkValue: params.data.SensorID, LinkDisplay: "View Sensor", CssClasses: "btn-sm btn-zybach" };
+      }, cellRendererFramework: LinkRendererComponent,
+      cellRendererParams: { inRouterLink: "/sensors/" },
+      comparator: function (id1: any, id2: any) {
+        let link1 = id1.LinkDisplay;
+        let link2 = id2.LinkDisplay;
+        if (link1 < link2) {
+          return -1;
+        }
+        if (link1 > link2) {
+          return 1;
+        }
+        return 0;
+      },
+      width: 120,
+      resizable: true
+    },
+    {
       headerName: 'Sensor Name', 
       field: 'SensorName', 
       sortable: true, filter: true, resizable: true
@@ -112,14 +131,8 @@ export class SensorListComponent implements OnInit {
       width: 120,
       resizable: true,
       sortable: true
-    },
-  ];
-    
-    //Button to navigate to sensor detail page
-
-    //Sensor Name (aka Serial Number)
-
-    // TODO: Last Message Age
+    }
+    ];
   }
 
   ngOnDestroy(): void {
