@@ -20,7 +20,7 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking();
         }
 
-        public static IEnumerable<SensorSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
+        public static List<SensorSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
             return GetSensorsImpl(dbContext)
                 .Select(x => x.AsSimpleDto())

@@ -19,7 +19,9 @@ export class SensorSimpleDto {
     CreateDate?: string;
     LastUpdateDate?: string;
     IsActive?: boolean;
+    WellRegistrationID?: string;
     SensorTypeName?: string;
+    MessageAge?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

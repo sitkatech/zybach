@@ -4,5 +4,6 @@
     {
         public string WellRegistrationID { get; set; }
         public string SensorTypeName { get; set; }
+        public int? MessageAge { get; set; }
     }
 }

@@ -1,4 +1,3 @@
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -34,7 +33,6 @@ export class SensorListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private datePipe: DatePipe,
     private utilityFunctionsService: UtilityFunctionsService,
     private alertService: AlertService
   ) { }
@@ -63,8 +61,6 @@ export class SensorListComponent implements OnInit {
   }
 
   private initializeSensorsGrid(): void {
-    let datePipe = this.datePipe;
-
     this.sensorColumnDefs = [
     {
       headerName: 'Sensor Name', 
@@ -80,9 +76,10 @@ export class SensorListComponent implements OnInit {
       resizable: true, sortable: true, width: 120
     },
     { 
-      headerName: 'Last Update',
-      field: 'LastUpdateDate',
-      sortable: true, resizable: true, width: 130
+      headerName: 'Last Message Age (Hours)',
+      valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
+      filter: 'agNumberColumnFilter',
+      sortable: true, resizable: true
     },
     {
       headerName: 'Well', valueGetter: function (params: any) {

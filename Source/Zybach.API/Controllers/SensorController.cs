@@ -16,16 +16,30 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class SensorController : SitkaController<SensorController>
     {
-        public SensorController(ZybachDbContext dbContext, ILogger<SensorController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        private readonly InfluxDBService _influxDbService;
+
+        public SensorController(ZybachDbContext dbContext, ILogger<SensorController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
+            _influxDbService = influxDbService;
         }
 
         [HttpGet("/api/sensors")]
         [ZybachViewFeature]
-        public ActionResult<IEnumerable<SensorSimpleDto>> ListSensors()
+        public async Task<List<SensorSimpleDto>> ListSensors()
         {
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
-            return Ok(sensorSimpleDtos);
+            var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
+
+            foreach (var sensorSimpleDto in sensorSimpleDtos)
+            {
+                var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
+                        ? sensorMessageAges[sensorSimpleDto.SensorName]
+                        : (int?)null;
+
+                sensorSimpleDto.MessageAge = messageAge;
+            }
+
+            return sensorSimpleDtos;
         }
 
         [HttpGet("/api/sensors/{sensorID}")]
