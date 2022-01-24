@@ -3365,7 +3365,7 @@
         }
       }
     },
-    "/api/wells/search/{wellID}": {
+    "/api/wells/search/{wellRegistrationID}": {
       "get": {
         "tags": [
           "Well"
@@ -3373,14 +3373,6 @@
         "parameters": [
           {
             "name": "wellRegistrationID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "wellID",
             "in": "path",
             "required": true,
             "schema": {
@@ -3421,7 +3413,7 @@
         }
       }
     },
-    "/api/wells/search/{wellID}/hasInspectionType": {
+    "/api/wells/search/{wellRegistrationID}/hasInspectionType": {
       "get": {
         "tags": [
           "Well"
@@ -3434,9 +3426,49 @@
             "schema": {
               "type": "string"
             }
-          },
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/search/{wellRegistrationID}/requiresChemigation": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
           {
-            "name": "wellID",
+            "name": "wellRegistrationID",
             "in": "path",
             "required": true,
             "schema": {

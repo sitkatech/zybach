@@ -39,7 +39,7 @@ namespace Zybach.API.Controllers
             return Ok(wellParticipationDtos);
         }
 
-        [HttpGet("/api/wells/search/{wellID}")]
+        [HttpGet("/api/wells/search/{wellRegistrationID}")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
         {
@@ -47,11 +47,18 @@ namespace Zybach.API.Controllers
             return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
         }
 
-        [HttpGet("/api/wells/search/{wellID}/hasInspectionType")]
+        [HttpGet("/api/wells/search/{wellRegistrationID}/hasInspectionType")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationIDHasInspectionType([FromRoute] string wellRegistrationID)
         {
             return Ok(Wells.SearchByWellRegistrationIDHasInspectionType(_dbContext, wellRegistrationID));
+        }
+
+        [HttpGet("/api/wells/search/{wellRegistrationID}/requiresChemigation")]
+        [ZybachViewFeature]
+        public ActionResult<List<string>> SearchByWellRegistrationIDRequiresChemigation([FromRoute] string wellRegistrationID)
+        {
+            return Ok(Wells.SearchByWellRegistrationIDRequiresChemigation(_dbContext, wellRegistrationID));
         }
 
         [HttpGet("/api/wells/{wellID}/waterLevelInspections")]
