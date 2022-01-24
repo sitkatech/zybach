@@ -126,14 +126,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         return environment.platformShortName;
     }
 
-    public leadOrganizationHomeUrl(): string{
-        return environment.leadOrganizationHomeUrl;
-    }
-
-    public leadOrganizationLogoSrc(): string{
-        return `assets/main/logos/${environment.leadOrganizationLogoFilename}`;
-    }
-
     public search(event) {
         this.isSearching = true;
         this.searchService.getSearchSuggestions(event.query.trim()).subscribe(results => {
