@@ -14,9 +14,13 @@ services:
       - SECRET_PATH=${SECRET_PATH}
       - KEYSTONE_REDIRECT_URL=${KEYSTONE_REDIRECT_URL}
       - PlatformLongName=${PlatformLongName}
-      - LeadOrganizationLongName=${LeadOrganizationLongName}
-      - LeadOrganizationHomeUrl=${LeadOrganizationHomeUrl}
-      - LeadOrganizationEmail=${LeadOrganizationEmail}
+      - PlatformShortName=${PlatformShortName}
+      - SupportEmail=${SupportEmail}
+      - DoNotReplyEmail=${DoNotReplyEmail}
+      - INFLUXDB_URL=${INFLUXDB_URL}
+      - GEOOPTIX_HOSTNAME=${GEOOPTIX_HOSTNAME}
+      - GEOOPTIX_SEARCH_HOSTNAME=${GEOOPTIX_SEARCH_HOSTNAME}
+      - AGHUB_API_BASE_URL=${AGHUB_API_BASE_URL}
       - GET_API_BASE_URL=${GET_API_BASE_URL}
       - GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID=${GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID}
       - GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID=${GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID}

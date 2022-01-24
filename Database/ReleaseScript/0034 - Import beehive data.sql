@@ -4,6 +4,11 @@ update dbo.BeehiveWell
 set [Long/Lat] = '-101.370669927, 41.1704551546'
 where WellRegistrationID = 'G-038284'
 
+update dbo.BeehiveWell
+set [Long/Lat] = '-101.2, 41.121'
+where WellRegistrationID = 'G-128953'
+
+
 insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
 select bw.WellRegistrationID, geometry::STGeomFromText('POINT (' + replace(bw.[Long/Lat], ',', '') + ')', 4326) as WellGeometry, @dateCreated, @dateCreated
 from dbo.BeehiveWell bw

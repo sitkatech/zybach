@@ -99,6 +99,11 @@ export class WellService {
     return this.apiService.getFromApi(route);
   }
 
+  public searchByWellRegistrationIDRequiresChemigation(wellRegistrationID: string): Observable<Array<string>> {
+    let route = `/wells/search/${wellRegistrationID}/requiresChemigation`;
+    return this.apiService.getFromApi(route);
+  }
+
   public searchByWellRegistrationIDHasInspectionType(wellRegistrationID: string): Observable<Array<string>> {
     let route = `/wells/search/${wellRegistrationID}/hasInspectionType`;
     return this.apiService.getFromApi(route);
