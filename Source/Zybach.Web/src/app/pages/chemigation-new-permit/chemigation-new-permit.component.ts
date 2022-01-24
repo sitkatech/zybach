@@ -142,7 +142,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
         debounceTime(200), 
         distinctUntilChanged(),
         tap(() => this.searchFailed = false),
-        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationID(searchText) : ([])), 
+        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationIDHasInspectionType(searchText) : ([])), 
         catchError(() => {
           this.searchFailed = true;
           return of([]);
