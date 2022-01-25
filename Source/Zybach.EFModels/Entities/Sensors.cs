@@ -27,7 +27,7 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
-        public static SensorSimpleDto GetBySensorIDAsSimpleDto(ZybachDbContext dbContext, int sensorID)
+        public static SensorSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int sensorID)
         {
             return GetSensorsImpl(dbContext)
                 .SingleOrDefault(x => x.SensorID == sensorID)?

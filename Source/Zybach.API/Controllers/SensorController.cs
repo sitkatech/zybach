@@ -46,7 +46,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<ActionResult<SensorSimpleDto>> GetSensorByIDAsSimpleDto([FromRoute] int sensorID)
         {
-            var sensorSimpleDto = Sensors.GetBySensorIDAsSimpleDto(_dbContext, sensorID);
+            var sensorSimpleDto = Sensors.GetByIDAsSimpleDto(_dbContext, sensorID);
             if (sensorSimpleDto == null)
             {
                 ModelState.AddModelError("Sensor ID", $"Sensor with ID '{sensorID}' not found!");
