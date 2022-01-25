@@ -25,7 +25,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/sensors")]
         [ZybachViewFeature]
-        public async Task<List<SensorSimpleDto>> ListSensors()
+        public async Task<List<SensorSimpleDto>> List()
         {
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
@@ -44,7 +44,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/sensors/{sensorID}")]
         [ZybachViewFeature]
-        public async Task<ActionResult<SensorSimpleDto>> GetSensorByIDAsSimpleDto([FromRoute] int sensorID)
+        public async Task<ActionResult<SensorSimpleDto>> GetByID([FromRoute] int sensorID)
         {
             var sensorSimpleDto = Sensors.GetByIDAsSimpleDto(_dbContext, sensorID);
             if (sensorSimpleDto == null)
