@@ -6159,6 +6159,10 @@
       "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "SensorName": {
             "type": "string",
             "nullable": true
@@ -6235,6 +6239,10 @@
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
           },
           "SensorName": {
             "type": "string",

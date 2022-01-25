@@ -61,11 +61,9 @@ model/robust-review-dto.ts
 model/robust-review-scenario-get-run-history-dto.ts
 model/role-dto.ts
 model/search-summary-dto.ts
-model/sensor-dto.ts
 model/sensor-message-age-dto.ts
 model/sensor-simple-dto.ts
 model/sensor-summary-dto.ts
-model/sensor-type-dto.ts
 model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
 model/structured-results-dto.ts

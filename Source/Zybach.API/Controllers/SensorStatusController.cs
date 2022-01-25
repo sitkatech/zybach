@@ -51,6 +51,7 @@ namespace Zybach.API.Controllers
                         return new SensorMessageAgeDto
                         {
                             SensorName = sensor.SensorName,
+                            SensorID = sensor.SensorID,
                             MessageAge = messageAge,
                             SensorType = sensor.SensorType,
                             IsActive = sensor.IsActive
@@ -88,6 +89,7 @@ namespace Zybach.API.Controllers
                         return new SensorMessageAgeDto
                         {
                             SensorName = sensor.SensorName,
+                            SensorID = sensor.SensorID,
                             MessageAge = messageAge,
                             SensorType = sensor.SensorType,
                             IsActive = sensor.IsActive

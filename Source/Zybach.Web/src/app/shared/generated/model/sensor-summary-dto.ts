@@ -12,6 +12,7 @@
 
 export class SensorSummaryDto { 
     WellRegistrationID?: string;
+    SensorID?: number;
     SensorName?: string;
     SensorType?: string;
     IsActive?: boolean;

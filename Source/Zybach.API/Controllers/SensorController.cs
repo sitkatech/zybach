@@ -43,10 +43,16 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/sensors/{sensorID}")]
-        //[ZybachViewFeature]
+        [ZybachViewFeature]
         public async Task<ActionResult<SensorSimpleDto>> GetSensorByIDAsSimpleDto([FromRoute] int sensorID)
         {
             var sensorSimpleDto = Sensors.GetBySensorIDAsSimpleDto(_dbContext, sensorID);
+            if (sensorSimpleDto == null)
+            {
+                ModelState.AddModelError("Sensor ID", $"Sensor with ID '{sensorID}' not found!");
+                return BadRequest(ModelState);
+            }
+
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
             var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
                 ? sensorMessageAges[sensorSimpleDto.SensorName]

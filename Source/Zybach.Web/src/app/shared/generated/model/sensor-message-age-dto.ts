@@ -11,6 +11,7 @@
  */
 
 export class SensorMessageAgeDto { 
+    SensorID?: number;
     SensorName?: string;
     MessageAge?: number;
     SensorType?: string;

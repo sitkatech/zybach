@@ -24,20 +24,20 @@
                         </div>
                         <div class="card-body">
                             <div class="row" *ngIf="well">
-                                <div class="col-12  col-sm-6 label"><strong>Registration ID: </strong> </div>
-                                <div class="col-12  col-sm-6">{{well.WellRegistrationID}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>In AgHub? </strong></div>
-                                <div class="col-12  col-sm-6">{{well.InAgHub ? "Yes" : "No"}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>In GeoOptix? </strong></div>
-                                <div class="col-12  col-sm-6">{{well.InGeoOptix ? "Yes" : "No"}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>TPID: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.WellTPID}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>AgHub Registered User: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.AgHubRegisteredUser}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Field Name: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.FieldName}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>{{getDataSourcesLabel()}}</strong></div>
-                                <div class="col-12  col-sm-6">
+                                <div class="col-12 col-sm-6 label"><strong>Registration ID: </strong> </div>
+                                <div class="col-12 col-sm-6">{{well.WellRegistrationID}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>In AgHub? </strong></div>
+                                <div class="col-12 col-sm-6">{{well.InAgHub ? "Yes" : "No"}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>In GeoOptix? </strong></div>
+                                <div class="col-12 col-sm-6">{{well.InGeoOptix ? "Yes" : "No"}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>TPID: </strong></div>
+                                <div class="col-12 col-sm-6">{{well.WellTPID}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>AgHub Registered User: </strong></div>
+                                <div class="col-12 col-sm-6">{{well.AgHubRegisteredUser}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Field Name: </strong></div>
+                                <div class="col-12 col-sm-6">{{well.FieldName}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>{{getDataSourcesLabel()}}</strong></div>
+                                <div class="col-12 col-sm-6">
                                     <p *ngFor="let sensorType of getSensorTypes()" class="m-0">
                                         {{sensorType}}
                                     </p>
@@ -45,10 +45,10 @@
                                         Electrical Usage
                                     </p>
                                 </div>
-                                <div class="col-12  col-sm-6 label"><strong>Last Reading Date: </strong></div>
-                                <div class="col-12  col-sm-6">{{getLastReadingDate()}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Irrigated Acres: </strong></div>
-                                <div class="col-12  col-sm-6">
+                                <div class="col-12 col-sm-6 label"><strong>Last Reading Date: </strong></div>
+                                <div class="col-12 col-sm-6">{{getLastReadingDate()}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Irrigated Acres: </strong></div>
+                                <div class="col-12 col-sm-6">
                                     <ng-container *ngIf="displayIrrigatedAcres(); else irrigatedAcresPerYearEmpty">
                                         <p *ngFor="let result of getWellIrrigatedAcresPerYear()" class="m-0">
                                             {{result.Acres}} ac in {{result.Year}}
@@ -83,18 +83,18 @@
                         </div>
                         <div class="card-body">
                             <div class="row" *ngIf="well">
-                                <div class="col-12  col-sm-6 label"><strong>Owner: </strong> </div>
-                                <div class="col-12  col-sm-6" [innerHtml]="getWellOwner()"></div>
-                                <div class="col-12  col-sm-6 label"><strong>Additional Contact: </strong></div>
-                                <div class="col-12  col-sm-6" [innerHtml]="getWellAdditionalContact()"></div>
-                                <div class="col-12  col-sm-6 label"><strong>Township, Range, Section:</strong></div>
-                                <div class="col-12  col-sm-6">{{well.TownshipRangeSection}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>County: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.County}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Nickname: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.WellNickname}}</div>
-                                <div class="col-12  col-sm-6 label"><strong>Notes: </strong></div>
-                                <div class="col-12  col-sm-6">{{well.Notes}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Owner: </strong> </div>
+                                <div class="col-12 col-sm-6" [innerHtml]="getWellOwner()"></div>
+                                <div class="col-12 col-sm-6 label"><strong>Additional Contact: </strong></div>
+                                <div class="col-12 col-sm-6" [innerHtml]="getWellAdditionalContact()"></div>
+                                <div class="col-12 col-sm-6 label"><strong>Township, Range, Section:</strong></div>
+                                <div class="col-12 col-sm-6">{{well.TownshipRangeSection}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
+                                <div class="col-12 col-sm-6">{{well.County}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Nickname: </strong></div>
+                                <div class="col-12 col-sm-6">{{well.WellNickname}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Notes: </strong></div>
+                                <div class="col-12 col-sm-6">{{well.Notes}}</div>
                             </div>
                             <div class="row" *ngIf="!well">
                                 <div class="col text-center">
@@ -239,19 +239,10 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let sensor of sensorsWithStatus">
-                                        <td>{{sensor.SensorName}}</td>
+                                        <td><a routerLink="/sensors/{{sensor.SensorID}}">{{sensor.SensorName}}</a></td>
                                         <td>{{sensor.SensorType}}</td>
                                         <td>{{sensor.MessageAge}}</td>
-                                        <td>
-                                            <div class="btn-group btn-group-toggle float-right">
-                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
-                                                  <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, true)" [disabled]="sensor.IsActive"> Enabled
-                                                </label>
-                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''">
-                                                  <input type="radio" name="sensorIsActive" (click)="toggleIsActive(sensor.SensorName, false)" [disabled]="!sensor.IsActive"> Disabled
-                                                </label>
-                                            </div>
-                                        </td>
+                                        <td>{{sensor.IsActive ? 'Enabled' : 'Disabled'}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -363,7 +354,7 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-4">
+        <div class="col-6">
             <div class="card">
                 <div class="card-header">
                     Chemigation
@@ -393,68 +384,6 @@
                         <p class="font-italic">
                             No Chemigation Permits were found for this well.
                         </p>                        
-                    </ng-template>
-                </div>
-            </div>
-        </div>
-        <div class="col-8">
-            <div class="card">
-                <div class="card-header">
-                    Installation Details
-                    <a *ngIf="well?.InGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
-                        View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
-                    </a>
-                </div>
-                <div class="card-body">
-                    <ng-container *ngIf="installations; else installationsLoading">
-                        <ng-container *ngIf="installations.length === 0; else installationsDetails">
-                            <p class="font-italic">
-                                No Installations Records were found for this well.
-                            </p>
-                        </ng-container>
-                        <ng-template #installationsDetails>
-                            <ng-container *ngFor="let installation of installations; index as i">
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="row">
-                                            <div class="col-12  col-sm-6 label"><strong>Installation Name: </strong> </div>
-                                            <div class="col-12  col-sm-6">{{installation.InstallationCanonicalName}}</div>
-                                            <div class="col-12  col-sm-6 label"><strong>Installation Status: </strong> </div>
-                                            <div class="col-12  col-sm-6">{{installation.Status}}</div>
-                                            <div class="col-12  col-sm-6 label"><strong>Installation Date: </strong></div>
-                                            <div class="col-12  col-sm-6">{{getInstallationDate(installation)}}</div>
-                                            <div class="col-12  col-sm-6 label"><strong>GPS Location: </strong></div>
-                                            <div class="col-12  col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
-                                                {{installation.Longitude | number: '1.0-3'}}</div>
-                                            <div class="col-12  col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
-                                            <div class="col-12  col-sm-6">{{installation.FlowmeterSerialNumber}}</div>
-                                            <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
-                                            <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6 text-center">
-                                        <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName] && installationPhotos[installation.InstallationCanonicalName].length > 0; else noInstallationPhotos">
-                                            <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 1; else manyInstallationPhotos">
-                                                <img class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}" style="height: 300px" />
-                                            </ng-container>
-                                            <ng-template #manyInstallationPhotos>
-                                                <carousel [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1" [objectFit]="contain" [dots]="true"></carousel>
-                                            </ng-template>
-                                        </ng-container>
-                                        <ng-template #noInstallationPhotos>
-                                            <img class="img img-fluid" style="height:300px" src="/assets/main/no-photo-available.jpg" />
-                                        </ng-template>        
-                                    </div>
-                                </div>
-                                <hr *ngIf="i != installations.length - 1" />
-                            </ng-container>
-                        </ng-template>
-                    </ng-container>
-                    <ng-template #installationsLoading>
-                        <div class="row text-center">
-                            <span class="fas fa-spinner loading-spinner"></span>
-                            <p>Loading...</p>
-                        </div>
                     </ng-template>
                 </div>
             </div>

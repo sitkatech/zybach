@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SensorDto } from '../shared/generated/model/sensor-dto';
 import { SensorSimpleDto } from '../shared/generated/model/sensor-simple-dto';
 import { ApiService } from '../shared/services';
 
@@ -15,7 +14,7 @@ export class SensorService {
     return this.apiService.getFromApi(`/sensors`);
   }
 
-  public getSensorByID(sensorID: number): Observable<SensorDto> {
+  public getSensorByID(sensorID: number): Observable<SensorSimpleDto> {
     return this.apiService.getFromApi(`/sensors/${sensorID}`);
   }
 }

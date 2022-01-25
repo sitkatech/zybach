@@ -3,11 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { WellService } from 'src/app/services/well.service';
 import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
 import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
+import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
@@ -27,9 +29,12 @@ export class SensorDetailComponent implements OnInit {
   public installations: InstallationRecordDto[] = [];
   public installationPhotos: Map<string, any[]>; 
 
+  public isLoadingSubmit: boolean = false;
+
   constructor(
     private authenticationService: AuthenticationService,
     private sensorService: SensorService,
+    private sensorStatusService: SensorStatusService,
     private wellService: WellService,
     private route: ActivatedRoute,
     private router: Router,
@@ -106,6 +111,26 @@ export class SensorDetailComponent implements OnInit {
     const time = moment(installation.Date)
     const timepiece = time.format('h:mm a');
     return time.format('M/D/yyyy ') + timepiece;
+  }
+  
+  public toggleIsActive(isActive : boolean): void {
+    this.isLoadingSubmit = true;
+    var sensorSummaryDto = new SensorSummaryDto();
+    sensorSummaryDto.SensorName = this.sensor.SensorName;
+    sensorSummaryDto.SensorID = this.sensor.SensorID;
+    sensorSummaryDto.IsActive = isActive
+    this.sensorStatusService.updateSensorIsActive(sensorSummaryDto)
+      .subscribe(response => {
+        this.isLoadingSubmit = false;
+        this.sensor.IsActive = isActive;
+        // this.alertService.pushAlert(new Alert(`Sensor '${sensorName}' now ${isActive ? "enabled" : "disabled"}`, AlertContext.Success));
+      }
+        ,
+        error => {
+          this.isLoadingSubmit = false;
+          this.cdr.detectChanges();
+        }
+      );
   }
 
   public wellInGeoOptixUrl(): string {

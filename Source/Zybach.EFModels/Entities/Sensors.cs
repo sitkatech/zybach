@@ -30,7 +30,7 @@ namespace Zybach.EFModels.Entities
         public static SensorSimpleDto GetBySensorIDAsSimpleDto(ZybachDbContext dbContext, int sensorID)
         {
             return GetSensorsImpl(dbContext)
-                .SingleOrDefault(x => x.SensorID == sensorID)
+                .SingleOrDefault(x => x.SensorID == sensorID)?
                 .AsSimpleDto();
         }
     }

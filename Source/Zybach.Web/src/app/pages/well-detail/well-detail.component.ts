@@ -154,8 +154,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.getWellDetails();
-      this.getInstallationDetails();
-      this.getSenorsWithAgeMessages();
+      this.getSensorsWithAgeMessages();
       this.getChartDataAndBuildChart();
       this.getChemigationPermits();
       this.getInspections();
@@ -326,19 +325,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.well.IrrigatedAcresPerYear.sort((a, b) => a.Year < b.Year ? 1 : a.Year === b.Year ? 0 : -1);
   }
 
-  getInstallationDetails(){
-    this.wellService.getInstallationDetails(this.wellID).subscribe(installations => {
-      this.installations = installations;
-      this.installationPhotos = new Map();
-      for (const installation of installations) {
-
-        const installationPhotoDataUrls = this.getPhotoRecords(installation);
-        this.installationPhotos.set(installation.InstallationCanonicalName, installationPhotoDataUrls);
-      }
-    });
-  }
-
-  getSenorsWithAgeMessages(){
+  getSensorsWithAgeMessages(){
     this.sensorService.getSensorStatusForWell(this.wellID).subscribe(wellWithSensorMessageAge => {
       this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
 
@@ -362,37 +349,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     return `Data Source${plural ? "s": ""}: `
-  }
-
-  getPhotoRecords(installation: InstallationRecordDto) : any[]{
-    const installationPhotoDataUrls = [];
-    const photos = installation.Photos;
-
-    const photoObservables = photos.map(
-      photo => this.wellService.getPhoto(this.wellID, installation.InstallationCanonicalName, photo)
-    );
-
-    let foundPhoto = false;
-
-    forkJoin(photoObservables).subscribe((blobs: any[]) => {
-      for (const blob of blobs){
-        if (!blob){
-          // we're ignoring errors that come from the GO request by sending 204 in their place, 
-          // so skip through this iteration if the current blob is null/undefined
-          continue; 
-        }
-
-        foundPhoto = true;
-
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-          // result includes identifier 'data:image/png;base64,' plus the base64 data
-          installationPhotoDataUrls.push({path: reader.result});
-        };
-      }
-    });
-    return installationPhotoDataUrls;
   }
   
   wellInGeoOptixUrl(): string {
@@ -527,29 +483,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   public toggleUnitsShown(units : string): void {
     this.unitsShown = units;
   }
-
-  public toggleIsActive(sensorName : string, isActive : boolean): void{
-    var sensor = this.sensorsWithStatus.find(x => x.SensorName === sensorName);
-    if(sensor) {
-      this.isLoadingSubmit = true;
-      var sensorSummaryDto = new SensorSummaryDto();
-      sensorSummaryDto.SensorName = sensorName;
-      sensorSummaryDto.IsActive = isActive
-      this.sensorService.updateSensorIsActive(sensorSummaryDto)
-        .subscribe(response => {
-          this.isLoadingSubmit = false;
-          sensor.IsActive = isActive;
-          // this.alertService.pushAlert(new Alert(`Sensor '${sensorName}' now ${isActive ? "enabled" : "disabled"}`, AlertContext.Success));
-        }
-          ,
-          error => {
-            this.isLoadingSubmit = false;
-            this.cdr.detectChanges();
-          }
-        );
-    }
-  }
-
+  
   // Begin section: location map
 
   public ngAfterViewInit(): void {
