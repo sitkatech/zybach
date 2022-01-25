@@ -55,6 +55,9 @@ export class SensorDetailComponent implements OnInit {
   private getSensorDetails() {
     this.sensorService.getSensorByID(this.sensorID).subscribe(sensor => {
       this.sensor = sensor;
+      // convert to hours
+      this.sensor.MessageAge = Math.floor(this.sensor.MessageAge / 3600);
+
       this.wellID = this.sensor.WellID;
 
       this.getInstallationDetails();
