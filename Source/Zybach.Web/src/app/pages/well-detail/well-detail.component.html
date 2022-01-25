@@ -375,7 +375,7 @@
                                 <tr *ngFor="let chemigationPermit of chemigationPermits">
                                     <td><a routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}">{{chemigationPermit.ChemigationPermitNumberDisplay}}</a></td>
                                     <td>{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</td>
-                                    <td>{{chemigationPermit.LatestInspection.InspectionDate | date:'MM/dd/yyyy'}}</td>
+                                    <td>{{chemigationPermit.LatestInspection?.InspectionDate | date:'MM/dd/yyyy'}}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -9,6 +9,7 @@ import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-re
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -26,6 +27,8 @@ export class SensorListComponent implements OnInit {
   public defaultColDef: ColDef;
 
   public sensors: Array<SensorSimpleDto>;
+
+  public richTextTypeID : number = CustomRichTextType.SensorList;
 
   constructor(
     private authenticationService: AuthenticationService,

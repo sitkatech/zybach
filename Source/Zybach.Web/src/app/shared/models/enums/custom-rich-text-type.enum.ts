@@ -14,5 +14,6 @@ export enum CustomRichTextType{
     WaterQualityInspections = 13,
     WaterLevelInspections = 14,
     WellRegistrationIDChangeHelpText = 15,
-    ClearinghouseReport = 16
+    ClearinghouseReport = 16,
+    SensorList = 17
 }
