@@ -8,13 +8,13 @@
     </ol>
 </nav>
 <app-alert-display></app-alert-display>
-<div class="row container" *ngIf="chemigationPermit">
+<div class="row m-3" *ngIf="chemigationPermit">
     <div class="col-12">
         <h2 class="d-inline-block">Chemigation Permit #{{chemigationPermit.ChemigationPermitNumberDisplay}}</h2>
         <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Approve Annual Renewal </a>
         <a class="btn btn-zybach btn-md mr-3 float-right disabled" routerLink="/"> Schedule Inspection </a>
     </div>
-    <div class="row container" *ngIf="chemigationPermit">
+    <div class="row container">
         <div class="col-12 col-sm-6 label"><strong>Well: </strong></div>
         <div class="col-12 col-sm-6"><a *ngIf="chemigationPermit.Well" routerLink="/wells/{{chemigationPermit.Well.WellID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
         </div>
@@ -28,30 +28,30 @@
             <em *ngIf="!latestInspection?.InspectionDate" class="text-muted">N/A</em>
         </div>
     </div>
-    <div class="row container">
-        <div class="col-12">
-            <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-right" role="button" data-toggle="dropdown" 
-                aria-haspopup="true" aria-expanded="false">
-                Other Actions
+
+    <div class="col-12">
+        <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-right" role="button" data-toggle="dropdown" 
+            aria-haspopup="true" aria-expanded="false">
+            Other Actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
+                <span class="fas fa-edit"></span>
+                Edit Permit 
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
-                    <span class="fas fa-edit"></span>
-                    Edit Permit 
-                </a>
-                <a *ngIf="permitHasCurrentRecord()" class="dropdown-item disabled" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
-                    <span class="fas fa-plus"></span> 
-                    Create Renewal 
-                </a>
-                <a *ngIf="!permitHasCurrentRecord()" class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
-                    <span class="fas fa-plus"></span> 
-                    Create Renewal 
-                </a>
-            </div>
+            <a *ngIf="permitHasCurrentRecord()" class="dropdown-item disabled" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+                <span class="fas fa-plus"></span> 
+                Create Renewal 
+            </a>
+            <a *ngIf="!permitHasCurrentRecord()" class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+                <span class="fas fa-plus"></span> 
+                Create Renewal 
+            </a>
         </div>
     </div>
+
 </div>
-<div class="row mt-4 container">
+<div class="row mt-4 m-3">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header d-flex align-items-center">

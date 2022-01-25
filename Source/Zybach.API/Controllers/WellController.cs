@@ -147,6 +147,7 @@ namespace Zybach.API.Controllers
             var sensors = well.Sensors.Select(x => new SensorSummaryDto()
             {
                 SensorName = x.SensorName,
+                SensorID = x.SensorID,
                 SensorType = x.SensorType.SensorTypeDisplayName,
                 WellRegistrationID = wellRegistrationID,
                 IsActive = x.IsActive

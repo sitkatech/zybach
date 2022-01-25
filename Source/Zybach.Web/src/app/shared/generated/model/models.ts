@@ -60,6 +60,7 @@ export * from '././robust-review-scenario-get-run-history-dto';
 export * from '././role-dto';
 export * from '././search-summary-dto';
 export * from '././sensor-message-age-dto';
+export * from '././sensor-simple-dto';
 export * from '././sensor-summary-dto';
 export * from '././stream-flow-zone-dto';
 export * from '././stream-flow-zone-pumping-depth-dto';
