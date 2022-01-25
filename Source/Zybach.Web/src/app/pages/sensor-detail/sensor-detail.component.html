@@ -78,8 +78,10 @@
                                             <div class="col-12 col-sm-6 label"><strong>GPS Location: </strong></div>
                                             <div class="col-12 col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
                                                 {{installation.Longitude | number: '1.0-3'}}</div>
-                                            <div class="col-12 col-sm-6 label"><strong>Flowmeter Serial Number: </strong></div>
-                                            <div class="col-12 col-sm-6">{{installation.FlowmeterSerialNumber}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
+                                            <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
+                                            <div class="col-12 col-sm-6 label" *ngIf="installation.FlowmeterSerialNumber"><strong>Flowmeter Serial Number: </strong></div>
+                                            <div class="col-12 col-sm-6" *ngIf="installation.FlowmeterSerialNumber"><>{{installation.FlowmeterSerialNumber}}</div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 text-center">
