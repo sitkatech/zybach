@@ -59,7 +59,7 @@ namespace Zybach.API.Controllers
                 : (int?)null;
             sensorSimpleDto.MessageAge = messageAge;
 
-            return RequireNotNullThrowNotFound(theObject: sensorSimpleDto, objectType: "Sensor", objectID: sensorID);
+            return sensorSimpleDto;
         }
     }
 }
