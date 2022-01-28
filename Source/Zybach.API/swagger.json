@@ -1919,6 +1919,78 @@
         }
       }
     },
+    "/api/print/pdf": {
+      "post": {
+        "tags": [
+          "Print"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/print/image": {
+      "post": {
+        "tags": [
+          "Print"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePostData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/reportTemplates": {
       "get": {
         "tags": [
@@ -4261,6 +4333,38 @@
           "ChemigationInspectionsCreated": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CapturePostData": {
+        "type": "object",
+        "properties": {
+          "cssStrings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "cssUrls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "cssSelector": {
+            "type": "string",
+            "nullable": true
+          },
+          "html": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

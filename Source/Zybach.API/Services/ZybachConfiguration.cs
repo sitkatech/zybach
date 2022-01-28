@@ -32,5 +32,6 @@
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID { get; set; }
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID { get; set; }
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID { get; set; }
+        public string PRINT_URL { get; set; }
     }
 }

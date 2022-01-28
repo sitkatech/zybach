@@ -25,9 +25,13 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/assets"
-            ],
-            
+            ],            
             "styles": [
+              {
+                "input": "src/styles.scss",
+                "bundleName": "print-module",
+                "inject": false
+              },
               "src/styles.scss",
               "node_modules/leaflet.fullscreen/Control.FullScreen.css",
               "node_modules/leaflet-gesture-handling/dist/leaflet-gesture-handling.css",

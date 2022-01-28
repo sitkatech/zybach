@@ -230,3 +230,38 @@ figure.media {
         text-align: right;
     }
   }
+
+  @media print
+  {
+      * {
+          -webkit-print-color-adjust: exact !important;
+      }
+      .no-print, .no-print *
+      {
+          display: none !important;
+      }
+      .form-group, .no-break {
+          page-break-inside: avoid;
+          -webkit-column-break-inside: avoid;
+          page-break-inside: avoid;
+          break-inside: avoid;
+      }
+      .break-before {
+          page-break-before: always;
+      }
+      .container {
+          width:100%!important;
+      }
+
+      button, a.btn { 
+        display: none !important;
+      }
+
+      @page  
+      { 
+          size: portrait;   /* auto is the initial value */ 
+
+          /* this affects the margin in the printer settings */ 
+          margin: 5mm 5mm 5mm 5mm;  
+      }  
+}
