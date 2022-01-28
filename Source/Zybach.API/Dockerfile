@@ -4,6 +4,7 @@ WORKDIR /src
 COPY ./Zybach.Models ./Zybach.Models
 COPY ./Zybach.EFModels ./Zybach.EFModels
 COPY ./Zybach.API ./Zybach.API
+COPY ./SitkaCaptureService ./SitkaCaptureService
 
 RUN dotnet publish ./Zybach.API/Zybach.API.csproj -c Release -o /app
 

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zybach.Models", "Zybach.Mod
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{4ADC0EA7-5D32-4AEC-B818-FCC266A4E6F6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitkaCaptureService", "SitkaCaptureService\SitkaCaptureService.csproj", "{69276DC2-C7D9-4877-83D6-9CCE08F6ECD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4ADC0EA7-5D32-4AEC-B818-FCC266A4E6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ADC0EA7-5D32-4AEC-B818-FCC266A4E6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ADC0EA7-5D32-4AEC-B818-FCC266A4E6F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69276DC2-C7D9-4877-83D6-9CCE08F6ECD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69276DC2-C7D9-4877-83D6-9CCE08F6ECD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69276DC2-C7D9-4877-83D6-9CCE08F6ECD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69276DC2-C7D9-4877-83D6-9CCE08F6ECD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

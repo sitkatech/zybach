@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -39,6 +39,7 @@ import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
+import { PrintService } from 'src/app/services/print.service';
 
 @Component({
   selector: 'zybach-well-detail',
@@ -113,7 +114,9 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private datePipe: DatePipe,
     private decimalPipe: DecimalPipe,
     private utilityFunctionsService: UtilityFunctionsService,
-    private alertService: AlertService
+    private alertService: AlertService, 
+    private printService: PrintService,
+    private componentElRef: ViewContainerRef
   ) {
     // force route reload whenever params change;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -815,4 +818,12 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   // End section: chart
+
+  printToPdf(): void {
+    this.printService.htmlToImage(this.componentElRef.element.nativeElement.innerHTML).subscribe(response => {
+      const blob = new Blob([response], { type: 'image/png' });
+      const url= window.URL.createObjectURL(blob);
+      window.open(url);
+    }); 
+  }
 }
