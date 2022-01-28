@@ -33,14 +33,6 @@ begin
 	join dbo.ChemigationPermitAnnualRecordApplicator cpara on cpar.ChemigationPermitAnnualRecordID = cpara.ChemigationPermitAnnualRecordID
 	join dbo.ChemigationPermitAnnualRecord cparnew on cp.ChemigationPermitID = cparnew.ChemigationPermitID and cparnew.RecordYear = @recordYear
 
-	insert into dbo.ChemigationPermitAnnualRecordChemicalFormulation(ChemigationPermitAnnualRecordID, ChemicalFormulationID, ChemicalUnitID, AcresTreated)
-	select cparnew.ChemigationPermitAnnualRecordID, cparcf.ChemicalFormulationID, cparcf.ChemicalUnitID, cparcf.AcresTreated
-	from dbo.ChemigationPermit cp
-	join #chemigationPermitsToRenew a on cp.ChemigationPermitID = a.ChemigationPermitID
-	join dbo.ChemigationPermitAnnualRecord cpar on cp.ChemigationPermitID = cpar.ChemigationPermitID and cpar.RecordYear = a.LatestRecordYear
-	join dbo.ChemigationPermitAnnualRecordChemicalFormulation cparcf on cpar.ChemigationPermitAnnualRecordID = cparcf.ChemigationPermitAnnualRecordID
-	join dbo.ChemigationPermitAnnualRecord cparnew on cp.ChemigationPermitID = cparnew.ChemigationPermitID and cparnew.RecordYear = @recordYear
-
 	drop table if exists #chemigationInspectionsToCreate
 	select ChemigationPermitID, RecordYear, ChemigationInspectionID, ChemigationPermitAnnualRecordID, ChemigationInspectionStatusID
 		, ChemigationInspectionTypeID, InspectionDate, InspectorUserID, ChemigationMainlineCheckValveID, HasVacuumReliefValve, HasInspectionPort
