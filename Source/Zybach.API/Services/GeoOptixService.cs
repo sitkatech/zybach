@@ -169,7 +169,12 @@ namespace Zybach.API.Services
         private static List<string> GetRecordSetValueAsStringList(RecordInstance recordInstance, string canonicalName)
         {
             var recordSetValue = recordInstance.Fields.SingleOrDefault(x => x.CanonicalName == canonicalName)?.RawValue;
-            return recordSetValue != null ? recordSetValue.ToObject<List<string>>() : new List<string>();
+            if (recordSetValue != null)
+            {
+                return recordSetValue.Type == JTokenType.Array ? recordSetValue.ToObject<List<string>>() : new List<string> { recordSetValue.ToObject<string>() };
+            }
+
+            return new List<string>();
         }
 
         private static DateTime? GetRecordSetValueAsDateTime(RecordInstance recordInstance, string canonicalName)
