@@ -28,8 +28,10 @@ namespace Zybach.Models.DataTransferObjects
         [Display(Name = "Injection Unit Type")]
         [Required]
         public int ChemigationInjectionUnitTypeID { get; set; }
+        [Display(Name = "Home Phone")]
         [RegularExpression(@"^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
         public string ApplicantPhone { get; set; }
+        [Display(Name = "Mobile Phone")]
         [RegularExpression(@"^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
         public string ApplicantMobilePhone { get; set; }
         [Display(Name = "Address")]
