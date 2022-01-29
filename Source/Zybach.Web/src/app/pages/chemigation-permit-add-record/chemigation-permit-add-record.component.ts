@@ -94,13 +94,6 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection = annualRecord.TownshipRangeSection;
 
     const chemicalFormulations = new Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>();
-    annualRecord.ChemicalFormulations.map(x => {
-      const chemicalFormulation = new ChemigationPermitAnnualRecordChemicalFormulationUpsertDto();
-      chemicalFormulation.ChemicalFormulationID = x.ChemicalFormulationID;
-      chemicalFormulation.ChemicalUnitID = x.ChemicalUnitID;
-      chemicalFormulation.AcresTreated = x.AcresTreated;
-      chemicalFormulations.push(chemicalFormulation);
-    });
     chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations = chemicalFormulations;
 
     const applicators = new Array<ChemigationPermitAnnualRecordApplicatorUpsertDto>();
