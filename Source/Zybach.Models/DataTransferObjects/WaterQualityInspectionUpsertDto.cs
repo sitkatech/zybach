@@ -5,12 +5,16 @@ namespace Zybach.Models.DataTransferObjects
 {
     public class WaterQualityInspectionUpsertDto
     {
+        [Display(Name = "Registration ID")]
         [Required]
         public string WellRegistrationID { get; set; }
+        [Display(Name = "Inspection Type")]
         [Required]
         public int WaterQualityInspectionTypeID { get; set; }
+        [Display(Name = "Inspection Date")]
         [Required]
         public DateTime InspectionDate { get; set; }
+        [Display(Name = "Inspector")]
         [Required]
         public int InspectorUserID { get; set; }
         public decimal? Temperature { get; set; }
