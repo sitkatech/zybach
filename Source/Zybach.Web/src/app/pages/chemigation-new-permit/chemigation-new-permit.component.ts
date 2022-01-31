@@ -27,7 +27,6 @@ import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/models/
 
 export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent: ChemigationPermitAnnualRecordUpsertComponent;
-
   
   private currentUser: UserDto;
 
@@ -38,8 +37,6 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
   public defaultState: string = 'NE';
 
   public isLoadingSubmit: boolean = false;
-  public isAnnualRecordFormValidCheck: boolean;
-  public isApplicatorsFormValidCheck: boolean;
   public searchFailed : boolean = false;
 
   constructor(
@@ -106,21 +103,10 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.cdr.detach();
   }
 
-  public isAnnualRecordFormValid(formValid: any): void {
-    this.isAnnualRecordFormValidCheck = formValid;
-  }
-
-  public isApplicatorsFormValid(formValid: any): void {
-    this.isApplicatorsFormValidCheck = formValid;
-  }
-
-  public isFormValid(addChemigationPermitAnnualRecordForm: any): boolean {
-    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isApplicatorsFormValidCheck
-     || !addChemigationPermitAnnualRecordForm.form.valid;
-  }
-
   public onSubmit(newChemigationPermitForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+    this.alertService.clearAlerts();
+
     this.chemigationPermitService.createNewChemigationPermit(this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;

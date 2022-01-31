@@ -19,7 +19,6 @@ import { ChemigationPermitAnnualRecordFeeTypeDto } from '../../generated/model/c
 
 export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
   @Input() model: ChemigationPermitAnnualRecordUpsertDto;
-  @Output() isFormValid: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('annualRecordForm',  {static: true}) public annualRecordForm: NgForm;
   
   public injectionUnitTypes: Array<ChemigationInjectionUnitTypeDto>;
@@ -44,17 +43,5 @@ export class ChemigationPermitAnnualRecordUpsertComponent implements OnInit {
       this.cdr.detectChanges();
     });
     this.states = States.statesList;
-    this.validateForm();
-    this.annualRecordForm.valueChanges.subscribe(() => {
-      this.validateForm();
-    });
-  }
-
-  public validateForm(): void {
-    if (this.annualRecordForm.valid == true) {
-        this.isFormValid.emit(true);
-    } else {
-        this.isFormValid.emit(false);
-    }
   }
 }

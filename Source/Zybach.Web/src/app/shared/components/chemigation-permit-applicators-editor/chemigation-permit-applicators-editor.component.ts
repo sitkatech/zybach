@@ -10,7 +10,6 @@ import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from '../../generate
 })
 export class ChemigationPermitApplicatorsEditorComponent implements OnInit {
   @Input() model: ChemigationPermitAnnualRecordApplicatorUpsertDto[];
-  @Output() isFormValid: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('applicatorsForm',  {static: true}) public applicatorsForm: NgForm;
   
   private newRecordID: number = -1;
@@ -24,29 +23,20 @@ export class ChemigationPermitApplicatorsEditorComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.validateForm();
-    this.applicatorsForm.valueChanges.subscribe(() => {
-      this.validateForm();
-    });
   }
 
-  public validateForm(): void {
-    if (this.applicatorsForm.valid == true) {
-        this.isFormValid.emit(true);
-    } else {
-        this.isFormValid.emit(false);
-    }
-  }
-
-  public addRow(): void{
+  public addRow(): void {
     const newRecord = new ChemigationPermitAnnualRecordApplicatorUpsertDto();
     newRecord.ChemigationPermitAnnualRecordApplicatorID = this.newRecordID--;
     this.model.push(newRecord);
   }
 
-  public deleteRow(row: ChemigationPermitAnnualRecordApplicatorUpsertDto): void{
+  public deleteRow(row: ChemigationPermitAnnualRecordApplicatorUpsertDto): void {
     this.model.forEach( (item, index) => {
-      if(item === row) this.model.splice(index,1);
+      if(item === row) this.model.splice(index, 1);
+      if (item.ChemigationPermitAnnualRecordApplicatorID) {
+
+      }
     });
   }
 }

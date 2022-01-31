@@ -59,8 +59,8 @@ namespace Zybach.API.Controllers
                 return actionResult;
             }
 
-            chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID;
-            chemigationPermit.CountyID = chemigationPermitUpsertDto.CountyID;
+            chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID.Value;
+            chemigationPermit.CountyID = chemigationPermitUpsertDto.CountyID.Value;
             _dbContext.SaveChanges();
 
             return Ok();

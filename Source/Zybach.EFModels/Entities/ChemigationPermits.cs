@@ -53,9 +53,9 @@ namespace Zybach.EFModels.Entities
             var chemigationPermit = new ChemigationPermit()
             {
                 ChemigationPermitNumber = nextPermitNumber,
-                ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID,
+                ChemigationPermitStatusID = chemigationPermitNewDto.ChemigationPermitStatusID.Value,
                 DateCreated = DateTime.Now.Date,
-                CountyID = chemigationPermitNewDto.CountyID
+                CountyID = chemigationPermitNewDto.CountyID.Value
             };
             var wellID = dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == chemigationPermitNewDto.WellRegistrationID)?.WellID;
             chemigationPermit.WellID = wellID;

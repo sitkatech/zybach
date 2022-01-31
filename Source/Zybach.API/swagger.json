@@ -4801,6 +4801,10 @@
         "additionalProperties": false
       },
       "ChemigationPermitAnnualRecordChemicalFormulationUpsertDto": {
+        "required": [
+          "ChemicalFormulationID",
+          "ChemicalUnitID"
+        ],
         "type": "object",
         "properties": {
           "ChemigationPermitAnnualRecordChemicalFormulationID": {

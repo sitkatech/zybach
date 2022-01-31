@@ -4,9 +4,9 @@ namespace Zybach.Models.DataTransferObjects
 {
     public class ChemigationPermitUpsertDto
     {
-        [Required]
-        public int ChemigationPermitStatusID { get; set; }
-        [Required]
-        public int CountyID { get; set; }
+        [Required(ErrorMessage = "Status is required")]
+        public int? ChemigationPermitStatusID { get; set; }
+        [Required(ErrorMessage = "County is required")]
+        public int? CountyID { get; set; }
     }
 }

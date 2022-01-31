@@ -7,11 +7,11 @@ namespace Zybach.Models.DataTransferObjects
     public class ChemigationPermitAnnualRecordUpsertDto
     {
         [Display(Name = "Status")]
-        [Required]
-        public int ChemigationPermitAnnualRecordStatusID { get; set; }
+        [Required(ErrorMessage = "Renewal Status is required")]
+        public int? ChemigationPermitAnnualRecordStatusID { get; set; }
         [Display(Name = "Fee Type")]
         [Required(ErrorMessage = "Fee Type is required")]
-        public int ChemigationPermitAnnualRecordFeeTypeID { get; set; }
+        public int? ChemigationPermitAnnualRecordFeeTypeID { get; set; }
         public string ApplicantFirstName { get; set; }
         public string ApplicantLastName { get; set; }
         public string ApplicantCompany { get; set; }
@@ -26,8 +26,8 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? DatePaid { get; set; }
         public DateTime? DateApproved { get; set; }
         [Display(Name = "Injection Unit Type")]
-        [Required]
-        public int ChemigationInjectionUnitTypeID { get; set; }
+        [Required(ErrorMessage = "Injection Unit Type required")]
+        public int? ChemigationInjectionUnitTypeID { get; set; }
         [Display(Name = "Home Phone")]
         [RegularExpression(@"^\(?\d{3}\)?-? *\d{3}-? *-?\d{4}", ErrorMessage = "Phone numbers must be submitted in 10 digit format with optional hyphens or spaces")]
         public string ApplicantPhone { get; set; }
