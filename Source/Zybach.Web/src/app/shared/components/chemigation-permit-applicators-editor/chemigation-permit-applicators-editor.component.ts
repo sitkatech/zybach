@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from '../../generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
 
 @Component({
@@ -18,7 +17,6 @@ export class ChemigationPermitApplicatorsEditorComponent implements OnInit {
   public expirationYears: Array<number> = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040];
 
   constructor(
-    private chemigationPermitService: ChemigationPermitService,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -34,9 +32,6 @@ export class ChemigationPermitApplicatorsEditorComponent implements OnInit {
   public deleteRow(row: ChemigationPermitAnnualRecordApplicatorUpsertDto): void {
     this.model.forEach( (item, index) => {
       if(item === row) this.model.splice(index, 1);
-      if (item.ChemigationPermitAnnualRecordApplicatorID) {
-
-      }
     });
   }
 }
