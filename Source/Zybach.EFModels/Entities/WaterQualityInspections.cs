@@ -46,7 +46,7 @@ namespace Zybach.EFModels.Entities
             {
                 WellID = wellID,
                 WaterQualityInspectionTypeID = waterQualityInspectionUpsert.WaterQualityInspectionTypeID,
-                InspectionDate = waterQualityInspectionUpsert.InspectionDate,
+                InspectionDate = waterQualityInspectionUpsert.InspectionDate.AddHours(8),
                 InspectorUserID = waterQualityInspectionUpsert.InspectorUserID,
                 Temperature = waterQualityInspectionUpsert.Temperature,
                 PH = waterQualityInspectionUpsert.PH,

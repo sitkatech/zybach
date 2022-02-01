@@ -1,0 +1,117 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/sensors">Sensors</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{sensor?.SensorName}}</li>
+    </ol>
+</nav>
+<div class="container">
+    <app-alert-display></app-alert-display>
+
+    <div class="row mt-4">
+        <div class="col-5">
+            <div class="card">
+                <div class="card-header">
+                    Sensor Info
+                </div>
+                <div class="card-body text-center" *ngIf="sensor">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>Well: </strong> </div>
+                                <div class="col-12 col-sm-6 text-left"><a routerLink="/wells/{{sensor.WellID}}">{{sensor.WellRegistrationID}}</a></div>
+                                <div class="col-12 col-sm-6 label"><strong>Sensor Type: </strong> </div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.SensorTypeName}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Last Message Age (Hours): </strong></div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.MessageAge}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Status: </strong></div>
+                                <div class="col-12 col-sm-6 text-left">
+                                    <div class="btn-group btn-group-toggle float-left">
+                                        <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
+                                        <input type="radio" name="sensorIsActive" (click)="toggleIsActive(true)" [disabled]="sensor.IsActive"> Enabled
+                                        </label>
+                                        <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''">
+                                        <input type="radio" name="sensorIsActive" (click)="toggleIsActive(false)" [disabled]="!sensor.IsActive"> Disabled
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <ng-container *ngIf="!sensor">
+                        <span class="fas fa-spinner loading-spinner"></span>
+                        <p>Loading...</p>
+                    </ng-container>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-7">
+            <div class="card">
+                <div class="card-header">
+                    Installation Details
+                    <a *ngIf="sensor?.InGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
+                        View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <ng-container *ngIf="installations; else installationsLoading">
+                        <ng-container *ngIf="installations.length === 0; else installationsDetails">
+                            <p class="font-italic">
+                                No Installation Records were found for this well.
+                            </p>
+                        </ng-container>
+                        <ng-template #installationsDetails>
+                            <ng-container *ngFor="let installation of installations; index as i">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 label"><strong>Installation Name: </strong> </div>
+                                            <div class="col-12 col-sm-6">{{installation.InstallationCanonicalName}}</div>
+                                            <div class="col-12 col-sm-6 label"><strong>Installation Status: </strong> </div>
+                                            <div class="col-12 col-sm-6">{{installation.Status}}</div>
+                                            <div class="col-12 col-sm-6 label"><strong>Installation Date: </strong></div>
+                                            <div class="col-12 col-sm-6">{{getInstallationDate(installation)}}</div>
+                                            <div class="col-12 col-sm-6 label"><strong>GPS Location: </strong></div>
+                                            <div class="col-12 col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
+                                                {{installation.Longitude | number: '1.0-3'}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
+                                            <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
+                                            <div class="col-12 col-sm-6 label" *ngIf="installation.FlowmeterSerialNumber"><strong>Flowmeter Serial Number: </strong></div>
+                                            <div class="col-12 col-sm-6" *ngIf="installation.FlowmeterSerialNumber"><>{{installation.FlowmeterSerialNumber}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 text-center">
+                                        <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName] && installationPhotos[installation.InstallationCanonicalName].length > 0; else noInstallationPhotos">
+                                            <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 1; else manyInstallationPhotos">
+                                                <img class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}" style="height: 300px" />
+                                            </ng-container>
+                                            <ng-template #manyInstallationPhotos>
+                                                <carousel [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1" [objectFit]="contain" [dots]="true"></carousel>
+                                            </ng-template>
+                                        </ng-container>
+                                        <ng-template #noInstallationPhotos>
+                                            <img class="img img-fluid" style="height:300px" src="/assets/main/no-photo-available.jpg" />
+                                        </ng-template>        
+                                    </div>
+                                </div>
+                                <hr *ngIf="i != installations.length - 1" />
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #installationsLoading>
+                        <div class="row text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

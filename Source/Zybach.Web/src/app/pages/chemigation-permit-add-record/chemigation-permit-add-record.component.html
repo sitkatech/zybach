@@ -70,19 +70,19 @@
                         <hr class="w-90" />
 
                         <zybach-chemigation-permit-annual-record-upsert #annualRecordForm
-                            (isFormValid)="isAnnualRecordFormValid($event)" [(model)]="model">
+                            [(model)]="model">
                         </zybach-chemigation-permit-annual-record-upsert>
 
                         <hr class="w-90" />
 
                         <zybach-chemigation-permit-applicators-editor #applicatorsForm
-                            (isFormValid)="isApplicatorsFormValid($event)" [(model)]="model.Applicators">
+                            [(model)]="model.Applicators">
                         </zybach-chemigation-permit-applicators-editor>
 
                         <hr class="w-90" />
 
                         <zybach-chemigation-permit-chemical-formulations-editor #chemicalFormulationsForm
-                            (isFormValid)="isChemicalFormulationsFormValid($event)" [(model)]="model.ChemicalFormulations">
+                            [(model)]="model.ChemicalFormulations">
                         </zybach-chemigation-permit-chemical-formulations-editor>
 
                     </div>
@@ -93,8 +93,7 @@
                         <i class="fas fa-bolt"></i> Required field
                     </div>
                     <div class="col-sm text-right">
-                        <button type="submit" class="btn btn-zybach"
-                            [disabled]="isFormValid(addChemigationPermitAnnualRecordForm)">
+                        <button type="submit" class="btn btn-zybach">
                             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                             Save
                         </button>

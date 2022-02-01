@@ -63,7 +63,38 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         width: 115,
         sortable: true, filter: true, resizable: true
       },
-      { headerName: 'Sensor Number', field: 'SensorName', sortable: true, filter: true, resizable: true},
+      {
+        headerName: 'Sensor', valueGetter: function (params: any) {
+          if(params.data.SensorName)
+          {
+            return { LinkValue: params.data.SensorID, LinkDisplay: params.data.SensorName };
+          }
+          else
+          {
+            return { LinkValue: null, LinkDisplay: null };
+          }
+        }, 
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/sensors/" },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkValue;
+          let link2 = id2.LinkValue;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        filterValueGetter: function (params: any) {
+          return params.data.SensorName;
+        },
+        filter: true,
+        resizable: true,
+        sortable: true,
+        width: 120
+      },
       { headerName: 'Last Message Age (Hours)',
         valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
         filter: 'agNumberColumnFilter',

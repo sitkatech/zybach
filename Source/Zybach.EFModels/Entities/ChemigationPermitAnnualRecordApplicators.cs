@@ -10,7 +10,7 @@ namespace Zybach.EFModels.Entities
         public static void UpdateApplicators(ZybachDbContext dbContext, ChemigationPermitAnnualRecord chemigationPermitAnnualRecord,
             List<ChemigationPermitAnnualRecordApplicatorUpsertDto> chemigationPermitAnnualRecordApplicatorsDto)
         {
-            if (chemigationPermitAnnualRecordApplicatorsDto != null && chemigationPermitAnnualRecordApplicatorsDto.Any())
+            if (chemigationPermitAnnualRecordApplicatorsDto != null)
             {
                 var newChemigationPermitAnnualRecordApplicators =
                     chemigationPermitAnnualRecordApplicatorsDto.GroupBy(x => new { x.ApplicatorName, x.CertificationNumber }).Select(x =>

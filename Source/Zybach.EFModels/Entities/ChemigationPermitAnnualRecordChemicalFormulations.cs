@@ -12,7 +12,7 @@ namespace Zybach.EFModels.Entities
             List<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>
                 chemigationPermitAnnualRecordChemicalFormulationsDto)
         {
-            if (chemigationPermitAnnualRecordChemicalFormulationsDto != null && chemigationPermitAnnualRecordChemicalFormulationsDto.Any())
+            if (chemigationPermitAnnualRecordChemicalFormulationsDto != null)
             {
                 var newChemigationPermitAnnualRecordChemicalFormulations =
                     chemigationPermitAnnualRecordChemicalFormulationsDto.GroupBy(x => new {x.ChemicalFormulationID, x.ChemicalUnitID}).Select(x =>
@@ -20,8 +20,8 @@ namespace Zybach.EFModels.Entities
                         var formulation = new ChemigationPermitAnnualRecordChemicalFormulation
                             {
                                 ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordID,
-                                ChemicalFormulationID = x.Key.ChemicalFormulationID,
-                                ChemicalUnitID = x.Key.ChemicalUnitID,
+                                ChemicalFormulationID = x.Key.ChemicalFormulationID.Value,
+                                ChemicalUnitID = x.Key.ChemicalUnitID.Value,
                                 AcresTreated = x.Sum(y => y.AcresTreated)
                             };
 

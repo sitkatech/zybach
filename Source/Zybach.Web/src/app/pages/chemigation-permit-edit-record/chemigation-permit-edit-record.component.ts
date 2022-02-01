@@ -23,7 +23,6 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 
 export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   @ViewChild('annualRecordForm') private chemigationPermitAnnualRecordUpsertComponent : ChemigationPermitAnnualRecordUpsertComponent;
-
   
   private currentUser: UserDto;
   
@@ -36,10 +35,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   public recordYear: number;
   
   public isLoadingSubmit: boolean = false;
-  public isAnnualRecordFormValidCheck: boolean;
-  public isChemicalFormulationsFormValidCheck: boolean;
-  public isApplicatorsFormValidCheck: boolean;
-
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -133,25 +129,9 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
        this.cdr.detach();
   }
 
-  public isAnnualRecordFormValid(formValid: any) : void {
-    this.isAnnualRecordFormValidCheck = formValid;
-  }
-
-  public isChemicalFormulationsFormValid(formValid: any): void {
-    this.isChemicalFormulationsFormValidCheck = formValid;
-  }
-
-  public isApplicatorsFormValid(formValid: any): void {
-    this.isApplicatorsFormValidCheck = formValid;
-  }
-
-  public isFormValid(editChemigationPermitAnnualRecordForm: any) : boolean{
-    return this.isLoadingSubmit || !this.isAnnualRecordFormValidCheck || !this.isChemicalFormulationsFormValidCheck
-     || !this.isApplicatorsFormValidCheck || !editChemigationPermitAnnualRecordForm.form.valid;
-  }
-
   onSubmit(editChemigationPermitAnnualRecordForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
+    this.alertService.clearAlerts();
   
     this.chemigationPermitService.updateChemigationPermitAnnualRecord(this.chemigationPermitAnnualRecordID, this.model)
       .subscribe(response => {

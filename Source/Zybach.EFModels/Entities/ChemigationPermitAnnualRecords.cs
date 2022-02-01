@@ -73,8 +73,8 @@ namespace Zybach.EFModels.Entities
                 // we need to save the annual record first to get an ID for it
                 dbContext.SaveChanges();
             }
-            Entities.ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
-            Entities.ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.Applicators);
+            ChemigationPermitAnnualRecordChemicalFormulations.UpdateChemicalFormulations(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.ChemicalFormulations);
+            ChemigationPermitAnnualRecordApplicators.UpdateApplicators(dbContext, chemigationPermitAnnualRecord, chemigationPermitAnnualRecordUpsertDto.Applicators);
             dbContext.SaveChanges();
         }
 
@@ -82,11 +82,11 @@ namespace Zybach.EFModels.Entities
             ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordStatusID =
-                chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID;
+                chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordStatusID.Value;
             chemigationPermitAnnualRecord.ChemigationPermitAnnualRecordFeeTypeID =
-                chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordFeeTypeID;
+                chemigationPermitAnnualRecordUpsertDto.ChemigationPermitAnnualRecordFeeTypeID.Value;
             chemigationPermitAnnualRecord.ChemigationInjectionUnitTypeID =
-                chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID;
+                chemigationPermitAnnualRecordUpsertDto.ChemigationInjectionUnitTypeID.Value;
             chemigationPermitAnnualRecord.TownshipRangeSection = chemigationPermitAnnualRecordUpsertDto.TownshipRangeSection;
             chemigationPermitAnnualRecord.ApplicantFirstName = chemigationPermitAnnualRecordUpsertDto.ApplicantFirstName;
             chemigationPermitAnnualRecord.ApplicantLastName = chemigationPermitAnnualRecordUpsertDto.ApplicantLastName;

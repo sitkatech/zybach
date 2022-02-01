@@ -10,12 +10,18 @@
  * Do not edit the class manually.
  */
 
-export class SensorMessageAgeDto { 
+export class SensorSimpleDto { 
     SensorID?: number;
     SensorName?: string;
-    MessageAge?: number;
-    SensorType?: string;
+    SensorTypeID?: number;
+    WellID?: number;
+    InGeoOptix?: boolean;
+    CreateDate?: string;
+    LastUpdateDate?: string;
     IsActive?: boolean;
+    WellRegistrationID?: string;
+    SensorTypeName?: string;
+    MessageAge?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

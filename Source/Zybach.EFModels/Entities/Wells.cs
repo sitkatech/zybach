@@ -78,6 +78,7 @@ namespace Zybach.EFModels.Entities
             var sensors = well.Sensors.Select(x => new SensorSummaryDto()
             {
                 SensorName = x.SensorName,
+                SensorID = x.SensorID,
                 SensorType = x.SensorType.SensorTypeDisplayName,
                 WellRegistrationID = well.WellRegistrationID,
                 IsActive = x.IsActive

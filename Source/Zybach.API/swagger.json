@@ -2436,6 +2436,84 @@
         }
       }
     },
+    "/api/sensors": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensors/{sensorID}": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/sensorStatus": {
       "get": {
         "tags": [
@@ -4723,6 +4801,10 @@
         "additionalProperties": false
       },
       "ChemigationPermitAnnualRecordChemicalFormulationUpsertDto": {
+        "required": [
+          "ChemicalFormulationID",
+          "ChemicalUnitID"
+        ],
         "type": "object",
         "properties": {
           "ChemigationPermitAnnualRecordChemicalFormulationID": {
@@ -5036,10 +5118,13 @@
       },
       "ChemigationPermitAnnualRecordUpsertDto": {
         "required": [
+          "ApplicantCity",
+          "ApplicantMailingAddress",
+          "ApplicantState",
+          "ApplicantZipCode",
           "ChemigationInjectionUnitTypeID",
           "ChemigationPermitAnnualRecordFeeTypeID",
           "ChemigationPermitAnnualRecordStatusID",
-          "PivotName",
           "RecordYear",
           "TownshipRangeSection"
         ],
@@ -5066,7 +5151,8 @@
             "nullable": true
           },
           "PivotName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "RecordYear": {
             "type": "integer",
@@ -5105,25 +5191,27 @@
             "nullable": true
           },
           "ApplicantMailingAddress": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
           },
           "ApplicantEmail": {
             "type": "string",
             "nullable": true
           },
           "ApplicantCity": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
           },
           "ApplicantState": {
-            "type": "string",
-            "nullable": true
+            "maxLength": 20,
+            "minLength": 0,
+            "type": "string"
           },
           "ApplicantZipCode": {
             "pattern": "^[0-9]{5}(?:-[0-9]{4})?$",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "NDEEAmount": {
             "type": "number",
@@ -6081,6 +6169,10 @@
       "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "SensorName": {
             "type": "string",
             "nullable": true
@@ -6100,12 +6192,67 @@
         },
         "additionalProperties": false
       },
+      "SensorSimpleDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "InGeoOptix": {
+            "type": "boolean"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MessageAge": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorSummaryDto": {
         "type": "object",
         "properties": {
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
           },
           "SensorName": {
             "type": "string",

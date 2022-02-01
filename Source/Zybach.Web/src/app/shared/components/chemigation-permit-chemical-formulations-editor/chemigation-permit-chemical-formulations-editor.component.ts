@@ -13,7 +13,6 @@ import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '../..
 })
 export class ChemigationPermitChemicalFormulationsEditorComponent implements OnInit {
   @Input() model: ChemigationPermitAnnualRecordChemicalFormulationUpsertDto[];
-  @Output() isFormValid: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild('chemicalFormulationsForm',  {static: true}) public chemicalFormulationsForm: NgForm;
   
   public chemicalUnits: Array<ChemicalUnitDto>;
@@ -34,18 +33,6 @@ export class ChemigationPermitChemicalFormulationsEditorComponent implements OnI
       this.chemicalUnits = chemicalUnits;
       this.cdr.detectChanges();
     });
-    this.validateForm();
-    this.chemicalFormulationsForm.valueChanges.subscribe(() => {
-      this.validateForm();
-    });
-  }
-
-  public validateForm(): void {
-    if (this.chemicalFormulationsForm.valid == true) {
-        this.isFormValid.emit(true);
-    } else {
-        this.isFormValid.emit(false);
-    }
   }
 
   public addRow(): void{
