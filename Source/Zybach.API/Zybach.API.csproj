@@ -52,6 +52,7 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug' ">
     <Exec Command="dotnet new tool-manifest --force" />
     <Exec Command="dotnet tool install --version 6.2.3 Swashbuckle.AspNetCore.Cli" />
+	  <!-- This step can be finicky and can cause the build to fail. If you find the generator isn't creating your changes, remove the ContinueOnError="true" and clean/close visual studio until it works-->
     <Exec Command="dotnet swagger tofile --output swagger.json $(OutputPath)\$(AssemblyName).dll v1 " ContinueOnError="true"/>
   </Target>
 
