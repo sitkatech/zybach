@@ -49,7 +49,7 @@ namespace Zybach.API.ReportTemplates
             var baseTempDirectory = new DirectoryInfo($"{tempPath.FullName}{TemplateTempDirectoryName}");
             baseTempDirectory.Create();
             FullTemplateTempDirectory = baseTempDirectory.FullName;
-            FullTemplateTempImageDirectory = baseTempDirectory.CreateSubdirectory(TemplateTempImageDirectoryName).FullName + '/';
+            FullTemplateTempImageDirectory = baseTempDirectory.CreateSubdirectory(TemplateTempImageDirectoryName).FullName;
         }
 
         public void Generate(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
