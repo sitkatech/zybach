@@ -24,10 +24,10 @@ namespace VegaRenderService
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/png"));
         }
 
-        public async Task<byte[]> PrintPNG(CapturePostData postData)
+        public async Task<byte[]> PrintPNG(string spec)
         {
             _logger.Information($"Handling PrintPDF request with BaseAddress {_client.BaseAddress}");
-            var response = await _client.PostAsJsonAsync("/", postData);
+            var response = await _client.PostAsJsonAsync("/", new { spec = spec });
             var pdf = response.Content.ReadAsByteArrayAsync();
             return await pdf;
         }

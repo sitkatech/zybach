@@ -16,8 +16,11 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class ReportController : SitkaController<ReportController>
     {
-        public ReportController(ZybachDbContext dbContext, ILogger<ReportController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        protected readonly VegaRenderService.VegaRenderService _vegaRenderService;
+
+        public ReportController(ZybachDbContext dbContext, ILogger<ReportController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, VegaRenderService.VegaRenderService vegaRenderService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
+            _vegaRenderService = vegaRenderService;
         }
 
         [HttpGet("api/reportTemplates")]
@@ -75,7 +78,7 @@ namespace Zybach.API.Controllers
 
             var reportTemplate = CreateNew(_dbContext, reportTemplateNewDto, fileResource);
 
-            ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger, _vegaRenderService);
             if (!reportIsValid)
             {
                 var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
@@ -118,7 +121,7 @@ namespace Zybach.API.Controllers
 
             var updatedReportTemplate = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
 
-            ReportTemplateGenerator.ValidateReportTemplate(updatedReportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger);
+            ReportTemplateGenerator.ValidateReportTemplate(updatedReportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger, _vegaRenderService);
             if (!reportIsValid)
             {
                 var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
@@ -181,7 +184,7 @@ namespace Zybach.API.Controllers
 
         private ActionResult GenerateAndDownload(ReportTemplateGenerator reportTemplateGenerator, ReportTemplate reportTemplate)
         {
-            reportTemplateGenerator.Generate(_dbContext);
+            reportTemplateGenerator.Generate(_dbContext, _vegaRenderService);
             var fileData = System.IO.File.ReadAllBytes(reportTemplateGenerator.GetCompilePath());
             var stream = new MemoryStream(fileData);
             return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"{reportTemplate.DisplayName} Report");
