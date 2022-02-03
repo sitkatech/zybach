@@ -26,10 +26,10 @@ namespace VegaRenderService
 
         public async Task<byte[]> PrintPNG(string spec)
         {
-            _logger.Information($"Handling PrintPDF request with BaseAddress {_client.BaseAddress}");
+            _logger.Information($"Handling PrintPNG request with BaseAddress {_client.BaseAddress}");
             var response = await _client.PostAsJsonAsync("/", new { spec = spec });
-            var pdf = response.Content.ReadAsByteArrayAsync();
-            return await pdf;
+            var png = response.Content.ReadAsByteArrayAsync();
+            return await png;
         }
 
     }
