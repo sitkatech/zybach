@@ -182,7 +182,7 @@ namespace Zybach.API
 
             services.AddControllers();
 
-            services.AddSitkaCaptureService(zybachConfiguration.PRINT_URL, logger);
+            services.AddVegaRenderService(zybachConfiguration.VEGA_RENDER_URL, logger);
 
             services.AddSwaggerGen(c =>
             {

@@ -40,7 +40,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\SitkaCaptureService\SitkaCaptureService.csproj" />
+    <ProjectReference Include="..\VegaRenderService\VegaRenderService.csproj" />
     <ProjectReference Include="..\Zybach.EFModels\Zybach.EFModels.csproj" />
     <ProjectReference Include="..\Zybach.Models\Zybach.Models.csproj" />
   </ItemGroup>
