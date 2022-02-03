@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -113,8 +113,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     private datePipe: DatePipe,
     private decimalPipe: DecimalPipe,
     private utilityFunctionsService: UtilityFunctionsService,
-    private alertService: AlertService, 
-    private componentElRef: ViewContainerRef
+    private alertService: AlertService
   ) {
     // force route reload whenever params change;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
