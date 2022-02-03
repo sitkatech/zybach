@@ -12,22 +12,22 @@
 @import "scss/_forms.scss";
 @import "scss/_custom-bootstrap.scss";
 
-@import '~ngx-toastr/toastr';
+@import "~ngx-toastr/toastr";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 //ckeditor css
 
 .image {
-  display:table;
+  display: table;
   clear: both;
-  text-align:center;
-  margin:1em auto;
+  text-align: center;
+  margin: 1em auto;
 }
 
-.image>img {
-  display:block;
-  margin:0 auto;
-  max-width:100%;
+.image > img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
   min-width: 50px;
 }
 
@@ -69,199 +69,166 @@ blockquote {
 }
 
 figure.media {
-  clear:both;
+  clear: both;
   margin: 1em 0;
   display: block;
-  min-width:15em;
+  min-width: 15em;
 }
 
 .ck.ck-balloon-panel.ck-balloon-panel_visible {
   //to account for in popover case
-  z-index:1061;
+  z-index: 1061;
 }
 //end ckeditor css
 
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 98px;
-    height: 21px;
-    padding: 0;
-    margin: 0;
+  position: relative;
+  display: inline-block;
+  width: 98px;
+  height: 21px;
+  padding: 0;
+  margin: 0;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #6b6b6b;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 17px;
+  width: 17px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: $button-border-and-background;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px $button-border-and-background;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(77px);
+  -ms-transform: translateX(7px);
+  transform: translateX(77px);
+}
+
+/*------ ADDED CSS ---------*/
+
+.on,
+.off {
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  font-size: 10px;
+}
+
+.on {
+  display: none;
+  color: $button-text-color;
+}
+
+input:checked + .slider .on {
+  display: block;
+}
+
+input:checked + .slider .off {
+  display: none;
+}
+
+/*--------- END --------*/
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+//Added leaflet css
+.leaflet-control-layers-close {
+  color: #0078a8 !important;
+  cursor: pointer;
+  float: right;
+  display: none;
+}
+
+.leaflet-control-layers-expanded .leaflet-control-layers-close {
+  display: block;
+}
+
+.leaflet-popup-tip-container {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: #e6ffe5;
+}
+
+//End of added leaflet css
+
+//NGB Popover
+
+.popover {
+  max-width: 400px;
+}
+
+.popover-override {
+  font-size: 0.75em;
+}
+
+.popover-override h3.popover-header {
+  background-color: #dfdfdf;
+  padding: 0.25em 0.5em;
+}
+
+.popover-override h3.popover-header .btn {
+  line-height: 1;
+}
+
+.popover-override .popover-body {
+  padding: 0.25em 0.5em;
+}
+
+zybach-field-definition-grid-header {
+  width: 100%;
+}
+
+//End of NGB Popover
+
+.container {
+  max-width: 1800px;
+}
+
+.navCaretMargin {
+  margin-top: 22px;
+}
+
+@media screen and (min-width: 576px) {
+  .label {
+    text-align: right;
   }
-  
-  .switch input {display:none;}
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #6b6b6b;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 17px;
-    width: 17px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: $button-border-and-background;
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px $button-border-and-background;
-  }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(77px);
-    -ms-transform: translateX(7px);
-    transform: translateX(77px);
-  }
-  
-  /*------ ADDED CSS ---------*/
-  
-  .on, .off
-  {
-    color: white;
-    position: absolute;
-    transform: translate(-50%,-50%);
-    top: 50%;
-    left: 50%;
-    font-size: 10px;
-  }
-
-  .on{
-    display: none;
-    color: $button-text-color;
-  }
-
-  
-  input:checked+ .slider .on
-  {display: block;}
-  
-  input:checked + .slider .off
-  {display: none;}
-  
-  /*--------- END --------*/
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;}
-
-
-  //Added leaflet css  
-  .leaflet-control-layers-close {
-    color: #0078A8 !important;
-    cursor:pointer;
-    float:right;
-    display:none;
-  }
-
-  .leaflet-control-layers-expanded .leaflet-control-layers-close {
-    display:block;
-  }
-
-  .leaflet-popup-tip-container {
-    display:none;
-  }
-
-  .leaflet-popup-content-wrapper {
-    background-color:#E6FFE5
-  }
-
-  //End of added leaflet css
-
-  //NGB Popover
-
-  .popover {
-    max-width: 400px;
-  }
-
-  .popover-override
-  {
-    font-size: .75em;
-  }
-
-  .popover-override h3.popover-header {
-    background-color:#dfdfdf;
-    padding: 0.25em 0.5em;
-  }
-
-  .popover-override h3.popover-header .btn {
-    line-height: 1;
-  }
-
-  .popover-override .popover-body {
-    padding: 0.25em 0.5em;
-  }
-
-  zybach-field-definition-grid-header {
-    width:100%;
-  }
-
-  //End of NGB Popover
-
-  .container{
-    max-width: 1800px;
-  }
-
-  .navCaretMargin{
-    margin-top: 22px;
-  }
-
-  @media screen and (min-width: 576px){
-    .label{
-        text-align: right;
-    }
-  }
-
-  @media print
-  {
-      * {
-          -webkit-print-color-adjust: exact !important;
-      }
-      .no-print, .no-print *
-      {
-          display: none !important;
-      }
-      .form-group, .no-break {
-          page-break-inside: avoid;
-          -webkit-column-break-inside: avoid;
-          page-break-inside: avoid;
-          break-inside: avoid;
-      }
-      .break-before {
-          page-break-before: always;
-      }
-      .container {
-          width:100%!important;
-      }
-
-      button, a.btn { 
-        display: none !important;
-      }
-
-      @page  
-      { 
-          size: portrait;   /* auto is the initial value */ 
-
-          /* this affects the margin in the printer settings */ 
-          margin: 5mm 5mm 5mm 5mm;  
-      }  
 }
