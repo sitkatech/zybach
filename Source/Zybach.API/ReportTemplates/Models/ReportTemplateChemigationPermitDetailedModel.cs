@@ -36,6 +36,7 @@ namespace Zybach.API.ReportTemplates.Models
         public string InspectionPort { get; set; }
         public string TillageName { get; set; }
         public string CropTypeName { get; set; }
+        public string TempImagePath { get; set; }
 
         public ReportTemplateChemigationPermitDetailedModel(ChemigationPermitDetailedDto chemigationPermit)
         {
@@ -79,6 +80,7 @@ namespace Zybach.API.ReportTemplates.Models
                     : "N/A";
                 TillageName = chemigationPermit.LatestInspection.TillageName;
                 CropTypeName = chemigationPermit.LatestInspection.CropTypeName;
+                TempImagePath = $"{chemigationPermit.ChemigationPermitID}.png";
             }
         }
 
