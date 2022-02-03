@@ -19,10 +19,10 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
 
-  sitkacapture:
-    container_name: zybach_sitkacapture
-    image: sitkacontainers.azurecr.io/sitkacapture:latest
+  vegarenderservice:
+    container_name: zybach_vegarenderservice
+    image: sitkacontainers.azurecr.io/vegarenderservice:latest
     environment:
-      - PORT=8724
+      - PORT=8090
     ports:
-      - 127.0.0.1:8724:8724
+      - 127.0.0.1:8090:8090
