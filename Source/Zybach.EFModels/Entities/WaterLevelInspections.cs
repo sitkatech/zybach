@@ -41,5 +41,37 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsSummaryDto())
                 .ToList();
         }
+
+        public static WaterLevelInspectionSimpleDto Create(ZybachDbContext dbContext, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)
+        {
+            var waterLevelInspection = new WaterLevelInspection()
+            {
+                WellID = wellID,
+                InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.AddHours(8),
+                InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID,
+                Measurement = waterLevelInspectionUpsertDto.Measurement,
+                HasOil = waterLevelInspectionUpsertDto.HasOil,
+                HasBrokenTape = waterLevelInspectionUpsertDto.HasBrokenTape,
+                InspectionNotes = waterLevelInspectionUpsertDto.InspectionNotes
+            };
+
+            dbContext.WaterLevelInspections.Add(waterLevelInspection);
+            dbContext.SaveChanges();
+            dbContext.Entry(waterLevelInspection).Reload();
+            return GetByIDAsSimpleDto(dbContext, waterLevelInspection.WaterLevelInspectionID);
+        }
+
+        public static void Update(ZybachDbContext dbContext, WaterLevelInspection waterLevelInspection, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)
+        {
+            waterLevelInspection.WellID = wellID;
+            waterLevelInspection.InspectionDate = waterLevelInspectionUpsertDto.InspectionDate;
+            waterLevelInspection.InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID;
+            waterLevelInspection.Measurement = waterLevelInspectionUpsertDto.Measurement;
+            waterLevelInspection.HasOil = waterLevelInspectionUpsertDto.HasOil;
+            waterLevelInspection.HasBrokenTape = waterLevelInspectionUpsertDto.HasBrokenTape;
+            waterLevelInspection.InspectionNotes = waterLevelInspectionUpsertDto.InspectionNotes;
+
+            dbContext.SaveChanges();
+        }
     }
 }

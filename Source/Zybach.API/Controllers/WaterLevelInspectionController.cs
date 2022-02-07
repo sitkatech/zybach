@@ -26,12 +26,50 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelInspectionSimpleDtos);
         }
 
+        [HttpPost("/api/waterLevelInspections")]
+        [AdminFeature]
+        public ActionResult<WaterLevelInspectionSimpleDto> Create([FromBody] WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto)
+        {
+            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, waterLevelInspectionUpsertDto.WellRegistrationID);
+            if (well == null)
+            {
+                ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{waterLevelInspectionUpsertDto.WellRegistrationID}' not found!");
+                return BadRequest(ModelState);
+            }
+
+            var waterLevelInspectionSimpleDto = WaterLevelInspections.Create(_dbContext, waterLevelInspectionUpsertDto, well.WellID);
+            return Ok(waterLevelInspectionSimpleDto);
+        }
+
         [HttpGet("/api/waterLevelInspections/{waterLevelInspectionID}")]
         [ZybachViewFeature]
         public ActionResult<WaterLevelInspectionSimpleDto> GetWaterLevelInspection([FromRoute] int waterLevelInspectionID)
         {
             var waterLevelInspectionSimpleDto = WaterLevelInspections.GetByIDAsSimpleDto(_dbContext, waterLevelInspectionID);
             return Ok(waterLevelInspectionSimpleDto);
+        }
+
+        [HttpPut("/api/waterLevelInspections/{waterLevelInspectionID}")]
+        [AdminFeature]
+        public ActionResult Update([FromRoute] int waterLevelInspectionID, [FromBody] WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto)
+        {
+            var waterLevelInspection = WaterLevelInspections.GetByID(_dbContext, waterLevelInspectionID);
+
+            if (ThrowNotFound(waterLevelInspection, "WaterLevelInspection",
+                waterLevelInspectionID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, waterLevelInspectionUpsertDto.WellRegistrationID);
+            if (well == null)
+            {
+                ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{waterLevelInspectionUpsertDto.WellRegistrationID}' not found!");
+                return BadRequest();
+            }
+
+            WaterLevelInspections.Update(_dbContext, waterLevelInspection, waterLevelInspectionUpsertDto, well.WellID);
+            return Ok();
         }
     }
 }

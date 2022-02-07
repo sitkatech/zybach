@@ -154,6 +154,42 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         sortable: true
       },
       { 
+        headerName: 'Hold', 
+        field: 'Hold',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 70,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Cut', 
+        field: 'Cut',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 70,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'MP', 
+        field: 'MP',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 60,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Measurement', 
+        field: 'Measurement',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 120,
+        resizable: true,
+        sortable: true
+      },
+      { 
         headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
@@ -258,42 +294,6 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         width: 120,
         resizable: true, 
         sortable: true 
-      },
-      { 
-        headerName: 'Hold', 
-        field: 'Hold',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 70,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Cut', 
-        field: 'Cut',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 70,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'MP', 
-        field: 'MP',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 60,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Measurement', 
-        field: 'Measurement',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 120,
-        resizable: true,
-        sortable: true
       },
       { 
         headerName: 'Notes', 
