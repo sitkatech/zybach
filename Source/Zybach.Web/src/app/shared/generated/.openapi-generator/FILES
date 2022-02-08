@@ -52,6 +52,7 @@ model/icrs-object.ts
 model/installation-record-dto.ts
 model/interval-volume-dto.ts
 model/irrigated-acres-per-year-dto.ts
+model/measurement-type-dto.ts
 model/models.ts
 model/monthly-pumped-volume.ts
 model/report-template-dto.ts
@@ -91,6 +92,7 @@ model/well-new-dto.ts
 model/well-participation-dto.ts
 model/well-participation-info-dto.ts
 model/well-registration-id-dto.ts
+model/well-sensor-measurement-dto.ts
 model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-with-sensor-message-age-dto.ts

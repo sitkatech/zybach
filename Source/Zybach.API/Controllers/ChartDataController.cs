@@ -36,7 +36,7 @@ namespace Zybach.API.Controllers
 
             if (hasElectricalData)
             {
-                var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
                 var electricalBasedFlowEstimateSeries = CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, MeasurementTypes.ElectricalUsage);
                 dailyPumpedVolumes.AddRange(electricalBasedFlowEstimateSeries);
             }
@@ -57,7 +57,7 @@ namespace Zybach.API.Controllers
                 return new List<DailyPumpedVolume>();
             }
 
-            var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
+            var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
             return CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, sensorType);
         }
 

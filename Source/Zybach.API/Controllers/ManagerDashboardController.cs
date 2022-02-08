@@ -63,7 +63,7 @@ namespace Zybach.API.Controllers
         {
             // Step 2. Get the total pumped volume for each well.
             // This is represented as a mapping from Well Registration IDs to pumped volumes
-            var pumpedVolumes = WellSensorMeasurement
+            var pumpedVolumes = WellSensorMeasurements
                 .GetWellSensorMeasurementsByMeasurementTypeAndYear(_dbContext, MeasurementTypeEnum.ElectricalUsage, year)
                 .GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Sum(y => y.MeasurementValue));
 

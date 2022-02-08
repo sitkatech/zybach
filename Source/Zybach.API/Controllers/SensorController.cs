@@ -46,12 +46,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<ActionResult<SensorSimpleDto>> GetByID([FromRoute] int sensorID)
         {
-            var sensorSimpleDto = Sensors.GetByIDAsSimpleDto(_dbContext, sensorID);
-            if (sensorSimpleDto == null)
-            {
-                ModelState.AddModelError("Sensor ID", $"Sensor with ID '{sensorID}' not found!");
-                return BadRequest(ModelState);
-            }
+            if (GetSensorSimpleDtoAndThrowIfNotFound(sensorID, out var sensorSimpleDto, out var actionResult)) return actionResult;
 
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
             var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
@@ -59,7 +54,18 @@ namespace Zybach.API.Controllers
                 : (int?)null;
             sensorSimpleDto.MessageAge = messageAge;
 
+            var wellSensorMeasurementDtos = WellSensorMeasurements.ListBySensorAsDto(_dbContext, sensorSimpleDto.SensorName);
+            sensorSimpleDto.FirstReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Min(x => x.MeasurementDate) : null;
+            sensorSimpleDto.LastReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Max(x => x.MeasurementDate) : null;
+            sensorSimpleDto.WellSensorMeasurements = wellSensorMeasurementDtos;
+
             return sensorSimpleDto;
+        }
+
+        private bool GetSensorSimpleDtoAndThrowIfNotFound(int sensorID, out SensorSimpleDto sensorSimpleDto, out ActionResult actionResult)
+        {
+            sensorSimpleDto = Sensors.GetByIDAsSimpleDto(_dbContext, sensorID);
+            return ThrowNotFound(sensorSimpleDto, "Sensor", sensorID, out actionResult);
         }
     }
 }
