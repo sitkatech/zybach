@@ -334,6 +334,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
+  hasWellPressureSensor(): boolean{
+    return this.sensorsWithStatus?.filter(x => x.SensorType === "Well Pressure").length > 0;
+  }
+
   getChemigationPermits(){
     this.wellService.getChemigationPermits(this.wellID).subscribe(chemigationPermits => {
       this.chemigationPermits = chemigationPermits;

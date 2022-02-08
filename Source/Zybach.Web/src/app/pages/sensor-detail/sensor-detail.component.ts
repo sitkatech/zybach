@@ -37,6 +37,7 @@ export class SensorDetailComponent implements OnInit {
   public isLoadingSubmit: boolean = false;
 
   public chartID: string = "sensorChart";
+  chartColor: string;
   chartSubscription: any;
   timeSeries: any[];
   vegaView: any;
@@ -82,6 +83,12 @@ export class SensorDetailComponent implements OnInit {
       this.sensor.MessageAge = Math.floor(this.sensor.MessageAge / 3600);
 
       this.wellID = this.sensor.WellID;
+      if(this.sensor.SensorTypeID === SensorTypeEnum.PumpMonitor){
+        this.chartColor = "#4AAA42";
+      }
+      else{
+        this.chartColor = "#13B5EA";
+      }
 
       this.getInstallationDetails();
       this.initDateRange(new Date(this.sensor.FirstReadingDate), new Date(this.sensor.LastReadingDate));
@@ -347,7 +354,7 @@ export class SensorDetailComponent implements OnInit {
               },
               "scale": {
                 "domain": [this.sensor.SensorTypeName],
-                "range": ["#13B5EA"],
+                "range": [this.chartColor],
               }
             }
           },
