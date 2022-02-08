@@ -167,11 +167,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       {
         headerName: "Inspection Date", 
         valueGetter: function (params: any) {
-          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy");
+          return { LinkValue: params.data.WaterLevelInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy h:mm a") };
         },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/water-level-inspections/" },
         comparator: function (id1: any, id2: any) {
-          const date1 = Date.parse(id1);
-          const date2 = Date.parse(id2);
+          const date1 = Date.parse(id1.LinkDisplay);
+          const date2 = Date.parse(id2.LinkDisplay);
           if (date1 < date2) {
             return -1;
           }

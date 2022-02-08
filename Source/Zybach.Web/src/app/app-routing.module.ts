@@ -60,6 +60,8 @@ const routes: Routes = [
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
+  { path: "wells/:id/new-water-level-inspection", component: WaterLevelInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "wells/:id/new-water-quality-inspection", component: WaterQualityInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "wells/:id/edit-registration-id", component: WellRegistrationIdEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/edit-contact", component: WellContactEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/edit-participation", component: WellParticipationEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
