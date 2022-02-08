@@ -71,5 +71,23 @@ namespace Zybach.API.Controllers
             WaterLevelInspections.Update(_dbContext, waterLevelInspection, waterLevelInspectionUpsertDto, well.WellID);
             return Ok();
         }
+
+        [HttpDelete("/api/waterLevelInspections/{waterLevelInspectionID}")]
+        [AdminFeature]
+        public ActionResult DeleteWaterLevelInspectionByID([FromRoute] int waterLevelInspectionID)
+        {
+            var waterLevelInspection = WaterLevelInspections.GetByID(_dbContext, waterLevelInspectionID);
+
+            if (ThrowNotFound(waterLevelInspection, "WaterLevelInspection",
+                waterLevelInspectionID, out var actionResult))
+            {
+                return actionResult;
+            }
+
+            _dbContext.WaterLevelInspections.Remove(waterLevelInspection);
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
     }
 }

@@ -3190,6 +3190,27 @@
             "description": "Success"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterLevelInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
       }
     },
     "/api/waterQualityInspectionTypes": {

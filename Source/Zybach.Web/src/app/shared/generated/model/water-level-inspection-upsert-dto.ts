@@ -10,13 +10,14 @@
  * Do not edit the class manually.
  */
 
-export class ChemigationPermitAnnualRecordChemicalFormulationUpsertDto { 
-    ChemigationPermitAnnualRecordChemicalFormulationID?: number;
-    ChemigationPermitAnnualRecordID?: number;
-    ChemicalFormulationID: number;
-    ChemicalUnitID: number;
-    TotalApplied?: number;
-    AcresTreated?: number;
+export class WaterLevelInspectionUpsertDto { 
+    WellRegistrationID: string;
+    InspectionDate: string;
+    InspectorUserID: number;
+    Measurement?: number;
+    HasOil: boolean;
+    HasBrokenTape: boolean;
+    InspectionNotes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

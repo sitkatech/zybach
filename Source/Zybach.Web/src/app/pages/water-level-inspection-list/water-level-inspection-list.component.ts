@@ -73,8 +73,10 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       {
         headerName: "Date", 
         valueGetter: function (params: any) {
-          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a");
+          return { LinkValue: params.data.WaterLevelInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a") };
         },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/water-level-inspections/" },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1);
           const date2 = Date.parse(id2);
