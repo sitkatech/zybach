@@ -73,8 +73,10 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       {
         headerName: "Date", 
         valueGetter: function (params: any) {
-          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a");
+          return { LinkValue: params.data.WaterLevelInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a") };
         },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/water-level-inspections/" },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1);
           const date2 = Date.parse(id2);
@@ -150,6 +152,42 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         filter: true,
         type: 'rightAligned',
         width: 80,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Hold', 
+        field: 'Hold',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 70,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Cut', 
+        field: 'Cut',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 70,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'MP', 
+        field: 'MP',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 60,
+        resizable: true,
+        sortable: true
+      },
+      { 
+        headerName: 'Measurement', 
+        field: 'Measurement',
+        filter: 'agNumberColumnFilter',
+        type: 'rightAligned',
+        width: 120,
         resizable: true,
         sortable: true
       },
@@ -258,42 +296,6 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         width: 120,
         resizable: true, 
         sortable: true 
-      },
-      { 
-        headerName: 'Hold', 
-        field: 'Hold',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 70,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Cut', 
-        field: 'Cut',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 70,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'MP', 
-        field: 'MP',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 60,
-        resizable: true,
-        sortable: true
-      },
-      { 
-        headerName: 'Measurement', 
-        field: 'Measurement',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 120,
-        resizable: true,
-        sortable: true
       },
       { 
         headerName: 'Notes', 

@@ -2,7 +2,7 @@
     <app-alert-display></app-alert-display>
     <div class="row">
         <div class="col-12">
-            <h2 class="d-inline-block">Water Level Inspections</h2>
+            <h2 class="d-inline-block">Seasonal Water Level Inspections</h2>
             <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         </div>
     </div>
@@ -10,6 +10,8 @@
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
+                    <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/water-level-inspections/new"
+                    ngbTooltip="Create New Inspection"><span class="fas fa-plus"></span> New Inspection </a>
                     <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
                     ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
                     <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="waterLevelInspectionsGrid">

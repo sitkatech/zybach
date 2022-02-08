@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
@@ -16,7 +16,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 })
 export class WaterQualityInspectionNewComponent implements OnInit {
   @ViewChild('inspectionUpsertForm') private waterQualityInspectionUpsertComponent : WaterQualityInspectionUpsertComponent;
-
+  
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
 

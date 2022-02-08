@@ -82,6 +82,10 @@ import { ClearinghouseWqiReportComponent } from './pages/clearinghouse-wqi-repor
 import { NgxMaskModule } from 'ngx-mask';
 import { SensorListComponent } from './pages/sensor-list/sensor-list.component';
 import { SensorDetailComponent } from './pages/sensor-detail/sensor-detail.component';
+import { WaterLevelInspectionDetailComponent } from './pages/water-level-inspection-detail/water-level-inspection-detail.component';
+import { WaterLevelInspectionNewComponent } from './pages/water-level-inspection-new/water-level-inspection-new.component';
+import { WaterLevelInspectionUpsertComponent } from './shared/components/water-level-inspection-upsert/water-level-inspection-upsert.component';
+import { WaterLevelInspectionEditComponent } from './pages/water-level-inspection-edit/water-level-inspection-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -140,7 +144,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WaterQualityInspectionUpsertComponent, 
     WaterQualityInspectionNewComponent, 
     WaterQualityInspectionEditComponent, 
-    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent
+    WaterLevelInspectionUpsertComponent,
+    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent
   ],
   imports: [
     AppRoutingModule,

@@ -18,7 +18,7 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ApplicantFirstName?: string;
     ApplicantLastName?: string;
     ApplicantCompany?: string;
-    PivotName: string;
+    PivotName?: string;
     RecordYear: number;
     TownshipRangeSection: string;
     DateReceived?: string;
@@ -27,11 +27,11 @@ export class ChemigationPermitAnnualRecordUpsertDto {
     ChemigationInjectionUnitTypeID: number;
     ApplicantPhone?: string;
     ApplicantMobilePhone?: string;
-    ApplicantMailingAddress?: string;
+    ApplicantMailingAddress: string;
     ApplicantEmail?: string;
-    ApplicantCity?: string;
-    ApplicantState?: string;
-    ApplicantZipCode?: string;
+    ApplicantCity: string;
+    ApplicantState: string;
+    ApplicantZipCode: string;
     NDEEAmount?: number;
     AnnualNotes?: string;
     ChemicalFormulations?: Array<ChemigationPermitAnnualRecordChemicalFormulationUpsertDto>;

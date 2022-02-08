@@ -3054,6 +3054,57 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/waterLevelInspections/{waterLevelInspectionID}": {
@@ -3092,6 +3143,72 @@
                 }
               }
             }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterLevelInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterLevelInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -6819,6 +6936,56 @@
             "nullable": true
           },
           "MeasuringEquipment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterLevelInspectionUpsertDto": {
+        "required": [
+          "HasBrokenTape",
+          "HasOil",
+          "InspectionDate",
+          "InspectorUserID",
+          "WellRegistrationID"
+        ],
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Measurement": {
+            "maximum": 99999999.9999,
+            "minimum": 0,
+            "pattern": "^\\d{0,8}\\.?\\d{0,4}|\\.\\d{0,4}$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "HasOil": {
+            "type": "boolean"
+          },
+          "HasBrokenTape": {
+            "type": "boolean"
+          },
+          "InspectionNickname": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "maxLength": 500,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           }
