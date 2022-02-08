@@ -50,6 +50,7 @@ import { SensorListComponent } from './pages/sensor-list/sensor-list.component';
 import { SensorDetailComponent } from './pages/sensor-detail/sensor-detail.component';
 import { WaterLevelInspectionDetailComponent } from './pages/water-level-inspection-detail/water-level-inspection-detail.component';
 import { WaterLevelInspectionNewComponent } from './pages/water-level-inspection-new/water-level-inspection-new.component';
+import { WaterLevelInspectionEditComponent } from './pages/water-level-inspection-edit/water-level-inspection-edit.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
@@ -93,6 +94,7 @@ const routes: Routes = [
   { path: "water-level-inspections",  component: WaterLevelInspectionListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "water-level-inspections/new",  component: WaterLevelInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "water-level-inspections/:id",  component: WaterLevelInspectionDetailComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
+  { path: "water-level-inspections/:id/edit",  component: WaterLevelInspectionEditComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard]},
   { path: "", component: HomeIndexComponent},
   { path: "disclaimer", component: DisclaimerComponent },
   { path: "disclaimer/:forced", component: DisclaimerComponent },
