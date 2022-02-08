@@ -21,8 +21,8 @@
         <div class="col-12 col-sm-6"><a *ngIf="waterLevelInspection.Well" routerLink="/wells/{{waterLevelInspection.Well.WellID}}">{{waterLevelInspection.Well.WellRegistrationID}}</a></div>
         <div class="col-12 col-sm-6 label"><strong>Inspected By: </strong></div>
         <div class="col-12 col-sm-6"><a *ngIf="waterLevelInspection.Inspector" routerLink="/users/{{waterLevelInspection.Inspector.UserID}}">{{waterLevelInspection.Inspector.FullNameLastFirst}}</a></div>
-        <div class="col-12 col-sm-6 label"><strong>Inspection Status: </strong></div>
-        <div class="col-12 col-sm-6">{{waterLevelInspection.WaterLevelInspectionStatus}}</div>
+        <div class="col-12 col-sm-6 label" *ngIf="waterLevelInspection.WaterLevelInspectionStatus"><strong>Inspection Status: </strong></div>
+        <div class="col-12 col-sm-6" *ngIf="waterLevelInspection.WaterLevelInspectionStatus">{{waterLevelInspection.WaterLevelInspectionStatus}}</div>
         <div class="col-12 col-sm-6 label"><strong>Nickname: </strong></div>
         <div class="col-12 col-sm-6">{{waterLevelInspection.InspectionNickname}}</div>
     </div>

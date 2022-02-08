@@ -6964,14 +6964,24 @@
             "format": "int32"
           },
           "Measurement": {
+            "maximum": 99999999.9999,
+            "minimum": 0,
+            "pattern": "^\\d{0,8}\\.?\\d{0,4}|\\.\\d{0,4}$",
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "HasOil": {
             "type": "boolean"
           },
           "HasBrokenTape": {
             "type": "boolean"
+          },
+          "InspectionNickname": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
           },
           "InspectionNotes": {
             "maxLength": 500,

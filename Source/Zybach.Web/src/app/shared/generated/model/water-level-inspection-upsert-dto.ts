@@ -17,6 +17,7 @@ export class WaterLevelInspectionUpsertDto {
     Measurement?: number;
     HasOil: boolean;
     HasBrokenTape: boolean;
+    InspectionNickname?: string;
     InspectionNotes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);

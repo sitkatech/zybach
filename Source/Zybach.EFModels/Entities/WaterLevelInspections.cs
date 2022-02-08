@@ -7,6 +7,15 @@ namespace Zybach.EFModels.Entities
 {
     public static class WaterLevelInspections
     {
+        public static class WaterLevelInspectionDefaults
+        {
+            public const string Party = "TPNRD";
+            public const string SourceCode = "A";
+            public const string TimeDatumCode = "CST";
+            public const string TimeDatumReliability = "K";
+            public const string LevelTypeCode = "L";
+        }
+
         public static IQueryable<WaterLevelInspection> ListImpl(ZybachDbContext dbContext)
         {
             return dbContext.WaterLevelInspections
@@ -47,12 +56,21 @@ namespace Zybach.EFModels.Entities
             var waterLevelInspection = new WaterLevelInspection()
             {
                 WellID = wellID,
-                InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.AddHours(8),
-                InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID,
+                InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value.AddHours(8),
+                InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID.Value,
                 Measurement = waterLevelInspectionUpsertDto.Measurement,
                 HasOil = waterLevelInspectionUpsertDto.HasOil,
                 HasBrokenTape = waterLevelInspectionUpsertDto.HasBrokenTape,
-                InspectionNotes = waterLevelInspectionUpsertDto.InspectionNotes
+                InspectionNotes = waterLevelInspectionUpsertDto.InspectionNotes,
+                InspectionNickname = waterLevelInspectionUpsertDto.InspectionNickname,
+
+                // Defaults assigned at creation to all new water level inspections
+                Party = WaterLevelInspectionDefaults.Party,
+                SourceCode = WaterLevelInspectionDefaults.SourceCode,
+                TimeDatumCode = WaterLevelInspectionDefaults.TimeDatumCode,
+                TimeDatumReliability = WaterLevelInspectionDefaults.TimeDatumReliability,
+                LevelTypeCode = WaterLevelInspectionDefaults.LevelTypeCode
+
             };
 
             dbContext.WaterLevelInspections.Add(waterLevelInspection);
@@ -64,12 +82,13 @@ namespace Zybach.EFModels.Entities
         public static void Update(ZybachDbContext dbContext, WaterLevelInspection waterLevelInspection, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)
         {
             waterLevelInspection.WellID = wellID;
-            waterLevelInspection.InspectionDate = waterLevelInspectionUpsertDto.InspectionDate;
-            waterLevelInspection.InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID;
+            waterLevelInspection.InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value;
+            waterLevelInspection.InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID.Value;
             waterLevelInspection.Measurement = waterLevelInspectionUpsertDto.Measurement;
             waterLevelInspection.HasOil = waterLevelInspectionUpsertDto.HasOil;
             waterLevelInspection.HasBrokenTape = waterLevelInspectionUpsertDto.HasBrokenTape;
             waterLevelInspection.InspectionNotes = waterLevelInspectionUpsertDto.InspectionNotes;
+            waterLevelInspection.InspectionNickname = waterLevelInspectionUpsertDto.InspectionNickname;
 
             dbContext.SaveChanges();
         }
