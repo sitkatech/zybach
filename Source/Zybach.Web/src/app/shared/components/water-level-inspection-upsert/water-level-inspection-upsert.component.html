@@ -54,7 +54,8 @@
                         <label><strong>Measurement: </strong></label>
                     </div>
                     <div class="col-6 text-left mb-2">
-                        <input type="text" class="form-control" name="Measurement" [(ngModel)]="inspection.Measurement" />
+                        <input type="text" class="form-control" name="Measurement" [(ngModel)]="inspection.Measurement" 
+                        [dropSpecialCharacters]="false" mask="0*.0000" />
                     </div>
                 
 

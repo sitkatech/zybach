@@ -3802,6 +3802,46 @@
         }
       }
     },
+    "/api/wells/{wellID}/simpleDto": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/{wellID}": {
       "get": {
         "tags": [

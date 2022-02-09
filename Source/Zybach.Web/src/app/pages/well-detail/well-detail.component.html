@@ -316,6 +316,8 @@
                                         <h5 class="d-inline-block">Seasonal Water Level Inspections</h5>
                                         <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWLIToCsv()" placement="top"
                                         ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                                        <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{well?.WellID}}/new-water-level-inspection"
+                                        ngbTooltip="New Water Level Inspection"><span class="fas fa-plus"></span></a>
                                         <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterLevelInspectionsGrid">
                                         </fresca-clear-grid-filters-button>
                                     </div>
@@ -335,6 +337,8 @@
                                         <h5 class="d-inline-block">Water Quality Inspections</h5>
                                         <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWQIToCsv()" placement="top"
                                         ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                                        <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{well?.WellID}}/new-water-quality-inspection"
+                                        ngbTooltip="New Water Quality Inspection"><span class="fas fa-plus"></span></a>
                                         <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterQualityInspectionsGrid">
                                         </fresca-clear-grid-filters-button>
                                     </div>
