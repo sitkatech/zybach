@@ -305,6 +305,7 @@
             <div class="card">
                 <div class="card-header">
                     Inspections
+                    <em class="small" *ngIf="hasWellPressureSensor()"> - This well has a well pressure sensor installed. Click on the sensor name above to view the water level readings for each sensor.</em>
                 </div>
                 <div class="card-body">
                     <div class="row">

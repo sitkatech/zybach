@@ -119,7 +119,7 @@ namespace Zybach.API.Controllers
                     Status = "success"
                 };
 
-                var firstReadingDates = WellSensorMeasurement.GetFirstReadingDateTimesPerSensorForWells(_dbContext, measurementTypeEnum, wellRegistrationIDs);
+                var firstReadingDates = WellSensorMeasurements.GetFirstReadingDateTimesPerSensorForWells(_dbContext, measurementTypeEnum, wellRegistrationIDs);
                 apiResult.Result = StructureResults(wellSensorMeasurementDtos, wells, startDate, endDate, firstReadingDates, wellRegistrationIDs);
                 return apiResult;
             }

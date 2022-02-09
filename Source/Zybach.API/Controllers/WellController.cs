@@ -138,8 +138,8 @@ namespace Zybach.API.Controllers
                 wellDetailDto.InAgHub = false;
             }
 
-            var firstReadingDate = WellSensorMeasurement.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
-            var lastReadingDate = WellSensorMeasurement.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
+            var firstReadingDate = WellSensorMeasurements.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
+            var lastReadingDate = WellSensorMeasurements.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
 
             wellDetailDto.FirstReadingDate = firstReadingDate;
             wellDetailDto.LastReadingDate = lastReadingDate;
@@ -161,7 +161,7 @@ namespace Zybach.API.Controllers
 
             if (wellDetailDto.HasElectricalData)
             {
-                var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
                 var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                     .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue),
                         MeasurementTypes.ElectricalUsage)).ToList();
@@ -331,7 +331,7 @@ namespace Zybach.API.Controllers
                 return new List<AnnualPumpedVolume>();
             }
 
-            var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
+            var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
 
             var annualPumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                 .Select(x => new AnnualPumpedVolume(x.Key,x.Sum(y => y.MeasurementValue), sensorType)).ToList();

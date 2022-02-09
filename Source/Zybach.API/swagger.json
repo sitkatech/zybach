@@ -6074,6 +6074,24 @@
         },
         "additionalProperties": false
       },
+      "MeasurementTypeDto": {
+        "type": "object",
+        "properties": {
+          "MeasurementTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "MeasurementTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MonthlyPumpedVolume": {
         "type": "object",
         "properties": {
@@ -6355,6 +6373,23 @@
           "MessageAge": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "FirstReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "WellSensorMeasurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellSensorMeasurementDto"
+            },
             "nullable": true
           }
         },
@@ -7912,6 +7947,55 @@
             "maxLength": 100,
             "minLength": 0,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellSensorMeasurementDto": {
+        "type": "object",
+        "properties": {
+          "WellSensorMeasurementID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementType": {
+            "$ref": "#/components/schemas/MeasurementTypeDto"
+          },
+          "ReadingYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReadingMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReadingDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "MeasurementDateInPacificTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MeasurementDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MeasurementValueString": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -22,7 +22,7 @@ namespace Zybach.Models.DataTransferObjects
         public bool? HasVacuumReliefValve { get; set; }
         public bool? HasInspectionPort { get; set; }
 
-        public string? InspectionNotes { get; set; }
+        public string InspectionNotes { get; set; }
 
     }
 }

@@ -30,7 +30,8 @@ namespace Zybach.EFModels.Entities
     {
         FlowMeter = 1,
         ContinuityMeter = 2,
-        ElectricalUsage = 3
+        ElectricalUsage = 3,
+        WellPressure = 4
     }
 
     /// <summary>
@@ -41,5 +42,6 @@ namespace Zybach.EFModels.Entities
         public const string ContinuityMeter = "Continuity Meter";
         public const string FlowMeter = "Flow Meter";
         public const string ElectricalUsage = "Electrical Usage";
+        public const string WellPressure = "Well Pressure";
     }
 }

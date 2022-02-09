@@ -8,26 +8,25 @@ using Zybach.EFModels.Entities;
 
 namespace Zybach.API
 {
-    public class FlowMeterSeriesFetchDailyJob : ScheduledBackgroundJobBase<FlowMeterSeriesFetchDailyJob>
+    public class WaterLevelSeriesFetchDailyJob : ScheduledBackgroundJobBase<WaterLevelSeriesFetchDailyJob>
     {
         private readonly InfluxDBService _influxDbService;
-        public const string JobName = "Flow Meter Series Fetch Daily";
+        public const string JobName = "Water Level Series Fetch Daily";
 
-        public FlowMeterSeriesFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<FlowMeterSeriesFetchDailyJob> logger,
+        public WaterLevelSeriesFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<WaterLevelSeriesFetchDailyJob> logger,
             ZybachDbContext zybachDbContext, InfluxDBService influxDbService) : base(
             JobName, logger, webHostEnvironment, zybachDbContext)
         {
             _influxDbService = influxDbService;
         }
 
-        public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-            {RunEnvironment.Production};
+        public override List<RunEnvironment> RunEnvironments => new() {RunEnvironment.Development, RunEnvironment.Staging, RunEnvironment.Production};
 
         protected override void RunJobImplementation()
         {
             try
             {
-                GetDailyWellFlowMeterData(DefaultStartDate);
+                GetDailyWellWaterLevelData(DefaultStartDate);
             }
             catch (Exception e)
             {
@@ -36,11 +35,11 @@ namespace Zybach.API
             }
         }
 
-        private void GetDailyWellFlowMeterData(DateTime fromDate)
+        private void GetDailyWellWaterLevelData(DateTime fromDate)
         {
             _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
-            var wellSensorMeasurements = _influxDbService.GetFlowMeterSeries(fromDate).Result;
+            var wellSensorMeasurements = _influxDbService.GetWaterLevelSeries(fromDate).Result;
             _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurements);
             _dbContext.SaveChanges();
 

@@ -27,7 +27,6 @@ import { Alert } from 'src/app/shared/models/alert';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
-import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
 import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
@@ -335,6 +334,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         sensor.MessageAge = Math.floor(sensor.MessageAge / 3600)
       }
     });
+  }
+
+  hasWellPressureSensor(): boolean{
+    return this.sensorsWithStatus?.filter(x => x.SensorType === "Well Pressure").length > 0;
   }
 
   getChemigationPermits(){
