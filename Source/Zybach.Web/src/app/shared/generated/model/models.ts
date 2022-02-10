@@ -86,6 +86,7 @@ export * from '././well-chart-data-dto';
 export * from '././well-contact-info-dto';
 export * from '././well-detail-dto';
 export * from '././well-dto';
+export * from '././well-inspection-summary-dto';
 export * from '././well-new-dto';
 export * from '././well-participation-dto';
 export * from '././well-participation-info-dto';

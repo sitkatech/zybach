@@ -209,11 +209,13 @@ namespace Zybach.EFModels.Entities
         public static List<WellInspectionSummaryDto> ListAsWellInspectionSummaryDtos(ZybachDbContext dbContext)
         {
             var latestWellWaterLevelInspection = dbContext.WaterLevelInspections
+                .Include(x => x.Well)
                 .AsNoTracking().ToList()
                 .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
                     x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
             var latestWellWaterQualityInspection = dbContext.WaterQualityInspections
                 .Include(x => x.WaterQualityInspectionType)
+                .Include(x => x.Well)
                 .AsNoTracking().ToList()
                 .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
                     x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
@@ -226,6 +228,7 @@ namespace Zybach.EFModels.Entities
                     x.AsWellInspectionSummaryDto(
                         latestWellWaterLevelInspection.ContainsKey(x.WellID) ? latestWellWaterLevelInspection[x.WellID] : null,
                         latestWellWaterQualityInspection.ContainsKey(x.WellID) ? latestWellWaterQualityInspection[x.WellID] : null))
+                .Where(x => x.HasWaterLevelInspections || x.HasWaterQualityInspections)
                 .ToList();
             return listWithLatestInspectionsAsDto;
         }

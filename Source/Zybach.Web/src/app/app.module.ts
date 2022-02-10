@@ -86,6 +86,7 @@ import { WaterLevelInspectionDetailComponent } from './pages/water-level-inspect
 import { WaterLevelInspectionNewComponent } from './pages/water-level-inspection-new/water-level-inspection-new.component';
 import { WaterLevelInspectionUpsertComponent } from './shared/components/water-level-inspection-upsert/water-level-inspection-upsert.component';
 import { WaterLevelInspectionEditComponent } from './pages/water-level-inspection-edit/water-level-inspection-edit.component';
+import { WellInspectionReportsComponent } from './pages/well-inspection-reports/well-inspection-reports.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -145,7 +146,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WaterQualityInspectionNewComponent, 
     WaterQualityInspectionEditComponent, 
     WaterLevelInspectionUpsertComponent,
-    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent
+    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WellInspectionReportsComponent
   ],
   imports: [
     AppRoutingModule,

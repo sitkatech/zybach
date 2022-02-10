@@ -10,6 +10,7 @@ import { WaterQualityInspectionSummaryDto } from '../shared/generated/model/wate
 import { WellChartDataDto } from '../shared/generated/model/well-chart-data-dto';
 import { WellContactInfoDto } from '../shared/generated/model/well-contact-info-dto';
 import { WellDetailDto } from '../shared/generated/model/well-detail-dto';
+import { WellInspectionSummaryDto } from '../shared/generated/model/well-inspection-summary-dto';
 import { WellNewDto } from '../shared/generated/model/well-new-dto';
 import { WellParticipationDto } from '../shared/generated/model/well-participation-dto';
 import { WellParticipationInfoDto } from '../shared/generated/model/well-participation-info-dto';
@@ -38,6 +39,10 @@ export class WellService {
 
   public getWellDetails(wellID: number): Observable<WellDetailDto> {
     return this.apiService.getFromApi(`wells/${wellID}`);
+  }
+
+  public getWellsWithInspectionSummaries(): Observable<Array<WellInspectionSummaryDto>> {
+    return this.apiService.getFromApi(`wells/inspectionSummaries`);
   }
 
   public getWellUses(): Observable<Array<WellUseDto>> {
