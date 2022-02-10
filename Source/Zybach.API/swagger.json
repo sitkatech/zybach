@@ -3560,6 +3560,44 @@
         }
       }
     },
+    "/api/wells/inspectionSummaries": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/search/{wellRegistrationID}": {
       "get": {
         "tags": [
@@ -7796,6 +7834,49 @@
           "Latitude": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellParticipationID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellParticipationName": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterLevelInspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterQualityInspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false

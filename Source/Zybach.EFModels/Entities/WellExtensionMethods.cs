@@ -1,4 +1,6 @@
-﻿using Zybach.Models.DataTransferObjects;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
@@ -14,5 +16,25 @@ namespace Zybach.EFModels.Entities
         {
             wellSimpleDto.WellParticipationName = well.WellParticipation?.WellParticipationDisplayName;
         }
+
+        public static WellInspectionSummaryDto AsWellInspectionSummaryDto(this Well well,
+            WaterLevelInspectionSimpleDto waterLevelInspectionSimpleDto, WaterQualityInspectionSimpleDto waterQualityInspectionSimpleDto)
+        {
+            var wellInspectionSummaryDto = new WellInspectionSummaryDto()
+            {
+                WellID = well.WellID,
+                WellRegistrationID = well.WellRegistrationID,
+                WellNickname = well.WellNickname,
+                WellParticipationID = well.WellParticipation?.WellParticipationID,
+                WellParticipationName = well.WellParticipation?.WellParticipationDisplayName,
+                HasWaterLevelInspections = waterLevelInspectionSimpleDto != null,
+                LatestWaterLevelInspectionDate = waterLevelInspectionSimpleDto?.InspectionDate,
+                HasWaterQualityInspections = waterQualityInspectionSimpleDto != null,
+                LatestWaterQualityInspectionDate = waterQualityInspectionSimpleDto?.InspectionDate
+            };
+
+            return wellInspectionSummaryDto;
+        }
+
     }
 }

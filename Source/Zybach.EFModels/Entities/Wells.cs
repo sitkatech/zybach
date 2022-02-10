@@ -206,5 +206,28 @@ namespace Zybach.EFModels.Entities
             well.SiteNumber = wellParticipationInfoDto.SiteNumber;
         }
 
+        public static List<WellInspectionSummaryDto> ListAsWellInspectionSummaryDtos(ZybachDbContext dbContext)
+        {
+            var latestWellWaterLevelInspection = dbContext.WaterLevelInspections
+                .AsNoTracking().ToList()
+                .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
+                    x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
+            var latestWellWaterQualityInspection = dbContext.WaterQualityInspections
+                .Include(x => x.WaterQualityInspectionType)
+                .AsNoTracking().ToList()
+                .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
+                    x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
+            var listWithLatestInspectionsAsDto = dbContext.Wells
+                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellParticipation)
+                .AsNoTracking()
+                .ToList()
+                .Select(x =>
+                    x.AsWellInspectionSummaryDto(
+                        latestWellWaterLevelInspection.ContainsKey(x.WellID) ? latestWellWaterLevelInspection[x.WellID] : null,
+                        latestWellWaterQualityInspection.ContainsKey(x.WellID) ? latestWellWaterQualityInspection[x.WellID] : null))
+                .ToList();
+            return listWithLatestInspectionsAsDto;
+        }
     }
 }
