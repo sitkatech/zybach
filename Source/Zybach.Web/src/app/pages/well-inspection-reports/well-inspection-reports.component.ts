@@ -29,7 +29,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
 
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.ChemigationPermitReport;
+  public richTextTypeID : number = CustomRichTextType.WellInspectionReports;
   
   public rowData: Array<WellInspectionSummaryDto>;
   public columnDefs: ColDef[];
@@ -77,7 +77,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
       {
         headerName: 'Well',
         valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellID, LinkDisplay: params.data.WellRegistrationID };
+          return { LinkValue: params.data.Well.WellID, LinkDisplay: params.data.Well.WellRegistrationID };
         },
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
@@ -93,7 +93,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
           return 0;
         },
         filterValueGetter: function (params: any) {
-          return params.data.WellRegistrationID;
+          return params.data.Well.WellRegistrationID;
         },
         filter: true,
         resizable: true,
@@ -102,7 +102,9 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "Well Nickname",
-        field: "WellNickname",
+        valueGetter: function (params: any) {
+          return params.data.Well.WellNickname;
+        },
         width: 140,
         sortable: true, filter: true, resizable: true,        
       },

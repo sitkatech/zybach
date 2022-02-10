@@ -7841,22 +7841,8 @@
       "WellInspectionSummaryDto": {
         "type": "object",
         "properties": {
-          "WellID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellNickname": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellParticipationID": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
           },
           "WellParticipationName": {
             "type": "string",

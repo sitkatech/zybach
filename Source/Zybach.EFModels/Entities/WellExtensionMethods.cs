@@ -22,11 +22,10 @@ namespace Zybach.EFModels.Entities
         {
             var wellInspectionSummaryDto = new WellInspectionSummaryDto()
             {
-                WellID = well.WellID,
-                WellRegistrationID = well.WellRegistrationID,
-                WellNickname = well.WellNickname,
-                WellParticipationID = well.WellParticipation?.WellParticipationID,
+                Well = well.AsSimpleDto(),
+
                 WellParticipationName = well.WellParticipation?.WellParticipationDisplayName,
+
                 HasWaterLevelInspections = waterLevelInspectionSimpleDto != null,
                 LatestWaterLevelInspectionDate = waterLevelInspectionSimpleDto?.InspectionDate,
                 HasWaterQualityInspections = waterQualityInspectionSimpleDto != null,

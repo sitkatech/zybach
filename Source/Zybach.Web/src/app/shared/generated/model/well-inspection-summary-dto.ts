@@ -9,12 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { WellSimpleDto } from '././well-simple-dto';
 
 export class WellInspectionSummaryDto { 
-    WellID?: number;
-    WellRegistrationID?: string;
-    WellNickname?: string;
-    WellParticipationID?: number;
+    Well?: WellSimpleDto;
     WellParticipationName?: string;
     HasWaterLevelInspections?: boolean;
     LatestWaterLevelInspectionDate?: string;

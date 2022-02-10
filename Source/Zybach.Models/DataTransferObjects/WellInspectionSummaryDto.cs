@@ -9,10 +9,8 @@ namespace Zybach.Models.DataTransferObjects
 {
     public class WellInspectionSummaryDto
     {
-        public int WellID { get; set; }
-        public string WellRegistrationID { get; set; }
-        public string? WellNickname { get; set; }
-        public int? WellParticipationID { get; set; }
+        public WellSimpleDto Well { get; set; }
+
         public string? WellParticipationName { get; set; }
 
         public bool HasWaterLevelInspections { get; set; }
