@@ -98,14 +98,12 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filter: true,
         resizable: true,
         sortable: true,
-        width: 120
       },
       {
         headerName: "Well Nickname",
         valueGetter: function (params: any) {
           return params.data.Well.WellNickname;
         },
-        width: 160,
         sortable: true, filter: true, resizable: true,        
       },
       {
@@ -117,7 +115,6 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.Well.WellParticipationName'
         },
-        width: 110,
         sortable: true, filter: true, resizable: true,        
       },
       {
@@ -133,7 +130,6 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterQualityInspections'
         },
-        width: 130,
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Quality Inspection', 'LatestWaterQualityInspectionDate', 'M/d/yyyy'),
@@ -150,7 +146,6 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterLevelInspections'
         },
-        width: 150,
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
@@ -203,8 +198,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
       filterParams: {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
-      }, 
-      width: 130,
+      },
       resizable: true,
       sortable: true
     };
@@ -222,7 +216,6 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
     this.wellService.getWellsWithInspectionSummaries().subscribe(wells => {
       this.rowData = wells;
       this.wellInspectionsGrid.api.hideOverlay();
-      //this.wellInspectionsGrid.api.sizeColumnsToFit();
     });
   }
 
