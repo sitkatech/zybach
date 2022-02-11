@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WaterLevelInspectionService } from 'src/app/services/water-level-inspection.service';
+import { WellService } from 'src/app/services/well.service';
 import { WaterLevelInspectionUpsertComponent } from 'src/app/shared/components/water-level-inspection-upsert/water-level-inspection-upsert.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterLevelInspectionUpsertDto } from 'src/app/shared/generated/model/water-level-inspection-upsert-dto';
@@ -21,10 +22,13 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
 
   public inspection: WaterLevelInspectionUpsertDto;
   public isLoadingSubmit: boolean;
+  public wellID: number;
 
   constructor(
     private waterLevelInspectionService: WaterLevelInspectionService,
+    private wellService: WellService,
     private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
@@ -33,14 +37,23 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.initializeInspectionModel();
+      this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
+
+      if (this.wellID > 0) {
+        this.wellService.getWellSimpleDto(this.wellID).subscribe(well => {
+          this.initializeInspectionModel(well.WellRegistrationID);
+        });
+      } else {
+        this.initializeInspectionModel(null);
+      }
+
       this.cdr.detectChanges();
     });
   }
 
-  private initializeInspectionModel() : void {
+  private initializeInspectionModel(wellRegistrationID: string) : void {
     var waterLevelInspectionUpsertDto = new WaterLevelInspectionUpsertDto();
-    waterLevelInspectionUpsertDto.WellRegistrationID = null;
+    waterLevelInspectionUpsertDto.WellRegistrationID = wellRegistrationID;
     waterLevelInspectionUpsertDto.HasBrokenTape = false;
     waterLevelInspectionUpsertDto.HasOil = false;
     waterLevelInspectionUpsertDto.InspectionDate = null;

@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
+import { WellService } from 'src/app/services/well.service';
 import { WaterQualityInspectionUpsertComponent } from 'src/app/shared/components/water-quality-inspection-upsert/water-quality-inspection-upsert.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterQualityInspectionUpsertDto } from 'src/app/shared/generated/model/water-quality-inspection-upsert-dto';
@@ -23,10 +24,13 @@ export class WaterQualityInspectionNewComponent implements OnInit {
   public inspection: WaterQualityInspectionUpsertDto;
   public isLoadingSubmit: boolean;
   public isInspectionUpsertFormValidCheck: boolean;
+  public wellID: number;
   
   constructor(
     private waterQualityInspectionService: WaterQualityInspectionService,
+    private wellService: WellService,
     private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
@@ -35,14 +39,23 @@ export class WaterQualityInspectionNewComponent implements OnInit {
   ngOnInit(): void {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.initializeInspectionModel();
+      this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
+
+      if (this.wellID > 0) {
+        this.wellService.getWellSimpleDto(this.wellID).subscribe(well => {
+          this.initializeInspectionModel(well.WellRegistrationID);
+        });
+      } else {
+        this.initializeInspectionModel(null);
+      }
+
       this.cdr.detectChanges();
     });
   }
 
-  private initializeInspectionModel() : void {
+  private initializeInspectionModel(wellRegistrationID: string) : void {
     var waterQualityInspectionUpsertDto = new WaterQualityInspectionUpsertDto();
-    waterQualityInspectionUpsertDto.WellRegistrationID = null;
+    waterQualityInspectionUpsertDto.WellRegistrationID = wellRegistrationID;
     waterQualityInspectionUpsertDto.WaterQualityInspectionTypeID = null;
     waterQualityInspectionUpsertDto.InspectionDate = null;
     waterQualityInspectionUpsertDto.InspectorUserID = null;
@@ -73,8 +86,7 @@ export class WaterQualityInspectionNewComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    
-       this.cdr.detach();
+    this.cdr.detach();
   }
 
   public isInspectionUpsertFormValid(formValid: any): void {

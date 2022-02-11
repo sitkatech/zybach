@@ -18,6 +18,12 @@ namespace Zybach.EFModels.Entities
             return well?.AsDto();
         }
 
+        public static WellSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int wellID)
+        {
+            var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
+            return well?.AsSimpleDto();
+        }
+
         public static List<WellWithSensorSummaryDto> ListAsWellWithSensorSummaryDto(ZybachDbContext dbContext)
         {
             return GetWellsImpl(dbContext).OrderBy(x => x.WellRegistrationID).Select(x => WellWithSensorSummaryDtoFromWell(x)).ToList();
