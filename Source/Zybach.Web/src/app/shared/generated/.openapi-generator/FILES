@@ -88,6 +88,7 @@ model/well-chart-data-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
+model/well-inspection-summary-dto.ts
 model/well-new-dto.ts
 model/well-participation-dto.ts
 model/well-participation-info-dto.ts

@@ -39,6 +39,14 @@ namespace Zybach.API.Controllers
             return Ok(wellParticipationDtos);
         }
 
+        [HttpGet("/api/wells/inspectionSummaries")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<WellInspectionSummaryDto>> GetWellInspectionSummaries()
+        {
+            var wellInspectionSummaryDtos = Wells.ListAsWellInspectionSummaryDtos(_dbContext);
+            return Ok(wellInspectionSummaryDtos);
+        }
+
         [HttpGet("/api/wells/search/{wellRegistrationID}")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)

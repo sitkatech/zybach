@@ -1,5 +1,4 @@
-﻿using Zybach.EFModels.Entities;
-using Zybach.Models.DataTransferObjects;
+﻿using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.ReportTemplates.Models
 {
