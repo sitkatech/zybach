@@ -85,6 +85,14 @@ namespace Zybach.API.Controllers
             return Ok(waterQualityInspectionSummaryDtos);
         }
 
+        [HttpGet("/api/wells/{wellID}/simpleDto")]
+        [ZybachViewFeature]
+        public ActionResult<WellSimpleDto> GetWellSimpleDto([FromRoute] int wellID)
+        {
+            var wellSimpleDto = Wells.GetByIDAsSimpleDto(_dbContext, wellID);
+            return Ok(wellSimpleDto);
+        }
+
         [HttpGet("/api/wells/{wellID}")]
         [ZybachViewFeature]
         public ActionResult<WellDetailDto> GetWellDetails([FromRoute] int wellID)

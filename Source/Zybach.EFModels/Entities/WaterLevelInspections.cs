@@ -82,7 +82,7 @@ namespace Zybach.EFModels.Entities
         public static void Update(ZybachDbContext dbContext, WaterLevelInspection waterLevelInspection, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)
         {
             waterLevelInspection.WellID = wellID;
-            waterLevelInspection.InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value;
+            waterLevelInspection.InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value.AddHours(8);
             waterLevelInspection.InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID.Value;
             waterLevelInspection.Measurement = waterLevelInspectionUpsertDto.Measurement;
             waterLevelInspection.HasOil = waterLevelInspectionUpsertDto.HasOil;

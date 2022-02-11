@@ -44,6 +44,10 @@ export class WellService {
   public getWellsWithInspectionSummaries(): Observable<Array<WellInspectionSummaryDto>> {
     return this.apiService.getFromApi(`wells/inspectionSummaries`);
   }
+  
+  public getWellSimpleDto(wellID: number): Observable<WellSimpleDto> {
+    return this.apiService.getFromApi(`wells/${wellID}/simpleDto`);
+  }
 
   public getWellUses(): Observable<Array<WellUseDto>> {
     return this.apiService.getFromApi(`wellUses`);

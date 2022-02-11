@@ -56,7 +56,7 @@ export class WellContactEditComponent implements OnInit {
 
   public onSubmit(editWellContactForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-  
+
     this.wellService.updateWellContactDetails(this.wellID, this.wellContactInfo)
       .subscribe(response => {
         this.isLoadingSubmit = false;

@@ -76,7 +76,7 @@
                                         <label><strong>Zip: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="text" class="form-control" name="OwnerZipCode" mask="00000-0000"
+                                        <input type="text" class="form-control" name="OwnerZipCode" [dropSpecialCharacters]="false" mask="00000-0000"
                                             placeholder="Zip Code" [(ngModel)]="wellContactInfo.OwnerZipCode" />
                                     </div>
 
@@ -126,7 +126,7 @@
                                         <label><strong>Zip: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="text" class="form-control" name="AdditionalContactZipCode" mask="00000-0000"
+                                        <input type="text" class="form-control" name="AdditionalContactZipCode" [dropSpecialCharacters]="false" mask="00000-0000"
                                         placeholder="Zip Code" [(ngModel)]="wellContactInfo.AdditionalContactZipCode" />
                                     </div>
                                 </div>
