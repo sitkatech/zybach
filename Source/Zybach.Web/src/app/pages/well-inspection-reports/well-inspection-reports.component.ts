@@ -32,7 +32,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
   public richTextTypeID : number = CustomRichTextType.WellInspectionReports;
   
   public rowData: Array<WellInspectionSummaryDto>;
-  public columnDefs: ColDef[];
+  public columnDefs: any[];
   
   public gridApi: any;
   public gridColumnApi: any;
@@ -105,7 +105,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return params.data.Well.WellNickname;
         },
-        width: 150,
+        width: 160,
         sortable: true, filter: true, resizable: true,        
       },
       {
@@ -150,10 +150,28 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterLevelInspections'
         },
-        width: 130,
+        width: 150,
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
+      {  
+        headerName: 'Well Owner',
+        children: [
+            { headerName: 'Name', field: "Well.OwnerName", filter: true, resizable: true, sortable: true },
+            { headerName: 'Address', field: "Well.OwnerAddress", filter: true, resizable: true, sortable: true },
+            { headerName: 'City', field: "Well.OwnerCity", filter: true, resizable: true, sortable: true },
+            { headerName: 'State', field: "Well.OwnerState", filter: true, resizable: true, sortable: true },
+            { headerName: 'Zip', field: "Well.OwnerZipCode", filter: true, resizable: true, sortable: true },        ]
+      },
+      {  
+        headerName: 'Additional Contact',
+        children: [
+            { headerName: 'Name', field: "Well.AdditionalContactName", filter: true, resizable: true, sortable: true },
+            { headerName: 'Address', field: "Well.AdditionalContactAddress", filter: true, resizable: true, sortable: true },
+            { headerName: 'City', field: "Well.AdditionalContactCity", filter: true, resizable: true, sortable: true },
+            { headerName: 'State', field: "Well.AdditionalContactState", filter: true, resizable: true, sortable: true },
+            { headerName: 'Zip', field: "Well.AdditionalContactZipCode", filter: true, resizable: true, sortable: true },        ]
+      }
     ]; 
   }
 
@@ -204,7 +222,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
     this.wellService.getWellsWithInspectionSummaries().subscribe(wells => {
       this.rowData = wells;
       this.wellInspectionsGrid.api.hideOverlay();
-      this.wellInspectionsGrid.api.sizeColumnsToFit();
+      //this.wellInspectionsGrid.api.sizeColumnsToFit();
     });
   }
 
@@ -235,6 +253,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
   }
 
   public generateReport(): void {
+    this.alertService.clearAlerts();
     if(!this.selectedReportTemplateID){
       this.alertService.pushAlert(new Alert("No report template selected.", AlertContext.Danger));
     } else {
