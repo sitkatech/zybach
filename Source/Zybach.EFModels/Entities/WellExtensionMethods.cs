@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
@@ -24,8 +25,6 @@ namespace Zybach.EFModels.Entities
             {
                 Well = well.AsSimpleDto(),
 
-                WellParticipationName = well.WellParticipation?.WellParticipationDisplayName,
-
                 HasWaterLevelInspections = waterLevelInspectionSimpleDto != null,
                 LatestWaterLevelInspectionDate = waterLevelInspectionSimpleDto?.InspectionDate,
                 HasWaterQualityInspections = waterQualityInspectionSimpleDto != null,
@@ -35,5 +34,30 @@ namespace Zybach.EFModels.Entities
             return wellInspectionSummaryDto;
         }
 
+        public static WellWaterLevelInspectionDetailedDto AsWellWaterLevelInspectionDetailedDto(this Well well,
+            List<WaterLevelInspectionSimpleDto> waterLevelInspectionSimpleDtos)
+        {
+            var wellWaterLevelInspectionDetailedDto = new WellWaterLevelInspectionDetailedDto()
+            {
+                Well = well.AsSimpleDto(),
+
+                WaterLevelInspections = waterLevelInspectionSimpleDtos
+            };
+
+            return wellWaterLevelInspectionDetailedDto;
+        }
+
+        public static WellWaterQualityInspectionDetailedDto AsWellWaterQualityInspectionDetailedDto(this Well well,
+            List<WaterQualityInspectionSimpleDto> waterQualityInspectionSimpleDtos)
+        {
+            var wellWaterQualityInspectionDetailedDto = new WellWaterQualityInspectionDetailedDto()
+            {
+                Well = well.AsSimpleDto(),
+
+                WaterQualityInspections = waterQualityInspectionSimpleDtos
+            };
+
+            return wellWaterQualityInspectionDetailedDto;
+        }
     }
 }

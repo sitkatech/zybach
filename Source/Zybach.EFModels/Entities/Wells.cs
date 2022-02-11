@@ -232,5 +232,48 @@ namespace Zybach.EFModels.Entities
                 .ToList();
             return listWithLatestInspectionsAsDto;
         }
+
+        public static IEnumerable<WellWaterLevelInspectionDetailedDto> ListByWellIDsAsWellWaterLevelInspectionDetailedDto(ZybachDbContext dbContext, List<int> wellIDs)
+        {
+            var wells = dbContext.Wells
+                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellParticipation)
+                .AsNoTracking()
+                .Where(x => wellIDs.Contains(x.WellID))
+                .ToList();
+            var waterLevelInspections = dbContext.WaterLevelInspections
+                .Include(x => x.Well)
+                .AsNoTracking().ToList()
+                .GroupBy(x => x.WellID)
+                .ToDictionary(x => x.Key, x =>
+                    x.OrderByDescending(y => y.InspectionDate).Select(x => x.AsSimpleDto()).ToList());
+
+            var wellWaterLevelInspectionDetailedDtos = wells
+                .Select(x => x.AsWellWaterLevelInspectionDetailedDto(waterLevelInspections.ContainsKey(x.WellID) ? waterLevelInspections[x.WellID] : null))
+                .ToList();
+            return wellWaterLevelInspectionDetailedDtos;
+        }
+
+        public static IEnumerable<WellWaterQualityInspectionDetailedDto> ListByWellIDsAsWellWaterQualityInspectionDetailedDto(ZybachDbContext dbContext, List<int> wellIDs)
+        {
+            var wells = dbContext.Wells
+                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellParticipation)
+                .AsNoTracking()
+                .Where(x => wellIDs.Contains(x.WellID))
+                .ToList();
+            var waterQualityInspections = dbContext.WaterQualityInspections
+                .Include(x => x.WaterQualityInspectionType)
+                .Include(x => x.Well)
+                .AsNoTracking().ToList()
+                .GroupBy(x => x.WellID)
+                .ToDictionary(x => x.Key, x =>
+                    x.OrderByDescending(y => y.InspectionDate).Select(x => x.AsSimpleDto()).ToList());
+
+            var wellWaterQualityInspectionDetailedDtos = wells
+                .Select(x => x.AsWellWaterQualityInspectionDetailedDto(waterQualityInspections.ContainsKey(x.WellID) ? waterQualityInspections[x.WellID] : null))
+                .ToList();
+            return wellWaterQualityInspectionDetailedDtos;
+        }
     }
 }

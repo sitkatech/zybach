@@ -2,7 +2,7 @@
 
 namespace Zybach.API.ReportTemplates.Models
 {
-    public class ReportTemplateWaterLevelInspectionModel
+    public class ReportTemplateWaterLevelInspectionModel : ReportTemplateBaseModel
     {
         public WaterLevelInspectionSimpleDto WaterLevelInspection { get; set; }
 

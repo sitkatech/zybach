@@ -54,7 +54,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.ChemigationPermit).subscribe(reportTemplates => {
+    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.WellWaterQualityInspection).subscribe(reportTemplates => {
       this.reportTemplates = reportTemplates;
       if (this.reportTemplates.length == 1) {
         this.selectedReportTemplateID = reportTemplates[0].ReportTemplateID;
@@ -111,11 +111,11 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
       {
         headerName: "Participation",
         valueGetter: function (params: any) {
-          return params.data.WellParticipationName;
+          return params.data.Well.WellParticipationName;
         },
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'params.data.WellParticipationName'
+          field: 'params.data.Well.WellParticipationName'
         },
         width: 140,
         sortable: true, filter: true, resizable: true,        
@@ -213,7 +213,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
     if(this.wellInspectionsGrid){
       this.wellInspectionsGrid.api.forEachNodeAfterFilterAndSort(node => {
         if(node.isSelected()){
-          selectedFilteredSortedRows.push(node.data.WellID);
+          selectedFilteredSortedRows.push(node.data.Well.WellID);
         }
       });
     }
@@ -241,7 +241,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
       let selectedFilteredSortedRows = [];
       this.wellInspectionsGrid.api.forEachNodeAfterFilterAndSort(node => {
         if(node.isSelected()){
-          selectedFilteredSortedRows.push(parseInt(node.data.WellID));
+          selectedFilteredSortedRows.push(parseInt(node.data.Well.WellID));
         }
       });
   

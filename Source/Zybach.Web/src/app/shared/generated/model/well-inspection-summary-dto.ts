@@ -13,7 +13,6 @@ import { WellSimpleDto } from '././well-simple-dto';
 
 export class WellInspectionSummaryDto { 
     Well?: WellSimpleDto;
-    WellParticipationName?: string;
     HasWaterLevelInspections?: boolean;
     LatestWaterLevelInspectionDate?: string;
     HasWaterQualityInspections?: boolean;

@@ -2,11 +2,9 @@
 
 namespace Zybach.Models.DataTransferObjects
 {
-    public class WellInspectionDetailedDto
+    public class WellWaterQualityInspectionDetailedDto
     {
         public WellSimpleDto Well { get; set; }
-
-        public List<WaterLevelInspectionSimpleDto> WaterLevelInspections { get; set; }
         public List<WaterQualityInspectionSimpleDto> WaterQualityInspections { get; set; }
     }
 }

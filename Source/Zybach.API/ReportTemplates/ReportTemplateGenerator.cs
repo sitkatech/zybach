@@ -78,6 +78,13 @@ namespace Zybach.API.ReportTemplates
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, chemigationPermitDetailedBaseViewModel);
                     break;
+                case ReportTemplateModelEnum.WellWaterQualityInspection:
+                    var wellWaterQualityInspectionBaseViewModel = new ReportTemplateWellWaterQualityInspectionBaseViewModel()
+                    {
+                        ReportModel = GetListOfWellWaterQualityInspectionModels(dbContext)
+                    };
+                    document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterQualityInspectionBaseViewModel);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -243,6 +250,14 @@ namespace Zybach.API.ReportTemplates
             return listOfModels;
         }
 
+        private List<ReportTemplateWellWaterQualityInspectionModel> GetListOfWellWaterQualityInspectionModels(ZybachDbContext dbContext)
+        {
+            var listOfModels = Wells.ListByWellIDsAsWellWaterQualityInspectionDetailedDto(dbContext, SelectedModelIDs)
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.Well.WellID))
+                .Select(x => new ReportTemplateWellWaterQualityInspectionModel(x)).ToList();
+            return listOfModels;
+        }
+
         public static void ValidateReportTemplate(ReportTemplate reportTemplate, out bool reportIsValid, out string errorMessage, out string sourceCode, ZybachDbContext dbContext, ILogger logger, VegaRenderService.VegaRenderService vegaRenderService)
         {
             errorMessage = "";
@@ -256,6 +271,9 @@ namespace Zybach.API.ReportTemplates
                     // select 10 random models to test the report with
                     // SMG 2/17/2020 this can cause problems with templates failing only some of the time, but it feels costly to validate against every single model in the system
                     selectedModelIDs = dbContext.ChemigationPermits.AsNoTracking().Where(x => x.ChemigationPermitAnnualRecords.Count > 0).Select(x => x.ChemigationPermitID).Take(10).ToList();
+                    break;
+                case ReportTemplateModelEnum.WellWaterQualityInspection:
+                    selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

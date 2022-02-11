@@ -7844,10 +7844,6 @@
           "Well": {
             "$ref": "#/components/schemas/WellSimpleDto"
           },
-          "WellParticipationName": {
-            "type": "string",
-            "nullable": true
-          },
           "HasWaterLevelInspections": {
             "type": "boolean"
           },
