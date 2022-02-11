@@ -98,14 +98,14 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filter: true,
         resizable: true,
         sortable: true,
-        width: 140
+        width: 120
       },
       {
         headerName: "Well Nickname",
         valueGetter: function (params: any) {
           return params.data.Well.WellNickname;
         },
-        width: 140,
+        width: 150,
         sortable: true, filter: true, resizable: true,        
       },
       {
@@ -117,11 +117,11 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.Well.WellParticipationName'
         },
-        width: 140,
+        width: 110,
         sortable: true, filter: true, resizable: true,        
       },
       {
-        headerName: "Water Quality?",
+        headerName: "Water Quality Inspections?",
         valueGetter: function (params) {
           if (params.data.HasWaterQualityInspections) {
             return "Yes";
@@ -133,12 +133,12 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterQualityInspections'
         },
-        width: 100,
+        width: 130,
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Quality Inspection', 'LatestWaterQualityInspectionDate', 'M/d/yyyy'),
       {
-        headerName: "Water Level?",
+        headerName: "Water Level Inspections?",
         valueGetter: function (params) {
           if (params.data.HasWaterLevelInspections) {
             return "Yes";
@@ -150,7 +150,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterLevelInspections'
         },
-        width: 100,
+        width: 130,
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
@@ -186,7 +186,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
       }, 
-      width: 120,
+      width: 130,
       resizable: true,
       sortable: true
     };

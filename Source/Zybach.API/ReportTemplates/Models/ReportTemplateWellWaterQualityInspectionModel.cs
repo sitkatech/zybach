@@ -70,31 +70,36 @@ namespace Zybach.API.ReportTemplates.Models
 
             WaterQualityInspections = wellWithWaterQualityInspections.WaterQualityInspections;
 
-            if (WaterQualityInspections != null)
+            if (WaterQualityInspections is { Count: > 0 })
             {
-                var firstNitrateInspection = WaterQualityInspections.Where(x => x.LabNitrates != null)
+                var inspectionsWithNitrates = WaterQualityInspections.Where(x => x.LabNitrates != null);
+                var firstNitrateInspection = inspectionsWithNitrates
                     .OrderBy(x => x.InspectionDate).First();
 
-                var lastNitrateInspection = WaterQualityInspections.Where(x => x.LabNitrates != null)
+                var lastNitrateInspection = inspectionsWithNitrates
                     .OrderByDescending(x => x.InspectionDate).First();
 
-                var highestNitrateInspection = WaterQualityInspections.Where(x => x.LabNitrates != null)
+                var highestNitrateInspection = inspectionsWithNitrates
                     .OrderByDescending(x => x.LabNitrates).First();
 
-                var lowestNitrateInspection = WaterQualityInspections.Where(x => x.LabNitrates != null)
+                var lowestNitrateInspection = inspectionsWithNitrates
                     .OrderBy(x => x.LabNitrates).First();
 
                 NitrateLevelFirstDate = firstNitrateInspection.InspectionDate.ToShortDateString();
                 NitrateLevelLastDate = lastNitrateInspection.InspectionDate.ToShortDateString();
                 NitrateLevelLast = Math.Round(lastNitrateInspection.LabNitrates.Value, 2);
 
-                NitrateLevelHighest = Math.Round(highestNitrateInspection.LabNitrates.Value, 2);
                 NitrateLevelHighestDate = highestNitrateInspection.InspectionDate.ToShortDateString();
+                NitrateLevelHighest = Math.Round(highestNitrateInspection.LabNitrates.Value, 2);
 
-                NitrateLevelLowest = Math.Round(lowestNitrateInspection.LabNitrates.Value, 2);
                 NitrateLevelLowestDate = lowestNitrateInspection.InspectionDate.ToShortDateString();
+                NitrateLevelLowest = Math.Round(lowestNitrateInspection.LabNitrates.Value, 2);
 
                 NitrateLevelAverage = Math.Round(WaterQualityInspections.Where(x => x.LabNitrates != null).Average(x => x.LabNitrates.Value), 2);
+            }
+            else
+            {
+                WaterQualityInspections = new List<WaterQualityInspectionSimpleDto>();
             }
 
         }
