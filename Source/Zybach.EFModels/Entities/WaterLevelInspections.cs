@@ -14,6 +14,8 @@ namespace Zybach.EFModels.Entities
             public const string TimeDatumCode = "CST";
             public const string TimeDatumReliability = "K";
             public const string LevelTypeCode = "L";
+            public const string AgencyCode = "NE023";
+            public const string SourceAgency = "USGS";
         }
 
         public static IQueryable<WaterLevelInspection> ListImpl(ZybachDbContext dbContext)
@@ -69,8 +71,9 @@ namespace Zybach.EFModels.Entities
                 SourceCode = WaterLevelInspectionDefaults.SourceCode,
                 TimeDatumCode = WaterLevelInspectionDefaults.TimeDatumCode,
                 TimeDatumReliability = WaterLevelInspectionDefaults.TimeDatumReliability,
-                LevelTypeCode = WaterLevelInspectionDefaults.LevelTypeCode
-
+                LevelTypeCode = WaterLevelInspectionDefaults.LevelTypeCode,
+                AgencyCode = WaterLevelInspectionDefaults.AgencyCode,
+                SourceAgency = WaterLevelInspectionDefaults.SourceAgency
             };
 
             dbContext.WaterLevelInspections.Add(waterLevelInspection);
