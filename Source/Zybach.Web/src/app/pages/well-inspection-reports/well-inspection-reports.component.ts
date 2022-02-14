@@ -17,6 +17,7 @@ import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-repo
 import { WellInspectionSummaryDto } from 'src/app/shared/generated/model/well-inspection-summary-dto';
 import { WellService } from 'src/app/services/well.service';
 import { DatePipe } from '@angular/common';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 
 @Component({
   selector: 'zybach-well-inspection-reports',
@@ -130,6 +131,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterQualityInspections'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'HasWaterQualityInspections'},
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Quality Inspection', 'LatestWaterQualityInspectionDate', 'M/d/yyyy'),
@@ -146,6 +148,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterLevelInspections'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'HasWaterLevelInspections'},
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
@@ -167,7 +170,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
             { headerName: 'State', field: "Well.AdditionalContactState", filter: true, resizable: true, sortable: true },
             { headerName: 'Zip', field: "Well.AdditionalContactZipCode", filter: true, resizable: true, sortable: true },        ]
       }
-    ]; 
+    ];
   }
 
   private dateSortComparer (id1: any, id2: any) {
@@ -199,6 +202,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
       },
+      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: fieldName},
       resizable: true,
       sortable: true
     };
