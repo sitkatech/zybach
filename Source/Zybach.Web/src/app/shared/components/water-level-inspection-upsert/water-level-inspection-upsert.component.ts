@@ -3,13 +3,13 @@ import { NgForm } from '@angular/forms';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, Observable, of } from 'rxjs';
 import { UserService } from 'src/app/services/user/user.service';
-import { CropTypeDto } from '../../generated/model/crop-type-dto';
 import { UserDto } from '../../generated/model/user-dto';
 import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { WellService } from 'src/app/services/well.service';
 import { WaterLevelInspectionUpsertDto } from '../../generated/model/water-level-inspection-upsert-dto';
-
+import { WaterLevelInspectionService } from 'src/app/services/water-level-inspection.service';
+import { WaterLevelMeasuringEquipmentDto } from '../../generated/model/water-level-measuring-equipment-dto';
 
 @Component({
   selector: 'zybach-water-level-inspection-upsert',
@@ -24,8 +24,10 @@ export class WaterLevelInspectionUpsertComponent implements OnInit {
   public users: UserDto[];
 
   public searchFailed : boolean = false;
+  public waterLevelMeasuringEquipment: Array<WaterLevelMeasuringEquipmentDto>;
 
   constructor(
+    private waterLevelInspectionService: WaterLevelInspectionService,
     private wellService: WellService,
     private cdr: ChangeDetectorRef,
     private userService: UserService
@@ -34,10 +36,11 @@ export class WaterLevelInspectionUpsertComponent implements OnInit {
   ngOnInit(): void {
     forkJoin({
       users: this.userService.getUsers(),
+      waterLevelMeasuringEquipment: this.waterLevelInspectionService.getWaterLevelMeasuringEquipments()
 
-    }).subscribe(({ users }) => {
-
+    }).subscribe(({ users, waterLevelMeasuringEquipment }) => {
       this.users = users;
+      this.waterLevelMeasuringEquipment = waterLevelMeasuringEquipment;
 
       this.cdr.detectChanges();
     });

@@ -24,6 +24,8 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
   public isLoadingSubmit: boolean;
   public wellID: number;
 
+  public defaultEquipment: string = 'Logger';
+
   constructor(
     private waterLevelInspectionService: WaterLevelInspectionService,
     private wellService: WellService,
@@ -59,7 +61,7 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
     waterLevelInspectionUpsertDto.InspectionDate = null;
     waterLevelInspectionUpsertDto.InspectorUserID = null;
     waterLevelInspectionUpsertDto.Measurement = null;
-
+    waterLevelInspectionUpsertDto.MeasuringEquipment = this.defaultEquipment;
     waterLevelInspectionUpsertDto.InspectionNotes = null;
     waterLevelInspectionUpsertDto.InspectionNickname = null;
 

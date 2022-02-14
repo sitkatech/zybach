@@ -10,16 +10,10 @@
  * Do not edit the class manually.
  */
 
-export class WaterLevelInspectionUpsertDto { 
-    WellRegistrationID: string;
-    InspectionDate: string;
-    InspectorUserID: number;
-    Measurement?: number;
-    MeasuringEquipment?: string;
-    HasOil: boolean;
-    HasBrokenTape: boolean;
-    InspectionNickname?: string;
-    InspectionNotes?: string;
+export class WaterLevelMeasuringEquipmentDto { 
+    WaterLevelMeasuringEquipmentID?: number;
+    WaterLevelMeasuringEquipmentName?: string;
+    WaterLevelMeasuringEquipmentDisplayName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

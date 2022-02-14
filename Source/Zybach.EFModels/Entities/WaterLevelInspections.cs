@@ -58,9 +58,10 @@ namespace Zybach.EFModels.Entities
             var waterLevelInspection = new WaterLevelInspection()
             {
                 WellID = wellID,
-                InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value.AddHours(8),
+                InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value.AddHours(20),
                 InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID.Value,
                 Measurement = waterLevelInspectionUpsertDto.Measurement,
+                MeasuringEquipment = waterLevelInspectionUpsertDto.MeasuringEquipment,
                 HasOil = waterLevelInspectionUpsertDto.HasOil,
                 HasBrokenTape = waterLevelInspectionUpsertDto.HasBrokenTape,
                 InspectionNotes = waterLevelInspectionUpsertDto.InspectionNotes,
@@ -85,9 +86,10 @@ namespace Zybach.EFModels.Entities
         public static void Update(ZybachDbContext dbContext, WaterLevelInspection waterLevelInspection, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)
         {
             waterLevelInspection.WellID = wellID;
-            waterLevelInspection.InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value.AddHours(8);
+            waterLevelInspection.InspectionDate = waterLevelInspectionUpsertDto.InspectionDate.Value;
             waterLevelInspection.InspectorUserID = waterLevelInspectionUpsertDto.InspectorUserID.Value;
             waterLevelInspection.Measurement = waterLevelInspectionUpsertDto.Measurement;
+            waterLevelInspection.MeasuringEquipment = waterLevelInspectionUpsertDto.MeasuringEquipment;
             waterLevelInspection.HasOil = waterLevelInspectionUpsertDto.HasOil;
             waterLevelInspection.HasBrokenTape = waterLevelInspectionUpsertDto.HasBrokenTape;
             waterLevelInspection.InspectionNotes = waterLevelInspectionUpsertDto.InspectionNotes;

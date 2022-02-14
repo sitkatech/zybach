@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WaterLevelInspectionSimpleDto } from '../shared/generated/model/water-level-inspection-simple-dto';
 import { WaterLevelInspectionUpsertDto } from '../shared/generated/model/water-level-inspection-upsert-dto';
+import { WaterLevelMeasuringEquipmentDto } from '../shared/generated/model/water-level-measuring-equipment-dto';
 import { ApiService } from '../shared/services';
 
 @Injectable({
@@ -13,6 +14,11 @@ export class WaterLevelInspectionService {
 
   public getWaterLevelInspections(): Observable<Array<WaterLevelInspectionSimpleDto>> {
     let route = `/waterLevelInspections`;
+    return this.apiService.getFromApi(route);
+  }
+
+  public getWaterLevelMeasuringEquipments(): Observable<Array<WaterLevelMeasuringEquipmentDto>> {
+    let route = `/waterLevelInspections/measuringEquipment`;
     return this.apiService.getFromApi(route);
   }
 

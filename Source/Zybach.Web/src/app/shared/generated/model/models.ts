@@ -78,6 +78,7 @@ export * from '././volume-by-well';
 export * from '././water-level-inspection-simple-dto';
 export * from '././water-level-inspection-summary-dto';
 export * from '././water-level-inspection-upsert-dto';
+export * from '././water-level-measuring-equipment-dto';
 export * from '././water-quality-inspection-simple-dto';
 export * from '././water-quality-inspection-summary-dto';
 export * from '././water-quality-inspection-type-dto';
