@@ -8,6 +8,7 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterLevelInspectionUpsertDto } from 'src/app/shared/generated/model/water-level-inspection-upsert-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { WaterLevelMeasuringEquipmentTypes } from 'src/app/shared/models/enums/water-level-measuring-equipment-types.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -23,6 +24,8 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
   public inspection: WaterLevelInspectionUpsertDto;
   public isLoadingSubmit: boolean;
   public wellID: number;
+
+  public defaultEquipment: string = WaterLevelMeasuringEquipmentTypes.Logger;
 
   constructor(
     private waterLevelInspectionService: WaterLevelInspectionService,
@@ -59,7 +62,7 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
     waterLevelInspectionUpsertDto.InspectionDate = null;
     waterLevelInspectionUpsertDto.InspectorUserID = null;
     waterLevelInspectionUpsertDto.Measurement = null;
-
+    waterLevelInspectionUpsertDto.MeasuringEquipment = this.defaultEquipment;
     waterLevelInspectionUpsertDto.InspectionNotes = null;
     waterLevelInspectionUpsertDto.InspectionNickname = null;
 

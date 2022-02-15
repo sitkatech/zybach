@@ -56,6 +56,7 @@ export class WaterLevelInspectionEditComponent implements OnInit, OnDestroy {
     waterLevelInspectionUpsertDto.HasBrokenTape = waterLevelInspectionSimpleDto.HasBrokenTape;
     waterLevelInspectionUpsertDto.HasOil = waterLevelInspectionSimpleDto.HasOil;
     waterLevelInspectionUpsertDto.Measurement = waterLevelInspectionSimpleDto.Measurement;
+    waterLevelInspectionUpsertDto.MeasuringEquipment = waterLevelInspectionSimpleDto.MeasuringEquipment;
     waterLevelInspectionUpsertDto.InspectionNotes = waterLevelInspectionSimpleDto.InspectionNotes;
     waterLevelInspectionUpsertDto.InspectionNickname = waterLevelInspectionSimpleDto.InspectionNickname;
   

@@ -26,6 +26,14 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelInspectionSimpleDtos);
         }
 
+        [HttpGet("/api/waterLevelInspections/measuringEquipment")]
+        [ZybachViewFeature]
+        public ActionResult<List<WaterLevelMeasuringEquipmentDto>> GetAllMeasuringEquipments()
+        {
+            var waterLevelMeasuringEquipmentDtos = WaterLevelMeasuringEquipments.ListAsDto(_dbContext);
+            return Ok(waterLevelMeasuringEquipmentDtos);
+        }
+
         [HttpPost("/api/waterLevelInspections")]
         [AdminFeature]
         public ActionResult<WaterLevelInspectionSimpleDto> Create([FromBody] WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto)

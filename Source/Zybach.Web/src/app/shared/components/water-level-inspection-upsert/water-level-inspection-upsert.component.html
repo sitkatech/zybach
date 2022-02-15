@@ -38,6 +38,15 @@
                 </div>
 
                 <div class="col-6 control-label text-right mb-2">
+                    <label><strong>Measuring Equipment: </strong></label>
+                </div>
+                <div class="col-6 text-left mb-2">
+                    <ng-select [(ngModel)]="inspection.MeasuringEquipment" name="MeasuringEquipment"
+                        [items]="waterLevelMeasuringEquipment" bindLabel="WaterLevelMeasuringEquipmentDisplayName" bindValue="WaterLevelMeasuringEquipmentDisplayName" >
+                    </ng-select>
+                </div>
+
+                <div class="col-6 control-label text-right mb-2">
                     <label><strong>Nickname: </strong></label>
                 </div>
                 <div class="col-6 text-left mb-2">

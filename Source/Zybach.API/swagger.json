@@ -3107,6 +3107,44 @@
         }
       }
     },
+    "/api/waterLevelInspections/measuringEquipment": {
+      "get": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelMeasuringEquipmentDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelMeasuringEquipmentDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelMeasuringEquipmentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/waterLevelInspections/{waterLevelInspectionID}": {
       "get": {
         "tags": [
@@ -7084,6 +7122,10 @@
             "format": "double",
             "nullable": true
           },
+          "MeasuringEquipment": {
+            "type": "string",
+            "nullable": true
+          },
           "HasOil": {
             "type": "boolean"
           },
@@ -7099,6 +7141,24 @@
           "InspectionNotes": {
             "maxLength": 500,
             "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterLevelMeasuringEquipmentDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelMeasuringEquipmentID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterLevelMeasuringEquipmentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterLevelMeasuringEquipmentDisplayName": {
             "type": "string",
             "nullable": true
           }
