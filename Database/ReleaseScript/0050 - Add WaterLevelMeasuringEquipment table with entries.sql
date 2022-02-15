@@ -5,7 +5,7 @@ create table dbo.WaterLevelMeasuringEquipment
 	WaterLevelMeasuringEquipmentDisplayName varchar(50) not null constraint AK_WaterLevelMeasuringEquipment_WaterLevelMeasuringEquipmentDisplayName unique
 )
 
-INSERT INTO dbo.WaterLevelMeasuringEquipment(WaterLevelMeasuringEquipmentName, WaterLevelMeasuringEquipmentDisplayName)
+INSERT INTO dbo.WaterLevelMeasuringEquipment(WaterLevelMeasuringEquipmentID, WaterLevelMeasuringEquipmentName, WaterLevelMeasuringEquipmentDisplayName)
 VALUES
 (1, 'Electric', 'Electric'),
 (2, 'Fiberglass', 'Fiberglass'),
