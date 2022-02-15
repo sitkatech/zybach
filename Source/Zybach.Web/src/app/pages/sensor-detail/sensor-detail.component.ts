@@ -193,10 +193,10 @@ export class SensorDetailComponent implements OnInit {
     for (const point of this.timeSeries){
       let pivotRow = pivoted.get(point.MeasurementDate);
       if (pivotRow){
-        pivotRow[point.MeasurementType.MeasurementTypeDisplayName] = point.MeasurementValue;
+        pivotRow["Reading"] = point.MeasurementValue;
       } else{
         pivotRow = {"Date": point.MeasurementDate};
-        pivotRow[point.MeasurementType.MeasurementTypeDisplayName] = point.MeasurementValue;
+        pivotRow["Reading"] = point.MeasurementValue;
         pivoted.set(point.MeasurementDate, pivotRow);
       }
     }
@@ -204,7 +204,7 @@ export class SensorDetailComponent implements OnInit {
     const pivotedAndSorted = Array.from(pivoted.values())
       .map(x=> ({
         "Date": moment(x.Date).format('M/D/yyyy'),
-        "MeasurementValue": x["MeasurementValue"]
+        "Reading": x["Reading"]
       }))
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
 
@@ -343,7 +343,7 @@ export class SensorDetailComponent implements OnInit {
               "field": "MeasurementValue",
               "type": "quantitative",
               "axis": {
-                "title": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? "Feet" : "Gallons"
+                "title": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? "Depth to Groundwater" : "Gallons"
               }
             },
             "color": {

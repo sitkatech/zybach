@@ -8,14 +8,6 @@ namespace Zybach.EFModels.Entities
 {
     public static class WellSensorMeasurements
     {
-        public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementType(
-            ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum)
-        {
-            return GetWellSensorMeasurementsImpl(dbContext)
-                .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum).Select(x => x.AsDto())
-                .ToList();
-        }
-
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementTypeAndYear(
             ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum, int year)
         {
@@ -101,10 +93,36 @@ namespace Zybach.EFModels.Entities
 
         public static List<WellSensorMeasurementDto> ListBySensorAsDto(ZybachDbContext dbContext, string sensorName)
         {
-            return GetWellSensorMeasurementsImpl(dbContext)
-                .Where(x => x.SensorName == sensorName).Select(x => x.AsDto())
-                .ToList();
+            var wellSensorMeasurements = GetWellSensorMeasurementsImpl(dbContext)
+                .Where(x => x.SensorName == sensorName).ToList();
+            return ZeroFillMissingDaysAsDto(wellSensorMeasurements);
         }
+
+        private static List<WellSensorMeasurementDto> ZeroFillMissingDaysAsDto(
+            List<WellSensorMeasurement> wellSensorMeasurements)
+        {
+            if (!wellSensorMeasurements.Any())
+            {
+                return new List<WellSensorMeasurementDto>();
+            }
+
+            var measurementTypeDto = wellSensorMeasurements.First().MeasurementType.AsDto();
+            var sensorName = wellSensorMeasurements.First().SensorName;
+            var units = measurementTypeDto.MeasurementTypeID == (int)MeasurementTypeEnum.WellPressure ? "feet" : "gallons";
+            var measurementValues = wellSensorMeasurements.ToLookup(
+                x => x.MeasurementDate.ToShortDateString());
+            var startDate = wellSensorMeasurements.Min(x => x.MeasurementDateInPacificTime);
+            var endDate = DateTime.Today;
+            var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
+                .ToList();
+            return list.Select(a =>
+            {
+                var measurementDate = startDate.AddDays(a);
+                var measurementValue = measurementValues.Contains(measurementDate.ToShortDateString()) ? measurementValues[measurementDate.ToShortDateString()].Sum(x => x.MeasurementValue) : 0;
+                return new WellSensorMeasurementDto(measurementTypeDto, sensorName, measurementDate, measurementValue, $"{measurementValue:N1} {units}");
+            }).ToList();
+        }
+
 
     }
 }
