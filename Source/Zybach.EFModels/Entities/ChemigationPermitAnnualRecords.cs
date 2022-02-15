@@ -47,7 +47,7 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDetailedDto()).ToList();
         }
 
-        public static ChemigationPermitAnnualRecord CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID)
+        public static ChemigationPermitAnnualRecord CreateAnnualRecord(ZybachDbContext dbContext, ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto, int chemigationPermitID, decimal ndeeAmount)
         {
             if (chemigationPermitAnnualRecordUpsertDto == null)
             {
@@ -56,7 +56,8 @@ namespace Zybach.EFModels.Entities
 
             var chemigationPermitAnnualRecord = new ChemigationPermitAnnualRecord
             {
-                ChemigationPermitID = chemigationPermitID
+                ChemigationPermitID = chemigationPermitID,
+                NDEEAmount = ndeeAmount
             };
             dbContext.ChemigationPermitAnnualRecords.Add(chemigationPermitAnnualRecord);
 
@@ -101,7 +102,6 @@ namespace Zybach.EFModels.Entities
             chemigationPermitAnnualRecord.ApplicantZipCode = chemigationPermitAnnualRecordUpsertDto.ApplicantZipCode;
             chemigationPermitAnnualRecord.PivotName = chemigationPermitAnnualRecordUpsertDto.PivotName;
             chemigationPermitAnnualRecord.RecordYear = chemigationPermitAnnualRecordUpsertDto.RecordYear;
-            chemigationPermitAnnualRecord.NDEEAmount = chemigationPermitAnnualRecordUpsertDto.NDEEAmount;
             chemigationPermitAnnualRecord.AnnualNotes = chemigationPermitAnnualRecordUpsertDto.AnnualNotes;
             //TODO: find a better solution to correct date assignment
             chemigationPermitAnnualRecord.DatePaid = chemigationPermitAnnualRecordUpsertDto.DatePaid?.AddHours(8);
