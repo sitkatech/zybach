@@ -2,7 +2,8 @@
 USING (VALUES
 (1, 'FlowMeter', 'Flow Meter'),
 (2, 'ContinuityMeter', 'Continuity Meter'),
-(3, 'ElectricalUsage', 'Electrical Usage')
+(3, 'ElectricalUsage', 'Electrical Usage'),
+(4, 'WellPressure', 'Well Pressure')
 )
 AS Source (MeasurementTypeID, MeasurementTypeName, MeasurementTypeDisplayName)
 ON Target.MeasurementTypeID = Source.MeasurementTypeID

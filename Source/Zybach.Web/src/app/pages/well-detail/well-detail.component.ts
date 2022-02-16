@@ -27,7 +27,6 @@ import { Alert } from 'src/app/shared/models/alert';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
-import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
 import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
@@ -167,11 +166,13 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       {
         headerName: "Inspection Date", 
         valueGetter: function (params: any) {
-          return datePipe.transform(params.data.InspectionDate, "M/dd/yyyy");
+          return { LinkValue: params.data.WaterLevelInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy h:mm a") };
         },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/water-level-inspections/" },
         comparator: function (id1: any, id2: any) {
-          const date1 = Date.parse(id1);
-          const date2 = Date.parse(id2);
+          const date1 = Date.parse(id1.LinkDisplay);
+          const date2 = Date.parse(id2.LinkDisplay);
           if (date1 < date2) {
             return -1;
           }
@@ -333,6 +334,10 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         sensor.MessageAge = Math.floor(sensor.MessageAge / 3600)
       }
     });
+  }
+
+  hasWellPressureSensor(): boolean{
+    return this.sensorsWithStatus?.filter(x => x.SensorType === "Well Pressure").length > 0;
   }
 
   getChemigationPermits(){

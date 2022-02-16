@@ -13,8 +13,8 @@
 export class ChemigationPermitAnnualRecordChemicalFormulationUpsertDto { 
     ChemigationPermitAnnualRecordChemicalFormulationID?: number;
     ChemigationPermitAnnualRecordID?: number;
-    ChemicalFormulationID?: number;
-    ChemicalUnitID?: number;
+    ChemicalFormulationID: number;
+    ChemicalUnitID: number;
     TotalApplied?: number;
     AcresTreated?: number;
     constructor(obj?: any) {

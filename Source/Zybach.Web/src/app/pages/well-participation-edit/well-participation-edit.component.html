@@ -142,7 +142,7 @@
                                         <label><strong>Well Depth: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="text" class="form-control" name="WellDepth" mask="000000.0000"
+                                        <input type="text" class="form-control" name="WellDepth" [dropSpecialCharacters]="false" mask="0*.0000"
                                         [(ngModel)]="wellParticipationInfo.WellDepth" placeholder="Well Depth" />
                                     </div>
 
@@ -158,7 +158,7 @@
                                         <label><strong>Screen Depth: </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
-                                        <input type="text" class="form-control" name="ScreenDepth" mask="000000.0000"
+                                        <input type="text" class="form-control" name="ScreenDepth" [dropSpecialCharacters]="false" mask="0*.0000"
                                         [(ngModel)]="wellParticipationInfo.ScreenDepth" placeholder="Screen Depth" />
                                     </div>
 

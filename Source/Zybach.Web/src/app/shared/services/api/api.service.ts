@@ -19,7 +19,7 @@ export class ApiService {
     constructor(private busyService: BusyService, private apiRoute: ApiRouteService, private http: HttpClient, private alertService: AlertService, private oauthService: OAuthService, private router: Router, ) {
     }
 
-    postToApi(relativeRoute: string, data: any): Observable<any> {
+    postToApi(relativeRoute: string, data: any, responseType : string = null): Observable<any> {
 
         this.busyService.setBusy(true);
 
@@ -32,7 +32,8 @@ export class ApiService {
         const baseRoute = this.apiRoute.getRoute();
         const route = `${baseRoute}/${relativeRoute}`;
 
-        return this.http.post(route, data)
+        const options = responseType ? {'responseType' : responseType} : {};
+        return this.http.post(route, data, options as any)
             .pipe(
                 map((response: any) => {
                     return this.handleResponse(response);

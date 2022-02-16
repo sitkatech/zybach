@@ -81,6 +81,26 @@ namespace Zybach.API.Services
             }).ToList();
         }
 
+        public async Task<List<WellSensorMeasurementStaging>> GetWaterLevelSeries(DateTime fromDate)
+        {
+            var flux = FilterByDateRange(fromDate, DateTime.Now) +
+                       FilterByMeasurement(new List<string> { MeasurementNames.Depth }) +
+                       FilterByField(FieldNames.WaterBelowGroundLevel) +
+                       GroupBy(new List<string> { FieldNames.RegistrationID, FieldNames.SensorName }) +
+                       AggregateMeanDaily(false);
+
+            var fluxTables = await RunInfluxQueryAsync(flux);
+            return fluxTables.Select(x => new WellSensorMeasurementStaging
+            {
+                WellRegistrationID = x.RegistrationID,
+                ReadingYear = x.Time.Year,
+                ReadingMonth = x.Time.Month,
+                ReadingDay = x.Time.Day,
+                MeasurementTypeID = (int)MeasurementTypeEnum.WellPressure,
+                MeasurementValue = x.Value,
+                SensorName = x.Sensor
+            }).ToList();
+        }
 
         public async Task<Dictionary<string, int>> GetLastMessageAgeBySensor()
         {
@@ -126,6 +146,11 @@ namespace Zybach.API.Services
         private static string AggregateSumDaily(bool createEmpty)
         {
             return $"|> aggregateWindow(every: 1d, fn: sum, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\", offset: 5h)";
+        }
+
+        private static string AggregateMeanDaily(bool createEmpty)
+        {
+            return $"|> aggregateWindow(every: 1d, fn: mean, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\", offset: 5h)";
         }
 
         private string FilterByStartDate()
@@ -238,6 +263,7 @@ namespace Zybach.API.Services
 
             public const string Gallons = "gallons";
             public const string Continuity = "continuity";
+            public const string Depth = "depth";
         }
 
         private struct FieldNames
@@ -248,6 +274,7 @@ namespace Zybach.API.Services
             public const string On = "on";
             public const string Field = "_field";
             public const string Pumped = "pumped";
+            public const string WaterBelowGroundLevel = "water-bgl";
         }
     }
 }

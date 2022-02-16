@@ -1,0 +1,51 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/water-level-inspections">Water Level Inspections</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Add Inspection
+        </li>
+    </ol>
+</nav>
+
+<div class="container" *ngIf="inspection">
+    <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">Add Inspection</h2>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <p>Add a water level inspection record using the form below
+            </p>
+        </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit(addWaterLevelInspectionForm)" #addWaterLevelInspectionForm="ngForm" class="container">
+
+        <zybach-water-level-inspection-upsert #inspectionUpsertForm [(inspection)]="inspection">
+        </zybach-water-level-inspection-upsert >
+
+        <div class="col-12 text-right mt-3 mr-3">
+            <div class="col-sm text-left float-right">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
+            <button type="submit" class="btn btn-zybach mr-1">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+            <a class="btn btn-secondary ml-1"
+                routerLink="..">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+

@@ -1,0 +1,302 @@
+<nav aria-label="breadcrumb" *ngIf="waterLevelInspection">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/water-level-inspections">Water Level Inspections</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a routerLink="/wells/{{waterLevelInspection.Well.WellID}}">Well #{{waterLevelInspection.Well.WellRegistrationID}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {{waterLevelInspection.InspectionDate | date:'MM/dd/yyyy, h:mm a'}}
+        </li>
+    </ol>
+</nav>
+<app-alert-display></app-alert-display>
+<div class="row container" *ngIf="waterLevelInspection">
+    <div class="col-12">
+        <h2 class="d-inline-block">{{waterLevelInspection.InspectionDate | date:'MM/dd/yyyy, h:mm a'}}</h2>
+    </div>
+    <div class="row container" *ngIf="waterLevelInspection">
+        <div class="col-12 col-sm-6 label"><strong>Well: </strong></div>
+        <div class="col-12 col-sm-6"><a *ngIf="waterLevelInspection.Well" routerLink="/wells/{{waterLevelInspection.Well.WellID}}">{{waterLevelInspection.Well.WellRegistrationID}}</a></div>
+        <div class="col-12 col-sm-6 label"><strong>Inspected By: </strong></div>
+        <div class="col-12 col-sm-6"><a *ngIf="waterLevelInspection.Inspector" routerLink="/users/{{waterLevelInspection.Inspector.UserID}}">{{waterLevelInspection.Inspector.FullNameLastFirst}}</a></div>
+        <div class="col-12 col-sm-6 label" *ngIf="waterLevelInspection.WaterLevelInspectionStatus"><strong>Inspection Status: </strong></div>
+        <div class="col-12 col-sm-6" *ngIf="waterLevelInspection.WaterLevelInspectionStatus">{{waterLevelInspection.WaterLevelInspectionStatus}}</div>
+        <div class="col-12 col-sm-6 label"><strong>Nickname: </strong></div>
+        <div class="col-12 col-sm-6">{{waterLevelInspection.InspectionNickname}}</div>
+    </div>
+</div>
+<div class="row mt-4 container" *ngIf="waterLevelInspection">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row col-12">
+                    <div class="row col-6">
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Measurement: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterLevelInspection.Measurement}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Measuring Equipment: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterLevelInspection.MeasuringEquipment}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Has Oil? </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterLevelInspection.HasOil ? 'Yes' : 'No'}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Has Broken Tape? </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterLevelInspection.HasBrokenTape ? 'Yes' : 'No'}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Accuracy: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterLevelInspection.Accuracy}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Method: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterLevelInspection.Method}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Crop: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{waterLevelInspection.Crop}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Notes: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.InspectionNotes}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row col-6">
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Party: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.Party}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Source Agency: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.SourceAgency}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Source Code: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.SourceCode}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Time Datum Code: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.TimeDatumCode}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Time Datum Reliability: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.TimeDatumReliability}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Level Type Code: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.LevelTypeCode}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Agency Code: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.AgencyCode}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Access: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.Access}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Hold: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.Hold}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Cut: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.Cut}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>MP: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.MP}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Primary? </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.IsPrimary ? 'Yes' : 'No'}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Water Level: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    {{waterLevelInspection.WaterLevel}}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row float-right mt-3">
+            <a class="btn btn-zybach btn-md float-right mr-3"
+                routerLink="/water-level-inspections/{{waterLevelInspection.WaterLevelInspectionID}}/edit">
+                <span class="fas fa-edit"></span> Edit Inspection
+            </a>
+            
+            <button type="button" class="btn btn-zybach btn-md mr-3" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(waterLevelInspection.WaterLevelInspectionID)">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                <span class="fas fa-trash"></span> Delete Inspection
+            </button>
+        </div>
+    </div>
+</div>
+
+<ng-template #deleteInspectionModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Confirm Delete</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to delete this inspection? This action cannot be undone
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-zybach btn-md" [disabled]="isPerformingAction" (click)="deleteInspectionByID()">
+            <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+            Confirm
+        </button>
+        <button type="button" class="btn btn-secondary btn-md" (click)="modal.close('Cancel click')"
+            [disabled]="isPerformingAction">
+            Cancel
+        </button>
+    </div>
+</ng-template>

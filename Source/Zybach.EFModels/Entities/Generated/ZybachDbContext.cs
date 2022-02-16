@@ -63,6 +63,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<Tillage> Tillages { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WaterLevelInspection> WaterLevelInspections { get; set; }
+        public virtual DbSet<WaterLevelMeasuringEquipment> WaterLevelMeasuringEquipments { get; set; }
         public virtual DbSet<WaterQualityInspection> WaterQualityInspections { get; set; }
         public virtual DbSet<WaterQualityInspectionType> WaterQualityInspectionTypes { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
@@ -631,6 +632,13 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.WaterLevelInspections)
                     .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<WaterLevelMeasuringEquipment>(entity =>
+            {
+                entity.Property(e => e.WaterLevelMeasuringEquipmentDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.WaterLevelMeasuringEquipmentName).IsUnicode(false);
             });
 
             modelBuilder.Entity<WaterQualityInspection>(entity =>

@@ -5,7 +5,7 @@ namespace Zybach.Models.DataTransferObjects
     public class ClearinghouseWaterQualityInspectionDto
     {
         public string WellRegistrationID { get; set; }
-        public string? WellNickname { get; set; }
+        public string WellNickname { get; set; }
         public string Clearinghouse { get; set; }
         public string Contaminant { get; set; }
         public DateTime SamplingDate { get; set; }
@@ -18,8 +18,8 @@ namespace Zybach.Models.DataTransferObjects
         public string WaterQualityInspectionType { get; set; }
         public string TownshipRangeSection { get; set; }
         public decimal? WellDepth { get; set; }
-        public string? WellParticipation { get; set; }
-        public string? WellUse { get; set; }
+        public string WellParticipation { get; set; }
+        public string WellUse { get; set; }
         public decimal? WellPreLevel { get; set; }
         public decimal? WellPostLevel { get; set; }
         public string ScreenInterval { get; set; }

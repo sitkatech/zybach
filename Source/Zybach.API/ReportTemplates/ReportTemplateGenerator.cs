@@ -46,13 +46,13 @@ namespace Zybach.API.ReportTemplates
         private void InitializeTempFolders(DirectoryInfo directoryInfo)
         {
             var tempPath = directoryInfo;
-            var baseTempDirectory = new DirectoryInfo($"{tempPath.FullName}\\{TemplateTempDirectoryName}\\");
+            var baseTempDirectory = new DirectoryInfo($"{tempPath.FullName}{TemplateTempDirectoryName}");
             baseTempDirectory.Create();
             FullTemplateTempDirectory = baseTempDirectory.FullName;
             FullTemplateTempImageDirectory = baseTempDirectory.CreateSubdirectory(TemplateTempImageDirectoryName).FullName;
         }
 
-        public void Generate(ZybachDbContext dbContext)
+        public void Generate(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
         {
             var templatePath = GetTemplatePath();
             DocxDocument document;
@@ -61,7 +61,7 @@ namespace Zybach.API.ReportTemplates
             // todo: if someone generates a report with all wells, the resulting .docx can get up to 3gb+ depending on the tenant, how do we want to handle this situation?
             if (TemplateHasImages(templatePath))
             {
-                SaveImageFilesToTempDirectory();
+                SaveImageFilesToTempDirectory(dbContext, vegaRenderService);
             }
 
             // Word will insert hidden bookmarks apparently. Bookmarks seem to cause a good amount of issues with the generation
@@ -77,6 +77,13 @@ namespace Zybach.API.ReportTemplates
                         ReportModel = GetListOfChemigationPermitDetailedModels(dbContext)
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, chemigationPermitDetailedBaseViewModel);
+                    break;
+                case ReportTemplateModelEnum.WellWaterQualityInspection:
+                    var wellWaterQualityInspectionBaseViewModel = new ReportTemplateWellWaterQualityInspectionBaseViewModel()
+                    {
+                        ReportModel = GetListOfWellWaterQualityInspectionModels(dbContext)
+                    };
+                    document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterQualityInspectionBaseViewModel);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -131,23 +138,23 @@ namespace Zybach.API.ReportTemplates
         /// when the report generates. This allows us to create a helper on the ReportTemplateProjectImage model that can then call Image() and pass in the
         /// same file name (that uses the file resource unique GUID)
         /// </summary>
-        private void SaveImageFilesToTempDirectory()
+        private async void SaveImageFilesToTempDirectory(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
         {
-            //TODO
-            // switch (ReportTemplateModelEnum)
-            // {
-            //     case ReportTemplateModelEnum.Well:
-            //         var projectsList = HttpRequestStorage.DatabaseEntities.Projects.Where(x => SelectedModelIDs.Contains(x.ProjectID)).ToList();
-            //         var projectImages = projectsList.SelectMany(x => x.ProjectImages).ToList();
-            //         foreach (var projectImage in projectImages)
-            //         {
-            //             var imagePath = $"{FullTemplateTempImageDirectory}\\{projectImage.FileResource.GetFullGuidBasedFilename()}";
-            //             CorrectImageProblemsAndSaveToDisk(projectImage, imagePath);
-            //         }
-            //         break;
-            //     default:
-            //         throw new ArgumentOutOfRangeException();
-            // }
+             switch (ReportTemplateModelEnum)
+            {
+                case ReportTemplateModelEnum.ChemigationPermit:
+                    var chemigationPermitsList = dbContext.ChemigationPermits.Where(x => SelectedModelIDs.Contains(x.ChemigationPermitID)).ToList();
+                    foreach (var chemigationPermit in chemigationPermitsList)
+                    {
+                        var imageByteArray = await vegaRenderService.PrintPNG(ChemigationPermits.TempHardCodedVegaSpec(chemigationPermit.ChemigationPermitID));
+                        var imagePath = $"{FullTemplateTempImageDirectory}/{chemigationPermit.ChemigationPermitID}";
+                        File.WriteAllBytes($"{imagePath}.png", imageByteArray);
+                        //CorrectImageProblemsAndSaveToDisk(projectImage, imagePath);
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         /// <summary>
@@ -165,24 +172,24 @@ namespace Zybach.API.ReportTemplates
         ///
         /// todo: let the owner of the SharpDocx repository know about these issues to be able to set defaults there instead
         /// </summary>
-        // private static void CorrectImageProblemsAndSaveToDisk(ProjectImage projectImage, string imagePath)
-        // {
-        //     // // in order to save time on subsequent reports, we should check to see if the file already exists at the path and return early
-        //     // var fileInfo = new FileInfo(imagePath);
-        //     // if (fileInfo.Exists)
-        //     // {
-        //     //     return;
-        //     // }
-        //     //
-        //     // using (var ms = new MemoryStream(projectImage.FileResource.FileResourceData.Data))
-        //     // {
-        //     //     var bitmap = new Bitmap(ms);
-        //     //     using (Bitmap newBitmap = new Bitmap(bitmap))
-        //     //     {
-        //     //         newBitmap.Save(imagePath, ImageFormat.Jpeg);
-        //     //     }
-        //     // }
-        // }
+        //private static void CorrectImageProblemsAndSaveToDisk(ProjectImage projectImage, string imagePath)
+        //{
+        //    // in order to save time on subsequent reports, we should check to see if the file already exists at the path and return early
+        //    var fileInfo = new FileInfo(imagePath);
+        //    if (fileInfo.Exists)
+        //    {
+        //        return;
+        //    }
+
+        //    using (var ms = new MemoryStream(projectImage.FileResource.FileResourceData.Data))
+        //    {
+        //        var bitmap = new Bitmap(ms);
+        //        using (Bitmap newBitmap = new Bitmap(bitmap))
+        //        {
+        //            newBitmap.Save(imagePath, ImageFormat.Png);
+        //        }
+        //    }
+        //}
 
         private void CleanTempDirectoryOfOldFiles(string targetDirectory)
         {
@@ -219,7 +226,7 @@ namespace Zybach.API.ReportTemplates
         /// <returns></returns>
         private string GetTemplatePath()
         {
-            var fileName = new FileInfo($"{FullTemplateTempDirectory}{ReportTemplateUniqueIdentifier}-{ReportTemplate.FileResource.OriginalBaseFilename}");
+            var fileName = new FileInfo($"{FullTemplateTempDirectory}/{ReportTemplateUniqueIdentifier}-{ReportTemplate.FileResource.OriginalBaseFilename}");
             fileName.Directory.Create();
             return fileName.FullName;
         }
@@ -230,7 +237,7 @@ namespace Zybach.API.ReportTemplates
         /// <returns></returns>
         public string GetCompilePath()
         {
-            var fileName = new FileInfo($"{FullTemplateTempDirectory}{ReportTemplateUniqueIdentifier}-generated-{ReportTemplate.FileResource.OriginalBaseFilename}");
+            var fileName = new FileInfo($"{FullTemplateTempDirectory}/{ReportTemplateUniqueIdentifier}-generated-{ReportTemplate.FileResource.OriginalBaseFilename}");
             fileName.Directory.Create();
             return fileName.FullName;
         }
@@ -243,7 +250,15 @@ namespace Zybach.API.ReportTemplates
             return listOfModels;
         }
 
-        public static void ValidateReportTemplate(ReportTemplate reportTemplate, out bool reportIsValid, out string errorMessage, out string sourceCode, ZybachDbContext dbContext, ILogger logger)
+        private List<ReportTemplateWellWaterQualityInspectionModel> GetListOfWellWaterQualityInspectionModels(ZybachDbContext dbContext)
+        {
+            var listOfModels = Wells.ListByWellIDsAsWellWaterQualityInspectionDetailedDto(dbContext, SelectedModelIDs)
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.Well.WellID))
+                .Select(x => new ReportTemplateWellWaterQualityInspectionModel(x)).ToList();
+            return listOfModels;
+        }
+
+        public static void ValidateReportTemplate(ReportTemplate reportTemplate, out bool reportIsValid, out string errorMessage, out string sourceCode, ZybachDbContext dbContext, ILogger logger, VegaRenderService.VegaRenderService vegaRenderService)
         {
             errorMessage = "";
             sourceCode = "";
@@ -257,14 +272,17 @@ namespace Zybach.API.ReportTemplates
                     // SMG 2/17/2020 this can cause problems with templates failing only some of the time, but it feels costly to validate against every single model in the system
                     selectedModelIDs = dbContext.ChemigationPermits.AsNoTracking().Where(x => x.ChemigationPermitAnnualRecords.Count > 0).Select(x => x.ChemigationPermitID).Take(10).ToList();
                     break;
+                case ReportTemplateModelEnum.WellWaterQualityInspection:
+                    selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            ValidateReportTemplateForSelectedModelIDs(reportTemplate, selectedModelIDs, out reportIsValid, out errorMessage, out sourceCode, logger, dbContext);
+            ValidateReportTemplateForSelectedModelIDs(reportTemplate, selectedModelIDs, out reportIsValid, out errorMessage, out sourceCode, logger, dbContext, vegaRenderService);
         }
 
-        public static void ValidateReportTemplateForSelectedModelIDs(ReportTemplate reportTemplate, List<int> selectedModelIDs, out bool reportIsValid, out string errorMessage, out string sourceCode, ILogger logger, ZybachDbContext dbContext)
+        public static void ValidateReportTemplateForSelectedModelIDs(ReportTemplate reportTemplate, List<int> selectedModelIDs, out bool reportIsValid, out string errorMessage, out string sourceCode, ILogger logger, ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
         {
             errorMessage = "";
             sourceCode = "";
@@ -272,7 +290,7 @@ namespace Zybach.API.ReportTemplates
             var tempDirectory = reportTemplateGenerator.GetCompilePath();
             try
             {
-                reportTemplateGenerator.Generate(dbContext);
+                reportTemplateGenerator.Generate(dbContext, vegaRenderService);
                 reportIsValid = true;
             }
             catch (SharpDocxCompilationException exception)

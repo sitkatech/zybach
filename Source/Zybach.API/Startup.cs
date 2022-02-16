@@ -182,6 +182,8 @@ namespace Zybach.API
 
             services.AddControllers();
 
+            services.AddVegaRenderService(zybachConfiguration.VEGA_RENDER_URL, logger);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zybach", Version = "v1" });

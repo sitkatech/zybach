@@ -39,6 +39,14 @@ namespace Zybach.API.Controllers
             return Ok(wellParticipationDtos);
         }
 
+        [HttpGet("/api/wells/inspectionSummaries")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<WellInspectionSummaryDto>> GetWellInspectionSummaries()
+        {
+            var wellInspectionSummaryDtos = Wells.ListAsWellInspectionSummaryDtos(_dbContext);
+            return Ok(wellInspectionSummaryDtos);
+        }
+
         [HttpGet("/api/wells/search/{wellRegistrationID}")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
@@ -75,6 +83,14 @@ namespace Zybach.API.Controllers
         {
             var waterQualityInspectionSummaryDtos = WaterQualityInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
             return Ok(waterQualityInspectionSummaryDtos);
+        }
+
+        [HttpGet("/api/wells/{wellID}/simpleDto")]
+        [ZybachViewFeature]
+        public ActionResult<WellSimpleDto> GetWellSimpleDto([FromRoute] int wellID)
+        {
+            var wellSimpleDto = Wells.GetByIDAsSimpleDto(_dbContext, wellID);
+            return Ok(wellSimpleDto);
         }
 
         [HttpGet("/api/wells/{wellID}")]
@@ -138,8 +154,8 @@ namespace Zybach.API.Controllers
                 wellDetailDto.InAgHub = false;
             }
 
-            var firstReadingDate = WellSensorMeasurement.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
-            var lastReadingDate = WellSensorMeasurement.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
+            var firstReadingDate = WellSensorMeasurements.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
+            var lastReadingDate = WellSensorMeasurements.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
 
             wellDetailDto.FirstReadingDate = firstReadingDate;
             wellDetailDto.LastReadingDate = lastReadingDate;
@@ -161,7 +177,7 @@ namespace Zybach.API.Controllers
 
             if (wellDetailDto.HasElectricalData)
             {
-                var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
                 var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                     .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue),
                         MeasurementTypes.ElectricalUsage)).ToList();
@@ -331,7 +347,7 @@ namespace Zybach.API.Controllers
                 return new List<AnnualPumpedVolume>();
             }
 
-            var wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
+            var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
 
             var annualPumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                 .Select(x => new AnnualPumpedVolume(x.Key,x.Sum(y => y.MeasurementValue), sensorType)).ToList();

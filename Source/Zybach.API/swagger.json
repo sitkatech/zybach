@@ -3054,6 +3054,95 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/waterLevelInspections/measuringEquipment": {
+      "get": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelMeasuringEquipmentDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelMeasuringEquipmentDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WaterLevelMeasuringEquipmentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/waterLevelInspections/{waterLevelInspectionID}": {
@@ -3092,6 +3181,72 @@
                 }
               }
             }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterLevelInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WaterLevelInspectionUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "WaterLevelInspection"
+        ],
+        "parameters": [
+          {
+            "name": "waterLevelInspectionID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -3443,6 +3598,44 @@
         }
       }
     },
+    "/api/wells/inspectionSummaries": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/search/{wellRegistrationID}": {
       "get": {
         "tags": [
@@ -3678,6 +3871,46 @@
                   "items": {
                     "$ref": "#/components/schemas/WaterQualityInspectionSummaryDto"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/wells/{wellID}/simpleDto": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellSimpleDto"
                 }
               }
             }
@@ -5957,6 +6190,24 @@
         },
         "additionalProperties": false
       },
+      "MeasurementTypeDto": {
+        "type": "object",
+        "properties": {
+          "MeasurementTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "MeasurementTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "MonthlyPumpedVolume": {
         "type": "object",
         "properties": {
@@ -6238,6 +6489,23 @@
           "MessageAge": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "FirstReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "WellSensorMeasurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellSensorMeasurementDto"
+            },
             "nullable": true
           }
         },
@@ -6819,6 +7087,78 @@
             "nullable": true
           },
           "MeasuringEquipment": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterLevelInspectionUpsertDto": {
+        "required": [
+          "HasBrokenTape",
+          "HasOil",
+          "InspectionDate",
+          "InspectorUserID",
+          "WellRegistrationID"
+        ],
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string"
+          },
+          "InspectionDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "InspectorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Measurement": {
+            "maximum": 99999999.9999,
+            "minimum": 0,
+            "pattern": "^\\d{0,8}\\.?\\d{0,4}|\\.\\d{0,4}$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "MeasuringEquipment": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasOil": {
+            "type": "boolean"
+          },
+          "HasBrokenTape": {
+            "type": "boolean"
+          },
+          "InspectionNickname": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          },
+          "InspectionNotes": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterLevelMeasuringEquipmentDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelMeasuringEquipmentID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterLevelMeasuringEquipmentName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterLevelMeasuringEquipmentDisplayName": {
             "type": "string",
             "nullable": true
           }
@@ -7598,6 +7938,31 @@
         },
         "additionalProperties": false
       },
+      "WellInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterLevelInspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterQualityInspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellNewDto": {
         "required": [
           "Latitude",
@@ -7745,6 +8110,55 @@
             "maxLength": 100,
             "minLength": 0,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellSensorMeasurementDto": {
+        "type": "object",
+        "properties": {
+          "WellSensorMeasurementID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementType": {
+            "$ref": "#/components/schemas/MeasurementTypeDto"
+          },
+          "ReadingYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReadingMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReadingDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "MeasurementDateInPacificTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MeasurementDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MeasurementValueString": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

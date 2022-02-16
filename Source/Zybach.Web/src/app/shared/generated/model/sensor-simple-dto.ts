@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { WellSensorMeasurementDto } from '././well-sensor-measurement-dto';
 
 export class SensorSimpleDto { 
     SensorID?: number;
@@ -22,6 +23,9 @@ export class SensorSimpleDto {
     WellRegistrationID?: string;
     SensorTypeName?: string;
     MessageAge?: number;
+    FirstReadingDate?: string;
+    LastReadingDate?: string;
+    WellSensorMeasurements?: Array<WellSensorMeasurementDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

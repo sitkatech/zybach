@@ -1,0 +1,50 @@
+<nav aria-label="breadcrumb" *ngIf="waterLevelInspection">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/water-level-inspections">Water Level Inspections</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a routerLink="/wells/{{waterLevelInspection.WellID}}">Well #{{waterLevelInspection.WellRegistrationID}}</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page">
+            <a routerLink="/water-level-inspections/{{waterLevelInspectionID}}">{{waterLevelInspection.InspectionDate | date:'MM/dd/yyyy, h:mm a'}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Edit Inspection
+        </li>
+    </ol>
+</nav>
+<app-alert-display></app-alert-display>
+<div class="row container" *ngIf="waterLevelInspection">
+    <div class="row col-12 mt-2 ml-2">
+        <h2 class="d-inline-block">Edit Inspection</h2>
+    </div>
+
+    <div class="row col-12 mt-2 ml-2">
+        <p>Edit water level inspection record using the form below
+        </p>
+    </div>
+
+    <form (ngSubmit)="onSubmit(editWaterLevelInspectionForm)" #editWaterLevelInspectionForm="ngForm" class="container">
+
+        <zybach-water-level-inspection-upsert #inspectionUpsertForm
+        [(inspection)]="waterLevelInspection">
+        </zybach-water-level-inspection-upsert >
+
+        <div class="col-12 text-right mt-3 mr-3">
+            <div class="col-sm text-left float-right">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
+            <button type="submit" class="btn btn-zybach mr-1">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+            <a class="btn btn-secondary ml-1"
+                routerLink="..">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>

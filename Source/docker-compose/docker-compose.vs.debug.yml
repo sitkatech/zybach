@@ -18,3 +18,11 @@ services:
       - Kestrel__Certificates__Default__Password=password#1
     volumes:
       - ~/.aspnet/https:/https:ro
+
+  vegarenderservice:
+    container_name: zybach_vegarenderservice
+    image: sitkacontainers.azurecr.io/vegarenderservice:latest
+    environment:
+      - PORT=8090
+    ports:
+      - 127.0.0.1:8090:8090

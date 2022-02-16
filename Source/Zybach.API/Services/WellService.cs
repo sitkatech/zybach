@@ -24,8 +24,8 @@ namespace Zybach.API.Services
         public List<WellWithSensorSummaryDto> GetAghubAndGeoOptixWells()
         {
             var wells = Wells.ListAsWellWithSensorSummaryDto(_dbContext);
-            var lastReadingDateTimes = WellSensorMeasurement.GetLastReadingDateTimes(_dbContext);
-            var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
+            var lastReadingDateTimes = WellSensorMeasurements.GetLastReadingDateTimes(_dbContext);
+            var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(_dbContext);
             wells.ForEach(x =>
             {
                 x.LastReadingDate = lastReadingDateTimes.ContainsKey(x.WellRegistrationID)
@@ -42,7 +42,7 @@ namespace Zybach.API.Services
         public List<RobustReviewDto> GetRobustReviewDtos()
         {
             var wellWithSensorSummaryDtos = GetAghubAndGeoOptixWells();
-            var firstReadingDateTimes = WellSensorMeasurement.GetFirstReadingDateTimes(_dbContext);
+            var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(_dbContext);
             var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();
         }
@@ -59,7 +59,7 @@ namespace Zybach.API.Services
             List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
             if (wellWithSensorSummaryDto.HasElectricalData)
             {
-                wellSensorMeasurementDtos = WellSensorMeasurement.GetWellSensorMeasurementsForWellByMeasurementType(
+                wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(
                     _dbContext,
                     wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
                 dataSource = MeasurementTypes.ElectricalUsage;
@@ -68,7 +68,7 @@ namespace Zybach.API.Services
             {
                 const string continuityMeter = MeasurementTypes.ContinuityMeter;
                 wellSensorMeasurementDtos =
-                    WellSensorMeasurement.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
+                    WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
                         wellRegistrationID,
                         new List<MeasurementTypeEnum>
                             {MeasurementTypeEnum.ContinuityMeter, MeasurementTypeEnum.FlowMeter},

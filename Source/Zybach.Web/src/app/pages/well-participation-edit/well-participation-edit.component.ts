@@ -58,7 +58,7 @@ export class WellParticipationEditComponent implements OnInit {
 
   public onSubmit(editWellParticipationForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-  
+    
     this.wellService.updateWellParticipationDetails(this.wellID, this.wellParticipationInfo)
       .subscribe(response => {
         this.isLoadingSubmit = false;

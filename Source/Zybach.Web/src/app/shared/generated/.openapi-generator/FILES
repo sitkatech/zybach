@@ -52,6 +52,7 @@ model/icrs-object.ts
 model/installation-record-dto.ts
 model/interval-volume-dto.ts
 model/irrigated-acres-per-year-dto.ts
+model/measurement-type-dto.ts
 model/models.ts
 model/monthly-pumped-volume.ts
 model/report-template-dto.ts
@@ -78,6 +79,8 @@ model/user-upsert-dto.ts
 model/volume-by-well.ts
 model/water-level-inspection-simple-dto.ts
 model/water-level-inspection-summary-dto.ts
+model/water-level-inspection-upsert-dto.ts
+model/water-level-measuring-equipment-dto.ts
 model/water-quality-inspection-simple-dto.ts
 model/water-quality-inspection-summary-dto.ts
 model/water-quality-inspection-type-dto.ts
@@ -86,10 +89,12 @@ model/well-chart-data-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
+model/well-inspection-summary-dto.ts
 model/well-new-dto.ts
 model/well-participation-dto.ts
 model/well-participation-info-dto.ts
 model/well-registration-id-dto.ts
+model/well-sensor-measurement-dto.ts
 model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-with-sensor-message-age-dto.ts

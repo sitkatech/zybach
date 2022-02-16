@@ -17,8 +17,6 @@ import { ReportTemplateService } from 'src/app/shared/services/report-template.s
 })
 export class ReportTemplateEditComponent implements OnInit, OnDestroy {
   @ViewChild('fileUpload') fileUpload: any;
-
-
   
   private currentUser: UserDto;
 
