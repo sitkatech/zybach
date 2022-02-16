@@ -11,7 +11,7 @@ namespace Zybach.API
     public class GETUpdateStatusOfNonTerminalRunJob : ScheduledBackgroundJobBase<GETUpdateStatusOfNonTerminalRunJob>
     {
         private readonly GETService _GETService;
-        public const string JobName = "GET Update Status Of Non-Terminal Run Semi-Hourly";
+        public const string JobName = "GET Update Status Of Non-Terminal Run Every 6 Hours";
 
         public GETUpdateStatusOfNonTerminalRunJob(IWebHostEnvironment webHostEnvironment, ILogger<GETUpdateStatusOfNonTerminalRunJob> logger,
             ZybachDbContext zybachDbContext, GETService GETService) : base(
