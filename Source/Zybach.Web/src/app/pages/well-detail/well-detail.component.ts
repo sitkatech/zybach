@@ -7,24 +7,13 @@ import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { AsyncParser } from 'json2csv';
 
-import {
-  GeoJSON,
-  marker,
-  map,
-  Map as LeafletMap,
-  MapOptions,
-  tileLayer,
-  icon} from 'leaflet';
-import 'leaflet.icon.glyph';
-import 'leaflet.fullscreen';
-import {GestureHandling} from 'leaflet-gesture-handling';
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
-import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
+
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -44,9 +33,9 @@ import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/che
   templateUrl: './well-detail.component.html',
   styleUrls: ['./well-detail.component.scss']
 })
-export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
+
+export class WellDetailComponent implements OnInit, OnDestroy {
   @ViewChild('dp') mydp: AngularMyDatePickerDirective;
-  @ViewChild('wellLocation') mapContainer;  
   @ViewChild('waterLevelInspectionsGrid') waterLevelInspectionsGrid: AgGridAngular;
   @ViewChild('waterQualityInspectionsGrid') waterQualityInspectionsGrid: AgGridAngular;
   
@@ -57,8 +46,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   public defaultColDef: ColDef;
 
   public watchUserChangeSubscription: any;
-
-  maxZoom = 17;
 
   currentUser: UserDto;
   chartSubscription: any;
@@ -75,9 +62,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   tooltipFields: any;
   noTimeSeriesData: boolean = false;
   sensors: any;
-  boundingBox: any;
-  tileLayers: any;
-  map: LeafletMap;
+
   photoDataUrl: string | ArrayBuffer;
   years: number[];
   legendNames: any[];
@@ -92,8 +77,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   // to set initial date range value using the selDateRange attribute.
   dateRange: any;
   public unitsShown: string = "gal";
-
-  public isInAgHubOrGeoOptix: boolean;
 
   public isLoadingSubmit: boolean = false;
 
@@ -143,8 +126,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const startDate = new Date(currentYear, 0, 1)
     this.initDateRange(startDate, currentDate);
-
-    this.initMapConstants();
 
     this.initializeWaterLevelInspectionsGrid();
     this.initializeWaterQualityInspectionsGrid();
@@ -310,15 +291,8 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.wellService.getWellDetails(this.wellID).subscribe((well: WellDetailDto)=>{
       this.well = well;
       this.wellRegistrationID = well.WellRegistrationID;
-      this.isInAgHubOrGeoOptix = this.well.InAgHub || this.well.InGeoOptix;
       this.cdr.detectChanges();
-      
-      if (well.Location != null && well.Location != undefined) {
-        this.addWellToMap();
-      }
-      else {
-        this.alertService.pushAlert(new Alert(`No location was provided for ${well.WellRegistrationID}.`))
-      }
+    
     })
   }
 
@@ -488,83 +462,6 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   public toggleUnitsShown(units : string): void {
     this.unitsShown = units;
   }
-  
-  // Begin section: location map
-
-  public ngAfterViewInit(): void {
-    
-    LeafletMap.addInitHook("addHandler", "gestureHandling", GestureHandling);
-    const mapOptions: MapOptions = {
-      maxZoom: this.maxZoom,
-      layers: [
-        this.tileLayers["Aerial"],
-      ],
-      gestureHandling: true,
-      fullscreenControl: true
-    } as MapOptions;
-    this.map = map(this.mapContainer.nativeElement, mapOptions);
-
-    this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], null);
-
-  }
-
-  public initMapConstants() {
-    this.boundingBox = DefaultBoundingBox;
-
-    this.tileLayers = Object.assign({}, {
-      "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Aerial',
-      }),
-      "Street": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Aerial',
-      }),
-      "Terrain": tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Terrain',
-      }),
-    }, this.tileLayers);
-  }
-
-  public addWellToMap() {
-    const sensorTypes = this.well.Sensors.map(x => x.SensorType);
-    let mapIcon;
-
-    if (sensorTypes.includes("Flow Meter")) {
-      mapIcon = icon.glyph({
-        prefix: "fas",
-        glyph: "tint",
-        iconUrl: "/assets/main/flowMeterMarker.png"
-      });
-    } else if (sensorTypes.includes("Continuity Meter")) {
-      mapIcon = icon.glyph({
-        prefix: "fas",
-        glyph: "tint",
-        iconUrl: "/assets/main/continuityMeterMarker.png"
-      });
-    } else if (sensorTypes.includes("Electrical Usage")) {
-      mapIcon = icon.glyph({
-        prefix: "fas",
-        glyph: "tint",
-        iconUrl: "/assets/main/electricalDataMarker.png"
-      });
-    } else {
-      mapIcon = icon.glyph({
-        prefix: "fas",
-        glyph: "tint",
-        iconUrl: "/assets/main/noDataSourceMarker.png"
-      });
-    }
-    const wellLayer = new GeoJSON(this.well.Location, {
-      pointToLayer: function (feature, latlng) {
-        return marker(latlng, {icon: mapIcon});
-      }
-    });
-    wellLayer.addTo(this.map);
-    
-    let target = (this.map as any)._getBoundsCenterZoom(wellLayer.getBounds(), null);
-    this.map.setView(target.center, 16, null);
-  }
-
-  // End section: location map
 
   // Begin section: chart
 
