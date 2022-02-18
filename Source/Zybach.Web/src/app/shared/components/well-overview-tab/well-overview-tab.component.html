@@ -7,7 +7,7 @@
                         <div class="card-header">
                             Basics
                             <div class="float-right">
-                                <a [ngClass]="{'btn': true, 'btn-zybach': true, 'btn-sm': true, 'float-right': true, 'disabled': isInAgHubOrGeoOptix()}"
+                                <a class="btn btn-zybach btn-sm float-right" [ngClass]="{'disabled': isInAgHubOrGeoOptix()}"
                                     routerLink="/wells/{{well.WellID}}/edit-registration-id">
                                     <span class="fas fa-edit"></span> Edit Reg. ID
                                 </a>

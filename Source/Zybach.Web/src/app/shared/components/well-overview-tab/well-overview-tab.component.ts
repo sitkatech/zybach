@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import moment from 'moment';
 import { WellDetailDto } from '../../generated/model/well-detail-dto';
 import {
@@ -8,7 +8,7 @@ import {
   Map as LeafletMap,
   MapOptions,
   tileLayer,
-  icon} from 'leaflet';
+  icon } from 'leaflet';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';

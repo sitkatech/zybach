@@ -88,6 +88,8 @@ import { WaterLevelInspectionUpsertComponent } from './shared/components/water-l
 import { WaterLevelInspectionEditComponent } from './pages/water-level-inspection-edit/water-level-inspection-edit.component';
 import { WellInspectionReportsComponent } from './pages/well-inspection-reports/well-inspection-reports.component';
 import { WellOverviewTabComponent } from './shared/components/well-overview-tab/well-overview-tab.component';
+import { WellWaterDataTabComponent } from './shared/components/well-water-data-tab/well-water-data-tab.component';
+import { WellPermitsInspectionsTabComponent } from './shared/components/well-permits-inspections-tab/well-permits-inspections-tab.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -148,6 +150,8 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WaterQualityInspectionEditComponent, 
     WaterLevelInspectionUpsertComponent,
     WellOverviewTabComponent,
+    WellWaterDataTabComponent,
+    WellPermitsInspectionsTabComponent,
     WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WellInspectionReportsComponent
   ],
   imports: [
