@@ -1,7 +1,7 @@
 <div class="row col-12 mt-4">
     <div class="col-6">
         <div class="card">
-            <div class="card-header" *ngIf="waterLevelInspections || waterQualityInspections">
+            <div class="card-header" *ngIf="waterLevelInspections">
                 Seasonal Water Level Inspections
                 <em class="small" *ngIf="hasWellPressureSensor()"> - This well has a well pressure sensor installed. Click on the sensor name in the Water Data Program tab to view the water level readings for each sensor.</em>
             </div>
@@ -29,9 +29,8 @@
 
     <div class="col-6">
         <div class="card">
-            <div class="card-header" *ngIf="waterLevelInspections || waterQualityInspections">
-                Seasonal Water Level Inspections
-                <em class="small" *ngIf="hasWellPressureSensor()"> - This well has a well pressure sensor installed. Click on the sensor name in the Water Data Program tab to view the water level readings for each sensor.</em>
+            <div class="card-header">
+                Water Quality Inspections
             </div>
             <div class="card-body">
                 <div class="row">
