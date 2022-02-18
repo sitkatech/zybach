@@ -34,6 +34,24 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
+        public static List<WaterQualityInspectionForVegaChartDto> ListByWellIDAsVegaChartDto(ZybachDbContext dbContext, int wellID)
+        {
+            var inspections = dbContext.WaterQualityInspections
+                .Include(x => x.WaterQualityInspectionType)
+                .AsNoTracking()
+                .OrderByDescending(x => x.InspectionDate)
+                .Where(x => x.WellID == wellID);
+
+            if (!inspections.Any() || inspections.All(x => x.LabNitrates == null))
+            {
+                return new List<WaterQualityInspectionForVegaChartDto>();
+            }
+
+            var mostRecentNitrateLevel = inspections.First(x => x.LabNitrates != null).LabNitrates;
+
+            return inspections.Select(x => x.AsVegaChartDto(mostRecentNitrateLevel.Value)).ToList();
+        }
+
         public static WaterQualityInspectionSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int waterQualityInspectionID)
         {
             return ListImpl(dbContext).SingleOrDefault(x => x.WaterQualityInspectionID == waterQualityInspectionID)?.AsSimpleDto();
