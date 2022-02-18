@@ -71,10 +71,6 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     } as MapOptions;
 
     this.map = map(this.mapContainer.nativeElement, mapOptions);
-
-    // using this to force leaflet to check for the actual container size due to display: none interfering with its default behavior
-    // see https://stackoverflow.com/questions/36246815/data-toggle-tab-does-not-download-leaflet-map/36257493#36257493
-    setTimeout(this.map.invalidateSize.bind(this.map));
     LeafletMap.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], null);
