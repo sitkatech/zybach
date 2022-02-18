@@ -1,0 +1,92 @@
+<div class="row col-12 mt-4">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header" *ngIf="waterLevelInspections">
+                Seasonal Water Level Inspections
+                <em class="small" *ngIf="hasWellPressureSensor()"> - This well has a well pressure sensor installed. Click on the sensor name in the Water Data Program tab to view the water level readings for each sensor.</em>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWLIToCsv()" placement="top"
+                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                        <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{well.WellID}}/new-water-level-inspection"
+                        ngbTooltip="New Water Level Inspection"><span class="fas fa-plus"></span></a>
+                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterLevelInspectionsGrid">
+                        </fresca-clear-grid-filters-button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <ag-grid-angular #waterLevelInspectionsGrid style="width: 100%; height: 300px;" 
+                        class="ag-theme-balham"
+                        [columnDefs]="waterLevelInspectionColumnDefs" [defaultColDef]="defaultColDef"
+                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                Water Quality Inspections
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWQIToCsv()" placement="top"
+                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                        <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{well.WellID}}/new-water-quality-inspection"
+                        ngbTooltip="New Water Quality Inspection"><span class="fas fa-plus"></span></a>
+                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterQualityInspectionsGrid">
+                        </fresca-clear-grid-filters-button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <ag-grid-angular #waterQualityInspectionsGrid style="width: 100%; height: 300px;" 
+                        class="ag-theme-balham"
+                        [columnDefs]="waterQualityInspectionColumnDefs" [defaultColDef]="defaultColDef"
+                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row col-12 mt-4">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                Chemigation
+            </div>
+            <div class="card-body">
+                <div *ngIf="chemigationPermits && chemigationPermits.length > 0; then hasChemigationPermits else noChemigationPermits"></div>
+                <ng-template #hasChemigationPermits>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Permit #</th>
+                                <th>Status</th>
+                                <th>Last Inspected</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let chemigationPermit of chemigationPermits">
+                                <td><a routerLink="/chemigation-permits/{{chemigationPermit.ChemigationPermitNumber}}">{{chemigationPermit.ChemigationPermitNumberDisplay}}</a></td>
+                                <td>{{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}</td>
+                                <td>{{chemigationPermit.LatestInspection?.InspectionDate | date:'MM/dd/yyyy'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-template>
+                <ng-template #noChemigationPermits>
+                    <p class="font-italic">
+                        No Chemigation Permits were found for this well.
+                    </p>                        
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

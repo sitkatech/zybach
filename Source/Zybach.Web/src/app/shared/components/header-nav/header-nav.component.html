@@ -74,7 +74,7 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item dropdown" routerLinkActive="active">
+            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAuthenticated()">
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     Report

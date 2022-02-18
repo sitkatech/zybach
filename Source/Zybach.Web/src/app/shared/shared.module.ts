@@ -23,6 +23,7 @@ import { CustomDropdownFilterComponent } from './components/custom-dropdown-filt
 import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
 import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { WellPermitsInspectionsTabComponent } from './components/well-permits-inspections-tab/well-permits-inspections-tab.component';
 
 @NgModule({
     declarations: [
