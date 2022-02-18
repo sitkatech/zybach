@@ -7731,6 +7731,10 @@
             "format": "double",
             "nullable": true
           },
+          "NitrateChartVegaSpec": {
+            "type": "string",
+            "nullable": true
+          },
           "Sensors": {
             "type": "array",
             "items": {

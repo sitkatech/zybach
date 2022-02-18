@@ -79,6 +79,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WaterQualityInspectionTypes { get; set; }
         public string ScreenInterval { get; set; }
         public decimal? ScreenDepth { get; set; }
+        public string NitrateChartVegaSpec { get; set; }
     }
 
 

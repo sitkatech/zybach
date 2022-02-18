@@ -28,6 +28,19 @@ namespace Zybach.EFModels.Entities
             return waterQualityInspectionSummaryDto;
         }
 
+        public static WaterQualityInspectionForVegaChartDto AsVegaChartDto(this WaterQualityInspection waterQualityInspection, decimal mostRecentLabNitrates)
+        {
+            var waterQualityInspectionForVegaChartDto = new WaterQualityInspectionForVegaChartDto()
+            {
+                WellID = waterQualityInspection.WellID,
+                InspectionDate = waterQualityInspection.InspectionDate,
+                LabNitrates = waterQualityInspection.LabNitrates,
+                MostRecentDateLabNitrates = mostRecentLabNitrates
+            };
+
+            return waterQualityInspectionForVegaChartDto;
+        }
+
         public static class ClearinghouseConstants
         {
             // Setting these here to keep track
@@ -41,7 +54,7 @@ namespace Zybach.EFModels.Entities
             this WaterQualityInspection waterQualityInspection)
         {
             var clearinghouseWaterQualityInspectionDto = new ClearinghouseWaterQualityInspectionDto()
-            { 
+            {
                 WellRegistrationID = waterQualityInspection.Well.WellRegistrationID,
                 WellNickname = waterQualityInspection.Well.WellNickname,
                 Clearinghouse = waterQualityInspection.Well.Clearinghouse,

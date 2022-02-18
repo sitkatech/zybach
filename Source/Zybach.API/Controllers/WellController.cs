@@ -185,6 +185,12 @@ namespace Zybach.API.Controllers
                 annualPumpedVolumes.AddRange(pumpedVolumes);
             }
             wellDetailDto.AnnualPumpedVolume = annualPumpedVolumes;
+
+            var waterQualityInspectionsForVegaChart = WaterQualityInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
+            if (waterQualityInspectionsForVegaChart.Any())
+            {
+                wellDetailDto.NitrateChartVegaSpec = well.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart);
+            }
             return wellDetailDto;
         }
 

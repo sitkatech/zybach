@@ -51,6 +51,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('waterQualityInspectionsGrid') waterQualityInspectionsGrid: AgGridAngular;
   
   public chartID: string = "wellChart";
+  public nitrateChartID: string = "nitrateChart";
 
   public waterLevelInspectionColumnDefs: any[];
   public waterQualityInspectionColumnDefs: any[];
@@ -69,6 +70,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   rawResults: string;
   timeSeries: any[];
   vegaView: any;
+  nitrateVegaView: any;
   rangeMax: number;
   wellID: number;
   wellRegistrationID: string;
@@ -311,6 +313,7 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       this.well = well;
       this.wellRegistrationID = well.WellRegistrationID;
       this.isInAgHubOrGeoOptix = this.well.InAgHub || this.well.InGeoOptix;
+      this.buildNitrateChart();
       this.cdr.detectChanges();
       
       if (well.Location != null && well.Location != undefined) {
@@ -687,12 +690,25 @@ export class WellDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   buildChart() {
     var self = this;
+    var blah = this.getVegaSpec();
+    debugger;
     vegaEmbed(`#${this.chartID}`, this.getVegaSpec(), {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.vegaView = res.view;
 
       self.filterChart(new Date(2021, 0, 1), new Date());
+    });
+  }
+
+  buildNitrateChart() {
+    var self = this;
+    vegaEmbed(`#${this.nitrateChartID}`, JSON.parse(this.well.NitrateChartVegaSpec), {
+      actions: false, tooltip: true, renderer: "svg"
+    }).then(function (res) {
+      self.nitrateVegaView = res.view;
+    }).catch(function (e) {
+      debugger;
     });
   }
 
