@@ -17,15 +17,9 @@ export class WellDetailComponent implements OnInit {
 
   currentUser: UserDto;
   well: WellDetailDto;
-
-  installations: InstallationRecordDto[] = [];
-  installationPhotos: Map<string, any[]>; 
   wellID: number;
   wellRegistrationID: string;
-  sensors: any;
-
-  photoDataUrl: string | ArrayBuffer;
-
+  
   public isLoadingSubmit: boolean = false;
 
   constructor(
