@@ -61,13 +61,34 @@ namespace Zybach.EFModels.Entities
             return wellWaterQualityInspectionDetailedDto;
         }
 
-        public static string GetNitrateChartVegaSpec(this Well well, List<WaterQualityInspectionForVegaChartDto> chartDtos)
+        public static string GetNitrateChartVegaSpec(this Well well, List<WaterQualityInspectionForVegaChartDto> chartDtos, bool isForWeb)
         {
+
+            var reportDocumentOnlyConfig = @"
+                ""config"": {
+                    ""axis"": {
+                        ""labelFontSize"": 20,
+                        ""titleFontSize"": 30
+                    }, 
+                    ""text"": {
+                        ""fontSize"":20
+                    }, 
+                    ""legend"": {
+                        ""labelFontSize"": 30, 
+                        ""symbolSize"":500,
+                        ""labelLimit"":300
+                    }
+                } ,
+                ""title"": {
+                    ""text"":""Nitrate Levels"",
+                    ""fontSize"": 30
+                }";
+
             return $@"{{
             ""$schema"": ""https://vega.github.io/schema/vega-lite/v4.json"",
             ""description"": ""Lab Nitrates Chart"",
-            ""width"": ""container"",
-            ""height"": ""container"",
+            ""width"": {(isForWeb ? "\"container\"" : 1351)},
+            ""height"": {(isForWeb ? "\"container\"" : 500)},
             ""data"": {{ 
                 ""values"": {JsonConvert.SerializeObject(chartDtos)}
             }},
@@ -78,6 +99,7 @@ namespace Zybach.EFModels.Entities
                   ""type"": ""temporal"",                    
                   ""axis"": {{
                     ""title"": ""Inspection Date""
+                    {(!isForWeb ? ",\"labelAngle\":50" : "")}
                   }}
                 }},    
                 ""color"":{{
@@ -96,9 +118,9 @@ namespace Zybach.EFModels.Entities
                     ""field"": ""LabNitrates"",
                     ""type"": ""quantitative"",
                     ""axis"": {{                            
-                    ""title"": ""Lab Nitrates""                        
+                        ""title"": ""Lab Nitrates""
                     }}
-        }}
+                }}
                 }},               
                 ""layer"": [
                 {{ 
@@ -176,17 +198,17 @@ namespace Zybach.EFModels.Entities
                 ]}},                
                 ""selection"": 
                     {{
-                ""hover"": {{
-                    ""type"": ""single"",                        
-                        ""fields"": [""InspectionDate""],                        
-                        ""nearest"": true,                        
-                        ""on"": ""mouseover"",                        
-                        ""empty"": ""none"",                        
-                        ""clear"": ""mouseout""
+                    ""hover"": {{
+                        ""type"": ""single"",                        
+                            ""fields"": [""InspectionDate""],                        
+                            ""nearest"": true,                        
+                            ""on"": ""mouseover"",                        
+                            ""empty"": ""none"",                        
+                            ""clear"": ""mouseout""
+                        }}
                     }}
-            }}
-        }}
-            ]
+                }}
+            ]{(!isForWeb ? "," + reportDocumentOnlyConfig : "")}
         }}";
         }
     }

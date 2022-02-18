@@ -40,7 +40,8 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.WaterQualityInspectionType)
                 .AsNoTracking()
                 .OrderByDescending(x => x.InspectionDate)
-                .Where(x => x.WellID == wellID);
+                .Where(x => x.WellID == wellID)
+                .ToList();
 
             if (!inspections.Any() || inspections.All(x => x.LabNitrates == null))
             {
