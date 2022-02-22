@@ -21,7 +21,7 @@
                 <zybach-well-water-data-tab [well]="well" *ngIf="well"></zybach-well-water-data-tab>
             </ng-template>
         </ng-container>
-        <ng-container ngbNavItem>
+        <ng-container ngbNavItem *ngIf="!isUserReadOnly()">
             <a ngbNavLink><h5>Permits and Inspections</h5></a>
             <ng-template ngbNavContent>
                 <zybach-well-permits-inspections-tab [well]="well" *ngIf="well"></zybach-well-permits-inspections-tab>

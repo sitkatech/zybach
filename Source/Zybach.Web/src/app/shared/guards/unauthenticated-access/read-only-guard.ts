@@ -5,15 +5,16 @@ import { Injectable } from '@angular/core';
 import { AlertService } from '../../services/alert.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RoleEnum } from '../../models/enums/role.enum';
+
 @Injectable({
   providedIn: 'root'
 })
-export class ManagerOnlyGuard implements CanActivate {
+export class ReadOnlyGuard implements CanActivate {
   constructor(private router: Router, private alertService: AlertService, private authenticationService: AuthenticationService) {
   }
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     if (!this.authenticationService.isCurrentUserNullOrUndefined()) {
-      if (this.authenticationService.isCurrentUserAnAdministrator()) {
+      if (this.authenticationService.doesCurrentUserhaveReadOnlyRightsOrHigher()) {
         return true;
       } else {
         this.alertService.pushNotFoundUnauthorizedAlert();
@@ -25,7 +26,8 @@ export class ManagerOnlyGuard implements CanActivate {
     return this.authenticationService.getCurrentUser()
       .pipe(
         map(x => {
-          if (x.Role.RoleID == RoleEnum.Admin) {
+          const readOnlyRoles = new Array(RoleEnum.Admin, RoleEnum.Normal, RoleEnum.WaterDataProgramReadOnly);
+          if (readOnlyRoles.includes(x.Role.RoleID)) {
             return true;
           } else {
             this.alertService.pushNotFoundUnauthorizedAlert();

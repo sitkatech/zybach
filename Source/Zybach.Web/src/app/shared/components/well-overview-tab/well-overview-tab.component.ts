@@ -15,6 +15,8 @@ import {GestureHandling} from 'leaflet-gesture-handling';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { Alert } from '../../models/alert';
 import { AlertService } from '../../services/alert.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UserDto } from '../../generated/model/user-dto';
 
 @Component({
   selector: 'zybach-well-overview-tab',
@@ -29,12 +31,17 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
   private maxZoom: number = 17;
   private boundingBox: any;
   public tileLayers: any;
+  public currentUser: UserDto;
 
   constructor(
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit(): void {
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
+      this.currentUser = currentUser;
+    })
   }
 
   // Begin section: location map
@@ -42,6 +49,10 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
     this.initMapConstants();
     this.initializeMap();
+  }
+
+  public isUserReadOnly(): boolean {
+    return this.authenticationService.isUserReadOnly(this.currentUser);
   }
 
   public initMapConstants() {

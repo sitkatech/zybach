@@ -74,7 +74,7 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAuthenticated()">
+            <li class="nav-item dropdown" routerLinkActive="active" *ngIf="isAuthenticated() && !isReadOnly()">
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     Report
@@ -131,7 +131,8 @@
                     <img src="/assets/main/nav/map.png" /> Well Map
                 </a>
             </li>
-            <li class="nav-item dropdown chemigationItem" routerLinkActive="active" [ngClass]="{'currentPage': isChemigationCurrentPage()}">
+            <li class="nav-item dropdown chemigationItem" routerLinkActive="active" [ngClass]="{'currentPage': isChemigationCurrentPage()}"
+                *ngIf="!isReadOnly()">
                 <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false">
                     <img src="/assets/main/nav/chemigation.png" />
