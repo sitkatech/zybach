@@ -3,7 +3,8 @@ USING (VALUES
 (1, 'Admin', 'Administrator', '', 30),
 (2, 'Normal', 'Normal', '', 20),
 (3, 'Unassigned', 'Unassigned', '', 10),
-(4, 'Disabled', 'Disabled', '', 40)
+(4, 'Disabled', 'Disabled', '', 40),
+(5, 'WaterDataProgramReadOnly', 'Water Data Program Read-Only', '', 15)
 )
 AS Source (RoleID, RoleName, RoleDisplayName, RoleDescription, SortOrder)
 ON Target.RoleID = Source.RoleID

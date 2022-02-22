@@ -46,6 +46,10 @@ export class WellDetailComponent implements OnInit {
       this.getWellDetails();
     })
   }
+  
+  public isUserReadOnly(): boolean {
+    return this.authenticationService.isUserReadOnly(this.currentUser);
+  }
 
   getWellDetails(){
     this.wellService.getWellDetails(this.wellID).subscribe((well: WellDetailDto)=>{
