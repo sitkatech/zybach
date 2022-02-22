@@ -186,15 +186,25 @@ namespace Zybach.API.Controllers
             }
             wellDetailDto.AnnualPumpedVolume = annualPumpedVolumes;
 
-            var waterQualityInspectionsForVegaChart = WaterQualityInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
-            if (waterQualityInspectionsForVegaChart.Any())
-            {
-                wellDetailDto.NitrateChartVegaSpec = VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true);
-            }
             return wellDetailDto;
         }
 
-        private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
+        [HttpGet("/api/wells/{wellID}/nitrateChartSpec")]
+        [ZybachViewFeature]
+        public ActionResult<string> GetNitrateVegaChartSpec([FromRoute] int wellID)
+        {
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            var waterQualityInspectionsForVegaChart = WaterQualityInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
+
+            if (!waterQualityInspectionsForVegaChart.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true));
+        }
+
+            private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
         {
             well = Wells.GetByID(_dbContext, wellID);
             return ThrowNotFound(well, "Well", wellID, out actionResult);

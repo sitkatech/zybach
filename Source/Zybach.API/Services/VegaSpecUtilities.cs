@@ -22,10 +22,6 @@ namespace Zybach.API.Services
                         ""symbolSize"":500,
                         ""labelLimit"":300
                     }
-                } ,
-                ""title"": {
-                    ""text"":""Nitrate Levels"",
-                    ""fontSize"": 30
                 }";
 
             return $@"{{
@@ -152,7 +148,11 @@ namespace Zybach.API.Services
                         }}
                     }}
                 }}
-            ]{(!isForWeb ? "," + reportDocumentOnlyConfig : "")}
+            ],
+            ""title"": {{
+                ""text"":""Nitrate Levels""
+                {(!isForWeb ? ",\"fontSize\": 30 ": "")}
+            }}{ (!isForWeb ? "," + reportDocumentOnlyConfig : "")}
         }}";
         }
     }
