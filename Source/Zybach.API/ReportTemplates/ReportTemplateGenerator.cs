@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharpDocx;
 using Zybach.API.ReportTemplates.Models;
+using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API.ReportTemplates
@@ -158,8 +159,8 @@ namespace Zybach.API.ReportTemplates
                     foreach (var well in wellList)
                     {
                         var nitrateInspectionsAsVegaChartDtos = WaterQualityInspections.ListByWellIDAsVegaChartDto(dbContext, well.WellID);
-                        var spec = well.GetNitrateChartVegaSpec(nitrateInspectionsAsVegaChartDtos, false);
-                        var imageByteArray = await vegaRenderService.PrintPNG(well.GetNitrateChartVegaSpec(nitrateInspectionsAsVegaChartDtos, false));
+                        var spec = VegaSpecUtilities.GetNitrateChartVegaSpec(nitrateInspectionsAsVegaChartDtos, false);
+                        var imageByteArray = await vegaRenderService.PrintPNG(spec);
                         var imagePath = $"{FullTemplateTempImageDirectory}/{well.WellID}-nitrateLevelsChart";
                         File.WriteAllBytes($"{imagePath}.png", imageByteArray);
                     }
