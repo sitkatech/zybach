@@ -243,7 +243,6 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
     vegaEmbed(`#${this.nitrateChartID}`, nitrateChartVegaSpec, {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
-      console.log("hey");
       self.nitrateVegaView = res.view;
     }).catch(() => this.hasNitrateChartData = false);
   }

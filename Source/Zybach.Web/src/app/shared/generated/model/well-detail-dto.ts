@@ -43,7 +43,6 @@ export class WellDetailDto {
     WaterQualityInspectionTypes?: string;
     ScreenInterval?: string;
     ScreenDepth?: number;
-    NitrateChartVegaSpec?: string;
     Sensors?: Array<SensorSummaryDto>;
     WellID?: number;
     WellRegistrationID?: string;
