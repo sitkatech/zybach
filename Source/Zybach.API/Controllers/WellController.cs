@@ -189,7 +189,7 @@ namespace Zybach.API.Controllers
             var waterQualityInspectionsForVegaChart = WaterQualityInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
             if (waterQualityInspectionsForVegaChart.Any())
             {
-                wellDetailDto.NitrateChartVegaSpec = well.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true);
+                wellDetailDto.NitrateChartVegaSpec = VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true);
             }
             return wellDetailDto;
         }
