@@ -42,7 +42,6 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
     })
-  
   }
 
   // Begin section: location map

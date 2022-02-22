@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
+using Newtonsoft.Json;
 
 namespace Zybach.EFModels.Entities
 {
