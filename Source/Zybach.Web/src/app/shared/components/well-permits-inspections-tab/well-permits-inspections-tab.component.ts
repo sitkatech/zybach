@@ -14,6 +14,9 @@ import { WellDetailDto } from '../../generated/model/well-detail-dto';
 import { AlertService } from '../../services/alert.service';
 import { LinkRendererComponent } from '../ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from '../custom-dropdown-filter/custom-dropdown-filter.component';
+import * as vega from 'vega';
+import { default as vegaEmbed } from 'vega-embed';
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'zybach-well-permits-inspections-tab',
@@ -29,6 +32,9 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
   public waterLevelInspectionColumnDefs: any[];
   public waterQualityInspectionColumnDefs: any[];
   public defaultColDef: ColDef;
+  public nitrateChartID: string = "nitrateChart";
+  public nitrateVegaView: any;
+  public hasNitrateChartData: boolean = true;
   
   sensorsWithStatus: SensorMessageAgeDto[];
   public chemigationPermits: Array<ChemigationPermitDetailedDto>;
@@ -186,6 +192,21 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       this.waterQualityInspectionsGrid.api.sizeColumnsToFit();
 
       this.cdr.detectChanges();
+
+      if (this.waterQualityInspections != null && this.waterQualityInspections.length > 0) {
+        this.wellService.getWellNitrateChartVegaSpec(this.well.WellID).subscribe(result => {
+          if (result == null || result == undefined || result == "") {
+            this.hasNitrateChartData = false;
+            return;
+          }
+
+          this.buildNitrateChart(result);
+          return;
+        })
+      } else {
+        this.hasNitrateChartData = false;
+      }
+
     });
   }
 
@@ -215,6 +236,15 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
 
   hasWellPressureSensor(): boolean{
     return this.sensorsWithStatus?.filter(x => x.SensorType === "Well Pressure").length > 0;
+  }
+
+  private buildNitrateChart(nitrateChartVegaSpec : any) {
+    var self = this;
+    vegaEmbed(`#${this.nitrateChartID}`, nitrateChartVegaSpec, {
+      actions: false, tooltip: true, renderer: "svg"
+    }).then(function (res) {
+      self.nitrateVegaView = res.view;
+    }).catch(() => this.hasNitrateChartData = false);
   }
   
 }

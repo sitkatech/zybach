@@ -43,6 +43,7 @@ namespace Zybach.API.ReportTemplates.Models
         public string NitrateLevelLowestDate { get; set; }
 
         public decimal NitrateLevelAverage { get; set; }
+        public string NitrateLevelsChartImagePath { get; set; }
 
         public ReportTemplateWellWaterQualityInspectionModel(WellWaterQualityInspectionDetailedDto wellWithWaterQualityInspections)
         {
@@ -102,6 +103,7 @@ namespace Zybach.API.ReportTemplates.Models
                 WaterQualityInspections = new List<WaterQualityInspectionSimpleDto>();
             }
 
+            NitrateLevelsChartImagePath = $"{wellWithWaterQualityInspections.Well.WellID}-nitrateLevelsChart.png";
         }
 
         /// <summary>

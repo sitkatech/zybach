@@ -8,8 +8,8 @@
 </nav>
 <div class="container">
     <app-alert-display></app-alert-display>
-    <nav ngbNav #nav="ngbNav" [destroyOnHide]="false" class="nav-tabs nav-fill">
-        <ng-container ngbNavItem>
+    <nav ngbNav #nav="ngbNav" class="nav-tabs nav-fill">
+        <ng-container ngbNavItem [destroyOnHide]="false">
             <a ngbNavLink><h5>Well Overview</h5></a>
             <ng-template ngbNavContent>
                 <zybach-well-overview-tab [well]="well" *ngIf="well"></zybach-well-overview-tab>

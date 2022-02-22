@@ -78,10 +78,10 @@ namespace Zybach.API.Controllers
 
             var reportTemplate = CreateNew(_dbContext, reportTemplateNewDto, fileResource);
 
-            ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger, _vegaRenderService);
-            if (!reportIsValid)
+            var validationResult = await ReportTemplateGenerator.ValidateReportTemplate(reportTemplate, _dbContext, _logger, _vegaRenderService);
+            if (!validationResult.IsValid)
             {
-                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+                var errorMessageAndSourceCode = $"{validationResult.ErrorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{validationResult.SourceCode}</pre>";
                 return BadRequest(errorMessageAndSourceCode);
             }
 
@@ -121,10 +121,10 @@ namespace Zybach.API.Controllers
 
             var updatedReportTemplate = UpdateReportTemplate(_dbContext, reportTemplate, reportUpdateDto, fileResource);
 
-            ReportTemplateGenerator.ValidateReportTemplate(updatedReportTemplate, out var reportIsValid, out var errorMessage, out var sourceCode, _dbContext, _logger, _vegaRenderService);
-            if (!reportIsValid)
+            var validationResult = await ReportTemplateGenerator.ValidateReportTemplate(updatedReportTemplate, _dbContext, _logger, _vegaRenderService);
+            if (!validationResult.IsValid)
             {
-                var errorMessageAndSourceCode = $"{errorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{sourceCode}</pre>";
+                var errorMessageAndSourceCode = $"{validationResult.ErrorMessage} \n <pre style='max-height: 300px; overflow: scroll;'>{validationResult.SourceCode}</pre>";
                 return BadRequest(errorMessageAndSourceCode);
             }
 
@@ -166,7 +166,7 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/api/reportTemplates/generateReports")]
         [AdminFeature]
-        public ActionResult GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
+        public async Task<ActionResult> GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {
             var reportTemplateID = generateReportsDto.ReportTemplateID;
             var reportTemplate = EFModels.Entities.ReportTemplates.GetByReportTemplateID(_dbContext, reportTemplateID);
@@ -179,12 +179,12 @@ namespace Zybach.API.Controllers
             }
 
             var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
-            return GenerateAndDownload(reportTemplateGenerator, reportTemplate);
+            return await GenerateAndDownload(reportTemplateGenerator, reportTemplate);
         }
 
-        private ActionResult GenerateAndDownload(ReportTemplateGenerator reportTemplateGenerator, ReportTemplate reportTemplate)
+        private async Task<ActionResult> GenerateAndDownload(ReportTemplateGenerator reportTemplateGenerator, ReportTemplate reportTemplate)
         {
-            reportTemplateGenerator.Generate(_dbContext, _vegaRenderService);
+            await reportTemplateGenerator.Generate(_dbContext, _vegaRenderService);
             var fileData = System.IO.File.ReadAllBytes(reportTemplateGenerator.GetCompilePath());
             var stream = new MemoryStream(fileData);
             return File(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"{reportTemplate.DisplayName} Report");
