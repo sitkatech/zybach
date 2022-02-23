@@ -53,4 +53,8 @@ export class WellDetailComponent implements OnInit {
     })
   }
 
+  resizeWindow(){
+    window.dispatchEvent(new Event('resize'));
+  }
+
 }

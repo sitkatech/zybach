@@ -280,7 +280,7 @@ export class WellWaterDataTabComponent implements OnInit {
     this.setRangeMax(filteredTimeSeries);
 
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
-    this.vegaView.change('TimeSeries', changeSet).run();
+    this.vegaView.change('TimeSeries', changeSet).runAsync();
     window.dispatchEvent(new Event('resize'));
   }
 
