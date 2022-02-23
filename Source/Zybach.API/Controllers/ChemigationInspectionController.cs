@@ -101,7 +101,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/chemigationInspections/{chemigationInspectionID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<ChemigationInspectionSimpleDto> GetChemigationInspectionByID([FromRoute] int chemigationInspectionID)
         {
             var chemigationInspection = ChemigationInspections.GetChemigationInspectionSimpleDtoByID(_dbContext, chemigationInspectionID);
@@ -125,7 +125,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<ChemigationInspectionSimpleDto>
             CreateChemigationInspectionByAnnualRecordID([FromRoute] int chemigationPermitAnnualRecordID,
                 [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
@@ -146,7 +146,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/chemigationInspections/{chemigationInspectionID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult
             UpdateChemigationInspectionByAnnualRecordIDAndInspectionID([FromRoute] int chemigationInspectionID, [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
         {
@@ -184,7 +184,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpDelete("/api/chemigationInspections/{chemigationInspectionID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult DeleteChemigationInspectionByID([FromRoute] int chemigationInspectionID)
         {
             var chemigationInspection = _dbContext.ChemigationInspections.SingleOrDefault(x => x.ChemigationInspectionID == chemigationInspectionID);

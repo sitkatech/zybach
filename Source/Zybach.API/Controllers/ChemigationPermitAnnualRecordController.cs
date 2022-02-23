@@ -53,7 +53,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/chemigationPermitAnnualRecords/{recordYear}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<BulkChemigationPermitAnnualRecordCreationResult> BulkCreateChemigationPermitAnnualRecords([FromRoute] int recordYear)
         {
             var bulkChemigationPermitAnnualRecordCreationResult = ChemigationPermits.BulkCreateRenewalRecords(_dbContext, recordYear);
@@ -98,7 +98,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/chemigationPermits/{chemigationPermitID}/annualRecords")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> CreateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {
             var chemigationPermit = ChemigationPermits.GetByID(_dbContext, chemigationPermitID);
@@ -125,7 +125,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<ChemigationPermitAnnualRecordDto> UpdateChemigationPermitAnnualRecord([FromRoute] int chemigationPermitAnnualRecordID,
             [FromBody] ChemigationPermitAnnualRecordUpsertDto chemigationPermitAnnualRecordUpsertDto)
         {

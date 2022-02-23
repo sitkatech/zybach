@@ -217,7 +217,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/wells/{wellID}/editRegistrationID")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult UpsertWellRegistrationID([FromRoute] int wellID, [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
@@ -258,7 +258,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/wells/{wellID}/contactInfo")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult UpsertWellContactDetails([FromRoute] int wellID, [FromBody] WellContactInfoDto wellContactInfoDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
@@ -303,7 +303,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/wells/{wellID}/participationInfo")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult UpsertWellParticipationDetails([FromRoute] int wellID, [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
@@ -372,7 +372,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/wells/new")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public IActionResult NewWell([FromBody] WellNewDto wellNewDto)
         {
             var existingWell = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellNewDto.WellRegistrationID);
