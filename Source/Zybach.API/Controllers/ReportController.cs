@@ -24,7 +24,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("api/reportTemplates")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<List<ReportTemplateDto>> ListAllReports()
         {
             var reportTemplateDtos = EFModels.Entities.ReportTemplates.ListAsDtos(_dbContext);
@@ -32,7 +32,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("api/reportTemplatesByModelID/{reportTemplateModelID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<List<ReportTemplateDto>> ListAllReportsByModelID([FromRoute] int reportTemplateModelID)
         {
             var reportTemplateDtos = EFModels.Entities.ReportTemplates.ListByModelIDAsDtos(_dbContext, reportTemplateModelID);
@@ -40,7 +40,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("api/reportTemplateModels")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public IActionResult GetReportTemplateModels()
         {
             var reportTemplateModelDtos = ReportTemplateModel.List(_dbContext);
@@ -49,7 +49,7 @@ namespace Zybach.API.Controllers
 
 
         [HttpGet("api/reportTemplates/{reportTemplateID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<ReportTemplateDto> GetReport([FromRoute] int reportTemplateID)
         {
             var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
@@ -165,7 +165,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/reportTemplates/generateReports")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public async Task<ActionResult> GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {
             var reportTemplateID = generateReportsDto.ReportTemplateID;

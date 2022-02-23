@@ -16,7 +16,7 @@ export class FieldDefinitionGridHeaderComponent implements OnDestroy, IHeaderAng
     public params: any;
     public sorted: string;
     private elementRef: ElementRef;
-    public showMenu: boolean = false;
+    public showMenu: boolean = true;
 
     constructor(elementRef: ElementRef) {
         this.elementRef = elementRef;
