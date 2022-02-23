@@ -244,7 +244,11 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.nitrateVegaView = res.view;
-      self.nitrateVegaView.runAsync();
+      setTimeout(() => {
+        self.nitrateVegaView.runAsync();
+        window.dispatchEvent(new Event('resize'));
+        console.log("resized");
+      }, 100);
     }).catch(() => this.hasNitrateChartData = false);
   }
   
