@@ -47,11 +47,6 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
-        this.router.navigateByUrl("/not-found")
-          .then();
-        return;
-      }
 
       this.reportTemplateService.getReportTemplateModels().subscribe(reportTemplateModels => {
         this.reportTemplateModels = reportTemplateModels.sort((a: ReportTemplateModelDto, b: ReportTemplateModelDto) => {

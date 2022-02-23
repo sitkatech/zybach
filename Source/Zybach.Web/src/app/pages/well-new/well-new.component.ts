@@ -56,11 +56,6 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
-        this.router.navigateByUrl("/not-found")
-          .then();
-        return;
-      }
     });
   }
 
