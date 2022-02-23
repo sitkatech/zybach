@@ -92,6 +92,8 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     else {
       this.alertService.pushAlert(new Alert(`No location was provided for ${this.well.WellRegistrationID}.`))
     }
+
+    setTimeout(()=>this.map.invalidateSize(), 10);
   }
 
   public addWellToMap() {
