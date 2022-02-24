@@ -1,5 +1,5 @@
 <div class="row col-12 mt-4">
-    <div class="col-6">
+    <div class="col">
         <div class="card">
             <div class="card-header" *ngIf="waterLevelInspections">
                 Seasonal Water Level Inspections
@@ -8,13 +8,19 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col">
+                        <div *ngIf="hasWaterLevelChartData; else noWaterLevelSpecDiv" id="{{waterLevelChartID}}" style="width:100%; min-height: 340px;"><span class="fa fa-spinner loading-spinner"></span> Loading</div>
+                        <ng-template #noWaterLevelSpecDiv><em>No Water Level Chart data to show</em></ng-template>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
                         <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWLIToCsv()" placement="top"
                         ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
                         <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{well.WellID}}/new-water-level-inspection"
                         ngbTooltip="New Water Level Inspection"><span class="fas fa-plus"></span></a>
                         <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterLevelInspectionsGrid">
                         </fresca-clear-grid-filters-button>
-                    </div>
+                    </div> 
                 </div>
                 <div class="table-responsive">
                     <ag-grid-angular #waterLevelInspectionsGrid style="width: 100%; height: 300px;" 
@@ -26,6 +32,44 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="row col-12 mt-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">
+                Water Quality Inspections
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div *ngIf="hasNitrateChartData; else noSpecDiv" id="{{nitrateChartID}}" style="width:100%; min-height: 340px;"><span class="fa fa-spinner loading-spinner"></span> Loading</div>
+                        <ng-template #noSpecDiv><em>No Nitrate Level Chart data to show</em></ng-template>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWQIToCsv()" placement="top"
+                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                        <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{well.WellID}}/new-water-quality-inspection"
+                        ngbTooltip="New Water Quality Inspection"><span class="fas fa-plus"></span></a>
+                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterQualityInspectionsGrid">
+                        </fresca-clear-grid-filters-button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <ag-grid-angular #waterQualityInspectionsGrid style="width: 100%; height: 300px;" 
+                        class="ag-theme-balham"
+                        [columnDefs]="waterQualityInspectionColumnDefs" [defaultColDef]="defaultColDef"
+                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>
+    </div>   
+</div>
+
+<div class="row col-12 mt-4">
     <div class="col-6">
         <div class="card">
             <div class="card-header">
@@ -59,41 +103,4 @@
             </div>
         </div>
     </div>
-    
-</div>
-
-<div class="row col-12 mt-4">
-    <div class="col">
-        <div class="card">
-            <div class="card-header">
-                Water Quality Inspections
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <div *ngIf="hasNitrateChartData; else noSpecDiv" id="{{nitrateChartID}}" style="width:100%; min-height: 340px;"><span class="fa fa-spinner loading-spinner"></span> Loading</div>
-                        <ng-template #noSpecDiv>No Nitrate Level Chart data to show</ng-template>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportWQIToCsv()" placement="top"
-                        ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-                        <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{well.WellID}}/new-water-quality-inspection"
-                        ngbTooltip="New Water Quality Inspection"><span class="fas fa-plus"></span></a>
-                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterQualityInspectionsGrid">
-                        </fresca-clear-grid-filters-button>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <ag-grid-angular #waterQualityInspectionsGrid style="width: 100%; height: 300px;" 
-                        class="ag-theme-balham"
-                        [columnDefs]="waterQualityInspectionColumnDefs" [defaultColDef]="defaultColDef"
-                        [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
-                    </ag-grid-angular>
-                </div>
-            </div>
-        </div>
-    </div>
-    
 </div>

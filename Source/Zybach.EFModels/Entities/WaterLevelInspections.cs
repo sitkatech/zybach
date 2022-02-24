@@ -53,6 +53,24 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
+        public static List<WaterLevelInspectionForVegaChartDto> ListByWellIDAsVegaChartDto(ZybachDbContext dbContext, int wellID)
+        {
+            var inspections = dbContext.WaterLevelInspections
+                .AsNoTracking()
+                .OrderByDescending(x => x.InspectionDate)
+                .Where(x => x.WellID == wellID)
+                .ToList();
+
+            if (!inspections.Any() || inspections.All(x => x.Measurement == null))
+            {
+                return new List<WaterLevelInspectionForVegaChartDto>();
+            }
+
+            var mostRecentLevelMeasurement = inspections.First(x => x.Measurement != null).Measurement;
+
+            return inspections.Select(x => x.AsVegaChartDto(mostRecentLevelMeasurement.Value)).ToList();
+        }
+
         public static WaterLevelInspectionSimpleDto Create(ZybachDbContext dbContext, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)
         {
             var waterLevelInspection = new WaterLevelInspection()

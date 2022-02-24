@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[WaterLevelMeasuringEquipment](
-	[WaterLevelMeasuringEquipmentID] [int] IDENTITY(1,1) NOT NULL,
+	[WaterLevelMeasuringEquipmentID] [int] NOT NULL,
 	[WaterLevelMeasuringEquipmentName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[WaterLevelMeasuringEquipmentDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
  CONSTRAINT [PK_WaterLevelMeasuringEquipment_WaterLevelMeasuringEquipmentID] PRIMARY KEY CLUSTERED 

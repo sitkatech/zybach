@@ -155,5 +155,155 @@ namespace Zybach.API.Services
             }}{ (!isForWeb ? "," + reportDocumentOnlyConfig : "")}
         }}";
         }
+
+        public static string GetWaterLevelChartVegaSpec(List<WaterLevelInspectionForVegaChartDto> chartDtos, bool isForWeb)
+        {
+            var reportDocumentOnlyConfig = @"
+                ""config"": {
+                    ""axis"": {
+                        ""labelFontSize"": 20,
+                        ""titleFontSize"": 30
+                    }, 
+                    ""text"": {
+                        ""fontSize"":20
+                    }, 
+                    ""legend"": {
+                        ""labelFontSize"": 30, 
+                        ""symbolSize"":500,
+                        ""labelLimit"":300
+                    }
+                }";
+
+            return $@"{{
+            ""$schema"": ""https://vega.github.io/schema/vega-lite/v4.json"",
+            ""description"": ""Water Level Chart"",
+            ""width"": {(isForWeb ? "\"container\"" : 1351)},
+            ""height"": {(isForWeb ? "\"container\"" : 500)},
+            ""data"": {{ 
+                ""values"": {JsonConvert.SerializeObject(chartDtos)}
+            }},
+            ""encoding"": {{
+                ""x"": {{
+                  ""field"": ""InspectionDate"",                    
+                  ""timeUnit"": ""yearmonthdate"",                    
+                  ""type"": ""temporal"",                    
+                  ""axis"": {{
+                    ""title"": ""Inspection Date""
+                    {(!isForWeb ? ",\"labelAngle\":50" : "")}
+                  }}
+                }},    
+                ""color"":{{
+                  ""type"":""nominal"",
+                  ""scale"":{{
+                    ""range"":[""blue"", ""red""], 
+                    ""domain"": [""Groundwater Depth"", ""Current Groundwater Depth""]
+                  }}
+                }}
+            }},           
+            ""layer"": 
+            [
+            {{                
+                ""encoding"": {{                    
+                ""y"": {{                        
+                    ""field"": ""Measurement"",
+                    ""type"": ""quantitative"",
+                    ""axis"": {{                            
+                        ""title"": ""Groundwater Depth""
+                    }}
+                }}
+                }},               
+                ""layer"": [
+                {{ 
+                    ""mark"": ""line"",
+                    ""encoding"": {{
+                    ""color"": {{
+                        ""datum"":""Groundwater Depth""
+                    }}
+                    }}
+                }},           
+                {{
+            ""transform"": [
+                    {{
+                ""filter"": 
+                        {{ ""selection"": ""hover"" }}
+            }}
+                    ], 
+                    ""mark"": ""point""
+                }}                
+                ]           
+            }},  
+            {{
+            ""encoding"": {{
+                ""y"": {{
+                    ""field"": ""MostRecentMeasurement"",
+                    ""type"":""quantitative""
+                }}
+            }},
+                ""layer"": [
+                {{
+                ""mark"": ""line"",
+                    ""encoding"": {{
+                    ""color"": {{
+                        ""datum"":""Current Groundwater Depth""
+                    }}
+                }}
+            }},           
+                {{
+                ""transform"": [
+                    {{
+                    ""filter"": 
+                        {{ ""selection"": ""hover"" }}
+                }}
+                    ], 
+                    ""mark"": ""point""
+                }}                
+                ]    
+            }},       
+            {{
+            ""mark"": ""rule"",                
+                ""encoding"": {{
+                ""opacity"": {{
+                    ""condition"": {{
+                        ""value"": 0.3, 
+                    ""selection"": ""hover""
+                    }},                    
+                    ""value"": 0
+                }},                
+                ""tooltip"": [
+                    {{
+                    ""field"": ""InspectionDate"", 
+                    ""type"": ""temporal"", 
+                    ""title"": ""Date""
+                    }},                    
+                    {{
+                    ""field"": ""Measurement"", 
+                    ""type"": ""quantitative"", 
+                    ""title"": ""Groundwater Depth""
+                    }},
+                    {{
+                    ""field"": ""MostRecentMeasurement"", 
+                    ""type"": ""quantitative"", 
+                    ""title"": ""Current Groundwater Depth""
+                    }}              
+                ]}},                
+                ""selection"": 
+                    {{
+                    ""hover"": {{
+                        ""type"": ""single"",                        
+                            ""fields"": [""InspectionDate""],                        
+                            ""nearest"": true,                        
+                            ""on"": ""mouseover"",                        
+                            ""empty"": ""none"",                        
+                            ""clear"": ""mouseout""
+                        }}
+                    }}
+                }}
+            ],
+            ""title"": {{
+                ""text"":""Groundwater Depth""
+                {(!isForWeb ? ",\"fontSize\": 30 " : "")}
+            }}{ (!isForWeb ? "," + reportDocumentOnlyConfig : "")}
+        }}";
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace Zybach.API.ReportTemplates.Models
 
         public ReportTemplateWaterQualityInspectionModel(WaterQualityInspectionSimpleDto waterQualityInspection)
         {
-            WaterQualityInspectionID = waterQualityInspection.WaterQualityInspectionTypeID;
+            WaterQualityInspectionID = waterQualityInspection.WaterQualityInspectionID;
             WaterQualityInspectionTypeName = waterQualityInspection.WaterQualityInspectionTypeName;
             InspectionDate = waterQualityInspection.InspectionDate;
             InspectionYear = waterQualityInspection.InspectionYear;

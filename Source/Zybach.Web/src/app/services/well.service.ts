@@ -47,6 +47,10 @@ export class WellService {
     return this.apiService.getFromApi(`wells/${wellID}/nitrateChartSpec`);
   }
 
+  public getWellWaterLevelChartVegaSpec(wellID: number): Observable<any> {
+    return this.apiService.getFromApi(`wells/${wellID}/waterLevelChartSpec`);
+  }
+
   public getWellsWithInspectionSummaries(): Observable<Array<WellInspectionSummaryDto>> {
     return this.apiService.getFromApi(`wells/inspectionSummaries`);
   }

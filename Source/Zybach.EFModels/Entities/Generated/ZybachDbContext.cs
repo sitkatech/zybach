@@ -636,6 +636,8 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<WaterLevelMeasuringEquipment>(entity =>
             {
+                entity.Property(e => e.WaterLevelMeasuringEquipmentID).ValueGeneratedNever();
+
                 entity.Property(e => e.WaterLevelMeasuringEquipmentDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.WaterLevelMeasuringEquipmentName).IsUnicode(false);

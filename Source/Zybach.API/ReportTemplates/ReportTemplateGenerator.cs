@@ -87,6 +87,13 @@ namespace Zybach.API.ReportTemplates
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterQualityInspectionBaseViewModel);
                     break;
+                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                    var wellWaterLevelInspectionBaseViewModel = new ReportTemplateWellWaterLevelInspectionBaseViewModel()
+                    {
+                        ReportModel = GetListOfWellWaterLevelInspectionModels(dbContext)
+                    };
+                    document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterLevelInspectionBaseViewModel);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -162,6 +169,17 @@ namespace Zybach.API.ReportTemplates
                         var spec = VegaSpecUtilities.GetNitrateChartVegaSpec(nitrateInspectionsAsVegaChartDtos, false);
                         var imageByteArray = await vegaRenderService.PrintPNG(spec);
                         var imagePath = $"{FullTemplateTempImageDirectory}/{well.WellID}-nitrateLevelsChart";
+                        File.WriteAllBytes($"{imagePath}.png", imageByteArray);
+                    }
+                    break;
+                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                    var wells = dbContext.Wells.Where(x => SelectedModelIDs.Contains(x.WellID)).ToList();
+                    foreach (var well in wells)
+                    {
+                        var waterLevelInspectionsAsVegaChartDtos = WaterLevelInspections.ListByWellIDAsVegaChartDto(dbContext, well.WellID);
+                        var spec = VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionsAsVegaChartDtos, false);
+                        var imageByteArray = await vegaRenderService.PrintPNG(spec);
+                        var imagePath = $"{FullTemplateTempImageDirectory}/{well.WellID}-waterLevelsChart";
                         File.WriteAllBytes($"{imagePath}.png", imageByteArray);
                     }
                     break;
@@ -271,6 +289,14 @@ namespace Zybach.API.ReportTemplates
             return listOfModels;
         }
 
+        private List<ReportTemplateWellWaterLevelInspectionModel> GetListOfWellWaterLevelInspectionModels(ZybachDbContext dbContext)
+        {
+            var listOfModels = Wells.ListByWellIDsAsWellWaterLevelInspectionDetailedDto(dbContext, SelectedModelIDs)
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.Well.WellID))
+                .Select(x => new ReportTemplateWellWaterLevelInspectionModel(x)).ToList();
+            return listOfModels;
+        }
+
         public static async Task<ReportTemplateValidationResultDto> ValidateReportTemplate(ReportTemplate reportTemplate, ZybachDbContext dbContext, ILogger logger, VegaRenderService.VegaRenderService vegaRenderService)
         {
             var reportTemplateModel = (ReportTemplateModelEnum)reportTemplate.ReportTemplateModelID;
@@ -283,6 +309,9 @@ namespace Zybach.API.ReportTemplates
                     selectedModelIDs = dbContext.ChemigationPermits.AsNoTracking().Where(x => x.ChemigationPermitAnnualRecords.Count > 0).Select(x => x.ChemigationPermitID).Take(10).ToList();
                     break;
                 case ReportTemplateModelEnum.WellWaterQualityInspection:
+                    selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
+                    break;
+                case ReportTemplateModelEnum.WellWaterLevelInspection:
                     selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
                     break;
                 default:
