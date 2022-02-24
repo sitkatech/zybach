@@ -204,7 +204,22 @@ namespace Zybach.API.Controllers
             return Ok(VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true));
         }
 
-            private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
+        [HttpGet("/api/wells/{wellID}/waterLevelChartSpec")]
+        [ZybachViewFeature]
+        public ActionResult<string> GetWaterLevelVegaChartSpec([FromRoute] int wellID)
+        {
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            var waterLevelInspectionForVegaChartDtos = WaterLevelInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
+
+            if (!waterLevelInspectionForVegaChartDtos.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionForVegaChartDtos, true));
+        }
+
+        private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
         {
             well = Wells.GetByID(_dbContext, wellID);
             return ThrowNotFound(well, "Well", wellID, out actionResult);
