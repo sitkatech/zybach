@@ -37,6 +37,11 @@ namespace Zybach.API.Controllers
                         : (int?)null;
 
                 sensorSimpleDto.MessageAge = messageAge;
+
+                var wellSensorMeasurementDates =
+                    WellSensorMeasurements.ListReadingDatesBySensor(_dbContext, sensorSimpleDto.SensorName);
+                sensorSimpleDto.FirstReadingDate = wellSensorMeasurementDates.Any() ? wellSensorMeasurementDates.Min() : null;
+                sensorSimpleDto.LastReadingDate = wellSensorMeasurementDates.Any() ? wellSensorMeasurementDates.Max() : null;
             }
 
             return sensorSimpleDtos;

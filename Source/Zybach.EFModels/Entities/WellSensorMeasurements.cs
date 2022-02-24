@@ -98,6 +98,15 @@ namespace Zybach.EFModels.Entities
             return ZeroFillMissingDaysAsDto(wellSensorMeasurements);
         }
 
+        public static List<DateTime> ListReadingDatesBySensor(ZybachDbContext dbContext, string sensorName)
+        {
+            return dbContext.WellSensorMeasurements
+                .AsNoTracking()
+                .Where(x => x.SensorName == sensorName)
+                .Select(x => x.MeasurementDate)
+                .ToList();
+        }
+
         private static List<WellSensorMeasurementDto> ZeroFillMissingDaysAsDto(
             List<WellSensorMeasurement> wellSensorMeasurements)
         {
