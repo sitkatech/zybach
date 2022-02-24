@@ -196,7 +196,7 @@ namespace Zybach.API.Services
                   ""type"":""nominal"",
                   ""scale"":{{
                     ""range"":[""blue"", ""red""], 
-                    ""domain"": [""Groundwater Depth"", ""Current Groundwater Depth""]
+                    ""domain"": [""Depth"", ""Current Depth""]
                   }}
                 }}
             }},           
@@ -208,7 +208,7 @@ namespace Zybach.API.Services
                     ""field"": ""Measurement"",
                     ""type"": ""quantitative"",
                     ""axis"": {{                            
-                        ""title"": ""Groundwater Depth""
+                        ""title"": ""Depth to Groundwater""
                     }}
                 }}
                 }},               
@@ -217,7 +217,7 @@ namespace Zybach.API.Services
                     ""mark"": ""line"",
                     ""encoding"": {{
                     ""color"": {{
-                        ""datum"":""Groundwater Depth""
+                        ""datum"":""Depth""
                     }}
                     }}
                 }},           
@@ -244,7 +244,7 @@ namespace Zybach.API.Services
                 ""mark"": ""line"",
                     ""encoding"": {{
                     ""color"": {{
-                        ""datum"":""Current Groundwater Depth""
+                        ""datum"":""Current Depth""
                     }}
                 }}
             }},           
@@ -278,12 +278,12 @@ namespace Zybach.API.Services
                     {{
                     ""field"": ""Measurement"", 
                     ""type"": ""quantitative"", 
-                    ""title"": ""Groundwater Depth""
+                    ""title"": ""Depth""
                     }},
                     {{
                     ""field"": ""MostRecentMeasurement"", 
                     ""type"": ""quantitative"", 
-                    ""title"": ""Current Groundwater Depth""
+                    ""title"": ""Current Depth""
                     }}              
                 ]}},                
                 ""selection"": 
@@ -300,7 +300,7 @@ namespace Zybach.API.Services
                 }}
             ],
             ""title"": {{
-                ""text"":""Groundwater Depth""
+                ""text"":""Depth to Groundwater""
                 {(!isForWeb ? ",\"fontSize\": 30 " : "")}
             }}{ (!isForWeb ? "," + reportDocumentOnlyConfig : "")}
         }}";
