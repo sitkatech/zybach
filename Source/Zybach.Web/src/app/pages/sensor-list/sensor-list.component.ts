@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
@@ -32,6 +33,7 @@ export class SensorListComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private datePipe: DatePipe,
     private sensorService: SensorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -64,6 +66,7 @@ export class SensorListComponent implements OnInit {
   }
 
   private initializeSensorsGrid(): void {
+    let datePipe = this.datePipe;
     this.sensorColumnDefs = [
     {
       headerName: '', valueGetter: function (params: any) {
@@ -103,6 +106,8 @@ export class SensorListComponent implements OnInit {
       filter: 'agNumberColumnFilter',
       sortable: true, resizable: true
     },
+    this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
+    this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
     {
       headerName: 'Well', valueGetter: function (params: any) {
         if(params.data.WellID)
@@ -136,6 +141,40 @@ export class SensorListComponent implements OnInit {
       sortable: true
     }
     ];
+  }
+
+  private dateSortComparer (id1: any, id2: any) {
+    const date1 = id1 ? Date.parse(id1) : Date.parse("1/1/1900");
+    const date2 = id2 ? Date.parse(id2) : Date.parse("1/1/1900");
+    if (date1 < date2) {
+      return -1;
+    }
+    return (date1 > date2)  ?  1 : 0;
+  }
+
+  private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+    if(cellValue === null) return -1;
+    const cellDate = Date.parse(cellValue);
+    if (cellDate == filterLocalDateAtMidnight) {
+      return 0;
+    }
+    return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
+  }
+
+  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string): ColDef {
+    return {
+      headerName: headerName, valueGetter: function (params: any) {
+        return datePipe.transform(params.data[fieldName], dateFormat);
+      },
+      comparator: this.dateSortComparer,
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        filterOptions: ['inRange'],
+        comparator: this.dateFilterComparator
+      },
+      resizable: true,
+      sortable: true
+    };
   }
 
   ngOnDestroy(): void {
