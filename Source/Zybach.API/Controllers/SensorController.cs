@@ -30,6 +30,11 @@ namespace Zybach.API.Controllers
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
+            var wellSensorMeasurementDatesBySensor =
+                WellSensorMeasurements.ListReadingDatesBySensor(_dbContext);
+
+            var currentDate = DateTime.Now;
+
             foreach (var sensorSimpleDto in sensorSimpleDtos)
             {
                 var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
@@ -38,10 +43,13 @@ namespace Zybach.API.Controllers
 
                 sensorSimpleDto.MessageAge = messageAge;
 
-                var wellSensorMeasurementDates =
-                    WellSensorMeasurements.ListReadingDatesBySensor(_dbContext, sensorSimpleDto.SensorName);
-                sensorSimpleDto.FirstReadingDate = wellSensorMeasurementDates.Any() ? wellSensorMeasurementDates.Min() : null;
-                sensorSimpleDto.LastReadingDate = wellSensorMeasurementDates.Any() ? wellSensorMeasurementDates.Max() : null;
+                if (wellSensorMeasurementDatesBySensor.ContainsKey(sensorSimpleDto.SensorName))
+                {
+                    sensorSimpleDto.FirstReadingDate = wellSensorMeasurementDatesBySensor[sensorSimpleDto.SensorName].Min();
+                    var numberOfDays = currentDate.Subtract(sensorSimpleDto.FirstReadingDate.Value).Days;
+                    // correlates with ZeroFillMissingDaysAsDto
+                    sensorSimpleDto.LastReadingDate = sensorSimpleDto.FirstReadingDate.Value.AddDays(numberOfDays - 1);
+                }
             }
 
             return sensorSimpleDtos;
