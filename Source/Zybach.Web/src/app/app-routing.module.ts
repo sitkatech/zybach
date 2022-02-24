@@ -54,6 +54,7 @@ import { WaterLevelInspectionEditComponent } from './pages/water-level-inspectio
 import { WellInspectionReportsComponent } from './pages/well-inspection-reports/well-inspection-reports.component';
 import { ReadOnlyGuard } from "./shared/guards/unauthenticated-access/read-only-guard";
 import { NormalPlusGuard } from './shared/guards/unauthenticated-access/normal-plus-guard';
+import { AnomalyReportListComponent } from './pages/anomaly-report-list/anomaly-report-list.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -61,6 +62,7 @@ const routes: Routes = [
   { path: "sensors", component: SensorListComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensors/:id", component: SensorDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "anomaly-reports", component: AnomalyReportListComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/new-water-level-inspection", component: WaterLevelInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
