@@ -21,10 +21,7 @@ export class AnomalyReportListComponent implements OnInit {
   
   public columnDefs: any[];
   public defaultColDef: ColDef;
-
-  public sensors: Array<SensorSimpleDto>;
-
-  public richTextTypeID : number = CustomRichTextType.SensorList;
+  public richTextTypeID : number = CustomRichTextType.AnomalyReportList;
 
   constructor(
     private authenticationService: AuthenticationService,

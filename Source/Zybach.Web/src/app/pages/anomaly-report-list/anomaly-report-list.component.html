@@ -2,15 +2,15 @@
     <app-alert-display></app-alert-display>
     <div class="row">
         <div class="col-12">
-            <h2 class="d-inline-block">Anomaly Report Management</h2>
-            <!-- <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text> -->
+            <h2 class="d-inline-block">Anomaly Reports</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         </div>
     </div>
     <div class="row mt-2">
         <div class="col">
-            <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+            <button class="btn btn-secondary btn-md float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
             ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-            <fresca-clear-grid-filters-button class="float-right" [grid]="reportedAnomaliesGrid" classList="mr-3">
+            <fresca-clear-grid-filters-button class="float-right" [grid]="reportedAnomaliesGrid" classList="ml-3">
             </fresca-clear-grid-filters-button>
         </div>
     </div>
