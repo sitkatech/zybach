@@ -277,8 +277,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       setTimeout(() => {
         self.waterLevelVegaView.runAsync();
         window.dispatchEvent(new Event('resize'));
-        console.log("resized");
-      }, 100);
+      }, 200);
     }).catch(() => this.hasWaterLevelChartData = false);
   }
   
