@@ -101,7 +101,6 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
 
   public addWellToMap() {
     const sensorTypes = this.well.Sensors.map(x => x.SensorType);
-    console.log(sensorTypes);
     let mapIcon;
 
     if (sensorTypes.includes("Flow Meter")) {
