@@ -7811,6 +7811,10 @@
             "format": "double",
             "nullable": true
           },
+          "IrrigationUnitGeoJSON": {
+            "type": "string",
+            "nullable": true
+          },
           "Sensors": {
             "type": "array",
             "items": {

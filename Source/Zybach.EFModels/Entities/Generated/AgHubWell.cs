@@ -45,6 +45,8 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(WellID))]
         [InverseProperty("AgHubWell")]
         public virtual Well Well { get; set; }
+        [InverseProperty("AgHubWell")]
+        public virtual AgHubWellIrrigationUnit AgHubWellIrrigationUnit { get; set; }
         [InverseProperty(nameof(AgHubWellIrrigatedAcre.AgHubWell))]
         public virtual ICollection<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
     }
