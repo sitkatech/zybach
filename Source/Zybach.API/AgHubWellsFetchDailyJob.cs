@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
@@ -24,7 +25,7 @@ namespace Zybach.API
         }
 
         public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-            {RunEnvironment.Production};
+            {RunEnvironment.Production, RunEnvironment.Development /*temporary to run jobs locally*/ }; 
 
         protected override void RunJobImplementation()
         {
@@ -104,6 +105,8 @@ namespace Zybach.API
         {
             var agHubWellRawWithAcreYears =
                 _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID).Result;
+            var wktReader = new WKTReader();
+
             if (agHubWellRawWithAcreYears != null)
             {
                 wellStaging.RegisteredUpdated = agHubWellRawWithAcreYears.RegisteredUpdated;
@@ -111,6 +114,7 @@ namespace Zybach.API
                 wellStaging.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
                 wellStaging.AgHubRegisteredUser = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
                 wellStaging.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
+                wellStaging.IrrigationUnitGeometry = wktReader.Read(agHubWellRawWithAcreYears.IrrigationUnitGeometry);
 
                 var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
                     .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()

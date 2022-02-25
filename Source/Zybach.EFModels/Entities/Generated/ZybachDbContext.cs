@@ -20,6 +20,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
+        public virtual DbSet<AgHubWellIrrigationUnit> AgHubWellIrrigationUnits { get; set; }
         public virtual DbSet<AgHubWellStaging> AgHubWellStagings { get; set; }
         public virtual DbSet<ChemicalFormulation> ChemicalFormulations { get; set; }
         public virtual DbSet<ChemicalUnit> ChemicalUnits { get; set; }
@@ -111,6 +112,14 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<AgHubWellIrrigatedAcreStaging>(entity =>
             {
                 entity.Property(e => e.WellRegistrationID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<AgHubWellIrrigationUnit>(entity =>
+            {
+                entity.HasOne(d => d.AgHubWell)
+                    .WithOne(p => p.AgHubWellIrrigationUnit)
+                    .HasForeignKey<AgHubWellIrrigationUnit>(d => d.AgHubWellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<AgHubWellStaging>(entity =>
