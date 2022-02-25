@@ -26,7 +26,7 @@ namespace Zybach.API
         }
 
         public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-            {RunEnvironment.Production, RunEnvironment.Development /*temporary to run jobs locally*/ }; 
+            {RunEnvironment.Production}; 
 
         protected override void RunJobImplementation()
         {
