@@ -148,7 +148,11 @@ namespace Zybach.API.Controllers
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
                 wellDetailDto.InAgHub = true;
-                wellDetailDto.IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(agHubWell.AgHubWellIrrigationUnit.IrrigationUnitGeometry);
+                var agHubWellIrrigationUnit = agHubWell.AgHubWellIrrigationUnit;
+                if (agHubWellIrrigationUnit != null)
+                {
+                    wellDetailDto.IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(agHubWellIrrigationUnit.IrrigationUnitGeometry);
+                }
             }
             else
             {
