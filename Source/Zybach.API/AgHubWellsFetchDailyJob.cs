@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
+using RestSharp.Extensions;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
@@ -114,7 +115,7 @@ namespace Zybach.API
                 wellStaging.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
                 wellStaging.AgHubRegisteredUser = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
                 wellStaging.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
-                wellStaging.IrrigationUnitGeometry = wktReader.Read(agHubWellRawWithAcreYears.IrrigationUnitGeometry);
+                wellStaging.IrrigationUnitGeometry = agHubWellRawWithAcreYears.IrrigationUnitGeometry.HasValue() ? wktReader.Read(agHubWellRawWithAcreYears.IrrigationUnitGeometry) : null;
 
                 var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
                     .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()

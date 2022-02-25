@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 
 namespace Zybach.Models.DataTransferObjects
 {
@@ -79,6 +80,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WaterQualityInspectionTypes { get; set; }
         public string ScreenInterval { get; set; }
         public decimal? ScreenDepth { get; set; }
+        public string? IrrigationUnitGeoJSON { get; set; }
     }
 
 

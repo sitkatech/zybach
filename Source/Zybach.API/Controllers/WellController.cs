@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
+using Zybach.EFModels.Util;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
@@ -147,6 +148,7 @@ namespace Zybach.API.Controllers
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
                 wellDetailDto.InAgHub = true;
+                wellDetailDto.IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(agHubWell.AgHubWellIrrigationUnit.IrrigationUnitGeometry);
             }
             else
             {
