@@ -58,6 +58,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
+        public virtual DbSet<SensorAnomaly> SensorAnomalies { get; set; }
         public virtual DbSet<SensorType> SensorTypes { get; set; }
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<Tillage> Tillages { get; set; }
@@ -547,6 +548,18 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.SensorName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<SensorAnomaly>(entity =>
+            {
+                entity.Property(e => e.SensorAnomalyID).ValueGeneratedNever();
+
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.Sensor)
+                    .WithMany(p => p.SensorAnomalies)
+                    .HasForeignKey(d => d.SensorID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<SensorType>(entity =>
             {
                 entity.Property(e => e.SensorTypeID).ValueGeneratedNever();
@@ -636,6 +649,8 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<WaterLevelMeasuringEquipment>(entity =>
             {
+                entity.Property(e => e.WaterLevelMeasuringEquipmentID).ValueGeneratedNever();
+
                 entity.Property(e => e.WaterLevelMeasuringEquipmentDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.WaterLevelMeasuringEquipmentName).IsUnicode(false);
