@@ -88,9 +88,6 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     if (this.well.IrrigationUnitGeoJSON != null && this.well.IrrigationUnitGeoJSON != undefined) {
       this.addIrrigationUnitToMap();
     }
-    // else {
-    //   this.alertService.pushAlert(new Alert(`No location was provided for ${this.well.WellRegistrationID}.`))
-    // }
   }
 
   public addIrrigationUnitToMap() : void {    
