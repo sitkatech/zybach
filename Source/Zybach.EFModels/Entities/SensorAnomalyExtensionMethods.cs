@@ -8,7 +8,7 @@ namespace Zybach.EFModels.Entities
         {
             sensorAnomalySimpleDto.SensorName = sensorAnomaly.Sensor.SensorName;
             sensorAnomalySimpleDto.WellRegistrationID = sensorAnomaly.Sensor.Well.WellRegistrationID;
-            sensorAnomalySimpleDto.NumberOfAnomalousDays = (int)(sensorAnomaly.EndDate - sensorAnomaly.StartDate).TotalDays;
+            sensorAnomalySimpleDto.NumberOfAnomalousDays = (int)(sensorAnomaly.EndDate - sensorAnomaly.StartDate).TotalDays + 1;
         }
     }
 }
