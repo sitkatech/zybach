@@ -68,4 +68,5 @@ namespace Zybach.Models.DataTransferObjects
         public string InspectionNotes { get; set; }
         public string InspectionNickname { get; set; }
     }
+
 }

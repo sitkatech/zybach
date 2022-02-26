@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AnomalyReportListComponent } from './anomaly-report-list.component';
+import { SensorAnomalyListComponent } from './sensor-anomaly-list.component';
 
-describe('AnomalyReportListComponent', () => {
-  let component: AnomalyReportListComponent;
-  let fixture: ComponentFixture<AnomalyReportListComponent>;
+describe('SensorAnomalyListComponent', () => {
+  let component: SensorAnomalyListComponent;
+  let fixture: ComponentFixture<SensorAnomalyListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AnomalyReportListComponent ]
+      declarations: [ SensorAnomalyListComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AnomalyReportListComponent);
+    fixture = TestBed.createComponent(SensorAnomalyListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

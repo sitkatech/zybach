@@ -2514,6 +2514,152 @@
         }
       }
     },
+    "/api/sensorAnomalies": {
+      "get": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorAnomalyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorAnomalyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorAnomalyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensorAnomalies/new": {
+      "post": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/sensorAnomalies/update": {
+      "put": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/sensorAnomalies/delete": {
+      "delete": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/sensorStatus": {
       "get": {
         "tags": [
@@ -6457,6 +6603,104 @@
         },
         "additionalProperties": false
       },
+      "SensorAnomalyDto": {
+        "type": "object",
+        "properties": {
+          "SensorAnomalyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Sensor": {
+            "$ref": "#/components/schemas/SensorDto"
+          },
+          "StartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorAnomalySimpleDto": {
+        "type": "object",
+        "properties": {
+          "SensorAnomalyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "StartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "NumberOfAnomalousDays": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorType": {
+            "$ref": "#/components/schemas/SensorTypeDto"
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellDto"
+          },
+          "InGeoOptix": {
+            "type": "boolean"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
@@ -6572,6 +6816,24 @@
           },
           "IsActive": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorTypeDto": {
+        "type": "object",
+        "properties": {
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorTypeDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

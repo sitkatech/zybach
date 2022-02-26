@@ -18,7 +18,9 @@ namespace Zybach.API.Controllers
     {
         private readonly GeoOptixService _geoOptixService;
 
-        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public WellController(ZybachDbContext dbContext, ILogger<WellController> logger,
+            KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration,
+            GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _geoOptixService = geoOptixService;
         }
@@ -57,21 +59,24 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/wells/search/{wellRegistrationID}/hasInspectionType")]
         [ZybachViewFeature]
-        public ActionResult<List<string>> SearchByWellRegistrationIDHasInspectionType([FromRoute] string wellRegistrationID)
+        public ActionResult<List<string>> SearchByWellRegistrationIDHasInspectionType(
+            [FromRoute] string wellRegistrationID)
         {
             return Ok(Wells.SearchByWellRegistrationIDHasInspectionType(_dbContext, wellRegistrationID));
         }
 
         [HttpGet("/api/wells/search/{wellRegistrationID}/requiresChemigation")]
         [ZybachViewFeature]
-        public ActionResult<List<string>> SearchByWellRegistrationIDRequiresChemigation([FromRoute] string wellRegistrationID)
+        public ActionResult<List<string>> SearchByWellRegistrationIDRequiresChemigation(
+            [FromRoute] string wellRegistrationID)
         {
             return Ok(Wells.SearchByWellRegistrationIDRequiresChemigation(_dbContext, wellRegistrationID));
         }
 
         [HttpGet("/api/wells/{wellID}/waterLevelInspections")]
         [ZybachViewFeature]
-        public ActionResult<List<WaterLevelInspectionSummaryDto>> GetWaterLevelInspectionSummariesByWellID([FromRoute] int wellID)
+        public ActionResult<List<WaterLevelInspectionSummaryDto>> GetWaterLevelInspectionSummariesByWellID(
+            [FromRoute] int wellID)
         {
             var waterLevelInspectionSummaryDtos = WaterLevelInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
             return Ok(waterLevelInspectionSummaryDtos);
@@ -79,9 +84,11 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/wells/{wellID}/waterQualityInspections")]
         [ZybachViewFeature]
-        public ActionResult<List<WaterQualityInspectionSummaryDto>> GetWaterQualityInspectionSummariesByWellID([FromRoute] int wellID)
+        public ActionResult<List<WaterQualityInspectionSummaryDto>> GetWaterQualityInspectionSummariesByWellID(
+            [FromRoute] int wellID)
         {
-            var waterQualityInspectionSummaryDtos = WaterQualityInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
+            var waterQualityInspectionSummaryDtos =
+                WaterQualityInspections.ListByWellIDAsSummaryDto(_dbContext, wellID);
             return Ok(waterQualityInspectionSummaryDtos);
         }
 
@@ -104,7 +111,8 @@ namespace Zybach.API.Controllers
             {
                 WellID = well.WellID,
                 WellRegistrationID = wellRegistrationID,
-                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
+                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y,
+                    well.WellGeometry.Coordinate.X))),
                 InAgHub = well.AgHubWell != null,
                 InGeoOptix = well.GeoOptixWell != null,
                 TownshipRangeSection = well.TownshipRangeSection,
@@ -135,14 +143,17 @@ namespace Zybach.API.Controllers
                 IsReplacement = well.IsReplacement,
                 WellNickname = well.WellNickname,
                 Notes = well.Notes,
-                WaterQualityInspectionTypes = string.Join(", ", well.WellWaterQualityInspectionTypes.Select(x => x.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName)),
+                WaterQualityInspectionTypes = string.Join(", ",
+                    well.WellWaterQualityInspectionTypes.Select(x =>
+                        x.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName)),
             };
 
             var agHubWell = well.AgHubWell;
             if (agHubWell != null)
             {
                 wellDetailDto.WellTPID = agHubWell.WellTPID;
-                wellDetailDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres.Select(x => new IrrigatedAcresPerYearDto { Acres = x.Acres, Year = x.IrrigationYear }).ToList();
+                wellDetailDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres
+                    .Select(x => new IrrigatedAcresPerYearDto {Acres = x.Acres, Year = x.IrrigationYear}).ToList();
                 wellDetailDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
@@ -154,7 +165,8 @@ namespace Zybach.API.Controllers
                 wellDetailDto.InAgHub = false;
             }
 
-            var firstReadingDate = WellSensorMeasurements.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
+            var firstReadingDate =
+                WellSensorMeasurements.GetFirstReadingDateTimeForWell(_dbContext, wellRegistrationID);
             var lastReadingDate = WellSensorMeasurements.GetLastReadingDateTimeForWell(_dbContext, wellRegistrationID);
 
             wellDetailDto.FirstReadingDate = firstReadingDate;
@@ -172,18 +184,23 @@ namespace Zybach.API.Controllers
 
             var annualPumpedVolumes = new List<AnnualPumpedVolume>();
 
-            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
-            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
+            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors,
+                MeasurementTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
+            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors,
+                MeasurementTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 
             if (wellDetailDto.HasElectricalData)
             {
-                var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
+                var wellSensorMeasurementDtos =
+                    WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext,
+                        wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
                 var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
                     .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue),
                         MeasurementTypes.ElectricalUsage)).ToList();
 
                 annualPumpedVolumes.AddRange(pumpedVolumes);
             }
+
             wellDetailDto.AnnualPumpedVolume = annualPumpedVolumes;
 
             return wellDetailDto;
@@ -194,7 +211,8 @@ namespace Zybach.API.Controllers
         public ActionResult<string> GetNitrateVegaChartSpec([FromRoute] int wellID)
         {
             if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
-            var waterQualityInspectionsForVegaChart = WaterQualityInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
+            var waterQualityInspectionsForVegaChart =
+                WaterQualityInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
 
             if (!waterQualityInspectionsForVegaChart.Any())
             {
@@ -204,7 +222,7 @@ namespace Zybach.API.Controllers
             return Ok(VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true));
         }
 
-            private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
+        private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
         {
             well = Wells.GetByID(_dbContext, wellID);
             return ThrowNotFound(well, "Well", wellID, out actionResult);
@@ -218,7 +236,8 @@ namespace Zybach.API.Controllers
 
         [HttpPut("/api/wells/{wellID}/editRegistrationID")]
         [ZybachEditFeature]
-        public ActionResult UpsertWellRegistrationID([FromRoute] int wellID, [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
+        public ActionResult UpsertWellRegistrationID([FromRoute] int wellID,
+            [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 
@@ -259,7 +278,8 @@ namespace Zybach.API.Controllers
 
         [HttpPut("/api/wells/{wellID}/contactInfo")]
         [ZybachEditFeature]
-        public ActionResult UpsertWellContactDetails([FromRoute] int wellID, [FromBody] WellContactInfoDto wellContactInfoDto)
+        public ActionResult UpsertWellContactDetails([FromRoute] int wellID,
+            [FromBody] WellContactInfoDto wellContactInfoDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 
@@ -285,14 +305,14 @@ namespace Zybach.API.Controllers
                 WellParticipationID = well.WellParticipationID,
                 WellParticipationName = well.WellParticipation?.WellParticipationDisplayName,
                 WellUseID = well.WellUseID,
-                WellUseName = well.WellUse?.WellUseDisplayName, 
+                WellUseName = well.WellUse?.WellUseDisplayName,
                 RequiresChemigation = well.RequiresChemigation,
                 RequiresWaterLevelInspection = well.RequiresWaterLevelInspection,
                 WaterQualityInspectionTypeIDs = waterQualityInspectionTypeIDs,
-                IsReplacement = well.IsReplacement, 
+                IsReplacement = well.IsReplacement,
                 WellDepth = well.WellDepth,
                 Clearinghouse = well.Clearinghouse,
-                PageNumber = well.PageNumber, 
+                PageNumber = well.PageNumber,
                 SiteName = well.SiteName,
                 SiteNumber = well.SiteNumber,
                 ScreenInterval = well.ScreenInterval,
@@ -304,7 +324,8 @@ namespace Zybach.API.Controllers
 
         [HttpPut("/api/wells/{wellID}/participationInfo")]
         [ZybachEditFeature]
-        public ActionResult UpsertWellParticipationDetails([FromRoute] int wellID, [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
+        public ActionResult UpsertWellParticipationDetails([FromRoute] int wellID,
+            [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             Wells.MapFromParticipationUpsert(well, wellParticipationInfoDto);
@@ -313,7 +334,8 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        private void UpdateWaterQualityInspectionTypesForWell(Well well, WellParticipationInfoDto wellParticipationInfoDto)
+        private void UpdateWaterQualityInspectionTypesForWell(Well well,
+            WellParticipationInfoDto wellParticipationInfoDto)
         {
             _dbContext.WellWaterQualityInspectionTypes.RemoveRange(
                 _dbContext.WellWaterQualityInspectionTypes.Where(x => x.WellID == well.WellID));
@@ -331,7 +353,8 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/wells/{wellID}/installation")]
         [ZybachViewFeature]
-        public async Task<ActionResult<List<InstallationRecordDto>>> GetInstallationRecordForWell([FromRoute] int wellID)
+        public async Task<ActionResult<List<InstallationRecordDto>>> GetInstallationRecordForWell(
+            [FromRoute] int wellID)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             return await _geoOptixService.GetInstallationRecords(well.WellRegistrationID);
@@ -339,7 +362,8 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
         [ZybachViewFeature]
-        public async Task<IActionResult> GetPhoto([FromRoute] int wellID, [FromRoute] string installationCanonicalName, [FromRoute] string photoCanonicalName)
+        public async Task<IActionResult> GetPhoto([FromRoute] int wellID, [FromRoute] string installationCanonicalName,
+            [FromRoute] string photoCanonicalName)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             try
@@ -354,7 +378,8 @@ namespace Zybach.API.Controllers
             }
         }
 
-        private List<AnnualPumpedVolume> GetAnnualPumpedVolumeForWellAndSensorType(string wellRegistrationID, List<SensorSummaryDto> sensors, string sensorType, MeasurementTypeEnum measurementTypeEnum)
+        private List<AnnualPumpedVolume> GetAnnualPumpedVolumeForWellAndSensorType(string wellRegistrationID,
+            List<SensorSummaryDto> sensors, string sensorType, MeasurementTypeEnum measurementTypeEnum)
         {
             var sensorTypeSensors = sensors.Where(x => x.SensorType == sensorType).ToList();
 
@@ -363,10 +388,12 @@ namespace Zybach.API.Controllers
                 return new List<AnnualPumpedVolume>();
             }
 
-            var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
+            var wellSensorMeasurementDtos =
+                WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
+                    wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
 
             var annualPumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
-                .Select(x => new AnnualPumpedVolume(x.Key,x.Sum(y => y.MeasurementValue), sensorType)).ToList();
+                .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue), sensorType)).ToList();
 
             return annualPumpedVolumes;
         }
@@ -380,6 +407,7 @@ namespace Zybach.API.Controllers
             {
                 ModelState.AddModelError("Well Registration ID", $"'{wellNewDto.WellRegistrationID}' already exists!");
             }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

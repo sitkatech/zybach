@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[SensorAnomaly](
-	[SensorAnomalyID] [int] NOT NULL,
+	[SensorAnomalyID] [int] IDENTITY(1,1) NOT NULL,
 	[SensorID] [int] NOT NULL,
 	[StartDate] [datetime] NOT NULL,
 	[EndDate] [datetime] NOT NULL,

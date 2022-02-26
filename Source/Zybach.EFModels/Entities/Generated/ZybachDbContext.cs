@@ -550,8 +550,6 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<SensorAnomaly>(entity =>
             {
-                entity.Property(e => e.SensorAnomalyID).ValueGeneratedNever();
-
                 entity.Property(e => e.Notes).IsUnicode(false);
 
                 entity.HasOne(d => d.Sensor)
