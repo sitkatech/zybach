@@ -1,3 +1,0 @@
-const GALLON_TO_ACRE_INCH = 3.68266E-5;
-
-export default GALLON_TO_ACRE_INCH
