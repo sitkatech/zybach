@@ -76,8 +76,8 @@ export class SensorAnomalyListComponent implements OnInit {
       },
       {headerName: 'Sensor Name', field: 'SensorName' },
       {headerName: 'Well Registration #', field: 'WellRegistrationID' },
-      this.utilityFunctionsService.createDateColumnDef('Start Date', 'StartDate', 'M/d/yyyy'),
-      this.utilityFunctionsService.createDateColumnDef('End Date', 'EndDate', 'M/d/yyyy'),
+      this.utilityFunctionsService.createDateColumnDef('Start Date', 'StartDate', 'M/d/yyyy', 'UTC'),
+      this.utilityFunctionsService.createDateColumnDef('End Date', 'EndDate', 'M/d/yyyy', 'UTC'),
       this.utilityFunctionsService.createDecimalColumnDef('Number of Days', 'NumberOfAnomalousDays', 120, 0),
       {headerName: 'Notes', field: 'Notes' }
     ];

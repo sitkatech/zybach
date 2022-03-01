@@ -70,11 +70,11 @@ export class UtilityFunctionsService {
     return (date1 > date2)  ?  1 : 0;
   }
 
-  public createDateColumnDef(headerName: string, fieldName: string, dateFormat: string, width?: number): ColDef {
+  public createDateColumnDef(headerName: string, fieldName: string, dateFormat: string, dateTimezone?: string, width?: number): ColDef {
     const _datePipe = this.datePipe;
     var dateColDef: ColDef = {
       headerName: headerName, valueGetter: function (params: any) {
-        return _datePipe.transform(params.data[fieldName], dateFormat);
+        return _datePipe.transform(params.data[fieldName], dateFormat, dateTimezone);
       },
       comparator: this.dateSortComparator,
       filter: 'agDateColumnFilter',

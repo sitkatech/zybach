@@ -187,17 +187,20 @@ export class SensorDetailComponent implements OnInit {
 
   public displaySensorAnomalyPanel() {
     this.isDisplayingSensorAnomalyPanel = true;
-
+    
     if (this.sensorAnomalyModel) {
       this.sensorAnomalyModel = null;
     }
 
     this.sensorAnomalyModel = new SensorAnomalyUpsertDto();
     this.sensorAnomalyModel.SensorID = this.sensorID;
+
+    this.resizeWindow();
   }
 
   public closeSensorAnomalyPanel() {
     this.isDisplayingSensorAnomalyPanel = false;
+    this.resizeWindow();
   }
 
   public submitSensorAnomaly() {
@@ -216,6 +219,11 @@ export class SensorDetailComponent implements OnInit {
       this.isLoadingSubmit = false;
       window.scroll(0, 0);
     });
+  }
+
+  public resizeWindow() {
+    this.cdr.detectChanges();
+    window.dispatchEvent(new Event('resize'));
   }
 
   // Begin section: chart
@@ -345,7 +353,7 @@ export class SensorDetailComponent implements OnInit {
 
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
     this.vegaView.change('TimeSeries', changeSet).run();
-    window.dispatchEvent(new Event('resize'));
+    this.resizeWindow();
   }
 
   setRangeMax(timeSeries: any){
