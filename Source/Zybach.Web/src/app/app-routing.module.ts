@@ -55,6 +55,7 @@ import { WellInspectionReportsComponent } from './pages/well-inspection-reports/
 import { ReadOnlyGuard } from "./shared/guards/unauthenticated-access/read-only-guard";
 import { NormalPlusGuard } from './shared/guards/unauthenticated-access/normal-plus-guard';
 import { SensorAnomalyListComponent } from './pages/sensor-anomaly-list/sensor-anomaly-list.component';
+import { SensorAnomalyEditComponent } from './pages/sensor-anomaly-edit/sensor-anomaly-edit.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -62,7 +63,8 @@ const routes: Routes = [
   { path: "sensors", component: SensorListComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensors/:id", component: SensorDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "anomaly-reports", component: SensorAnomalyListComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
+  { path: "sensor-anomalies", component: SensorAnomalyListComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
+  { path: "sensor-anomalies/edit/:id", component: SensorAnomalyEditComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/new-water-level-inspection", component: WaterLevelInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},

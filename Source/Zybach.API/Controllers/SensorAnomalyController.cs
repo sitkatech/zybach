@@ -8,6 +8,7 @@ using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
+using Zybach.Models.DataTransferObjects.User;
 
 namespace Zybach.API.Controllers
 {
@@ -19,97 +20,83 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/api/sensorAnomalies")]
         [ZybachViewFeature]
-        public ActionResult<List<SensorAnomalyDto>> List()
+        public ActionResult<List<SensorAnomalySimpleDto>> List()
         {
-            var sensorAnomalyDtos = SensorAnomalies.ListAsSimpleDto(_dbContext);
-            return Ok(sensorAnomalyDtos);
+            var sensorAnomalySimpleDtos = SensorAnomalies.ListAsSimpleDto(_dbContext);
+            return Ok(sensorAnomalySimpleDtos);
+        }
+
+        [HttpGet("/api/sensorAnomalies/{sensorAnomalyID}")]
+        [ZybachViewFeature]
+        public ActionResult<SensorAnomalySimpleDto> GetByID([FromRoute] int sensorAnomalyID)
+        {
+            var sensorAnomalySimpleDto = SensorAnomalies.GetByIDAsSimpleDto(_dbContext, sensorAnomalyID);
+            return Ok(sensorAnomalySimpleDto);
         }
 
         [HttpPost("/api/sensorAnomalies/new")]
         [ZybachEditFeature]
-        public IActionResult NewSensorAnomaly([FromBody] SensorAnomalySimpleDto sensorAnomalySimpleDto)
+        public IActionResult NewSensorAnomaly([FromBody] SensorAnomalyUpsertDto sensorAnomalyUpsertDto)
         {
-            if (!VerifySensorExists(_dbContext, sensorAnomalySimpleDto.SensorID))
+            var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorID == sensorAnomalyUpsertDto.SensorID);
+            if (sensor == null)
+            {
+                return BadRequest();
+            }
+
+            if (!ValidateStartAndEndDates(sensorAnomalyUpsertDto))
             {
                 return BadRequest(ModelState);
             }
 
-            if (!ValidateStartAndEndDates(sensorAnomalySimpleDto))
-            {
-                return BadRequest(ModelState);
-            }
-
-            SensorAnomalies.CreateNew(_dbContext, sensorAnomalySimpleDto);
+            SensorAnomalies.CreateNew(_dbContext, sensorAnomalyUpsertDto);
             return Ok();
         }
 
-        [HttpPut("/api/sensorAnomalies/update")]
+        [HttpPost("/api/sensorAnomalies/update")]
         [ZybachEditFeature]
-        public IActionResult UpdateSensorAnomaly([FromBody] SensorAnomalySimpleDto sensorAnomalySimpleDto)
+        public IActionResult UpdateSensorAnomaly([FromBody] SensorAnomalyUpsertDto sensorAnomalyUpsertDto)
         {
 
-            var sensorAnomaly = VerifySensorAndGetSensorAnomalyIfExists(_dbContext, sensorAnomalySimpleDto);
-            if (sensorAnomaly == null)
+            var sensorAnomaly = _dbContext.SensorAnomalies.SingleOrDefault(x => x.SensorAnomalyID == sensorAnomalyUpsertDto.SensorAnomalyID);
+
+            if (sensorAnomaly == null || sensorAnomaly.SensorID != sensorAnomalyUpsertDto.SensorID)
+            {
+                return BadRequest();
+            }
+
+            if (!ValidateStartAndEndDates(sensorAnomalyUpsertDto))
             {
                 return BadRequest(ModelState);
             }
 
-            if (!ValidateStartAndEndDates(sensorAnomalySimpleDto))
-            {
-                return BadRequest(ModelState);
-            }
-
-            SensorAnomalies.Update(_dbContext, sensorAnomaly, sensorAnomalySimpleDto);
+            SensorAnomalies.Update(_dbContext, sensorAnomaly, sensorAnomalyUpsertDto);
             return Ok();
         }
 
-        [HttpDelete("/api/sensorAnomalies/delete")]
+        [HttpDelete("/api/sensorAnomalies/{sensorAnomalyID}")]
         [ZybachEditFeature]
-        public IActionResult DeleteSensorAnomaly([FromBody] SensorAnomalySimpleDto sensorAnomalySimpleDto)
+        public IActionResult DeleteSensorAnomaly([FromRoute] int sensorAnomalyID)
         {
-            var sensorAnomaly = VerifySensorAndGetSensorAnomalyIfExists(_dbContext, sensorAnomalySimpleDto);
+            var sensorAnomaly = _dbContext.SensorAnomalies.SingleOrDefault(x => x.SensorAnomalyID == sensorAnomalyID);
             if (sensorAnomaly == null)
             {
-                return BadRequest(ModelState);
+                return BadRequest();
             }
 
             SensorAnomalies.Delete(_dbContext, sensorAnomaly);
             return Ok();
         }
 
-        private bool VerifySensorExists(ZybachDbContext dbContext, int sensorID)
+        private bool ValidateStartAndEndDates(SensorAnomalyUpsertDto sensorAnomalyUpsertDto)
         {
-            var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorID == sensorID);
-
-            if (sensor != null)
+            if (sensorAnomalyUpsertDto.StartDate <= sensorAnomalyUpsertDto.EndDate)
             {
                 return true;
             }
 
-            ModelState.AddModelError("Sensor", $"Sensor with an ID of {sensorID} does not exist.");
+            ModelState.AddModelError("End Date", "End date must be equal to or later than start date.");
             return false;
-        }
-
-        private SensorAnomaly VerifySensorAndGetSensorAnomalyIfExists(ZybachDbContext dbContext, SensorAnomalySimpleDto sensorAnomalySimpleDto)
-        {
-            if (!VerifySensorExists(dbContext, sensorAnomalySimpleDto.SensorID))
-            {
-                return null;
-            }
-
-            var sensorAnomaly = dbContext.SensorAnomalies.SingleOrDefault(x => x.SensorAnomalyID == sensorAnomalySimpleDto.SensorAnomalyID);
-            if (sensorAnomaly != null)
-            {
-                return sensorAnomaly;
-            }
-
-            ModelState.AddModelError("Sensor", $"Sensor anomaly with an ID of {sensorAnomalySimpleDto.SensorAnomalyID} does not exist.");
-            return null;
-        }
-
-        private bool ValidateStartAndEndDates(SensorAnomalySimpleDto sensorAnomalySimpleDto)
-        {
-            return true;
         }
     }
 }

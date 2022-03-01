@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 
-export class SensorTypeDto { 
-    SensorTypeID?: number;
-    SensorTypeName?: string;
-    SensorTypeDisplayName?: string;
+export class SensorAnomalyUpsertDto { 
+    SensorAnomalyID?: number;
+    SensorID: number;
+    StartDate: string;
+    EndDate: string;
+    Notes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

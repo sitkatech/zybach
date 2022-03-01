@@ -91,6 +91,7 @@ import { WellOverviewTabComponent } from './shared/components/well-overview-tab/
 import { WellWaterDataTabComponent } from './shared/components/well-water-data-tab/well-water-data-tab.component';
 import { WellPermitsInspectionsTabComponent } from './shared/components/well-permits-inspections-tab/well-permits-inspections-tab.component';
 import { SensorAnomalyListComponent } from './pages/sensor-anomaly-list/sensor-anomaly-list.component';
+import { SensorAnomalyEditComponent } from './pages/sensor-anomaly-edit/sensor-anomaly-edit.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -153,7 +154,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WellOverviewTabComponent,
     WellWaterDataTabComponent,
     WellPermitsInspectionsTabComponent,
-    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WellInspectionReportsComponent, SensorAnomalyListComponent
+    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WellInspectionReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent
   ],
   imports: [
     AppRoutingModule,

@@ -18,11 +18,18 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { SensorTypeEnum } from 'src/app/shared/models/enums/sensor-type.enum';
+import { SensorAnomalyService } from 'src/app/services/sensor-anomaly.service';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-adapter-from-string';
+import { SensorAnomalyUpsertDto } from 'src/app/shared/generated/model/sensor-anomaly-upsert-dto';
 
 @Component({
   selector: 'zybach-sensor-detail',
   templateUrl: './sensor-detail.component.html',
-  styleUrls: ['./sensor-detail.component.scss']
+  styleUrls: ['./sensor-detail.component.scss'],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateAdapterFromString}]
 })
 export class SensorDetailComponent implements OnInit {
   public sensorID: number;
@@ -35,6 +42,7 @@ export class SensorDetailComponent implements OnInit {
   public installationPhotos: Map<string, any[]>; 
 
   public isLoadingSubmit: boolean = false;
+  public sensorAnomalyModel: SensorAnomalyUpsertDto;
 
   public chartID: string = "sensorChart";
   chartColor: string;
@@ -54,7 +62,6 @@ export class SensorDetailComponent implements OnInit {
   dateRange: any;
   public unitsShown: string = "gal";
 
-
   constructor(
     private authenticationService: AuthenticationService,
     private sensorService: SensorService,
@@ -64,16 +71,20 @@ export class SensorDetailComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private utilityFunctionsService: UtilityFunctionsService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private sensorAnomalyService: SensorAnomalyService
   ) { }
 
   ngOnInit(): void {
     this.sensorID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      
+
+      this.sensorAnomalyModel = new SensorAnomalyUpsertDto();
+      this.sensorAnomalyModel.SensorID = this.sensorID;
+
       this.getSensorDetails();
-    })
+    });
   }
   
   private getSensorDetails() {
@@ -170,6 +181,23 @@ export class SensorDetailComponent implements OnInit {
 
   public wellInGeoOptixUrl(): string {
     return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.sensor.WellRegistrationID}`;
+  }
+
+  public submitSensorAnomaly() {
+    this.isLoadingSubmit = true;
+    console.log(this.sensorAnomalyModel);
+    
+    this.sensorAnomalyService.createSensorAnomaly(this.sensorAnomalyModel).subscribe(() => {
+      this.isLoadingSubmit = false;
+      this.sensorAnomalyModel = new SensorAnomalyUpsertDto();
+      this.sensorAnomalyModel.SensorID = this.sensorID;
+      
+      this.alertService.pushAlert(new Alert('Sensor anomaly report successfully created.', AlertContext.Success));
+      window.scroll(0, 0);
+    }, error => {
+      this.isLoadingSubmit = false;
+      window.scroll(0, 0);
+    });
   }
 
   // Begin section: chart

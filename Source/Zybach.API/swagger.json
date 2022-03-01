@@ -2527,7 +2527,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SensorAnomalyDto"
+                    "$ref": "#/components/schemas/SensorAnomalySimpleDto"
                   }
                 }
               },
@@ -2535,7 +2535,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SensorAnomalyDto"
+                    "$ref": "#/components/schemas/SensorAnomalySimpleDto"
                   }
                 }
               },
@@ -2543,11 +2543,72 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SensorAnomalyDto"
+                    "$ref": "#/components/schemas/SensorAnomalySimpleDto"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/sensorAnomalies/{sensorAnomalyID}": {
+      "get": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "parameters": [
+          {
+            "name": "sensorAnomalyID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "parameters": [
+          {
+            "name": "sensorAnomalyID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -2561,22 +2622,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             }
           }
@@ -2589,7 +2650,7 @@
       }
     },
     "/api/sensorAnomalies/update": {
-      "put": {
+      "post": {
         "tags": [
           "SensorAnomaly"
         ],
@@ -2597,58 +2658,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/sensorAnomalies/delete": {
-      "delete": {
-        "tags": [
-          "SensorAnomaly"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
               }
             }
           }
@@ -6603,31 +6628,6 @@
         },
         "additionalProperties": false
       },
-      "SensorAnomalyDto": {
-        "type": "object",
-        "properties": {
-          "SensorAnomalyID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Sensor": {
-            "$ref": "#/components/schemas/SensorDto"
-          },
-          "StartDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "EndDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "Notes": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "SensorAnomalySimpleDto": {
         "type": "object",
         "properties": {
@@ -6667,36 +6667,35 @@
         },
         "additionalProperties": false
       },
-      "SensorDto": {
+      "SensorAnomalyUpsertDto": {
+        "required": [
+          "EndDate",
+          "SensorID",
+          "StartDate"
+        ],
         "type": "object",
         "properties": {
+          "SensorAnomalyID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "SensorID": {
             "type": "integer",
             "format": "int32"
           },
-          "SensorName": {
+          "StartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Notes": {
+            "maxLength": 500,
+            "minLength": 0,
             "type": "string",
             "nullable": true
-          },
-          "SensorType": {
-            "$ref": "#/components/schemas/SensorTypeDto"
-          },
-          "Well": {
-            "$ref": "#/components/schemas/WellDto"
-          },
-          "InGeoOptix": {
-            "type": "boolean"
-          },
-          "CreateDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "LastUpdateDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "IsActive": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -6816,24 +6815,6 @@
           },
           "IsActive": {
             "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SensorTypeDto": {
-        "type": "object",
-        "properties": {
-          "SensorTypeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "SensorTypeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "SensorTypeDisplayName": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
