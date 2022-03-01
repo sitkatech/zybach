@@ -185,7 +185,6 @@ export class SensorDetailComponent implements OnInit {
 
   public submitSensorAnomaly() {
     this.isLoadingSubmit = true;
-    console.log(this.sensorAnomalyModel);
     
     this.sensorAnomalyService.createSensorAnomaly(this.sensorAnomalyModel).subscribe(() => {
       this.isLoadingSubmit = false;
@@ -194,6 +193,8 @@ export class SensorDetailComponent implements OnInit {
       
       this.alertService.pushAlert(new Alert('Sensor anomaly report successfully created.', AlertContext.Success));
       window.scroll(0, 0);
+      
+      this.getSensorDetails();
     }, error => {
       this.isLoadingSubmit = false;
       window.scroll(0, 0);

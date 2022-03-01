@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
@@ -18,8 +19,26 @@ namespace Zybach.EFModels.Entities
         public static List<SensorAnomalySimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
             return GetSensorAnomaliesImpl(dbContext)
+                .OrderByDescending(x => x.EndDate)
                 .Select(x => x.AsSimpleDto())
                 .ToList();
+        }
+
+        public static List<DateTime> GetAnomolousDatesBySensorName(ZybachDbContext dbContext, string sensorName)
+        {
+            var anomalousDates = new List<DateTime>();
+            var sensorAnomalies = GetSensorAnomaliesImpl(dbContext)
+                .Where(x => x.Sensor.SensorName == sensorName);
+
+            foreach (var sensorAnomaly in sensorAnomalies)
+            {
+                var anomalousDateRange = Enumerable.Range(0, (sensorAnomaly.EndDate - sensorAnomaly.StartDate).Days + 1)
+                    .Select(d => sensorAnomaly.StartDate.AddDays(d));
+
+                anomalousDates.AddRange(anomalousDateRange);
+            }
+
+            return anomalousDates;
         }
 
         public static SensorAnomalySimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int sensorAnomalyID)
