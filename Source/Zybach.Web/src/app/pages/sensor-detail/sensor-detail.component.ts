@@ -42,6 +42,7 @@ export class SensorDetailComponent implements OnInit {
   public installationPhotos: Map<string, any[]>; 
 
   public isLoadingSubmit: boolean = false;
+  public isDisplayingSensorAnomalyPanel = false;
   public sensorAnomalyModel: SensorAnomalyUpsertDto;
 
   public chartID: string = "sensorChart";
@@ -79,9 +80,6 @@ export class SensorDetailComponent implements OnInit {
     this.sensorID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-
-      this.sensorAnomalyModel = new SensorAnomalyUpsertDto();
-      this.sensorAnomalyModel.SensorID = this.sensorID;
 
       this.getSensorDetails();
     });
@@ -183,6 +181,25 @@ export class SensorDetailComponent implements OnInit {
     return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.sensor.WellRegistrationID}`;
   }
 
+  public isSensorTypeWithAnomalies(): boolean {
+    return this.sensor.SensorTypeID == SensorTypeEnum.FlowMeter || this.sensor.SensorTypeID == SensorTypeEnum.PumpMonitor;
+  }
+
+  public displaySensorAnomalyPanel() {
+    this.isDisplayingSensorAnomalyPanel = true;
+
+    if (this.sensorAnomalyModel) {
+      this.sensorAnomalyModel = null;
+    }
+
+    this.sensorAnomalyModel = new SensorAnomalyUpsertDto();
+    this.sensorAnomalyModel.SensorID = this.sensorID;
+  }
+
+  public closeSensorAnomalyPanel() {
+    this.isDisplayingSensorAnomalyPanel = false;
+  }
+
   public submitSensorAnomaly() {
     this.isLoadingSubmit = true;
     
@@ -193,7 +210,7 @@ export class SensorDetailComponent implements OnInit {
       
       this.alertService.pushAlert(new Alert('Sensor anomaly report successfully created.', AlertContext.Success));
       window.scroll(0, 0);
-      
+
       this.getSensorDetails();
     }, error => {
       this.isLoadingSubmit = false;

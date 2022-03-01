@@ -119,12 +119,14 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col">
+        <div [ngClass]="isDisplayingSensorAnomalyPanel ? 'col-sm-9' : 'col-sm-12'">
             <div class="card">
                 <div class="card-header">
                     Sensor Data Readings
                     <a *ngIf="!noTimeSeriesData" class="btn btn-sm btn-zybach float-right" (click)="exportChartData()">
                         <span class="fas fa-download"></span> Download CSV</a>  
+                    <a *ngIf="!noTimeSeriesData && isSensorTypeWithAnomalies()" class="btn btn-sm btn-zybach float-right mr-2" (click)="displaySensorAnomalyPanel()">
+                        <span class="fas fa-plus"></span> Add Sensor Anomaly</a>  
                 </div>
                 <div class="card-body">
                     <div class="row" *ngIf="!timeSeries">
@@ -159,7 +161,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" *ngIf="isDisplayingSensorAnomalyPanel">
             <div class="card">
                 <div class="card-header">Create Anomaly Report</div>
                 <div class="card-body">
@@ -189,14 +191,17 @@
                             [(ngModel)]="sensorAnomalyModel.Notes">
                         </textarea>
                     </div>
+                    <div class="col">
+                        <i class="fas fa-bolt"></i> Required field
+                    </div>
                     <div class="row mt-3">
-                        <div class="col">
-                            <i class="fas fa-bolt"></i> Required field
-                        </div>
                         <div class="col-auto ml-auto">
                             <button class="btn btn-zybach" [disabled]=" isLoadingSubmit" (click)="submitSensorAnomaly()">
                                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                                 Save
+                            </button>
+                            <button class="btn btn-secondary ml-1" [disabled]=" isLoadingSubmit" (click)="closeSensorAnomalyPanel()">
+                                Cancel
                             </button>
                         </div>
                     </div>
