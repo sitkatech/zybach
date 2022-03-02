@@ -35,7 +35,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/waterLevelInspections")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<WaterLevelInspectionSimpleDto> Create([FromBody] WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto)
         {
             var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, waterLevelInspectionUpsertDto.WellRegistrationID);
@@ -58,7 +58,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/waterLevelInspections/{waterLevelInspectionID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult Update([FromRoute] int waterLevelInspectionID, [FromBody] WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto)
         {
             var waterLevelInspection = WaterLevelInspections.GetByID(_dbContext, waterLevelInspectionID);
@@ -81,7 +81,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpDelete("/api/waterLevelInspections/{waterLevelInspectionID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult DeleteWaterLevelInspectionByID([FromRoute] int waterLevelInspectionID)
         {
             var waterLevelInspection = WaterLevelInspections.GetByID(_dbContext, waterLevelInspectionID);

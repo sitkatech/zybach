@@ -7,12 +7,12 @@
 4. Install Node.js
 5. Install these extensions for Visual Studio Code:
 
-- Angular CLI
+- Angular CLI from Balram Chavan
 - Debugger for Chrome
 - Docker
-- npm support for VS Code
-- npm commands for VS Code
-- npm Intellisense
+- npm support for VS Code from egamma
+- npm commands for VS Code from Florian Knop
+- npm Intellisense from Christian Kohler
 
 ## Zybach Set-up (API)
 

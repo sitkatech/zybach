@@ -54,12 +54,10 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-
-    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.WellWaterQualityInspection).subscribe(reportTemplates => {
-      this.reportTemplates = reportTemplates;
-      if (this.reportTemplates.length == 1) {
-        this.selectedReportTemplateID = reportTemplates[0].ReportTemplateID;
-      }
+    this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
+      this.reportTemplates = reportTemplates.filter(x => 
+        x.ReportTemplateModel.ReportTemplateModelID == ReportTemplateModelEnum.WellWaterQualityInspection ||
+        x.ReportTemplateModel.ReportTemplateModelID == ReportTemplateModelEnum.WellWaterLevelInspection);
     });
     
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
@@ -219,6 +217,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
   private populateWellInspections(): void {
     this.wellService.getWellsWithInspectionSummaries().subscribe(wells => {
       this.rowData = wells;
+      this.wellInspectionsGrid.columnApi.autoSizeAllColumns();
       this.wellInspectionsGrid.api.hideOverlay();
     });
   }
@@ -243,10 +242,6 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
       });
     }
     return count;
-  }
-
-  public modelHasMultipleTemplates(): boolean {
-    return this.reportTemplates?.length > 1;
   }
 
   public generateReport(): void {

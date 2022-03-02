@@ -41,12 +41,6 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-  
-      if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
-        this.router.navigateByUrl("/not-found")
-          .then();
-        return;
-      }
 
       this.chemigationPermitService.getChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;

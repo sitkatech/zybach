@@ -52,7 +52,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/waterQualityInspections")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult<WaterQualityInspectionSimpleDto> CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
             var well = Wells.GetByWellRegistrationIDWithTracking(_dbContext, waterQualityInspectionUpsert.WellRegistrationID);
@@ -67,7 +67,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/waterQualityInspections/{waterQualityInspectionID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult UpdateWaterQualityInspection([FromRoute] int waterQualityInspectionID,
             [FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
@@ -91,7 +91,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpDelete("/api/waterQualityInspections/{waterQualityInspectionID}")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult DeleteWaterQualityInspectionByID([FromRoute] int waterQualityInspectionID)
         {
             var waterQualityInspection = WaterQualityInspections.GetByID(_dbContext, waterQualityInspectionID);

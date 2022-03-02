@@ -41,6 +41,16 @@ export class WellService {
     return this.apiService.getFromApi(`wells/${wellID}`);
   }
 
+  //The backend function generates a string, but sending across the wire is going to produce
+  //an object spec because it's valid JSON
+  public getWellNitrateChartVegaSpec(wellID: number): Observable<any> {
+    return this.apiService.getFromApi(`wells/${wellID}/nitrateChartSpec`);
+  }
+
+  public getWellWaterLevelChartVegaSpec(wellID: number): Observable<any> {
+    return this.apiService.getFromApi(`wells/${wellID}/waterLevelChartSpec`);
+  }
+
   public getWellsWithInspectionSummaries(): Observable<Array<WellInspectionSummaryDto>> {
     return this.apiService.getFromApi(`wells/inspectionSummaries`);
   }

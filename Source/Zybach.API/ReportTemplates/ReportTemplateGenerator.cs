@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SharpDocx;
 using Zybach.API.ReportTemplates.Models;
+using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API.ReportTemplates
@@ -52,7 +54,7 @@ namespace Zybach.API.ReportTemplates
             FullTemplateTempImageDirectory = baseTempDirectory.CreateSubdirectory(TemplateTempImageDirectoryName).FullName;
         }
 
-        public void Generate(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
+        public async Task Generate(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
         {
             var templatePath = GetTemplatePath();
             DocxDocument document;
@@ -61,7 +63,7 @@ namespace Zybach.API.ReportTemplates
             // todo: if someone generates a report with all wells, the resulting .docx can get up to 3gb+ depending on the tenant, how do we want to handle this situation?
             if (TemplateHasImages(templatePath))
             {
-                SaveImageFilesToTempDirectory(dbContext, vegaRenderService);
+                await SaveImageFilesToTempDirectory(dbContext, vegaRenderService);
             }
 
             // Word will insert hidden bookmarks apparently. Bookmarks seem to cause a good amount of issues with the generation
@@ -84,6 +86,13 @@ namespace Zybach.API.ReportTemplates
                         ReportModel = GetListOfWellWaterQualityInspectionModels(dbContext)
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterQualityInspectionBaseViewModel);
+                    break;
+                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                    var wellWaterLevelInspectionBaseViewModel = new ReportTemplateWellWaterLevelInspectionBaseViewModel()
+                    {
+                        ReportModel = GetListOfWellWaterLevelInspectionModels(dbContext)
+                    };
+                    document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterLevelInspectionBaseViewModel);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -138,7 +147,7 @@ namespace Zybach.API.ReportTemplates
         /// when the report generates. This allows us to create a helper on the ReportTemplateProjectImage model that can then call Image() and pass in the
         /// same file name (that uses the file resource unique GUID)
         /// </summary>
-        private async void SaveImageFilesToTempDirectory(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
+        private async Task SaveImageFilesToTempDirectory(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
         {
              switch (ReportTemplateModelEnum)
             {
@@ -150,6 +159,28 @@ namespace Zybach.API.ReportTemplates
                         var imagePath = $"{FullTemplateTempImageDirectory}/{chemigationPermit.ChemigationPermitID}";
                         File.WriteAllBytes($"{imagePath}.png", imageByteArray);
                         //CorrectImageProblemsAndSaveToDisk(projectImage, imagePath);
+                    }
+                    break;
+                case ReportTemplateModelEnum.WellWaterQualityInspection:
+                    var wellList = dbContext.Wells.Where(x => SelectedModelIDs.Contains(x.WellID)).ToList();
+                    foreach (var well in wellList)
+                    {
+                        var nitrateInspectionsAsVegaChartDtos = WaterQualityInspections.ListByWellIDAsVegaChartDto(dbContext, well.WellID);
+                        var spec = VegaSpecUtilities.GetNitrateChartVegaSpec(nitrateInspectionsAsVegaChartDtos, false);
+                        var imageByteArray = await vegaRenderService.PrintPNG(spec);
+                        var imagePath = $"{FullTemplateTempImageDirectory}/{well.WellID}-nitrateLevelsChart";
+                        File.WriteAllBytes($"{imagePath}.png", imageByteArray);
+                    }
+                    break;
+                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                    var wells = dbContext.Wells.Where(x => SelectedModelIDs.Contains(x.WellID)).ToList();
+                    foreach (var well in wells)
+                    {
+                        var waterLevelInspectionsAsVegaChartDtos = WaterLevelInspections.ListByWellIDAsVegaChartDto(dbContext, well.WellID);
+                        var spec = VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionsAsVegaChartDtos, false);
+                        var imageByteArray = await vegaRenderService.PrintPNG(spec);
+                        var imagePath = $"{FullTemplateTempImageDirectory}/{well.WellID}-waterLevelsChart";
+                        File.WriteAllBytes($"{imagePath}.png", imageByteArray);
                     }
                     break;
                 default:
@@ -258,11 +289,16 @@ namespace Zybach.API.ReportTemplates
             return listOfModels;
         }
 
-        public static void ValidateReportTemplate(ReportTemplate reportTemplate, out bool reportIsValid, out string errorMessage, out string sourceCode, ZybachDbContext dbContext, ILogger logger, VegaRenderService.VegaRenderService vegaRenderService)
+        private List<ReportTemplateWellWaterLevelInspectionModel> GetListOfWellWaterLevelInspectionModels(ZybachDbContext dbContext)
         {
-            errorMessage = "";
-            sourceCode = "";
+            var listOfModels = Wells.ListByWellIDsAsWellWaterLevelInspectionDetailedDto(dbContext, SelectedModelIDs)
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.Well.WellID))
+                .Select(x => new ReportTemplateWellWaterLevelInspectionModel(x)).ToList();
+            return listOfModels;
+        }
 
+        public static async Task<ReportTemplateValidationResultDto> ValidateReportTemplate(ReportTemplate reportTemplate, ZybachDbContext dbContext, ILogger logger, VegaRenderService.VegaRenderService vegaRenderService)
+        {
             var reportTemplateModel = (ReportTemplateModelEnum)reportTemplate.ReportTemplateModelID;
             List<int> selectedModelIDs;
             switch (reportTemplateModel)
@@ -275,58 +311,76 @@ namespace Zybach.API.ReportTemplates
                 case ReportTemplateModelEnum.WellWaterQualityInspection:
                     selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
                     break;
+                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                    selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            ValidateReportTemplateForSelectedModelIDs(reportTemplate, selectedModelIDs, out reportIsValid, out errorMessage, out sourceCode, logger, dbContext, vegaRenderService);
+            return await ValidateReportTemplateForSelectedModelIDs(reportTemplate, selectedModelIDs, logger, dbContext, vegaRenderService);
         }
 
-        public static void ValidateReportTemplateForSelectedModelIDs(ReportTemplate reportTemplate, List<int> selectedModelIDs, out bool reportIsValid, out string errorMessage, out string sourceCode, ILogger logger, ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
+        public static async Task<ReportTemplateValidationResultDto> ValidateReportTemplateForSelectedModelIDs(ReportTemplate reportTemplate, List<int> selectedModelIDs, ILogger logger, ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
         {
-            errorMessage = "";
-            sourceCode = "";
+            var validationResult = new ReportTemplateValidationResultDto();
             var reportTemplateGenerator = new ReportTemplateGenerator(reportTemplate, selectedModelIDs);
             var tempDirectory = reportTemplateGenerator.GetCompilePath();
             try
             {
-                reportTemplateGenerator.Generate(dbContext, vegaRenderService);
-                reportIsValid = true;
+                await reportTemplateGenerator.Generate(dbContext, vegaRenderService);
+                validationResult.IsValid = true;
             }
             catch (SharpDocxCompilationException exception)
             {
-                errorMessage = exception.Errors;
-                sourceCode = exception.SourceCode;
-                reportIsValid = false;
+                validationResult.ErrorMessage = exception.Errors;
+                validationResult.SourceCode = exception.SourceCode;
+                validationResult.IsValid = false;
                 logger.LogError(
-                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\" Error Message: \"{errorMessage}\". Source Code: \"{sourceCode}\"");
+                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\" Error Message: \"{validationResult.ErrorMessage}\". Source Code: \"{validationResult.SourceCode}\"");
             }
             catch (Exception exception)
             {
-                reportIsValid = false;
+                validationResult.IsValid = false;
 
                 // SMG 2/12/2020 submitted an issue on the SharpDocx repo https://github.com/egonl/SharpDocx/issues/13 for better exceptions to be able to refactor this out later.
                 switch (exception.Message)
                 {
                     case "No end tag found for code.":
-                        errorMessage =
+                        validationResult.ErrorMessage =
                             $"CodeBlockBuilder exception: \"{exception.Message}\". Could not find a matching closing tag \"%>\" for an opening tag.";
                         break;
                     case "TextBlock is not terminated with '<% } %>'.":
-                        errorMessage = $"CodeBlockBuilder exception: \"{exception.Message}\".";
+                        validationResult.ErrorMessage = $"CodeBlockBuilder exception: \"{exception.Message}\".";
                         break;
                     default:
-                        errorMessage = exception.Message;
+                        validationResult.ErrorMessage = exception.Message;
                         break;
                 }
 
-                sourceCode = exception.StackTrace;
+                validationResult.SourceCode = exception.StackTrace;
                 logger.LogError(
-                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\". Error Message: \"{errorMessage}\".",
+                    $"There was a SharpDocxCompilationException validating a report template. Temporary template file location:\"{tempDirectory}\". Error Message: \"{validationResult.ErrorMessage}\".",
                     exception);
             }
-        
+
+            return validationResult;
         }
 
+    }
+
+    public class ReportTemplateValidationResultDto
+    {
+        public bool IsValid { get; set; }
+        public string ErrorMessage { get; set; }
+        public string SourceCode { get; set; }
+
+        public ReportTemplateValidationResultDto()
+        {
+            //Innocent until proven guilty
+            IsValid = true;
+            ErrorMessage = "";
+            SourceCode = "";
+        }
     }
 }

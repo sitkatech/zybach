@@ -48,12 +48,6 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-  
-      if (!this.authenticationService.isUserAnAdministrator(this.currentUser)) {
-        this.router.navigateByUrl("/not-found")
-          .then();
-        return;
-      }
 
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       this.recordYear = parseInt(this.route.snapshot.paramMap.get("record-year"));

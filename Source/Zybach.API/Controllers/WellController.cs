@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
+using Zybach.EFModels.Util;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
@@ -147,6 +148,11 @@ namespace Zybach.API.Controllers
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
                 wellDetailDto.InAgHub = true;
+                var agHubWellIrrigationUnit = agHubWell.AgHubWellIrrigationUnit;
+                if (agHubWellIrrigationUnit != null)
+                {
+                    wellDetailDto.IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(agHubWellIrrigationUnit.IrrigationUnitGeometry);
+                }
             }
             else
             {
@@ -185,7 +191,38 @@ namespace Zybach.API.Controllers
                 annualPumpedVolumes.AddRange(pumpedVolumes);
             }
             wellDetailDto.AnnualPumpedVolume = annualPumpedVolumes;
+
             return wellDetailDto;
+        }
+
+        [HttpGet("/api/wells/{wellID}/nitrateChartSpec")]
+        [ZybachViewFeature]
+        public ActionResult<string> GetNitrateVegaChartSpec([FromRoute] int wellID)
+        {
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            var waterQualityInspectionsForVegaChart = WaterQualityInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
+
+            if (!waterQualityInspectionsForVegaChart.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true));
+        }
+
+        [HttpGet("/api/wells/{wellID}/waterLevelChartSpec")]
+        [ZybachViewFeature]
+        public ActionResult<string> GetWaterLevelVegaChartSpec([FromRoute] int wellID)
+        {
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            var waterLevelInspectionForVegaChartDtos = WaterLevelInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
+
+            if (!waterLevelInspectionForVegaChartDtos.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionForVegaChartDtos, true));
         }
 
         private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
@@ -201,7 +238,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/wells/{wellID}/editRegistrationID")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult UpsertWellRegistrationID([FromRoute] int wellID, [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
@@ -242,7 +279,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/wells/{wellID}/contactInfo")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult UpsertWellContactDetails([FromRoute] int wellID, [FromBody] WellContactInfoDto wellContactInfoDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
@@ -287,7 +324,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPut("/api/wells/{wellID}/participationInfo")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public ActionResult UpsertWellParticipationDetails([FromRoute] int wellID, [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
@@ -356,7 +393,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("/api/wells/new")]
-        [AdminFeature]
+        [ZybachEditFeature]
         public IActionResult NewWell([FromBody] WellNewDto wellNewDto)
         {
             var existingWell = Wells.GetByWellRegistrationIDWithTracking(_dbContext, wellNewDto.WellRegistrationID);

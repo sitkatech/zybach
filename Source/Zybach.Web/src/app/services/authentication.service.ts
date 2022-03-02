@@ -180,6 +180,41 @@ export class AuthenticationService {
       : null;
     return role === RoleEnum.Admin;
   }
+  
+  public isUserReadOnly(user: UserDto): boolean {
+    const role = user && user.Role
+    ? user.Role.RoleID
+    : null;
+    return role === RoleEnum.WaterDataProgramReadOnly;
+  }
+  
+  public isUserNormalOrHigher(user: UserDto): boolean {
+    const normalPlusRoles = new Array(RoleEnum.Admin, RoleEnum.Normal);
+    const role = user && user.Role
+      ? user.Role.RoleID
+      : null;
+    return normalPlusRoles.includes(role); 
+  }
+
+  public doesUserHaveReadOnlyRightsOrHigher(user: UserDto): boolean {
+    const readOnlyRoles = new Array(RoleEnum.Admin, RoleEnum.Normal, RoleEnum.WaterDataProgramReadOnly);
+    const role = user && user.Role
+      ? user.Role.RoleID
+      : null;
+    return readOnlyRoles.includes(role); 
+  }
+
+  public isCurrentUserNormalOrHigher(): boolean {
+    return this.isUserNormalOrHigher(this.currentUser);
+  }
+
+  public isCurrentUserReadOnly(): boolean {
+    return this.isUserReadOnly(this.currentUser);
+  }
+
+  public doesCurrentUserhaveReadOnlyRightsOrHigher(): boolean {
+    return this.doesUserHaveReadOnlyRightsOrHigher(this.currentUser);
+  }
 
   public isCurrentUserAnAdministrator(): boolean {
     return this.isUserAnAdministrator(this.currentUser);

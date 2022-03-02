@@ -37,5 +37,7 @@ namespace Zybach.EFModels.Entities
         public string AgHubRegisteredUser { get; set; }
         [StringLength(100)]
         public string FieldName { get; set; }
+        [Column(TypeName = "geometry")]
+        public Geometry IrrigationUnitGeometry { get; set; }
     }
 }
