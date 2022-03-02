@@ -194,8 +194,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         return { StreamFlowZoneID: zone.StreamFlowZoneID, PumpingDepth: allYearsPumpingDepth, TotalIrrigatedAcres: allYearsTotalIrrigatedAcres, TotalPumpedVolume: allYearsTotalPumpedVolume }
       });
 
-      console.log(this.pumpingDepthsByYear);
-
       this.displayStreamFlowZones();
     })
   }
@@ -209,7 +207,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let pumpingDepths: StreamFlowZonePumpingDepthDto[];
 
     if (!this.allYearsSelected) {
-      pumpingDepths = this.pumpingDepthsByYear.find(x => x.Year === this.yearToDisplay).StreamFlowZonePumpingDepths;
+      pumpingDepths = this.pumpingDepthsByYear.find(x => x.Year === this.yearToDisplay)?.StreamFlowZonePumpingDepths;
     }
     else {
       pumpingDepths = this.allYearsPumpingDepths;
@@ -255,7 +253,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
   getFillColor(streamFlowZoneID: number, pumpingDepths: StreamFlowZonePumpingDepthDto[]) {
 
-    const pumpingDepth = pumpingDepths.find(x => x.StreamFlowZoneID === streamFlowZoneID).PumpingDepth;
+    const pumpingDepth = pumpingDepths?.find(x => x.StreamFlowZoneID === streamFlowZoneID).PumpingDepth;
 
     if (pumpingDepth === 0) {
       return null;
