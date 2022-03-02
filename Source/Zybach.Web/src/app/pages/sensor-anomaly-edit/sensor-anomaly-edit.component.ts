@@ -55,7 +55,6 @@ export class SensorAnomalyEditComponent implements OnInit {
 
   public onSubmit(editSensorAnomalyForm: HTMLFormElement) { 
     this.isLoadingSubmit = true;
-    console.log(this.sensorAnomalyModel);
 
     this.sensorAnomalyService.updateSensorAnomaly(this.sensorAnomalyModel).subscribe(() => {
       this.isLoadingSubmit = false;
