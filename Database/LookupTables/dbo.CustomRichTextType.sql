@@ -17,7 +17,8 @@ USING (VALUES
 (15, 'WellRegistrationIDChangeHelpText', 'Well Registration ID Change Help Text'),
 (16, 'ClearinghouseReport', 'Clearinghouse Report'),
 (17, 'SensorList', 'Sensor List'),
-(18, 'WellInspectionReports', 'Well Inspection Reports')
+(18, 'WellInspectionReports', 'Well Inspection Reports'),
+(19, 'AnomalyReportList', 'Anomaly Report List')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

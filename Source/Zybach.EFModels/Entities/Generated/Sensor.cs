@@ -12,6 +12,11 @@ namespace Zybach.EFModels.Entities
     [Index(nameof(SensorName), Name = "AK_Sensor_SensorName", IsUnique = true)]
     public partial class Sensor
     {
+        public Sensor()
+        {
+            SensorAnomalies = new HashSet<SensorAnomaly>();
+        }
+
         [Key]
         public int SensorID { get; set; }
         [Required]
@@ -32,5 +37,7 @@ namespace Zybach.EFModels.Entities
         [ForeignKey(nameof(WellID))]
         [InverseProperty("Sensors")]
         public virtual Well Well { get; set; }
+        [InverseProperty(nameof(SensorAnomaly.Sensor))]
+        public virtual ICollection<SensorAnomaly> SensorAnomalies { get; set; }
     }
 }

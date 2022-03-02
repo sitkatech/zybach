@@ -1,0 +1,87 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/sensor-anomalies">Reported Sensor Anomalies</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Edit Sensor Anomaly
+        </li>
+    </ol>
+</nav>
+<div class="container">
+    <app-alert-display></app-alert-display>
+    <div class="row">
+        <div class="col-xl-5 col-lg-7 col-md-9 m-auto">
+            <form #editSensorAnomalyForm="ngForm" *ngIf="sensorAnomalyModel" (ngSubmit)="onSubmit(editSensorAnomalyForm)">
+                <div class="row">
+                    <div class="col-sm-3 text-sm-right">
+                        <span class="font-weight-bold">Sensor Name</span>
+                    </div>
+                    <div class="col-sm-9">
+                        {{sensorAnomaly.SensorName}}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-3 text-sm-right">
+                        <span class="font-weight-bold">Well Reg. #</span>
+                    </div>
+                    <div class="col-sm-9">
+                        {{sensorAnomaly.WellRegistrationID}}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-3 text-sm-right">
+                        <span class="font-weight-bold required">Start Date</span>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="input-group mt-1">
+                            <input class="form-control" name="startDate" placeholder="Select a start date"
+                                [(ngModel)]="sensorAnomalyModel.StartDate" ngbDatepicker #d1="ngbDatepicker" required >
+                            <div class="input-group-append">
+                            <button class="btn btn-secondary far fa-calendar" (click)="d1.toggle()" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-3 text-sm-right">
+                        <span class="font-weight-bold required">End Date</span>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="input-group mt-1">
+                            <input class="form-control" name="endDate" placeholder="Select an end date"
+                                [(ngModel)]="sensorAnomalyModel.EndDate" ngbDatepicker #d2="ngbDatepicker" required >
+                            <div class="input-group-append">
+                            <button class="btn btn-secondary far fa-calendar" (click)="d2.toggle()" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-3 text-sm-right">
+                        <span class="font-weight-bold">Notes</span>
+                    </div>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" name="notes" style="height: 100px"
+                            [(ngModel)]="sensorAnomalyModel.Notes">
+                        </textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <i class="fas fa-bolt"></i> Required field
+                    </div>
+                    <div class="col-auto ml-auto">
+                        <button type="submit" class="btn btn-zybach" [disabled]=" isLoadingSubmit">
+                            <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                            Save
+                        </button>
+                        <a class="btn btn-secondary ml-2" routerLink="/sensor-anomalies">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

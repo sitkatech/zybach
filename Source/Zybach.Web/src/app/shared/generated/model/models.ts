@@ -60,6 +60,8 @@ export * from '././robust-review-dto';
 export * from '././robust-review-scenario-get-run-history-dto';
 export * from '././role-dto';
 export * from '././search-summary-dto';
+export * from '././sensor-anomaly-simple-dto';
+export * from '././sensor-anomaly-upsert-dto';
 export * from '././sensor-message-age-dto';
 export * from '././sensor-simple-dto';
 export * from '././sensor-summary-dto';

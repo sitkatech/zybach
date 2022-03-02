@@ -59,6 +59,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
+        public virtual DbSet<SensorAnomaly> SensorAnomalies { get; set; }
         public virtual DbSet<SensorType> SensorTypes { get; set; }
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<Tillage> Tillages { get; set; }
@@ -554,6 +555,16 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<Sensor>(entity =>
             {
                 entity.Property(e => e.SensorName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SensorAnomaly>(entity =>
+            {
+                entity.Property(e => e.Notes).IsUnicode(false);
+
+                entity.HasOne(d => d.Sensor)
+                    .WithMany(p => p.SensorAnomalies)
+                    .HasForeignKey(d => d.SensorID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<SensorType>(entity =>

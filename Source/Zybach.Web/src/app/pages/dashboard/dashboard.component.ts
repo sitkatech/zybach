@@ -194,8 +194,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         return { StreamFlowZoneID: zone.StreamFlowZoneID, PumpingDepth: allYearsPumpingDepth, TotalIrrigatedAcres: allYearsTotalIrrigatedAcres, TotalPumpedVolume: allYearsTotalPumpedVolume }
       });
 
-      console.log(this.pumpingDepthsByYear);
-
       this.displayStreamFlowZones();
     })
   }
