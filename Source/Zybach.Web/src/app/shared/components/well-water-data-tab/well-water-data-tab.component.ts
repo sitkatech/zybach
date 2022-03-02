@@ -251,7 +251,7 @@ export class WellWaterDataTabComponent implements OnInit {
     }).then(function (res) {
       self.vegaView = res.view;
 
-      self.filterChart(new Date(2021, 0, 1), new Date());
+      setTimeout(() => self.filterChart(new Date(2021, 0, 1), new Date()), 200);
     });
   }
 

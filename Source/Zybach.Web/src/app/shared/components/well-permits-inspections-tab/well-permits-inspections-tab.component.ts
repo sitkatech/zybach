@@ -33,10 +33,13 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
   public waterQualityInspectionColumnDefs: any[];
   public defaultColDef: ColDef;
   public nitrateChartID: string = "nitrateChart";
+  public waterLevelChartID: string = "waterLevelChart";
   public nitrateVegaView: any;
+  public waterLevelVegaView: any;
   public hasNitrateChartData: boolean = true;
+  public hasWaterLevelChartData: boolean = true;
   
-  sensorsWithStatus: SensorMessageAgeDto[];
+  public sensorsWithStatus: SensorMessageAgeDto[];
   public chemigationPermits: Array<ChemigationPermitDetailedDto>;
 
   public waterLevelInspections: Array<WaterLevelInspectionSummaryDto>;
@@ -207,6 +210,20 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
         this.hasNitrateChartData = false;
       }
 
+      if (this.waterLevelInspections != null && this.waterLevelInspections.length > 0) {
+        this.wellService.getWellWaterLevelChartVegaSpec(this.well.WellID).subscribe(result => {
+          if (result == null || result == undefined || result == "") {
+            this.hasWaterLevelChartData = false;
+            return;
+          }
+
+          this.buildWaterLevelChart(result);
+          return;
+        })
+      } else {
+        this.hasWaterLevelChartData = false;
+      }
+
     });
   }
 
@@ -249,6 +266,19 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
         window.dispatchEvent(new Event('resize'));
       }, 200);
     }).catch(() => this.hasNitrateChartData = false);
+  }
+
+  private buildWaterLevelChart(waterLevelChartVegaSpec : any) {
+    var self = this;
+    vegaEmbed(`#${this.waterLevelChartID}`, waterLevelChartVegaSpec, {
+      actions: false, tooltip: true, renderer: "svg"
+    }).then(function (res) {
+      self.waterLevelVegaView = res.view;
+      setTimeout(() => {
+        self.waterLevelVegaView.runAsync();
+        window.dispatchEvent(new Event('resize'));
+      }, 200);
+    }).catch(() => this.hasWaterLevelChartData = false);
   }
   
 }

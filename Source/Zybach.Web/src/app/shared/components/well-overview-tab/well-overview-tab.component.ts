@@ -1,14 +1,7 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import moment from 'moment';
 import { WellDetailDto } from '../../generated/model/well-detail-dto';
-import {
-  GeoJSON,
-  marker,
-  map,
-  Map as LeafletMap,
-  MapOptions,
-  tileLayer,
-  icon } from 'leaflet';
+import * as L from 'leaflet';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
 import {GestureHandling} from 'leaflet-gesture-handling';
@@ -27,7 +20,7 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
   @Input() well: WellDetailDto;
   @ViewChild('mapContainer') mapContainer: ElementRef;  
 
-  public map: LeafletMap;
+  public map: L.Map;
   private maxZoom: number = 17;
   private boundingBox: any;
   public tileLayers: any;
@@ -59,30 +52,30 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     this.boundingBox = DefaultBoundingBox;
 
     this.tileLayers = Object.assign({}, {
-      "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      "Aerial": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
       }),
-      "Street": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      "Street": L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
       }),
-      "Terrain": tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+      "Terrain": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Terrain',
       }),
     }, this.tileLayers);
   }
   
   public initializeMap() {
-    const mapOptions: MapOptions = {
+    const mapOptions: L.MapOptions = {
       maxZoom: this.maxZoom,
       layers: [
         this.tileLayers["Aerial"],
       ],
       gestureHandling: true,
       fullscreenControl: true
-    } as MapOptions;
+    } as L.MapOptions;
 
-    this.map = map(this.mapContainer.nativeElement, mapOptions);
-    LeafletMap.addInitHook("addHandler", "gestureHandling", GestureHandling);
+    this.map = L.map(this.mapContainer.nativeElement, mapOptions);
+    L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], null);
 
@@ -92,6 +85,18 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     else {
       this.alertService.pushAlert(new Alert(`No location was provided for ${this.well.WellRegistrationID}.`))
     }
+    if (this.well.IrrigationUnitGeoJSON != null && this.well.IrrigationUnitGeoJSON != undefined) {
+      this.addIrrigationUnitToMap();
+    }
+  }
+
+  public addIrrigationUnitToMap() : void {    
+    const irrigationUnitGeoJSON = L.geoJSON(JSON.parse(this.well.IrrigationUnitGeoJSON)).addTo(this.map);
+    const unitBoundingBox = irrigationUnitGeoJSON.getBounds();
+    let target = (this.map as any)._getBoundsCenterZoom(unitBoundingBox, null);
+    this.map.getBoundsZoom(unitBoundingBox, true, this.well.Location )
+    this.map.fitBounds(unitBoundingBox);
+    this.map.setView(target.center, 15, null);
   }
 
   public addWellToMap() {
@@ -99,33 +104,33 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     let mapIcon;
 
     if (sensorTypes.includes("Flow Meter")) {
-      mapIcon = icon.glyph({
+      mapIcon = L.icon.glyph({
         prefix: "fas",
         glyph: "tint",
         iconUrl: "/assets/main/flowMeterMarker.png"
       });
     } else if (sensorTypes.includes("Continuity Meter")) {
-      mapIcon = icon.glyph({
+      mapIcon = L.icon.glyph({
         prefix: "fas",
         glyph: "tint",
         iconUrl: "/assets/main/continuityMeterMarker.png"
       });
     } else if (sensorTypes.includes("Electrical Usage")) {
-      mapIcon = icon.glyph({
+      mapIcon = L.icon.glyph({
         prefix: "fas",
         glyph: "tint",
         iconUrl: "/assets/main/electricalDataMarker.png"
       });
     } else {
-      mapIcon = icon.glyph({
+      mapIcon = L.icon.glyph({
         prefix: "fas",
         glyph: "tint",
         iconUrl: "/assets/main/noDataSourceMarker.png"
       });
     }
-    const wellLayer = new GeoJSON(this.well.Location, {
+    const wellLayer = new L.GeoJSON(this.well.Location, {
       pointToLayer: function (feature, latlng) {
-        return marker(latlng, {icon: mapIcon});
+        return L.marker(latlng, {icon: mapIcon});
       }
     });
     wellLayer.addTo(this.map);

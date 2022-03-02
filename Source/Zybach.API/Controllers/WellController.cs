@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
+using Zybach.EFModels.Util;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
@@ -158,6 +159,11 @@ namespace Zybach.API.Controllers
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
                 wellDetailDto.InAgHub = true;
+                var agHubWellIrrigationUnit = agHubWell.AgHubWellIrrigationUnit;
+                if (agHubWellIrrigationUnit != null)
+                {
+                    wellDetailDto.IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(agHubWellIrrigationUnit.IrrigationUnitGeometry);
+                }
             }
             else
             {
@@ -222,6 +228,21 @@ namespace Zybach.API.Controllers
             return Ok(VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true));
         }
 
+        [HttpGet("/api/wells/{wellID}/waterLevelChartSpec")]
+        [ZybachViewFeature]
+        public ActionResult<string> GetWaterLevelVegaChartSpec([FromRoute] int wellID)
+        {
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            var waterLevelInspectionForVegaChartDtos = WaterLevelInspections.ListByWellIDAsVegaChartDto(_dbContext, wellID);
+
+            if (!waterLevelInspectionForVegaChartDtos.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionForVegaChartDtos, true));
+        }
+
         private bool GetWellAndThrowIfNotFound(int wellID, out Well well, out ActionResult actionResult)
         {
             well = Wells.GetByID(_dbContext, wellID);
@@ -236,8 +257,7 @@ namespace Zybach.API.Controllers
 
         [HttpPut("/api/wells/{wellID}/editRegistrationID")]
         [ZybachEditFeature]
-        public ActionResult UpsertWellRegistrationID([FromRoute] int wellID,
-            [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
+        public ActionResult UpsertWellRegistrationID([FromRoute] int wellID, [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
         {
             if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
 

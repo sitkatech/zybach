@@ -71,6 +71,38 @@ begin
 	update dbo.AgHubWell
 	Set AgHubWellGeometry.STSrid = 4326
 
+	-- add irrigiation units
+	-- first get the new list of possible AgHubWell Irrigation Units
+	-- then do a merge (delete, insert, update)
+	select aw.AgHubWellID,
+			aws.IrrigationUnitGeometry
+	into #agIrrigationUnits
+	from dbo.AgHubWellStaging aws
+	join dbo.Well w on aws.WellRegistrationID = w.WellRegistrationID
+	join dbo.AgHubWell aw on w.WellID = aw.WellID
+	where aws.IrrigationUnitGeometry is not null
+
+	delete awiu
+	from dbo.AgHubWellIrrigationUnit awiu
+	left join #agIrrigationUnits awiuNew on awiu.AgHubWellID = awiuNew.AgHubWellID
+	where awiuNew.AgHubWellID is null
+	
+	insert into dbo.AgHubWellIrrigationUnit (AgHubWellID, IrrigationUnitGeometry)
+	select awiuNew.AgHubWellID,
+			awiuNew.IrrigationUnitGeometry
+	from #agIrrigationUnits awiuNew
+	left join dbo.AgHubWellIrrigationUnit awiu on awiuNew.AgHubWellID = awiu.AgHubWellID
+	where awiu.AgHubWellIrrigationUnitID is null
+
+	update awiu
+	set awiu.IrrigationUnitGeometry = awiuNew.IrrigationUnitGeometry
+	from dbo.AgHubWellIrrigationUnit awiu 
+	join #agIrrigationUnits awiuNew on awiu.AgHubWellID = awiuNew.AgHubWellID
+
+	update dbo.AgHubWellIrrigationUnit
+	Set IrrigationUnitGeometry.STSrid = 4326
+
+
 	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres)
 	select	aw.AgHubWellID, 
 			awias.IrrigationYear,

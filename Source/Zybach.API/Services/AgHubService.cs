@@ -125,7 +125,8 @@ namespace Zybach.API.Services
             public string WellTPID { get; set; }
             [JsonProperty("electric")]
             public bool HasElectricalData { get; set; }
-
+            [JsonProperty("irrigation_unit_geometry")]
+            public string? IrrigationUnitGeometry { get; set; }
             public DateTime? RegisteredUpdated { get; set; }
             public int? RegisteredPumpRate { get; set; }
             public List<IrrigatedAcresPerYear> AcresYear { get; set; }

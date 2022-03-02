@@ -2,11 +2,11 @@
 
 namespace Zybach.Models.DataTransferObjects
 {
-    public class WaterQualityInspectionForVegaChartDto
+    public class WaterLevelInspectionForVegaChartDto
     {
         public int WellID { get; set; }
         public DateTime InspectionDate { get; set; }
-        public decimal? LabNitrates { get; set; }
-        public decimal MostRecentDateLabNitrates { get; set; }
+        public decimal? Measurement { get; set; }
+        public decimal MostRecentMeasurement { get; set; }
     }
 }
