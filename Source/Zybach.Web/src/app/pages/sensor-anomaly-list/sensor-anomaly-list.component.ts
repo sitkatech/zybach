@@ -60,7 +60,8 @@ export class SensorAnomalyListComponent implements OnInit {
   }
 
   public exportToCsv() {
-    this.utilityFunctionsService.exportGridToCsv(this.sensorAnomaliesGrid, 'reported-anomalies.csv', null);
+    var colIDsToExport = this.sensorAnomaliesGrid.columnApi.getAllGridColumns().map(x => x.getId()).slice(2);
+    this.utilityFunctionsService.exportGridToCsv(this.sensorAnomaliesGrid, 'sensor-anomalies.csv', colIDsToExport);
   }
 
   private createSensorAnomaliesGridColumnDefs(): void {
