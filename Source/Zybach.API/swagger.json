@@ -6691,13 +6691,8 @@
             "type": "string",
             "nullable": true
           },
-          "SensorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
+          "Sensor": {
+            "$ref": "#/components/schemas/SensorSimpleDto"
           },
           "NumberOfAnomalousDays": {
             "type": "integer",
