@@ -25,6 +25,9 @@ export class SensorSimpleDto {
     MessageAge?: number;
     FirstReadingDate?: string;
     LastReadingDate?: string;
+    WellPageNumber?: number;
+    WellOwnerName?: string;
+    WellTownshipRangeSection?: string;
     WellSensorMeasurements?: Array<WellSensorMeasurementDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);

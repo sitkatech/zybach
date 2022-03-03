@@ -69,8 +69,8 @@ export class SensorListComponent implements OnInit {
     let datePipe = this.datePipe;
     this.sensorColumnDefs = [
     {
-      headerName: '', valueGetter: function (params: any) {
-        return { LinkValue: params.data.SensorID, LinkDisplay: "View Sensor", CssClasses: "btn-sm btn-zybach" };
+      headerName: 'Sensor Name', valueGetter: function (params: any) {
+        return { LinkValue: params.data.SensorID, LinkDisplay: params.data.SensorName };
       }, cellRendererFramework: LinkRendererComponent,
       cellRendererParams: { inRouterLink: "/sensors/" },
       comparator: function (id1: any, id2: any) {
@@ -85,11 +85,6 @@ export class SensorListComponent implements OnInit {
         return 0;
       },
       width: 120,
-      resizable: true
-    },
-    {
-      headerName: 'Sensor Name', 
-      field: 'SensorName', 
       sortable: true, filter: true, resizable: true
     },
     { 
@@ -97,6 +92,17 @@ export class SensorListComponent implements OnInit {
       filterFramework: CustomDropdownFilterComponent,
       filterParams: {
       field: 'SensorTypeName'
+      },
+      resizable: true, sortable: true, width: 120
+    },
+    { 
+      headerName: 'Status', field: 'IsActive',
+      valueGetter: (params) => {
+        return params.data.IsActive ? "Enabled" : "Disabled";
+      },
+      filterFramework: CustomDropdownFilterComponent,
+      filterParams: {
+      field: 'IsActive'
       },
       resizable: true, sortable: true, width: 120
     },
@@ -109,36 +115,57 @@ export class SensorListComponent implements OnInit {
     this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
     this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
     {
-      headerName: 'Well', valueGetter: function (params: any) {
-        if(params.data.WellID)
-        {
-          return { LinkValue: params.data.WellID, LinkDisplay: params.data.WellRegistrationID };
-        }
-        else
-        {
-          return { LinkValue: null, LinkDisplay: null };
-        }
-      }, 
-      cellRendererFramework: LinkRendererComponent,
-      cellRendererParams: { inRouterLink: "/wells/" },
-      comparator: function (id1: any, id2: any) {
-        let link1 = id1.LinkValue;
-        let link2 = id2.LinkValue;
-        if (link1 < link2) {
-          return -1;
-        }
-        if (link1 > link2) {
-          return 1;
-        }
-        return 0;
+      headerName: 'Well',
+      children: [
+      {
+        headerName: 'Well', valueGetter: function (params: any) {
+          if(params.data.WellID)
+          {
+            return { LinkValue: params.data.WellID, LinkDisplay: params.data.WellRegistrationID };
+          }
+          else
+          {
+            return { LinkValue: null, LinkDisplay: null };
+          }
+        }, 
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/wells/" },
+        comparator: function (id1: any, id2: any) {
+          let link1 = id1.LinkValue;
+          let link2 = id2.LinkValue;
+          if (link1 < link2) {
+            return -1;
+          }
+          if (link1 > link2) {
+            return 1;
+          }
+          return 0;
+        },
+        filterValueGetter: function (params: any) {
+          return params.data.WellRegistrationID;
+        },
+        filter: true,
+        width: 120,
+        resizable: true,
+        sortable: true
+      },    
+      {
+        headerName: 'Well Owner', 
+        field: 'WellOwnerName', 
+        sortable: true, filter: true, resizable: true
       },
-      filterValueGetter: function (params: any) {
-        return params.data.WellRegistrationID;
+      {
+        headerName: 'Well Page #', 
+        field: 'WellPageNumber', 
+        filter: 'agNumberColumnFilter',
+        sortable: true, resizable: true
       },
-      filter: true,
-      width: 120,
-      resizable: true,
-      sortable: true
+      {
+        headerName: 'Well Legal', 
+        field: 'WellTownshipRangeSection', 
+        sortable: true, filter: true, resizable: true
+      }
+      ]
     }
     ];
   }
