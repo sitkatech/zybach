@@ -28,6 +28,11 @@ namespace Zybach.Models.DataTransferObjects
         public string AgHubRegisteredUser { get; set; }
         public string FieldName { get; set; }
         public string WellNickname { get; set; }
+        public int? PageNumber { get; set; }
+        public string? OwnerName { get; set; }
+        public string? TownshipRangeSection { get; set; }
+        public bool? HasWaterQualityInspections { get; set; }
+        public bool? HasWaterLevelInspections { get; set; }
     }
 
     public class SensorSummaryDto
