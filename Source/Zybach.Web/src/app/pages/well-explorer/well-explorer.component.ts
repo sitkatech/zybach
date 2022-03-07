@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
@@ -30,6 +31,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   constructor(private authenticationService: AuthenticationService,
     private datePipe: DatePipe,
+    private utilityFunctionsService: UtilityFunctionsService,
     private wellService: WellService) { }
 
   ngOnInit(): void {
@@ -97,6 +99,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
+        filterValueGetter: function (params: any) {
+          return params.data.WellRegistrationID;
+        },
         sortable: true, filter: true, resizable: true,        
       },
       {
@@ -120,7 +125,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
       {
-        headerName: "Owner",
+        headerName: "Owner Name",
         field: "OwnerName",
         sortable: true, filter: true, resizable: true
       },
@@ -303,19 +308,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   public downloadCsv(){
-
-    // quick and easy way to exclude the column with the "View" buttons from the download:
-    // since it's the first column in the grid, we can just get all columns and ignore the first one
-    const columns = this.gridApi.columnController.getAllGridColumns();
-    const columnsToDownload = columns.slice(1);
-
-
-    // the columnKeys parameter can be either a column object (obtained as above from the grid api)
-    // or a string, set as the "colId" property of a column in the column definitions.
-    // if we ever need to add more columns that won't be intended for download, we'll need to set
-    // colIds on the column definitions and pass an explicit list of the desired ids to exportDataAsCsv,
-    // because the trick we're using here only works since the one column we want to ignore is the first one.
-    this.gridApi.exportDataAsCsv({columnKeys: columnsToDownload});
+    this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
   }
 
   public getParams() {
