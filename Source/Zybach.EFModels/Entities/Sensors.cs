@@ -7,6 +7,13 @@ namespace Zybach.EFModels.Entities
 {
     public class Sensors
     {
+        public enum SensorTypeEnum
+        {
+            FlowMeter = 1,
+            ContinuityMeter = 2,
+            WellPressure = 3
+        }
+
         public static Sensor GetBySensorName(ZybachDbContext dbContext, string sensorName)
         {
             return GetSensorsImpl(dbContext).SingleOrDefault(x => x.SensorName.Equals(sensorName));

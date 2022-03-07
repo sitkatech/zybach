@@ -5,6 +5,7 @@ using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
+using ProjNet.Geometries;
 using Zybach.Models.DataTransferObjects;
 using Point = GeoJSON.Net.Geometry.Point;
 
@@ -111,6 +112,7 @@ namespace Zybach.EFModels.Entities
             {
                 SensorName = x.SensorName,
                 SensorID = x.SensorID,
+                SensorTypeID = x.SensorTypeID,
                 SensorType = x.SensorType.SensorTypeDisplayName,
                 WellRegistrationID = well.WellRegistrationID,
                 IsActive = x.IsActive
@@ -306,6 +308,15 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsWellWaterQualityInspectionDetailedDto(waterQualityInspections.ContainsKey(x.WellID) ? waterQualityInspections[x.WellID] : null))
                 .ToList();
             return wellWaterQualityInspectionDetailedDtos;
+        }
+
+        public static List<Well> GetWellsWithWellPressureSensors(ZybachDbContext dbContext)
+        {
+            return GetWellsImpl(dbContext)
+                .OrderBy(x => x.WellRegistrationID)
+                .Where(x => x.Sensors.Any(y => y.SensorType.SensorTypeID == (int)Sensors.SensorTypeEnum.WellPressure))
+
+                .ToList();
         }
     }
 }

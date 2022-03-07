@@ -40,6 +40,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellRegistrationID { get; set; }
         public int SensorID { get; set; }
         public string SensorName { get; set; }
+        public int? SensorTypeID { get; set; }
         public string SensorType { get; set; }
         public bool IsActive{ get; set; }
     }
