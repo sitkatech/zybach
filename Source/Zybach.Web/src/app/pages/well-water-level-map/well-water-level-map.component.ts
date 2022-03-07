@@ -154,7 +154,7 @@ export class WellWaterLevelMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer.on("click", (event: LeafletEvent) => {
       this.selectFeature(event.propagatedFrom.feature);
-      this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
+      this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellID);
     })
 
     this.tpnrdBoundaryLayer = geoJSON(TwinPlatteBoundaryGeoJson as any, {
@@ -209,8 +209,8 @@ export class WellWaterLevelMapComponent implements OnInit, AfterViewInit {
     return booleanWithin(turfPoint, turfPolygon);
   }
 
-  public selectWell(wellRegistrationID: string): void {
-    const wellFeature = this.wellsGeoJson.features.find(x => x.properties.wellRegistrationID === wellRegistrationID);
+  public selectWell(wellID: number): void {
+    const wellFeature = this.wellsGeoJson.features.find(x => x.properties.wellID === wellID);
     this.selectFeature(wellFeature);
   }
 
@@ -262,6 +262,7 @@ export class WellWaterLevelMapComponent implements OnInit, AfterViewInit {
       layer = null;
     }
   }
+
 }
 
 

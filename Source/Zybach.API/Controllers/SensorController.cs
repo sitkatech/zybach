@@ -75,6 +75,23 @@ namespace Zybach.API.Controllers
             return sensorSimpleDto;
         }
 
+        [HttpGet("/api/sensors/byWellID/{wellID}")]
+        [ZybachViewFeature]
+        public ActionResult<List<SensorSimpleDto>> GetSensorsByWellID([FromRoute] int wellID)
+        {
+            var sensors = Sensors.ListByWellIDAsSimpleDto(_dbContext, wellID);
+
+            foreach (var sensor in sensors)
+            {
+                var wellSensorMeasurementDtos = WellSensorMeasurements.ListBySensorAsDto(_dbContext, sensor.SensorName);
+                sensor.FirstReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Min(x => x.MeasurementDate) : null;
+                sensor.LastReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Max(x => x.MeasurementDate) : null;
+                sensor.WellSensorMeasurements = wellSensorMeasurementDtos;
+            }
+
+            return sensors;
+        }
+
         private bool GetSensorSimpleDtoAndThrowIfNotFound(int sensorID, out SensorSimpleDto sensorSimpleDto, out ActionResult actionResult)
         {
             sensorSimpleDto = Sensors.GetByIDAsSimpleDto(_dbContext, sensorID);
