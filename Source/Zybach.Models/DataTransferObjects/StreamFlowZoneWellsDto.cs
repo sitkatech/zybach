@@ -10,6 +10,17 @@ namespace Zybach.Models.DataTransferObjects
         public List<WellWithIrrigatedAcresDto> Wells { get; set; }
     }
 
+    public class WellWaterLevelMapSummaryDto
+    {
+        public int WellID { get; set; }
+        public string WellRegistrationID { get; set; }
+        public object Location { get; set; }
+        public DateTime? LastReadingDate { get; set; }
+        public string WellNickname { get; set; }
+        public string? TownshipRangeSection { get; set; }
+
+        public List<SensorSummaryDto> Sensors { get; set; }
+    }
 
     public class WellSummaryDto
     {

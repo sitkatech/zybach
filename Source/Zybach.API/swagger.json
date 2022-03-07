@@ -1932,7 +1932,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
                   }
                 }
               },
@@ -1940,7 +1940,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
                   }
                 }
               },
@@ -1948,7 +1948,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
                   }
                 }
               }
@@ -8706,6 +8706,43 @@
           },
           "WellUseDisplayName": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWaterLevelMapSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Location": {
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
             "nullable": true
           }
         },

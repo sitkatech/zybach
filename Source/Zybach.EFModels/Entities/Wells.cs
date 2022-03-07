@@ -310,12 +310,11 @@ namespace Zybach.EFModels.Entities
             return wellWaterQualityInspectionDetailedDtos;
         }
 
-        public static List<Well> GetWellsWithWellPressureSensors(ZybachDbContext dbContext)
+        public static List<WellWaterLevelMapSummaryDto> ListAsWaterLevelMapSummaryDtos(ZybachDbContext dbContext)
         {
             return GetWellsImpl(dbContext)
                 .OrderBy(x => x.WellRegistrationID)
-                .Where(x => x.Sensors.Any(y => y.SensorType.SensorTypeID == (int)Sensors.SensorTypeEnum.WellPressure))
-
+                .Select(x => x.AsWaterLevelMapSummaryDto())
                 .ToList();
         }
     }

@@ -28,11 +28,9 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("api/mapData/wells/withWellPressureSensor")]
-        public List<WellWithSensorSummaryDto> GetWellsWithWellPressureSensors()
+        public List<WellWaterLevelMapSummaryDto> GetWellsWithWellPressureSensors()
         {
-            return _wellService.GetAghubAndGeoOptixWells()
-                .Where(x => x.Sensors.Any(y => y.SensorTypeID == (int)Sensors.SensorTypeEnum.WellPressure))
-                .ToList();
+            return _wellService.GetWellPressureWellsForWaterLevelSummary();
         }
     }
 }

@@ -39,6 +39,22 @@ namespace Zybach.API.Services
             return wells;
         }
 
+        public List<WellWaterLevelMapSummaryDto> GetWellPressureWellsForWaterLevelSummary()
+        {
+            var wells = Wells.ListAsWaterLevelMapSummaryDtos(_dbContext)
+                .Where(x => x.Sensors.Any(y => y.SensorTypeID == (int)Sensors.SensorTypeEnum.WellPressure))
+                .ToList();
+            var lastReadingDateTimes = WellSensorMeasurements.GetLastReadingDateTimes(_dbContext);
+            wells.ForEach(x =>
+            {
+                x.LastReadingDate = lastReadingDateTimes.ContainsKey(x.WellRegistrationID)
+                    ? lastReadingDateTimes[x.WellRegistrationID]
+                    : (DateTime?)null;
+            });
+
+            return wells;
+        }
+
         public List<RobustReviewDto> GetRobustReviewDtos()
         {
             var wellWithSensorSummaryDtos = GetAghubAndGeoOptixWells();
