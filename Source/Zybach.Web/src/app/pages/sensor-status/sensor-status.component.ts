@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorStatusService } from 'src/app/services/sensor-status.service';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
@@ -26,8 +27,11 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   public columnDefs: any[];
   public gridApi: any;
 
-  constructor(private authenticationService: AuthenticationService,
-    private sensorStatusService: SensorStatusService) { }
+  constructor(
+    private authenticationService: AuthenticationService,
+    private sensorStatusService: SensorStatusService,
+    private utilityFunctionsService: UtilityFunctionsService
+    ) { }
 
   ngOnInit(): void {
     this.columnDefs = [
@@ -131,7 +135,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             })
         }
 
-
         this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8 && sensor.IsActive);
       })
     });
@@ -143,21 +146,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   }
   
   public downloadCsv(){
-
-    // quick and easy way to exclude the column with the "View" buttons from the download:
-    // since it's the first column in the grid, we can just get all columns and ignore the first one
-    const columns = this.gridApi.columnController.getAllGridColumns();
-    const columnsToDownload = columns.slice(1);
-
-
-    // the columnKeys parameter can be either a column object (obtained as above from the grid api)
-    // or a string, set as the "colId" property of a column in the column definitions.
-    // if we ever need to add more columns that won't be intended for download, we'll need to set
-    // colIds on the column definitions and pass an explicit list of the desired ids to exportDataAsCsv,
-    // because the trick we're using here only works since the one column we want to ignore is the first one.
-    this.gridApi.exportDataAsCsv({columnKeys: columnsToDownload});
+    this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
   }
-
   
   public onGridReady(params) {
     this.gridApi = params.api;

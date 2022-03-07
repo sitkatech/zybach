@@ -1,1 +1,34 @@
-<p>water-level-explorer works!</p>
+<div class="container" *ngIf="!wells else wellsList">
+    <div class="row">
+        <div class="col text-center">
+            <span class="fas fa-spinner loading-spinner"></span>
+            <p>Loading...</p>
+        </div>
+    </div>
+</div>
+
+<div class="row col-12 mt-4">
+
+    <div class="col-5" *ngIf="isDisplayingWaterLevelPanel">
+        <div class="card">
+            <div class="card-header">Water Level Summary</div>
+            <div class="card-body">
+                
+            </div>
+        </div>
+    </div>
+    
+    <div [ngClass]="isDisplayingWaterLevelPanel ? 'col-7' : 'col-12'">
+        
+        <ng-template #wellsList>
+            <div class="container navCaretMargin">
+                <div class="col-12 col-md-6">
+                    <h2 class="d-inline-block">Water Level Explorer</h2>
+                </div>
+                <zybach-well-water-level-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)">
+                </zybach-well-water-level-map>
+            </div>
+        </ng-template>
+    </div>
+
+</div>
