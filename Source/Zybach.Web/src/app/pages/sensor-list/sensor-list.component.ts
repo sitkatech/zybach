@@ -35,12 +35,8 @@ export class SensorListComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private datePipe: DatePipe,
     private sensorService: SensorService,
-    private route: ActivatedRoute,
-    private router: Router,
     private cdr: ChangeDetectorRef,
-    private utilityFunctionsService: UtilityFunctionsService,
-    private alertService: AlertService
-  ) { }
+    private utilityFunctionsService: UtilityFunctionsService  ) { }
 
   ngOnInit(): void {
     this.initializeSensorsGrid();
@@ -83,6 +79,9 @@ export class SensorListComponent implements OnInit {
           return 1;
         }
         return 0;
+      },
+      filterValueGetter: function (params: any) {
+        return params.data.SensorName;
       },
       width: 120,
       sortable: true, filter: true, resizable: true
@@ -150,7 +149,7 @@ export class SensorListComponent implements OnInit {
         sortable: true
       },    
       {
-        headerName: 'Well Owner', 
+        headerName: 'Well Owner Name', 
         field: 'WellOwnerName', 
         sortable: true, filter: true, resizable: true
       },
