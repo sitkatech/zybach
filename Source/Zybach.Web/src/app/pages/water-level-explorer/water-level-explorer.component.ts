@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { WellService } from 'src/app/services/well.service';
@@ -8,7 +9,10 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWaterLevelMapSummaryDto } from 'src/app/shared/generated/model/well-water-level-map-summary-dto';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { WellWaterLevelMapComponent } from '../well-water-level-map/well-water-level-map.component';
-
+import { default as vegaEmbed } from 'vega-embed';
+import * as vega from 'vega';
+import { AsyncParser } from 'json2csv';
+import moment from 'moment';
 @Component({
   selector: 'zybach-water-level-explorer',
   templateUrl: './water-level-explorer.component.html',
@@ -20,16 +24,30 @@ export class WaterLevelExplorerComponent implements OnInit {
   public currentUser: UserDto;
   public wells: WellWaterLevelMapSummaryDto[];
   public selectedWell: WellWaterLevelMapSummaryDto;
-  public sensors: SensorSimpleDto[];
+  public selectedSensors: SensorSimpleDto[];
   public wellsGeoJson: any;
   
   public richTextTypeID : number = CustomRichTextType.WaterLevelExplorerMap;
   public disclaimerRichTextTypeID : number = CustomRichTextType.WaterLevelExplorerMapDisclaimer;
 
-  public isDisplayingWaterLevelPanel : boolean = true;
+  public chartID: string = "sensorChart";
+  chartColor: string = "#13B5EA";
+  chartSubscription: any;
+  timeSeries: any[];
+  vegaView: any;
+  rangeMax: number;
+  tooltipFields: any;
+  noTimeSeriesData: boolean = false;
+  myDpOptions: IAngularMyDpOptions = {
+    dateRange: true,
+    dateFormat: 'mm/dd/yyyy'
+  };
+  dateRange: any;
+  public unitsShown: string = "gal";
   
   constructor(
     private authenticationService: AuthenticationService,
+    private cdr: ChangeDetectorRef,
     private datePipe: DatePipe,
     private sensorService: SensorService,
     private wellService: WellService
@@ -61,27 +79,32 @@ export class WaterLevelExplorerComponent implements OnInit {
   public onMapSelection(wellID: number) {
     this.selectedWell = this.wells.find(x => x.WellID === wellID);
     this.sensorService.listSensorsByWellID(wellID).subscribe(sensors => {
-      this.sensors = sensors;
+      this.selectedSensors = sensors;
+      const startDate = new Date(Date.parse(Math.min.apply(this.selectedSensors.map(x => Date.parse(x.FirstReadingDate)))));
+      const endDate = new Date(this.selectedWell.LastReadingDate)
+      this.initDateRange(startDate, endDate);
+      this.getChartDataAndBuildChart();
     });
-    //this.getChartDataAndBuildChart();
   }
 
   
   // Begin section: chart
 
-//   getChartDataAndBuildChart() {
-//     if (this.sensor.WellSensorMeasurements.length === 0) {
-//       this.noTimeSeriesData = true;
-//       this.timeSeries = [];
-//       return;
-//     }
-
-//     this.timeSeries = this.sensor.WellSensorMeasurements;      
-//     this.cdr.detectChanges();
-//     this.setRangeMax(this.timeSeries);
-//     this.tooltipFields = [{ "field": this.sensor.SensorTypeName, "type": "ordinal" }];
-//     this.buildChart();
-// }
+  getChartDataAndBuildChart() {
+    this.selectedSensors.forEach(sensor => {
+      if (sensor.WellSensorMeasurements.length === 0) {
+        this.noTimeSeriesData = true;
+        this.timeSeries = [];
+        return;
+      }
+  
+      this.timeSeries = sensor.WellSensorMeasurements;      
+      this.cdr.detectChanges();
+      this.setRangeMax(this.timeSeries);
+      this.tooltipFields = [{ "field": sensor.SensorTypeName, "type": "ordinal" }];
+      this.buildChart();
+    });
+  }
 
 // async exportChartData(){
 //   const pivoted = new Map();
@@ -142,149 +165,154 @@ export class WaterLevelExplorerComponent implements OnInit {
 //   return pivotedAndSorted;
 // }
 
-// buildChart() {
-//   var self = this;
-//   vegaEmbed(`#${this.chartID}`, this.getVegaSpec(), {
-//     actions: false, tooltip: true, renderer: "svg"
-//   }).then(function (res) {
-//     self.vegaView = res.view;
+  buildChart() {
+    var self = this;
+    vegaEmbed(`#${this.chartID}`, this.getVegaSpec(), {
+      actions: false, tooltip: true, renderer: "svg"
+    }).then(function (res) {
+      self.vegaView = res.view;
 
-//     self.filterChart(new Date(2021, 0, 1), new Date());
-//   });
-// }
+      self.filterChart(new Date(2021, 0, 1), new Date());
+    });
+  }
 
-// initDateRange(startDate: Date, endDate: Date) {
-//   this.dateRange = {
-//     isRange: true, 
-//     singleDate: null, 
-//     dateRange: {
-//       beginDate: {
-//         year: startDate.getFullYear(), month: startDate.getMonth() + 1, day: startDate.getDate()
-//       },
-//       endDate: {
-//         year: endDate.getFullYear(), month: endDate.getMonth() + 1, day: endDate.getDate()
-//       }
-//     }
-//   };
-// }
+  initDateRange(startDate: Date, endDate: Date) {
+    this.dateRange = {
+      isRange: true, 
+      singleDate: null, 
+      dateRange: {
+        beginDate: {
+          year: startDate.getFullYear(), month: startDate.getMonth() + 1, day: startDate.getDate()
+        },
+        endDate: {
+          year: endDate.getFullYear(), month: endDate.getMonth() + 1, day: endDate.getDate()
+        }
+      }
+    };
+  }
 
-// onDateChanged(event){
-//   const startDate = event.dateRange.beginJsDate;
-//   const endDate = event.dateRange.endJsDate;
+  onDateChanged(event){
+    const startDate = event.dateRange.beginJsDate;
+    const endDate = event.dateRange.endJsDate;
 
-//   this.filterChart(startDate, endDate);
-// }
+    this.filterChart(startDate, endDate);
+  }
 
-// useFullDateRange(){
-//   const startDate = new Date(this.sensor.FirstReadingDate) 
-//   const endDate = new Date(this.sensor.LastReadingDate)
+  useFullDateRange(){
+    const startDate = new Date(Date.parse(Math.min.apply(this.selectedSensors.map(x => Date.parse(x.FirstReadingDate)))));
+    const endDate = new Date(this.selectedWell.LastReadingDate)
 
-//   this.initDateRange(startDate, endDate);
+    this.initDateRange(startDate, endDate);
 
-//   this.filterChart(startDate, endDate);
-// }
+    this.filterChart(startDate, endDate);
+  }
 
-// filterChart(startDate: Date, endDate: Date){
-//   const filteredTimeSeries = this.timeSeries.filter(x=>{
-//     const asDate =  new Date(x.MeasurementDate);
-//     return asDate.getTime() >= startDate.getTime() && asDate.getTime() <= endDate.getTime();
-//   });
+  filterChart(startDate: Date, endDate: Date){
+    const filteredTimeSeries = this.timeSeries.filter(x=>{
+      const asDate =  new Date(x.MeasurementDate);
+      return asDate.getTime() >= startDate.getTime() && asDate.getTime() <= endDate.getTime();
+    });
 
-//   this.setRangeMax(filteredTimeSeries);
+    this.setRangeMax(filteredTimeSeries);
 
-//   var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
-//   this.vegaView.change('TimeSeries', changeSet).run();
-//   this.resizeWindow();
-// }
+    var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
+    this.vegaView.change('TimeSeries', changeSet).run();
+    this.resizeWindow();
+  }
 
-// setRangeMax(timeSeries: any){
-//   if(timeSeries && timeSeries.length > 0)
-//   {
-//     const measurementValueMax = timeSeries.sort((a, b) => b.MeasurementValue - a.MeasurementValue)[0].MeasurementValue;
-//     if (measurementValueMax !== 0) {
-//       this.rangeMax = measurementValueMax * 1.05;
-//     } else {
-//       this.rangeMax = 10000;
-//     }
-//   }
-//   else
-//   {
-//     this.rangeMax = 10000;
-//   }
-// }
+  setRangeMax(timeSeries: any){
+    if(timeSeries && timeSeries.length > 0)
+    {
+      const measurementValueMax = timeSeries.sort((a, b) => b.MeasurementValue - a.MeasurementValue)[0].MeasurementValue;
+      if (measurementValueMax !== 0) {
+        this.rangeMax = measurementValueMax * 1.05;
+      } else {
+        this.rangeMax = 10000;
+      }
+    }
+    else
+    {
+      this.rangeMax = 10000;
+    }
+  }
 
-// getVegaSpec(): any {
-//   return {
-//     "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-//     "description": "A chart",
-//     "width": "container",
-//     "height": "container",
-//     "data": { "name": "TimeSeries" },
-//     "encoding": {
-//       "x": {
-//         "field": "MeasurementDate",
-//         "timeUnit": "yearmonthdate",
-//         "type": "temporal",
-//         "axis": {
-//           "title": "Date"
-//         }
-//       }
-//     },
+  getVegaSpec(): any {
+    return {
+      "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+      "description": "A chart",
+      "width": "container",
+      "height": "container",
+      "data": { "name": "TimeSeries" },
+      "encoding": {
+        "x": {
+          "field": "MeasurementDate",
+          "timeUnit": "yearmonthdate",
+          "type": "temporal",
+          "axis": {
+            "title": "Date"
+          }
+        }
+      },
 
-//     "layer": [
-//       {
-//         "encoding": {
-//           "y": {
-//             "field": "MeasurementValue",
-//             "type": "quantitative",
-//             "axis": {
-//               "title": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? "Depth to Groundwater" : "Gallons"
-//             }
-//           },
-//           "color": {
-//             "field": "MeasurementType.MeasurementTypeDisplayName",
-//             "type": "nominal",
-//             "axis": {
-//               "title": "Data Source"
-//             },
-//             "scale": {
-//               "domain": [this.sensor.SensorTypeName],
-//               "range": [this.chartColor],
-//             }
-//           }
-//         },
-//         "layer": [
-//           { "mark": "line" },
-//           { "transform": [{ "filter": { "selection": "hover" } }], "mark": "point" }
-//         ]
-//       },
-//       {
-//         "transform": [{ "pivot": "MeasurementType.MeasurementTypeDisplayName", "value": "MeasurementValueString", "groupby": ["MeasurementDate"], "op": "max" }],
-//         "mark": "rule",
-//         "encoding": {
-//           "opacity": {
-//             "condition": { "value": 0.3, "selection": "hover" },
-//             "value": 0
-//           },
-//           "tooltip": [
-//             { "field": "MeasurementDate", "type": "temporal", "title": "Date" },
-//             ...this.tooltipFields
-//           ]
-//         },
-//         "selection": {
-//           "hover": {
-//             "type": "single",
-//             "fields": ["MeasurementDate"],
-//             "nearest": true,
-//             "on": "mouseover",
-//             "empty": "none",
-//             "clear": "mouseout"
-//           }
-//         }
-//       }
-//     ]
-//   }
-// }
-// End section: chart
+      "layer": [
+        {
+          "encoding": {
+            "y": {
+              "field": "MeasurementValue",
+              "type": "quantitative",
+              "axis": {
+                "title": "Depth to Groundwater"
+              }
+            },
+            "color": {
+              "field": "MeasurementType.MeasurementTypeDisplayName",
+              "type": "nominal",
+              "axis": {
+                "title": "Data Source"
+              },
+              "scale": {
+                "domain": ["Well Pressure"],
+                "range": [this.chartColor],
+              }
+            }
+          },
+          "layer": [
+            { "mark": "line" },
+            { "transform": [{ "filter": { "selection": "hover" } }], "mark": "point" }
+          ]
+        },
+        {
+          "transform": [{ "pivot": "MeasurementType.MeasurementTypeDisplayName", "value": "MeasurementValueString", "groupby": ["MeasurementDate"], "op": "max" }],
+          "mark": "rule",
+          "encoding": {
+            "opacity": {
+              "condition": { "value": 0.3, "selection": "hover" },
+              "value": 0
+            },
+            "tooltip": [
+              { "field": "MeasurementDate", "type": "temporal", "title": "Date" },
+              ...this.tooltipFields
+            ]
+          },
+          "selection": {
+            "hover": {
+              "type": "single",
+              "fields": ["MeasurementDate"],
+              "nearest": true,
+              "on": "mouseover",
+              "empty": "none",
+              "clear": "mouseout"
+            }
+          }
+        }
+      ]
+    }
+  }
+  // End section: chart
+
+  public resizeWindow() {
+    this.cdr.detectChanges();
+    window.dispatchEvent(new Event('resize'));
+  }
 
 }

@@ -61,6 +61,10 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
                this.cdr.detach();
     }
 
+    public isWaterLevelExplorerCurrentPage(){
+        return this.router.url === '/water-level-explorer';
+    }
+
     public isDataProgramCurrentPage(){
         return this.router.url.startsWith('/dashboard') 
         || this.router.url.startsWith('/sensor-status')

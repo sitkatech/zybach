@@ -7,68 +7,84 @@
     </div>
 </div>
 
-<ng-template #wellsList>
-    <div class="row col-12 mt-4">
 
-        <div class="col-5" *ngIf="isDisplayingWaterLevelPanel">
-            <div class="card">
-                <div class="card-header">Water Level Summary</div>
-                <div class="card-body">
-                    <div class="col-12">
-                        <div class="row">
-                            <div class="col-6 label"><strong>Well Registration ID: </strong> </div>
-                            <div class="col-6">{{ selectedWell?.WellRegistrationID }}</div>
-                            <div class="col-6 label"><strong>Last Reading Date: </strong> </div>
-                            <div class="col-6">{{ selectedWell?.LastReadingDate | date:'shortDate' }}</div>
-                            <div class="col-6 label"><strong>Legal Description: </strong></div>
-                            <div class="col-6">{{ selectedWell?.TownshipRangeSection }}</div>
-                        </div>
-                    </div>
-                    <div *ngFor="let sensor of sensors">
-    
-                        <div class="row" *ngIf="!timeSeries">
-                            <div class="text-center">
-                                <span class="fas fa-spinner loading-spinner"></span>
-                                <p>Loading...</p>
-                            </div>
-                        </div>
-                        <div class="row mb-1" *ngIf="!noTimeSeriesData">
-                            <div class="input-group col-xl-5 col-lg-6 col-sm-8">
-                                <span class="font-weight-bold mt-1 mx-3">Date Range:</span>
-                                <!-- input box -->
-                                <input id="dateRangeInput" class="form-control" name="mydate" placeholder="Select a date" 
-                                       angular-mydatepicker #dp="angular-mydatepicker" 
-                                       [(ngModel)]="dateRange" [options]="myDpOptions"
-                                       (dateChanged)="onDateChanged($event)"/>
-                              
-                                <!-- toggle calendar button -->
-                                <div class="input-group-append">
-                                  <button type="button" class="btn btn-secondary" (click)="dp.toggleCalendar()">
-                                    <i class="fa fa-calendar-o"></i>
-                                  </button>
+<ng-template #wellsList>
+    <div class="container navCaretMargin">
+        <div class="col-12">
+            <h2 class="d-inline-block">Water Level Explorer</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
+        
+        <div class="row col-12 mt-4">
+
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">Water Level Summary</div>
+                    <div class="card-body">
+                        <div *ngIf="selectedWell; then wellSelected else noWellSelected"></div>
+                        <ng-template #wellSelected>
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-6 label"><strong>Well Registration ID: </strong> </div>
+                                    <div class="col-6">{{ selectedWell?.WellRegistrationID }}</div>
+                                    <div class="col-6 label"><strong>Last Reading Date: </strong> </div>
+                                    <div class="col-6">{{ selectedWell?.LastReadingDate | date:'shortDate' }}</div>
+                                    <div class="col-6 label"><strong>Legal Description: </strong></div>
+                                    <div class="col-6">{{ selectedWell?.TownshipRangeSection }}</div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <button type="button" class="btn btn-zybach" (click)="useFullDateRange()">Use Full Date Range</button>
+                            <div *ngFor="let sensor of selectedSensors">
+            
+                                <div class="row" *ngIf="!timeSeries">
+                                    <div class="text-center">
+                                        <span class="fas fa-spinner loading-spinner"></span>
+                                        <p>Loading...</p>
+                                    </div>
+                                </div>
+                                <div class="row mb-1 mt-2" *ngIf="!noTimeSeriesData">
+                                    <div class="input-group col-8">
+                                        <span class="font-weight-bold mt-1 mx-2">Date Range:</span>
+                                        <!-- input box -->
+                                        <input id="dateRangeInput" class="form-control" name="mydate" placeholder="Select a date" 
+                                            angular-mydatepicker #dp="angular-mydatepicker" 
+                                            [(ngModel)]="dateRange" [options]="myDpOptions"
+                                            (dateChanged)="onDateChanged($event)"/>
+                                    
+                                        <!-- toggle calendar button -->
+                                        <div class="input-group-append">
+                                        <button type="button" class="btn btn-secondary" (click)="dp.toggleCalendar()">
+                                            <i class="fa fa-calendar-o"></i>
+                                        </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-zybach" (click)="useFullDateRange()">Use Full Date Range</button>
+                                    </div>
+                                </div>
+                                <div *ngIf="!noTimeSeriesData" #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+                                <em *ngIf="!noTimeSeriesData">All data are displayed in Central Daylight Time</em>
+                                <em *ngIf="noTimeSeriesData">No time series data available for this sensor.</em>
+                                <div class="mt-2">
+                                    <custom-rich-text [customRichTextTypeID]="disclaimerRichTextTypeID"></custom-rich-text>
+    
+                                </div>
                             </div>
-                        </div>
-                        <div *ngIf="!noTimeSeriesData" id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
-                        <em *ngIf="!noTimeSeriesData">All data are displayed in Central Daylight Time</em>
-                        <em *ngIf="noTimeSeriesData">No time series data available for this sensor.</em>
+
+                        </ng-template>
+                        <ng-template #noWellSelected>
+                            <p>
+                                Click on a well on the map to view water level sensor information, or use the search box
+                                to locate the closest well to a certain location.
+                            </p>
+                        </ng-template>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div [ngClass]="isDisplayingWaterLevelPanel ? 'col-7' : 'col-12'">
-            <div class="container navCaretMargin">
-                <div class="col-12 col-md-6">
-                    <h2 class="d-inline-block">Water Level Explorer</h2>
-                </div>
+            
+            <div class="col-6">
                 <zybach-well-water-level-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)">
                 </zybach-well-water-level-map>
             </div>
         </div>
-    
     </div>
 </ng-template>

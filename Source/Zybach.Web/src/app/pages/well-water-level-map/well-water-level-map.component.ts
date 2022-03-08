@@ -113,40 +113,15 @@ export class WellWaterLevelMapComponent implements OnInit, AfterViewInit {
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
     
-    const flowMeterMarkerIcon = icon.glyph({
-      prefix: "fas",
-      glyph: "tint",
-      iconUrl: "/assets/main/flowMeterMarker.png"
-    });
-    const continuityMeterMarkerIcon = icon.glyph({
-      prefix: "fas",
-      glyph: "tint",
-      iconUrl: "/assets/main/continuityMeterMarker.png"
-    });
-    const electricalDataMarkerIcon = icon.glyph({
+    const markerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
       iconUrl: "/assets/main/electricalDataMarker.png"
     });
-    const noDataSourceMarkerIcon = icon.glyph({
-      prefix: "fas",
-      glyph: "tint",
-      iconUrl: "/assets/main/noDataSourceMarker.png"
-    });
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        var sensorTypes = feature.properties.sensors.map(x => x.SensorType);
-        if (sensorTypes.includes("Flow Meter")) {
-          var icon = flowMeterMarkerIcon
-        } else if (sensorTypes.includes("Continuity Meter")) {
-          var icon = continuityMeterMarkerIcon
-        } else if (sensorTypes.includes("Electrical Usage")) {
-          var icon = electricalDataMarkerIcon
-        } else {
-          var icon = noDataSourceMarkerIcon
-        }
-        return marker(latlng, { icon: icon})
+        return marker(latlng, { icon: markerIcon})
       }
     });
 
@@ -216,6 +191,7 @@ export class WellWaterLevelMapComponent implements OnInit, AfterViewInit {
 
   selectFeature(feature) : void {
     this.clearLayer(this.selectedFeatureLayer);
+
     const markerIcon = icon.glyph({
       prefix: "fas",
       glyph: "tint",
@@ -225,35 +201,11 @@ export class WellWaterLevelMapComponent implements OnInit, AfterViewInit {
     this.selectedFeatureLayer = new GeoJSON(feature, {
       pointToLayer: (feature,latlng) =>{
         return marker(latlng, {icon: markerIcon});
-      },
-      onEachFeature: (feature, layer) => {
-        layer.bindPopup(() => {
-          const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-          popupEl.wellID = feature.properties.wellID;
-          popupEl.wellRegistrationID = feature.properties.wellRegistrationID;
-          popupEl.sensors = feature.properties.sensors;
-          popupEl.AgHubRegisteredUser = feature.properties.AgHubRegisteredUser;
-          popupEl.fieldName = feature.properties.fieldName;
-          
-          return popupEl;
-        }, {maxWidth:500});
       }
-    })
+    });
 
     this.selectedFeatureLayer
       .addTo(this.map);
-
-    this.selectedFeatureLayer.eachLayer(function (layer) {
-      layer.openPopup();
-    })
-  }
-
-  public getPopupContentForWellFeature(feature: any) : NgElement & WithProperties<WellMapPopupComponent> {
-    const popupEl: NgElement & WithProperties<WellMapPopupComponent> = document.createElement('well-map-popup-element') as any;
-    popupEl.wellID = feature.properties.wellID;
-    popupEl.wellRegistrationID = feature.properties.wellRegistrationID;
-    popupEl.sensors = feature.properties.sensors;
-    return popupEl;
   }
   
   public clearLayer(layer: Layer): void {
