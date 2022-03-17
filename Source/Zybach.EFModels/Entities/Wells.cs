@@ -26,7 +26,26 @@ namespace Zybach.EFModels.Entities
 
         public static List<WellWithSensorSummaryDto> ListAsWellWithSensorSummaryDto(ZybachDbContext dbContext)
         {
-            return GetWellsImpl(dbContext).OrderBy(x => x.WellRegistrationID).Select(x => WellWithSensorSummaryDtoFromWell(x)).ToList();
+            var wellsWithWaterLevelInspections = dbContext.WaterLevelInspections
+                .Include(x => x.Well)
+                .AsNoTracking().ToList()
+                .GroupBy(x => x.WellID)
+                .ToDictionary(x => x.Key, y => y.Any());
+            var wellsWithWaterQualityInspections = dbContext.WaterQualityInspections
+                .Include(x => x.Well)
+                .AsNoTracking().ToList()
+                .GroupBy(x => x.WellID)
+                .ToDictionary(x => x.Key, y => y.Any());
+            return GetWellsImpl(dbContext)
+                .OrderBy(x => x.WellRegistrationID)
+                .Select(x => WellWithSensorSummaryDtoFromWell(x,
+                    wellsWithWaterLevelInspections.ContainsKey(x.WellID)
+                        ? wellsWithWaterLevelInspections[x.WellID]
+                        : null,
+                    wellsWithWaterQualityInspections.ContainsKey(x.WellID)
+                        ? wellsWithWaterQualityInspections[x.WellID]
+                        : null))
+                .ToList();
         }
 
         public static WellWithSensorSummaryDto GetByIDAsWellWithSensorSummaryDto(ZybachDbContext dbContext, int wellID)
@@ -34,7 +53,7 @@ namespace Zybach.EFModels.Entities
             var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
             if (well != null)
             {
-                return WellWithSensorSummaryDtoFromWell(well);
+                return WellWithSensorSummaryDtoFromWell(well, null, null);
             }
             return null;
         }
@@ -67,20 +86,26 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.WellParticipation)
                 .Include(x => x.WellUse)
                 .Include(x => x.County)
-                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
                 .AsNoTracking();
         }
 
-        private static WellWithSensorSummaryDto WellWithSensorSummaryDtoFromWell(Well well)
+        private static WellWithSensorSummaryDto WellWithSensorSummaryDtoFromWell(Well well, bool? hasWaterLevelInspections, bool? hasWaterQualityInspections)
         {
-            var wellWithSensorSummaryDto = new WellWithSensorSummaryDto();
-            wellWithSensorSummaryDto.WellID = well.WellID;
-            wellWithSensorSummaryDto.WellRegistrationID = well.WellRegistrationID;
-            wellWithSensorSummaryDto.Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X)));
-            wellWithSensorSummaryDto.FetchDate = well.LastUpdateDate;
-            wellWithSensorSummaryDto.InGeoOptix = well.GeoOptixWell != null;
-            wellWithSensorSummaryDto.InAgHub = well.AgHubWell != null;
-            wellWithSensorSummaryDto.WellNickname = well.WellNickname;
+            var wellWithSensorSummaryDto = new WellWithSensorSummaryDto
+            {
+                WellID = well.WellID,
+                WellRegistrationID = well.WellRegistrationID,
+                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
+                FetchDate = well.LastUpdateDate,
+                InGeoOptix = well.GeoOptixWell != null,
+                InAgHub = well.AgHubWell != null,
+                WellNickname = well.WellNickname,
+                OwnerName = well.OwnerName,
+                PageNumber = well.PageNumber,
+                TownshipRangeSection = well.TownshipRangeSection,
+                HasWaterLevelInspections = hasWaterLevelInspections,
+                HasWaterQualityInspections = hasWaterQualityInspections
+            };
 
             var sensors = well.Sensors.Select(x => new SensorSummaryDto()
             {

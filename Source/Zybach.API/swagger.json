@@ -6819,6 +6819,19 @@
             "format": "date-time",
             "nullable": true
           },
+          "WellPageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellOwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellTownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
           "WellSensorMeasurements": {
             "type": "array",
             "items": {
@@ -8121,6 +8134,14 @@
           "WellNickname": {
             "type": "string",
             "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8713,6 +8734,27 @@
           "WellNickname": {
             "type": "string",
             "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8787,6 +8829,27 @@
           },
           "WellNickname": {
             "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean",
             "nullable": true
           }
         },

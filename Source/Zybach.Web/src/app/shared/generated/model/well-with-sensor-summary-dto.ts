@@ -29,6 +29,11 @@ export class WellWithSensorSummaryDto {
     AgHubRegisteredUser?: string;
     FieldName?: string;
     WellNickname?: string;
+    PageNumber?: number;
+    OwnerName?: string;
+    TownshipRangeSection?: string;
+    HasWaterQualityInspections?: boolean;
+    HasWaterLevelInspections?: boolean;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
