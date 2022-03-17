@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { WellService } from 'src/app/services/well.service';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { ChemigationPermitUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-upsert-dto';
@@ -9,6 +10,8 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'zybach-chemigation-permit-edit',
@@ -16,8 +19,6 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./chemigation-permit-edit.component.scss']
 })
 export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
-
-  
   private currentUser: UserDto;
   
   public chemigationPermitNumber: number;
@@ -26,12 +27,14 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   public model: ChemigationPermitUpsertDto;
   
   public isLoadingSubmit: boolean = false;
-
+  public searchFailed : boolean = false;
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
+    private wellService: WellService,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
   ) { }
@@ -51,6 +54,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
         this.chemigationPermit = chemigationPermit;
         this.model.ChemigationPermitStatusID = this.chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusID;
         this.model.CountyID = this.chemigationPermit.County.CountyID;
+        this.model.WellRegistrationID = this.chemigationPermit.Well.WellRegistrationID;
         this.cdr.detectChanges();
       });
 
@@ -79,5 +83,18 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         }
       );
+  }
+
+  searchApi = (text$: Observable<string>) => {
+    return text$.pipe(      
+        debounceTime(200), 
+        distinctUntilChanged(),
+        tap(() => this.searchFailed = false),
+        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationIDRequiresChemigation(searchText) : ([])), 
+        catchError(() => {
+          this.searchFailed = true;
+          return of([]);
+        })     
+      );                 
   }
 }

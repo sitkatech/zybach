@@ -5856,7 +5856,8 @@
       "ChemigationPermitUpsertDto": {
         "required": [
           "ChemigationPermitStatusID",
-          "CountyID"
+          "CountyID",
+          "WellRegistrationID"
         ],
         "type": "object",
         "properties": {
@@ -5867,6 +5868,9 @@
           "CountyID": {
             "type": "integer",
             "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string"
           }
         },
         "additionalProperties": false
