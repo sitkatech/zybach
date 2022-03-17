@@ -28,7 +28,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   
   public isLoadingSubmit: boolean = false;
   public searchFailed : boolean = false;
-  
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -54,7 +54,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
         this.chemigationPermit = chemigationPermit;
         this.model.ChemigationPermitStatusID = this.chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusID;
         this.model.CountyID = this.chemigationPermit.County.CountyID;
-        this.model.WellRegistrationID = this.chemigationPermit.Well.WellRegistrationID;
+        this.model.WellRegistrationID = this.chemigationPermit.Well?.WellRegistrationID;
         this.cdr.detectChanges();
       });
 
