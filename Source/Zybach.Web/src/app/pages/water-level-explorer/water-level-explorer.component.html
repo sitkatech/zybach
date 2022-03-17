@@ -27,10 +27,10 @@
                                 <div class="row">
                                     <div class="col-6 label"><strong>Well Registration ID: </strong> </div>
                                     <div class="col-6">{{ selectedWell?.WellRegistrationID }}</div>
-                                    <div class="col-6 label"><strong>Last Reading Date: </strong> </div>
-                                    <div class="col-6">{{ selectedWell?.LastReadingDate | date:'shortDate' }}</div>
                                     <div class="col-6 label"><strong>Legal Description: </strong></div>
                                     <div class="col-6">{{ selectedWell?.TownshipRangeSection }}</div>
+                                    <div class="col-6 label"><strong>Last Reading Date: </strong> </div>
+                                    <div class="col-6">{{ selectedWell?.LastReadingDate | date:'shortDate' }}</div>
                                 </div>
                             </div>
                             <div *ngFor="let sensor of selectedSensors">
@@ -66,7 +66,6 @@
                                 <em *ngIf="noTimeSeriesData">No time series data available for this sensor.</em>
                                 <div class="mt-2">
                                     <custom-rich-text [customRichTextTypeID]="disclaimerRichTextTypeID"></custom-rich-text>
-    
                                 </div>
                             </div>
 
