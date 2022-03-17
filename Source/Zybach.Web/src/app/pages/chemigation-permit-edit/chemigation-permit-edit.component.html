@@ -43,7 +43,8 @@
                                     <label><strong>Well: </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
-                                    <a *ngIf="chemigationPermit?.Well" routerLink="/wells/{{chemigationPermit?.Well.WellID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
+                                    <input type="text" class="form-control" name="WellRegistrationID" [(ngModel)]="model.WellRegistrationID" [ngbTypeahead]="searchApi" placeholder="Search by Reg #" />
+                                    <small class="form-text text-muted font-italic" *ngIf="searchFailed">Suggestions could not be loaded.</small>
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">

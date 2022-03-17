@@ -53,14 +53,21 @@ namespace Zybach.API.Controllers
         public ActionResult UpdateChemigationPermit([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
             var chemigationPermit = ChemigationPermits.GetByID(_dbContext, chemigationPermitID);
-
             if (ThrowNotFound(chemigationPermit, "ChemigationPermit", chemigationPermitID, out var actionResult))
             {
                 return actionResult;
             }
 
+            var well = Wells.GetByWellRegistrationID(_dbContext, chemigationPermitUpsertDto.WellRegistrationID);
+            if (well == null)
+            {
+                ModelState.AddModelError("Well Registration ID", $"Well with Well Registration ID '{chemigationPermitUpsertDto.WellRegistrationID}' not found!");
+                return BadRequest(ModelState);
+            }
+
             chemigationPermit.ChemigationPermitStatusID = chemigationPermitUpsertDto.ChemigationPermitStatusID.Value;
             chemigationPermit.CountyID = chemigationPermitUpsertDto.CountyID.Value;
+            chemigationPermit.WellID = well.WellID;
             _dbContext.SaveChanges();
 
             return Ok();
