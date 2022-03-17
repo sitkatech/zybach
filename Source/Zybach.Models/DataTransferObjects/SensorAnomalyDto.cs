@@ -2,8 +2,7 @@
 {
     public partial class SensorAnomalySimpleDto
     {
-        public string SensorName { get; set; }
-        public string WellRegistrationID { get; set; }
+        public SensorSimpleDto Sensor { get; set; }
         public int? NumberOfAnomalousDays { get; set; }
     }
 }
