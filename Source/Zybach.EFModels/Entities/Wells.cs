@@ -59,6 +59,11 @@ namespace Zybach.EFModels.Entities
             return null;
         }
 
+        public static Well GetByWellRegistrationID(ZybachDbContext dbContext, string wellRegistrationID)
+        {
+            return dbContext.Wells.AsNoTracking().SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
+        }
+
         public static Well GetByWellRegistrationIDWithTracking(ZybachDbContext dbContext, string wellRegistrationID)
         {
             return dbContext.Wells.SingleOrDefault(x => x.WellRegistrationID == wellRegistrationID);
@@ -163,8 +168,9 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.Wells
                 .AsNoTracking()
-                .Where(x => x.RequiresChemigation)
-                .Select(x => x.WellRegistrationID).ToList();
+                .Where(x => x.RequiresChemigation && x.WellRegistrationID.Contains(searchText))
+                .Select(x => x.WellRegistrationID)
+                .Distinct().ToList();
         }
 
         public static List<WellSimpleDto> SearchByAghubRegisteredUser(ZybachDbContext dbContext, string searchText)

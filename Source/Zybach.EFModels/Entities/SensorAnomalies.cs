@@ -13,6 +13,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.SensorAnomalies
                 .Include(x => x.Sensor).ThenInclude(x => x.Well)
+                .Include(x => x.Sensor).ThenInclude(x => x.SensorType)
                 .AsNoTracking();
         }
 

@@ -6,8 +6,7 @@ namespace Zybach.EFModels.Entities
     {
         static partial void DoCustomSimpleDtoMappings(SensorAnomaly sensorAnomaly, SensorAnomalySimpleDto sensorAnomalySimpleDto)
         {
-            sensorAnomalySimpleDto.SensorName = sensorAnomaly.Sensor.SensorName;
-            sensorAnomalySimpleDto.WellRegistrationID = sensorAnomaly.Sensor.Well.WellRegistrationID;
+            sensorAnomalySimpleDto.Sensor = sensorAnomaly.Sensor.AsSimpleDto();
             sensorAnomalySimpleDto.NumberOfAnomalousDays = (int)(sensorAnomaly.EndDate - sensorAnomaly.StartDate).TotalDays + 1;
         }
     }

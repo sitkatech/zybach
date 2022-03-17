@@ -129,17 +129,7 @@ export class SensorListComponent implements OnInit {
         }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkValue;
-          let link2 = id2.LinkValue;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
           return params.data.WellRegistrationID;
         },

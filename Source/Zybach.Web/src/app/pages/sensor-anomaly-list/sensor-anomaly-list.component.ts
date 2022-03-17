@@ -12,6 +12,8 @@ import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 
 @Component({
   selector: 'zybach-sensor-anomaly-list',
@@ -58,7 +60,8 @@ export class SensorAnomalyListComponent implements OnInit {
   }
 
   public exportToCsv() {
-    this.utilityFunctionsService.exportGridToCsv(this.sensorAnomaliesGrid, 'reported-anomalies.csv', null);
+    var colIDsToExport = this.sensorAnomaliesGrid.columnApi.getAllGridColumns().map(x => x.getId()).slice(2);
+    this.utilityFunctionsService.exportGridToCsv(this.sensorAnomaliesGrid, 'sensor-anomalies.csv', colIDsToExport);
   }
 
   private createSensorAnomaliesGridColumnDefs(): void {
@@ -67,15 +70,39 @@ export class SensorAnomalyListComponent implements OnInit {
         valueGetter: params => params.data.SensorAnomalyID, 
         cellRendererFramework: FontAwesomeIconLinkRendererComponent,
         cellRendererParams: { inRouterLink: '/sensor-anomalies/edit/', fontawesomeIconName: 'edit', cssClasses: 'text-primary'},
-        width: 30, sortable: false, filter: false
+        width: 40, sortable: false, filter: false, cellStyle: {textAlign: 'center'}
       },
       {
         cellRendererFramework: FontAwesomeIconLinkRendererComponent,
         cellRendererParams: { isSpan: true, fontawesomeIconName: 'trash', cssClasses: 'text-danger'},
-        width: 30, sortable: false, filter: false
+        width: 40, sortable: false, filter: false, cellStyle: {textAlign: 'center'}
       },
-      {headerName: 'Sensor Name', field: 'SensorName' },
-      {headerName: 'Well Registration #', field: 'WellRegistrationID' },
+      {
+        headerName: 'Sensor Name', valueGetter: function (params: any) {
+          return { LinkValue: params.data.Sensor.SensorID, LinkDisplay: params.data.Sensor.SensorName };
+        }, 
+        cellRendererFramework: LinkRendererComponent, cellRendererParams: { inRouterLink: "/sensors/" },
+        filterValueGetter: params => params.data.Sensor.SensorName,
+        comparator: this.utilityFunctionsService.linkRendererComparator,
+        width: 180
+      },
+      {
+        headerName: 'Well', valueGetter: function (params: any) {
+         return params.data.Sensor.WellID ?  { LinkValue: params.data.Sensor.WellID, LinkDisplay: params.data.Sensor.WellRegistrationID }
+            : { LinkValue: null, LinkDisplay: null };
+        }, 
+        cellRendererFramework: LinkRendererComponent, cellRendererParams: { inRouterLink: "/wells/" },
+        filterValueGetter: params => params.data.Sensor.WellRegistrationID,
+        comparator: this.utilityFunctionsService.linkRendererComparator,
+        width: 180
+      },
+      {
+        headerName: 'Sensor Type', field: 'Sensor.SensorTypeName', width: 180,
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'Sensor.SensorTypeName',
+        }, 
+      },
       this.utilityFunctionsService.createDateColumnDef('Start Date', 'StartDate', 'M/d/yyyy', 'UTC'),
       this.utilityFunctionsService.createDateColumnDef('End Date', 'EndDate', 'M/d/yyyy', 'UTC'),
       this.utilityFunctionsService.createDecimalColumnDef('Number of Days', 'NumberOfAnomalousDays', 120, 0),

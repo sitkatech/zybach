@@ -13,6 +13,7 @@
 export class ChemigationPermitUpsertDto { 
     ChemigationPermitStatusID: number;
     CountyID: number;
+    WellRegistrationID: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
