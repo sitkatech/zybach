@@ -1,1 +1,0 @@
-alter table dbo.WellSensorMeasurement add constraint AK_WellSensorMeasurement_WellRegistrationID_MeasurementTypeID_SensorName_ReadingDate unique (WellRegistrationID, MeasurementTypeID, SensorName, ReadingYear, ReadingMonth, ReadingDay)

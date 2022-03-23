@@ -2,12 +2,12 @@ import { DatePipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { WellService } from 'src/app/services/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
-import agGridDateFormatter from 'src/app/util/agGridDateFormatter';
 import { WellMapComponent } from '../well-map/well-map.component';
 
 @Component({
@@ -31,6 +31,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   constructor(private authenticationService: AuthenticationService,
     private datePipe: DatePipe,
+    private utilityFunctionsService: UtilityFunctionsService,
     private wellService: WellService) { }
 
   ngOnInit(): void {
@@ -70,6 +71,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   public onGridReady(params) {
     this.gridApi = params.api;
+    this.wellsGrid.columnApi.autoSizeAllColumns();
     this.onFilterChange({
       showFlowMeters: true,
       showContinuityMeters: true,
@@ -82,8 +84,8 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     let datePipe = this.datePipe;
     this.columnDefs = [
       {
-        headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellID, LinkDisplay: "View", CssClasses: "btn-sm btn-zybach" };
+        headerName: 'Registration #', valueGetter: function (params: any) {
+          return { LinkValue: params.data.WellID, LinkDisplay: params.data.WellRegistrationID };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
@@ -97,38 +99,62 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           }
           return 0;
         },
-        width: 70,
-        resizable: true
-      },
-      {
-        headerName: "Registration #",
-        field: "WellRegistrationID",
-        width: 125,
+        filterValueGetter: function (params: any) {
+          return params.data.WellRegistrationID;
+        },
         sortable: true, filter: true, resizable: true,        
       },
       {
         headerName: "Nickname",
         field: "WellNickname",
-        width: 125,
         sortable: true, filter: true, resizable: true,        
-      },
-      {
-        headerName: "TPID",
-        field: "WellTPID",
-        width: 85,
-        sortable: true, filter: true, resizable: true
       },
       {
         headerName: "AgHub Registered User",
         field: "AgHubRegisteredUser",
-        width: 170,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Field Name",
         field: "FieldName",
-        width: 115,
         sortable: true, filter: true, resizable: true
+      },      
+      {
+        headerName: "Page #",
+        field: "PageNumber",
+        sortable: true, filter: 'agNumberColumnFilter', resizable: true
+      },
+      {
+        headerName: "Owner Name",
+        field: "OwnerName",
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Legal",
+        field: "TownshipRangeSection",
+        sortable: true, filter: true, resizable: true
+      },
+      {
+        headerName: "Water Quality?", field: 'HasWaterQualityInspections',
+        valueGetter: (params) => {
+          return params.data.HasWaterQualityInspections ? 'Yes' : 'No';
+        },
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+        field: 'HasWaterQualityInspections'
+        },
+        sortable: true, resizable: true
+      },
+      {
+        headerName: "Water Level?", field: 'HasWaterLevelInspections',
+        valueGetter: (params) => {
+          return params.data.HasWaterLevelInspections ? 'Yes' : 'No';
+        },
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+        field: 'HasWaterLevelInspections'
+        },
+        sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
       this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
@@ -142,8 +168,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        sortable: true, filter: true, resizable: true,
-        width: 136
+        sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Has Continuity Meter?",
@@ -156,8 +181,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           }
         },
         filter: true,
-        sortable: true, resizable: true,
-        width: 170
+        sortable: true, resizable: true
       },
       {
         headerName: "Has Electrical Use Meter?",
@@ -175,6 +199,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       {
+        headerName: "TPID",
+        field: "WellTPID",
+        sortable: true, filter: true, resizable: true
+      },
+      {
         headerName: "In AgHub?",
         valueGetter: function (params) {
           if (params.data.InAgHub) {
@@ -187,7 +216,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.InAgHub'
         },
-        sortable: true, resizable: true, width: 110
+        sortable: true, resizable: true
       },
       {
         headerName: "In GeoOptix?",
@@ -202,7 +231,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.InGeoOptix'
         },
-        sortable: true, resizable: true, width: 115
+        sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Fetched from AgHub', 'FetchDate', 'M/d/yyyy')
     ]
@@ -237,8 +266,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       filterParams: {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
-      }, 
-      width: 110,
+      },
       resizable: true,
       sortable: true
     };
@@ -280,19 +308,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   }
 
   public downloadCsv(){
-
-    // quick and easy way to exclude the column with the "View" buttons from the download:
-    // since it's the first column in the grid, we can just get all columns and ignore the first one
-    const columns = this.gridApi.columnController.getAllGridColumns();
-    const columnsToDownload = columns.slice(1);
-
-
-    // the columnKeys parameter can be either a column object (obtained as above from the grid api)
-    // or a string, set as the "colId" property of a column in the column definitions.
-    // if we ever need to add more columns that won't be intended for download, we'll need to set
-    // colIds on the column definitions and pass an explicit list of the desired ids to exportDataAsCsv,
-    // because the trick we're using here only works since the one column we want to ignore is the first one.
-    this.gridApi.exportDataAsCsv({columnKeys: columnsToDownload});
+    this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
   }
 
   public getParams() {

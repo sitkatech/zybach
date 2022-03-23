@@ -10,10 +10,12 @@
  * Do not edit the class manually.
  */
 
-export class ChemigationPermitUpsertDto { 
-    ChemigationPermitStatusID: number;
-    CountyID: number;
-    WellRegistrationID: string;
+export class SensorAnomalyUpsertDto { 
+    SensorAnomalyID?: number;
+    SensorID: number;
+    StartDate: string;
+    EndDate: string;
+    Notes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

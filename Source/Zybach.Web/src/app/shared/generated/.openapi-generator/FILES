@@ -62,6 +62,8 @@ model/robust-review-dto.ts
 model/robust-review-scenario-get-run-history-dto.ts
 model/role-dto.ts
 model/search-summary-dto.ts
+model/sensor-anomaly-simple-dto.ts
+model/sensor-anomaly-upsert-dto.ts
 model/sensor-message-age-dto.ts
 model/sensor-simple-dto.ts
 model/sensor-summary-dto.ts

@@ -60,6 +60,8 @@ export class WellDetailDto {
     AgHubRegisteredUser?: string;
     FieldName?: string;
     WellNickname?: string;
+    HasWaterQualityInspections?: boolean;
+    HasWaterLevelInspections?: boolean;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

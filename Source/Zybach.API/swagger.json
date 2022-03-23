@@ -2514,6 +2514,177 @@
         }
       }
     },
+    "/api/sensorAnomalies": {
+      "get": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensorAnomalies/{sensorAnomalyID}": {
+      "get": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "parameters": [
+          {
+            "name": "sensorAnomalyID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorAnomalySimpleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "parameters": [
+          {
+            "name": "sensorAnomalyID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/sensorAnomalies/new": {
+      "post": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/sensorAnomalies/update": {
+      "post": {
+        "tags": [
+          "SensorAnomaly"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorAnomalyUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/sensorStatus": {
       "get": {
         "tags": [
@@ -5685,7 +5856,8 @@
       "ChemigationPermitUpsertDto": {
         "required": [
           "ChemigationPermitStatusID",
-          "CountyID"
+          "CountyID",
+          "WellRegistrationID"
         ],
         "type": "object",
         "properties": {
@@ -5696,6 +5868,9 @@
           "CountyID": {
             "type": "integer",
             "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -6497,6 +6672,73 @@
         },
         "additionalProperties": false
       },
+      "SensorAnomalySimpleDto": {
+        "type": "object",
+        "properties": {
+          "SensorAnomalyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "StartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "Sensor": {
+            "$ref": "#/components/schemas/SensorSimpleDto"
+          },
+          "NumberOfAnomalousDays": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorAnomalyUpsertDto": {
+        "required": [
+          "EndDate",
+          "SensorID",
+          "StartDate"
+        ],
+        "type": "object",
+        "properties": {
+          "SensorAnomalyID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "StartDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "EndDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "Notes": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
@@ -6579,6 +6821,19 @@
           "LastReadingDate": {
             "type": "string",
             "format": "date-time",
+            "nullable": true
+          },
+          "WellPageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellOwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "WellTownshipRangeSection": {
+            "type": "string",
             "nullable": true
           },
           "WellSensorMeasurements": {
@@ -7883,6 +8138,14 @@
           "WellNickname": {
             "type": "string",
             "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8475,6 +8738,27 @@
           "WellNickname": {
             "type": "string",
             "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8549,6 +8833,27 @@
           },
           "WellNickname": {
             "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean",
             "nullable": true
           }
         },

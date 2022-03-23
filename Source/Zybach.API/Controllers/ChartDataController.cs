@@ -31,13 +31,13 @@ namespace Zybach.API.Controllers
             var dailyPumpedVolumes = new List<DailyPumpedVolume>();
 
             var wellRegistrationID = well.WellRegistrationID;
-            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
-            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors, MeasurementTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(_dbContext, wellRegistrationID, sensors, MeasurementTypes.FlowMeter, MeasurementTypeEnum.FlowMeter));
+            dailyPumpedVolumes.AddRange(GetDailyPumpedVolumeForWellAndSensorType(_dbContext, wellRegistrationID, sensors, MeasurementTypes.ContinuityMeter, MeasurementTypeEnum.ContinuityMeter));
 
             if (hasElectricalData)
             {
                 var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(_dbContext, wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
-                var electricalBasedFlowEstimateSeries = CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, MeasurementTypes.ElectricalUsage);
+                var electricalBasedFlowEstimateSeries = CreateDailyPumpedVolumesAndZeroFillMissingDays(_dbContext, wellSensorMeasurementDtos, MeasurementTypes.ElectricalUsage);
                 dailyPumpedVolumes.AddRange(electricalBasedFlowEstimateSeries);
             }
 
@@ -47,7 +47,7 @@ namespace Zybach.API.Controllers
             return wellChartDataDto;
         }
 
-        private IEnumerable<DailyPumpedVolume> GetDailyPumpedVolumeForWellAndSensorType(string wellRegistrationID,
+        private IEnumerable<DailyPumpedVolume> GetDailyPumpedVolumeForWellAndSensorType(ZybachDbContext dbContext, string wellRegistrationID,
             IEnumerable<SensorSummaryDto> sensors, string sensorType, MeasurementTypeEnum measurementTypeEnum)
         {
             var sensorTypeSensors = sensors.Where(x => x.SensorType == sensorType).ToList();
@@ -58,18 +58,25 @@ namespace Zybach.API.Controllers
             }
 
             var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext, wellRegistrationID, measurementTypeEnum, sensorTypeSensors);
-            return CreateDailyPumpedVolumesAndZeroFillMissingDays(wellSensorMeasurementDtos, sensorType);
+            return CreateDailyPumpedVolumesAndZeroFillMissingDays(dbContext, wellSensorMeasurementDtos, sensorType);
         }
 
-        private static IEnumerable<DailyPumpedVolume> CreateDailyPumpedVolumesAndZeroFillMissingDays(
-            List<WellSensorMeasurementDto> wellSensorMeasurementDtos, string sensorType)
+        private static IEnumerable<DailyPumpedVolume> CreateDailyPumpedVolumesAndZeroFillMissingDays(ZybachDbContext dbContext, List<WellSensorMeasurementDto> wellSensorMeasurementDtos, string sensorType)
         {
             if (!wellSensorMeasurementDtos.Any())
             {
                 return new List<DailyPumpedVolume>();
             }
-            var measurementValues = wellSensorMeasurementDtos.ToLookup(
-                x => x.MeasurementDate.ToShortDateString());
+
+            var anomalousDates = wellSensorMeasurementDtos
+                .Where(x => x.SensorName != null)
+                .Select(x => x.SensorName).Distinct()
+                .ToDictionary(sensorName => sensorName, sensorName => SensorAnomalies.GetAnomolousDatesBySensorName(dbContext, sensorName));
+            
+            var measurementValues = wellSensorMeasurementDtos
+                .Where(x => x.SensorName == null || !anomalousDates[x.SensorName].Contains(x.MeasurementDate))
+                .ToLookup(x => x.MeasurementDate.ToShortDateString());
+
             var startDate = wellSensorMeasurementDtos.Min(x => x.MeasurementDateInPacificTime);
             var endDate = DateTime.Today;
             var list = Enumerable.Range(0, (endDate - startDate).Days + 1)

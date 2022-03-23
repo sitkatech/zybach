@@ -39,6 +39,7 @@
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <a *ngIf="chemigationPermit.Well" routerLink="/wells/{{chemigationPermit.Well.WellID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
+                                    <em *ngIf="!chemigationPermit.Well" class="text-muted">N/A</em>
                                 </div>
 
                                 <div class="col-6 control-label text-right mb-2">

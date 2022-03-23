@@ -8,6 +8,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 })
 export class ClearGridFiltersButtonComponent {
   @Input() grid: AgGridAngular;
+  @Input() classList: string;
 
   public clearFilters() {
     this.grid.api.setFilterModel(null);
