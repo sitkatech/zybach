@@ -21,7 +21,6 @@ export class AuthenticationService {
 
   private _currentUserSetSubject = new Subject<UserDto>();
   private currentUserSetObservable = this._currentUserSetSubject.asObservable();
-  attemptingToCreateUser: any;
 
 
   constructor(private router: Router,
@@ -29,42 +28,22 @@ export class AuthenticationService {
     private cookieStorageService: CookieStorageService,
     private userService: UserService,
     private alertService: AlertService) {
-    this.oauthService.events.subscribe(_ => {
-      this.checkAuthentication();
-    });
+      this.oauthService.events
+      .pipe(filter(e => ['discovery_document_loaded'].includes(e.type)))
+      .subscribe(e => { 
+        this.checkAuthentication();
+      });
 
     this.oauthService.events
       .pipe(filter(e => ['token_received'].includes(e.type)))
-      .subscribe(e => this.oauthService.loadUserProfile());
-
-    this.oauthService.events
-      .pipe(filter(e => ['invalid_nonce_in_state'].includes(e.type)))
-      .subscribe(e => {
-        //During user creation our nonce can get into an invalid state, but just signing in again mitigates the issue
-        if (this.router.url.includes("signin-oidc")) {
-          this.oauthService.initCodeFlow();
-        }
+      .subscribe(e => { 
+        this.checkAuthentication();
+        this.oauthService.loadUserProfile();
       });
 
     this.oauthService.events
-      .pipe(filter(e => ['token_refresh_error'].includes(e.type)))
-      .subscribe(e => {
-        //If we're still authenticated, don't worry about the error
-        if (this.isAuthenticated()) {
-          return;
-        }
-
-        //If we haven't cleared our cookies and done the logout, do so
-        var token = this.oauthService.getAccessToken();
-        if (token != null && token != undefined && token != "") {
-          this.logout();
-          return;
-        }
-
-        this.router
-          .navigateByUrl("/")
-          .then(() => this.alertService.pushAlert(new Alert("Your session has been terminated. Please login again.")));
-      });
+      .pipe(filter(e => ['session_terminated', 'session_error', 'token_error', 'token_refresh_error', 'silent_refresh_error', 'token_validation_error'].includes(e.type)))
+      .subscribe(e => this.router.navigateByUrl("/"));
 
     this.oauthService.setupAutomaticSilentRefresh();
   }
@@ -101,25 +80,19 @@ export class AuthenticationService {
     if (error.status !== 404) {
       this.alertService.pushAlert(new Alert("There was an error logging into the application.", AlertContext.Danger));
       this.router.navigate(['/']);
-    }
-
-    if (!this.attemptingToCreateUser) {
-      this.attemptingToCreateUser = true;
+    } else {
       this.alertService.clearAlerts();
       const newUser = new UserCreateDto({
         FirstName: claims["given_name"],
         LastName: claims["family_name"],
         Email: claims["email"],
-        RoleID: RoleEnum.Unassigned,
         LoginName: claims["login_name"],
         UserGuid: claims["sub"],
       });
 
-      this.userService.createNewUser(newUser).pipe(
-        finalize(() => this.attemptingToCreateUser = false)
-      ).subscribe(user => {
+      this.userService.createNewUser(newUser).subscribe(user => {
         this.updateUser(user);
-      });
+      })
     }
   }
 
