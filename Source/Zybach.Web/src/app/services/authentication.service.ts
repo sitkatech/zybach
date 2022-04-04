@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { UserService } from './user/user.service';
 import { Observable, race, Subject } from 'rxjs';
-import { filter, finalize, first } from 'rxjs/operators';
+import { filter, finalize, first, map } from 'rxjs/operators';
 import { CookieStorageService } from '../shared/services/cookies/cookie-storage.service';
 import { Router } from '@angular/router';
 import { RoleEnum } from '../shared/models/enums/role.enum';
@@ -48,15 +48,10 @@ export class AuthenticationService {
     this.oauthService.setupAutomaticSilentRefresh();
   }
 
-  public initialLoginSequence(): Promise<void> {
-    return this.oauthService.loadDiscoveryDocument()
+  public initialLoginSequence() {
+    this.oauthService.loadDiscoveryDocument()
       .then(() => this.oauthService.tryLogin())
-      .then(() => {
-        if (this.oauthService.hasValidAccessToken()) {
-          return Promise.resolve();
-        }
-        return this.oauthService.silentRefresh().then(() => Promise.resolve());
-      }).catch(() => { });
+      .then(() => Promise.resolve()).catch(() => {});
   }
 
   public checkAuthentication() {
@@ -114,6 +109,20 @@ export class AuthenticationService {
         }
       }),
       this.currentUserSetObservable.pipe(first())
+    );
+  }
+
+  public getCurrentUserID(): Observable<number> {
+    return race(
+      new Observable(subscriber => {
+        if (this.currentUser) {
+          subscriber.next(this.currentUser.UserID);
+          subscriber.complete();
+        }
+      }),
+      this.currentUserSetObservable.pipe(first(), map(
+        (user) => user.UserID
+      ))
     );
   }
 

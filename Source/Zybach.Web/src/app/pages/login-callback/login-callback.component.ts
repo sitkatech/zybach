@@ -12,7 +12,7 @@ export class LoginCallbackComponent implements OnInit {
   constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
-    this.authenticationService.getCurrentUser().subscribe(currentUser => {
+    this.authenticationService.getCurrentUserID().subscribe(currentUser => {
       let authRedirectUrl = this.authenticationService.getAuthRedirectUrl();  
       if (authRedirectUrl) {
           this.router.navigateByUrl(authRedirectUrl)
