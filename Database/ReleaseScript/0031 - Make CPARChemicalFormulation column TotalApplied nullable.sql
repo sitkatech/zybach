@@ -1,1 +1,0 @@
-ALTER TABLE dbo.ChemigationPermitAnnualRecordChemicalFormulation ALTER COLUMN TotalApplied decimal (8, 2) NULL

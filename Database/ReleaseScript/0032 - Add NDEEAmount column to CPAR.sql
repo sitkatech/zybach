@@ -1,1 +1,0 @@
-ALTER TABLE dbo.ChemigationPermitAnnualRecord add NDEEAmount decimal(4,2) NULL
