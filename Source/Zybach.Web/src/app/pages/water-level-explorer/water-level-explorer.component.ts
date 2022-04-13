@@ -92,18 +92,14 @@ export class WaterLevelExplorerComponent implements OnInit {
     this.selectedSensors.forEach(sensor => {
       if (sensor.WellSensorMeasurements.length === 0) {
         this.timeSeries = [];
-
       }
       else {
         this.noTimeSeriesData = false;
         this.timeSeries = sensor.WellSensorMeasurements;      
         this.setRangeMax(this.timeSeries);
-
       }
-      this.cdr.detectChanges();
       this.tooltipFields = [{ "field": sensor.SensorTypeName, "type": "ordinal" }];
       this.buildChart();
-      
     });
   }
 
@@ -113,7 +109,6 @@ export class WaterLevelExplorerComponent implements OnInit {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.vegaView = res.view;
-
       self.filterChart(new Date(2021, 0, 1), new Date());
     });
   }
