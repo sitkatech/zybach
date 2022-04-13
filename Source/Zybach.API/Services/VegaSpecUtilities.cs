@@ -208,7 +208,7 @@ namespace Zybach.API.Services
                     ""field"": ""Measurement"",
                     ""type"": ""quantitative"",
                     ""axis"": {{                            
-                        ""title"": ""Depth to Groundwater""
+                        ""title"": ""Depth to Groundwater (ft)""
                     }}
                 }}
                 }},               
