@@ -1919,6 +1919,44 @@
         }
       }
     },
+    "/api/mapData/wells/withWellPressureSensor": {
+      "get": {
+        "tags": [
+          "MapData"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/reportTemplates": {
       "get": {
         "tags": [
@@ -2507,6 +2545,55 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SensorSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensors/byWellID/{wellID}": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
                 }
               }
             }
@@ -6861,6 +6948,11 @@
             "type": "string",
             "nullable": true
           },
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "SensorType": {
             "type": "string",
             "nullable": true
@@ -8654,6 +8746,43 @@
           },
           "WellUseDisplayName": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWaterLevelMapSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Location": {
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
             "nullable": true
           }
         },

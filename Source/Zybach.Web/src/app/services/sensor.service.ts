@@ -17,6 +17,10 @@ export class SensorService {
   public getSensorByID(sensorID: number): Observable<SensorSimpleDto> {
     return this.apiService.getFromApi(`/sensors/${sensorID}`);
   }
+
+  public listSensorsByWellID(wellID: number): Observable<Array<SensorSimpleDto>> {
+    return this.apiService.getFromApi(`/sensors/byWellID/${wellID}`);
+  }
 }
 
 

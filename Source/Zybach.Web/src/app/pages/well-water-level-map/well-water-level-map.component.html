@@ -1,0 +1,13 @@
+<div class="row mb-2">
+    <div class="col-12 col-lg-6">
+        <div class="input-group">
+            <input type="text" name="mapSearchQuery" class="form-control" placeholder="Search map by address..."
+                [(ngModel)]="mapSearchQuery" (keyup.enter)="mapSearch()" />
+            <div class="input-group-append">
+                <button class="btn btn-zybach" type="button" (click)="mapSearch()">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="{{mapID}}" [style.height]="mapHeight">
+</div>

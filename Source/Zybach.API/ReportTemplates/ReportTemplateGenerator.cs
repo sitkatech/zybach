@@ -149,7 +149,7 @@ namespace Zybach.API.ReportTemplates
         /// </summary>
         private async Task SaveImageFilesToTempDirectory(ZybachDbContext dbContext, VegaRenderService.VegaRenderService vegaRenderService)
         {
-             switch (ReportTemplateModelEnum)
+            switch (ReportTemplateModelEnum)
             {
                 case ReportTemplateModelEnum.ChemigationPermit:
                     var chemigationPermitsList = dbContext.ChemigationPermits.Where(x => SelectedModelIDs.Contains(x.ChemigationPermitID)).ToList();

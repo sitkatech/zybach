@@ -25,7 +25,7 @@ namespace Zybach.API.Services
                 }";
 
             return $@"{{
-            ""$schema"": ""https://vega.github.io/schema/vega-lite/v4.json"",
+            ""$schema"": ""https://vega.github.io/schema/vega-lite/v5.1.json"",
             ""description"": ""Lab Nitrates Chart"",
             ""width"": {(isForWeb ? "\"container\"" : 1351)},
             ""height"": {(isForWeb ? "\"container\"" : 500)},
@@ -175,7 +175,7 @@ namespace Zybach.API.Services
                 }";
 
             return $@"{{
-            ""$schema"": ""https://vega.github.io/schema/vega-lite/v4.json"",
+            ""$schema"": ""https://vega.github.io/schema/vega-lite/v5.1.json"",
             ""description"": ""Water Level Chart"",
             ""width"": {(isForWeb ? "\"container\"" : 1351)},
             ""height"": {(isForWeb ? "\"container\"" : 500)},
@@ -208,7 +208,7 @@ namespace Zybach.API.Services
                     ""field"": ""Measurement"",
                     ""type"": ""quantitative"",
                     ""axis"": {{                            
-                        ""title"": ""Depth to Groundwater""
+                        ""title"": ""Depth to Groundwater (ft)""
                     }}
                 }}
                 }},               
