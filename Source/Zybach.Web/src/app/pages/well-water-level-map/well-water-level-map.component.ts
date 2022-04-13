@@ -66,7 +66,7 @@ export class WellWaterLevelMapComponent implements OnInit, AfterViewInit {
   public selectedFeatureLayer: any;
 
   public mapSearchQuery: string;
-  public maxZoom: number = 17;
+  public maxZoom: number = 16;
 
   searchErrormessage: string = "Sorry, the address you searched is not within the NRD area. Click a well on the map or search another address.";
   

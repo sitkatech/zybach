@@ -11,12 +11,13 @@ import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text
 import { WellWaterLevelMapComponent } from '../well-water-level-map/well-water-level-map.component';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
-import { AsyncParser } from 'json2csv';
-import moment from 'moment';
+import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-adapter-from-string';
 @Component({
   selector: 'zybach-water-level-explorer',
   templateUrl: './water-level-explorer.component.html',
-  styleUrls: ['./water-level-explorer.component.scss']
+  styleUrls: ['./water-level-explorer.component.scss'],
+  providers: [{provide: NgbDateAdapter, useClass: NgbDateAdapterFromString}]
 })
 export class WaterLevelExplorerComponent implements OnInit {
   @ViewChild("wellMap") wellMap: WellWaterLevelMapComponent;
@@ -38,11 +39,13 @@ export class WaterLevelExplorerComponent implements OnInit {
   rangeMax: number;
   tooltipFields: any;
   noTimeSeriesData: boolean = false;
-  myDpOptions: IAngularMyDpOptions = {
-    dateRange: true,
-    dateFormat: 'mm/dd/yyyy'
-  };
-  dateRange: any;
+  // myDpOptions: IAngularMyDpOptions = {
+  //   dateRange: true,
+  //   dateFormat: 'mm/dd/yyyy'
+  // };
+  // dateRange: any;
+  startDate: any;
+  endDate: any;
   public unitsShown: string = "gal";
   
   constructor(
@@ -80,14 +83,13 @@ export class WaterLevelExplorerComponent implements OnInit {
     this.selectedWell = this.wells.find(x => x.WellID === wellID);
     this.sensorService.listSensorsByWellID(wellID).subscribe(sensors => {
       this.selectedSensors = sensors;
-      const startDate = new Date(Date.parse(Math.min.apply(this.selectedSensors.map(x => Date.parse(x.FirstReadingDate)))));
-      const endDate = new Date(this.selectedWell.LastReadingDate)
-      this.initDateRange(startDate, endDate);
+      this.startDate = this.selectedSensors[0].FirstReadingDate;
+      this.endDate = this.selectedWell.LastReadingDate ?? Date.now();
+      //this.cdr.detectChanges();
       this.getChartDataAndBuildChart();
     });
   }
 
-  
   // Begin section: chart
 
   getChartDataAndBuildChart() {
@@ -97,73 +99,17 @@ export class WaterLevelExplorerComponent implements OnInit {
         this.timeSeries = [];
         return;
       }
-  
-      this.timeSeries = sensor.WellSensorMeasurements;      
-      this.cdr.detectChanges();
-      this.setRangeMax(this.timeSeries);
-      this.tooltipFields = [{ "field": sensor.SensorTypeName, "type": "ordinal" }];
-      this.buildChart();
+      else {
+        this.timeSeries = sensor.WellSensorMeasurements;      
+
+        this.cdr.detectChanges();
+        this.setRangeMax(this.timeSeries);
+        this.tooltipFields = [{ "field": sensor.SensorTypeName, "type": "ordinal" }];
+        this.buildChart();
+
+      }
     });
   }
-
-// async exportChartData(){
-//   const pivoted = new Map();
-//   for (const point of this.timeSeries){
-//     let pivotRow = pivoted.get(point.MeasurementDate);
-//     if (pivotRow){
-//       pivotRow["Reading"] = point.MeasurementValue;
-//     } else{
-//       pivotRow = {"Date": point.MeasurementDate};
-//       pivotRow["Reading"] = point.MeasurementValue;
-//       pivoted.set(point.MeasurementDate, pivotRow);
-//     }
-//   }
-
-//   const pivotedAndSorted = Array.from(pivoted.values())
-//     .map(x=> ({
-//       "Date": moment(x.Date).format('M/D/yyyy'),
-//       "Reading": x["Reading"]
-//     }))
-//     .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
-
-//   const fields = ['Date', 'Reading'];
-
-//   const opts = { fields };
-
-//   const asyncParser = new AsyncParser(opts);
-
-//   let csv: string = await new Promise((resolve,reject)=>{
-//     let csv = '';
-//     asyncParser.processor
-//       .on('data', chunk => (csv += chunk.toString()))
-//       .on('end', () => {
-//         resolve(csv);
-//       })
-//       .on('error', err => {
-//         console.error(err);
-//         reject(err);
-//       });
-    
-//     asyncParser.input.push(JSON.stringify(pivotedAndSorted));
-//     asyncParser.input.push(null);
-//   });
-
-//   var exportedFilename = `${this.sensor.SensorName}_DataReadings.csv`;
-  
-
-//   var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-//   var link = document.createElement("a");
-
-//   var url = URL.createObjectURL(blob);
-//   link.setAttribute("href", url);
-//   link.setAttribute("download", exportedFilename);
-//   link.style.visibility = 'hidden';
-//   document.body.appendChild(link);
-//   link.click();
-//   document.body.removeChild(link);
-
-//   return pivotedAndSorted;
-// }
 
   buildChart() {
     var self = this;
@@ -176,40 +122,21 @@ export class WaterLevelExplorerComponent implements OnInit {
     });
   }
 
-  initDateRange(startDate: Date, endDate: Date) {
-    this.dateRange = {
-      isRange: true, 
-      singleDate: null, 
-      dateRange: {
-        beginDate: {
-          year: startDate.getFullYear(), month: startDate.getMonth() + 1, day: startDate.getDate()
-        },
-        endDate: {
-          year: endDate.getFullYear(), month: endDate.getMonth() + 1, day: endDate.getDate()
-        }
-      }
-    };
-  }
-
-  onDateChanged(event){
-    const startDate = event.dateRange.beginJsDate;
-    const endDate = event.dateRange.endJsDate;
-
+  onStartDateChanged(event){
+    const startDate = new Date(event);
+    const endDate = new Date(this.endDate);
     this.filterChart(startDate, endDate);
   }
 
-  useFullDateRange(){
-    const startDate = new Date(Date.parse(Math.min.apply(this.selectedSensors.map(x => Date.parse(x.FirstReadingDate)))));
-    const endDate = new Date(this.selectedWell.LastReadingDate)
-
-    this.initDateRange(startDate, endDate);
-
+  onEndDateChanged(event){
+    const endDate = new Date(event);
+    const startDate = new Date(this.startDate);
     this.filterChart(startDate, endDate);
   }
 
   filterChart(startDate: Date, endDate: Date){
     const filteredTimeSeries = this.timeSeries.filter(x=>{
-      const asDate =  new Date(x.MeasurementDate);
+      const asDate = new Date(x.MeasurementDate);
       return asDate.getTime() >= startDate.getTime() && asDate.getTime() <= endDate.getTime();
     });
 
@@ -261,7 +188,7 @@ export class WaterLevelExplorerComponent implements OnInit {
               "field": "MeasurementValue",
               "type": "quantitative",
               "axis": {
-                "title": "Depth to Groundwater"
+                "title": "Depth to Groundwater (ft)"
               }
             },
             "color": {

@@ -397,7 +397,7 @@ export class SensorDetailComponent implements OnInit {
               "field": "MeasurementValue",
               "type": "quantitative",
               "axis": {
-                "title": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? "Depth to Groundwater" : "Gallons"
+                "title": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? "Depth to Groundwater (ft)" : "Gallons"
               }
             },
             "color": {
