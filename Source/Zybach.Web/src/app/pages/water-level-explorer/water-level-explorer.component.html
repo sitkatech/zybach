@@ -21,8 +21,7 @@
                 <div class="card">
                     <div class="card-header">Water Level Summary</div>
                     <div class="card-body">
-                        <div *ngIf="selectedWell; then wellSelected else noWellSelected"></div>
-                        <ng-template #wellSelected>
+                        <div *ngIf="selectedWell; else noWellSelected">
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-6 label"><strong>Well Registration ID: </strong> </div>
@@ -34,22 +33,21 @@
                                 </div>
                             </div>
                             <div *ngFor="let sensor of selectedSensors">
-            
+                                
                                 <div class="row" *ngIf="!timeSeries">
                                     <div class="text-center">
                                         <span class="fas fa-spinner loading-spinner"></span>
                                         <p>Loading...</p>
                                     </div>
                                 </div>
-                                
-                                <div *ngIf="noTimeSeriesData; then noTimeSeriesTemplate else timeSeriesTemplate"></div>
-                                <ng-template #noTimeSeriesTemplate>
+
+                                <div *ngIf="noTimeSeriesData; else timeSeriesTemplate">
+                               
                                     <div class="mt-2">
-                                        <em *ngIf="noTimeSeriesData">No time series data available for this sensor.</em>
-
+                                        <em>No time series data available for this sensor.</em>
                                     </div>
-
-                                </ng-template>
+                                    <div #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+                                </div>
                                 <ng-template #timeSeriesTemplate>
                                     <div class="row mb-1 mt-2">
                                         <div class="input-group col-6">
@@ -66,7 +64,6 @@
                                         </div>
                                         <div class="input-group col-6">
                                             <span class="font-weight-bold mt-1 mx-2">End Date:</span>
-                                            <!-- input box -->
                                             <div class="input-group">
                                                 <input class="form-control" name="d2"
                                                 ngbDatepicker #d2="ngbDatepicker"
@@ -78,17 +75,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div *ngIf="!noTimeSeriesData" #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
-                                    <em *ngIf="!noTimeSeriesData">All data are displayed in Central Daylight Time</em>
+                                    <div #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+                                    <em>All data are displayed in Central Daylight Time</em>
 
                                 </ng-template>
-                                
+
                                 <div class="mt-2">
                                     <custom-rich-text [customRichTextTypeID]="disclaimerRichTextTypeID"></custom-rich-text>
                                 </div>
                             </div>
-
-                        </ng-template>
+                        </div>
                         <ng-template #noWellSelected>
                             <p>
                                 Click on a well on the map to view water level sensor information, or use the search box

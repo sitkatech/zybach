@@ -1,6 +1,5 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorService } from 'src/app/services/sensor.service';
 import { WellService } from 'src/app/services/well.service';
@@ -31,7 +30,7 @@ export class WaterLevelExplorerComponent implements OnInit {
   public richTextTypeID : number = CustomRichTextType.WaterLevelExplorerMap;
   public disclaimerRichTextTypeID : number = CustomRichTextType.WaterLevelExplorerMapDisclaimer;
 
-  public chartID: string = "sensorChart";
+  public chartID: string;
   chartColor: string = "#13B5EA";
   chartSubscription: any;
   timeSeries: any[];
@@ -39,11 +38,6 @@ export class WaterLevelExplorerComponent implements OnInit {
   rangeMax: number;
   tooltipFields: any;
   noTimeSeriesData: boolean = false;
-  // myDpOptions: IAngularMyDpOptions = {
-  //   dateRange: true,
-  //   dateFormat: 'mm/dd/yyyy'
-  // };
-  // dateRange: any;
   startDate: any;
   endDate: any;
   public unitsShown: string = "gal";
@@ -80,13 +74,15 @@ export class WaterLevelExplorerComponent implements OnInit {
   }
 
   public onMapSelection(wellID: number) {
+    this.noTimeSeriesData = true;
     this.selectedWell = this.wells.find(x => x.WellID === wellID);
     this.sensorService.listSensorsByWellID(wellID).subscribe(sensors => {
+      this.chartID = `sensorChart-${wellID}`;
       this.selectedSensors = sensors;
       this.startDate = this.selectedSensors[0].FirstReadingDate;
       this.endDate = this.selectedWell.LastReadingDate ?? Date.now();
-      //this.cdr.detectChanges();
       this.getChartDataAndBuildChart();
+      this.cdr.detectChanges();
     });
   }
 
@@ -95,19 +91,19 @@ export class WaterLevelExplorerComponent implements OnInit {
   getChartDataAndBuildChart() {
     this.selectedSensors.forEach(sensor => {
       if (sensor.WellSensorMeasurements.length === 0) {
-        this.noTimeSeriesData = true;
         this.timeSeries = [];
-        return;
+
       }
       else {
+        this.noTimeSeriesData = false;
         this.timeSeries = sensor.WellSensorMeasurements;      
-
-        this.cdr.detectChanges();
         this.setRangeMax(this.timeSeries);
-        this.tooltipFields = [{ "field": sensor.SensorTypeName, "type": "ordinal" }];
-        this.buildChart();
 
       }
+      this.cdr.detectChanges();
+      this.tooltipFields = [{ "field": sensor.SensorTypeName, "type": "ordinal" }];
+      this.buildChart();
+      
     });
   }
 
