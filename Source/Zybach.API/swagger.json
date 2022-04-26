@@ -8579,6 +8579,10 @@
             "type": "number",
             "format": "double"
           },
+          "IsAnomalous": {
+            "type": "boolean",
+            "nullable": true
+          },
           "MeasurementDateInPacificTime": {
             "type": "string",
             "format": "date-time"
