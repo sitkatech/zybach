@@ -12,6 +12,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
+import { CountyDto } from 'src/app/shared/generated/model/county-dto';
 
 @Component({
   selector: 'zybach-chemigation-permit-edit',
@@ -24,6 +25,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   public chemigationPermitNumber: number;
   public chemigationPermit: ChemigationPermitDto;
   public permitStatuses: Array<ChemigationPermitStatusDto>;
+  public counties: Array<CountyDto>;
   public model: ChemigationPermitUpsertDto;
   
   public isLoadingSubmit: boolean = false;
@@ -47,6 +49,10 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
 
       this.chemigationPermitService.getChemigationPermitStatuses().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
+      });
+
+      this.chemigationPermitService.getCounties().subscribe(counties => {
+        this.counties = counties;
       });
 
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
