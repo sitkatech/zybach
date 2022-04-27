@@ -59,56 +59,74 @@ namespace Zybach.EFModels.Entities
                 Notes = sensorAnomalyUpsertDto.Notes
             }).Entity;
 
-            //UpdateWellSensorMeasurementsAnomalousFlag(dbContext, sensorAnomaly, null);
+            var sensor = dbContext.Sensors.FirstOrDefault(x => x.SensorID == sensorAnomaly.SensorID);
+
+            var measurementsForSensor = dbContext.WellSensorMeasurements
+                .Where(x => x.SensorName == sensor.SensorName).AsEnumerable();
+
+            var measurementsInCurrentDateRange = measurementsForSensor.Where(x =>
+                x.MeasurementDate.IsDateInRange(sensorAnomaly.StartDate, sensorAnomaly.EndDate)).ToList();
+
+            foreach (var wellSensorMeasurement in measurementsInCurrentDateRange)
+            {
+                wellSensorMeasurement.IsAnomalous = true;
+            }
 
             dbContext.SaveChanges();
         }
 
-        //private static void UpdateWellSensorMeasurementsAnomalousFlag(ZybachDbContext dbContext,
-        //    SensorAnomaly sensorAnomaly, SensorAnomalyUpsertDto? sensorAnomalyUpsertDto)
-        //{
-        //    var sensor = dbContext.Sensors.FirstOrDefault(x => x.SensorID == sensorAnomaly.SensorID);
+        private static void UpdateWellSensorMeasurementsAnomalousFlag(ZybachDbContext dbContext,
+            SensorAnomaly sensorAnomaly, SensorAnomalyUpsertDto sensorAnomalyUpsertDto)
+        {
+            var sensor = dbContext.Sensors.FirstOrDefault(x => x.SensorID == sensorAnomaly.SensorID);
 
-        //    var measurementsForSensor = dbContext.WellSensorMeasurements
-        //        .Where(x => x.SensorName == sensor.SensorName).AsEnumerable();
+            var measurementsForSensor = dbContext.WellSensorMeasurements
+                .Where(x => x.SensorName == sensor.SensorName).AsEnumerable();
 
-        //    var measurementsInDateRange = measurementsForSensor.Where(x =>
-        //                                    x.MeasurementDate.IsDateInRange(sensorAnomaly.StartDate, sensorAnomaly.EndDate)).ToList();
+            var measurementsInCurrentDateRange = measurementsForSensor.Where(x =>
+                                            x.MeasurementDate.IsDateInRange(sensorAnomaly.StartDate, sensorAnomaly.EndDate)).ToList();
 
-        //    foreach (var wellSensorMeasurement in measurementsInDateRange)
-        //    {
-        //        wellSensorMeasurement.IsAnomalous = true;
-        //    }
+            // ReSharper disable twice PossibleInvalidOperationException
+            var measurementsInNewDateRange = measurementsForSensor.Where(x =>
+                    x.MeasurementDate.IsDateInRange(sensorAnomalyUpsertDto.StartDate.Value, sensorAnomalyUpsertDto.EndDate.Value)).ToList();
+            
+            foreach (var wellSensorMeasurement in measurementsInCurrentDateRange)
+            {
+                wellSensorMeasurement.IsAnomalous = measurementsInNewDateRange.Contains(wellSensorMeasurement);
+            }
 
-        //    if (sensorAnomalyUpsertDto != null)
-        //    {
-        //        var measurementsOutsideNewDateRange = measurementsForSensor.Where(x => 
-        //                                                x.MeasurementDate.IsDateInRange(sensorAnomalyUpsertDto.StartDate, sensorAnomalyUpsertDto.EndDate) &&
-        //                                                !x.MeasurementDate.IsDateInRange())
-        //    }
-
-        //    dbContext.UpdateRange(measurementsInDateRange);
-        //}
+            dbContext.UpdateRange(measurementsInCurrentDateRange);
+        }
 
         public static void Update(ZybachDbContext dbContext, SensorAnomaly sensorAnomaly, SensorAnomalyUpsertDto sensorAnomalyUpsertDto)
         {
+            UpdateWellSensorMeasurementsAnomalousFlag(dbContext, sensorAnomaly, sensorAnomalyUpsertDto);
+
             sensorAnomaly.StartDate = sensorAnomalyUpsertDto.StartDate.GetValueOrDefault();
             sensorAnomaly.EndDate = sensorAnomalyUpsertDto.EndDate.GetValueOrDefault();
             sensorAnomaly.Notes = sensorAnomalyUpsertDto.Notes;
 
             dbContext.SaveChanges();
-
-            //UpdateWellSensorMeasurementsAnomalousFlag(dbContext, sensorAnomaly);
-
-            //dbContext.SaveChanges();
         }
 
         public static void Delete(ZybachDbContext dbContext, SensorAnomaly sensorAnomaly)
         {
+            var sensor = dbContext.Sensors.FirstOrDefault(x => x.SensorID == sensorAnomaly.SensorID);
+
+            var measurementsForSensor = dbContext.WellSensorMeasurements
+                .Where(x => x.SensorName == sensor.SensorName).AsEnumerable();
+
+            var measurementsInCurrentDateRange = measurementsForSensor.Where(x =>
+                x.MeasurementDate.IsDateInRange(sensorAnomaly.StartDate, sensorAnomaly.EndDate)).ToList();
+
+            foreach (var wellSensorMeasurement in measurementsInCurrentDateRange)
+            {
+                wellSensorMeasurement.IsAnomalous = false;
+            }
+
             dbContext.SensorAnomalies.Remove(sensorAnomaly);
+            
             dbContext.SaveChanges();
-            //UpdateWellSensorMeasurementsAnomalousFlag(dbContext, sensorAnomaly);
-            //dbContext.SaveChanges();
         }
     }
 }
