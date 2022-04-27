@@ -76,7 +76,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/sensors/byWellID/{wellID}")]
-        [ZybachViewFeature]
+        [UserViewFeature]
         public ActionResult<List<SensorSimpleDto>> GetSensorsByWellID([FromRoute] int wellID)
         {
             var sensors = Sensors.ListByWellIDAsSimpleDto(_dbContext, wellID);
