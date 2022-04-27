@@ -6186,6 +6186,9 @@
           "PumpingRateGallonsPerMinute": {
             "type": "integer",
             "format": "int32"
+          },
+          "IsAnomalous": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
