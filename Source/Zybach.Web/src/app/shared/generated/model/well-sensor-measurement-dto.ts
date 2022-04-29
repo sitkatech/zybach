@@ -20,6 +20,7 @@ export class WellSensorMeasurementDto {
     ReadingDay?: number;
     SensorName?: string;
     MeasurementValue?: number;
+    IsAnomalous?: boolean;
     MeasurementDateInPacificTime?: string;
     MeasurementDate?: string;
     MeasurementValueString?: string;

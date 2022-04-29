@@ -6186,6 +6186,9 @@
           "PumpingRateGallonsPerMinute": {
             "type": "integer",
             "format": "int32"
+          },
+          "IsAnomalous": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -8578,6 +8581,10 @@
           "MeasurementValue": {
             "type": "number",
             "format": "double"
+          },
+          "IsAnomalous": {
+            "type": "boolean",
+            "nullable": true
           },
           "MeasurementDateInPacificTime": {
             "type": "string",

@@ -24,6 +24,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         public string SensorName { get; set; }
         public double MeasurementValue { get; set; }
+        public bool? IsAnomalous { get; set; }
 
         [ForeignKey(nameof(MeasurementTypeID))]
         [InverseProperty("WellSensorMeasurements")]
