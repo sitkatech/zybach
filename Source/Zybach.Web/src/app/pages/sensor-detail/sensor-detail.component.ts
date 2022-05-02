@@ -398,6 +398,9 @@ export class SensorDetailComponent implements OnInit {
               "type": "quantitative",
               "axis": {
                 "title": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? "Depth to Groundwater (ft)" : "Gallons"
+              },
+              "scale": {
+                "reverse": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? true : false
               }
             },
             "color": {
@@ -408,7 +411,7 @@ export class SensorDetailComponent implements OnInit {
               },
               "scale": {
                 "domain": [this.sensor.SensorTypeName],
-                "range": [this.chartColor],
+                "range": [this.chartColor]
               }
             }
           },

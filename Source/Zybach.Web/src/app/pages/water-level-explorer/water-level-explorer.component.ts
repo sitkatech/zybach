@@ -180,6 +180,9 @@ export class WaterLevelExplorerComponent implements OnInit {
               "type": "quantitative",
               "axis": {
                 "title": "Depth to Groundwater (ft)"
+              },
+              "scale": {
+                "reverse": true
               }
             },
             "color": {
