@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -24,6 +25,12 @@ namespace Zybach.API.Controllers
         public List<WellWithSensorSummaryDto> GetWellsWithSensors()
         {
             return _wellService.GetAghubAndGeoOptixWells();
+        }
+
+        [HttpGet("api/mapData/wells/withWellPressureSensor")]
+        public List<WellWaterLevelMapSummaryDto> GetWellsWithWellPressureSensors()
+        {
+            return _wellService.GetWellPressureWellsForWaterLevelSummary();
         }
     }
 }

@@ -17,6 +17,7 @@ import { WellParticipationInfoDto } from '../shared/generated/model/well-partici
 import { WellRegistrationIDDto } from '../shared/generated/model/well-registration-id-dto';
 import { WellSimpleDto } from '../shared/generated/model/well-simple-dto';
 import { WellUseDto } from '../shared/generated/model/well-use-dto';
+import { WellWaterLevelMapSummaryDto } from '../shared/generated/model/well-water-level-map-summary-dto';
 import { WellWithSensorSummaryDto } from '../shared/generated/model/well-with-sensor-summary-dto';
 import { ApiService } from '../shared/services';
 
@@ -31,6 +32,10 @@ export class WellService {
 
   public getWellsMapData(): Observable<WellWithSensorSummaryDto[]> {
     return this.apiService.getFromApi("mapData/wells")
+  }
+
+  public getWellsWithPressureSensorMapData(): Observable<WellWaterLevelMapSummaryDto[]> {
+    return this.apiService.getFromApi("mapData/wells/withWellPressureSensor")
   }
 
   public getChartData(wellID: number): Observable<WellChartDataDto> {

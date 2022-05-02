@@ -302,7 +302,7 @@ export class WellWaterDataTabComponent implements OnInit {
 
   getVegaSpec(): any {
     return {
-      "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+      "$schema": "https://vega.github.io/schema/vega-lite/v5.1.json",
       "description": "A chart",
       "width": "container",
       "height": "container",

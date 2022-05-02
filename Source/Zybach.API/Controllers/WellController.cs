@@ -182,6 +182,7 @@ namespace Zybach.API.Controllers
             {
                 SensorName = x.SensorName,
                 SensorID = x.SensorID,
+                SensorTypeID = x.SensorTypeID,
                 SensorType = x.SensorType.SensorTypeDisplayName,
                 WellRegistrationID = wellRegistrationID,
                 IsActive = x.IsActive

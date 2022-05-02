@@ -189,7 +189,7 @@ namespace Zybach.API.Controllers
                                     x.MeasurementDate.ToShortDateString() == dateTime.ToShortDateString());
                                 var gallons = wellSensorMeasurementDto?.MeasurementValue ?? 0;
                                 dailySensorVolumeDtos.Add(new DailySensorVolumeDto(gallons, sensorName,
-                                    pumpingRateGallonsPerMinute));
+                                    pumpingRateGallonsPerMinute, wellSensorMeasurementDto?.IsAnomalous ?? false));
                             }
                         }
 

@@ -1919,6 +1919,44 @@
         }
       }
     },
+    "/api/mapData/wells/withWellPressureSensor": {
+      "get": {
+        "tags": [
+          "MapData"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWaterLevelMapSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/reportTemplates": {
       "get": {
         "tags": [
@@ -2507,6 +2545,55 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SensorSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensors/byWellID/{wellID}": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SensorSimpleDto"
+                  }
                 }
               }
             }
@@ -6099,6 +6186,9 @@
           "PumpingRateGallonsPerMinute": {
             "type": "integer",
             "format": "int32"
+          },
+          "IsAnomalous": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -6861,6 +6951,11 @@
             "type": "string",
             "nullable": true
           },
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "SensorType": {
             "type": "string",
             "nullable": true
@@ -6986,45 +7081,37 @@
       },
       "UserCreateDto": {
         "required": [
-          "ReceiveSupportEmails",
-          "RoleID"
+          "Email",
+          "FirstName",
+          "LastName",
+          "LoginName",
+          "UserGuid"
         ],
         "type": "object",
         "properties": {
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "Email": {
+            "type": "string"
+          },
           "LoginName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "UserGuid": {
             "type": "string",
             "format": "uuid"
           },
-          "FirstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "LastName": {
-            "type": "string",
-            "nullable": true
-          },
           "OrganizationName": {
-            "type": "string",
-            "nullable": true
-          },
-          "Email": {
             "type": "string",
             "nullable": true
           },
           "PhoneNumber": {
             "type": "string",
             "nullable": true
-          },
-          "RoleID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ReceiveSupportEmails": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -8495,6 +8582,10 @@
             "type": "number",
             "format": "double"
           },
+          "IsAnomalous": {
+            "type": "boolean",
+            "nullable": true
+          },
           "MeasurementDateInPacificTime": {
             "type": "string",
             "format": "date-time"
@@ -8662,6 +8753,43 @@
           },
           "WellUseDisplayName": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWaterLevelMapSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Location": {
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
+            "type": "string",
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
             "nullable": true
           }
         },

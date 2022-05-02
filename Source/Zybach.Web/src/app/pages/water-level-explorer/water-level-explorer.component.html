@@ -1,0 +1,104 @@
+<div class="container" *ngIf="!wells else wellsList">
+    <div class="row">
+        <div class="col text-center">
+            <span class="fas fa-spinner loading-spinner"></span>
+            <p>Loading...</p>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #wellsList>
+    <div class="container navCaretMargin">
+        <div class="col-12">
+            <h2 class="d-inline-block">Water Level Explorer</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
+        
+        <div class="row col-12 mt-4">
+
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">Water Level Summary</div>
+                    <div class="card-body">
+                        <div *ngIf="selectedWell; else noWellSelected">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-6 label"><strong>Well Registration ID: </strong> </div>
+                                    <div class="col-6">{{ selectedWell?.WellRegistrationID }}</div>
+                                    <div class="col-6 label"><strong>Legal Description: </strong></div>
+                                    <div class="col-6">{{ selectedWell?.TownshipRangeSection }}</div>
+                                    <div class="col-6 label"><strong>Last Reading Date: </strong> </div>
+                                    <div class="col-6">{{ selectedWell?.LastReadingDate | date:'shortDate' }}</div>
+                                </div>
+                            </div>
+                            <div *ngFor="let sensor of selectedSensors">
+                                
+                                <div class="row" *ngIf="!timeSeries">
+                                    <div class="text-center">
+                                        <span class="fas fa-spinner loading-spinner"></span>
+                                        <p>Loading...</p>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="noTimeSeriesData; else timeSeriesTemplate">
+                               
+                                    <div class="mt-2">
+                                        <em>No time series data available for this sensor.</em>
+                                    </div>
+                                    <div #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+                                </div>
+                                <ng-template #timeSeriesTemplate>
+                                    <div class="row mb-1 mt-2">
+                                        <div class="input-group col-6">
+                                            <span class="font-weight-bold mt-1 mx-2">Start Date:</span>
+                                            <div class="input-group">
+                                                <input class="form-control" name="d1"
+                                                ngbDatepicker #d1="ngbDatepicker"
+                                                placeholder="yyyy-mm-dd" (ngModelChange)="onStartDateChanged($event)"
+                                                [(ngModel)]="startDate" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()" type="button"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group col-6">
+                                            <span class="font-weight-bold mt-1 mx-2">End Date:</span>
+                                            <div class="input-group">
+                                                <input class="form-control" name="d2"
+                                                ngbDatepicker #d2="ngbDatepicker"
+                                                placeholder="yyyy-mm-dd" (ngModelChange)="onEndDateChanged($event)"
+                                                [(ngModel)]="endDate" />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d2.toggle()" type="button"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+                                    <em>All data are displayed in Central Daylight Time</em>
+
+                                </ng-template>
+
+                                <div class="mt-2">
+                                    <custom-rich-text [customRichTextTypeID]="disclaimerRichTextTypeID"></custom-rich-text>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #noWellSelected>
+                            <p>
+                                Click on a well on the map to view water level sensor information, or use the search box
+                                to locate the closest well to a certain location.
+                            </p>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-6">
+                <zybach-well-water-level-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)">
+                </zybach-well-water-level-map>
+            </div>
+        </div>
+    </div>
+</ng-template>
