@@ -128,6 +128,7 @@ namespace Zybach.EFModels.Entities
             {
                 wellWithSensorSummaryDto.WellTPID = agHubWell.WellTPID;
                 wellWithSensorSummaryDto.HasElectricalData = agHubWell.HasElectricalData;
+                wellWithSensorSummaryDto.WellConnectedMeter = agHubWell.WellConnectedMeter;
                 wellWithSensorSummaryDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
                 wellWithSensorSummaryDto.FieldName = agHubWell.FieldName;
 

@@ -59,6 +59,7 @@ namespace Zybach.Models.DataTransferObjects
     public class WellWithSensorSummaryDto : WellSummaryDto
     {
         public List<SensorSummaryDto> Sensors { get; set; }
+        public bool WellConnectedMeter { get; set; }
     }
 
     public class WellWithSensorMessageAgeDto : WellSummaryDto
