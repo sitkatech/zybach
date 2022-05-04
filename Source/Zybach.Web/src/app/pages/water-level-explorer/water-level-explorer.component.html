@@ -50,6 +50,19 @@
                                 </div>
                                 <ng-template #timeSeriesTemplate>
                                     <div class="row mb-1 mt-2">
+                                        <div class="col">
+                                            <button (click)="lastThirtyDays($event)" class="btn btn-zybach mr-2">
+                                                Last 30 Days
+                                            </button>
+                                            <button (click)="lastSixMonths($event)" class="btn btn-zybach mr-2">
+                                                6 Months
+                                            </button>
+                                            <button (click)="lastOneYear($event)" class="btn btn-zybach mr-2">
+                                                One Year
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1 mt-2">
                                         <div class="input-group col-6">
                                             <span class="font-weight-bold mt-1 mx-2">Start Date:</span>
                                             <div class="input-group">

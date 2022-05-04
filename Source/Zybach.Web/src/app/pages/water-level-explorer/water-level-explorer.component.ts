@@ -113,6 +113,42 @@ export class WaterLevelExplorerComponent implements OnInit {
     });
   }
 
+  private addDays(date: Date, days: number): Date {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  private addMonths(date: Date, months: number): Date {
+    var result = new Date(date);
+    result.setMonth(result.getMonth() + months);
+    return result;
+  }
+
+  private addYears(date: Date, years: number): Date {
+    var result = new Date(date);
+    result.setFullYear(result.getFullYear() + years);
+    return result;
+  }
+
+  public lastThirtyDays(event): void {
+    this.endDate = new Date().toISOString();
+    this.startDate = this.addDays(new Date(this.endDate), -30).toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
+  }
+
+  public lastSixMonths(event): void {
+    this.endDate = new Date().toISOString();
+    this.startDate = this.addMonths(new Date(this.endDate), -6).toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
+  }
+
+  public lastOneYear(event): void {
+    this.endDate = new Date().toISOString();
+    this.startDate = this.addYears(new Date(this.endDate), -1).toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
+  }
+
   onStartDateChanged(event){
     const startDate = new Date(event);
     const endDate = new Date(this.endDate);

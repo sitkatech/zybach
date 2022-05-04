@@ -72,12 +72,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   public onGridReady(params) {
     this.gridApi = params.api;
     this.wellsGrid.columnApi.autoSizeAllColumns();
-    this.onFilterChange({
-      showFlowMeters: true,
-      showContinuityMeters: true,
-      showElectricalData: true,
-      showNoEstimate: false
-    });
+    this.gridApi.setRowData(this.wells);
   }
 
   private makeColumnDefs() {
@@ -289,23 +284,6 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         this.gridApi.ensureIndexVisible(node.rowIndex, "top")
       }
     })
-  }
-
-  public onFilterChange(dataSourceOptions: any) {
-    const filteredWells = this.wells.filter(x => {
-      const sensorTypes = x.Sensors.map(s => s.SensorType);
-      if (sensorTypes.length > 0) {
-        return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) ||
-          (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
-          (dataSourceOptions.showElectricalData && sensorTypes.includes("Electrical Usage") ||
-          dataSourceOptions.showNoEstimate);
-      } else if (x.Sensors === null || x.Sensors.length === 0 || (x.Sensors.length === 1 && x.Sensors[0].SensorType === "Well Pressure")) {
-
-        return dataSourceOptions.showNoEstimate;
-      }
-    });
-
-    this.gridApi.setRowData(filteredWells);
   }
 
   public downloadCsv(){
