@@ -8164,6 +8164,9 @@
             },
             "nullable": true
           },
+          "WellConnectedMeter": {
+            "type": "boolean"
+          },
           "WellID": {
             "type": "integer",
             "format": "int32"
@@ -8900,6 +8903,9 @@
               "$ref": "#/components/schemas/SensorSummaryDto"
             },
             "nullable": true
+          },
+          "WellConnectedMeter": {
+            "type": "boolean"
           },
           "WellID": {
             "type": "integer",

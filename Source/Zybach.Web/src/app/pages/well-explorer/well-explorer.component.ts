@@ -184,9 +184,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       {
-        headerName: "Has Electrical Use Meter?",
+        headerName: "Well Connected Meter?",
         valueGetter: function (params) {
-          if (params.data.HasElectricalData) {
+          if (params.data.WellConnectedMeter) {
             return "Yes";
           } else {
             return "No";
@@ -194,7 +194,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         },
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'params.data.HasElectricalData'
+          field: 'params.data.WellConnectedMeter'
         },
         sortable: true, resizable: true
       },
@@ -293,15 +293,16 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
   public onFilterChange(dataSourceOptions: any) {
     const filteredWells = this.wells.filter(x => {
-      if (x.Sensors === null || x.Sensors.length === 0 || (x.Sensors.length === 1 && x.Sensors[0].SensorType === "Well Pressure")) {
+      const sensorTypes = x.Sensors.map(s => s.SensorType);
+      if (sensorTypes.length > 0) {
+        return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) ||
+          (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
+          (dataSourceOptions.showElectricalData && sensorTypes.includes("Electrical Usage") ||
+          dataSourceOptions.showNoEstimate);
+      } else if (x.Sensors === null || x.Sensors.length === 0 || (x.Sensors.length === 1 && x.Sensors[0].SensorType === "Well Pressure")) {
+
         return dataSourceOptions.showNoEstimate;
       }
-
-      const sensorTypes = x.Sensors.map(s => s.SensorType);
-
-      return (dataSourceOptions.showFlowMeters && sensorTypes.includes("Flow Meter")) ||
-        (dataSourceOptions.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
-        (dataSourceOptions.showElectricalData && sensorTypes.includes("Electrical Usage"));
     });
 
     this.gridApi.setRowData(filteredWells);
