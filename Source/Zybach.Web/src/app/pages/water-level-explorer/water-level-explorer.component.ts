@@ -109,7 +109,7 @@ export class WaterLevelExplorerComponent implements OnInit {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.vegaView = res.view;
-      self.filterChart(new Date(2021, 0, 1), new Date());
+      self.filterChart(new Date(2018, 0, 1), new Date());
     });
   }
 
@@ -129,6 +129,12 @@ export class WaterLevelExplorerComponent implements OnInit {
     var result = new Date(date);
     result.setFullYear(result.getFullYear() + years);
     return result;
+  }
+
+  public fullDateRange(event): void {
+    this.startDate = this.selectedSensors[0].FirstReadingDate;
+    this.endDate = this.selectedWell.LastReadingDate ?? new Date().toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
   }
 
   public lastThirtyDays(event): void {
