@@ -14,6 +14,7 @@ export class DailySensorVolumeDto {
     SensorName?: string;
     MeasurementValueGallons?: number;
     PumpingRateGallonsPerMinute?: number;
+    IsAnomalous?: boolean;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
