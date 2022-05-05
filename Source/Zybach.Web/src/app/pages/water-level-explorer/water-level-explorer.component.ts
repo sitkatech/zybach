@@ -109,8 +109,50 @@ export class WaterLevelExplorerComponent implements OnInit {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.vegaView = res.view;
-      self.filterChart(new Date(2021, 0, 1), new Date());
+      self.filterChart(new Date(2018, 0, 1), new Date());
     });
+  }
+
+  private addDays(date: Date, days: number): Date {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  private addMonths(date: Date, months: number): Date {
+    var result = new Date(date);
+    result.setMonth(result.getMonth() + months);
+    return result;
+  }
+
+  private addYears(date: Date, years: number): Date {
+    var result = new Date(date);
+    result.setFullYear(result.getFullYear() + years);
+    return result;
+  }
+
+  public fullDateRange(event): void {
+    this.startDate = this.selectedSensors[0].FirstReadingDate;
+    this.endDate = this.selectedWell.LastReadingDate ?? new Date().toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
+  }
+
+  public lastThirtyDays(event): void {
+    this.endDate = new Date().toISOString();
+    this.startDate = this.addDays(new Date(this.endDate), -30).toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
+  }
+
+  public lastSixMonths(event): void {
+    this.endDate = new Date().toISOString();
+    this.startDate = this.addMonths(new Date(this.endDate), -6).toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
+  }
+
+  public lastOneYear(event): void {
+    this.endDate = new Date().toISOString();
+    this.startDate = this.addYears(new Date(this.endDate), -1).toISOString();
+    this.filterChart(new Date(this.startDate), new Date(this.endDate));
   }
 
   onStartDateChanged(event){

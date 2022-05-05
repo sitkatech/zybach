@@ -6208,6 +6208,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "NumberOfAgHubWellsWithConnectedElectricalMeters": {
+            "type": "integer",
+            "format": "int32"
+          },
           "NumberOfFlowMeters": {
             "type": "integer",
             "format": "int32"

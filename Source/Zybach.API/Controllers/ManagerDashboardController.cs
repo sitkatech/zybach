@@ -34,7 +34,7 @@ namespace Zybach.API.Controllers
             { 
                 NumberOfWellsTracked = allWells.Count,
                 NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.ContinuityMeter)).Select(x => x.WellRegistrationID).Distinct().Count(),
-                NumberOfElectricalUsageEstimates = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.ElectricalUsage)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfAgHubWellsWithConnectedElectricalMeters = allWells.Where(x => x.WellConnectedMeter).Select(x => x.WellRegistrationID).Distinct().Count(),
                 NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorType == MeasurementTypes.FlowMeter)).Select(x => x.WellRegistrationID).Distinct().Count()
             };
         }

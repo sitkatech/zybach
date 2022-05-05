@@ -14,6 +14,7 @@ export class DistrictStatisticsDto {
     NumberOfWellsTracked?: number;
     NumberOfContinuityMeters?: number;
     NumberOfElectricalUsageEstimates?: number;
+    NumberOfAgHubWellsWithConnectedElectricalMeters?: number;
     NumberOfFlowMeters?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
