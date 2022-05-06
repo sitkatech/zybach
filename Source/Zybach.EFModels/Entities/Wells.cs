@@ -83,7 +83,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.Wells
                 .Include(x => x.AgHubWell)
-                    .ThenInclude(x => x.AgHubWellIrrigationUnit)
+                    .ThenInclude(x => x.AgHubIrrigationUnit)
                 .Include(x => x.GeoOptixWell)
                 .Include(x => x.AgHubWell.AgHubWellIrrigatedAcres)
                 .Include(x => x.Sensors)
@@ -126,7 +126,7 @@ namespace Zybach.EFModels.Entities
             var agHubWell = well.AgHubWell;
             if (agHubWell != null)
             {
-                wellWithSensorSummaryDto.WellTPID = agHubWell.WellTPID;
+                wellWithSensorSummaryDto.WellTPID = agHubWell.AgHubIrrigationUnit?.WellTPID;
                 wellWithSensorSummaryDto.HasElectricalData = agHubWell.HasElectricalData;
                 wellWithSensorSummaryDto.WellConnectedMeter = agHubWell.WellConnectedMeter;
                 wellWithSensorSummaryDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;

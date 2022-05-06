@@ -152,17 +152,17 @@ namespace Zybach.API.Controllers
             var agHubWell = well.AgHubWell;
             if (agHubWell != null)
             {
-                wellDetailDto.WellTPID = agHubWell.WellTPID;
+                wellDetailDto.WellTPID = agHubWell.AgHubIrrigationUnit?.WellTPID;
                 wellDetailDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres
                     .Select(x => new IrrigatedAcresPerYearDto {Acres = x.Acres, Year = x.IrrigationYear}).ToList();
                 wellDetailDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
                 wellDetailDto.InAgHub = true;
-                var agHubWellIrrigationUnit = agHubWell.AgHubWellIrrigationUnit;
-                if (agHubWellIrrigationUnit != null)
+                var agHubIrrigationUnit = agHubWell.AgHubIrrigationUnit;
+                if (agHubIrrigationUnit != null)
                 {
-                    wellDetailDto.IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(agHubWellIrrigationUnit.IrrigationUnitGeometry);
+                    wellDetailDto.IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(agHubIrrigationUnit.IrrigationUnitGeometry);
                 }
             }
             else
