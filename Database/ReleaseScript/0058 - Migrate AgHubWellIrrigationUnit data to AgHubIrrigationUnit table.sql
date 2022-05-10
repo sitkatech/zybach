@@ -24,3 +24,10 @@ left join dbo.AgHubIrrigationUnit ahiu on ahw.WellTPID = ahiu.WellTPID
 
 alter table dbo.AgHubWell
 drop column WellTPID
+
+--Add rich text entry for irrigation unit index
+Insert into dbo.CustomRichTextType (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
+values (22, 'IrrigationUnitIndex', 'Irrigation Unit Index')
+
+Insert into dbo.CustomRichText(CustomRichTextTypeID, CustomRichTextContent)
+values (22, 'Editable text for irrigation unit index page: TPIDs are links to irrigation unit detail pages, Well IDs are links to well detail pages')

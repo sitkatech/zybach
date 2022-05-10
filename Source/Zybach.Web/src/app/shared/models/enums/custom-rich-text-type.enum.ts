@@ -19,5 +19,6 @@ export enum CustomRichTextType{
     WellInspectionReports = 18,
     AnomalyReportList = 19,
     WaterLevelExplorerMap = 20,
-    WaterLevelExplorerMapDisclaimer = 21
+    WaterLevelExplorerMapDisclaimer = 21,
+    IrrigationUnitIndex = 22
 }

@@ -46,6 +46,8 @@ namespace Zybach.EFModels.Entities
             return dbContext.AgHubIrrigationUnits
                 .Include(x => x.AgHubWells)
                 .ThenInclude(x => x.Well)
+                .ThenInclude(x => x.Sensors)
+                .ThenInclude(x => x.SensorType)
                 .AsNoTracking();
         }
 

@@ -20,7 +20,8 @@ USING (VALUES
 (18, 'WellInspectionReports', 'Well Inspection Reports'),
 (19, 'AnomalyReportList', 'Anomaly Report List'),
 (20, 'WaterLevelExplorerMap', 'Water Level Explorer Map'),
-(21, 'WaterLevelExplorerMapDisclaimer', 'Water Level Explorer Map Disclaimer')
+(21, 'WaterLevelExplorerMapDisclaimer', 'Water Level Explorer Map Disclaimer'),
+(22, 'IrrigationUnitIndex', 'Irrigation Unit Index')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

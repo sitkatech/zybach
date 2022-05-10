@@ -153,6 +153,7 @@ namespace Zybach.API.Controllers
             if (agHubWell != null)
             {
                 wellDetailDto.WellTPID = agHubWell.AgHubIrrigationUnit?.WellTPID;
+                wellDetailDto.AgHubIrrigationUnitID = agHubWell.AgHubIrrigationUnit?.AgHubIrrigationUnitID;
                 wellDetailDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres
                     .Select(x => new IrrigatedAcresPerYearDto {Acres = x.Acres, Year = x.IrrigationYear}).ToList();
                 wellDetailDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;

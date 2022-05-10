@@ -8170,6 +8170,11 @@
       "WellDetailDto": {
         "type": "object",
         "properties": {
+          "AgHubIrrigationUnitID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "AnnualPumpedVolume": {
             "type": "array",
             "items": {
@@ -8552,8 +8557,11 @@
           "Location": {
             "nullable": true
           },
-          "WellNickname": {
-            "type": "string",
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSummaryDto"
+            },
             "nullable": true
           }
         },
