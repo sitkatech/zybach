@@ -104,6 +104,11 @@ begin
 	set ahiu.IrrigationUnitAreaInAcres = geography::STGeomFromText(ahiu.IrrigationUnitGeometry.STAsText(), 4326).MakeValid().STArea() * @squareMetersToAcres
 	from dbo.AgHubIrrigationUnit ahiu where ahiu.IrrigationUnitGeometry is not null 
 
+	--fix areas for inverted polygons
+	update ahiu
+	set ahiu.IrrigationUnitAreaInAcres = geography::STGeomFromText(ahiu.IrrigationUnitGeometry.STAsText(), 4326).MakeValid().ReorientObject().STArea() * @squareMetersToAcres
+	from dbo.AgHubIrrigationUnit ahiu where ahiu.IrrigationUnitGeometry is not null and ahiu.IrrigationUnitAreaInAcres > 1000000
+
 	update dbo.AgHubWell
 	set AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
 	from dbo.AgHubWell ahw
