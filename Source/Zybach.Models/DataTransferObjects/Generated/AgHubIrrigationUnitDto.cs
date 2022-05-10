@@ -11,12 +11,14 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int AgHubIrrigationUnitID { get; set; }
         public string WellTPID { get; set; }
+        public double? IrrigationUnitAreaInAcres { get; set; }
     }
 
     public partial class AgHubIrrigationUnitSimpleDto
     {
         public int AgHubIrrigationUnitID { get; set; }
         public string WellTPID { get; set; }
+        public double? IrrigationUnitAreaInAcres { get; set; }
     }
 
 }

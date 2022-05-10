@@ -14,7 +14,8 @@ namespace Zybach.EFModels.Entities
             var agHubIrrigationUnitDto = new AgHubIrrigationUnitDto()
             {
                 AgHubIrrigationUnitID = agHubIrrigationUnit.AgHubIrrigationUnitID,
-                WellTPID = agHubIrrigationUnit.WellTPID
+                WellTPID = agHubIrrigationUnit.WellTPID,
+                IrrigationUnitAreaInAcres = agHubIrrigationUnit.IrrigationUnitAreaInAcres
             };
             DoCustomMappings(agHubIrrigationUnit, agHubIrrigationUnitDto);
             return agHubIrrigationUnitDto;
@@ -27,7 +28,8 @@ namespace Zybach.EFModels.Entities
             var agHubIrrigationUnitSimpleDto = new AgHubIrrigationUnitSimpleDto()
             {
                 AgHubIrrigationUnitID = agHubIrrigationUnit.AgHubIrrigationUnitID,
-                WellTPID = agHubIrrigationUnit.WellTPID
+                WellTPID = agHubIrrigationUnit.WellTPID,
+                IrrigationUnitAreaInAcres = agHubIrrigationUnit.IrrigationUnitAreaInAcres
             };
             DoCustomSimpleDtoMappings(agHubIrrigationUnit, agHubIrrigationUnitSimpleDto);
             return agHubIrrigationUnitSimpleDto;

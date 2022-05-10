@@ -25,6 +25,7 @@ namespace Zybach.EFModels.Entities
         public string WellTPID { get; set; }
         [Column(TypeName = "geometry")]
         public Geometry IrrigationUnitGeometry { get; set; }
+        public double? IrrigationUnitAreaInAcres { get; set; }
 
         [InverseProperty(nameof(AgHubWell.AgHubIrrigationUnit))]
         public virtual ICollection<AgHubWell> AgHubWells { get; set; }

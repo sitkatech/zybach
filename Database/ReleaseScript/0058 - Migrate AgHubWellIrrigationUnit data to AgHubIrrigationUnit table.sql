@@ -1,7 +1,8 @@
 CREATE TABLE dbo.AgHubIrrigationUnit (
 	[AgHubIrrigationUnitID] [int] IDENTITY(1,1) NOT NULL CONSTRAINT [PK_AgHubIrrigationUnit_AgHubIrrigationUnitID] PRIMARY KEY,
 	[WellTPID] [varchar](100) NOT NULL CONSTRAINT AK_AgHubIrrigationUnit_WellTPID UNIQUE,
-	[IrrigationUnitGeometry] [geometry] NULL
+	[IrrigationUnitGeometry] [geometry] NULL,
+	[IrrigationUnitAreaInAcres] float NULL
 )
 
 INSERT INTO dbo.AgHubIrrigationUnit (WellTPID, IrrigationUnitGeometry)
