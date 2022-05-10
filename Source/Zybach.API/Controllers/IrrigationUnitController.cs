@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Controllers
 {
@@ -18,20 +19,26 @@ namespace Zybach.API.Controllers
         {
         }
 
-        //[HttpGet("/api/irrigationUnits")]
+        [HttpGet("/api/irrigationUnits")]
         //[ZybachViewFeature]
-        //public ActionResult<IEnumerable<>> ListIrrigationUnits()
-        //{
-        //    var  = AgHubIrrigationUnits.ListAsDto(_dbContext);
-        //    return Ok();
-        //}
+        public ActionResult<IEnumerable<AgHubIrrigationUnitSimpleDto>> ListIrrigationUnits()
+        {
+            var irrigationUnits = AgHubIrrigationUnits.ListAsSimpleDto(_dbContext);
+            return Ok(irrigationUnits);
+        }
 
-        //[HttpGet("/api/irrigationUnits")]
+        [HttpGet("/api/irrigationUnits/{irrigationUnitID}")]
         //[ZybachViewFeature]
-        //public ActionResult<IEnumerable<>> ListIrrigationUnits()
-        //{
-        //    var = AgHubIrrigationUnits.ListAsDto(_dbContext);
-        //    return Ok();
-        //}
+        public ActionResult<AgHubIrrigationUnitDetailDto> GetIrrigationUnitByID([FromRoute] int irrigationUnitID)
+        {
+            var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);
+
+            if (irrigationUnit != null)
+            {
+                return Ok(AgHubIrrigationUnits.AgHubIrrigationUnitAsDetailDto(irrigationUnit));
+            }
+
+            return NotFound();
+        }
     }
 }

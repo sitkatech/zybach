@@ -99,8 +99,9 @@ begin
 	Set IrrigationUnitGeometry.STSrid = 4326
 	WHERE IrrigationUnitGeometry is not null
 	 
+	declare @squareMetersToAcres float = 0.000247105
 	update ahiu
-	set ahiu.IrrigationUnitAreaInAcres = geography::STGeomFromText(ahiu.IrrigationUnitGeometry.STAsText(), 4326).MakeValid().STArea() * 0.000247105
+	set ahiu.IrrigationUnitAreaInAcres = geography::STGeomFromText(ahiu.IrrigationUnitGeometry.STAsText(), 4326).MakeValid().STArea() * @squareMetersToAcres
 	from dbo.AgHubIrrigationUnit ahiu where ahiu.IrrigationUnitGeometry is not null 
 
 	update dbo.AgHubWell

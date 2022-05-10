@@ -87,5 +87,16 @@ namespace Zybach.EFModels.Entities
 
             return wellWaterLevelMapSummaryDto;
         }
+
+        public static WellMinimalDto AsMinimalDto(this Well well)
+        {
+            return new WellMinimalDto
+            {
+                WellID = well.WellID,
+                WellRegistrationID = well.WellRegistrationID,
+                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
+                WellNickname = well.WellNickname
+            };
+        }
     }
 }
