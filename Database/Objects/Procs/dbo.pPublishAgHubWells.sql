@@ -98,16 +98,16 @@ begin
 	update dbo.AgHubIrrigationUnit
 	Set IrrigationUnitGeometry.STSrid = 4326
 	WHERE IrrigationUnitGeometry is not null
-	 
-	declare @squareMetersToAcres float = 0.000247105
-	update ahiu
-	set ahiu.IrrigationUnitAreaInAcres = geography::STGeomFromText(ahiu.IrrigationUnitGeometry.STAsText(), 4326).MakeValid().STArea() * @squareMetersToAcres
-	from dbo.AgHubIrrigationUnit ahiu where ahiu.IrrigationUnitGeometry is not null 
-
-	--fix areas for inverted polygons
-	update ahiu
-	set ahiu.IrrigationUnitAreaInAcres = geography::STGeomFromText(ahiu.IrrigationUnitGeometry.STAsText(), 4326).MakeValid().ReorientObject().STArea() * @squareMetersToAcres
-	from dbo.AgHubIrrigationUnit ahiu where ahiu.IrrigationUnitGeometry is not null and ahiu.IrrigationUnitAreaInAcres > 1000000
+	
+	-- pulling latest acres straight from AgHubWellIrrigatedAcre to ahiu
+	update dbo.AgHubIrrigationUnit
+	set AgHubIrrigationUnit.IrrigationUnitAreaInAcres = 
+	(
+		select TOP 1 awia.Acres
+		FROM dbo.AgHubWellIrrigatedAcre awia 
+		join dbo.AgHubWell ahw on awia.AgHubWellID = ahw.AgHubWellID and dbo.AgHubIrrigationUnit.AgHubIrrigationUnitID = ahw.AgHubIrrigationUnitID
+		ORDER BY IrrigationYear DESC
+	)
 
 	update dbo.AgHubWell
 	set AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
