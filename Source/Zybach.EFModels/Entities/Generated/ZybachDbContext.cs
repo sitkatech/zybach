@@ -53,6 +53,9 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
         public virtual DbSet<GeoOptixWellStaging> GeoOptixWellStagings { get; set; }
         public virtual DbSet<MeasurementType> MeasurementTypes { get; set; }
+        public virtual DbSet<OpenETGoogleBucketResponseEvapotranspirationDatum> OpenETGoogleBucketResponseEvapotranspirationData { get; set; }
+        public virtual DbSet<OpenETSyncHistory> OpenETSyncHistories { get; set; }
+        public virtual DbSet<OpenETSyncResultType> OpenETSyncResultTypes { get; set; }
         public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
         public virtual DbSet<ReportTemplateModel> ReportTemplateModels { get; set; }
         public virtual DbSet<ReportTemplateModelType> ReportTemplateModelTypes { get; set; }
@@ -68,6 +71,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WaterLevelMeasuringEquipment> WaterLevelMeasuringEquipments { get; set; }
         public virtual DbSet<WaterQualityInspection> WaterQualityInspections { get; set; }
         public virtual DbSet<WaterQualityInspectionType> WaterQualityInspectionTypes { get; set; }
+        public virtual DbSet<WaterYearMonth> WaterYearMonths { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
         public virtual DbSet<WellParticipation> WellParticipations { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
@@ -477,6 +481,37 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.MeasurementTypeDisplayName).IsUnicode(false);
 
                 entity.Property(e => e.MeasurementTypeName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<OpenETGoogleBucketResponseEvapotranspirationDatum>(entity =>
+            {
+                entity.Property(e => e.WellTPID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<OpenETSyncHistory>(entity =>
+            {
+                entity.Property(e => e.ErrorMessage).IsUnicode(false);
+
+                entity.Property(e => e.GoogleBucketFileRetrievalURL).IsUnicode(false);
+
+                entity.HasOne(d => d.OpenETSyncResultType)
+                    .WithMany(p => p.OpenETSyncHistories)
+                    .HasForeignKey(d => d.OpenETSyncResultTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.WaterYearMonth)
+                    .WithMany(p => p.OpenETSyncHistories)
+                    .HasForeignKey(d => d.WaterYearMonthID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<OpenETSyncResultType>(entity =>
+            {
+                entity.Property(e => e.OpenETSyncResultTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.OpenETSyncResultTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.OpenETSyncResultTypeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<ReportTemplate>(entity =>

@@ -8,9 +8,6 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using System;
 using System.Net.Http;
-using Zybach.API;
-using Zybach.API.Services;
-using Zybach.EFModels.Entities;
 
 namespace Zybach.API
 {
@@ -32,7 +29,7 @@ namespace Zybach.API
             _httpClient = httpClientFactory.CreateClient("GenericClient");
         }
 
-        public override List<RunEnvironment> RunEnvironments => new() { RunEnvironment.Staging, RunEnvironment.Production};
+        public override List<RunEnvironment> RunEnvironments => new() { RunEnvironment.Staging, RunEnvironment.Production };
 
         public const string JobName = "OpenET Retrieve from Google Bucket and Update Usage Data";
 
@@ -42,9 +39,9 @@ namespace Zybach.API
             {
                 return;
             }
-            
+
             var inProgressSyncs = _dbContext.OpenETSyncHistories
-                .Where(x => x.OpenETSyncResultTypeID == (int) OpenETSyncResultTypeEnum.InProgress).ToList();
+                .Where(x => x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress).ToList();
             if (inProgressSyncs.Any())
             {
                 var filesReadyForExport = _openETService.GetAllFilesReadyForExport();
@@ -53,10 +50,10 @@ namespace Zybach.API
                     _openETService.UpdateParcelMonthlyEvapotranspirationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
                 });
             }
-            
+
             //Fail any created syncs that have been in a created state for longer than 15 minutes
             var createdSyncs = _dbContext.OpenETSyncHistories
-                .Where(x => x.OpenETSyncResultTypeID == (int) OpenETSyncResultTypeEnum.Created).ToList();
+                .Where(x => x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Created).ToList();
             if (createdSyncs.Any())
             {
                 createdSyncs.ForEach(x =>
@@ -64,7 +61,7 @@ namespace Zybach.API
                     if (DateTime.UtcNow.Subtract(x.CreateDate).Minutes > 15)
                     {
                         OpenETSyncHistory.UpdateOpenETSyncEntityByID(_dbContext, x.OpenETSyncHistoryID,
-                            OpenETSyncResultTypeEnum.Failed,
+                            OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed,
                             "Request never exited the Created state. Please try again.");
                     }
                 });

@@ -180,7 +180,7 @@ namespace Zybach.API
             services.AddScoped<IOpenETService, OpenETService>();
             services.AddScoped<IOpenETRetrieveFromBucketJob, OpenETRetrieveFromBucketJob>();
             services.AddScoped<IOpenETTriggerBucketRefreshJob, OpenETTriggerBucketRefreshJob>();
-            
+
 
             // Add Hangfire services.
             services.AddHangfire(configuration => configuration

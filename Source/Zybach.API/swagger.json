@@ -2035,6 +2035,113 @@
         }
       }
     },
+    "/openet/is-api-key-valid": {
+      "get": {
+        "tags": [
+          "OpenET"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openet-sync-history/trigger-openet-google-bucket-refresh": {
+      "post": {
+        "tags": [
+          "OpenET"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/openet-sync-history": {
+      "get": {
+        "tags": [
+          "OpenET"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/reportTemplates": {
       "get": {
         "tags": [
@@ -6709,6 +6816,56 @@
         },
         "additionalProperties": false
       },
+      "OpenETSyncHistoryDto": {
+        "type": "object",
+        "properties": {
+          "OpenETSyncHistoryID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WaterYearMonth": {
+            "$ref": "#/components/schemas/WaterYearMonthDto"
+          },
+          "OpenETSyncResultType": {
+            "$ref": "#/components/schemas/OpenETSyncResultTypeDto"
+          },
+          "CreateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "UpdateDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "GoogleBucketFileRetrievalURL": {
+            "type": "string",
+            "nullable": true
+          },
+          "ErrorMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenETSyncResultTypeDto": {
+        "type": "object",
+        "properties": {
+          "OpenETSyncResultTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "OpenETSyncResultTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OpenETSyncResultTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ReportTemplateDto": {
         "type": "object",
         "properties": {
@@ -8047,6 +8204,29 @@
           },
           "InspectionNickname": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WaterYearMonthDto": {
+        "type": "object",
+        "properties": {
+          "WaterYearMonthID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FinalizeDate": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         },

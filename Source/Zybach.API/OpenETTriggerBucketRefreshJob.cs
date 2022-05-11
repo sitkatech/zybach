@@ -29,7 +29,7 @@ namespace Zybach.API
             _openETService = openETService;
         }
 
-        public override List<RunEnvironment> RunEnvironments => new() { RunEnvironment.Staging, RunEnvironment.Production};
+        public override List<RunEnvironment> RunEnvironments => new() { RunEnvironment.Staging, RunEnvironment.Production };
 
         public const string JobName = "OpenET Trigger Google Bucket Update";
 
