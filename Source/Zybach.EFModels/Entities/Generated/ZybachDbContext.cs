@@ -78,6 +78,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
         public virtual DbSet<WellUse> WellUses { get; set; }
         public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
+        public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -822,6 +823,15 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.WellWaterQualityInspectionTypes)
                     .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<vOpenETMostRecentSyncHistoryForYearAndMonth>(entity =>
+            {
+                entity.ToView("vOpenETMostRecentSyncHistoryForYearAndMonth");
+
+                entity.Property(e => e.ErrorMessage).IsUnicode(false);
+
+                entity.Property(e => e.GoogleBucketFileRetrievalURL).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

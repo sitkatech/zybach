@@ -167,7 +167,7 @@ namespace Zybach.API
             {
                 c.BaseAddress = new Uri(zybachConfiguration.OpenETAPIBaseUrl);
                 c.Timeout = new TimeSpan(60 * TimeSpan.TicksPerSecond);
-                c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(zybachConfiguration.OpenETAPIKey);
+                c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(zybachConfiguration.OPENET_API_KEY);
             });
 
             services.AddHttpClient("GenericClient", c =>

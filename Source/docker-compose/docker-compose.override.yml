@@ -27,3 +27,14 @@ services:
       - GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID=${GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID}
       - GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID=${GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID}
       - VEGA_RENDER_URL=${VEGA_RENDER_URL}
+      - OpenETAPIBaseUrl=${OpenETAPIBaseUrl}
+      - OpenETRasterTimeSeriesMultipolygonRoute=${OpenETRasterTimeSeriesMultipolygonRoute}
+      - OpenETRasterMetadataRoute=${OpenETRasterMetadataRoute}
+      - OpenETAllFilesReadyForExportRoute=${OpenETAllFilesReadyForExportRoute}
+      - OpenETGoogleBucketBaseURL=${OpenETGoogleBucketBaseURL}
+      - DefaultBoundingBoxLeft=${DefaultBoundingBoxLeft}
+      - DefaultBoundingBoxRight=${DefaultBoundingBoxRight}
+      - DefaultBoundingBoxTop=${DefaultBoundingBoxTop}
+      - DefaultBoundingBoxBottom=${DefaultBoundingBoxBottom}
+      - OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier=${OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}
+      - AllowOpenETSync=${AllowOpenETSync}

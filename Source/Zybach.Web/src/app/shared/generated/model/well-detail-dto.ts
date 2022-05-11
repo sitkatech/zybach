@@ -14,6 +14,7 @@ import { SensorSummaryDto } from '././sensor-summary-dto';
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 
 export class WellDetailDto { 
+    AgHubIrrigationUnitID?: number;
     AnnualPumpedVolume?: Array<AnnualPumpedVolume>;
     TownshipRangeSection?: string;
     County?: string;

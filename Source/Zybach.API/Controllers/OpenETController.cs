@@ -25,7 +25,7 @@ namespace Zybach.API.Controllers
             _openETService = openETService;
         }
 
-        [HttpGet("openet/is-api-key-valid")]
+        [HttpGet("/api/openet/is-api-key-valid")]
         [AdminFeature]
         public ActionResult<bool> IsAPIKeyValid()
         {
@@ -39,7 +39,7 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpPost("openet-sync-history/trigger-openet-google-bucket-refresh")]
+        [HttpPost("/api/openet-sync-history/trigger-openet-google-bucket-refresh")]
         [AdminFeature]
         public ActionResult TriggerOpenETRefreshAndRetrieveJob([FromBody] int waterYearMonthID)
         {
@@ -53,7 +53,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpGet("openet-sync-history")]
+        [HttpGet("/api/openet-sync-history")]
         [AdminFeature]
         public ActionResult<List<OpenETSyncHistoryDto>> List()
         {

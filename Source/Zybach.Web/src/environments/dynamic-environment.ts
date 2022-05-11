@@ -72,4 +72,8 @@ export class DynamicEnvironment {
     public get GETEnvironmentUrl() {
         return window.config.GETEnvironmentUrl;
     }
+
+    public get allowOpenETSync() {
+        return window.config.allowOpenETSync;
+    }
 }

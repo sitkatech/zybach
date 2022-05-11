@@ -34,8 +34,8 @@
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID { get; set; }
         public string VEGA_RENDER_URL { get; set; }
 
-        public string OpenETAPIKey { get; set; }
-        public string OpenETShapefilePath { get; set; }
+        public string OPENET_API_KEY { get; set; }
+        public string OPENET_SHAPEFILE_PATH { get; set; }
         public string OpenETAPIBaseUrl { get; set; }
         public string OpenETRasterTimeSeriesMultipolygonRoute { get; set; }
         public string OpenETRasterMetadataRoute { get; set; }
