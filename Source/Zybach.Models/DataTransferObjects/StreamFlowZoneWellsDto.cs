@@ -22,6 +22,14 @@ namespace Zybach.Models.DataTransferObjects
         public List<SensorSummaryDto> Sensors { get; set; }
     }
 
+    public class WellMinimalDto
+    {
+        public int WellID { get; set; }
+        public string WellRegistrationID { get; set; }
+        public object Location { get; set; }
+        public List<SensorSummaryDto> Sensors { get; set; }
+    }
+
     public class WellSummaryDto
     {
         public int WellID { get; set; }
@@ -69,6 +77,7 @@ namespace Zybach.Models.DataTransferObjects
 
     public class WellDetailDto : WellWithSensorSummaryDto
     {
+        public int? AgHubIrrigationUnitID { get; set; }
         public List<AnnualPumpedVolume> AnnualPumpedVolume { get; set; }
         public string TownshipRangeSection { get; set; }
         public string County { get; set; }

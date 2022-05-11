@@ -1,0 +1,66 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/irrigation-units">Irrigation Units</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{irrigationUnit?.WellTPID}}</li>
+    </ol>
+</nav>
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-12 col-md-6">
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card" *ngIf="irrigationUnit">
+                        <div class="card-header">
+                            Basics
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>TPID: </strong></div>
+                                <div class="col-12 col-sm-6">{{irrigationUnit.WellTPID}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Area (ac): </strong></div>
+                                <div class="col-12 col-sm-6">{{irrigationUnit.IrrigationUnitAreaInAcres | number: '1.2-2' }}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Associated Wells: </strong></div>
+                                <div class="col-12 col-sm-6">
+                                    <p *ngFor="let well of irrigationUnit.AssociatedWells" class="m-0">
+                                        <a routerLink="/wells/{{well.WellID}}">{{well.WellRegistrationID}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card" *ngIf="irrigationUnit">
+                        <div class="card-header">
+                            Location
+                        </div>
+                        <div class="card-body">
+                            <zybach-irrigation-unit-map #irrigationUnitMap [irrigationUnit]="irrigationUnit"></zybach-irrigation-unit-map>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-header">
+                    OpenET Data
+                </div>
+                <div class="card-body mb-3">
+                    <p><em>Coming Soon!</em></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

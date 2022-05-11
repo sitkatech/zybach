@@ -15,7 +15,6 @@ namespace Zybach.EFModels.Entities
             {
                 AgHubWellID = agHubWell.AgHubWellID,
                 Well = agHubWell.Well.AsDto(),
-                WellTPID = agHubWell.WellTPID,
                 WellTPNRDPumpRate = agHubWell.WellTPNRDPumpRate,
                 TPNRDPumpRateUpdated = agHubWell.TPNRDPumpRateUpdated,
                 WellConnectedMeter = agHubWell.WellConnectedMeter,
@@ -25,7 +24,8 @@ namespace Zybach.EFModels.Entities
                 RegisteredPumpRate = agHubWell.RegisteredPumpRate,
                 RegisteredUpdated = agHubWell.RegisteredUpdated,
                 AgHubRegisteredUser = agHubWell.AgHubRegisteredUser,
-                FieldName = agHubWell.FieldName
+                FieldName = agHubWell.FieldName,
+                AgHubIrrigationUnit = agHubWell.AgHubIrrigationUnit?.AsDto()
             };
             DoCustomMappings(agHubWell, agHubWellDto);
             return agHubWellDto;
@@ -39,7 +39,6 @@ namespace Zybach.EFModels.Entities
             {
                 AgHubWellID = agHubWell.AgHubWellID,
                 WellID = agHubWell.WellID,
-                WellTPID = agHubWell.WellTPID,
                 WellTPNRDPumpRate = agHubWell.WellTPNRDPumpRate,
                 TPNRDPumpRateUpdated = agHubWell.TPNRDPumpRateUpdated,
                 WellConnectedMeter = agHubWell.WellConnectedMeter,
@@ -49,7 +48,8 @@ namespace Zybach.EFModels.Entities
                 RegisteredPumpRate = agHubWell.RegisteredPumpRate,
                 RegisteredUpdated = agHubWell.RegisteredUpdated,
                 AgHubRegisteredUser = agHubWell.AgHubRegisteredUser,
-                FieldName = agHubWell.FieldName
+                FieldName = agHubWell.FieldName,
+                AgHubIrrigationUnitID = agHubWell.AgHubIrrigationUnitID
             };
             DoCustomSimpleDtoMappings(agHubWell, agHubWellSimpleDto);
             return agHubWellSimpleDto;

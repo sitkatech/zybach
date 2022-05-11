@@ -1,3 +1,5 @@
+export * from '././ag-hub-irrigation-unit-detail-dto';
+export * from '././ag-hub-irrigation-unit-simple-dto';
 export * from '././annual-pumped-volume';
 export * from '././annual-stream-flow-zone-pumping-depth-dto';
 export * from '././bulk-chemigation-permit-annual-record-creation-result';
@@ -90,6 +92,7 @@ export * from '././well-contact-info-dto';
 export * from '././well-detail-dto';
 export * from '././well-dto';
 export * from '././well-inspection-summary-dto';
+export * from '././well-minimal-dto';
 export * from '././well-new-dto';
 export * from '././well-participation-dto';
 export * from '././well-participation-info-dto';
