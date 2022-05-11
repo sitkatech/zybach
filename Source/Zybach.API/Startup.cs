@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading;
 using Hangfire;
@@ -162,8 +163,24 @@ namespace Zybach.API
 
             services.AddSingleton(x => new SitkaSmtpClientService(zybachConfiguration));
 
+            services.AddHttpClient("OpenETClient", c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.OpenETAPIBaseUrl);
+                c.Timeout = new TimeSpan(60 * TimeSpan.TicksPerSecond);
+                c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(zybachConfiguration.OpenETAPIKey);
+            });
+
+            services.AddHttpClient("GenericClient", c =>
+            {
+                c.Timeout = new TimeSpan(60 * TimeSpan.TicksPerSecond);
+            });
+
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<ZybachDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
+            services.AddScoped<IOpenETService, OpenETService>();
+            services.AddScoped<IOpenETRetrieveFromBucketJob, OpenETRetrieveFromBucketJob>();
+            services.AddScoped<IOpenETTriggerBucketRefreshJob, OpenETTriggerBucketRefreshJob>();
+            
 
             // Add Hangfire services.
             services.AddHangfire(configuration => configuration

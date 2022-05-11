@@ -33,5 +33,18 @@
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID { get; set; }
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID { get; set; }
         public string VEGA_RENDER_URL { get; set; }
+
+        public string OpenETAPIKey { get; set; }
+        public string OpenETShapefilePath { get; set; }
+        public string OpenETAPIBaseUrl { get; set; }
+        public string OpenETRasterTimeSeriesMultipolygonRoute { get; set; }
+        public string OpenETRasterMetadataRoute { get; set; }
+        public string OpenETAllFilesReadyForExportRoute { get; set; }
+        public string DefaultBoundingBoxLeft { get; set; }
+        public string DefaultBoundingBoxRight { get; set; }
+        public string DefaultBoundingBoxTop { get; set; }
+        public string DefaultBoundingBoxBottom { get; set; }
+        public string OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier { get; set; }
+        public bool AllowOpenETSync { get; set; }
     }
 }
