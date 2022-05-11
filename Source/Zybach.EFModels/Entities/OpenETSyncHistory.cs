@@ -31,6 +31,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.OpenETSyncHistories
                 .Include(x => x.WaterYearMonth)
+                .Include(x => x.OpenETSyncResultType)
                 .SingleOrDefault(x => x.OpenETSyncHistoryID == openETSyncHistoryID).AsDto();
         }
         public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum resultType)
@@ -71,6 +72,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.OpenETSyncHistories
                 .Include(x => x.WaterYearMonth)
+                .Include(x => x.OpenETSyncResultType)
                 .OrderByDescending(x => x.CreateDate).Select(x => x.AsDto()).ToList();
         }
     }

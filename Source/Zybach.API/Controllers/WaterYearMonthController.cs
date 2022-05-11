@@ -40,6 +40,7 @@ namespace Zybach.API.Controllers
         {
             return _dbContext.vOpenETMostRecentSyncHistoryForYearAndMonths
                 .Include(x => x.WaterYearMonth)
+                .Include(x => x.OpenETSyncResultType)
                 .Select(x => x.AsOpenETSyncHistoryDto()).ToList();
         }
 
