@@ -99,16 +99,6 @@ begin
 	Set IrrigationUnitGeometry.STSrid = 4326
 	WHERE IrrigationUnitGeometry is not null
 	
-	-- pulling latest acres straight from AgHubWellIrrigatedAcre to ahiu
-	update dbo.AgHubIrrigationUnit
-	set AgHubIrrigationUnit.IrrigationUnitAreaInAcres = 
-	(
-		select TOP 1 awia.Acres
-		FROM dbo.AgHubWellIrrigatedAcre awia 
-		join dbo.AgHubWell ahw on awia.AgHubWellID = ahw.AgHubWellID and dbo.AgHubIrrigationUnit.AgHubIrrigationUnitID = ahw.AgHubIrrigationUnitID
-		ORDER BY IrrigationYear DESC
-	)
-
 	update dbo.AgHubWell
 	set AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
 	from dbo.AgHubWell ahw
@@ -116,7 +106,6 @@ begin
 	join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 	left join dbo.AgHubIrrigationUnit ahiu on aws.WellTPID = ahiu.WellTPID
 	
-
 	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres)
 	select	aw.AgHubWellID, 
 			awias.IrrigationYear,
@@ -125,6 +114,16 @@ begin
 	join dbo.Well w on awias.WellRegistrationID = w.WellRegistrationID
 	join dbo.AgHubWell aw on w.WellID = aw.WellID
 	group by aw.AgHubWellID, awias.IrrigationYear
+
+	-- pulling latest acres straight from AgHubWellIrrigatedAcre to ahiu
+	update dbo.AgHubIrrigationUnit
+	set IrrigationUnitAreaInAcres = 
+	(
+		select TOP 1 awia.Acres
+		FROM dbo.AgHubWellIrrigatedAcre awia 
+		join dbo.AgHubWell ahw on awia.AgHubWellID = ahw.AgHubWellID and dbo.AgHubIrrigationUnit.AgHubIrrigationUnitID = ahw.AgHubIrrigationUnitID
+		ORDER BY IrrigationYear DESC
+	)
 
 	-- Set StreamflowZoneID; first "reset" it to null; then actually calculate matching ones
 	update dbo.Well
