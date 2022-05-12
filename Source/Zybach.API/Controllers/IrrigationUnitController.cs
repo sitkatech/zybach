@@ -28,7 +28,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/api/irrigationUnits/{irrigationUnitID}")]
-        //[ZybachViewFeature]
+        [ZybachViewFeature]
         public ActionResult<AgHubIrrigationUnitDetailDto> GetIrrigationUnitByID([FromRoute] int irrigationUnitID)
         {
             var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);

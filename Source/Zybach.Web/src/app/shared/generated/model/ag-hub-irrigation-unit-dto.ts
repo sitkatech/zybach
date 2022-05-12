@@ -9,13 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { WellMinimalDto } from '././well-minimal-dto';
-import { AgHubIrrigationUnitWaterYearMonthETDatumDto } from '././ag-hub-irrigation-unit-water-year-month-et-datum-dto';
 
-export class AgHubIrrigationUnitDetailDto { 
-    IrrigationUnitGeoJSON?: string;
-    WaterYearMonthETData?: Array<AgHubIrrigationUnitWaterYearMonthETDatumDto>;
-    AssociatedWells?: Array<WellMinimalDto>;
+export class AgHubIrrigationUnitDto { 
     AgHubIrrigationUnitID?: number;
     WellTPID?: string;
     IrrigationUnitAreaInAcres?: number;

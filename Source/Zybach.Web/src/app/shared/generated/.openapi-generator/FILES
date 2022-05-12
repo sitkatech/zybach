@@ -1,6 +1,8 @@
 .gitignore
 model/ag-hub-irrigation-unit-detail-dto.ts
+model/ag-hub-irrigation-unit-dto.ts
 model/ag-hub-irrigation-unit-simple-dto.ts
+model/ag-hub-irrigation-unit-water-year-month-et-datum-dto.ts
 model/annual-pumped-volume.ts
 model/annual-stream-flow-zone-pumping-depth-dto.ts
 model/bulk-chemigation-permit-annual-record-creation-result.ts

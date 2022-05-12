@@ -1,5 +1,7 @@
 export * from '././ag-hub-irrigation-unit-detail-dto';
+export * from '././ag-hub-irrigation-unit-dto';
 export * from '././ag-hub-irrigation-unit-simple-dto';
+export * from '././ag-hub-irrigation-unit-water-year-month-et-datum-dto';
 export * from '././annual-pumped-volume';
 export * from '././annual-stream-flow-zone-pumping-depth-dto';
 export * from '././bulk-chemigation-permit-annual-record-creation-result';
