@@ -29,7 +29,7 @@
                 <h2 class="d-inline-block">OpenET Integration</h2>
 
                 <div class="mt-2">
-                    <zybach-custom-rich-text [customRichTextTypeID]="richTextTypeID"></zybach-custom-rich-text>
+                    <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
                 </div>
             </div>
         </div>
@@ -100,9 +100,9 @@
             submissions.
         </p>
         <div class="modal-footer">
-            <button type="button" class="btn btn-zybach btn-sm" ngbAutoFocus (click)="finalizeWaterYearMonth()">
+            <button type="button" class="btn btn-zybach btn-md" ngbAutoFocus (click)="finalizeWaterYearMonth()">
                 Finalize</button>
-            <button type="button" class="btn btn-secondary btn-sm"
+            <button type="button" class="btn btn-secondary btn-md"
                 (click)="resetWaterYearMonthToFinalizeAndCloseModal(modal)">Cancel</button>
         </div>
     </div>
@@ -121,9 +121,9 @@
             for all applicable parcels, but will not reset any user-input overrides.
         </p>
         <div class="modal-footer">
-            <button type="button" class="btn btn-zybach btn-sm" ngbAutoFocus (click)="syncWaterYearMonth()">
+            <button type="button" class="btn btn-zybach btn-md" ngbAutoFocus (click)="syncWaterYearMonth()">
                 Sync</button>
-            <button type="button" class="btn btn-secondary btn-sm"
+            <button type="button" class="btn btn-secondary btn-md"
                 (click)="resetWaterYearMonthToFinalizeAndCloseModal(modal)">Cancel</button>
         </div>
     </div>

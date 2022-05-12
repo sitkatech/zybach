@@ -309,7 +309,7 @@ namespace Zybach.API.Services
         /// <summary>
         /// Check if OpenET has created data for a particular Year and Month sync that has been triggered and update our ParcelLedger with the updated data
         /// </summary>
-        public void UpdateParcelMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
+        public void UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
             HttpClient httpClient)
         {
             var syncHistoryObject = OpenETSyncHistory.GetByOpenETSyncHistoryID(_zybachDbContext, syncHistoryID);
@@ -372,9 +372,9 @@ namespace Zybach.API.Services
                 }
 
                 _zybachDbContext.Database.ExecuteSqlRaw(
-                    "TRUNCATE TABLE dbo.OpenETGoogleBucketResponseEvapotranspirationData");
+                    "TRUNCATE TABLE dbo.OpenETGoogleBucketResponseEvapotranspirationDatum");
                 DataTable table = new DataTable();
-                table.Columns.Add("OpenETGoogleBucketResponseEvapotranspirationDataID", typeof(int));
+                table.Columns.Add("OpenETGoogleBucketResponseEvapotranspirationDatumID", typeof(int));
                 table.Columns.Add("WellTPID", typeof(string));
                 table.Columns.Add("WaterMonth", typeof(int));
                 table.Columns.Add("WaterYear", typeof(int));
@@ -390,14 +390,14 @@ namespace Zybach.API.Services
                 {
                     using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
                     {
-                        sqlBulkCopy.DestinationTableName = "dbo.OpenETGoogleBucketResponseEvapotranspirationData";
+                        sqlBulkCopy.DestinationTableName = "dbo.OpenETGoogleBucketResponseEvapotranspirationDatum";
                         con.Open();
                         sqlBulkCopy.WriteToServer(table);
                         con.Close();
                     }
                 }
 
-                //_zybachDbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateParcelMonthlyEvapotranspirationWithETData");
+                _zybachDbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData");
 
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
                     OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Succeeded);
@@ -447,7 +447,7 @@ namespace Zybach.API.Services
     {
         string[] GetAllFilesReadyForExport();
         HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID);
-        void UpdateParcelMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
+        void UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
             HttpClient httpClient);
         bool IsOpenETAPIKeyValid();
     }
