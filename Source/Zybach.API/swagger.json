@@ -5150,6 +5150,13 @@
             "type": "string",
             "nullable": true
           },
+          "WaterYearMonthETData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AgHubIrrigationUnitWaterYearMonthETDatumDto"
+            },
+            "nullable": true
+          },
           "AssociatedWells": {
             "type": "array",
             "items": {
@@ -5157,6 +5164,25 @@
             },
             "nullable": true
           },
+          "AgHubIrrigationUnitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "IrrigationUnitAreaInAcres": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AgHubIrrigationUnitDto": {
+        "type": "object",
+        "properties": {
           "AgHubIrrigationUnitID": {
             "type": "integer",
             "format": "int32"
@@ -5192,6 +5218,27 @@
             "nullable": true
           },
           "IrrigationUnitAreaInAcres": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AgHubIrrigationUnitWaterYearMonthETDatumDto": {
+        "type": "object",
+        "properties": {
+          "AgHubIrrigationUnitWaterYearMonthETDatumID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AgHubIrrigationUnit": {
+            "$ref": "#/components/schemas/AgHubIrrigationUnitDto"
+          },
+          "WaterYearMonth": {
+            "$ref": "#/components/schemas/WaterYearMonthDto"
+          },
+          "EvapotranspirationRateInches": {
             "type": "number",
             "format": "double",
             "nullable": true
