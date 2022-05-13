@@ -55,7 +55,6 @@ export class IrrigationUnitDetailComponent implements OnInit {
       this.irrigationUnit = irrigationUnit;
       this.irrigationUnitID = irrigationUnit.AgHubIrrigationUnitID;
       this.openETData = irrigationUnit.WaterYearMonthETData;
-      this.updateGridData();
       this.cdr.detectChanges();
     })
   }
@@ -78,10 +77,6 @@ export class IrrigationUnitDetailComponent implements OnInit {
       },
       this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration Rate (in)', 'EvapotranspirationRateInches', 140, 2)
     ];
-  }
-
-  public updateGridData(): void {
-    this.openETDataGrid ? this.openETDataGrid.api.setRowData(this.openETData) : null;
   }
 
   public onFirstDataRendered(params): void {

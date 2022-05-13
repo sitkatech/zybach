@@ -78,9 +78,9 @@ export class IrrigationUnitMapComponent implements OnInit, AfterViewInit {
     const irrigationUnitGeoJSON = L.geoJSON(JSON.parse(this.irrigationUnit.IrrigationUnitGeoJSON)).addTo(this.map);
     const unitBoundingBox = irrigationUnitGeoJSON.getBounds();
     let target = (this.map as any)._getBoundsCenterZoom(unitBoundingBox, null);
+    this.map.setView(target.center, 15, null);
     this.map.getBoundsZoom(unitBoundingBox, true);
     this.map.fitBounds(unitBoundingBox);
-    this.map.setView(target.center, 15, null);
   }
 
   public addWellToMap(well: WellMinimalDto) {

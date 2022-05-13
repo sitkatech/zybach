@@ -1,8 +1,8 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pPublishAghubWells'))
-    drop procedure dbo.pPublishAghubWells
+IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pPublishAgHubWells'))
+    drop procedure dbo.pPublishAgHubWells
 go
 
-create procedure dbo.pPublishAghubWells
+create procedure dbo.pPublishAgHubWells
 as
 begin
 	declare @fetchDate datetime
