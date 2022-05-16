@@ -16,7 +16,8 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigationUnitWaterYearMonthETDatumID = agHubIrrigationUnitWaterYearMonthETDatum.AgHubIrrigationUnitWaterYearMonthETDatumID,
                 AgHubIrrigationUnit = agHubIrrigationUnitWaterYearMonthETDatum.AgHubIrrigationUnit.AsDto(),
                 WaterYearMonth = agHubIrrigationUnitWaterYearMonthETDatum.WaterYearMonth.AsDto(),
-                EvapotranspirationRateInches = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateInches
+                EvapotranspirationRateInches = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateInches,
+                EvapotranspirationRateAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateAcreFeet
             };
             DoCustomMappings(agHubIrrigationUnitWaterYearMonthETDatum, agHubIrrigationUnitWaterYearMonthETDatumDto);
             return agHubIrrigationUnitWaterYearMonthETDatumDto;
@@ -31,7 +32,8 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigationUnitWaterYearMonthETDatumID = agHubIrrigationUnitWaterYearMonthETDatum.AgHubIrrigationUnitWaterYearMonthETDatumID,
                 AgHubIrrigationUnitID = agHubIrrigationUnitWaterYearMonthETDatum.AgHubIrrigationUnitID,
                 WaterYearMonthID = agHubIrrigationUnitWaterYearMonthETDatum.WaterYearMonthID,
-                EvapotranspirationRateInches = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateInches
+                EvapotranspirationRateInches = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateInches,
+                EvapotranspirationRateAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateAcreFeet
             };
             DoCustomSimpleDtoMappings(agHubIrrigationUnitWaterYearMonthETDatum, agHubIrrigationUnitWaterYearMonthETDatumSimpleDto);
             return agHubIrrigationUnitWaterYearMonthETDatumSimpleDto;

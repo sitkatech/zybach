@@ -13,6 +13,7 @@ namespace Zybach.Models.DataTransferObjects
         public AgHubIrrigationUnitDto AgHubIrrigationUnit { get; set; }
         public WaterYearMonthDto WaterYearMonth { get; set; }
         public decimal? EvapotranspirationRateInches { get; set; }
+        public decimal? EvapotranspirationRateAcreFeet { get; set; }
     }
 
     public partial class AgHubIrrigationUnitWaterYearMonthETDatumSimpleDto
@@ -21,6 +22,7 @@ namespace Zybach.Models.DataTransferObjects
         public int AgHubIrrigationUnitID { get; set; }
         public int WaterYearMonthID { get; set; }
         public decimal? EvapotranspirationRateInches { get; set; }
+        public decimal? EvapotranspirationRateAcreFeet { get; set; }
     }
 
 }

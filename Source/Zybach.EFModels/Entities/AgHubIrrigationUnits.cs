@@ -29,7 +29,11 @@ namespace Zybach.EFModels.Entities
         {
             var associatedWells = irrigationUnit.AgHubWells.Select(x => x.Well.AsMinimalDto()).ToList();
             var waterYearMonthETData =
-                irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData.Select(x => x.AsDto()).ToList();
+                irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData
+                    .Select(x => x.AsDto())
+                    .OrderByDescending(x => x.WaterYearMonth.Year)
+                    .ThenByDescending(x => x.WaterYearMonth.Month)
+                    .ToList();
 
             var agHubIrrigationUnitDetailDto = new AgHubIrrigationUnitDetailDto
             {

@@ -17,6 +17,8 @@ namespace Zybach.EFModels.Entities
         public int WaterYearMonthID { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
         public decimal? EvapotranspirationRateInches { get; set; }
+        [Column(TypeName = "decimal(20, 4)")]
+        public decimal? EvapotranspirationRateAcreFeet { get; set; }
 
         [ForeignKey(nameof(AgHubIrrigationUnitID))]
         [InverseProperty("AgHubIrrigationUnitWaterYearMonthETData")]

@@ -75,7 +75,7 @@ export class IrrigationUnitDetailComponent implements OnInit {
         },
         sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
-      this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration Rate (in)', 'EvapotranspirationRateInches', 140, 2)
+      this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration (in)', 'EvapotranspirationRateInches', 140, 2)
     ];
   }
 

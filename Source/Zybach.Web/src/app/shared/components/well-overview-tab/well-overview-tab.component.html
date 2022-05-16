@@ -21,7 +21,7 @@
                                 <div class="col-12 col-sm-6">{{well.InAgHub ? "Yes" : "No"}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>In GeoOptix? </strong></div>
                                 <div class="col-12 col-sm-6">{{well.InGeoOptix ? "Yes" : "No"}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>TPID: </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>Irrigation Unit ID: </strong></div>
                                 <div class="col-12 col-sm-6">
                                     <div *ngIf="well.AgHubIrrigationUnitID; then hasIU else noIU"></div>
                                     <ng-template #hasIU>
