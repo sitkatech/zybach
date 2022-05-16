@@ -17,6 +17,7 @@ export class AgHubIrrigationUnitWaterYearMonthETDatumDto {
     AgHubIrrigationUnit?: AgHubIrrigationUnitDto;
     WaterYearMonth?: WaterYearMonthDto;
     EvapotranspirationRateInches?: number;
+    EvapotranspirationRateAcreFeet?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
