@@ -5242,11 +5242,6 @@
             "type": "number",
             "format": "double",
             "nullable": true
-          },
-          "EvapotranspirationRateAcreFeet": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
           }
         },
         "additionalProperties": false
