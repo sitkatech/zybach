@@ -307,7 +307,7 @@ namespace Zybach.API.Services
         }
 
         /// <summary>
-        /// Check if OpenET has created data for a particular Year and Month sync that has been triggered and update our ParcelLedger with the updated data
+        /// Check if OpenET has created data for a particular Year and Month sync that has been triggered and update with the updated data
         /// </summary>
         public void UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
             HttpClient httpClient)

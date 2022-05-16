@@ -47,7 +47,7 @@ namespace Zybach.API
                 var filesReadyForExport = _openETService.GetAllFilesReadyForExport();
                 inProgressSyncs.ForEach(x =>
                 {
-                    _openETService.UpdateParcelMonthlyEvapotranspirationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
+                    _openETService.UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
                 });
             }
 
