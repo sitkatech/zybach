@@ -11,6 +11,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="27.2.1" />
     <PackageReference Include="GeoJSON.Net" Version="1.2.19" />
     <PackageReference Include="Hangfire" Version="1.7.24" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.24" />
@@ -53,7 +54,7 @@
     <Exec Command="dotnet new tool-manifest --force" />
     <Exec Command="dotnet tool install --version 6.2.3 Swashbuckle.AspNetCore.Cli" />
 	  <!-- This step can be finicky and can cause the build to fail. If you find the generator isn't creating your changes, remove the ContinueOnError="true" and clean/close visual studio until it works-->
-    <Exec Command="dotnet swagger tofile --output swagger.json $(OutputPath)\$(AssemblyName).dll v1 " ContinueOnError="true"/>
+    <Exec Command="dotnet swagger tofile --output swagger.json $(OutputPath)\$(AssemblyName).dll v1 " ContinueOnError="true" />
   </Target>
 
 </Project>

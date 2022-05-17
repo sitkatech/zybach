@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Zybach.API.Services.Telemetry
 {
@@ -44,6 +45,11 @@ namespace Zybach.API.Services.Telemetry
             }
 
             await next();
+        }
+
+        public static void LogCaughtException<T>(ILogger<T> logger, LogLevel severity, Exception ex, string message)
+        {
+            logger.Log(severity, ex, message);
         }
     }
 }

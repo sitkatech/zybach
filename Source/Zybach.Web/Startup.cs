@@ -87,6 +87,7 @@ namespace Zybach.Web
             MapQuestApiUrl =  configuration["MapQuestApiUrl"];
             GeoOptixWebUrl = configuration["GeoOptixWebUrl"];
             GETEnvironmentUrl = configuration["GETEnvironmentUrl"];
+            AllowOpenETSync = bool.Parse(configuration["AllowOpenETSync"]);
         }
 
         [JsonProperty("production")]
@@ -119,6 +120,9 @@ namespace Zybach.Web
         public string GeoOptixWebUrl {get; set;}
         [JsonProperty("GETEnvironmentUrl")]
         public string GETEnvironmentUrl {get; set;}
+        
+        [JsonProperty("AllowOpenETSync")]
+        public bool AllowOpenETSync { get; set; }
     }
 
     public class KeystoneAuthConfigurationDto

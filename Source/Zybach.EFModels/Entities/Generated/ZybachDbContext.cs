@@ -18,6 +18,7 @@ namespace Zybach.EFModels.Entities
         }
 
         public virtual DbSet<AgHubIrrigationUnit> AgHubIrrigationUnits { get; set; }
+        public virtual DbSet<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
@@ -53,6 +54,9 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
         public virtual DbSet<GeoOptixWellStaging> GeoOptixWellStagings { get; set; }
         public virtual DbSet<MeasurementType> MeasurementTypes { get; set; }
+        public virtual DbSet<OpenETGoogleBucketResponseEvapotranspirationDatum> OpenETGoogleBucketResponseEvapotranspirationData { get; set; }
+        public virtual DbSet<OpenETSyncHistory> OpenETSyncHistories { get; set; }
+        public virtual DbSet<OpenETSyncResultType> OpenETSyncResultTypes { get; set; }
         public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
         public virtual DbSet<ReportTemplateModel> ReportTemplateModels { get; set; }
         public virtual DbSet<ReportTemplateModelType> ReportTemplateModelTypes { get; set; }
@@ -68,12 +72,14 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WaterLevelMeasuringEquipment> WaterLevelMeasuringEquipments { get; set; }
         public virtual DbSet<WaterQualityInspection> WaterQualityInspections { get; set; }
         public virtual DbSet<WaterQualityInspectionType> WaterQualityInspectionTypes { get; set; }
+        public virtual DbSet<WaterYearMonth> WaterYearMonths { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
         public virtual DbSet<WellParticipation> WellParticipations { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
         public virtual DbSet<WellUse> WellUses { get; set; }
         public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
+        public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -91,6 +97,19 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<AgHubIrrigationUnit>(entity =>
             {
                 entity.Property(e => e.WellTPID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthETDatum>(entity =>
+            {
+                entity.HasOne(d => d.AgHubIrrigationUnit)
+                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETData)
+                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.WaterYearMonth)
+                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETData)
+                    .HasForeignKey(d => d.WaterYearMonthID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<AgHubWell>(entity =>
@@ -479,6 +498,37 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.MeasurementTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<OpenETGoogleBucketResponseEvapotranspirationDatum>(entity =>
+            {
+                entity.Property(e => e.WellTPID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<OpenETSyncHistory>(entity =>
+            {
+                entity.Property(e => e.ErrorMessage).IsUnicode(false);
+
+                entity.Property(e => e.GoogleBucketFileRetrievalURL).IsUnicode(false);
+
+                entity.HasOne(d => d.OpenETSyncResultType)
+                    .WithMany(p => p.OpenETSyncHistories)
+                    .HasForeignKey(d => d.OpenETSyncResultTypeID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.WaterYearMonth)
+                    .WithMany(p => p.OpenETSyncHistories)
+                    .HasForeignKey(d => d.WaterYearMonthID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<OpenETSyncResultType>(entity =>
+            {
+                entity.Property(e => e.OpenETSyncResultTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.OpenETSyncResultTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.OpenETSyncResultTypeName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<ReportTemplate>(entity =>
             {
                 entity.Property(e => e.Description).IsUnicode(false);
@@ -787,6 +837,15 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.WellWaterQualityInspectionTypes)
                     .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<vOpenETMostRecentSyncHistoryForYearAndMonth>(entity =>
+            {
+                entity.ToView("vOpenETMostRecentSyncHistoryForYearAndMonth");
+
+                entity.Property(e => e.ErrorMessage).IsUnicode(false);
+
+                entity.Property(e => e.GoogleBucketFileRetrievalURL).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

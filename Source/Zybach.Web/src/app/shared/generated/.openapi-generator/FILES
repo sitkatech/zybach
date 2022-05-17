@@ -1,6 +1,8 @@
 .gitignore
 model/ag-hub-irrigation-unit-detail-dto.ts
+model/ag-hub-irrigation-unit-dto.ts
 model/ag-hub-irrigation-unit-simple-dto.ts
+model/ag-hub-irrigation-unit-water-year-month-et-datum-dto.ts
 model/annual-pumped-volume.ts
 model/annual-stream-flow-zone-pumping-depth-dto.ts
 model/bulk-chemigation-permit-annual-record-creation-result.ts
@@ -57,6 +59,8 @@ model/irrigated-acres-per-year-dto.ts
 model/measurement-type-dto.ts
 model/models.ts
 model/monthly-pumped-volume.ts
+model/open-et-sync-history-dto.ts
+model/open-et-sync-result-type-dto.ts
 model/report-template-dto.ts
 model/report-template-model-dto.ts
 model/report-template-model-type-dto.ts
@@ -89,6 +93,7 @@ model/water-quality-inspection-simple-dto.ts
 model/water-quality-inspection-summary-dto.ts
 model/water-quality-inspection-type-dto.ts
 model/water-quality-inspection-upsert-dto.ts
+model/water-year-month-dto.ts
 model/well-chart-data-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts

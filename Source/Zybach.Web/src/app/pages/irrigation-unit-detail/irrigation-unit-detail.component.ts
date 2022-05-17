@@ -1,8 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AgGridAngular } from 'ag-grid-angular';
+import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { IrrigationUnitService } from 'src/app/services/irrigation-unit.service';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AgHubIrrigationUnitDetailDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-detail-dto';
+import { AgHubIrrigationUnitWaterYearMonthETDatumDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-water-year-month-et-datum-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { IrrigationUnitMapComponent } from '../irrigation-unit-map/irrigation-unit-map.component';
 
@@ -14,24 +18,35 @@ import { IrrigationUnitMapComponent } from '../irrigation-unit-map/irrigation-un
 export class IrrigationUnitDetailComponent implements OnInit {
   public watchUserChangeSubscription: any;
   @ViewChild("irrigationUnitMap") irrigationUnitMap: IrrigationUnitMapComponent;
+  @ViewChild('openETDataGrid') openETDataGrid: AgGridAngular;
  
   currentUser: UserDto;
   public irrigationUnit: AgHubIrrigationUnitDetailDto;
   public irrigationUnitID: number;
+
+  public columnDefs: any[];
+  public defaultColDef: ColDef;
+  public openETData: Array<AgHubIrrigationUnitWaterYearMonthETDatumDto>;
+
+  public gridApi: any;
 
   constructor(
     private irrigationUnitService: IrrigationUnitService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private utilityFunctionsService: UtilityFunctionsService
   ) { }
 
   ngOnInit(): void {
     this.irrigationUnitID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
+      this.initializeGrid();
+      this.openETDataGrid?.api.showLoadingOverlay();
       this.getIrrigationUnitDetails();
+      
     })
   }
 
@@ -39,8 +54,38 @@ export class IrrigationUnitDetailComponent implements OnInit {
     this.irrigationUnitService.getIrrigationUnitDetailsByID(this.irrigationUnitID).subscribe((irrigationUnit: AgHubIrrigationUnitDetailDto) => {
       this.irrigationUnit = irrigationUnit;
       this.irrigationUnitID = irrigationUnit.AgHubIrrigationUnitID;
+      this.openETData = irrigationUnit.WaterYearMonthETData;
       this.cdr.detectChanges();
     })
+  }
+
+  private initializeGrid(): void {
+    this.columnDefs = [
+      {
+        headerName: "Month",
+        valueGetter: function (params: any) {
+          return params.data.WaterYearMonth.Month;
+        },
+        sortable: true, filter: 'agNumberColumnFilter', resizable: true
+      },
+      {
+        headerName: "Year",
+        valueGetter: function (params: any) {
+          return params.data.WaterYearMonth.Year;
+        },
+        sortable: true, filter: 'agNumberColumnFilter', resizable: true
+      },
+      this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration (ac-ft)', 'EvapotranspirationRateAcreFeet', 140, 2)
+    ];
+  }
+
+  public onFirstDataRendered(params): void {
+    this.gridApi = params.api;
+    this.gridApi.sizeColumnsToFit();
+  }
+
+  public exportToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.openETDataGrid, 'openET-data.csv', null);
   }
 
 }
