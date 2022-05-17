@@ -121,7 +121,7 @@ namespace Zybach.Web
         [JsonProperty("GETEnvironmentUrl")]
         public string GETEnvironmentUrl {get; set;}
         
-        [JsonProperty("AllowOpenETSync")]
+        [JsonProperty("allowOpenETSync")]
         public bool AllowOpenETSync { get; set; }
     }
 
