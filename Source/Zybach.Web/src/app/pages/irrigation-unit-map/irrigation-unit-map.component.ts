@@ -66,7 +66,7 @@ export class IrrigationUnitMapComponent implements OnInit, AfterViewInit {
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], null);
 
-    if (this.irrigationUnit.IrrigationUnitGeoJSON != null && this.irrigationUnit.IrrigationUnitGeoJSON != undefined) {
+    if (this.irrigationUnit.IrrigationUnitGeoJSON != null && this.irrigationUnit.IrrigationUnitGeoJSON != undefined && this.irrigationUnit.IrrigationUnitGeoJSON != "null") {
       this.addIrrigationUnitToMap();
     }
 
@@ -118,6 +118,11 @@ export class IrrigationUnitMapComponent implements OnInit, AfterViewInit {
       }
     });
     wellLayer.addTo(this.map);
+
+    if (this.irrigationUnit.IrrigationUnitGeoJSON == null || this.irrigationUnit.IrrigationUnitGeoJSON == undefined || this.irrigationUnit.IrrigationUnitGeoJSON == "null") {
+      let target = (this.map as any)._getBoundsCenterZoom(wellLayer.getBounds(), null);
+      this.map.setView(target.center, 16, null);
+    }
   }
 
   // End section: location map

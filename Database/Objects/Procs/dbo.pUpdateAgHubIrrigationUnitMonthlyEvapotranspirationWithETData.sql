@@ -23,4 +23,4 @@ begin
     WHEN NOT MATCHED by Target THEN
 		insert (AgHubIrrigationUnitID, WaterYearMonthID, EvapotranspirationRateInches, EvapotranspirationRateAcreFeet) values 
 		(Source.AgHubIrrigationUnitID, Source.WaterYearMonthID, Source.EvapotranspirationRateInches, Source.etraf);
-	end
+end
