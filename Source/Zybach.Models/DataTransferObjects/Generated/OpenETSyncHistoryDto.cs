@@ -16,6 +16,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime UpdateDate { get; set; }
         public string GoogleBucketFileRetrievalURL { get; set; }
         public string ErrorMessage { get; set; }
+        public OpenETDataTypeDto OpenETDataType { get; set; }
     }
 
     public partial class OpenETSyncHistorySimpleDto
@@ -27,6 +28,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime UpdateDate { get; set; }
         public string GoogleBucketFileRetrievalURL { get; set; }
         public string ErrorMessage { get; set; }
+        public int? OpenETDataTypeID { get; set; }
     }
 
 }

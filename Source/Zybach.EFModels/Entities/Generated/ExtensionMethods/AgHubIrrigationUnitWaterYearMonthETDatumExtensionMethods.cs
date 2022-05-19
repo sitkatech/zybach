@@ -17,7 +17,9 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigationUnit = agHubIrrigationUnitWaterYearMonthETDatum.AgHubIrrigationUnit.AsDto(),
                 WaterYearMonth = agHubIrrigationUnitWaterYearMonthETDatum.WaterYearMonth.AsDto(),
                 EvapotranspirationRateInches = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateInches,
-                EvapotranspirationRateAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateAcreFeet
+                EvapotranspirationRateAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateAcreFeet,
+                PrecipitationAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.PrecipitationAcreFeet,
+                PrecipitationInches = agHubIrrigationUnitWaterYearMonthETDatum.PrecipitationInches
             };
             DoCustomMappings(agHubIrrigationUnitWaterYearMonthETDatum, agHubIrrigationUnitWaterYearMonthETDatumDto);
             return agHubIrrigationUnitWaterYearMonthETDatumDto;
@@ -33,7 +35,9 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigationUnitID = agHubIrrigationUnitWaterYearMonthETDatum.AgHubIrrigationUnitID,
                 WaterYearMonthID = agHubIrrigationUnitWaterYearMonthETDatum.WaterYearMonthID,
                 EvapotranspirationRateInches = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateInches,
-                EvapotranspirationRateAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateAcreFeet
+                EvapotranspirationRateAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.EvapotranspirationRateAcreFeet,
+                PrecipitationAcreFeet = agHubIrrigationUnitWaterYearMonthETDatum.PrecipitationAcreFeet,
+                PrecipitationInches = agHubIrrigationUnitWaterYearMonthETDatum.PrecipitationInches
             };
             DoCustomSimpleDtoMappings(agHubIrrigationUnitWaterYearMonthETDatum, agHubIrrigationUnitWaterYearMonthETDatumSimpleDto);
             return agHubIrrigationUnitWaterYearMonthETDatumSimpleDto;

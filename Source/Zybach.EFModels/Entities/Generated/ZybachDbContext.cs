@@ -54,7 +54,9 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
         public virtual DbSet<GeoOptixWellStaging> GeoOptixWellStagings { get; set; }
         public virtual DbSet<MeasurementType> MeasurementTypes { get; set; }
+        public virtual DbSet<OpenETDataType> OpenETDataTypes { get; set; }
         public virtual DbSet<OpenETGoogleBucketResponseEvapotranspirationDatum> OpenETGoogleBucketResponseEvapotranspirationData { get; set; }
+        public virtual DbSet<OpenETGoogleBucketResponsePrecipitationDatum> OpenETGoogleBucketResponsePrecipitationData { get; set; }
         public virtual DbSet<OpenETSyncHistory> OpenETSyncHistories { get; set; }
         public virtual DbSet<OpenETSyncResultType> OpenETSyncResultTypes { get; set; }
         public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
@@ -498,7 +500,23 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.MeasurementTypeName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<OpenETDataType>(entity =>
+            {
+                entity.Property(e => e.OpenETDataTypeID).ValueGeneratedNever();
+
+                entity.Property(e => e.OpenETDataTypeDisplayName).IsUnicode(false);
+
+                entity.Property(e => e.OpenETDataTypeName).IsUnicode(false);
+
+                entity.Property(e => e.OpenETDataTypeVariableName).IsUnicode(false);
+            });
+
             modelBuilder.Entity<OpenETGoogleBucketResponseEvapotranspirationDatum>(entity =>
+            {
+                entity.Property(e => e.WellTPID).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<OpenETGoogleBucketResponsePrecipitationDatum>(entity =>
             {
                 entity.Property(e => e.WellTPID).IsUnicode(false);
             });

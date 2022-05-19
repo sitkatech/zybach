@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[OpenETGoogleBucketResponseEvapotranspirationDatum](
 	[WaterMonth] [int] NOT NULL,
 	[WaterYear] [int] NOT NULL,
 	[EvapotranspirationRateInches] [decimal](20, 4) NULL,
+	[EvapotranspirationRateAcreFeet] [decimal](20, 4) NULL,
  CONSTRAINT [PK_OpenETGoogleBucketResponseEvapotranspirationDatum_OpenETGoogleBucketResponseEvapotranspirationDatumID] PRIMARY KEY CLUSTERED 
 (
 	[OpenETGoogleBucketResponseEvapotranspirationDatumID] ASC

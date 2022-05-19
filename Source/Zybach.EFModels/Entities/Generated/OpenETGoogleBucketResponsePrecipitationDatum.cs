@@ -8,19 +8,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    [Table("OpenETGoogleBucketResponseEvapotranspirationDatum")]
-    public partial class OpenETGoogleBucketResponseEvapotranspirationDatum
+    [Table("OpenETGoogleBucketResponsePrecipitationDatum")]
+    public partial class OpenETGoogleBucketResponsePrecipitationDatum
     {
         [Key]
-        public int OpenETGoogleBucketResponseEvapotranspirationDatumID { get; set; }
+        public int OpenETGoogleBucketResponsePrecipitationDatumID { get; set; }
         [Required]
         [StringLength(100)]
         public string WellTPID { get; set; }
         public int WaterMonth { get; set; }
         public int WaterYear { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
-        public decimal? EvapotranspirationRateInches { get; set; }
+        public decimal? PrecipitationAcreFeet { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
-        public decimal? EvapotranspirationRateAcreFeet { get; set; }
+        public decimal? PrecipitationInches { get; set; }
     }
 }

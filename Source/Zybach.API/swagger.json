@@ -5247,6 +5247,16 @@
             "type": "number",
             "format": "double",
             "nullable": true
+          },
+          "PrecipitationAcreFeet": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "PrecipitationInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7039,6 +7049,28 @@
         },
         "additionalProperties": false
       },
+      "OpenETDataTypeDto": {
+        "type": "object",
+        "properties": {
+          "OpenETDataTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "OpenETDataTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OpenETDataTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "OpenETDataTypeVariableName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "OpenETSyncHistoryDto": {
         "type": "object",
         "properties": {
@@ -7067,6 +7099,9 @@
           "ErrorMessage": {
             "type": "string",
             "nullable": true
+          },
+          "OpenETDataType": {
+            "$ref": "#/components/schemas/OpenETDataTypeDto"
           }
         },
         "additionalProperties": false

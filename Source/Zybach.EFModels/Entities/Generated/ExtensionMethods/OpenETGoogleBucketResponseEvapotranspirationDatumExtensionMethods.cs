@@ -17,7 +17,8 @@ namespace Zybach.EFModels.Entities
                 WellTPID = openETGoogleBucketResponseEvapotranspirationDatum.WellTPID,
                 WaterMonth = openETGoogleBucketResponseEvapotranspirationDatum.WaterMonth,
                 WaterYear = openETGoogleBucketResponseEvapotranspirationDatum.WaterYear,
-                EvapotranspirationRateInches = openETGoogleBucketResponseEvapotranspirationDatum.EvapotranspirationRateInches
+                EvapotranspirationRateInches = openETGoogleBucketResponseEvapotranspirationDatum.EvapotranspirationRateInches,
+                EvapotranspirationRateAcreFeet = openETGoogleBucketResponseEvapotranspirationDatum.EvapotranspirationRateAcreFeet
             };
             DoCustomMappings(openETGoogleBucketResponseEvapotranspirationDatum, openETGoogleBucketResponseEvapotranspirationDatumDto);
             return openETGoogleBucketResponseEvapotranspirationDatumDto;
@@ -33,7 +34,8 @@ namespace Zybach.EFModels.Entities
                 WellTPID = openETGoogleBucketResponseEvapotranspirationDatum.WellTPID,
                 WaterMonth = openETGoogleBucketResponseEvapotranspirationDatum.WaterMonth,
                 WaterYear = openETGoogleBucketResponseEvapotranspirationDatum.WaterYear,
-                EvapotranspirationRateInches = openETGoogleBucketResponseEvapotranspirationDatum.EvapotranspirationRateInches
+                EvapotranspirationRateInches = openETGoogleBucketResponseEvapotranspirationDatum.EvapotranspirationRateInches,
+                EvapotranspirationRateAcreFeet = openETGoogleBucketResponseEvapotranspirationDatum.EvapotranspirationRateAcreFeet
             };
             DoCustomSimpleDtoMappings(openETGoogleBucketResponseEvapotranspirationDatum, openETGoogleBucketResponseEvapotranspirationDatumSimpleDto);
             return openETGoogleBucketResponseEvapotranspirationDatumSimpleDto;

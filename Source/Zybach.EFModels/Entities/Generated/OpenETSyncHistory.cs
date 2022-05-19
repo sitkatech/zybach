@@ -22,7 +22,11 @@ namespace Zybach.EFModels.Entities
         [StringLength(200)]
         public string GoogleBucketFileRetrievalURL { get; set; }
         public string ErrorMessage { get; set; }
+        public int? OpenETDataTypeID { get; set; }
 
+        [ForeignKey(nameof(OpenETDataTypeID))]
+        [InverseProperty("OpenETSyncHistories")]
+        public virtual OpenETDataType OpenETDataType { get; set; }
         [ForeignKey(nameof(OpenETSyncResultTypeID))]
         [InverseProperty("OpenETSyncHistories")]
         public virtual OpenETSyncResultType OpenETSyncResultType { get; set; }

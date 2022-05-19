@@ -8,6 +8,8 @@ CREATE TABLE [dbo].[AgHubIrrigationUnitWaterYearMonthETDatum](
 	[WaterYearMonthID] [int] NOT NULL,
 	[EvapotranspirationRateInches] [decimal](20, 4) NULL,
 	[EvapotranspirationRateAcreFeet] [decimal](20, 4) NULL,
+	[PrecipitationAcreFeet] [decimal](20, 4) NULL,
+	[PrecipitationInches] [decimal](20, 4) NULL,
  CONSTRAINT [PK_AgHubIrrigationUnitWaterYearMonthETDatum_AgHubIrrigationUnitWaterYearMonthETDatumID] PRIMARY KEY CLUSTERED 
 (
 	[AgHubIrrigationUnitWaterYearMonthETDatumID] ASC

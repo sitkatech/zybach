@@ -66,7 +66,7 @@ namespace Zybach.API
                     _dbContext.AgHubWellStagings.Add(wellStaging);
                     _dbContext.SaveChanges();
                 }
-
+                
                 // only publish if we actually got any AgHubWells from Zappa
                 _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishAgHubWells");
             }
