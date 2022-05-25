@@ -28,9 +28,18 @@ namespace Zybach.EFModels.Entities
         public static AgHubIrrigationUnitDetailDto AgHubIrrigationUnitAsDetailDto(AgHubIrrigationUnit irrigationUnit)
         {
             var associatedWells = irrigationUnit.AgHubWells.Select(x => x.Well.AsMinimalDto()).ToList();
-            var waterYearMonthETData =
-                irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData
-                    .Select(x => x.AsDto())
+
+            var waterYearMonthETAndPrecipData =
+                irrigationUnit.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData
+                    .Select(x => new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
+                    {
+                        AgHubIrrigationUnitID = x.AgHubIrrigationUnitID,
+                        WaterYearMonth = x.WaterYearMonth.AsDto(),
+                        EvapotranspirationAcreFeet = x.EvapotranspirationAcreFeet,
+                        EvapotranspirationInches = x.EvapotranspirationInches,
+                        PrecipitationAcreFeet = x.PrecipitationAcreFeet,
+                        PrecipitationInches = x.PrecipitationInches
+                    })
                     .OrderByDescending(x => x.WaterYearMonth.Year)
                     .ThenByDescending(x => x.WaterYearMonth.Month)
                     .ToList();
@@ -42,7 +51,7 @@ namespace Zybach.EFModels.Entities
                 IrrigationUnitAreaInAcres = irrigationUnit.IrrigationUnitAreaInAcres,
                 AssociatedWells = associatedWells,
                 IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(irrigationUnit.IrrigationUnitGeometry),
-                WaterYearMonthETData = waterYearMonthETData
+                WaterYearMonthETAndPrecipData = waterYearMonthETAndPrecipData
             };
             
             return agHubIrrigationUnitDetailDto;
@@ -51,7 +60,7 @@ namespace Zybach.EFModels.Entities
         public static IQueryable<AgHubIrrigationUnit> GetAgHubIrrigationUnitImpl(ZybachDbContext dbContext)
         {
             return dbContext.AgHubIrrigationUnits
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData)
                     .ThenInclude(x => x.WaterYearMonth)
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)

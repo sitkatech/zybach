@@ -18,7 +18,9 @@ namespace Zybach.EFModels.Entities
         }
 
         public virtual DbSet<AgHubIrrigationUnit> AgHubIrrigationUnits { get; set; }
+        public virtual DbSet<AgHubIrrigationUnitWaterYearMonthETAndPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData { get; set; }
         public virtual DbSet<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
+        public virtual DbSet<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthPrecipitationData { get; set; }
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
@@ -101,6 +103,19 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.WellTPID).IsUnicode(false);
             });
 
+            modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthETAndPrecipitationDatum>(entity =>
+            {
+                entity.HasOne(d => d.AgHubIrrigationUnit)
+                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData)
+                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.WaterYearMonth)
+                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData)
+                    .HasForeignKey(d => d.WaterYearMonthID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthETDatum>(entity =>
             {
                 entity.HasOne(d => d.AgHubIrrigationUnit)
@@ -110,6 +125,19 @@ namespace Zybach.EFModels.Entities
 
                 entity.HasOne(d => d.WaterYearMonth)
                     .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETData)
+                    .HasForeignKey(d => d.WaterYearMonthID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum>(entity =>
+            {
+                entity.HasOne(d => d.AgHubIrrigationUnit)
+                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
+                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.WaterYearMonth)
+                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
                     .HasForeignKey(d => d.WaterYearMonthID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });

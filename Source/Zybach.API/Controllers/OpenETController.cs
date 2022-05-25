@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -43,11 +45,18 @@ namespace Zybach.API.Controllers
         [AdminFeature]
         public ActionResult TriggerOpenETRefreshAndRetrieveJob([FromBody] int waterYearMonthID)
         {
-            var triggerResponse = _openETService.TriggerOpenETGoogleBucketRefresh(waterYearMonthID);
-            if (!triggerResponse.IsSuccessStatusCode)
-            {
-                var ores = StatusCode((int)triggerResponse.StatusCode, triggerResponse.Content.ReadAsStringAsync().Result);
-                return ores;
+            var openETDataTypes = _dbContext.OpenETDataTypes
+                .AsNoTracking()
+                .Select(x => x.AsSimpleDto())
+                .ToList();
+            foreach (var openETDataType in openETDataTypes) { 
+                var triggerResponse = _openETService.TriggerOpenETGoogleBucketRefresh(waterYearMonthID, openETDataType);
+                if (!triggerResponse.IsSuccessStatusCode)
+                {
+                    var ores = StatusCode((int)triggerResponse.StatusCode,
+                        triggerResponse.Content.ReadAsStringAsync().Result);
+                    return ores;
+                }
             }
 
             return Ok();

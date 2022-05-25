@@ -8,23 +8,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    [Table("AgHubIrrigationUnitWaterYearMonthETDatum")]
-    public partial class AgHubIrrigationUnitWaterYearMonthETDatum
+    [Table("AgHubIrrigationUnitWaterYearMonthPrecipitationDatum")]
+    public partial class AgHubIrrigationUnitWaterYearMonthPrecipitationDatum
     {
         [Key]
-        public int AgHubIrrigationUnitWaterYearMonthETDatumID { get; set; }
+        public int AgHubIrrigationUnitWaterYearMonthPrecipitationDatumID { get; set; }
         public int AgHubIrrigationUnitID { get; set; }
         public int WaterYearMonthID { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
-        public decimal? EvapotranspirationRateInches { get; set; }
+        public decimal? PrecipitationAcreFeet { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
-        public decimal? EvapotranspirationRateAcreFeet { get; set; }
+        public decimal? PrecipitationInches { get; set; }
 
         [ForeignKey(nameof(AgHubIrrigationUnitID))]
-        [InverseProperty("AgHubIrrigationUnitWaterYearMonthETData")]
+        [InverseProperty("AgHubIrrigationUnitWaterYearMonthPrecipitationData")]
         public virtual AgHubIrrigationUnit AgHubIrrigationUnit { get; set; }
         [ForeignKey(nameof(WaterYearMonthID))]
-        [InverseProperty("AgHubIrrigationUnitWaterYearMonthETData")]
+        [InverseProperty("AgHubIrrigationUnitWaterYearMonthPrecipitationData")]
         public virtual WaterYearMonth WaterYearMonth { get; set; }
     }
 }

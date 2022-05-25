@@ -10,14 +10,14 @@
  * Do not edit the class manually.
  */
 import { WaterYearMonthDto } from '././water-year-month-dto';
-import { AgHubIrrigationUnitDto } from '././ag-hub-irrigation-unit-dto';
 
-export class AgHubIrrigationUnitWaterYearMonthETDatumDto { 
-    AgHubIrrigationUnitWaterYearMonthETDatumID?: number;
-    AgHubIrrigationUnit?: AgHubIrrigationUnitDto;
+export class AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto { 
+    AgHubIrrigationUnitID?: number;
     WaterYearMonth?: WaterYearMonthDto;
-    EvapotranspirationRateInches?: number;
-    EvapotranspirationRateAcreFeet?: number;
+    PrecipitationAcreFeet?: number;
+    PrecipitationInches?: number;
+    EvapotranspirationAcreFeet?: number;
+    EvapotranspirationInches?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

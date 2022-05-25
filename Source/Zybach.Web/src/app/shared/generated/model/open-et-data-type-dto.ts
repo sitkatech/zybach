@@ -10,10 +10,11 @@
  * Do not edit the class manually.
  */
 
-export class AgHubIrrigationUnitDto { 
-    AgHubIrrigationUnitID?: number;
-    WellTPID?: string;
-    IrrigationUnitAreaInAcres?: number;
+export class OpenETDataTypeDto { 
+    OpenETDataTypeID?: number;
+    OpenETDataTypeName?: string;
+    OpenETDataTypeDisplayName?: string;
+    OpenETDataTypeVariableName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
