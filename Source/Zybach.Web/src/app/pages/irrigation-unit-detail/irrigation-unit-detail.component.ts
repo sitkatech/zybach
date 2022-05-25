@@ -68,7 +68,7 @@ export class IrrigationUnitDetailComponent implements OnInit {
     this.unitsShown = this.unitsShown == ETAndPrecipitationUnitTypes.AcreFeet ? ETAndPrecipitationUnitTypes.Inches : ETAndPrecipitationUnitTypes.AcreFeet;
     this.initializeGrid();
     this.openETDataGrid?.api.showLoadingOverlay();
-    setTimeout(() => this.gridApi.sizeColumnsToFit(), 10);
+    setTimeout(() => this.gridApi.sizeColumnsToFit(), 200);
   }
 
   private initializeGrid(): void {
