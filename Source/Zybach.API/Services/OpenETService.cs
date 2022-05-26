@@ -180,7 +180,7 @@ namespace Zybach.API.Services
         }
 
 
-        public HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataTypeSimpleDto openETDataType)
+        public HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataTypeDto openETDataType)
         {
             if (!_zybachConfiguration.AllowOpenETSync)
             {
@@ -554,7 +554,7 @@ namespace Zybach.API.Services
     public interface IOpenETService
     {
         string[] GetAllFilesReadyForExport();
-        HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataTypeSimpleDto openETDataType);
+        HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataTypeDto openETDataType);
         void UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
             HttpClient httpClient);
         void UpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData(int syncHistoryID, string[] filesReadyForExport,

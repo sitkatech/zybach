@@ -5209,10 +5209,6 @@
       "AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto": {
         "type": "object",
         "properties": {
-          "AgHubIrrigationUnitID": {
-            "type": "integer",
-            "format": "int32"
-          },
           "WaterYearMonth": {
             "$ref": "#/components/schemas/WaterYearMonthDto"
           },

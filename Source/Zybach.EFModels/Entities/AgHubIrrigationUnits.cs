@@ -29,21 +29,22 @@ namespace Zybach.EFModels.Entities
         {
             var associatedWells = irrigationUnit.AgHubWells.Select(x => x.Well.AsMinimalDto()).ToList();
 
-            var waterYearMonthETAndPrecipData =
-                irrigationUnit.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData
-                    .Select(x => new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
+            var waterYearMonthETAndPrecipData = irrigationUnit.AgHubIrrigationUnitWaterYearMonthPrecipitationData
+                .Join(irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData,
+                    pr => new { pr.WaterYearMonthID, pr.AgHubIrrigationUnitID },
+                    et => new { et.WaterYearMonthID, et.AgHubIrrigationUnitID },
+                    (pr, et) => new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
                     {
-                        AgHubIrrigationUnitID = x.AgHubIrrigationUnitID,
-                        WaterYearMonth = x.WaterYearMonth.AsDto(),
-                        EvapotranspirationAcreFeet = x.EvapotranspirationAcreFeet,
-                        EvapotranspirationInches = x.EvapotranspirationInches,
-                        PrecipitationAcreFeet = x.PrecipitationAcreFeet,
-                        PrecipitationInches = x.PrecipitationInches
+                        WaterYearMonth = et.WaterYearMonth.AsDto(),
+                        EvapotranspirationAcreFeet = et.EvapotranspirationRateAcreFeet,
+                        EvapotranspirationInches = et.EvapotranspirationRateInches,
+                        PrecipitationAcreFeet = pr.PrecipitationAcreFeet,
+                        PrecipitationInches = pr.PrecipitationInches
                     })
-                    .OrderByDescending(x => x.WaterYearMonth.Year)
-                    .ThenByDescending(x => x.WaterYearMonth.Month)
-                    .ToList();
-
+                .OrderByDescending(x => x.WaterYearMonth.Year)
+                .ThenByDescending(x => x.WaterYearMonth.Month)
+                .ToList();
+            
             var agHubIrrigationUnitDetailDto = new AgHubIrrigationUnitDetailDto
             {
                 AgHubIrrigationUnitID = irrigationUnit.AgHubIrrigationUnitID,
@@ -60,7 +61,9 @@ namespace Zybach.EFModels.Entities
         public static IQueryable<AgHubIrrigationUnit> GetAgHubIrrigationUnitImpl(ZybachDbContext dbContext)
         {
             return dbContext.AgHubIrrigationUnits
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
+                    .ThenInclude(x => x.WaterYearMonth)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
                     .ThenInclude(x => x.WaterYearMonth)
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)

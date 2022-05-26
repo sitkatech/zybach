@@ -18,7 +18,6 @@ namespace Zybach.EFModels.Entities
         }
 
         public virtual DbSet<AgHubIrrigationUnit> AgHubIrrigationUnits { get; set; }
-        public virtual DbSet<AgHubIrrigationUnitWaterYearMonthETAndPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData { get; set; }
         public virtual DbSet<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
         public virtual DbSet<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthPrecipitationData { get; set; }
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
@@ -83,6 +82,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
         public virtual DbSet<WellUse> WellUses { get; set; }
         public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
+        public virtual DbSet<vAgHubIrrigationUnitMonthlyETAndPrecip> vAgHubIrrigationUnitMonthlyETAndPrecips { get; set; }
         public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -101,19 +101,6 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<AgHubIrrigationUnit>(entity =>
             {
                 entity.Property(e => e.WellTPID).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthETAndPrecipitationDatum>(entity =>
-            {
-                entity.HasOne(d => d.AgHubIrrigationUnit)
-                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData)
-                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.WaterYearMonth)
-                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETAndPrecipitationData)
-                    .HasForeignKey(d => d.WaterYearMonthID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthETDatum>(entity =>
@@ -883,6 +870,11 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.WellWaterQualityInspectionTypes)
                     .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<vAgHubIrrigationUnitMonthlyETAndPrecip>(entity =>
+            {
+                entity.ToView("vAgHubIrrigationUnitMonthlyETAndPrecip");
             });
 
             modelBuilder.Entity<vOpenETMostRecentSyncHistoryForYearAndMonth>(entity =>

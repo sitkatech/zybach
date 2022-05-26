@@ -2,7 +2,6 @@
 {
     public class AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
     {
-        public int AgHubIrrigationUnitID { get; set; }
         public WaterYearMonthDto WaterYearMonth { get; set; }
         public decimal? PrecipitationAcreFeet { get; set; }
         public decimal? PrecipitationInches { get; set; }
