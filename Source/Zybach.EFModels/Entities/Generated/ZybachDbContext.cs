@@ -82,7 +82,6 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
         public virtual DbSet<WellUse> WellUses { get; set; }
         public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
-        public virtual DbSet<vAgHubIrrigationUnitMonthlyETAndPrecip> vAgHubIrrigationUnitMonthlyETAndPrecips { get; set; }
         public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -870,11 +869,6 @@ namespace Zybach.EFModels.Entities
                     .WithMany(p => p.WellWaterQualityInspectionTypes)
                     .HasForeignKey(d => d.WellID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<vAgHubIrrigationUnitMonthlyETAndPrecip>(entity =>
-            {
-                entity.ToView("vAgHubIrrigationUnitMonthlyETAndPrecip");
             });
 
             modelBuilder.Entity<vOpenETMostRecentSyncHistoryForYearAndMonth>(entity =>
