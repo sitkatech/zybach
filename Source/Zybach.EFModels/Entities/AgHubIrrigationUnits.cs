@@ -28,13 +28,23 @@ namespace Zybach.EFModels.Entities
         public static AgHubIrrigationUnitDetailDto AgHubIrrigationUnitAsDetailDto(AgHubIrrigationUnit irrigationUnit)
         {
             var associatedWells = irrigationUnit.AgHubWells.Select(x => x.Well.AsMinimalDto()).ToList();
-            var waterYearMonthETData =
-                irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData
-                    .Select(x => x.AsDto())
-                    .OrderByDescending(x => x.WaterYearMonth.Year)
-                    .ThenByDescending(x => x.WaterYearMonth.Month)
-                    .ToList();
 
+            var waterYearMonthETAndPrecipData = irrigationUnit.AgHubIrrigationUnitWaterYearMonthPrecipitationData
+                .Join(irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData,
+                    pr => new { pr.WaterYearMonthID, pr.AgHubIrrigationUnitID },
+                    et => new { et.WaterYearMonthID, et.AgHubIrrigationUnitID },
+                    (pr, et) => new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
+                    {
+                        WaterYearMonth = et.WaterYearMonth.AsDto(),
+                        EvapotranspirationAcreFeet = et.EvapotranspirationRateAcreFeet,
+                        EvapotranspirationInches = et.EvapotranspirationRateInches,
+                        PrecipitationAcreFeet = pr.PrecipitationAcreFeet,
+                        PrecipitationInches = pr.PrecipitationInches
+                    })
+                .OrderByDescending(x => x.WaterYearMonth.Year)
+                .ThenByDescending(x => x.WaterYearMonth.Month)
+                .ToList();
+            
             var agHubIrrigationUnitDetailDto = new AgHubIrrigationUnitDetailDto
             {
                 AgHubIrrigationUnitID = irrigationUnit.AgHubIrrigationUnitID,
@@ -42,7 +52,7 @@ namespace Zybach.EFModels.Entities
                 IrrigationUnitAreaInAcres = irrigationUnit.IrrigationUnitAreaInAcres,
                 AssociatedWells = associatedWells,
                 IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(irrigationUnit.IrrigationUnitGeometry),
-                WaterYearMonthETData = waterYearMonthETData
+                WaterYearMonthETAndPrecipData = waterYearMonthETAndPrecipData
             };
             
             return agHubIrrigationUnitDetailDto;
@@ -52,6 +62,8 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.AgHubIrrigationUnits
                 .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
+                    .ThenInclude(x => x.WaterYearMonth)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
                     .ThenInclude(x => x.WaterYearMonth)
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)

@@ -10,11 +10,11 @@
  * Do not edit the class manually.
  */
 import { WellMinimalDto } from '././well-minimal-dto';
-import { AgHubIrrigationUnitWaterYearMonthETDatumDto } from '././ag-hub-irrigation-unit-water-year-month-et-datum-dto';
+import { AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto } from '././ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto';
 
 export class AgHubIrrigationUnitDetailDto { 
     IrrigationUnitGeoJSON?: string;
-    WaterYearMonthETData?: Array<AgHubIrrigationUnitWaterYearMonthETDatumDto>;
+    WaterYearMonthETAndPrecipData?: Array<AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto>;
     AssociatedWells?: Array<WellMinimalDto>;
     AgHubIrrigationUnitID?: number;
     WellTPID?: string;

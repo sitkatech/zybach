@@ -180,7 +180,7 @@ namespace Zybach.API.Services
         }
 
 
-        public HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID)
+        public HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataType openETDataType)
         {
             if (!_zybachConfiguration.AllowOpenETSync)
             {
@@ -217,7 +217,9 @@ namespace Zybach.API.Services
             var monthNameToDisplay = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
 
             if (_zybachDbContext.OpenETSyncHistories
-                .Any(x => x.WaterYearMonthID == waterYearMonthID && x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress))
+                .Any(x => x.WaterYearMonthID == waterYearMonthID && 
+                          x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress &&
+                          x.OpenETDataTypeID == openETDataType.OpenETDataTypeID))
             {
                 return new HttpResponseMessage()
                 {
@@ -226,7 +228,7 @@ namespace Zybach.API.Services
                 };
             }
 
-            var newSyncHistory = OpenETSyncHistory.New(_zybachDbContext, waterYearMonthID);
+            var newSyncHistory = OpenETSyncHistory.CreateNew(_zybachDbContext, waterYearMonthID, openETDataType.OpenETDataTypeID);
 
             if (!RasterUpdatedSinceMinimumLastUpdatedDate(month, year, newSyncHistory))
             {
@@ -236,11 +238,11 @@ namespace Zybach.API.Services
                 {
                     StatusCode = HttpStatusCode.UnprocessableEntity,
                     Content = new StringContent(
-                        $"The sync for {monthNameToDisplay} {year} will not be completed for the following reason: {newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeDisplayName}.{(newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed ? " Error Message:" + newSyncHistory.ErrorMessage : "")}")
+                        $"The sync for {monthNameToDisplay} {year} will not be completed for the following reason: {newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeDisplayName}.{(newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed ? $" Error Message:{newSyncHistory.ErrorMessage}" : "")}")
                 };
             }
 
-            var openETRequestURL = $"{_zybachConfiguration.OpenETRasterTimeSeriesMultipolygonRoute}?shapefile_asset_id={_zybachConfiguration.OPENET_SHAPEFILE_PATH}&start_date={new DateTime(year, month, 1):yyyy-MM-dd}&end_date={new DateTime(year, month, DateTime.DaysInMonth(year, month)):yyyy-MM-dd}&model=ensemble&variable=et&units=english&output_date_format=standard&ref_et_source=gridmet&filename_suffix={"TPNRD_" + month + "_" + year + "_public"}&include_columns={_zybachConfiguration.OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}&provisional=true&interval=monthly";
+            var openETRequestURL = $"{_zybachConfiguration.OpenETRasterTimeSeriesMultipolygonRoute}?shapefile_asset_id={_zybachConfiguration.OPENET_SHAPEFILE_PATH}&start_date={new DateTime(year, month, 1):yyyy-MM-dd}&end_date={new DateTime(year, month, DateTime.DaysInMonth(year, month)):yyyy-MM-dd}&model=ensemble&variable={openETDataType.OpenETDataTypeVariableName}&units=english&output_date_format=standard&ref_et_source=gridmet&filename_suffix={$"TPNRD_{month}_{year}_public{openETDataType.OpenETDataTypeName}"}&include_columns={_zybachConfiguration.OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}&provisional=true&interval=monthly";
 
             try
             {
@@ -307,7 +309,7 @@ namespace Zybach.API.Services
         }
 
         /// <summary>
-        /// Check if OpenET has created data for a particular Year and Month sync that has been triggered and update with the updated data
+        /// Check if OpenET has created data for a particular Year and Month evapotranspiration sync that has been triggered and update 
         /// </summary>
         public void UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
             HttpClient httpClient)
@@ -355,11 +357,11 @@ namespace Zybach.API.Services
                         .Select(x => new DateTime(x.Year, x.Month, 1))
                         .ToList();
                     csvr.Context.RegisterClassMap(
-                        new OpenETCSVFormatMap(_zybachConfiguration.OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier));
+                        new OpenETEvapCSVFormatMap(_zybachConfiguration.OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier));
                     //Sometimes the results will produce exact duplicates, so we need to filter those out
                     //Also one final check to make sure we don't get any finalized dates
-                    distinctRecords = csvr.GetRecords<OpenETCSVFormat>().Where(x => !finalizedWaterYearMonths.Contains(x.Date))
-                        .Distinct(new DistinctOpenETCSVFormatComparer())
+                    distinctRecords = csvr.GetRecords<OpenETEvapCSVFormat>().Where(x => !finalizedWaterYearMonths.Contains(x.Date))
+                        .Distinct(new DistinctOpenETEvapCSVFormatComparer())
                         .Select(x => x.AsOpenETGoogleBucketResponseEvapotranspirationDatum())
                         .ToList();
                 }
@@ -379,11 +381,12 @@ namespace Zybach.API.Services
                 table.Columns.Add("WaterMonth", typeof(int));
                 table.Columns.Add("WaterYear", typeof(int));
                 table.Columns.Add("EvapotranspirationRateInches", typeof(decimal));
+                table.Columns.Add("EvapotranspirationRateAcreFeet", typeof(decimal));
 
                 var index = 0;
                 distinctRecords.ForEach(x =>
                 {
-                    table.Rows.Add(++index, x.WellTPID, x.WaterMonth, x.WaterYear, x.EvapotranspirationRateInches);
+                    table.Rows.Add(++index, x.WellTPID, x.WaterMonth, x.WaterYear, x.EvapotranspirationRateInches, x.EvapotranspirationRateAcreFeet);
                 });
 
                 using (SqlConnection con = new SqlConnection(_zybachConfiguration.DB_CONNECTION_STRING))
@@ -398,6 +401,111 @@ namespace Zybach.API.Services
                 }
 
                 _zybachDbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData");
+
+                OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
+                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Succeeded);
+            }
+            catch (Exception ex)
+            {
+                TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error parsing file from OpenET or getting records into database.");
+                OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
+                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Check if OpenET has created data for a particular Year and Month precipitation sync that has been triggered and update
+        /// </summary>
+        public void UpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData(int syncHistoryID, string[] filesReadyForExport,
+            HttpClient httpClient)
+        {
+            var syncHistoryObject = OpenETSyncHistory.GetByOpenETSyncHistoryID(_zybachDbContext, syncHistoryID);
+
+            if (syncHistoryObject == null || syncHistoryObject.OpenETSyncResultType.OpenETSyncResultTypeID !=
+                (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress)
+            {
+                //Bad request, we completed already and somehow were called again, or someone else decided we were done
+                return;
+            }
+
+            if (String.IsNullOrWhiteSpace(syncHistoryObject.GoogleBucketFileRetrievalURL))
+            {
+                //We are somehow storing sync histories without file retrieval urls, this is not good
+                TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, new OpenETException(
+                    $"OpenETSyncHistory record:{syncHistoryObject.OpenETSyncHistoryID} was saved without a file retrieval URL but we attempted to update with it. Check integration!"), "Error communicating with OpenET API.");
+                OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, "Record was saved with a Google Bucket File Retrieval URL. Support has been notified.");
+                return;
+            }
+
+            if (filesReadyForExport == null || !filesReadyForExport.Contains(syncHistoryObject.GoogleBucketFileRetrievalURL))
+            {
+                UpdateStatusAndFailIfOperationHasExceeded24Hours(_zybachDbContext, syncHistoryObject, "OpenET API never reported the results as available.");
+                return;
+            }
+
+            var response = httpClient.GetAsync(syncHistoryObject.GoogleBucketFileRetrievalURL).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                UpdateStatusAndFailIfOperationHasExceeded24Hours(_zybachDbContext, syncHistoryObject, response.Content.ReadAsStringAsync().Result);
+                return;
+            }
+
+            try
+            {
+                List<OpenETGoogleBucketResponsePrecipitationDatum> distinctRecords;
+                using (var reader = new StreamReader(response.Content.ReadAsStreamAsync().Result))
+                {
+                    var csvr = new CsvReader(reader, CultureInfo.CurrentCulture);
+                    var finalizedWaterYearMonths = _zybachDbContext.WaterYearMonths
+                        .Where(x => x.FinalizeDate.HasValue)
+                        .Select(x => new DateTime(x.Year, x.Month, 1))
+                        .ToList();
+                    csvr.Context.RegisterClassMap(
+                        new OpenETPrecipCSVFormatMap(_zybachConfiguration.OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier));
+                    //Sometimes the results will produce exact duplicates, so we need to filter those out
+                    //Also one final check to make sure we don't get any finalized dates
+                    distinctRecords = csvr.GetRecords<OpenETPrecipCSVFormat>().Where(x => !finalizedWaterYearMonths.Contains(x.Date))
+                        .Distinct(new DistinctOpenETPrecipCSVFormatComparer())
+                        .Select(x => x.AsOpenETGoogleBucketResponsePrecipitationDatum())
+                        .ToList();
+                }
+
+                //This shouldn't happen, but if we enter here we've attempted to grab data for a water year that was finalized
+                if (!distinctRecords.Any())
+                {
+                    OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum.NoNewData);
+                    return;
+                }
+
+                _zybachDbContext.Database.ExecuteSqlRaw(
+                    "TRUNCATE TABLE dbo.OpenETGoogleBucketResponsePrecipitationDatum");
+                DataTable table = new DataTable();
+                table.Columns.Add("OpenETGoogleBucketResponsePrecipitationDatumID", typeof(int));
+                table.Columns.Add("WellTPID", typeof(string));
+                table.Columns.Add("WaterMonth", typeof(int));
+                table.Columns.Add("WaterYear", typeof(int));
+                table.Columns.Add("PrecipitationAcreFeet", typeof(decimal));
+                table.Columns.Add("PrecipitationInches", typeof(decimal));
+
+                var index = 0;
+                distinctRecords.ForEach(x =>
+                {
+                    table.Rows.Add(++index, x.WellTPID, x.WaterMonth, x.WaterYear, x.PrecipitationAcreFeet, x.PrecipitationInches);
+                });
+
+                using (SqlConnection con = new SqlConnection(_zybachConfiguration.DB_CONNECTION_STRING))
+                {
+                    using (SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con))
+                    {
+                        sqlBulkCopy.DestinationTableName = "dbo.OpenETGoogleBucketResponsePrecipitationDatum";
+                        con.Open();
+                        sqlBulkCopy.WriteToServer(table);
+                        con.Close();
+                    }
+                }
+
+                _zybachDbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData");
 
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
                     OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Succeeded);
@@ -446,57 +554,111 @@ namespace Zybach.API.Services
     public interface IOpenETService
     {
         string[] GetAllFilesReadyForExport();
-        HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID);
+        HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataType openETDataType);
         void UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
+            HttpClient httpClient);
+        void UpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData(int syncHistoryID, string[] filesReadyForExport,
             HttpClient httpClient);
         bool IsOpenETAPIKeyValid();
     }
 
-    public class OpenETCSVFormat
+    public class OpenETEvapCSVFormat
     {
         public string WellTPID { get; set; }
         public DateTime Date { get; set; }
-        public decimal EvapotranspirationRate { get; set; }
+        public decimal EvapotranspirationRateInches { get; set; }
+        public decimal EvapotranspirationRateAcreFeet { get; set; }
     }
 
-    public class OpenETCSVFormatMap : ClassMap<OpenETCSVFormat>
+    public class OpenETPrecipCSVFormat
     {
-        public OpenETCSVFormatMap(string parcelNumberColumnName)
+        public string WellTPID { get; set; }
+        public DateTime Date { get; set; }
+        public decimal PrecipitationInches { get; set; }
+        public decimal PrecipitationAcreFeet { get; set; }
+    }
+
+    public class OpenETEvapCSVFormatMap : ClassMap<OpenETEvapCSVFormat>
+    {
+        public OpenETEvapCSVFormatMap(string irrigationUnitTPIDColumnName)
         {
-            Map(m => m.WellTPID).Name(parcelNumberColumnName);
+            Map(m => m.WellTPID).Name(irrigationUnitTPIDColumnName);
             Map(m => m.Date).Name("time");
-            Map(m => m.EvapotranspirationRate).Name("et_mean");
+            Map(m => m.EvapotranspirationRateInches).Name("et_mean");
+            Map(m => m.EvapotranspirationRateAcreFeet).Name("volume_acre_feet");
         }
     }
 
-    public class DistinctOpenETCSVFormatComparer : IEqualityComparer<OpenETCSVFormat>
+    public class OpenETPrecipCSVFormatMap : ClassMap<OpenETPrecipCSVFormat>
+    {
+        public OpenETPrecipCSVFormatMap(string irrigationUnitTPIDColumnName)
+        {
+            Map(m => m.WellTPID).Name(irrigationUnitTPIDColumnName);
+            Map(m => m.Date).Name("time");
+            Map(m => m.PrecipitationInches).Name("pr_mean");
+            Map(m => m.PrecipitationAcreFeet).Name("volume_acre_feet");
+        }
+    }
+
+    public class DistinctOpenETEvapCSVFormatComparer : IEqualityComparer<OpenETEvapCSVFormat>
     {
 
-        public bool Equals(OpenETCSVFormat x, OpenETCSVFormat y)
+        public bool Equals(OpenETEvapCSVFormat x, OpenETEvapCSVFormat y)
         {
             return x.WellTPID == y.WellTPID &&
                    x.Date == y.Date &&
-                   x.EvapotranspirationRate == y.EvapotranspirationRate;
+                   x.EvapotranspirationRateInches == y.EvapotranspirationRateInches;
         }
 
-        public int GetHashCode(OpenETCSVFormat obj)
+        public int GetHashCode(OpenETEvapCSVFormat obj)
         {
             return obj.WellTPID.GetHashCode() ^
                    obj.Date.GetHashCode() ^
-                   obj.EvapotranspirationRate.GetHashCode();
+                   obj.EvapotranspirationRateInches.GetHashCode();
+        }
+    }
+
+    public class DistinctOpenETPrecipCSVFormatComparer : IEqualityComparer<OpenETPrecipCSVFormat>
+    {
+
+        public bool Equals(OpenETPrecipCSVFormat x, OpenETPrecipCSVFormat y)
+        {
+            return x.WellTPID == y.WellTPID &&
+                   x.Date == y.Date &&
+                   x.PrecipitationInches == y.PrecipitationInches;
+        }
+
+        public int GetHashCode(OpenETPrecipCSVFormat obj)
+        {
+            return obj.WellTPID.GetHashCode() ^
+                   obj.Date.GetHashCode() ^
+                   obj.PrecipitationInches.GetHashCode();
         }
     }
 
     public static class OpenETCSVFormatExtensionMethods
     {
-        public static OpenETGoogleBucketResponseEvapotranspirationDatum AsOpenETGoogleBucketResponseEvapotranspirationDatum(this OpenETCSVFormat openETCSVFormat)
+        public static OpenETGoogleBucketResponseEvapotranspirationDatum AsOpenETGoogleBucketResponseEvapotranspirationDatum(this OpenETEvapCSVFormat openEtEvapCsvFormat)
         {
             return new OpenETGoogleBucketResponseEvapotranspirationDatum()
             {
-                WellTPID = openETCSVFormat.WellTPID,
-                WaterYear = openETCSVFormat.Date.Year,
-                WaterMonth = openETCSVFormat.Date.Month,
-                EvapotranspirationRateInches = openETCSVFormat.EvapotranspirationRate
+                WellTPID = openEtEvapCsvFormat.WellTPID,
+                WaterYear = openEtEvapCsvFormat.Date.Year,
+                WaterMonth = openEtEvapCsvFormat.Date.Month,
+                EvapotranspirationRateInches = openEtEvapCsvFormat.EvapotranspirationRateInches,
+                EvapotranspirationRateAcreFeet = openEtEvapCsvFormat.EvapotranspirationRateAcreFeet
+            };
+        }
+
+        public static OpenETGoogleBucketResponsePrecipitationDatum AsOpenETGoogleBucketResponsePrecipitationDatum(this OpenETPrecipCSVFormat openEtPrecipCsvFormat)
+        {
+            return new OpenETGoogleBucketResponsePrecipitationDatum()
+            {
+                WellTPID = openEtPrecipCsvFormat.WellTPID,
+                WaterYear = openEtPrecipCsvFormat.Date.Year,
+                WaterMonth = openEtPrecipCsvFormat.Date.Month,
+                PrecipitationInches = openEtPrecipCsvFormat.PrecipitationInches,
+                PrecipitationAcreFeet = openEtPrecipCsvFormat.PrecipitationAcreFeet
             };
         }
     }

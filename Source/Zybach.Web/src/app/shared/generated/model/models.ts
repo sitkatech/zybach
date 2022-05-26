@@ -1,7 +1,6 @@
 export * from '././ag-hub-irrigation-unit-detail-dto';
-export * from '././ag-hub-irrigation-unit-dto';
 export * from '././ag-hub-irrigation-unit-simple-dto';
-export * from '././ag-hub-irrigation-unit-water-year-month-et-datum-dto';
+export * from '././ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto';
 export * from '././annual-pumped-volume';
 export * from '././annual-stream-flow-zone-pumping-depth-dto';
 export * from '././bulk-chemigation-permit-annual-record-creation-result';
@@ -57,6 +56,7 @@ export * from '././interval-volume-dto';
 export * from '././irrigated-acres-per-year-dto';
 export * from '././measurement-type-dto';
 export * from '././monthly-pumped-volume';
+export * from '././open-et-data-type-dto';
 export * from '././open-et-sync-history-dto';
 export * from '././open-et-sync-result-type-dto';
 export * from '././report-template-dto';

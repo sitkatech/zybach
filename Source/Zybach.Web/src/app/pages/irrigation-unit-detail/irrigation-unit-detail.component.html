@@ -58,6 +58,18 @@
                 <div class="card-body mb-3">
                     <div *ngIf="openETData?.length > 0; then hasOpenETData else noOpenETData"></div>
                     <ng-template #hasOpenETData>
+                        <div class="row col float-left">
+                            <!-- <label>Units:&nbsp;</label> -->
+                            <div class="btn-group btn-group-toggle float-left">
+                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="unitsShown == 'ac-ft' ? 'active' : ''">
+                                <input type="radio" name="ETAndPrecipUnits" (click)="toggleUnitsShown()" [disabled]="unitsShown == 'ac-ft'"> ac-ft
+                                </label>
+                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="unitsShown == 'in' ? 'active' : ''">
+                                <input type="radio" name="ETAndPrecipUnits" (click)="toggleUnitsShown()" [disabled]="unitsShown == 'in'"> in
+                                </label>
+                            </div>
+                            
+                        </div>
                         <div class="row">
                             <div class="col">
                                 <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"

@@ -8,7 +8,7 @@ namespace Zybach.EFModels.Entities
 {
     public partial class OpenETSyncHistory
     {
-        public static OpenETSyncHistoryDto New(ZybachDbContext dbContext, int waterYearMonthID)
+        public static OpenETSyncHistoryDto CreateNew(ZybachDbContext dbContext, int waterYearMonthID, int openETDataTypeID)
         {
             var waterYearMonth = dbContext.WaterYearMonths.Single(x => x.WaterYearMonthID == waterYearMonthID);
             
@@ -17,7 +17,8 @@ namespace Zybach.EFModels.Entities
                 OpenETSyncResultTypeID = (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Created,
                 WaterYearMonthID = waterYearMonthID,
                 CreateDate = DateTime.UtcNow,
-                UpdateDate = DateTime.UtcNow
+                UpdateDate = DateTime.UtcNow,
+                OpenETDataTypeID = openETDataTypeID
             };
 
             dbContext.OpenETSyncHistories.Add(openETSyncHistoryToAdd);

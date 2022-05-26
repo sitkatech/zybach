@@ -5150,10 +5150,10 @@
             "type": "string",
             "nullable": true
           },
-          "WaterYearMonthETData": {
+          "WaterYearMonthETAndPrecipData": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AgHubIrrigationUnitWaterYearMonthETDatumDto"
+              "$ref": "#/components/schemas/AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto"
             },
             "nullable": true
           },
@@ -5164,25 +5164,6 @@
             },
             "nullable": true
           },
-          "AgHubIrrigationUnitID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellTPID": {
-            "type": "string",
-            "nullable": true
-          },
-          "IrrigationUnitAreaInAcres": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AgHubIrrigationUnitDto": {
-        "type": "object",
-        "properties": {
           "AgHubIrrigationUnitID": {
             "type": "integer",
             "format": "int32"
@@ -5225,28 +5206,11 @@
         },
         "additionalProperties": false
       },
-      "AgHubIrrigationUnitWaterYearMonthETDatumDto": {
+      "AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto": {
         "type": "object",
         "properties": {
-          "AgHubIrrigationUnitWaterYearMonthETDatumID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "AgHubIrrigationUnit": {
-            "$ref": "#/components/schemas/AgHubIrrigationUnitDto"
-          },
           "WaterYearMonth": {
             "$ref": "#/components/schemas/WaterYearMonthDto"
-          },
-          "EvapotranspirationRateInches": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "EvapotranspirationRateAcreFeet": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
           },
           "PrecipitationAcreFeet": {
             "type": "number",
@@ -5254,6 +5218,16 @@
             "nullable": true
           },
           "PrecipitationInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "EvapotranspirationAcreFeet": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "EvapotranspirationInches": {
             "type": "number",
             "format": "double",
             "nullable": true

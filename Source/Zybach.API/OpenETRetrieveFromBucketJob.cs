@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using System;
 using System.Net.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.API
 {
@@ -47,8 +48,18 @@ namespace Zybach.API
                 var filesReadyForExport = _openETService.GetAllFilesReadyForExport();
                 inProgressSyncs.ForEach(x =>
                 {
-                    _openETService.UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
+                    if (x.OpenETDataTypeID == (int)OpenETDataTypes.OpenETDataTypeEnum.Evapotranspiration)
+                    {
+                        _openETService.UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
+                    }
+                    if (x.OpenETDataTypeID == (int)OpenETDataTypes.OpenETDataTypeEnum.Precipitation)
+                    {
+                        _openETService.UpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
+                    }
+                    
                 });
+
+                _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateAgHubIrrigationUnitMonthlyETAndPrecipDatum");
             }
 
             //Fail any created syncs that have been in a created state for longer than 15 minutes

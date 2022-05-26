@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Zybach.EFModels.Entities;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.API;
@@ -46,9 +47,15 @@ namespace Zybach.API
                 return;
             }
 
+            var openETDataTypes = _dbContext.OpenETDataTypes
+                .AsNoTracking()
+                .ToList();
+
             nonFinalizedWaterYearMonths.ToList().ForEach(x =>
                 {
-                    _openETService.TriggerOpenETGoogleBucketRefresh(x.WaterYearMonthID);
+                    openETDataTypes.ForEach(y =>
+                            _openETService.TriggerOpenETGoogleBucketRefresh(x.WaterYearMonthID, y)
+                    );
                 });
         }
     }

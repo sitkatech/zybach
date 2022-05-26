@@ -25,8 +25,3 @@ create table dbo.OpenETGoogleBucketResponsePrecipitationDatum (
 	PrecipitationAcreFeet decimal (20,4) null,
 	PrecipitationInches decimal (20,4) null
 )
-
-alter table dbo.AgHubIrrigationUnitWaterYearMonthETDatum
-add
-PrecipitationAcreFeet decimal (20,4) null,
-PrecipitationInches decimal (20,4) null
