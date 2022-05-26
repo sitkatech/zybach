@@ -47,7 +47,6 @@ namespace Zybach.API.Controllers
         {
             var openETDataTypes = _dbContext.OpenETDataTypes
                 .AsNoTracking()
-                .Select(x => x.AsDto())
                 .ToList();
             foreach (var openETDataType in openETDataTypes) { 
                 var triggerResponse = _openETService.TriggerOpenETGoogleBucketRefresh(waterYearMonthID, openETDataType);

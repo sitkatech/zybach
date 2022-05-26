@@ -49,7 +49,6 @@ namespace Zybach.API
 
             var openETDataTypes = _dbContext.OpenETDataTypes
                 .AsNoTracking()
-                .Select(x => x.AsDto())
                 .ToList();
 
             nonFinalizedWaterYearMonths.ToList().ForEach(x =>

@@ -180,7 +180,7 @@ namespace Zybach.API.Services
         }
 
 
-        public HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataTypeDto openETDataType)
+        public HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataType openETDataType)
         {
             if (!_zybachConfiguration.AllowOpenETSync)
             {
@@ -238,11 +238,11 @@ namespace Zybach.API.Services
                 {
                     StatusCode = HttpStatusCode.UnprocessableEntity,
                     Content = new StringContent(
-                        $"The sync for {monthNameToDisplay} {year} will not be completed for the following reason: {newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeDisplayName}.{(newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed ? " Error Message:" + newSyncHistory.ErrorMessage : "")}")
+                        $"The sync for {monthNameToDisplay} {year} will not be completed for the following reason: {newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeDisplayName}.{(newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed ? $" Error Message:{newSyncHistory.ErrorMessage}" : "")}")
                 };
             }
 
-            var openETRequestURL = $"{_zybachConfiguration.OpenETRasterTimeSeriesMultipolygonRoute}?shapefile_asset_id={_zybachConfiguration.OPENET_SHAPEFILE_PATH}&start_date={new DateTime(year, month, 1):yyyy-MM-dd}&end_date={new DateTime(year, month, DateTime.DaysInMonth(year, month)):yyyy-MM-dd}&model=ensemble&variable={openETDataType.OpenETDataTypeVariableName}&units=english&output_date_format=standard&ref_et_source=gridmet&filename_suffix={"TPNRD_" + month + "_" + year + "_public" + openETDataType.OpenETDataTypeName}&include_columns={_zybachConfiguration.OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}&provisional=true&interval=monthly";
+            var openETRequestURL = $"{_zybachConfiguration.OpenETRasterTimeSeriesMultipolygonRoute}?shapefile_asset_id={_zybachConfiguration.OPENET_SHAPEFILE_PATH}&start_date={new DateTime(year, month, 1):yyyy-MM-dd}&end_date={new DateTime(year, month, DateTime.DaysInMonth(year, month)):yyyy-MM-dd}&model=ensemble&variable={openETDataType.OpenETDataTypeVariableName}&units=english&output_date_format=standard&ref_et_source=gridmet&filename_suffix={$"TPNRD_{month}_{year}_public{openETDataType.OpenETDataTypeName}"}&include_columns={_zybachConfiguration.OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}&provisional=true&interval=monthly";
 
             try
             {
@@ -554,7 +554,7 @@ namespace Zybach.API.Services
     public interface IOpenETService
     {
         string[] GetAllFilesReadyForExport();
-        HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataTypeDto openETDataType);
+        HttpResponseMessage TriggerOpenETGoogleBucketRefresh(int waterYearMonthID, OpenETDataType openETDataType);
         void UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(int syncHistoryID, string[] filesReadyForExport,
             HttpClient httpClient);
         void UpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData(int syncHistoryID, string[] filesReadyForExport,
