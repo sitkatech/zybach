@@ -4,27 +4,27 @@ namespace Zybach.EFModels.Entities
 {
     public partial class ChemigationInspectionExtensionMethods
     {
-        static partial void DoCustomSimpleDtoMappings(ChemigationInspection chemigationInspections,
+        static partial void DoCustomSimpleDtoMappings(ChemigationInspection chemigationInspection,
             ChemigationInspectionSimpleDto chemigationInspectionSimpleDto)
         {
-            chemigationInspectionSimpleDto.ChemigationPermitNumber = chemigationInspections.ChemigationPermitAnnualRecord
+            chemigationInspectionSimpleDto.ChemigationPermitNumber = chemigationInspection.ChemigationPermitAnnualRecord
                 .ChemigationPermit.ChemigationPermitNumber;
-            chemigationInspectionSimpleDto.ChemigationPermitNumberDisplay = chemigationInspections
+            chemigationInspectionSimpleDto.ChemigationPermitNumberDisplay = chemigationInspection
                 .ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay;
-            chemigationInspectionSimpleDto.County = chemigationInspections.ChemigationPermitAnnualRecord
+            chemigationInspectionSimpleDto.County = chemigationInspection.ChemigationPermitAnnualRecord
                 .ChemigationPermit.County.CountyDisplayName;
             chemigationInspectionSimpleDto.TownshipRangeSection =
-                chemigationInspections.ChemigationPermitAnnualRecord.TownshipRangeSection;
-            chemigationInspectionSimpleDto.ChemigationInspectionTypeName = chemigationInspections.ChemigationInspectionType?.ChemigationInspectionTypeDisplayName;
-            chemigationInspectionSimpleDto.ChemigationInspectionStatusName = chemigationInspections.ChemigationInspectionStatus.ChemigationInspectionStatusDisplayName;
-            chemigationInspectionSimpleDto.ChemigationMainlineCheckValveName = chemigationInspections.ChemigationMainlineCheckValve?.ChemigationMainlineCheckValveDisplayName;
-            chemigationInspectionSimpleDto.ChemigationLowPressureValveName = chemigationInspections.ChemigationLowPressureValve?.ChemigationLowPressureValveDisplayName;
-            chemigationInspectionSimpleDto.ChemigationInjectionValveName = chemigationInspections.ChemigationInjectionValve?.ChemigationInjectionValveDisplayName;
-            chemigationInspectionSimpleDto.ChemigationInterlockTypeName = chemigationInspections.ChemigationInterlockType?.ChemigationInterlockTypeDisplayName;
-            chemigationInspectionSimpleDto.ChemigationInspectionFailureReasonName = chemigationInspections.ChemigationInspectionFailureReason?.ChemigationInspectionFailureReasonDisplayName;
-            chemigationInspectionSimpleDto.TillageName = chemigationInspections.Tillage?.TillageDisplayName;
-            chemigationInspectionSimpleDto.CropTypeName = chemigationInspections.CropType?.CropTypeDisplayName;
-            chemigationInspectionSimpleDto.Inspector = chemigationInspections.InspectorUser?.AsSimpleDto();
+                chemigationInspection.ChemigationPermitAnnualRecord.TownshipRangeSection;
+            chemigationInspectionSimpleDto.ChemigationInspectionTypeName = chemigationInspection.ChemigationInspectionType?.ChemigationInspectionTypeDisplayName;
+            chemigationInspectionSimpleDto.ChemigationInspectionStatusName = chemigationInspection.ChemigationInspectionStatus.ChemigationInspectionStatusDisplayName;
+            chemigationInspectionSimpleDto.ChemigationMainlineCheckValveName = chemigationInspection.ChemigationMainlineCheckValve?.ChemigationMainlineCheckValveDisplayName;
+            chemigationInspectionSimpleDto.ChemigationLowPressureValveName = chemigationInspection.ChemigationLowPressureValve?.ChemigationLowPressureValveDisplayName;
+            chemigationInspectionSimpleDto.ChemigationInjectionValveName = chemigationInspection.ChemigationInjectionValve?.ChemigationInjectionValveDisplayName;
+            chemigationInspectionSimpleDto.ChemigationInterlockTypeName = chemigationInspection.ChemigationInterlockType?.ChemigationInterlockTypeDisplayName;
+            chemigationInspectionSimpleDto.ChemigationInspectionFailureReasonName = chemigationInspection.ChemigationInspectionFailureReason?.ChemigationInspectionFailureReasonDisplayName;
+            chemigationInspectionSimpleDto.TillageName = chemigationInspection.Tillage?.TillageDisplayName;
+            chemigationInspectionSimpleDto.CropTypeName = chemigationInspection.CropType?.CropTypeDisplayName;
+            chemigationInspectionSimpleDto.Inspector = chemigationInspection.InspectorUser?.AsSimpleDto();
         }
 
     }

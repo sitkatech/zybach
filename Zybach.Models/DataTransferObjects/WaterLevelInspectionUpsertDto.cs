@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zybach.Models.DataTransferObjects
 {
@@ -18,7 +14,7 @@ namespace Zybach.Models.DataTransferObjects
         [RegularExpression(@"^\d{0,8}\.?\d{0,4}|\.\d{0,4}$", ErrorMessage = "Measurement must be a number between 0 and 99999999.9999, with at most 4 digits after the decimal")]
         [Range(typeof(decimal), "0", "99999999.9999", ErrorMessage = "Measurement must be a number between 0 and 99999999.9999, with at most 4 digits after the decimal")]
         public decimal? Measurement { get; set; }
-        public string? MeasuringEquipment { get; set; }
+        public string MeasuringEquipment { get; set; }
         [Required]
         public bool HasOil { get; set; }
         [Required]

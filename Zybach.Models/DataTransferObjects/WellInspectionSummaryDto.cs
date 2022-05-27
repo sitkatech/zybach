@@ -5,7 +5,7 @@ namespace Zybach.Models.DataTransferObjects
 {
     public class WellInspectionSummaryDto
     {
-        public WellSimpleDto Well { get; set; }
+        public WellSimpleDto? Well { get; set; }
 
         public bool HasWaterLevelInspections { get; set; }
         public DateTime? LatestWaterLevelInspectionDate { get; set; }

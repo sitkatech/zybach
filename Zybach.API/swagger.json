@@ -5284,6 +5284,15 @@
         },
         "additionalProperties": false
       },
+      "CRSType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "ChemicalFormulationDto": {
         "type": "object",
         "properties": {
@@ -6548,15 +6557,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "CRSType": {
-        "enum": [
-          0,
-          1,
-          2
-        ],
-        "type": "integer",
-        "format": "int32"
       },
       "CustomRichTextDto": {
         "type": "object",
@@ -8594,10 +8594,6 @@
             },
             "nullable": true
           },
-          "TownshipRangeSection": {
-            "type": "string",
-            "nullable": true
-          },
           "County": {
             "type": "string",
             "nullable": true
@@ -8635,20 +8631,11 @@
             "type": "string",
             "nullable": true
           },
-          "PageNumber": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
           "SiteName": {
             "type": "string",
             "nullable": true
           },
           "SiteNumber": {
-            "type": "string",
-            "nullable": true
-          },
-          "OwnerName": {
             "type": "string",
             "nullable": true
           },
@@ -8781,6 +8768,19 @@
             "nullable": true
           },
           "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
+          "PageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TownshipRangeSection": {
             "type": "string",
             "nullable": true
           },

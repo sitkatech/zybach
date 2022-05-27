@@ -7,8 +7,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
-using Zybach.API;
-using Zybach.API.Services;
 
 namespace Zybach.API
 {

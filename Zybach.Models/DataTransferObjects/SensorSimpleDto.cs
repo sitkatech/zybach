@@ -11,8 +11,8 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? FirstReadingDate { get; set; }
         public DateTime? LastReadingDate { get; set; }
         public int? WellPageNumber { get; set; }
-        public string? WellOwnerName { get; set; }
-        public string? WellTownshipRangeSection { get; set; }
+        public string WellOwnerName { get; set; }
+        public string WellTownshipRangeSection { get; set; }
         public List<WellSensorMeasurementDto> WellSensorMeasurements { get; set; }
     }
 }

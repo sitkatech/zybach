@@ -8,6 +8,7 @@ using NetTopologySuite.Geometries;
 using ProjNet.Geometries;
 using Zybach.Models.DataTransferObjects;
 using Point = GeoJSON.Net.Geometry.Point;
+using Position = GeoJSON.Net.Geometry.Position;
 
 namespace Zybach.EFModels.Entities
 {

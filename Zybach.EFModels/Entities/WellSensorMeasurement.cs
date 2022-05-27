@@ -9,6 +9,6 @@ namespace Zybach.EFModels.Entities
 
         public DateTime MeasurementDate => new(ReadingYear, ReadingMonth, ReadingDay);
 
-        public string MeasurementValueString => MeasurementValue != null ? $"{MeasurementValue:N1} {(MeasurementType.MeasurementTypeID == (int) MeasurementTypeEnum.WellPressure ? "feet" : "gallons")}" : "N/A";
+        public string MeasurementValueString => $"{MeasurementValue:N1} {(MeasurementType.MeasurementTypeID == (int) MeasurementTypeEnum.WellPressure ? "feet" : "gallons")}";
     }
 }

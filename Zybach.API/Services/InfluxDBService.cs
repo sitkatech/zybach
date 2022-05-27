@@ -24,7 +24,6 @@ namespace Zybach.API.Services
             var options = new InfluxDBClientOptions.Builder()
                 .Url(_zybachConfiguration.INFLUXDB_URL)
                 .AuthenticateToken(_zybachConfiguration.INFLUXDB_TOKEN.ToCharArray())
-                .ReadWriteTimeOut(TimeSpan.FromMinutes(10))
                 .TimeOut(TimeSpan.FromMinutes(10))
                 .Build();
             _influxDbClient = InfluxDBClientFactory.Create(options);

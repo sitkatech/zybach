@@ -9,6 +9,6 @@ namespace Zybach.Models.DataTransferObjects
         [Required(ErrorMessage = "County is required")]
         public int? CountyID { get; set; }
         [Required(ErrorMessage = "Well is required")]
-        public string? WellRegistrationID { get; set; }
+        public string WellRegistrationID { get; set; }
     }
 }

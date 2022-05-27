@@ -17,7 +17,7 @@ namespace Zybach.Models.DataTransferObjects
         public object Location { get; set; }
         public DateTime? LastReadingDate { get; set; }
         public string WellNickname { get; set; }
-        public string? TownshipRangeSection { get; set; }
+        public string TownshipRangeSection { get; set; }
 
         public List<SensorSummaryDto> Sensors { get; set; }
     }
@@ -48,8 +48,8 @@ namespace Zybach.Models.DataTransferObjects
         public string FieldName { get; set; }
         public string WellNickname { get; set; }
         public int? PageNumber { get; set; }
-        public string? OwnerName { get; set; }
-        public string? TownshipRangeSection { get; set; }
+        public string OwnerName { get; set; }
+        public string TownshipRangeSection { get; set; }
         public bool? HasWaterQualityInspections { get; set; }
         public bool? HasWaterLevelInspections { get; set; }
     }
@@ -79,7 +79,6 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int? AgHubIrrigationUnitID { get; set; }
         public List<AnnualPumpedVolume> AnnualPumpedVolume { get; set; }
-        public string TownshipRangeSection { get; set; }
         public string County { get; set; }
         public int? WellParticipationID { get; set; }
         public string WellParticipationName { get; set; }
@@ -89,10 +88,8 @@ namespace Zybach.Models.DataTransferObjects
         public bool RequiresWaterLevelInspection { get; set; }
         public decimal? WellDepth { get; set; }
         public string Clearinghouse { get; set; }
-        public int? PageNumber { get; set; }
         public string SiteName { get; set; }
         public string SiteNumber { get; set; }
-        public string OwnerName { get; set; }
         public string OwnerAddress { get; set; }
         public string OwnerCity { get; set; }
         public string OwnerState { get; set; }
@@ -107,7 +104,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WaterQualityInspectionTypes { get; set; }
         public string ScreenInterval { get; set; }
         public decimal? ScreenDepth { get; set; }
-        public string? IrrigationUnitGeoJSON { get; set; }
+        public string IrrigationUnitGeoJSON { get; set; }
     }
 
 

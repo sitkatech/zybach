@@ -115,7 +115,7 @@ namespace Zybach.API
                 wellStaging.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
                 wellStaging.AgHubRegisteredUser = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
                 wellStaging.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
-                wellStaging.IrrigationUnitGeometry = agHubWellRawWithAcreYears.IrrigationUnitGeometry.HasValue() ? wktReader.Read(agHubWellRawWithAcreYears.IrrigationUnitGeometry) : null;
+                wellStaging.IrrigationUnitGeometry = !string.IsNullOrWhiteSpace(agHubWellRawWithAcreYears.IrrigationUnitGeometry) ? wktReader.Read(agHubWellRawWithAcreYears.IrrigationUnitGeometry) : null;
 
                 var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
                     .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
