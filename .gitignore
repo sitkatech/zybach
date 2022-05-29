@@ -18,3 +18,4 @@ obj
 *.env
 *.user
 *.pem
+/Build/build.ini
