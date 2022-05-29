@@ -98,6 +98,8 @@ import { IrrigationUnitListComponent } from './pages/irrigation-unit-list/irriga
 import { IrrigationUnitDetailComponent } from './pages/irrigation-unit-detail/irrigation-unit-detail.component';
 import { IrrigationUnitMapComponent } from './pages/irrigation-unit-map/irrigation-unit-map.component';
 import { OpenetSyncWaterYearMonthStatusListComponent } from './pages/openet-sync-water-year-month-status-list/openet-sync-water-year-month-status-list.component';
+import { ApiModule } from './shared/generated/api.module';
+import { Configuration } from './shared/generated/configuration';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -180,6 +182,11 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     }),
     AngularMyDatePickerModule,
     NgSelectModule,
+    ApiModule.forRoot(() => {
+      return new Configuration({
+        basePath: `${environment.mainAppApiUrl}`,
+      });
+    }),
     NgxMaskModule.forRoot(),
   ],  
   providers: [

@@ -5,12 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("AgHubWell")]
-    [Index(nameof(WellID), Name = "AK_AgHubWell_WellID", IsUnique = true)]
+    [Index("WellID", Name = "AK_AgHubWell_WellID", IsUnique = true)]
     public partial class AgHubWell
     {
         public AgHubWell()
@@ -36,18 +34,20 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime? RegisteredUpdated { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string AgHubRegisteredUser { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string FieldName { get; set; }
         public int? AgHubIrrigationUnitID { get; set; }
 
-        [ForeignKey(nameof(AgHubIrrigationUnitID))]
+        [ForeignKey("AgHubIrrigationUnitID")]
         [InverseProperty("AgHubWells")]
         public virtual AgHubIrrigationUnit AgHubIrrigationUnit { get; set; }
-        [ForeignKey(nameof(WellID))]
+        [ForeignKey("WellID")]
         [InverseProperty("AgHubWell")]
         public virtual Well Well { get; set; }
-        [InverseProperty(nameof(AgHubWellIrrigatedAcre.AgHubWell))]
+        [InverseProperty("AgHubWell")]
         public virtual ICollection<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
     }
 }

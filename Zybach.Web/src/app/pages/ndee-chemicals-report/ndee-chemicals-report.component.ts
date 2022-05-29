@@ -2,13 +2,13 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemicalFormulationYearlyTotalDto } from 'src/app/shared/generated/model/chemical-formulation-yearly-total-dto';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { ChemigationPermitAnnualRecordChemicalFormulationService } from 'src/app/shared/generated/api/chemigation-permit-annual-record-chemical-formulation.service';
 
 @Component({
   selector: 'zybach-ndee-chemicals-report',
@@ -31,7 +31,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
   
     constructor(
       private authenticationService: AuthenticationService,
-      private chemigationPermitService: ChemigationPermitService,
+      private chemigationPermiAnnualRecordChemicalFormulationService: ChemigationPermitAnnualRecordChemicalFormulationService,
       private cdr: ChangeDetectorRef,
       private utilityFunctionsService: UtilityFunctionsService
     ) { }
@@ -101,7 +101,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
   }
 
   public onGridReady(params) {
-    this.chemigationPermitService.getChemicalFormulationYearlyTotals().subscribe(chemicalFormulationYearlyTotals => {
+    this.chemigationPermiAnnualRecordChemicalFormulationService.chemicalFormulationYearlyTotalsGet().subscribe(chemicalFormulationYearlyTotals => {
       this.rowData = chemicalFormulationYearlyTotals;
       this.chemicalReportGrid.api.hideOverlay();
       this.pinnedBottomRowData = [

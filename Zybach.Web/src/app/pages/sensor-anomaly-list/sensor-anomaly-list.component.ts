@@ -3,7 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { SensorAnomalyService } from 'src/app/services/sensor-anomaly.service';
+import { SensorAnomalyService } from 'src/app/shared/generated/api/sensor-anomaly.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { FontAwesomeIconLinkRendererComponent } from 'src/app/shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { SensorAnomalySimpleDto } from 'src/app/shared/generated/model/sensor-anomaly-simple-dto';
@@ -113,7 +113,7 @@ export class SensorAnomalyListComponent implements OnInit {
   }
 
   private updateSensorAnomaliesGridData(): void {
-    this.sensorAnomalyService.getSensorAnomalies().subscribe(sensorAnomalies => {
+    this.sensorAnomalyService.sensorAnomaliesGet().subscribe(sensorAnomalies => {
       this.sensorAnomalies = sensorAnomalies;
 
       this.sensorAnomaliesGrid.api.setRowData(sensorAnomalies);
@@ -145,7 +145,7 @@ export class SensorAnomalyListComponent implements OnInit {
   public deleteSensorAnomaly() {
     this.isLoadingDelete = true;
 
-    this.sensorAnomalyService.deleteSensorAnomaly(this.sensorAnomalyToDelete.SensorAnomalyID).subscribe(() => {
+    this.sensorAnomalyService.sensorAnomaliesSensorAnomalyIDDelete(this.sensorAnomalyToDelete.SensorAnomalyID).subscribe(() => {
       this.isLoadingDelete = false;
       this.modalReference.close();
       this.alertService.pushAlert(new Alert('Sensor Anomaly was successfully deleted.', AlertContext.Success, true));

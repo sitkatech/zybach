@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("County")]
-    [Index(nameof(CountyDisplayName), Name = "AK_County_CountyDisplayName", IsUnique = true)]
-    [Index(nameof(CountyName), Name = "AK_County_CountyName", IsUnique = true)]
+    [Index("CountyDisplayName", Name = "AK_County_CountyDisplayName", IsUnique = true)]
+    [Index("CountyName", Name = "AK_County_CountyName", IsUnique = true)]
     public partial class County
     {
         public County()
@@ -23,14 +21,16 @@ namespace Zybach.EFModels.Entities
         public int CountyID { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string CountyName { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string CountyDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationPermit.County))]
+        [InverseProperty("County")]
         public virtual ICollection<ChemigationPermit> ChemigationPermits { get; set; }
-        [InverseProperty(nameof(Well.County))]
+        [InverseProperty("County")]
         public virtual ICollection<Well> Wells { get; set; }
     }
 }

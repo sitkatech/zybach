@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { UserService } from 'src/app/services/user/user.service';
-import { RoleService } from 'src/app/services/role/role.service';
+import { UserService } from 'src/app/shared/generated/api/user.service';
+import { RoleService } from 'src/app/shared/generated/api/role.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
@@ -35,7 +35,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.authenticationService.getCurrentUser().subscribe(currentUser => {
             this.currentUser = currentUser;
-            this.roleService.getRoles().subscribe(result => {
+            this.roleService.rolesGet().subscribe(result => {
                 this.roles = result;
                 this.cdr.detectChanges();
             });
@@ -45,7 +45,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
             const userID = parseInt(this.route.snapshot.paramMap.get("userID"));
             if (userID) {
                 forkJoin(
-                    this.userService.getUserFromUserID(userID)
+                    this.userService.usersUserIDGet(userID)
                 ).subscribe(([user]) => {
                     if(user.UserGuid === null)
                     {
@@ -75,7 +75,7 @@ export class UserInviteComponent implements OnInit, OnDestroy {
     onSubmit(inviteUserForm: HTMLFormElement): void {
         this.isLoadingSubmit = true;
 
-        this.userService.inviteUser(this.model)
+        this.userService.usersInvitePost(this.model)
             .subscribe(response => {
                 this.isLoadingSubmit = false;
                 inviteUserForm.reset();

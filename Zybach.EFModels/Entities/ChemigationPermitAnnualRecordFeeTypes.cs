@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
@@ -16,9 +14,7 @@ namespace Zybach.EFModels.Entities
 
         public static IEnumerable<ChemigationPermitAnnualRecordFeeTypeDto> List(ZybachDbContext dbContext)
         {
-            return dbContext.ChemigationPermitAnnualRecordFeeTypes
-                .AsNoTracking()
-                .Select(x => x.AsDto()).ToList();
+            return ChemigationPermitAnnualRecordFeeType.AllAsDto;
         }
     }
 }

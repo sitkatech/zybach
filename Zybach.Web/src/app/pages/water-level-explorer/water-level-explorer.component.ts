@@ -1,8 +1,6 @@
-import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { SensorService } from 'src/app/services/sensor.service';
-import { WellService } from 'src/app/services/well.service';
+import { SensorService } from 'src/app/shared/generated/api/sensor.service';
 import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWaterLevelMapSummaryDto } from 'src/app/shared/generated/model/well-water-level-map-summary-dto';
@@ -12,6 +10,7 @@ import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-adapter-from-string';
+import { MapDataService } from 'src/app/shared/generated/api/map-data.service';
 @Component({
   selector: 'zybach-water-level-explorer',
   templateUrl: './water-level-explorer.component.html',
@@ -45,15 +44,13 @@ export class WaterLevelExplorerComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private cdr: ChangeDetectorRef,
-    private datePipe: DatePipe,
-    private sensorService: SensorService,
-    private wellService: WellService
-  ) { }
+    private mapDataService: MapDataService,
+    private sensorService: SensorService  ) { }
 
   ngOnInit(): void {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.wellService.getWellsWithPressureSensorMapData().subscribe(wells => {
+      this.mapDataService.mapDataWellsWithWellPressureSensorGet().subscribe(wells => {
         this.wells = wells;
         this.wellsGeoJson =
         {
@@ -76,7 +73,7 @@ export class WaterLevelExplorerComponent implements OnInit {
   public onMapSelection(wellID: number) {
     this.noTimeSeriesData = true;
     this.selectedWell = this.wells.find(x => x.WellID === wellID);
-    this.sensorService.listSensorsByWellID(wellID).subscribe(sensors => {
+    this.sensorService.sensorsByWellIDWellIDGet(wellID).subscribe(sensors => {
       this.chartID = `sensorChart-${wellID}`;
       this.selectedSensors = sensors;
       this.startDate = this.selectedSensors[0].FirstReadingDate;
@@ -131,25 +128,25 @@ export class WaterLevelExplorerComponent implements OnInit {
     return result;
   }
 
-  public fullDateRange(event): void {
+  public fullDateRange(): void {
     this.startDate = this.selectedSensors[0].FirstReadingDate;
     this.endDate = this.selectedWell.LastReadingDate ?? new Date().toISOString();
     this.filterChart(new Date(this.startDate), new Date(this.endDate));
   }
 
-  public lastThirtyDays(event): void {
+  public lastThirtyDays(): void {
     this.endDate = new Date().toISOString();
     this.startDate = this.addDays(new Date(this.endDate), -30).toISOString();
     this.filterChart(new Date(this.startDate), new Date(this.endDate));
   }
 
-  public lastSixMonths(event): void {
+  public lastSixMonths(): void {
     this.endDate = new Date().toISOString();
     this.startDate = this.addMonths(new Date(this.endDate), -6).toISOString();
     this.filterChart(new Date(this.startDate), new Date(this.endDate));
   }
 
-  public lastOneYear(event): void {
+  public lastOneYear(): void {
     this.endDate = new Date().toISOString();
     this.startDate = this.addYears(new Date(this.endDate), -1).toISOString();
     this.filterChart(new Date(this.startDate), new Date(this.endDate));
@@ -175,7 +172,7 @@ export class WaterLevelExplorerComponent implements OnInit {
 
     this.setRangeMax(filteredTimeSeries);
 
-    var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
+    var changeSet = vega.changeset().remove(() => true).insert(filteredTimeSeries);
     this.vegaView.change('TimeSeries', changeSet).run();
     this.resizeWindow();
   }

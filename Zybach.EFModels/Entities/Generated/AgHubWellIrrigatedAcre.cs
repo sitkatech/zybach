@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("AgHubWellIrrigatedAcre")]
-    [Index(nameof(AgHubWellID), nameof(IrrigationYear), Name = "AK_AgHubWellIrrigatedAcre_AgHubWellID_IrrigationYear", IsUnique = true)]
+    [Index("AgHubWellID", "IrrigationYear", Name = "AK_AgHubWellIrrigatedAcre_AgHubWellID_IrrigationYear", IsUnique = true)]
     public partial class AgHubWellIrrigatedAcre
     {
         [Key]
@@ -18,7 +16,7 @@ namespace Zybach.EFModels.Entities
         public int IrrigationYear { get; set; }
         public double Acres { get; set; }
 
-        [ForeignKey(nameof(AgHubWellID))]
+        [ForeignKey("AgHubWellID")]
         [InverseProperty("AgHubWellIrrigatedAcres")]
         public virtual AgHubWell AgHubWell { get; set; }
     }

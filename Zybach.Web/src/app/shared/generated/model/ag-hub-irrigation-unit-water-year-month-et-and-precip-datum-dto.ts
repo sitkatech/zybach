@@ -12,7 +12,6 @@
 import { WaterYearMonthDto } from '././water-year-month-dto';
 
 export class AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto { 
-    AgHubIrrigationUnitID?: number;
     WaterYearMonth?: WaterYearMonthDto;
     PrecipitationAcreFeet?: number;
     PrecipitationInches?: number;

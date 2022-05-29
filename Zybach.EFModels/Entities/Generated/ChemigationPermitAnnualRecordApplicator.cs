@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemigationPermitAnnualRecordApplicator")]
@@ -16,15 +14,18 @@ namespace Zybach.EFModels.Entities
         public int ChemigationPermitAnnualRecordID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string ApplicatorName { get; set; }
         public int? CertificationNumber { get; set; }
         public int? ExpirationYear { get; set; }
         [StringLength(30)]
+        [Unicode(false)]
         public string HomePhone { get; set; }
         [StringLength(30)]
+        [Unicode(false)]
         public string MobilePhone { get; set; }
 
-        [ForeignKey(nameof(ChemigationPermitAnnualRecordID))]
+        [ForeignKey("ChemigationPermitAnnualRecordID")]
         [InverseProperty("ChemigationPermitAnnualRecordApplicators")]
         public virtual ChemigationPermitAnnualRecord ChemigationPermitAnnualRecord { get; set; }
     }

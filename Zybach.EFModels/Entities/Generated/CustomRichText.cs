@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("CustomRichText")]
@@ -14,10 +12,7 @@ namespace Zybach.EFModels.Entities
         [Key]
         public int CustomRichTextID { get; set; }
         public int CustomRichTextTypeID { get; set; }
+        [Unicode(false)]
         public string CustomRichTextContent { get; set; }
-
-        [ForeignKey(nameof(CustomRichTextTypeID))]
-        [InverseProperty("CustomRichTexts")]
-        public virtual CustomRichTextType CustomRichTextType { get; set; }
     }
 }

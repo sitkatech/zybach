@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("OpenETGoogleBucketResponsePrecipitationDatum")]
@@ -15,6 +13,7 @@ namespace Zybach.EFModels.Entities
         public int OpenETGoogleBucketResponsePrecipitationDatumID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string WellTPID { get; set; }
         public int WaterMonth { get; set; }
         public int WaterYear { get; set; }

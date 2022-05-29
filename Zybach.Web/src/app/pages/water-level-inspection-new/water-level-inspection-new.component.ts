@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { WaterLevelInspectionService } from 'src/app/services/water-level-inspection.service';
-import { WellService } from 'src/app/services/well.service';
+import { WaterLevelInspectionService } from 'src/app/shared/generated/api/water-level-inspection.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WaterLevelInspectionUpsertComponent } from 'src/app/shared/components/water-level-inspection-upsert/water-level-inspection-upsert.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterLevelInspectionUpsertDto } from 'src/app/shared/generated/model/water-level-inspection-upsert-dto';
@@ -43,7 +43,7 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
       this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
 
       if (this.wellID > 0) {
-        this.wellService.getWellSimpleDto(this.wellID).subscribe(well => {
+        this.wellService.wellsWellIDSimpleDtoGet(this.wellID).subscribe(well => {
           this.initializeInspectionModel(well.WellRegistrationID);
         });
       } else {
@@ -77,7 +77,7 @@ export class WaterLevelInspectionNewComponent implements OnInit, OnDestroy {
     this.isLoadingSubmit = true;
     this.alertService.clearAlerts();
 
-    this.waterLevelInspectionService.createWaterLevelInspection(this.inspection)
+    this.waterLevelInspectionService.waterLevelInspectionsPost(this.inspection)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addWaterLevelInspectionForm.reset();

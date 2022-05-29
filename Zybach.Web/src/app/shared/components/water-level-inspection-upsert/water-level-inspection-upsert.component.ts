@@ -2,13 +2,13 @@ import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular
 import { NgForm } from '@angular/forms';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, Observable, of } from 'rxjs';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/shared/generated/api/user.service';
 import { UserDto } from '../../generated/model/user-dto';
 import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WaterLevelInspectionUpsertDto } from '../../generated/model/water-level-inspection-upsert-dto';
-import { WaterLevelInspectionService } from 'src/app/services/water-level-inspection.service';
+import { WaterLevelInspectionService } from 'src/app/shared/generated/api/water-level-inspection.service';
 import { WaterLevelMeasuringEquipmentDto } from '../../generated/model/water-level-measuring-equipment-dto';
 
 @Component({
@@ -35,8 +35,8 @@ export class WaterLevelInspectionUpsertComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin({
-      users: this.userService.getUsers(),
-      waterLevelMeasuringEquipment: this.waterLevelInspectionService.getWaterLevelMeasuringEquipments()
+      users: this.userService.usersGet(),
+      waterLevelMeasuringEquipment: this.waterLevelInspectionService.waterLevelInspectionsMeasuringEquipmentGet()
 
     }).subscribe(({ users, waterLevelMeasuringEquipment }) => {
       this.users = users;
@@ -51,7 +51,7 @@ export class WaterLevelInspectionUpsertComponent implements OnInit {
         debounceTime(200), 
         distinctUntilChanged(),
         tap(() => this.searchFailed = false),
-        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationIDHasInspectionType(searchText) : ([])), 
+        switchMap(searchText => searchText.length > 2 ? this.wellService.wellsSearchWellRegistrationIDHasInspectionTypeGet(searchText) : ([])), 
         catchError(() => {
           this.searchFailed = true;
           return of([]);

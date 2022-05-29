@@ -41,13 +41,13 @@ namespace Zybach.API.Controllers
         /// Comprehensive data download to support Robust Review processes
         /// </summary>
         /// <returns></returns>
-        [HttpGet("/api/robustReviewScenario/download/robustReviewScenarioJson")]
+        [HttpGet("/robustReviewScenario/download/robustReviewScenarioJson")]
         public List<RobustReviewDto> GetRobustReviewJsonFile()
         {
             return _wellService.GetRobustReviewDtos();
         }
 
-        [HttpGet("/api/robustReviewScenario/checkGETAPIHealth")]
+        [HttpGet("/robustReviewScenario/checkGETAPIHealth")]
         public ActionResult<bool> CheckGETAPIHealth()
         {
             return Ok(_GETService.IsAPIResponsive().Result);
@@ -57,7 +57,7 @@ namespace Zybach.API.Controllers
         /// Trigger a new Robust Review Scenario GET Run
         /// </summary>
         /// <returns></returns>
-        [HttpPost("/api/robustReviewScenario/new")]
+        [HttpPost("/robustReviewScenario/new")]
         [AdminFeature]
         public ActionResult NewRobustReviewScenarioRun()
         {
@@ -77,7 +77,7 @@ namespace Zybach.API.Controllers
         /// Return a list of all Robust Review Scenario Runs triggered by GWMA
         /// </summary>
         /// <returns></returns>
-        [HttpGet("/api/robustReviewScenarios")]
+        [HttpGet("/robustReviewScenarios")]
         [AdminFeature]
         public async Task<ActionResult<IEnumerable<RobustReviewScenarioGETRunHistoryDto>>> List()
         {

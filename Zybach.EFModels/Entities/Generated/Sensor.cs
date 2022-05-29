@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("Sensor")]
-    [Index(nameof(SensorName), Name = "AK_Sensor_SensorName", IsUnique = true)]
+    [Index("SensorName", Name = "AK_Sensor_SensorName", IsUnique = true)]
     public partial class Sensor
     {
         public Sensor()
@@ -21,6 +19,7 @@ namespace Zybach.EFModels.Entities
         public int SensorID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string SensorName { get; set; }
         public int? SensorTypeID { get; set; }
         public int? WellID { get; set; }
@@ -31,13 +30,10 @@ namespace Zybach.EFModels.Entities
         public DateTime LastUpdateDate { get; set; }
         public bool IsActive { get; set; }
 
-        [ForeignKey(nameof(SensorTypeID))]
-        [InverseProperty("Sensors")]
-        public virtual SensorType SensorType { get; set; }
-        [ForeignKey(nameof(WellID))]
+        [ForeignKey("WellID")]
         [InverseProperty("Sensors")]
         public virtual Well Well { get; set; }
-        [InverseProperty(nameof(SensorAnomaly.Sensor))]
+        [InverseProperty("Sensor")]
         public virtual ICollection<SensorAnomaly> SensorAnomalies { get; set; }
     }
 }

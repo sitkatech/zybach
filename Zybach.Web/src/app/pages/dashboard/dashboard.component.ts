@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ManagerDashboardService } from 'src/app/services/manager-dashboard.service';
+import { ManagerDashboardService } from 'src/app/shared/generated/api/manager-dashboard.service';
 import {
   Control, FitBoundsOptions,
   GeoJSON,
@@ -21,6 +21,8 @@ import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { DistrictStatisticsDto } from 'src/app/shared/generated/model/district-statistics-dto';
 import { StreamFlowZoneDto } from 'src/app/shared/generated/model/stream-flow-zone-dto';
 import { StreamFlowZonePumpingDepthDto } from 'src/app/shared/generated/model/stream-flow-zone-pumping-depth-dto';
+import { StreamFlowZoneService } from 'src/app/shared/generated/api/stream-flow-zone.service';
+import { AnnualStreamFlowZonePumpingDepthDto } from 'src/app/shared/generated/model/annual-stream-flow-zone-pumping-depth-dto';
 
 @Component({
   selector: 'zybach-dashboard',
@@ -49,11 +51,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   public districtStatistics: DistrictStatisticsDto;
   public loadingDistrictStatistics: boolean = true;
 
-  public pumpingDepthsByYear: { Year: number, StreamFlowZonePumpingDepths: StreamFlowZonePumpingDepthDto[] }[]
+  public pumpingDepthsByYear: AnnualStreamFlowZonePumpingDepthDto[];
   allYearsPumpingDepths: StreamFlowZonePumpingDepthDto[];
 
   constructor(
     private managerDashboardService: ManagerDashboardService,
+    private streamFlowZoneService: StreamFlowZoneService,
     public cdr: ChangeDetectorRef
   ) { }
 
@@ -61,7 +64,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear();
 
-    this.managerDashboardService.getDistrictStatistics().subscribe(stats => {
+    this.managerDashboardService.managerDashboardDistrictStatisticsGet().subscribe(stats => {
       this.districtStatistics = stats;
       this.loadingDistrictStatistics = false;
     });
@@ -170,15 +173,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       }
     });
 
-    
-
     new PumpingDepthLegend().addTo(this.map);
   }
 
   public getAndDisplayStreamflowZones() {
     forkJoin([
-      this.managerDashboardService.getStreamflowZones(),
-      this.managerDashboardService.getStreamFlowZonePumpingDepths()
+      this.streamFlowZoneService.streamFlowZonesGet(),
+      this.managerDashboardService.managerDashboardStreamFlowZonePumpingDepthsGet()
     ]).subscribe(([zones, pumpingDepthsByYear]) => {
       this.streamFlowZones = zones;
       this.pumpingDepthsByYear = pumpingDepthsByYear;

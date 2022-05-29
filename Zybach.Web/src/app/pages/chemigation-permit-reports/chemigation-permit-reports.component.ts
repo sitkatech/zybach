@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
@@ -17,6 +17,7 @@ import { Alert } from 'src/app/shared/models/alert';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
 import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
 import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
+import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -53,6 +54,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     private alertService: AlertService,
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
+    private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private cdr: ChangeDetectorRef,
     private reportTemplateService: ReportTemplateService,
     private utilityFunctionsService: UtilityFunctionsService
@@ -194,7 +196,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
   }
 
   private populateAnnualRecords(): void {
-    this.chemigationPermitService.getAllAnnualRecords().subscribe(annualRecords => {
+    this.chemigationPermitAnnualRecordService.chemigationPermitAnnualRecordsGet().subscribe(annualRecords => {
       this.rowData = annualRecords.filter(x => x.RecordYear == this.yearToDisplay);
       this.chemigationPermitReportGrid.api.hideOverlay();
       this.pinnedBottomRowData = [

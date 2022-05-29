@@ -18,7 +18,7 @@ namespace Zybach.API.Controllers
         public SensorAnomalyController(ZybachDbContext dbContext, ILogger<SensorAnomalyController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         { }
 
-        [HttpGet("/api/sensorAnomalies")]
+        [HttpGet("/sensorAnomalies")]
         [ZybachViewFeature]
         public ActionResult<List<SensorAnomalySimpleDto>> List()
         {
@@ -26,7 +26,7 @@ namespace Zybach.API.Controllers
             return Ok(sensorAnomalySimpleDtos);
         }
 
-        [HttpGet("/api/sensorAnomalies/{sensorAnomalyID}")]
+        [HttpGet("/sensorAnomalies/{sensorAnomalyID}")]
         [ZybachViewFeature]
         public ActionResult<SensorAnomalySimpleDto> GetByID([FromRoute] int sensorAnomalyID)
         {
@@ -34,7 +34,7 @@ namespace Zybach.API.Controllers
             return Ok(sensorAnomalySimpleDto);
         }
 
-        [HttpPost("/api/sensorAnomalies/new")]
+        [HttpPost("/sensorAnomalies/new")]
         [ZybachEditFeature]
         public IActionResult NewSensorAnomaly([FromBody] SensorAnomalyUpsertDto sensorAnomalyUpsertDto)
         {
@@ -53,7 +53,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpPost("/api/sensorAnomalies/update")]
+        [HttpPost("/sensorAnomalies/update")]
         [ZybachEditFeature]
         public IActionResult UpdateSensorAnomaly([FromBody] SensorAnomalyUpsertDto sensorAnomalyUpsertDto)
         {
@@ -74,7 +74,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("/api/sensorAnomalies/{sensorAnomalyID}")]
+        [HttpDelete("/sensorAnomalies/{sensorAnomalyID}")]
         [ZybachEditFeature]
         public IActionResult DeleteSensorAnomaly([FromRoute] int sensorAnomalyID)
         {

@@ -26,7 +26,7 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("/api/sensorStatus")]
+        [HttpGet("/sensorStatus")]
         [ZybachViewFeature]
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
@@ -65,7 +65,7 @@ namespace Zybach.API.Controllers
             }).ToList();
         }
 
-        [HttpGet("/api/sensorStatus/{wellID}")]
+        [HttpGet("/sensorStatus/{wellID}")]
         [ZybachViewFeature]
         public async Task<WellWithSensorMessageAgeDto> GetSensorMessageAgesForWell([FromRoute] int wellID)
         {
@@ -104,7 +104,7 @@ namespace Zybach.API.Controllers
             };
         }
 
-        [HttpPut("/api/sensorStatus/enableDisable")]
+        [HttpPut("/sensorStatus/enableDisable")]
         [ZybachViewFeature]
         public IActionResult UpdateSensorIsActive([FromBody] SensorSummaryDto sensorSummaryDto)
         {

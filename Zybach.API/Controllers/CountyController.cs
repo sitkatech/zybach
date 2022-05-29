@@ -16,7 +16,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/counties")]
+        [HttpGet("/counties")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<CountyDto>> GetCounties()
         {

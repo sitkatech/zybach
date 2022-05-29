@@ -20,7 +20,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/chemicalFormulations")]
+        [HttpGet("/chemicalFormulations")]
         [ZybachViewFeature]
         public ActionResult<List<ChemicalFormulationDto>> GetChemicalFormulations()
         {
@@ -28,7 +28,7 @@ namespace Zybach.API.Controllers
             return Ok(chemicalFormulations);
         }
 
-        [HttpGet("/api/chemicalUnits")]
+        [HttpGet("/chemicalUnits")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemicalUnitDto>> GetChemicalUnits()
         {
@@ -36,7 +36,7 @@ namespace Zybach.API.Controllers
             return Ok(chemicalUnitsDto);
         }
 
-        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/{recordYear}/chemicalFormulations")]
+        [HttpGet("/chemigationPermits/{chemigationPermitNumber}/{recordYear}/chemicalFormulations")]
         [ZybachViewFeature]
         public ActionResult<List<ChemigationPermitAnnualRecordChemicalFormulationSimpleDto>> GetChemigationPermitAnnualRecordChemicalFormulationByPermitNumberAndRecordYear([FromRoute] int chemigationPermitNumber, [FromRoute] int recordYear)
         {
@@ -60,7 +60,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitAnnualRecordChemicalFormulations);
         }
 
-        [HttpGet("/api/chemicalFormulationYearlyTotals")]
+        [HttpGet("/chemicalFormulationYearlyTotals")]
         [ZybachViewFeature]
         public ActionResult<List<ChemicalFormulationYearlyTotalDto>> GetChemicalFormulationYearlyTotals()
         {

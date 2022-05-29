@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("WaterQualityInspection")]
@@ -58,20 +56,19 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "decimal(12, 4)")]
         public decimal? PostWaterLevel { get; set; }
         [StringLength(500)]
+        [Unicode(false)]
         public string InspectionNotes { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string InspectionNickname { get; set; }
 
-        [ForeignKey(nameof(CropTypeID))]
+        [ForeignKey("CropTypeID")]
         [InverseProperty("WaterQualityInspections")]
         public virtual CropType CropType { get; set; }
-        [ForeignKey(nameof(InspectorUserID))]
-        [InverseProperty(nameof(User.WaterQualityInspections))]
-        public virtual User InspectorUser { get; set; }
-        [ForeignKey(nameof(WaterQualityInspectionTypeID))]
+        [ForeignKey("InspectorUserID")]
         [InverseProperty("WaterQualityInspections")]
-        public virtual WaterQualityInspectionType WaterQualityInspectionType { get; set; }
-        [ForeignKey(nameof(WellID))]
+        public virtual User InspectorUser { get; set; }
+        [ForeignKey("WellID")]
         [InverseProperty("WaterQualityInspections")]
         public virtual Well Well { get; set; }
     }

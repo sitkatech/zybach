@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationInspectionService } from 'src/app/shared/generated/api/chemigation-inspection.service';
+import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { ChemigationInspectionUpsertComponent } from 'src/app/shared/components/chemigation-inspection-upsert/chemigation-inspection-upsert.component';
 import { ChemigationInspectionUpsertDto } from 'src/app/shared/generated/model/chemigation-inspection-upsert-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
@@ -11,6 +11,7 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationInspectionStatusEnum } from 'src/app/shared/models/enums/chemigation-inspection-status';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 
 @Component({
   selector: 'zybach-chemigation-inspection-new',
@@ -33,6 +34,7 @@ export class ChemigationInspectionNewComponent implements OnInit {
   constructor(
     private chemigationPermitService: ChemigationPermitService,
     private chemigationInspectionService: ChemigationInspectionService,
+    private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router,
@@ -46,7 +48,7 @@ export class ChemigationInspectionNewComponent implements OnInit {
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       this.recordYear = parseInt(this.route.snapshot.paramMap.get("record-year"));
 
-      this.chemigationPermitService.getAnnualRecordByPermitNumberAndRecordYear(this.chemigationPermitNumber, this.recordYear).subscribe(annualRecord => {
+      this.chemigationPermitAnnualRecordService.chemigationPermitsChemigationPermitNumberRecordYearGet(this.chemigationPermitNumber, this.recordYear).subscribe(annualRecord => {
         this.annualRecord = annualRecord;
         this.initializeInspectionModel(this.annualRecord.ChemigationPermitAnnualRecordID)
         this.cdr.detectChanges();
@@ -85,7 +87,7 @@ export class ChemigationInspectionNewComponent implements OnInit {
   public onSubmit(addChemigationInspectionForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
-    this.chemigationInspectionService.createChemigationInspectionByAnnualRecordID(this.annualRecord.ChemigationPermitAnnualRecordID, this.inspection)
+    this.chemigationInspectionService.chemigationPermitsAnnualRecordsChemigationPermitAnnualRecordIDCreateInspectionPost(this.annualRecord.ChemigationPermitAnnualRecordID, this.inspection)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addChemigationInspectionForm.reset();

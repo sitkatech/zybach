@@ -20,7 +20,7 @@ namespace Zybach.EFModels.Entities
 
         private static IQueryable<WellSensorMeasurement> GetWellSensorMeasurementsImpl(ZybachDbContext dbContext)
         {
-            return dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking();
+            return dbContext.WellSensorMeasurements.AsNoTracking();
         }
 
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(

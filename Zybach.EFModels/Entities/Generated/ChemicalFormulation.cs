@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemicalFormulation")]
-    [Index(nameof(ChemicalFormulationDisplayName), Name = "AK_ChemicalFormulation_ChemicalFormulationDisplayName", IsUnique = true)]
-    [Index(nameof(ChemicalFormulationName), Name = "AK_ChemicalFormulation_ChemicalFormulationName", IsUnique = true)]
+    [Index("ChemicalFormulationDisplayName", Name = "AK_ChemicalFormulation_ChemicalFormulationDisplayName", IsUnique = true)]
+    [Index("ChemicalFormulationName", Name = "AK_ChemicalFormulation_ChemicalFormulationName", IsUnique = true)]
     public partial class ChemicalFormulation
     {
         public ChemicalFormulation()
@@ -21,11 +19,13 @@ namespace Zybach.EFModels.Entities
         [Key]
         public int ChemicalFormulationID { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string ChemicalFormulationName { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string ChemicalFormulationDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationPermitAnnualRecordChemicalFormulation.ChemicalFormulation))]
+        [InverseProperty("ChemicalFormulation")]
         public virtual ICollection<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
     }
 }

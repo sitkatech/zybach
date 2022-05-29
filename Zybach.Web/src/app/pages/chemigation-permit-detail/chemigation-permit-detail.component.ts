@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationInspectionService } from 'src/app/shared/generated/api/chemigation-inspection.service';
+import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
+import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
 import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-detailed-dto';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
@@ -42,6 +43,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private chemigationPermitService: ChemigationPermitService,
+    private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private chemigationInspectionService: ChemigationInspectionService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
@@ -59,9 +61,9 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
       forkJoin({
-        chemigationPermit: this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber),
-        annualRecords: this.chemigationPermitService.getChemigationPermitAnnualRecordsByPermitNumber(this.chemigationPermitNumber),
-        latestInspection: this.chemigationPermitService.getLatestChemigationInspectionByPermitNumber(this.chemigationPermitNumber)
+        chemigationPermit: this.chemigationPermitService.chemigationPermitsChemigationPermitNumberGet(this.chemigationPermitNumber),
+        annualRecords: this.chemigationPermitAnnualRecordService.chemigationPermitsChemigationPermitNumberAnnualRecordsGet(this.chemigationPermitNumber),
+        latestInspection: this.chemigationInspectionService.chemigationPermitsChemigationPermitNumberLatestChemigationInspectionGet(this.chemigationPermitNumber)
       }).subscribe(({ chemigationPermit, annualRecords, latestInspection }) => {
         this.chemigationPermit = chemigationPermit;
         this.annualRecords = annualRecords;
@@ -112,7 +114,7 @@ export class ChemigationPermitDetailComponent implements OnInit, OnDestroy {
 
   public deleteInspectionByID(): void {
     this.isPerformingAction = true;
-    this.chemigationInspectionService.deleteChemigationInspectionByID(this.inspectionIDToDelete).subscribe(() => {
+    this.chemigationInspectionService.chemigationInspectionsChemigationInspectionIDDelete(this.inspectionIDToDelete).subscribe(() => {
       this.modalReference.close();
       this.isPerformingAction = false;
       this.router.onSameUrlNavigation = 'reload';

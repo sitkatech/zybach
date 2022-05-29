@@ -5,7 +5,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/chartData/{wellID}": {
+    "/chartData/{wellID}": {
       "get": {
         "tags": [
           "ChartData"
@@ -45,7 +45,7 @@
         }
       }
     },
-    "/api/chemigationInspections/inspectionTypes": {
+    "/chemigationInspections/inspectionTypes": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -83,7 +83,7 @@
         }
       }
     },
-    "/api/chemigationInspections/inspectionStatuses": {
+    "/chemigationInspections/inspectionStatuses": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -121,7 +121,7 @@
         }
       }
     },
-    "/api/chemigationInspections/failureReasons": {
+    "/chemigationInspections/failureReasons": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -159,7 +159,7 @@
         }
       }
     },
-    "/api/tillageTypes": {
+    "/tillageTypes": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -197,7 +197,7 @@
         }
       }
     },
-    "/api/cropTypes": {
+    "/cropTypes": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -235,7 +235,7 @@
         }
       }
     },
-    "/api/chemigationInspections/mainlineCheckValves": {
+    "/chemigationInspections/mainlineCheckValves": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -273,7 +273,7 @@
         }
       }
     },
-    "/api/chemigationInspections/lowPressureValves": {
+    "/chemigationInspections/lowPressureValves": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -311,7 +311,7 @@
         }
       }
     },
-    "/api/chemigationInspections/injectionValves": {
+    "/chemigationInspections/injectionValves": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -349,7 +349,7 @@
         }
       }
     },
-    "/api/chemigationInspections/interlockTypes": {
+    "/chemigationInspections/interlockTypes": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -387,7 +387,7 @@
         }
       }
     },
-    "/api/chemigationInspections": {
+    "/chemigationInspections": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -425,7 +425,7 @@
         }
       }
     },
-    "/api/chemigationInspections/{chemigationInspectionID}": {
+    "/chemigationInspections/{chemigationInspectionID}": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -531,7 +531,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}/latestChemigationInspection": {
+    "/chemigationPermits/{chemigationPermitNumber}/latestChemigationInspection": {
       "get": {
         "tags": [
           "ChemigationInspection"
@@ -571,7 +571,7 @@
         }
       }
     },
-    "/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection": {
+    "/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection": {
       "post": {
         "tags": [
           "ChemigationInspection"
@@ -635,7 +635,7 @@
         }
       }
     },
-    "/api/chemigationPermitStatuses": {
+    "/chemigationPermitStatuses": {
       "get": {
         "tags": [
           "ChemigationPermit"
@@ -673,7 +673,7 @@
         }
       }
     },
-    "/api/chemigationPermits": {
+    "/chemigationPermits": {
       "get": {
         "tags": [
           "ChemigationPermit"
@@ -762,7 +762,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}": {
+    "/chemigationPermits/{chemigationPermitNumber}": {
       "get": {
         "tags": [
           "ChemigationPermit"
@@ -802,7 +802,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitID}": {
+    "/chemigationPermits/{chemigationPermitID}": {
       "put": {
         "tags": [
           "ChemigationPermit"
@@ -870,7 +870,7 @@
         }
       }
     },
-    "/api/chemigationInjectionUnitTypes": {
+    "/chemigationInjectionUnitTypes": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -908,7 +908,45 @@
         }
       }
     },
-    "/api/chemigationPermitAnnualRecordFeeTypes": {
+    "/chemigationPermitAnnualRecordFeeTypes": {
+      "get": {
+        "tags": [
+          "ChemigationPermitAnnualRecord"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordFeeTypeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordFeeTypeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordFeeTypeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chemigationPermitAnnualRecordStatuses": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -946,45 +984,7 @@
         }
       }
     },
-    "/api/chemigationPermitAnnualRecordStatuses": {
-      "get": {
-        "tags": [
-          "ChemigationPermitAnnualRecord"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChemigationPermitAnnualRecordStatusDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/chemigationPermitAnnualRecords": {
+    "/chemigationPermitAnnualRecords": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1022,7 +1022,7 @@
         }
       }
     },
-    "/api/chemigationPermitAnnualRecords/{recordYear}": {
+    "/chemigationPermitAnnualRecords/{recordYear}": {
       "post": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1062,7 +1062,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}/getLatestRecordYear": {
+    "/chemigationPermits/{chemigationPermitNumber}/getLatestRecordYear": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1102,7 +1102,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}/{recordYear}": {
+    "/chemigationPermits/{chemigationPermitNumber}/{recordYear}": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1151,7 +1151,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}/annualRecords": {
+    "/chemigationPermits/{chemigationPermitNumber}/annualRecords": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1200,7 +1200,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitID}/annualRecords": {
+    "/chemigationPermits/{chemigationPermitID}/annualRecords": {
       "post": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1264,7 +1264,7 @@
         }
       }
     },
-    "/api/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}": {
+    "/chemigationPermitAnnualRecords/{chemigationPermitAnnualRecordID}": {
       "put": {
         "tags": [
           "ChemigationPermitAnnualRecord"
@@ -1328,7 +1328,7 @@
         }
       }
     },
-    "/api/chemicalFormulations": {
+    "/chemicalFormulations": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecordChemicalFormulation"
@@ -1366,7 +1366,7 @@
         }
       }
     },
-    "/api/chemicalUnits": {
+    "/chemicalUnits": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecordChemicalFormulation"
@@ -1404,7 +1404,7 @@
         }
       }
     },
-    "/api/chemigationPermits/{chemigationPermitNumber}/{recordYear}/chemicalFormulations": {
+    "/chemigationPermits/{chemigationPermitNumber}/{recordYear}/chemicalFormulations": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecordChemicalFormulation"
@@ -1462,7 +1462,7 @@
         }
       }
     },
-    "/api/chemicalFormulationYearlyTotals": {
+    "/chemicalFormulationYearlyTotals": {
       "get": {
         "tags": [
           "ChemigationPermitAnnualRecordChemicalFormulation"
@@ -1500,7 +1500,7 @@
         }
       }
     },
-    "/api/counties": {
+    "/counties": {
       "get": {
         "tags": [
           "County"
@@ -1538,7 +1538,7 @@
         }
       }
     },
-    "/api/customRichText/{customRichTextTypeID}": {
+    "/customRichText/{customRichTextTypeID}": {
       "get": {
         "tags": [
           "CustomRichText"
@@ -1640,7 +1640,7 @@
         }
       }
     },
-    "/api/fieldDefinitions": {
+    "/fieldDefinitions": {
       "get": {
         "tags": [
           "FieldDefinition"
@@ -1678,7 +1678,7 @@
         }
       }
     },
-    "/api/fieldDefinitions/{fieldDefinitionTypeID}": {
+    "/fieldDefinitions/{fieldDefinitionTypeID}": {
       "get": {
         "tags": [
           "FieldDefinition"
@@ -1814,7 +1814,7 @@
         }
       }
     },
-    "/api/irrigationUnits": {
+    "/irrigationUnits": {
       "get": {
         "tags": [
           "IrrigationUnit"
@@ -1852,7 +1852,7 @@
         }
       }
     },
-    "/api/irrigationUnits/{irrigationUnitID}": {
+    "/irrigationUnits/{irrigationUnitID}": {
       "get": {
         "tags": [
           "IrrigationUnit"
@@ -1892,7 +1892,7 @@
         }
       }
     },
-    "/api/managerDashboard/districtStatistics": {
+    "/managerDashboard/districtStatistics": {
       "get": {
         "tags": [
           "ManagerDashboard"
@@ -1921,7 +1921,7 @@
         }
       }
     },
-    "/api/managerDashboard/streamFlowZonePumpingDepths": {
+    "/managerDashboard/streamFlowZonePumpingDepths": {
       "get": {
         "tags": [
           "ManagerDashboard"
@@ -1959,7 +1959,7 @@
         }
       }
     },
-    "/api/mapData/wells": {
+    "/mapData/wells": {
       "get": {
         "tags": [
           "MapData"
@@ -1997,7 +1997,7 @@
         }
       }
     },
-    "/api/mapData/wells/withWellPressureSensor": {
+    "/mapData/wells/withWellPressureSensor": {
       "get": {
         "tags": [
           "MapData"
@@ -2035,7 +2035,7 @@
         }
       }
     },
-    "/api/openet/is-api-key-valid": {
+    "/openet/is-api-key-valid": {
       "get": {
         "tags": [
           "OpenET"
@@ -2064,7 +2064,7 @@
         }
       }
     },
-    "/api/openet-sync-history/trigger-openet-google-bucket-refresh": {
+    "/openet-sync-history/trigger-openet-google-bucket-refresh": {
       "post": {
         "tags": [
           "OpenET"
@@ -2104,7 +2104,7 @@
         }
       }
     },
-    "/api/openet-sync-history": {
+    "/openet-sync-history": {
       "get": {
         "tags": [
           "OpenET"
@@ -2366,7 +2366,7 @@
         }
       }
     },
-    "/api/reportTemplates/new": {
+    "/reportTemplates/new": {
       "post": {
         "tags": [
           "Report"
@@ -2443,7 +2443,7 @@
         }
       }
     },
-    "/api/reportTemplates/generateReports": {
+    "/reportTemplates/generateReports": {
       "post": {
         "tags": [
           "Report"
@@ -2479,7 +2479,7 @@
         }
       }
     },
-    "/api/robustReviewScenario/download/robustReviewScenarioJson": {
+    "/robustReviewScenario/download/robustReviewScenarioJson": {
       "get": {
         "tags": [
           "RobustReviewScenario"
@@ -2518,7 +2518,7 @@
         }
       }
     },
-    "/api/robustReviewScenario/checkGETAPIHealth": {
+    "/robustReviewScenario/checkGETAPIHealth": {
       "get": {
         "tags": [
           "RobustReviewScenario"
@@ -2547,7 +2547,7 @@
         }
       }
     },
-    "/api/robustReviewScenario/new": {
+    "/robustReviewScenario/new": {
       "post": {
         "tags": [
           "RobustReviewScenario"
@@ -2560,7 +2560,7 @@
         }
       }
     },
-    "/api/robustReviewScenarios": {
+    "/robustReviewScenarios": {
       "get": {
         "tags": [
           "RobustReviewScenario"
@@ -2599,7 +2599,7 @@
         }
       }
     },
-    "/api/roles": {
+    "/roles": {
       "get": {
         "tags": [
           "Role"
@@ -2611,7 +2611,7 @@
         }
       }
     },
-    "/api/search/{searchText}": {
+    "/search/{searchText}": {
       "get": {
         "tags": [
           "Search"
@@ -2659,7 +2659,7 @@
         }
       }
     },
-    "/api/sensors": {
+    "/sensors": {
       "get": {
         "tags": [
           "Sensor"
@@ -2697,7 +2697,7 @@
         }
       }
     },
-    "/api/sensors/{sensorID}": {
+    "/sensors/{sensorID}": {
       "get": {
         "tags": [
           "Sensor"
@@ -2737,7 +2737,7 @@
         }
       }
     },
-    "/api/sensors/byWellID/{wellID}": {
+    "/sensors/byWellID/{wellID}": {
       "get": {
         "tags": [
           "Sensor"
@@ -2786,7 +2786,7 @@
         }
       }
     },
-    "/api/sensorAnomalies": {
+    "/sensorAnomalies": {
       "get": {
         "tags": [
           "SensorAnomaly"
@@ -2824,7 +2824,7 @@
         }
       }
     },
-    "/api/sensorAnomalies/{sensorAnomalyID}": {
+    "/sensorAnomalies/{sensorAnomalyID}": {
       "get": {
         "tags": [
           "SensorAnomaly"
@@ -2885,7 +2885,7 @@
         }
       }
     },
-    "/api/sensorAnomalies/new": {
+    "/sensorAnomalies/new": {
       "post": {
         "tags": [
           "SensorAnomaly"
@@ -2921,7 +2921,7 @@
         }
       }
     },
-    "/api/sensorAnomalies/update": {
+    "/sensorAnomalies/update": {
       "post": {
         "tags": [
           "SensorAnomaly"
@@ -2957,7 +2957,7 @@
         }
       }
     },
-    "/api/sensorStatus": {
+    "/sensorStatus": {
       "get": {
         "tags": [
           "SensorStatus"
@@ -2995,7 +2995,7 @@
         }
       }
     },
-    "/api/sensorStatus/{wellID}": {
+    "/sensorStatus/{wellID}": {
       "get": {
         "tags": [
           "SensorStatus"
@@ -3035,7 +3035,7 @@
         }
       }
     },
-    "/api/sensorStatus/enableDisable": {
+    "/sensorStatus/enableDisable": {
       "put": {
         "tags": [
           "SensorStatus"
@@ -3071,7 +3071,7 @@
         }
       }
     },
-    "/api/streamFlowZones": {
+    "/streamFlowZones": {
       "get": {
         "tags": [
           "StreamFlowZone"
@@ -3109,7 +3109,7 @@
         }
       }
     },
-    "/api/users/invite": {
+    "/users/invite": {
       "post": {
         "tags": [
           "User"
@@ -3145,7 +3145,7 @@
         }
       }
     },
-    "/api/users": {
+    "/users": {
       "post": {
         "tags": [
           "User"
@@ -3234,7 +3234,7 @@
         }
       }
     },
-    "/api/users/unassigned-report": {
+    "/users/unassigned-report": {
       "get": {
         "tags": [
           "User"
@@ -3263,7 +3263,7 @@
         }
       }
     },
-    "/api/users/{userID}": {
+    "/users/{userID}": {
       "get": {
         "tags": [
           "User"
@@ -3365,7 +3365,7 @@
         }
       }
     },
-    "/api/users/user-claims/{globalID}": {
+    "/users/user-claims/{globalID}": {
       "get": {
         "tags": [
           "User"
@@ -3404,7 +3404,7 @@
         }
       }
     },
-    "/api/users/set-disclaimer-acknowledged-date": {
+    "/users/set-disclaimer-acknowledged-date": {
       "put": {
         "tags": [
           "User"
@@ -3461,7 +3461,7 @@
         }
       }
     },
-    "/api/waterLevelInspections": {
+    "/waterLevelInspections": {
       "get": {
         "tags": [
           "WaterLevelInspection"
@@ -3550,7 +3550,7 @@
         }
       }
     },
-    "/api/waterLevelInspections/measuringEquipment": {
+    "/waterLevelInspections/measuringEquipment": {
       "get": {
         "tags": [
           "WaterLevelInspection"
@@ -3588,7 +3588,7 @@
         }
       }
     },
-    "/api/waterLevelInspections/{waterLevelInspectionID}": {
+    "/waterLevelInspections/{waterLevelInspectionID}": {
       "get": {
         "tags": [
           "WaterLevelInspection"
@@ -3694,7 +3694,7 @@
         }
       }
     },
-    "/api/waterQualityInspectionTypes": {
+    "/waterQualityInspectionTypes": {
       "get": {
         "tags": [
           "WaterQualityInspection"
@@ -3732,7 +3732,7 @@
         }
       }
     },
-    "/api/waterQualityInspections": {
+    "/waterQualityInspections": {
       "get": {
         "tags": [
           "WaterQualityInspection"
@@ -3821,7 +3821,7 @@
         }
       }
     },
-    "/api/clearinghouseWaterQualityInspections": {
+    "/clearinghouseWaterQualityInspections": {
       "get": {
         "tags": [
           "WaterQualityInspection"
@@ -3859,7 +3859,7 @@
         }
       }
     },
-    "/api/waterQualityInspections/{waterQualityInspectionID}": {
+    "/waterQualityInspections/{waterQualityInspectionID}": {
       "get": {
         "tags": [
           "WaterQualityInspection"
@@ -3965,7 +3965,7 @@
         }
       }
     },
-    "/api/water-year-months": {
+    "/water-year-months": {
       "get": {
         "tags": [
           "WaterYearMonth"
@@ -4003,7 +4003,7 @@
         }
       }
     },
-    "/api/water-year-months/current-date-or-earlier": {
+    "/water-year-months/current-date-or-earlier": {
       "get": {
         "tags": [
           "WaterYearMonth"
@@ -4041,7 +4041,7 @@
         }
       }
     },
-    "/api/water-year-months/most-recent-sync-history": {
+    "/water-year-months/most-recent-sync-history": {
       "get": {
         "tags": [
           "WaterYearMonth"
@@ -4079,7 +4079,7 @@
         }
       }
     },
-    "/api/water-year-month/finalize": {
+    "/water-year-month/finalize": {
       "put": {
         "tags": [
           "WaterYearMonth"
@@ -4136,7 +4136,7 @@
         }
       }
     },
-    "/api/wellUses": {
+    "/wellUses": {
       "get": {
         "tags": [
           "Well"
@@ -4174,7 +4174,7 @@
         }
       }
     },
-    "/api/wellParticipations": {
+    "/wellParticipations": {
       "get": {
         "tags": [
           "Well"
@@ -4187,7 +4187,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellUseDto"
+                    "$ref": "#/components/schemas/WellParticipationDto"
                   }
                 }
               },
@@ -4195,7 +4195,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellUseDto"
+                    "$ref": "#/components/schemas/WellParticipationDto"
                   }
                 }
               },
@@ -4203,7 +4203,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellUseDto"
+                    "$ref": "#/components/schemas/WellParticipationDto"
                   }
                 }
               }
@@ -4212,7 +4212,7 @@
         }
       }
     },
-    "/api/wells/inspectionSummaries": {
+    "/wells/inspectionSummaries": {
       "get": {
         "tags": [
           "Well"
@@ -4250,7 +4250,7 @@
         }
       }
     },
-    "/api/wells/search/{wellRegistrationID}": {
+    "/wells/search/{wellRegistrationID}": {
       "get": {
         "tags": [
           "Well"
@@ -4298,7 +4298,7 @@
         }
       }
     },
-    "/api/wells/search/{wellRegistrationID}/hasInspectionType": {
+    "/wells/search/{wellRegistrationID}/hasInspectionType": {
       "get": {
         "tags": [
           "Well"
@@ -4346,7 +4346,7 @@
         }
       }
     },
-    "/api/wells/search/{wellRegistrationID}/requiresChemigation": {
+    "/wells/search/{wellRegistrationID}/requiresChemigation": {
       "get": {
         "tags": [
           "Well"
@@ -4394,7 +4394,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/waterLevelInspections": {
+    "/wells/{wellID}/waterLevelInspections": {
       "get": {
         "tags": [
           "Well"
@@ -4443,7 +4443,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/waterQualityInspections": {
+    "/wells/{wellID}/waterQualityInspections": {
       "get": {
         "tags": [
           "Well"
@@ -4492,7 +4492,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/simpleDto": {
+    "/wells/{wellID}/simpleDto": {
       "get": {
         "tags": [
           "Well"
@@ -4532,7 +4532,7 @@
         }
       }
     },
-    "/api/wells/{wellID}": {
+    "/wells/{wellID}": {
       "get": {
         "tags": [
           "Well"
@@ -4572,7 +4572,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/nitrateChartSpec": {
+    "/wells/{wellID}/nitrateChartSpec": {
       "get": {
         "tags": [
           "Well"
@@ -4612,7 +4612,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/waterLevelChartSpec": {
+    "/wells/{wellID}/waterLevelChartSpec": {
       "get": {
         "tags": [
           "Well"
@@ -4652,7 +4652,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/editRegistrationID": {
+    "/wells/{wellID}/editRegistrationID": {
       "put": {
         "tags": [
           "Well"
@@ -4699,7 +4699,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/contactInfo": {
+    "/wells/{wellID}/contactInfo": {
       "get": {
         "tags": [
           "Well"
@@ -4784,7 +4784,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/participationInfo": {
+    "/wells/{wellID}/participationInfo": {
       "get": {
         "tags": [
           "Well"
@@ -4869,7 +4869,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/installation": {
+    "/wells/{wellID}/installation": {
       "get": {
         "tags": [
           "Well"
@@ -4918,7 +4918,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}": {
+    "/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}": {
       "get": {
         "tags": [
           "Well"
@@ -4957,7 +4957,7 @@
         }
       }
     },
-    "/api/wells/new": {
+    "/wells/new": {
       "post": {
         "tags": [
           "Well"
@@ -4993,7 +4993,7 @@
         }
       }
     },
-    "/api/wells/{wellID}/chemigationPermits": {
+    "/wells/{wellID}/chemigationPermits": {
       "get": {
         "tags": [
           "Well"

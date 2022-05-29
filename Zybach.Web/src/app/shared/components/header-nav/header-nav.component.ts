@@ -1,13 +1,13 @@
 import { Component, OnInit, HostListener, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CookieStorageService } from '../../services/cookies/cookie-storage.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/shared/generated/api/user.service';
 import { AlertService } from '../../services/alert.service';
 import { Alert } from '../../models/alert';
 import { environment } from 'src/environments/environment';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { Router } from '@angular/router';
-import { SearchService } from 'src/app/services/search.service';
+import { SearchService } from 'src/app/shared/generated/api/search.service';
 import { UserDto } from '../../generated/model/user-dto';
 
 @Component({
@@ -47,7 +47,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
             this.currentUser = currentUser;
 
             if (currentUser && this.isAdministrator()){
-                this.userService.getUnassignedUserReport().subscribe(report =>{
+                this.userService.usersUnassignedReportGet().subscribe(report =>{
                     if (report.Count > 0){
                         this.alertService.pushAlert(new Alert(`There are ${report.Count} users who are waiting for you to configure their account. <a href='/users'>Manage Users</a>.`, AlertContext.Info, true, AlertService.USERS_AWAITING_CONFIGURATION));
                     }
@@ -137,7 +137,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
 
     public search(event) {
         this.isSearching = true;
-        this.searchService.getSearchSuggestions(event.query.trim()).subscribe(results => {
+        this.searchService.searchSearchTextGet(event.query.trim()).subscribe(results => {
             this.searchSuggestions = results;
             this.isSearching = false;
         })

@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, View
 import { NgForm } from '@angular/forms';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
-import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
-import { UserService } from 'src/app/services/user/user.service';
+import { ChemigationInspectionService } from 'src/app/shared/generated/api/chemigation-inspection.service';
+import { UserService } from 'src/app/shared/generated/api/user.service';
 import { ChemigationInjectionValveDto } from '../../generated/model/chemigation-injection-valve-dto';
 import { ChemigationInspectionFailureReasonDto } from '../../generated/model/chemigation-inspection-failure-reason-dto';
 import { ChemigationInspectionStatusDto } from '../../generated/model/chemigation-inspection-status-dto';
@@ -48,16 +48,16 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin({
-      chemigationInspectionTypes: this.chemigationInspectionService.getChemigationInspectionTypes(),
-      chemigationInspectionStatuses: this.chemigationInspectionService.getChemigationInspectionStatuses(),
-      chemigationInspectionFailureReasons: this.chemigationInspectionService.getChemigationInspectionFailureReasons(),
-      tillages: this.chemigationInspectionService.getTillageTypes(),
-      cropTypes: this.chemigationInspectionService.getCropTypes(),
-      users: this.userService.getUsers(),
-      chemigationMainlineCheckValves: this.chemigationInspectionService.getMainlineCheckValves(),
-      chemigationLowPressureValves: this.chemigationInspectionService.getLowPressureValves(),
-      chemigationInjectionValves: this.chemigationInspectionService.getChemigationInjectionValves(),
-      chemigationInterlockTypes: this.chemigationInspectionService.getChemigationInterlockTypes()
+      chemigationInspectionTypes: this.chemigationInspectionService.chemigationInspectionsInspectionTypesGet(),
+      chemigationInspectionStatuses: this.chemigationInspectionService.chemigationInspectionsInspectionStatusesGet(),
+      chemigationInspectionFailureReasons: this.chemigationInspectionService.chemigationInspectionsFailureReasonsGet(),
+      tillages: this.chemigationInspectionService.tillageTypesGet(),
+      cropTypes: this.chemigationInspectionService.cropTypesGet(),
+      users: this.userService.usersGet(),
+      chemigationMainlineCheckValves: this.chemigationInspectionService.chemigationInspectionsMainlineCheckValvesGet(),
+      chemigationLowPressureValves: this.chemigationInspectionService.chemigationInspectionsLowPressureValvesGet(),
+      chemigationInjectionValves: this.chemigationInspectionService.chemigationInspectionsInjectionValvesGet(),
+      chemigationInterlockTypes: this.chemigationInspectionService.chemigationInspectionsInterlockTypesGet()
     }).subscribe(({ chemigationInspectionTypes, chemigationInspectionStatuses,
       chemigationInspectionFailureReasons, tillages, cropTypes, users,
       chemigationMainlineCheckValves, chemigationLowPressureValves, chemigationInjectionValves, chemigationInterlockTypes}) => {

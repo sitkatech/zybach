@@ -5,12 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("StreamFlowZone")]
-    [Index(nameof(StreamFlowZoneName), Name = "AK_StreamFlowZone_StreamFlowZoneName", IsUnique = true)]
+    [Index("StreamFlowZoneName", Name = "AK_StreamFlowZone_StreamFlowZoneName", IsUnique = true)]
     public partial class StreamFlowZone
     {
         public StreamFlowZone()
@@ -22,13 +20,14 @@ namespace Zybach.EFModels.Entities
         public int StreamFlowZoneID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string StreamFlowZoneName { get; set; }
         [Required]
         [Column(TypeName = "geometry")]
         public Geometry StreamFlowZoneGeometry { get; set; }
         public double StreamFlowZoneArea { get; set; }
 
-        [InverseProperty(nameof(Well.StreamflowZone))]
+        [InverseProperty("StreamflowZone")]
         public virtual ICollection<Well> Wells { get; set; }
     }
 }

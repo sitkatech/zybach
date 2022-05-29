@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("Tillage")]
-    [Index(nameof(TillageDisplayName), Name = "AK_Tillage_TillageDisplayName", IsUnique = true)]
-    [Index(nameof(TillageName), Name = "AK_Tillage_TillageName", IsUnique = true)]
+    [Index("TillageDisplayName", Name = "AK_Tillage_TillageDisplayName", IsUnique = true)]
+    [Index("TillageName", Name = "AK_Tillage_TillageName", IsUnique = true)]
     public partial class Tillage
     {
         public Tillage()
@@ -22,12 +20,14 @@ namespace Zybach.EFModels.Entities
         public int TillageID { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string TillageName { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string TillageDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationInspection.Tillage))]
+        [InverseProperty("Tillage")]
         public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
     }
 }

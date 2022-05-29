@@ -3,12 +3,13 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@ang
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
+import { MapDataService } from 'src/app/shared/generated/api/map-data.service';
 
 @Component({
   selector: 'zybach-well-explorer',
@@ -32,6 +33,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   constructor(private authenticationService: AuthenticationService,
     private datePipe: DatePipe,
     private utilityFunctionsService: UtilityFunctionsService,
+    private mapDataService: MapDataService,
     private wellService: WellService) { }
 
   ngOnInit(): void {
@@ -39,7 +41,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.wellsObservable = this.wellService.getWellsMapData().subscribe(wells => {
+      this.wellsObservable = this.mapDataService.mapDataWellsGet().subscribe(wells => {
         this.wells = wells;
         wells.filter(x => x.Location == null || x.Location ==  undefined).forEach(x => console.log(x));
         this.wellsGeoJson =

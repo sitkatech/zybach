@@ -21,13 +21,13 @@ namespace Zybach.API.Controllers
             _wellService = wellService;
         }
 
-        [HttpGet("api/mapData/wells")]
+        [HttpGet("/mapData/wells")]
         public List<WellWithSensorSummaryDto> GetWellsWithSensors()
         {
             return _wellService.GetAghubAndGeoOptixWells();
         }
 
-        [HttpGet("api/mapData/wells/withWellPressureSensor")]
+        [HttpGet("/mapData/wells/withWellPressureSensor")]
         public List<WellWaterLevelMapSummaryDto> GetWellsWithWellPressureSensors()
         {
             return _wellService.GetWellPressureWellsForWaterLevelSummary();

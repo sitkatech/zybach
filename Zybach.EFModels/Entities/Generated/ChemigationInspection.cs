@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemigationInspection")]
@@ -28,40 +26,41 @@ namespace Zybach.EFModels.Entities
         public int? TillageID { get; set; }
         public int? CropTypeID { get; set; }
         [StringLength(500)]
+        [Unicode(false)]
         public string InspectionNotes { get; set; }
         public int? ChemigationInspectionFailureReasonID { get; set; }
 
-        [ForeignKey(nameof(ChemigationInjectionValveID))]
+        [ForeignKey("ChemigationInjectionValveID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInjectionValve ChemigationInjectionValve { get; set; }
-        [ForeignKey(nameof(ChemigationInspectionFailureReasonID))]
+        [ForeignKey("ChemigationInspectionFailureReasonID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInspectionFailureReason ChemigationInspectionFailureReason { get; set; }
-        [ForeignKey(nameof(ChemigationInspectionStatusID))]
+        [ForeignKey("ChemigationInspectionStatusID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInspectionStatus ChemigationInspectionStatus { get; set; }
-        [ForeignKey(nameof(ChemigationInspectionTypeID))]
+        [ForeignKey("ChemigationInspectionTypeID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInspectionType ChemigationInspectionType { get; set; }
-        [ForeignKey(nameof(ChemigationInterlockTypeID))]
+        [ForeignKey("ChemigationInterlockTypeID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInterlockType ChemigationInterlockType { get; set; }
-        [ForeignKey(nameof(ChemigationLowPressureValveID))]
+        [ForeignKey("ChemigationLowPressureValveID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationLowPressureValve ChemigationLowPressureValve { get; set; }
-        [ForeignKey(nameof(ChemigationMainlineCheckValveID))]
+        [ForeignKey("ChemigationMainlineCheckValveID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationMainlineCheckValve ChemigationMainlineCheckValve { get; set; }
-        [ForeignKey(nameof(ChemigationPermitAnnualRecordID))]
+        [ForeignKey("ChemigationPermitAnnualRecordID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationPermitAnnualRecord ChemigationPermitAnnualRecord { get; set; }
-        [ForeignKey(nameof(CropTypeID))]
+        [ForeignKey("CropTypeID")]
         [InverseProperty("ChemigationInspections")]
         public virtual CropType CropType { get; set; }
-        [ForeignKey(nameof(InspectorUserID))]
-        [InverseProperty(nameof(User.ChemigationInspections))]
+        [ForeignKey("InspectorUserID")]
+        [InverseProperty("ChemigationInspections")]
         public virtual User InspectorUser { get; set; }
-        [ForeignKey(nameof(TillageID))]
+        [ForeignKey("TillageID")]
         [InverseProperty("ChemigationInspections")]
         public virtual Tillage Tillage { get; set; }
     }

@@ -65,7 +65,7 @@ namespace Zybach.API.Controllers
             var isStringAGuid = Guid.TryParse(fileResourceGuidAsString, out var fileResourceGuid);
             if (isStringAGuid)
             {
-                var fileResource = _dbContext.FileResources.Include(x => x.FileResourceMimeType).SingleOrDefault(x => x.FileResourceGUID == fileResourceGuid);
+                var fileResource = _dbContext.FileResources.SingleOrDefault(x => x.FileResourceGUID == fileResourceGuid);
 
                 return DisplayResourceImpl(fileResourceGuidAsString, fileResource);
             }

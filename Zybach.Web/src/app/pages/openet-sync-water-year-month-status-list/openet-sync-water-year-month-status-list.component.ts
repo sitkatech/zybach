@@ -3,13 +3,13 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { OpenETService } from 'src/app/services/openet.service';
+import { OpenETService } from 'src/app/shared/generated/api/open-et.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
-import { WaterYearMonthService } from 'src/app/services/water-year-month.service';
+import { WaterYearMonthService } from 'src/app/shared/generated/api/water-year-month.service';
 import { finalize } from 'rxjs/operators';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { OpenETSyncHistoryDto } from 'src/app/shared/generated/model/open-et-sync-history-dto';
@@ -54,7 +54,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.loadingPage = true;
       this.currentUser = currentUser;
-      this.openETService.isApiKeyValid().subscribe(isValid => {
+      this.openETService.openetIsApiKeyValidGet().subscribe(isValid => {
         this.isOpenETAPIKeyValid = isValid;
         this.refreshWaterYearMonthsAndOpenETSyncData();
         this.loadingPage = false;
@@ -65,8 +65,8 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
   private refreshWaterYearMonthsAndOpenETSyncData() {
     this.isPerformingAction = true;
     forkJoin([
-      this.waterYearMonthService.getWaterYearMonthsForCurrentDateOrEarlier(),
-      this.waterYearMonthService.getMostRecentSyncHistoryForWaterYearMonthsThatHaveBeenUpdated()]).subscribe(([waterYearMonths, abbreviatedWaterYearSyncHistories]) => {
+      this.waterYearMonthService.waterYearMonthsCurrentDateOrEarlierGet(),
+      this.waterYearMonthService.waterYearMonthsMostRecentSyncHistoryGet()]).subscribe(([waterYearMonths, abbreviatedWaterYearSyncHistories]) => {
         this.isPerformingAction = false;
         this.waterYearMonthDtos = waterYearMonths;
         this.mostRecentSyncHistoryDtos = abbreviatedWaterYearSyncHistories;
@@ -150,7 +150,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
     }
 
     this.isPerformingAction = true;
-    this.openETService.triggerGoogleBucketRefreshForWaterYearMonth(this.selectedWaterYearMonth.WaterYearMonthID).pipe(
+    this.openETService.openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(this.selectedWaterYearMonth.WaterYearMonthID).pipe(
       finalize(() => {
         this.isPerformingAction = false;
         this.selectedWaterYearMonth = null;
@@ -172,7 +172,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
       this.modalReference = null;
     }
     this.isPerformingAction = true;
-    this.waterYearMonthService.finalizeWaterYearMonth(this.selectedWaterYearMonth.WaterYearMonthID).pipe(
+    this.waterYearMonthService.waterYearMonthFinalizePut(this.selectedWaterYearMonth.WaterYearMonthID).pipe(
       finalize(() => {
         this.isPerformingAction = false;
         this.selectedWaterYearMonth = null;

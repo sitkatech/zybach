@@ -5,7 +5,7 @@ import { ColDef } from 'ag-grid-community';
 import { Subject, timer } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { RobustReviewScenarioService } from 'src/app/services/robust-review-scenario.service';
+import { RobustReviewScenarioService } from 'src/app/shared/generated/api/robust-review-scenario.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { RobustReviewScenarioGETRunHistoryDto } from 'src/app/shared/generated/model/robust-review-scenario-get-run-history-dto';
@@ -48,7 +48,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.robustReviewScenarioService.checkGETAPIHealth().subscribe(response => {
+      this.robustReviewScenarioService.robustReviewScenarioCheckGETAPIHealthGet().subscribe(response => {
           this.isGETAPIResponsive = response;
           if (!this.isGETAPIResponsive) {
             this.alertService.pushAlert(new Alert("Unable to establish communication with GET API, ability to trigger new runs and update status of in progress runs will be effected."));
@@ -71,7 +71,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   }
 
   updateRobustReviewScenarioGETHistories() {
-    this.robustReviewScenarioService.getRobustReviewScenarioGETRunHistories().subscribe(response => {
+    this.robustReviewScenarioService.robustReviewScenariosGet().subscribe(response => {
       this.robustReviewScenarioGETRunHistoryGrid?.api.showLoadingOverlay();
       this.robustReviewScenarioGETRunHistories = response;
       this.robustReviewScenarioGETRunHistoryGrid.api.sizeColumnsToFit();
@@ -176,7 +176,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
 
   getRobustReviewScenarioJson() {
     this.fileDownloading = true;
-    this.robustReviewScenarioService.getRobustReviewScenarioJson().subscribe(x => {
+    this.robustReviewScenarioService.robustReviewScenarioDownloadRobustReviewScenarioJsonGet().subscribe(x => {
       this.fileDownloading = false;
       //Create a fake object for us to click and download
       var a = document.createElement('a');
@@ -198,7 +198,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
 
   triggerNewRobustReviewScenarioRun() {
     this.newRunTriggered = true;
-    this.robustReviewScenarioService.newRobustReviewScenarioGETHistory().subscribe(x => {
+    this.robustReviewScenarioService.robustReviewScenarioNewPost().subscribe(x => {
       this.alertService.pushAlert(new Alert(`New Robust Review Scenario run was successfully requested.`, AlertContext.Success));
       this.updateRobustReviewScenarioGETHistories();
     },

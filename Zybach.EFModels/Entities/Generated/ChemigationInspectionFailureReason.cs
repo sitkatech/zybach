@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemigationInspectionFailureReason")]
-    [Index(nameof(ChemigationInspectionFailureReasonDisplayName), Name = "AK_ChemigationInspectionFailureReason_ChemigationInspectionFailureReasonDisplayName", IsUnique = true)]
-    [Index(nameof(ChemigationInspectionFailureReasonName), Name = "AK_ChemigationInspectionFailureReason_ChemigationInspectionFailureReasonName", IsUnique = true)]
+    [Index("ChemigationInspectionFailureReasonDisplayName", Name = "AK_ChemigationInspectionFailureReason_ChemigationInspectionFailureReasonDisplayName", IsUnique = true)]
+    [Index("ChemigationInspectionFailureReasonName", Name = "AK_ChemigationInspectionFailureReason_ChemigationInspectionFailureReasonName", IsUnique = true)]
     public partial class ChemigationInspectionFailureReason
     {
         public ChemigationInspectionFailureReason()
@@ -22,12 +20,14 @@ namespace Zybach.EFModels.Entities
         public int ChemigationInspectionFailureReasonID { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string ChemigationInspectionFailureReasonName { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string ChemigationInspectionFailureReasonDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationInspection.ChemigationInspectionFailureReason))]
+        [InverseProperty("ChemigationInspectionFailureReason")]
         public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
     }
 }

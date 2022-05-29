@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
-import { UserService } from 'src/app/services/user/user.service';
+import { UserService } from 'src/app/shared/generated/api/user.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ColDef } from 'ag-grid-community';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
@@ -36,7 +36,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.usersGrid?.api.showLoadingOverlay();
-      this.userService.getUsers().subscribe(users => {
+      this.userService.usersGet().subscribe(users => {
         this.rowData = users;
         this.usersGrid.api.hideOverlay();
         this.users = users;

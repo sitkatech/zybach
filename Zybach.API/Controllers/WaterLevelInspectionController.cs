@@ -18,7 +18,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/waterLevelInspections")]
+        [HttpGet("/waterLevelInspections")]
         [ZybachViewFeature]
         public ActionResult<List<WaterLevelInspectionSimpleDto>> GetAllWaterLevelInspections()
         {
@@ -26,7 +26,7 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelInspectionSimpleDtos);
         }
 
-        [HttpGet("/api/waterLevelInspections/measuringEquipment")]
+        [HttpGet("/waterLevelInspections/measuringEquipment")]
         [ZybachViewFeature]
         public ActionResult<List<WaterLevelMeasuringEquipmentDto>> GetAllMeasuringEquipments()
         {
@@ -34,7 +34,7 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelMeasuringEquipmentDtos);
         }
 
-        [HttpPost("/api/waterLevelInspections")]
+        [HttpPost("/waterLevelInspections")]
         [ZybachEditFeature]
         public ActionResult<WaterLevelInspectionSimpleDto> Create([FromBody] WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto)
         {
@@ -49,7 +49,7 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelInspectionSimpleDto);
         }
 
-        [HttpGet("/api/waterLevelInspections/{waterLevelInspectionID}")]
+        [HttpGet("/waterLevelInspections/{waterLevelInspectionID}")]
         [ZybachViewFeature]
         public ActionResult<WaterLevelInspectionSimpleDto> GetWaterLevelInspection([FromRoute] int waterLevelInspectionID)
         {
@@ -57,7 +57,7 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelInspectionSimpleDto);
         }
 
-        [HttpPut("/api/waterLevelInspections/{waterLevelInspectionID}")]
+        [HttpPut("/waterLevelInspections/{waterLevelInspectionID}")]
         [ZybachEditFeature]
         public ActionResult Update([FromRoute] int waterLevelInspectionID, [FromBody] WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto)
         {
@@ -80,7 +80,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("/api/waterLevelInspections/{waterLevelInspectionID}")]
+        [HttpDelete("/waterLevelInspections/{waterLevelInspectionID}")]
         [ZybachEditFeature]
         public ActionResult DeleteWaterLevelInspectionByID([FromRoute] int waterLevelInspectionID)
         {

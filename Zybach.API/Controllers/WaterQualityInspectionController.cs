@@ -19,7 +19,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/waterQualityInspectionTypes")]
+        [HttpGet("/waterQualityInspectionTypes")]
         [ZybachViewFeature]
         public ActionResult<List<WaterQualityInspectionTypeDto>> GetWaterQualityInspectionTypes()
         {
@@ -27,7 +27,7 @@ namespace Zybach.API.Controllers
             return Ok(waterQualityInspectionTypeDtos);
         }
 
-        [HttpGet("/api/waterQualityInspections")]
+        [HttpGet("/waterQualityInspections")]
         [ZybachViewFeature]
         public ActionResult<List<WaterQualityInspectionSimpleDto>> GetAllWaterQualityInspections()
         {
@@ -35,7 +35,7 @@ namespace Zybach.API.Controllers
             return Ok(waterQualityInspectionSimpleDtos);
         }
 
-        [HttpGet("/api/clearinghouseWaterQualityInspections")]
+        [HttpGet("/clearinghouseWaterQualityInspections")]
         [ZybachViewFeature]
         public ActionResult<List<ClearinghouseWaterQualityInspectionDto>> GetClearinghouseWaterQualityInspections()
         {
@@ -43,7 +43,7 @@ namespace Zybach.API.Controllers
             return Ok(clearinghouseWaterQualityInspectionDtos);
         }
 
-        [HttpGet("/api/waterQualityInspections/{waterQualityInspectionID}")]
+        [HttpGet("/waterQualityInspections/{waterQualityInspectionID}")]
         [ZybachViewFeature]
         public ActionResult<WaterQualityInspectionSimpleDto> GetWaterQualityInspection([FromRoute] int waterQualityInspectionID)
         {
@@ -51,7 +51,7 @@ namespace Zybach.API.Controllers
             return Ok(waterQualityInspectionSimpleDto);
         }
 
-        [HttpPost("/api/waterQualityInspections")]
+        [HttpPost("/waterQualityInspections")]
         [ZybachEditFeature]
         public ActionResult<WaterQualityInspectionSimpleDto> CreateWaterQualityInspection([FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
         {
@@ -66,7 +66,7 @@ namespace Zybach.API.Controllers
             return Ok(waterQualityInspectionSimpleDto);
         }
 
-        [HttpPut("/api/waterQualityInspections/{waterQualityInspectionID}")]
+        [HttpPut("/waterQualityInspections/{waterQualityInspectionID}")]
         [ZybachEditFeature]
         public ActionResult UpdateWaterQualityInspection([FromRoute] int waterQualityInspectionID,
             [FromBody] WaterQualityInspectionUpsertDto waterQualityInspectionUpsert)
@@ -90,7 +90,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("/api/waterQualityInspections/{waterQualityInspectionID}")]
+        [HttpDelete("/waterQualityInspections/{waterQualityInspectionID}")]
         [ZybachEditFeature]
         public ActionResult DeleteWaterQualityInspectionByID([FromRoute] int waterQualityInspectionID)
         {

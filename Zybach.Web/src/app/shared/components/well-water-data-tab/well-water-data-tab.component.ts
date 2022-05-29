@@ -3,12 +3,13 @@ import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular
 import { AngularMyDatePickerDirective, IAngularMyDpOptions } from 'angular-mydatepicker';
 import { AsyncParser } from 'json2csv';
 import moment from 'moment';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
 import { WellDetailDto } from '../../generated/model/well-detail-dto';
-import { SensorStatusService } from 'src/app/services/sensor-status.service';
+import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.service';
 import { SensorMessageAgeDto } from '../../generated/model/sensor-message-age-dto';
+import { ChartDataService } from '../../generated/api/chart-data.service';
 
 @Component({
   selector: 'zybach-well-water-data-tab',
@@ -46,6 +47,7 @@ export class WellWaterDataTabComponent implements OnInit {
   constructor(
     private wellService: WellService,
     private sensorService: SensorStatusService,
+    private chartDataService: ChartDataService,
     private cdr: ChangeDetectorRef,
     private decimalPipe: DecimalPipe,
   ) { }
@@ -80,7 +82,7 @@ export class WellWaterDataTabComponent implements OnInit {
   }
 
   getSensorsWithAgeMessages(){
-    this.sensorService.getSensorStatusForWell(this.well.WellID).subscribe(wellWithSensorMessageAge => {
+    this.sensorService.sensorStatusWellIDGet(this.well.WellID).subscribe(wellWithSensorMessageAge => {
       this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
 
       for (var sensor of this.sensorsWithStatus){
@@ -131,7 +133,7 @@ export class WellWaterDataTabComponent implements OnInit {
 
   getChartDataAndBuildChart() {
 
-    this.chartSubscription = this.wellService.getChartData(this.well.WellID).subscribe(response => {
+    this.chartSubscription = this.chartDataService.chartDataWellIDGet(this.well.WellID).subscribe(response => {
       if (!response.TimeSeries || response.TimeSeries.length == 0) {
         this.noTimeSeriesData = true;
         this.timeSeries = [];

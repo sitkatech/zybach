@@ -2,15 +2,15 @@ import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, View
 import { NgForm } from '@angular/forms';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin, Observable, of } from 'rxjs';
-import { ChemigationInspectionService } from 'src/app/services/chemigation-inspection.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
+import { ChemigationInspectionService } from 'src/app/shared/generated/api/chemigation-inspection.service';
+import { UserService } from 'src/app/shared/generated/api/user.service';
+import { WaterQualityInspectionService } from 'src/app/shared/generated/api/water-quality-inspection.service';
 import { CropTypeDto } from '../../generated/model/crop-type-dto';
 import { UserDto } from '../../generated/model/user-dto';
 import { WaterQualityInspectionUpsertDto } from '../../generated/model/water-quality-inspection-upsert-dto';
 import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WaterQualityInspectionTypeDto } from '../../generated/model/water-quality-inspection-type-dto';
 
 @Component({
@@ -40,9 +40,9 @@ export class WaterQualityInspectionUpsertComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin({
-      inspectionTypes: this.waterQualityInspectionService.getWaterQualityInspectionTypes(),
-      cropTypes: this.chemigationInspectionService.getCropTypes(),
-      users: this.userService.getUsers(),
+      inspectionTypes: this.waterQualityInspectionService.waterQualityInspectionTypesGet(),
+      cropTypes: this.chemigationInspectionService.cropTypesGet(),
+      users: this.userService.usersGet(),
 
     }).subscribe(({ inspectionTypes, cropTypes, users }) => {
 
@@ -72,7 +72,7 @@ export class WaterQualityInspectionUpsertComponent implements OnInit {
         debounceTime(200), 
         distinctUntilChanged(),
         tap(() => this.searchFailed = false),
-        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationIDHasInspectionType(searchText) : ([])), 
+        switchMap(searchText => searchText.length > 2 ? this.wellService.wellsSearchWellRegistrationIDHasInspectionTypeGet(searchText) : ([])), 
         catchError(() => {
           this.searchFailed = true;
           return of([]);

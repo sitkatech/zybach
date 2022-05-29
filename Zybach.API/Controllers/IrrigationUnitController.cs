@@ -19,7 +19,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/irrigationUnits")]
+        [HttpGet("/irrigationUnits")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<AgHubIrrigationUnitSimpleDto>> ListIrrigationUnits()
         {
@@ -27,7 +27,7 @@ namespace Zybach.API.Controllers
             return Ok(irrigationUnits);
         }
 
-        [HttpGet("/api/irrigationUnits/{irrigationUnitID}")]
+        [HttpGet("/irrigationUnits/{irrigationUnitID}")]
         [ZybachViewFeature]
         public ActionResult<AgHubIrrigationUnitDetailDto> GetIrrigationUnitByID([FromRoute] int irrigationUnitID)
         {

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { IrrigationUnitService } from 'src/app/services/irrigation-unit.service';
+import { IrrigationUnitService } from 'src/app/shared/generated/api/irrigation-unit.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { AgHubIrrigationUnitDetailDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-detail-dto';
 import { AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto';
@@ -56,7 +56,7 @@ export class IrrigationUnitDetailComponent implements OnInit {
   }
 
   getIrrigationUnitDetails(){
-    this.irrigationUnitService.getIrrigationUnitDetailsByID(this.irrigationUnitID).subscribe((irrigationUnit: AgHubIrrigationUnitDetailDto) => {
+    this.irrigationUnitService.irrigationUnitsIrrigationUnitIDGet(this.irrigationUnitID).subscribe((irrigationUnit: AgHubIrrigationUnitDetailDto) => {
       this.irrigationUnit = irrigationUnit;
       this.irrigationUnitID = irrigationUnit.AgHubIrrigationUnitID;
       this.openETData = irrigationUnit.WaterYearMonthETAndPrecipData;

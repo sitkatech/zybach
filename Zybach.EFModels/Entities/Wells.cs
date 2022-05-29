@@ -88,8 +88,7 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.GeoOptixWell)
                 .Include(x => x.AgHubWell.AgHubWellIrrigatedAcres)
                 .Include(x => x.Sensors)
-                .Include(x => x.Sensors).ThenInclude(x => x.SensorType)
-                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
                 .Include(x => x.WellUse)
                 .Include(x => x.County)
@@ -256,13 +255,12 @@ namespace Zybach.EFModels.Entities
                 .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
                     x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
             var latestWellWaterQualityInspection = dbContext.WaterQualityInspections
-                .Include(x => x.WaterQualityInspectionType)
                 .Include(x => x.Well)
                 .AsNoTracking().ToList()
                 .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
                     x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
             var listWithLatestInspectionsAsDto = dbContext.Wells
-                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
                 .AsNoTracking()
                 .ToList()
@@ -278,7 +276,7 @@ namespace Zybach.EFModels.Entities
         public static IEnumerable<WellWaterLevelInspectionDetailedDto> ListByWellIDsAsWellWaterLevelInspectionDetailedDto(ZybachDbContext dbContext, List<int> wellIDs)
         {
             var wells = dbContext.Wells
-                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
                 .AsNoTracking()
                 .Where(x => wellIDs.Contains(x.WellID))
@@ -299,13 +297,12 @@ namespace Zybach.EFModels.Entities
         public static IEnumerable<WellWaterQualityInspectionDetailedDto> ListByWellIDsAsWellWaterQualityInspectionDetailedDto(ZybachDbContext dbContext, List<int> wellIDs)
         {
             var wells = dbContext.Wells
-                .Include(x => x.WellWaterQualityInspectionTypes).ThenInclude(x => x.WaterQualityInspectionType)
+                .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
                 .AsNoTracking()
                 .Where(x => wellIDs.Contains(x.WellID))
                 .ToList();
             var waterQualityInspections = dbContext.WaterQualityInspections
-                .Include(x => x.WaterQualityInspectionType)
                 .Include(x => x.Well)
                 .AsNoTracking().ToList()
                 .GroupBy(x => x.WellID)

@@ -5,8 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("AgHubWellStaging")]
@@ -16,8 +14,10 @@ namespace Zybach.EFModels.Entities
         public int AgHubWellStagingID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string WellRegistrationID { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string WellTPID { get; set; }
         [Required]
         [Column(TypeName = "geometry")]
@@ -34,8 +34,10 @@ namespace Zybach.EFModels.Entities
         public DateTime? RegisteredUpdated { get; set; }
         public bool HasElectricalData { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string AgHubRegisteredUser { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string FieldName { get; set; }
         [Column(TypeName = "geometry")]
         public Geometry IrrigationUnitGeometry { get; set; }

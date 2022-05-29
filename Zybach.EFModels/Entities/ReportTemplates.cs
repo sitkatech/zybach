@@ -28,24 +28,14 @@ namespace Zybach.EFModels.Entities
         private static IQueryable<ReportTemplate> GetReportTemplatesImpl(ZybachDbContext dbContext)
         {
             return dbContext.ReportTemplates
-                .Include(x => x.ReportTemplateModel)
-                .Include(x => x.ReportTemplateModelType)
-                .Include(x => x.FileResource)
-                .Include(x => x.FileResource).ThenInclude(x => x.FileResourceMimeType)
                 .Include(x => x.FileResource).ThenInclude(x => x.CreateUser)
-                .Include(x => x.FileResource).ThenInclude(x => x.CreateUser).ThenInclude(x => x.Role)
                 .AsNoTracking();
         }
 
         private static IQueryable<ReportTemplate> GetReportTemplatesImplWithTracking(ZybachDbContext dbContext)
         {
             return dbContext.ReportTemplates
-                .Include(x => x.ReportTemplateModel)
-                .Include(x => x.ReportTemplateModelType)
-                .Include(x => x.FileResource)
-                .Include(x => x.FileResource).ThenInclude(x => x.FileResourceMimeType)
-                .Include(x => x.FileResource).ThenInclude(x => x.CreateUser)
-                .Include(x => x.FileResource).ThenInclude(x => x.CreateUser).ThenInclude(x => x.Role);
+                .Include(x => x.FileResource).ThenInclude(x => x.CreateUser);
         }
 
         public static List<ReportTemplateDto> ListByModelIDAsDtos(ZybachDbContext dbContext, int reportTemplateModelID)

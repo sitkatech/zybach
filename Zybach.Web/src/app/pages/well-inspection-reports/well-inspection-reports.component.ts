@@ -15,7 +15,7 @@ import { ReportTemplateDto } from 'src/app/shared/generated/model/report-templat
 import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
 import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 import { WellInspectionSummaryDto } from 'src/app/shared/generated/model/well-inspection-summary-dto';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { DatePipe } from '@angular/common';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 
@@ -215,7 +215,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
   }
 
   private populateWellInspections(): void {
-    this.wellService.getWellsWithInspectionSummaries().subscribe(wells => {
+    this.wellService.wellsInspectionSummariesGet().subscribe(wells => {
       this.rowData = wells;
       this.wellInspectionsGrid.columnApi.autoSizeAllColumns();
       this.wellInspectionsGrid.api.hideOverlay();
@@ -290,14 +290,3 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
     this.cdr.detach();
   }
 }
-
-  
-  
-  
-  
-
-
-  
-
-
-

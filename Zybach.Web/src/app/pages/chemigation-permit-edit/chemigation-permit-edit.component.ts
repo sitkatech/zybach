@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
-import { WellService } from 'src/app/services/well.service';
+import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { ChemigationPermitDto } from 'src/app/shared/generated/model/chemigation-permit-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { ChemigationPermitUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-upsert-dto';
@@ -13,6 +13,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { CountyDto } from 'src/app/shared/generated/model/county-dto';
+import { CountyService } from 'src/app/shared/generated/api/county.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-edit',
@@ -37,6 +38,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
     private wellService: WellService,
+    private countyService: CountyService,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
   ) { }
@@ -47,16 +49,16 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
 
-      this.chemigationPermitService.getChemigationPermitStatuses().subscribe(permitStatuses => {
+      this.chemigationPermitService.chemigationPermitStatusesGet().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
       });
 
-      this.chemigationPermitService.getCounties().subscribe(counties => {
+      this.countyService.countiesGet().subscribe(counties => {
         this.counties = counties;
       });
 
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
-      this.chemigationPermitService.getChemigationPermitByPermitNumber(this.chemigationPermitNumber).subscribe(chemigationPermit => {
+      this.chemigationPermitService.chemigationPermitsChemigationPermitNumberGet(this.chemigationPermitNumber).subscribe(chemigationPermit => {
         this.chemigationPermit = chemigationPermit;
         this.model.ChemigationPermitStatusID = this.chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusID;
         this.model.CountyID = this.chemigationPermit.County.CountyID;
@@ -75,7 +77,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
   onSubmit(editChemigationPermitForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.chemigationPermitService.updateChemigationPermitByID(this.chemigationPermit.ChemigationPermitID, this.model)
+    this.chemigationPermitService.chemigationPermitsChemigationPermitIDPut(this.chemigationPermit.ChemigationPermitID, this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editChemigationPermitForm.reset();
@@ -96,7 +98,7 @@ export class ChemigationPermitEditComponent implements OnInit, OnDestroy {
         debounceTime(200), 
         distinctUntilChanged(),
         tap(() => this.searchFailed = false),
-        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationIDRequiresChemigation(searchText) : ([])), 
+        switchMap(searchText => searchText.length > 2 ? this.wellService.wellsSearchWellRegistrationIDRequiresChemigationGet(searchText) : ([])), 
         catchError(() => {
           this.searchFailed = true;
           return of([]);

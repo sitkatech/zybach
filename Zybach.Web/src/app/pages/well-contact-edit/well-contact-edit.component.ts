@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { WellService } from 'src/app/services/well.service';
+import { CountyService } from 'src/app/shared/generated/api/county.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { CountyDto } from 'src/app/shared/generated/model/county-dto';
 import { WellContactInfoDto } from 'src/app/shared/generated/model/well-contact-info-dto';
 import { Alert } from 'src/app/shared/models/alert';
@@ -28,6 +29,7 @@ export class WellContactEditComponent implements OnInit {
 
   constructor(
     private wellService: WellService,
+    private countyService: CountyService,
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -39,8 +41,8 @@ export class WellContactEditComponent implements OnInit {
     this.states = States.statesList;
 
     forkJoin({
-      wellContactInfo: this.wellService.getWellContactDetails(this.wellID),
-      counties: this.wellService.getCounties()
+      wellContactInfo: this.wellService.wellsWellIDContactInfoGet(this.wellID),
+      counties: this.countyService.countiesGet()
     }).subscribe(({ wellContactInfo, counties }) => {
       this.wellContactInfo = wellContactInfo;
       this.wellRegistrationID = wellContactInfo.WellRegistrationID;
@@ -57,7 +59,7 @@ export class WellContactEditComponent implements OnInit {
   public onSubmit(editWellContactForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
 
-    this.wellService.updateWellContactDetails(this.wellID, this.wellContactInfo)
+    this.wellService.wellsWellIDContactInfoPut(this.wellID, this.wellContactInfo)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editWellContactForm.reset();

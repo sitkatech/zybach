@@ -19,7 +19,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/chemigationInspections/inspectionTypes")]
+        [HttpGet("/chemigationInspections/inspectionTypes")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionTypeDto>> GetChemigationInspectionTypes()
         {
@@ -27,7 +27,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspectionTypeDtos);
         }
 
-        [HttpGet("/api/chemigationInspections/inspectionStatuses")]
+        [HttpGet("/chemigationInspections/inspectionStatuses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionStatusDto>> GetChemigationInspectionStatuses()
         {
@@ -35,7 +35,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspectionStatusDtos);
         }
 
-        [HttpGet("/api/chemigationInspections/failureReasons")]
+        [HttpGet("/chemigationInspections/failureReasons")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionFailureReasonDto>> GetChemigationInspectionFailureReasons()
         {
@@ -43,7 +43,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspectionFailureReasonDtos);
         }
 
-        [HttpGet("/api/tillageTypes")]
+        [HttpGet("/tillageTypes")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<TillageDto>> GetTillageTypes()
         {
@@ -51,7 +51,7 @@ namespace Zybach.API.Controllers
             return Ok(tillageTypeDtos);
         }
 
-        [HttpGet("/api/cropTypes")]
+        [HttpGet("/cropTypes")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<CropTypeDto>> GetCropTypes()
         {
@@ -59,7 +59,7 @@ namespace Zybach.API.Controllers
             return Ok(cropTypeDtos);
         }
 
-        [HttpGet("/api/chemigationInspections/mainlineCheckValves")]
+        [HttpGet("/chemigationInspections/mainlineCheckValves")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationMainlineCheckValveDto>> GetMainlineCheckValves()
         {
@@ -67,7 +67,7 @@ namespace Zybach.API.Controllers
             return Ok(mainlineCheckValveDtos);
         }
 
-        [HttpGet("/api/chemigationInspections/lowPressureValves")]
+        [HttpGet("/chemigationInspections/lowPressureValves")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationLowPressureValveDto>> GetLowPressureValves()
         {
@@ -75,7 +75,7 @@ namespace Zybach.API.Controllers
             return Ok(lowPressureValveDtos);
         }
 
-        [HttpGet("/api/chemigationInspections/injectionValves")]
+        [HttpGet("/chemigationInspections/injectionValves")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInjectionValveDto>> GetChemigationInjectionValves()
         {
@@ -83,7 +83,7 @@ namespace Zybach.API.Controllers
             return Ok(injectionValveDtos);
         }
 
-        [HttpGet("/api/chemigationInspections/interlockTypes")]
+        [HttpGet("/chemigationInspections/interlockTypes")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInterlockTypeDto>> GetInterlockTypes()
         {
@@ -91,7 +91,7 @@ namespace Zybach.API.Controllers
             return Ok(interlockTypeDtos);
         }
 
-        [HttpGet("/api/chemigationInspections")]
+        [HttpGet("/chemigationInspections")]
         [ZybachViewFeature]
         public ActionResult<List<ChemigationInspectionSimpleDto>> GetAllChemigationInspections()
         {
@@ -100,7 +100,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspections);
         }
 
-        [HttpGet("/api/chemigationInspections/{chemigationInspectionID}")]
+        [HttpGet("/chemigationInspections/{chemigationInspectionID}")]
         [ZybachEditFeature]
         public ActionResult<ChemigationInspectionSimpleDto> GetChemigationInspectionByID([FromRoute] int chemigationInspectionID)
         {
@@ -114,7 +114,7 @@ namespace Zybach.API.Controllers
             return chemigationInspection;
         }
 
-        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}/latestChemigationInspection")]
+        [HttpGet("/chemigationPermits/{chemigationPermitNumber}/latestChemigationInspection")]
         [ZybachViewFeature]
         public ActionResult<ChemigationInspectionSimpleDto> GetLatestChemigationInspectionByPermitNumber(
             [FromRoute] int chemigationPermitNumber)
@@ -124,7 +124,7 @@ namespace Zybach.API.Controllers
             return chemigationInspection;
         }
 
-        [HttpPost("/api/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection")]
+        [HttpPost("/chemigationPermits/annualRecords/{chemigationPermitAnnualRecordID}/createInspection")]
         [ZybachEditFeature]
         public ActionResult<ChemigationInspectionSimpleDto>
             CreateChemigationInspectionByAnnualRecordID([FromRoute] int chemigationPermitAnnualRecordID,
@@ -145,7 +145,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationInspection);
         }
 
-        [HttpPut("/api/chemigationInspections/{chemigationInspectionID}")]
+        [HttpPut("/chemigationInspections/{chemigationInspectionID}")]
         [ZybachEditFeature]
         public ActionResult
             UpdateChemigationInspectionByAnnualRecordIDAndInspectionID([FromRoute] int chemigationInspectionID, [FromBody] ChemigationInspectionUpsertDto chemigationInspectionUpsertDto)
@@ -183,7 +183,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("/api/chemigationInspections/{chemigationInspectionID}")]
+        [HttpDelete("/chemigationInspections/{chemigationInspectionID}")]
         [ZybachEditFeature]
         public ActionResult DeleteChemigationInspectionByID([FromRoute] int chemigationInspectionID)
         {

@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
@@ -15,6 +15,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum';
+import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
@@ -46,6 +47,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
     private alertService: AlertService,
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
+    private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private modalService: NgbModal,
     private utilityFunctionsService: UtilityFunctionsService,
     private datePipe: DatePipe,
@@ -361,7 +363,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   }
 
   public updateGridData(): void {
-    this.chemigationPermitService.getChemigationPermits().subscribe(chemigationPermits => {
+    this.chemigationPermitService.chemigationPermitsGet().subscribe(chemigationPermits => {
       this.chemigationPermits = chemigationPermits;
       this.countOfActivePermitsWithoutRenewalRecordsForCurrentYear = this.chemigationPermits.filter(x => 
         x.ChemigationPermitStatus.ChemigationPermitStatusID == ChemigationPermitStatusEnum.Active &&
@@ -389,7 +391,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
 
   public bulkCreateAnnualRenewals(): void {
     this.isPerformingAction = true;
-    this.chemigationPermitService.bulkCreateChemigationPermitAnnualRecordsByRecordYear(this.currentYear).subscribe((response) => {
+    this.chemigationPermitAnnualRecordService.chemigationPermitAnnualRecordsRecordYearPost(this.currentYear).subscribe((response) => {
       this.modalReference.close();
       this.isPerformingAction = false;
       this.alertService.pushAlert(new Alert(`${response.ChemigationPermitsRenewed} Annual Renewal Applications successfully created, of which ${response.ChemigationInspectionsCreated} have a Chemigation Inspection due and auto-created for them`, AlertContext.Success, true));

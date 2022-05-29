@@ -19,7 +19,7 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("/api/chartData/{wellID}")]
+        [HttpGet("/chartData/{wellID}")]
         [ZybachViewFeature]
         public ActionResult<WellChartDataDto> GetInstallationRecordForWell([FromRoute] int wellID)
         {

@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpPost("/api/users/invite")]
+        [HttpPost("/users/invite")]
         [AdminFeature]
         public async Task<IActionResult> InviteUser([FromBody] UserInviteDto inviteDto)
         {
@@ -96,7 +96,7 @@ namespace Zybach.API.Controllers
             return Ok(user);
         }
 
-        [HttpPost("/api/users")]
+        [HttpPost("/users")]
         [LoggedInUnclassifiedFeature]
         public ActionResult<UserDto> CreateUser([FromBody] UserCreateDto userCreateDto)
         {
@@ -124,7 +124,7 @@ namespace Zybach.API.Controllers
             return Ok(user);
         }
 
-        [HttpGet("/api/users")]
+        [HttpGet("/users")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<UserDto>> List()
         {
@@ -132,7 +132,7 @@ namespace Zybach.API.Controllers
             return Ok(userDtos);
         }
 
-        [HttpGet("/api/users/unassigned-report")]
+        [HttpGet("/users/unassigned-report")]
         [ZybachViewFeature]
         public ActionResult<UnassignedUserReportDto> GetUnassignedUserReport()
         {
@@ -141,7 +141,7 @@ namespace Zybach.API.Controllers
             return Ok(report);
         }
 
-        [HttpGet("/api/users/{userID}")]
+        [HttpGet("/users/{userID}")]
         [UserViewFeature]
         public ActionResult<UserDto> GetByUserID([FromRoute] int userID)
         {
@@ -149,7 +149,7 @@ namespace Zybach.API.Controllers
             return RequireNotNullThrowNotFound(userDto, "User", userID);
         }
 
-        [HttpGet("/api/users/user-claims/{globalID}")]
+        [HttpGet("/users/user-claims/{globalID}")]
         public ActionResult<UserDto> GetByGlobalID([FromRoute] string globalID)
         {
             var isValidGuid = Guid.TryParse(globalID, out var globalIDAsGuid);
@@ -169,7 +169,7 @@ namespace Zybach.API.Controllers
             return Ok(userDto);
         }
 
-        [HttpPut("/api/users/{userID}")]
+        [HttpPut("/users/{userID}")]
         [ZybachViewFeature]
         public ActionResult<UserDto> UpdateUser([FromRoute] int userID, [FromBody] UserUpsertDto userUpsertDto)
         {
@@ -198,7 +198,7 @@ namespace Zybach.API.Controllers
             return Ok(updatedUserDto);
         }
 
-        [HttpPut("/api/users/set-disclaimer-acknowledged-date")]
+        [HttpPut("/users/set-disclaimer-acknowledged-date")]
         public ActionResult<UserDto> SetDisclaimerAcknowledgedDate([FromBody] int userID)
         {
             var userDto = EFModels.Entities.User.GetByUserID(_dbContext, userID);

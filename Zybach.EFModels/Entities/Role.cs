@@ -9,29 +9,12 @@ namespace Zybach.EFModels.Entities
     {
         public static IEnumerable<RoleDto> List(ZybachDbContext dbContext)
         {
-            var roles = dbContext.Roles
-                .AsNoTracking()
-                .Select(x => x.AsDto());
-
-            return roles;
+            return Role.AllAsDto;
         }
 
         public static RoleDto GetByRoleID(ZybachDbContext dbContext, int roleID)
         {
-            var role = dbContext.Roles
-                .AsNoTracking()
-                .FirstOrDefault(x => x.RoleID == roleID);
-
-            return role?.AsDto();
+            return Role.AllAsDtoLookupDictionary[roleID];
         }
-    }
-
-    public enum RoleEnum
-    {
-        Admin = 1,
-        Normal = 2,
-        Unassigned = 3,
-        Disabled = 4,
-        WaterDataProgramReadOnly = 5
     }
 }

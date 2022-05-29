@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("RobustReviewScenarioGETRunHistory")]
@@ -23,12 +21,14 @@ namespace Zybach.EFModels.Entities
         public DateTime? SuccessfulStartDate { get; set; }
         public bool IsTerminal { get; set; }
         [StringLength(100)]
+        [Unicode(false)]
         public string StatusMessage { get; set; }
         [StringLength(7)]
+        [Unicode(false)]
         public string StatusHexColor { get; set; }
 
-        [ForeignKey(nameof(CreateByUserID))]
-        [InverseProperty(nameof(User.RobustReviewScenarioGETRunHistories))]
+        [ForeignKey("CreateByUserID")]
+        [InverseProperty("RobustReviewScenarioGETRunHistories")]
         public virtual User CreateByUser { get; set; }
     }
 }

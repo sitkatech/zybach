@@ -5,12 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("AgHubIrrigationUnit")]
-    [Index(nameof(WellTPID), Name = "AK_AgHubIrrigationUnit_WellTPID", IsUnique = true)]
+    [Index("WellTPID", Name = "AK_AgHubIrrigationUnit_WellTPID", IsUnique = true)]
     public partial class AgHubIrrigationUnit
     {
         public AgHubIrrigationUnit()
@@ -24,16 +22,17 @@ namespace Zybach.EFModels.Entities
         public int AgHubIrrigationUnitID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string WellTPID { get; set; }
         [Column(TypeName = "geometry")]
         public Geometry IrrigationUnitGeometry { get; set; }
         public double? IrrigationUnitAreaInAcres { get; set; }
 
-        [InverseProperty(nameof(AgHubIrrigationUnitWaterYearMonthETDatum.AgHubIrrigationUnit))]
+        [InverseProperty("AgHubIrrigationUnit")]
         public virtual ICollection<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
-        [InverseProperty(nameof(AgHubIrrigationUnitWaterYearMonthPrecipitationDatum.AgHubIrrigationUnit))]
+        [InverseProperty("AgHubIrrigationUnit")]
         public virtual ICollection<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthPrecipitationData { get; set; }
-        [InverseProperty(nameof(AgHubWell.AgHubIrrigationUnit))]
+        [InverseProperty("AgHubIrrigationUnit")]
         public virtual ICollection<AgHubWell> AgHubWells { get; set; }
     }
 }

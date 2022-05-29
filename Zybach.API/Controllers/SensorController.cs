@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
             _influxDbService = influxDbService;
         }
 
-        [HttpGet("/api/sensors")]
+        [HttpGet("/sensors")]
         [ZybachViewFeature]
         public async Task<List<SensorSimpleDto>> List()
         {
@@ -55,7 +55,7 @@ namespace Zybach.API.Controllers
             return sensorSimpleDtos;
         }
 
-        [HttpGet("/api/sensors/{sensorID}")]
+        [HttpGet("/sensors/{sensorID}")]
         [ZybachViewFeature]
         public async Task<ActionResult<SensorSimpleDto>> GetByID([FromRoute] int sensorID)
         {
@@ -75,7 +75,7 @@ namespace Zybach.API.Controllers
             return sensorSimpleDto;
         }
 
-        [HttpGet("/api/sensors/byWellID/{wellID}")]
+        [HttpGet("/sensors/byWellID/{wellID}")]
         [UserViewFeature]
         public ActionResult<List<SensorSimpleDto>> GetSensorsByWellID([FromRoute] int wellID)
         {

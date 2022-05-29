@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("ChemigationInjectionValve")]
-    [Index(nameof(ChemigationInjectionValveDisplayName), Name = "AK_ChemigationInjectionValve_ChemigationInjectionValveDisplayName", IsUnique = true)]
-    [Index(nameof(ChemigationInjectionValveName), Name = "AK_ChemigationInjectionValve_ChemigationInjectionValveName", IsUnique = true)]
+    [Index("ChemigationInjectionValveDisplayName", Name = "AK_ChemigationInjectionValve_ChemigationInjectionValveDisplayName", IsUnique = true)]
+    [Index("ChemigationInjectionValveName", Name = "AK_ChemigationInjectionValve_ChemigationInjectionValveName", IsUnique = true)]
     public partial class ChemigationInjectionValve
     {
         public ChemigationInjectionValve()
@@ -22,12 +20,14 @@ namespace Zybach.EFModels.Entities
         public int ChemigationInjectionValveID { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string ChemigationInjectionValveName { get; set; }
         [Required]
         [StringLength(50)]
+        [Unicode(false)]
         public string ChemigationInjectionValveDisplayName { get; set; }
 
-        [InverseProperty(nameof(ChemigationInspection.ChemigationInjectionValve))]
+        [InverseProperty("ChemigationInjectionValve")]
         public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
     }
 }

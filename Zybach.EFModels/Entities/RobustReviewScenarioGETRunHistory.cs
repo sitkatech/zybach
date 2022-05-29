@@ -26,7 +26,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<RobustReviewScenarioGETRunHistoryDto> List(ZybachDbContext _dbContext)
         {
-            return _dbContext.RobustReviewScenarioGETRunHistories.Include(x => x.CreateByUser).ThenInclude(x => x.Role).OrderByDescending(x => x.CreateDate).Select(x => x.AsDto()).ToList();
+            return _dbContext.RobustReviewScenarioGETRunHistories.Include(x => x.CreateByUser).OrderByDescending(x => x.CreateDate).Select(x => x.AsDto()).ToList();
         }
 
         public static RobustReviewScenarioGETRunHistory GetNotYetStartedRobustReviewScenarioGETRunHistory(ZybachDbContext _dbContext)

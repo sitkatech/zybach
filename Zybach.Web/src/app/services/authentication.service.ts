@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { UserService } from './user/user.service';
+import { UserService } from 'src/app/shared/generated/api/user.service';
 import { Observable, race, Subject } from 'rxjs';
 import { filter, finalize, first, map } from 'rxjs/operators';
 import { CookieStorageService } from '../shared/services/cookies/cookie-storage.service';
@@ -65,7 +65,7 @@ export class AuthenticationService {
   public getUser(claims: any) {
     var globalID = claims["sub"];
 
-    this.userService.getUserFromGlobalID(globalID).subscribe(
+    this.userService.usersUserClaimsGlobalIDGet(globalID).subscribe(
       result => { this.updateUser(result); },
       error => { this.onGetUserError(error, claims) }
     );
@@ -85,7 +85,7 @@ export class AuthenticationService {
         UserGuid: claims["sub"],
       });
 
-      this.userService.createNewUser(newUser).subscribe(user => {
+      this.userService.usersPost(newUser).subscribe(user => {
         this.updateUser(user);
       })
     }

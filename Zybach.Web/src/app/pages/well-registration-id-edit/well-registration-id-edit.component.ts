@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WellRegistrationIDDto } from 'src/app/shared/generated/model/well-registration-id-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
@@ -33,7 +33,7 @@ export class WellRegistrationIdEditComponent implements OnInit {
     
     this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
     forkJoin({
-      well: this.wellService.getWellDetails(this.wellID),
+      well: this.wellService.wellsWellIDGet(this.wellID),
     }).subscribe(({ well }) => {
       this.wellRegistrationID = well.WellRegistrationID;
       this.newWellRegistrationIDDto = new WellRegistrationIDDto()
@@ -46,7 +46,7 @@ export class WellRegistrationIdEditComponent implements OnInit {
   public onSubmit(editWellRegistrationIDForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.wellService.updateWellRegistrationID(this.wellID, this.newWellRegistrationIDDto)
+    this.wellService.wellsWellIDEditRegistrationIDPut(this.wellID, this.newWellRegistrationIDDto)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editWellRegistrationIDForm.reset();

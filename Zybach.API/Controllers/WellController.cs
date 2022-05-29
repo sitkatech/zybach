@@ -26,7 +26,7 @@ namespace Zybach.API.Controllers
             _geoOptixService = geoOptixService;
         }
 
-        [HttpGet("/api/wellUses")]
+        [HttpGet("/wellUses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<WellUseDto>> GetWellUses()
         {
@@ -34,15 +34,15 @@ namespace Zybach.API.Controllers
             return Ok(wellUseDtos);
         }
 
-        [HttpGet("/api/wellParticipations")]
+        [HttpGet("/wellParticipations")]
         [ZybachViewFeature]
-        public ActionResult<IEnumerable<WellUseDto>> GetWellParticipations()
+        public ActionResult<IEnumerable<WellParticipationDto>> GetWellParticipations()
         {
             var wellParticipationDtos = WellParticipations.ListAsDto(_dbContext);
             return Ok(wellParticipationDtos);
         }
 
-        [HttpGet("/api/wells/inspectionSummaries")]
+        [HttpGet("/wells/inspectionSummaries")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<WellInspectionSummaryDto>> GetWellInspectionSummaries()
         {
@@ -50,7 +50,7 @@ namespace Zybach.API.Controllers
             return Ok(wellInspectionSummaryDtos);
         }
 
-        [HttpGet("/api/wells/search/{wellRegistrationID}")]
+        [HttpGet("/wells/search/{wellRegistrationID}")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
         {
@@ -58,7 +58,7 @@ namespace Zybach.API.Controllers
             return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
         }
 
-        [HttpGet("/api/wells/search/{wellRegistrationID}/hasInspectionType")]
+        [HttpGet("/wells/search/{wellRegistrationID}/hasInspectionType")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationIDHasInspectionType(
             [FromRoute] string wellRegistrationID)
@@ -66,7 +66,7 @@ namespace Zybach.API.Controllers
             return Ok(Wells.SearchByWellRegistrationIDHasInspectionType(_dbContext, wellRegistrationID));
         }
 
-        [HttpGet("/api/wells/search/{wellRegistrationID}/requiresChemigation")]
+        [HttpGet("/wells/search/{wellRegistrationID}/requiresChemigation")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationIDRequiresChemigation(
             [FromRoute] string wellRegistrationID)
@@ -74,7 +74,7 @@ namespace Zybach.API.Controllers
             return Ok(Wells.SearchByWellRegistrationIDRequiresChemigation(_dbContext, wellRegistrationID));
         }
 
-        [HttpGet("/api/wells/{wellID}/waterLevelInspections")]
+        [HttpGet("/wells/{wellID}/waterLevelInspections")]
         [ZybachViewFeature]
         public ActionResult<List<WaterLevelInspectionSummaryDto>> GetWaterLevelInspectionSummariesByWellID(
             [FromRoute] int wellID)
@@ -83,7 +83,7 @@ namespace Zybach.API.Controllers
             return Ok(waterLevelInspectionSummaryDtos);
         }
 
-        [HttpGet("/api/wells/{wellID}/waterQualityInspections")]
+        [HttpGet("/wells/{wellID}/waterQualityInspections")]
         [ZybachViewFeature]
         public ActionResult<List<WaterQualityInspectionSummaryDto>> GetWaterQualityInspectionSummariesByWellID(
             [FromRoute] int wellID)
@@ -93,7 +93,7 @@ namespace Zybach.API.Controllers
             return Ok(waterQualityInspectionSummaryDtos);
         }
 
-        [HttpGet("/api/wells/{wellID}/simpleDto")]
+        [HttpGet("/wells/{wellID}/simpleDto")]
         [ZybachViewFeature]
         public ActionResult<WellSimpleDto> GetWellSimpleDto([FromRoute] int wellID)
         {
@@ -101,7 +101,7 @@ namespace Zybach.API.Controllers
             return Ok(wellSimpleDto);
         }
 
-        [HttpGet("/api/wells/{wellID}")]
+        [HttpGet("/wells/{wellID}")]
         [ZybachViewFeature]
         public ActionResult<WellDetailDto> GetWellDetails([FromRoute] int wellID)
         {
@@ -214,7 +214,7 @@ namespace Zybach.API.Controllers
             return wellDetailDto;
         }
 
-        [HttpGet("/api/wells/{wellID}/nitrateChartSpec")]
+        [HttpGet("/wells/{wellID}/nitrateChartSpec")]
         [ZybachViewFeature]
         public ActionResult<string> GetNitrateVegaChartSpec([FromRoute] int wellID)
         {
@@ -230,7 +230,7 @@ namespace Zybach.API.Controllers
             return Ok(VegaSpecUtilities.GetNitrateChartVegaSpec(waterQualityInspectionsForVegaChart, true));
         }
 
-        [HttpGet("/api/wells/{wellID}/waterLevelChartSpec")]
+        [HttpGet("/wells/{wellID}/waterLevelChartSpec")]
         [ZybachViewFeature]
         public ActionResult<string> GetWaterLevelVegaChartSpec([FromRoute] int wellID)
         {
@@ -257,7 +257,7 @@ namespace Zybach.API.Controllers
             return ThrowNotFound(well, "Well", wellID, out actionResult);
         }
 
-        [HttpPut("/api/wells/{wellID}/editRegistrationID")]
+        [HttpPut("/wells/{wellID}/editRegistrationID")]
         [ZybachEditFeature]
         public ActionResult UpsertWellRegistrationID([FromRoute] int wellID, [FromBody] WellRegistrationIDDto wellRegistrationIDDto)
         {
@@ -269,7 +269,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpGet("/api/wells/{wellID}/contactInfo")]
+        [HttpGet("/wells/{wellID}/contactInfo")]
         [ZybachViewFeature]
         public ActionResult<WellContactInfoDto> GetWellContactDetails([FromRoute] int wellID)
         {
@@ -298,7 +298,7 @@ namespace Zybach.API.Controllers
             return Ok(wellContactInfoDto);
         }
 
-        [HttpPut("/api/wells/{wellID}/contactInfo")]
+        [HttpPut("/wells/{wellID}/contactInfo")]
         [ZybachEditFeature]
         public ActionResult UpsertWellContactDetails([FromRoute] int wellID,
             [FromBody] WellContactInfoDto wellContactInfoDto)
@@ -311,7 +311,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpGet("/api/wells/{wellID}/participationInfo")]
+        [HttpGet("/wells/{wellID}/participationInfo")]
         [ZybachViewFeature]
         public ActionResult<WellParticipationInfoDto> GetWellParticipationDetails([FromRoute] int wellID)
         {
@@ -344,7 +344,7 @@ namespace Zybach.API.Controllers
             return Ok(wellParticipationInfoDto);
         }
 
-        [HttpPut("/api/wells/{wellID}/participationInfo")]
+        [HttpPut("/wells/{wellID}/participationInfo")]
         [ZybachEditFeature]
         public ActionResult UpsertWellParticipationDetails([FromRoute] int wellID,
             [FromBody] WellParticipationInfoDto wellParticipationInfoDto)
@@ -373,7 +373,7 @@ namespace Zybach.API.Controllers
             }
         }
 
-        [HttpGet("/api/wells/{wellID}/installation")]
+        [HttpGet("/wells/{wellID}/installation")]
         [ZybachViewFeature]
         public async Task<ActionResult<List<InstallationRecordDto>>> GetInstallationRecordForWell(
             [FromRoute] int wellID)
@@ -382,7 +382,7 @@ namespace Zybach.API.Controllers
             return await _geoOptixService.GetInstallationRecords(well.WellRegistrationID);
         }
 
-        [HttpGet("/api/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
+        [HttpGet("/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
         [ZybachViewFeature]
         public async Task<IActionResult> GetPhoto([FromRoute] int wellID, [FromRoute] string installationCanonicalName,
             [FromRoute] string photoCanonicalName)
@@ -420,7 +420,7 @@ namespace Zybach.API.Controllers
             return annualPumpedVolumes;
         }
 
-        [HttpPost("/api/wells/new")]
+        [HttpPost("/wells/new")]
         [ZybachEditFeature]
         public IActionResult NewWell([FromBody] WellNewDto wellNewDto)
         {
@@ -439,7 +439,7 @@ namespace Zybach.API.Controllers
             return Ok(wellDto);
         }
 
-        [HttpGet("/api/wells/{wellID}/chemigationPermits")]
+        [HttpGet("/wells/{wellID}/chemigationPermits")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits([FromRoute] int wellID)
         {

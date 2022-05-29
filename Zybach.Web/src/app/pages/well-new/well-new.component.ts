@@ -12,7 +12,7 @@ import 'leaflet.fullscreen';
 import { GestureHandling } from 'leaflet-gesture-handling';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -149,7 +149,7 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public onSubmit(newWellForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
-    this.wellService.newWell(this.model)
+    this.wellService.wellsNewPost(this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         newWellForm.reset();

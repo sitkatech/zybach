@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { WaterLevelInspectionService } from 'src/app/services/water-level-inspection.service';
+import { WaterLevelInspectionService } from 'src/app/shared/generated/api/water-level-inspection.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterLevelInspectionSimpleDto } from 'src/app/shared/generated/model/water-level-inspection-simple-dto';
 import { Alert } from 'src/app/shared/models/alert';
@@ -46,7 +46,7 @@ export class WaterLevelInspectionDetailComponent implements OnInit {
       this.currentUser = currentUser;
       this.waterLevelInspectionID = parseInt(this.route.snapshot.paramMap.get("id"));
       forkJoin({
-        waterLevelInspection: this.waterLevelInspectionService.getByID(this.waterLevelInspectionID)
+        waterLevelInspection: this.waterLevelInspectionService.waterLevelInspectionsWaterLevelInspectionIDGet(this.waterLevelInspectionID)
       }).subscribe(({ waterLevelInspection }) => {
         this.waterLevelInspection = waterLevelInspection;
         this.cdr.detectChanges();
@@ -70,7 +70,7 @@ export class WaterLevelInspectionDetailComponent implements OnInit {
 
   public deleteInspectionByID(): void {
     this.isPerformingAction = true;
-    this.waterLevelInspectionService.deleteWaterLevelInspection(this.inspectionIDToDelete).subscribe(() => {
+    this.waterLevelInspectionService.waterLevelInspectionsWaterLevelInspectionIDDelete(this.inspectionIDToDelete).subscribe(() => {
       this.modalReference.close();
       this.isPerformingAction = false;
       this.router.navigateByUrl("/water-level-inspections").then(() => {

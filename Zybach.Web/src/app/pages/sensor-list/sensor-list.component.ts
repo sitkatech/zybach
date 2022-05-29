@@ -1,17 +1,15 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { SensorService } from 'src/app/services/sensor.service';
+import { SensorService } from 'src/app/shared/generated/api/sensor.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
-import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
   selector: 'zybach-sensor-list',
@@ -43,7 +41,7 @@ export class SensorListComponent implements OnInit {
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.sensorService.listSensors().subscribe(sensors => {
+      this.sensorService.sensorsGet().subscribe(sensors => {
         this.sensors = sensors;
 
         this.sensorsGrid ? this.sensorsGrid.api.setRowData(sensors) : null;

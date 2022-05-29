@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("OpenETSyncHistory")]
@@ -20,17 +18,13 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime UpdateDate { get; set; }
         [StringLength(200)]
+        [Unicode(false)]
         public string GoogleBucketFileRetrievalURL { get; set; }
+        [Unicode(false)]
         public string ErrorMessage { get; set; }
         public int? OpenETDataTypeID { get; set; }
 
-        [ForeignKey(nameof(OpenETDataTypeID))]
-        [InverseProperty("OpenETSyncHistories")]
-        public virtual OpenETDataType OpenETDataType { get; set; }
-        [ForeignKey(nameof(OpenETSyncResultTypeID))]
-        [InverseProperty("OpenETSyncHistories")]
-        public virtual OpenETSyncResultType OpenETSyncResultType { get; set; }
-        [ForeignKey(nameof(WaterYearMonthID))]
+        [ForeignKey("WaterYearMonthID")]
         [InverseProperty("OpenETSyncHistories")]
         public virtual WaterYearMonth WaterYearMonth { get; set; }
     }

@@ -4,7 +4,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
+import { WaterQualityInspectionService } from 'src/app/shared/generated/api/water-quality-inspection.service';
 import { ClearinghouseWaterQualityInspectionDto } from 'src/app/shared/generated/model/clearinghouse-water-quality-inspection-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
@@ -283,7 +283,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
   }
 
   public onGridReady(params) {
-    this.waterQualityInspectionService.getClearinghouseWaterQualityInspections().subscribe(clearinghouseWaterQualityInspections => {
+    this.waterQualityInspectionService.clearinghouseWaterQualityInspectionsGet().subscribe(clearinghouseWaterQualityInspections => {
       this.rowData = clearinghouseWaterQualityInspections;
       this.clearinghouseReportGrid.api.hideOverlay();
     });

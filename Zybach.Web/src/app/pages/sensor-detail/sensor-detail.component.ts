@@ -6,10 +6,10 @@ import { AsyncParser } from 'json2csv';
 import moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { SensorStatusService } from 'src/app/services/sensor-status.service';
-import { SensorService } from 'src/app/services/sensor.service';
+import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.service';
+import { SensorService } from 'src/app/shared/generated/api/sensor.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
 import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
@@ -18,7 +18,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { SensorTypeEnum } from 'src/app/shared/models/enums/sensor-type.enum';
-import { SensorAnomalyService } from 'src/app/services/sensor-anomaly.service';
+import { SensorAnomalyService } from 'src/app/shared/generated/api/sensor-anomaly.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
@@ -86,7 +86,7 @@ export class SensorDetailComponent implements OnInit {
   }
   
   private getSensorDetails() {
-    this.sensorService.getSensorByID(this.sensorID).subscribe(sensor => {
+    this.sensorService.sensorsSensorIDGet(this.sensorID).subscribe(sensor => {
       this.sensor = sensor;
       // convert to hours
       this.sensor.MessageAge = Math.floor(this.sensor.MessageAge / 3600);
@@ -106,7 +106,7 @@ export class SensorDetailComponent implements OnInit {
   }
 
   private getInstallationDetails() {
-    this.wellService.getInstallationDetails(this.wellID).subscribe(installations => {
+    this.wellService.wellsWellIDInstallationGet(this.wellID).subscribe(installations => {
       this.installations = installations.filter(x => x.SensorSerialNumber == this.sensor.SensorName);
       this.installationPhotos = new Map();
       for (const installation of installations) {
@@ -121,7 +121,7 @@ export class SensorDetailComponent implements OnInit {
     const photos = installation.Photos;
 
     const photoObservables = photos.map(
-      photo => this.wellService.getPhoto(this.wellID, installation.InstallationCanonicalName, photo)
+      photo => this.wellService.wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(this.wellID, installation.InstallationCanonicalName, photo)
     );
 
     let foundPhoto = false;
@@ -163,7 +163,7 @@ export class SensorDetailComponent implements OnInit {
     sensorSummaryDto.SensorName = this.sensor.SensorName;
     sensorSummaryDto.SensorID = this.sensor.SensorID;
     sensorSummaryDto.IsActive = isActive
-    this.sensorStatusService.updateSensorIsActive(sensorSummaryDto)
+    this.sensorStatusService.sensorStatusEnableDisablePut(sensorSummaryDto)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         this.sensor.IsActive = isActive;
@@ -206,7 +206,7 @@ export class SensorDetailComponent implements OnInit {
   public submitSensorAnomaly() {
     this.isLoadingSubmit = true;
     
-    this.sensorAnomalyService.createSensorAnomaly(this.sensorAnomalyModel).subscribe(() => {
+    this.sensorAnomalyService.sensorAnomaliesNewPost(this.sensorAnomalyModel).subscribe(() => {
       this.isLoadingSubmit = false;
       this.sensorAnomalyModel = new SensorAnomalyUpsertDto();
       this.sensorAnomalyModel.SensorID = this.sensorID;

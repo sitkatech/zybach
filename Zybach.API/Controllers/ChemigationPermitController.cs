@@ -16,7 +16,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/chemigationPermitStatuses")]
+        [HttpGet("/chemigationPermitStatuses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitStatusDto>> GetChemigationPermitStatuses()
         {
@@ -24,7 +24,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitStatusesDto);
         }
 
-        [HttpGet("/api/chemigationPermits")]
+        [HttpGet("/chemigationPermits")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitDetailedDto>> ListChemigationPermits()
         {
@@ -32,7 +32,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermitDetailedDtos);
         }
 
-        [HttpGet("/api/chemigationPermits/{chemigationPermitNumber}")]
+        [HttpGet("/chemigationPermits/{chemigationPermitNumber}")]
         [ZybachViewFeature]
         public ActionResult<ChemigationPermitDto> GetChemigationPermitByPermitNumberAsDto([FromRoute] int chemigationPermitNumber)
         {
@@ -40,7 +40,7 @@ namespace Zybach.API.Controllers
             return RequireNotNullThrowNotFound(chemigationPermitDto, "ChemigationPermit", chemigationPermitNumber);
         }
 
-        [HttpPost("/api/chemigationPermits")]
+        [HttpPost("/chemigationPermits")]
         [ZybachEditFeature]
         public ActionResult<ChemigationPermitDto> CreateChemigationPermit([FromBody] ChemigationPermitNewDto chemigationPermitNewDto)
         {
@@ -48,7 +48,7 @@ namespace Zybach.API.Controllers
             return Ok(chemigationPermit);
         }
 
-        [HttpPut("api/chemigationPermits/{chemigationPermitID}")]
+        [HttpPut("/chemigationPermits/{chemigationPermitID}")]
         [ZybachEditFeature]
         public ActionResult UpdateChemigationPermit([FromRoute] int chemigationPermitID, [FromBody] ChemigationPermitUpsertDto chemigationPermitUpsertDto)
         {
@@ -73,7 +73,7 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("/api/chemigationPermits/{chemigationPermitID}")]
+        [HttpDelete("/chemigationPermits/{chemigationPermitID}")]
         [ZybachEditFeature]
         public ActionResult DeleteChemigationPermitByID([FromRoute] int chemigationPermitID)
         {

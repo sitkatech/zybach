@@ -14,7 +14,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("api/roles")]
+        [HttpGet("/roles")]
         [ZybachViewFeature]
         public IActionResult Get()
         {

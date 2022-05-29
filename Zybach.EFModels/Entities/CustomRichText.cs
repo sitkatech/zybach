@@ -1,6 +1,5 @@
 ﻿using Zybach.Models.DataTransferObjects;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
@@ -9,7 +8,6 @@ namespace Zybach.EFModels.Entities
         public static CustomRichTextDto GetByCustomRichTextTypeID(ZybachDbContext dbContext, int customRichTextTypeID)
         {
             var customRichText = dbContext.CustomRichTexts
-                .Include(x => x.CustomRichTextType)
                 .SingleOrDefault(x => x.CustomRichTextTypeID == customRichTextTypeID);
 
             return customRichText?.AsDto();

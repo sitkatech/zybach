@@ -22,7 +22,7 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("/api/search/{searchText}")]
+        [HttpGet("/search/{searchText}")]
         [ZybachViewFeature]
         public async Task<List<SearchSummaryDto>> GetSearchSuggestions([FromRoute] string searchText)
         {

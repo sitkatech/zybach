@@ -4,7 +4,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
@@ -15,9 +15,10 @@ import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared
 import { ChemigationInjectionUnitTypeEnum } from 'src/app/shared/models/enums/chemigation-injection-unit-type.enum';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { CountyDto } from 'src/app/shared/generated/model/county-dto';
 import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-fee-type.enum';
+import { CountyService } from 'src/app/shared/generated/api/county.service';
 
 @Component({
   selector: 'zybach-chemigation-new-permit',
@@ -44,6 +45,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     private router: Router,
     private wellService: WellService,
     private chemigationPermitService: ChemigationPermitService,
+    private countyService: CountyService,
     private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) { }
@@ -82,10 +84,10 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       
-      this.chemigationPermitService.getChemigationPermitStatuses().subscribe(permitStatuses => {
+      this.chemigationPermitService.chemigationPermitStatusesGet().subscribe(permitStatuses => {
         this.permitStatuses = permitStatuses;
       });
-      this.chemigationPermitService.getCounties().subscribe(counties => {
+      this.countyService.countiesGet().subscribe(counties => {
         this.counties = counties;
       });
 
@@ -103,7 +105,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
     this.isLoadingSubmit = true;
     this.alertService.clearAlerts();
 
-    this.chemigationPermitService.createNewChemigationPermit(this.model)
+    this.chemigationPermitService.chemigationPermitsPost(this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         newChemigationPermitForm.reset();
@@ -124,7 +126,7 @@ export class ChemigationNewPermitComponent implements OnInit, OnDestroy {
         debounceTime(200), 
         distinctUntilChanged(),
         tap(() => this.searchFailed = false),
-        switchMap(searchText => searchText.length > 2 ? this.wellService.searchByWellRegistrationIDRequiresChemigation(searchText) : ([])), 
+        switchMap(searchText => searchText.length > 2 ? this.wellService.wellsSearchWellRegistrationIDRequiresChemigationGet(searchText) : ([])), 
         catchError(() => {
           this.searchFailed = true;
           return of([]);

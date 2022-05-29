@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
-import { WellService } from 'src/app/services/well.service';
+import { WaterQualityInspectionService } from 'src/app/shared/generated/api/water-quality-inspection.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WaterQualityInspectionUpsertComponent } from 'src/app/shared/components/water-quality-inspection-upsert/water-quality-inspection-upsert.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterQualityInspectionUpsertDto } from 'src/app/shared/generated/model/water-quality-inspection-upsert-dto';
@@ -42,7 +42,7 @@ export class WaterQualityInspectionNewComponent implements OnInit {
       this.wellID = parseInt(this.route.snapshot.paramMap.get("id"));
 
       if (this.wellID > 0) {
-        this.wellService.getWellSimpleDto(this.wellID).subscribe(well => {
+        this.wellService.wellsWellIDSimpleDtoGet(this.wellID).subscribe(well => {
           this.initializeInspectionModel(well.WellRegistrationID);
         });
       } else {
@@ -100,7 +100,7 @@ export class WaterQualityInspectionNewComponent implements OnInit {
   public onSubmit(addWaterQualityInspectionForm: HTMLFormElement): void {
     this.isLoadingSubmit = true;
   
-    this.waterQualityInspectionService.createWaterQualityInspection(this.inspection)
+    this.waterQualityInspectionService.waterQualityInspectionsPost(this.inspection)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addWaterQualityInspectionForm.reset();

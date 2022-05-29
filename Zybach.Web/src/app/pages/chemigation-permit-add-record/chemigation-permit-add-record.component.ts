@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
@@ -15,6 +15,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-fee-type.enum';
 import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-add-record',
@@ -40,6 +41,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthenticationService,
     private chemigationPermitService: ChemigationPermitService,
+    private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
   ) { }
@@ -51,7 +53,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
 
       this.chemigationPermitNumber = parseInt(this.route.snapshot.paramMap.get("permit-number"));
 
-      this.chemigationPermitService.getLatestAnnualRecordByPermitNumber(this.chemigationPermitNumber).subscribe(annualRecord => {
+      this.chemigationPermitAnnualRecordService.chemigationPermitsChemigationPermitNumberGetLatestRecordYearGet(this.chemigationPermitNumber).subscribe(annualRecord => {
         this.chemigationPermit = annualRecord.ChemigationPermit;
         this.initializeModel(annualRecord);        
         this.cdr.detectChanges();
@@ -111,7 +113,7 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     this.isLoadingSubmit = true;
     this.alertService.clearAlerts();
   
-    this.chemigationPermitService.createChemigationPermitAnnualRecord(this.chemigationPermit.ChemigationPermitID, this.model)
+    this.chemigationPermitAnnualRecordService.chemigationPermitsChemigationPermitIDAnnualRecordsPost(this.chemigationPermit.ChemigationPermitID, this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         addChemigationPermitAnnualRecordForm.reset();

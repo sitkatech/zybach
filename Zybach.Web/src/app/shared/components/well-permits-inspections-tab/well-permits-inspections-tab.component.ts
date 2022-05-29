@@ -3,9 +3,9 @@ import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { forkJoin } from 'rxjs';
-import { SensorStatusService } from 'src/app/services/sensor-status.service';
+import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { WellService } from 'src/app/services/well.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { ChemigationPermitDetailedDto } from '../../generated/model/chemigation-permit-detailed-dto';
 import { SensorMessageAgeDto } from '../../generated/model/sensor-message-age-dto';
 import { WaterLevelInspectionSummaryDto } from '../../generated/model/water-level-inspection-summary-dto';
@@ -14,9 +14,7 @@ import { WellDetailDto } from '../../generated/model/well-detail-dto';
 import { AlertService } from '../../services/alert.service';
 import { LinkRendererComponent } from '../ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from '../custom-dropdown-filter/custom-dropdown-filter.component';
-import * as vega from 'vega';
 import { default as vegaEmbed } from 'vega-embed';
-import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'zybach-well-permits-inspections-tab',
@@ -182,8 +180,8 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
 
   getInspections() {
     forkJoin({
-      waterLevelInspections: this.wellService.listWaterLevelInspectionsByWellID(this.well.WellID),
-      waterQualityInspections: this.wellService.listWaterQualityInspectionsByWellID(this.well.WellID)
+      waterLevelInspections: this.wellService.wellsWellIDWaterLevelInspectionsGet(this.well.WellID),
+      waterQualityInspections: this.wellService.wellsWellIDWaterQualityInspectionsGet(this.well.WellID)
     }).subscribe(({ waterLevelInspections, waterQualityInspections }) => {
       this.waterLevelInspections = waterLevelInspections;
       this.waterQualityInspections = waterQualityInspections;
@@ -197,7 +195,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       this.cdr.detectChanges();
 
       if (this.waterQualityInspections != null && this.waterQualityInspections.length > 0) {
-        this.wellService.getWellNitrateChartVegaSpec(this.well.WellID).subscribe(result => {
+        this.wellService.wellsWellIDNitrateChartSpecGet(this.well.WellID).subscribe(result => {
           if (result == null || result == undefined || result == "") {
             this.hasNitrateChartData = false;
             return;
@@ -211,7 +209,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       }
 
       if (this.waterLevelInspections != null && this.waterLevelInspections.length > 0) {
-        this.wellService.getWellWaterLevelChartVegaSpec(this.well.WellID).subscribe(result => {
+        this.wellService.wellsWellIDWaterLevelChartSpecGet(this.well.WellID).subscribe(result => {
           if (result == null || result == undefined || result == "") {
             this.hasWaterLevelChartData = false;
             return;
@@ -236,13 +234,13 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
   }
 
   getChemigationPermits(){
-    this.wellService.getChemigationPermits(this.well.WellID).subscribe(chemigationPermits => {
+    this.wellService.wellsWellIDChemigationPermitsGet(this.well.WellID).subscribe(chemigationPermits => {
       this.chemigationPermits = chemigationPermits;
     });
   }
 
   getSensorsWithAgeMessages(){
-    this.sensorService.getSensorStatusForWell(this.well.WellID).subscribe(wellWithSensorMessageAge => {
+    this.sensorService.sensorStatusWellIDGet(this.well.WellID).subscribe(wellWithSensorMessageAge => {
       this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
 
       for (var sensor of this.sensorsWithStatus){

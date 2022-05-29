@@ -2,17 +2,15 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { Alert } from 'src/app/shared/models/alert';
 import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
 import { DatePipe } from '@angular/common';
+import { ChemigationInspectionService } from 'src/app/shared/generated/api/chemigation-inspection.service';
 
 @Component({
   selector: 'zybach-chemigation-inspections-list',
@@ -38,7 +36,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private authenticationService: AuthenticationService,
-    private chemigationPermitService: ChemigationPermitService,
+    private chemigationInspectionService: ChemigationInspectionService,
     private cdr: ChangeDetectorRef,
     private utilityFunctionsService: UtilityFunctionsService,
     private datePipe: DatePipe,  
@@ -223,7 +221,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
   }
   
   private populateInspectionGrid(): void {
-    this.chemigationPermitService.getAllChemigationInspections().subscribe(chemigationInspections => {
+    this.chemigationInspectionService.chemigationInspectionsGet().subscribe(chemigationInspections => {
       this.rowData = chemigationInspections;
       this.chemigationInspectionsGrid.api.hideOverlay();
       this.chemigationInspectionsGrid.api.sizeColumnsToFit();

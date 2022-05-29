@@ -24,7 +24,7 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("/api/managerDashboard/districtStatistics")]
+        [HttpGet("/managerDashboard/districtStatistics")]
         [ZybachViewFeature]
         public DistrictStatisticsDto GetDistrictStatistics()
         {
@@ -39,7 +39,7 @@ namespace Zybach.API.Controllers
             };
         }
 
-        [HttpGet("/api/managerDashboard/streamFlowZonePumpingDepths")]
+        [HttpGet("/managerDashboard/streamFlowZonePumpingDepths")]
         public List<AnnualStreamFlowZonePumpingDepthDto> GetStreamFlowZonePumpingDepths()
         {
             // Currently, we are only accounting for electrical data when color-coding the SFZ map;

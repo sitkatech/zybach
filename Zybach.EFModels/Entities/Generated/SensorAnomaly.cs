@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("SensorAnomaly")]
@@ -19,9 +17,10 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime EndDate { get; set; }
         [StringLength(500)]
+        [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey(nameof(SensorID))]
+        [ForeignKey("SensorID")]
         [InverseProperty("SensorAnomalies")]
         public virtual Sensor Sensor { get; set; }
     }

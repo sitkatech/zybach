@@ -22,7 +22,6 @@ namespace Zybach.EFModels.Entities
         private static IQueryable<Sensor> GetSensorsImpl(ZybachDbContext dbContext)
         {
             return dbContext.Sensors
-                .Include(x => x.SensorType)
                 .Include(x => x.Well)
                 .AsNoTracking();
         }

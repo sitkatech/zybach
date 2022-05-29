@@ -9,13 +9,13 @@ namespace Zybach.EFModels.Entities
     {
         public static List<FieldDefinitionDto> List(ZybachDbContext dbContext)
         {
-            return dbContext.FieldDefinitions.Include(x => x.FieldDefinitionType).Select(x => x.AsDto()).ToList();
+            return dbContext.FieldDefinitions.Select(x => x.AsDto()).ToList();
         }
 
         public static FieldDefinitionDto GetByFieldDefinitionTypeID(ZybachDbContext dbContext, int fieldDefinitionTypeID)
         {
             var fieldDefinition = dbContext.FieldDefinitions
-                .Include(x => x.FieldDefinitionType)
+                
                 .SingleOrDefault(x => x.FieldDefinitionTypeID == fieldDefinitionTypeID);
 
             return fieldDefinition?.AsDto();
@@ -25,7 +25,6 @@ namespace Zybach.EFModels.Entities
             FieldDefinitionDto fieldDefinitionUpdateDto)
         {
             var fieldDefinition = dbContext.FieldDefinitions
-                .Include(x => x.FieldDefinitionType)
                 .SingleOrDefault(x => x.FieldDefinitionTypeID == fieldDefinitionTypeID);
 
             // null check occurs in calling endpoint method.

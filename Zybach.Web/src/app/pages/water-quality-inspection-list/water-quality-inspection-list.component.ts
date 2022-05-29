@@ -5,7 +5,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
+import { WaterQualityInspectionService } from 'src/app/shared/generated/api/water-quality-inspection.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -403,7 +403,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
   }
 
   public updateGridData(): void {
-    this.waterQualityInspectionService.getWaterQualityInspections().subscribe(waterQualityInspections => {
+    this.waterQualityInspectionService.waterQualityInspectionsGet().subscribe(waterQualityInspections => {
       this.waterQualityInspections = waterQualityInspections;
       this.waterQualityInspectionsGrid ? this.waterQualityInspectionsGrid.api.setRowData(waterQualityInspections) : null;
     });

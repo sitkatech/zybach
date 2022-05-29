@@ -5,8 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("GeoOptixWellStaging")]
@@ -16,6 +14,7 @@ namespace Zybach.EFModels.Entities
         public int GeoOptixWellStagingID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string WellRegistrationID { get; set; }
         [Required]
         [Column(TypeName = "geometry")]

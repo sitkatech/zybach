@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { IrrigationUnitService } from 'src/app/services/irrigation-unit.service';
+import { IrrigationUnitService } from 'src/app/shared/generated/api/irrigation-unit.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { MultiLinkRendererComponent } from 'src/app/shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
@@ -117,7 +117,7 @@ export class IrrigationUnitListComponent implements OnInit {
   }
 
   public updateGridData(): void {
-    this.irrigationUnitService.listIrrigationUnits().subscribe(irrigationUnits => {
+    this.irrigationUnitService.irrigationUnitsGet().subscribe(irrigationUnits => {
       this.irrigationUnits = irrigationUnits;
       this.irrigationUnitGrid ? this.irrigationUnitGrid.api.setRowData(irrigationUnits) : null;
     });

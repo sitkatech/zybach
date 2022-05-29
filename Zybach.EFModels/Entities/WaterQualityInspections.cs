@@ -11,10 +11,8 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.WaterQualityInspections
                 .Include(x => x.Well).ThenInclude(x => x.WellParticipation)
-                .Include(x => x.WaterQualityInspectionType)
                 .Include(x => x.CropType)
                 .Include(x => x.InspectorUser)
-                .ThenInclude(x => x.Role)
                 .AsNoTracking();
         }
 
@@ -26,7 +24,6 @@ namespace Zybach.EFModels.Entities
         public static List<WaterQualityInspectionSummaryDto> ListByWellIDAsSummaryDto(ZybachDbContext dbContext, int wellID)
         {
             return dbContext.WaterQualityInspections
-                .Include(x => x.WaterQualityInspectionType)
                 .AsNoTracking()
                 .OrderByDescending(x => x.InspectionDate)
                 .Where(x => x.WellID == wellID)
@@ -37,7 +34,6 @@ namespace Zybach.EFModels.Entities
         public static List<WaterQualityInspectionForVegaChartDto> ListByWellIDAsVegaChartDto(ZybachDbContext dbContext, int wellID)
         {
             var inspections = dbContext.WaterQualityInspections
-                .Include(x => x.WaterQualityInspectionType)
                 .AsNoTracking()
                 .OrderByDescending(x => x.InspectionDate)
                 .Where(x => x.WellID == wellID)
@@ -141,7 +137,6 @@ namespace Zybach.EFModels.Entities
                     .ThenInclude(x => x.WellParticipation)
                 .Include(x => x.Well)
                     .ThenInclude(x => x.WellUse)
-                .Include(x => x.WaterQualityInspectionType)
                 .Where(x => x.Well.Clearinghouse != null)
                 .OrderByDescending(x => x.InspectionDate)
                 .AsNoTracking()

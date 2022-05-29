@@ -11,10 +11,6 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.ChemigationInspections
                 .Include(x => x.ChemigationPermitAnnualRecord)
-                    .ThenInclude(x => x.ChemigationPermitAnnualRecordStatus)
-                .Include(x => x.ChemigationPermitAnnualRecord)
-                    .ThenInclude(x => x.ChemigationInjectionUnitType)
-                .Include(x => x.ChemigationPermitAnnualRecord)
                     .ThenInclude(x => x.ChemigationPermit)
                         .ThenInclude(x => x.ChemigationPermitStatus)
                 .Include(x => x.ChemigationPermitAnnualRecord)
@@ -33,7 +29,6 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.Tillage)
                 .Include(x => x.CropType)
                 .Include(x => x.InspectorUser)
-                    .ThenInclude(x => x.Role)
                 .AsNoTracking();
         }
 

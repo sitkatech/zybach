@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { forkJoin } from 'rxjs';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
+import { ChemigationPermitAnnualRecordChemicalFormulationService } from '../../generated/api/chemigation-permit-annual-record-chemical-formulation.service';
 import { ChemicalFormulationDto } from '../../generated/model/chemical-formulation-dto';
 import { ChemicalUnitDto } from '../../generated/model/chemical-unit-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from '../../generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
@@ -20,14 +20,14 @@ export class ChemigationPermitChemicalFormulationsEditorComponent implements OnI
   private newRecordID: number = -1;
 
   constructor(
-    private chemigationPermitService: ChemigationPermitService,
+    private chemigationPermitAnnualRecordChemicalFormulationService: ChemigationPermitAnnualRecordChemicalFormulationService,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     forkJoin({
-      chemicalFormulations: this.chemigationPermitService.getChemicalFormulations(),
-      chemicalUnits: this.chemigationPermitService.getChemicalUnits()
+      chemicalFormulations: this.chemigationPermitAnnualRecordChemicalFormulationService.chemicalFormulationsGet(),
+      chemicalUnits: this.chemigationPermitAnnualRecordChemicalFormulationService.chemicalUnitsGet()
     }).subscribe(({ chemicalFormulations, chemicalUnits }) => {
       this.chemicalFormulations = chemicalFormulations;
       this.chemicalUnits = chemicalUnits;

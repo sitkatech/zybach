@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("AgHubWellIrrigatedAcreStaging")]
@@ -15,6 +13,7 @@ namespace Zybach.EFModels.Entities
         public int AgHubWellIrrigatedAcreStagingID { get; set; }
         [Required]
         [StringLength(100)]
+        [Unicode(false)]
         public string WellRegistrationID { get; set; }
         public int IrrigationYear { get; set; }
         public double Acres { get; set; }

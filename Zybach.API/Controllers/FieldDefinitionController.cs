@@ -16,7 +16,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("api/fieldDefinitions")]
+        [HttpGet("/fieldDefinitions")]
         public ActionResult<List<FieldDefinitionDto>> ListAllFieldDefinitions()
         {
             var fieldDefinitionDtos = FieldDefinition.List(_dbContext);
@@ -24,14 +24,14 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("api/fieldDefinitions/{fieldDefinitionTypeID}")]
+        [HttpGet("/fieldDefinitions/{fieldDefinitionTypeID}")]
         public ActionResult<FieldDefinitionDto> GetFieldDefinition([FromRoute] int fieldDefinitionTypeID)
         {
             var fieldDefinitionDto = FieldDefinition.GetByFieldDefinitionTypeID(_dbContext, fieldDefinitionTypeID);
             return RequireNotNullThrowNotFound(fieldDefinitionDto, "FieldDefinition", fieldDefinitionTypeID);
         }
 
-        [HttpPut("api/fieldDefinitions/{fieldDefinitionTypeID}")]
+        [HttpPut("/fieldDefinitions/{fieldDefinitionTypeID}")]
         [ZybachViewFeature]
         public ActionResult<FieldDefinitionDto> UpdateFieldDefinition([FromRoute] int fieldDefinitionTypeID,
             [FromBody] FieldDefinitionDto fieldDefinitionUpdateDto)

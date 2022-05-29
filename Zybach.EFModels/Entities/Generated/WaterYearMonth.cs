@@ -4,12 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("WaterYearMonth")]
-    [Index(nameof(Year), nameof(Month), Name = "AK_WaterYearMonth_Year_Month", IsUnique = true)]
+    [Index("Year", "Month", Name = "AK_WaterYearMonth_Year_Month", IsUnique = true)]
     public partial class WaterYearMonth
     {
         public WaterYearMonth()
@@ -26,11 +24,11 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime? FinalizeDate { get; set; }
 
-        [InverseProperty(nameof(AgHubIrrigationUnitWaterYearMonthETDatum.WaterYearMonth))]
+        [InverseProperty("WaterYearMonth")]
         public virtual ICollection<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
-        [InverseProperty(nameof(AgHubIrrigationUnitWaterYearMonthPrecipitationDatum.WaterYearMonth))]
+        [InverseProperty("WaterYearMonth")]
         public virtual ICollection<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthPrecipitationData { get; set; }
-        [InverseProperty(nameof(OpenETSyncHistory.WaterYearMonth))]
+        [InverseProperty("WaterYearMonth")]
         public virtual ICollection<OpenETSyncHistory> OpenETSyncHistories { get; set; }
     }
 }

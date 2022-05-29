@@ -102,7 +102,7 @@ namespace Zybach.API.Services
         public KeystoneService(IHttpContextAccessor context, string baseUrl)
         {
             _token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault(); //this includes the word "Bearer"
-            _baseUrl = $"{baseUrl}/api/v1";
+            _baseUrl = $"{baseUrl}/v1";
         }
 
         public async Task<KeystoneApiResponse<KeystoneNewUserModel>> Invite(KeystoneInviteModel inviteModel)

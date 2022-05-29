@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
+import { WaterQualityInspectionService } from 'src/app/shared/generated/api/water-quality-inspection.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterQualityInspectionSimpleDto } from 'src/app/shared/generated/model/water-quality-inspection-simple-dto';
 import { Alert } from 'src/app/shared/models/alert';
@@ -43,7 +43,7 @@ export class WaterQualityInspectionDetailComponent implements OnInit, OnDestroy 
       this.currentUser = currentUser;
       this.waterQualityInspectionID = parseInt(this.route.snapshot.paramMap.get("id"));
       forkJoin({
-        waterQualityInspection: this.waterQualityInspectionService.getByID(this.waterQualityInspectionID)
+        waterQualityInspection: this.waterQualityInspectionService.waterQualityInspectionsWaterQualityInspectionIDGet(this.waterQualityInspectionID)
       }).subscribe(({ waterQualityInspection}) => {
         this.waterQualityInspection = waterQualityInspection;
         this.cdr.detectChanges();
@@ -67,7 +67,7 @@ export class WaterQualityInspectionDetailComponent implements OnInit, OnDestroy 
 
   public deleteInspectionByID(): void {
     this.isPerformingAction = true;
-    this.waterQualityInspectionService.deleteWaterQualityInspection(this.inspectionIDToDelete).subscribe(() => {
+    this.waterQualityInspectionService.waterQualityInspectionsWaterQualityInspectionIDDelete(this.inspectionIDToDelete).subscribe(() => {
       this.modalReference.close();
       this.isPerformingAction = false;
       this.router.navigateByUrl("/water-quality-inspections").then(() => {

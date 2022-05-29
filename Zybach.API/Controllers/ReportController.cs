@@ -56,7 +56,7 @@ namespace Zybach.API.Controllers
             return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateID);
         }
 
-        [HttpPost("/api/reportTemplates/new")]
+        [HttpPost("/reportTemplates/new")]
         [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
         [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]
         [AdminFeature]
@@ -137,7 +137,7 @@ namespace Zybach.API.Controllers
 
         private ReportTemplate CreateNew(ZybachDbContext dbContext, ReportTemplateNewDto reportTemplateNewDto, FileResource newFileResource)
         {
-            var reportTemplateModelType = dbContext.ReportTemplateModelTypes.Single(x => x.ReportTemplateModelTypeName == "MultipleModels");
+            var reportTemplateModelType = ReportTemplateModelType.MultipleModels;
             var reportTemplate = new ReportTemplate()
             {
                 FileResource = newFileResource,
@@ -164,7 +164,7 @@ namespace Zybach.API.Controllers
             return reportTemplate;
         }
 
-        [HttpPost("/api/reportTemplates/generateReports")]
+        [HttpPost("/reportTemplates/generateReports")]
         [ZybachEditFeature]
         public async Task<ActionResult> GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {

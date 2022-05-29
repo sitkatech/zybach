@@ -18,7 +18,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpGet("/api/water-year-months")]
+        [HttpGet("/water-year-months")]
         [AdminFeature]
         public ActionResult<List<WaterYearMonthDto>> GetWaterYearMonths()
         {
@@ -26,7 +26,7 @@ namespace Zybach.API.Controllers
             return Ok(waterYearMonths);
         }
 
-        [HttpGet("/api/water-year-months/current-date-or-earlier")]
+        [HttpGet("/water-year-months/current-date-or-earlier")]
         [AdminFeature]
         public ActionResult<List<WaterYearMonthDto>> GetWaterYearMonthsForCurrentDateOrEarlier()
         {
@@ -34,17 +34,16 @@ namespace Zybach.API.Controllers
             return Ok(waterYearMonths);
         }
 
-        [HttpGet("/api/water-year-months/most-recent-sync-history")]
+        [HttpGet("/water-year-months/most-recent-sync-history")]
         [AdminFeature]
         public ActionResult<List<OpenETSyncHistoryDto>> GetMostRecentSyncHistoryForWaterYearMonthsThatHaveBeenUpdated()
         {
             return _dbContext.vOpenETMostRecentSyncHistoryForYearAndMonths
                 .Include(x => x.WaterYearMonth)
-                .Include(x => x.OpenETSyncResultType)
                 .Select(x => x.AsOpenETSyncHistoryDto()).ToList();
         }
 
-        [HttpPut("/api/water-year-month/finalize")]
+        [HttpPut("/water-year-month/finalize")]
         [AdminFeature]
         public ActionResult<WaterYearMonthDto> FinalizeWaterYearMonth([FromBody] int waterYearMonthID)
         {

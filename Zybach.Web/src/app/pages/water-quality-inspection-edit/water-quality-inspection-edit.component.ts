@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { WaterQualityInspectionService } from 'src/app/services/water-quality-inspection.service';
+import { WaterQualityInspectionService } from 'src/app/shared/generated/api/water-quality-inspection.service';
 import { WaterQualityInspectionUpsertComponent } from 'src/app/shared/components/water-quality-inspection-upsert/water-quality-inspection-upsert.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterQualityInspectionSimpleDto } from 'src/app/shared/generated/model/water-quality-inspection-simple-dto';
@@ -41,7 +41,7 @@ export class WaterQualityInspectionEditComponent implements OnInit {
       this.currentUser = currentUser;
       this.waterQualityInspectionID = parseInt(this.route.snapshot.paramMap.get("id"));
 
-      this.waterQualityInspectionService.getByID(this.waterQualityInspectionID).subscribe(waterQualityInspectionSimpleDto => {
+      this.waterQualityInspectionService.waterQualityInspectionsWaterQualityInspectionIDGet(this.waterQualityInspectionID).subscribe(waterQualityInspectionSimpleDto => {
         this.initializeInspectionModel(waterQualityInspectionSimpleDto);
       });
       this.cdr.detectChanges();
@@ -98,7 +98,7 @@ export class WaterQualityInspectionEditComponent implements OnInit {
   public onSubmit(editWaterQualityInspectionForm: HTMLFormElement): void {
       this.isLoadingSubmit = true;
     
-      this.waterQualityInspectionService.updateWaterQualityInspection(this.waterQualityInspectionID, this.waterQualityInspection)
+      this.waterQualityInspectionService.waterQualityInspectionsWaterQualityInspectionIDPut(this.waterQualityInspectionID, this.waterQualityInspection)
         .subscribe(response => {
           this.isLoadingSubmit = false;
           editWaterQualityInspectionForm.reset();

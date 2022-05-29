@@ -5,12 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
 
-#nullable disable
-
 namespace Zybach.EFModels.Entities
 {
     [Table("GeoOptixWell")]
-    [Index(nameof(WellID), Name = "AK_GeoOptixWell_WellID", IsUnique = true)]
+    [Index("WellID", Name = "AK_GeoOptixWell_WellID", IsUnique = true)]
     public partial class GeoOptixWell
     {
         [Key]
@@ -20,7 +18,7 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "geometry")]
         public Geometry GeoOptixWellGeometry { get; set; }
 
-        [ForeignKey(nameof(WellID))]
+        [ForeignKey("WellID")]
         [InverseProperty("GeoOptixWell")]
         public virtual Well Well { get; set; }
     }

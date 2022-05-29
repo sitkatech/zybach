@@ -75,7 +75,6 @@ namespace Zybach.EFModels.Entities
         public static IEnumerable<UserDto> List(ZybachDbContext dbContext)
         {
             return dbContext.Users
-                .Include(x => x.Role)
                 .AsNoTracking()
                 .OrderBy(x => x.LastName)
                 .ThenBy(x => x.FirstName)
@@ -126,7 +125,6 @@ namespace Zybach.EFModels.Entities
         private static IQueryable<User> GetUserImpl(ZybachDbContext dbContext)
         {
             return dbContext.Users
-                .Include(x => x.Role)
                 .AsNoTracking();
         }
 
@@ -144,7 +142,6 @@ namespace Zybach.EFModels.Entities
             }
 
             var user = dbContext.Users
-                .Include(x => x.Role)
                 .Single(x => x.UserID == userID);
 
             user.RoleID = userEditDto.RoleID.Value;

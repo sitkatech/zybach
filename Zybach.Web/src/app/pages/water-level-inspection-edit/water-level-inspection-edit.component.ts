@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { WaterLevelInspectionService } from 'src/app/services/water-level-inspection.service';
+import { WaterLevelInspectionService } from 'src/app/shared/generated/api/water-level-inspection.service';
 import { WaterLevelInspectionUpsertComponent } from 'src/app/shared/components/water-level-inspection-upsert/water-level-inspection-upsert.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterLevelInspectionSimpleDto } from 'src/app/shared/generated/model/water-level-inspection-simple-dto';
@@ -40,7 +40,7 @@ export class WaterLevelInspectionEditComponent implements OnInit, OnDestroy {
       this.currentUser = currentUser;
       this.waterLevelInspectionID = parseInt(this.route.snapshot.paramMap.get("id"));
 
-      this.waterLevelInspectionService.getByID(this.waterLevelInspectionID).subscribe(waterLevelInspectionSimpleDto => {
+      this.waterLevelInspectionService.waterLevelInspectionsWaterLevelInspectionIDGet(this.waterLevelInspectionID).subscribe(waterLevelInspectionSimpleDto => {
         this.initializeInspectionModel(waterLevelInspectionSimpleDto);
       });
       this.cdr.detectChanges();
@@ -67,7 +67,7 @@ export class WaterLevelInspectionEditComponent implements OnInit, OnDestroy {
     this.isLoadingSubmit = true;
     this.alertService.clearAlerts();
   
-    this.waterLevelInspectionService.updateWaterLevelInspection(this.waterLevelInspectionID, this.waterLevelInspection)
+    this.waterLevelInspectionService.waterLevelInspectionsWaterLevelInspectionIDPut(this.waterLevelInspectionID, this.waterLevelInspection)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editWaterLevelInspectionForm.reset();

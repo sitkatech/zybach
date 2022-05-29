@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { SensorStatusService } from 'src/app/services/sensor-status.service';
+import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
@@ -116,7 +116,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.wellsObservable = this.sensorStatusService.getSensorStatusByWell().subscribe(wells => {
+      this.wellsObservable = this.sensorStatusService.sensorStatusGet().subscribe(wells => {
         this.wellsGeoJson =
         {
           type: "FeatureCollection",

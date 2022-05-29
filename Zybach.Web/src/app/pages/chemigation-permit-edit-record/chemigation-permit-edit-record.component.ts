@@ -2,7 +2,6 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/services/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
@@ -14,6 +13,7 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-edit-record',
@@ -40,7 +40,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private chemigationPermitService: ChemigationPermitService,
+    private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
   ) { }
@@ -53,9 +53,8 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
       this.recordYear = parseInt(this.route.snapshot.paramMap.get("record-year"));
 
       forkJoin({
-        annualRecord: this.chemigationPermitService.getAnnualRecordByPermitNumberAndRecordYear(this.chemigationPermitNumber, this.recordYear),
+        annualRecord: this.chemigationPermitAnnualRecordService.chemigationPermitsChemigationPermitNumberRecordYearGet(this.chemigationPermitNumber, this.recordYear),
       }).subscribe(({ annualRecord }) => {
-        //this.model = annualRecord;
         this.initializeModel(annualRecord);
         this.cdr.detectChanges();
       });
@@ -127,7 +126,7 @@ export class ChemigationPermitEditRecordComponent implements OnInit, OnDestroy {
     this.isLoadingSubmit = true;
     this.alertService.clearAlerts();
   
-    this.chemigationPermitService.updateChemigationPermitAnnualRecord(this.chemigationPermitAnnualRecordID, this.model)
+    this.chemigationPermitAnnualRecordService.chemigationPermitAnnualRecordsChemigationPermitAnnualRecordIDPut(this.chemigationPermitAnnualRecordID, this.model)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         editChemigationPermitAnnualRecordForm.reset();

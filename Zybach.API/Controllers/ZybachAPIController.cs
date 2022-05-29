@@ -92,7 +92,7 @@ namespace Zybach.API.Controllers
                 var measurementTypeEnum = MeasurementTypeEnum.ContinuityMeter;
                 var startDateAsInteger = int.Parse(startDate.ToString("yyyyMMdd"));
                 var endDateAsInteger = int.Parse(endDate.ToString("yyyyMMdd"));
-                var query = _dbContext.WellSensorMeasurements.Include(x => x.MeasurementType).AsNoTracking().Where(
+                var query = _dbContext.WellSensorMeasurements.AsNoTracking().Where(
                     x => x.MeasurementTypeID == (int)measurementTypeEnum
                          && 10000 * x.ReadingYear + 100 * x.ReadingMonth + x.ReadingDay >=
                          startDateAsInteger

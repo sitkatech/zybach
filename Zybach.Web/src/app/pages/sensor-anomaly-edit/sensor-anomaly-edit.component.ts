@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { SensorAnomalyService } from 'src/app/services/sensor-anomaly.service';
+import { SensorAnomalyService } from 'src/app/shared/generated/api/sensor-anomaly.service';
 import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-adapter-from-string';
 import { SensorAnomalySimpleDto } from 'src/app/shared/generated/model/sensor-anomaly-simple-dto';
 import { SensorAnomalyUpsertDto } from 'src/app/shared/generated/model/sensor-anomaly-upsert-dto';
@@ -40,7 +40,7 @@ export class SensorAnomalyEditComponent implements OnInit {
       this.currentUser = currentUser;
 
       this.sensorAnomalyID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.sensorAnomalyService.getSensorAnomalyByID(this.sensorAnomalyID).subscribe(sensorAnomaly => {
+      this.sensorAnomalyService.sensorAnomaliesSensorAnomalyIDGet(this.sensorAnomalyID).subscribe(sensorAnomaly => {
         this.sensorAnomaly = sensorAnomaly;
 
         this.sensorAnomalyModel = new SensorAnomalyUpsertDto();
@@ -56,7 +56,7 @@ export class SensorAnomalyEditComponent implements OnInit {
   public onSubmit(editSensorAnomalyForm: HTMLFormElement) { 
     this.isLoadingSubmit = true;
 
-    this.sensorAnomalyService.updateSensorAnomaly(this.sensorAnomalyModel).subscribe(() => {
+    this.sensorAnomalyService.sensorAnomaliesUpdatePost(this.sensorAnomalyModel).subscribe(() => {
       this.isLoadingSubmit = false;
       this.router.navigateByUrl("/sensor-anomalies").then(x => {
         this.alertService.pushAlert(new Alert("Sensor anomaly report was successfully updated.", AlertContext.Success));

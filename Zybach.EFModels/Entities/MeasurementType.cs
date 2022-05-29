@@ -9,29 +9,13 @@ namespace Zybach.EFModels.Entities
     {
         public static IEnumerable<MeasurementTypeDto> List(ZybachDbContext dbContext)
         {
-            var measurementTypes = dbContext.MeasurementTypes
-                .AsNoTracking()
-                .Select(x => x.AsDto());
-
-            return measurementTypes;
+            return MeasurementType.AllAsDto;
         }
 
         public static MeasurementTypeDto GetByMeasurementTypeID(ZybachDbContext dbContext, int measurementTypeID)
         {
-            var measurementType = dbContext.MeasurementTypes
-                .AsNoTracking()
-                .FirstOrDefault(x => x.MeasurementTypeID == measurementTypeID);
-
-            return measurementType?.AsDto();
+            return MeasurementType.AllAsDtoLookupDictionary[measurementTypeID];
         }
-    }
-
-    public enum MeasurementTypeEnum
-    {
-        FlowMeter = 1,
-        ContinuityMeter = 2,
-        ElectricalUsage = 3,
-        WellPressure = 4
     }
 
     /// <summary>
