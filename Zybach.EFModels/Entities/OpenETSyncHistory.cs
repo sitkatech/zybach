@@ -14,7 +14,7 @@ namespace Zybach.EFModels.Entities
             
             var openETSyncHistoryToAdd = new OpenETSyncHistory()
             {
-                OpenETSyncResultTypeID = (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Created,
+                OpenETSyncResultTypeID = (int)OpenETSyncResultTypeEnum.Created,
                 WaterYearMonthID = waterYearMonthID,
                 CreateDate = DateTime.UtcNow,
                 UpdateDate = DateTime.UtcNow,
@@ -34,24 +34,24 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.WaterYearMonth)
                 .SingleOrDefault(x => x.OpenETSyncHistoryID == openETSyncHistoryID).AsDto();
         }
-        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum resultType)
+        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType)
         {
             return UpdateOpenETSyncEntityByID(zybachDbContext, openETSyncHistoryID, resultType, null);
         }
 
-        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum resultType, string errorMessage)
+        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType, string errorMessage)
         {
             return UpdateOpenETSyncEntityByID(zybachDbContext, openETSyncHistoryID, resultType, errorMessage, null);
         }
 
-        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum resultType, string errorMessage, string googleBucketFileRetrievalURL)
+        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType, string errorMessage, string googleBucketFileRetrievalURL)
         {
             var openETSyncHistory =
                 zybachDbContext.OpenETSyncHistories.Single(x => x.OpenETSyncHistoryID == openETSyncHistoryID);
 
             openETSyncHistory.UpdateDate = DateTime.UtcNow;
             openETSyncHistory.OpenETSyncResultTypeID = (int)resultType;
-            if (resultType == OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed)
+            if (resultType == OpenETSyncResultTypeEnum.Failed)
             {
                 openETSyncHistory.ErrorMessage = errorMessage;
             }

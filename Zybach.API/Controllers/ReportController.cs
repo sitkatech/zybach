@@ -43,7 +43,7 @@ namespace Zybach.API.Controllers
         [ZybachEditFeature]
         public IActionResult GetReportTemplateModels()
         {
-            var reportTemplateModelDtos = ReportTemplateModel.List(_dbContext);
+            var reportTemplateModelDtos = (IEnumerable<ReportTemplateModelDto>)ReportTemplateModel.AllAsDto;
             return Ok(reportTemplateModelDtos);
         }
 

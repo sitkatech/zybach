@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<WaterQualityInspectionTypeDto>> GetWaterQualityInspectionTypes()
         {
-            var waterQualityInspectionTypeDtos = WaterQualityInspectionTypes.ListAsDto(_dbContext);
+            var waterQualityInspectionTypeDtos = (IEnumerable<WaterQualityInspectionTypeDto>)WaterQualityInspectionType.AllAsDto;
             return Ok(waterQualityInspectionTypeDtos);
         }
 

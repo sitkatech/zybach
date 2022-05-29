@@ -73,7 +73,7 @@ namespace Zybach.API.Services
                         _rebuildingModelResultsErrorMessages.Contains(unsuccessfulObject.Description))
                     {
                         OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                            OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, "OpenET is currently rebuilding collections that include this date. Please try again later.");
+                            OpenETSyncResultTypeEnum.Failed, "OpenET is currently rebuilding collections that include this date. Please try again later.");
                         return false;
                     }
                     throw new OpenETException($"Call to {openETRequestURL} was unsuccessful. Status Code: {response.StatusCode} Message: {body}");
@@ -86,14 +86,14 @@ namespace Zybach.API.Services
                     !DateTime.TryParse(responseObject.DateIngested, out DateTime responseDate))
                 {
                     OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                        OpenETSyncResultTypes.OpenETSyncResultTypeEnum.DataNotAvailable);
+                        OpenETSyncResultTypeEnum.DataNotAvailable);
                     return false;
                 }
 
                 var openETSyncHistoriesThatWereSuccessful = _zybachDbContext.OpenETSyncHistories
                     .Include(x => x.WaterYearMonth)
                     .Where(x => x.WaterYearMonth.Year == year && x.WaterYearMonth.Month == month &&
-                                x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Succeeded);
+                                x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.Succeeded);
 
                 if (!openETSyncHistoriesThatWereSuccessful.Any())
                 {
@@ -109,13 +109,13 @@ namespace Zybach.API.Services
                 }
 
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.NoNewData);
+                    OpenETSyncResultTypeEnum.NoNewData);
                 return false;
             }
             catch (TaskCanceledException ex)
             {
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, "OpenET API did not respond");
+                    OpenETSyncResultTypeEnum.Failed, "OpenET API did not respond");
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error communicating with OpenET API.");
                 return false;
             }
@@ -123,7 +123,7 @@ namespace Zybach.API.Services
             {
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error when attempting to check raster metadata date ingested.");
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, ex.Message);
+                    OpenETSyncResultTypeEnum.Failed, ex.Message);
                 return false;
             }
         }
@@ -218,7 +218,7 @@ namespace Zybach.API.Services
 
             if (_zybachDbContext.OpenETSyncHistories
                 .Any(x => x.WaterYearMonthID == waterYearMonthID && 
-                          x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress &&
+                          x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.InProgress &&
                           x.OpenETDataTypeID == openETDataType.OpenETDataTypeID))
             {
                 return new HttpResponseMessage()
@@ -238,7 +238,7 @@ namespace Zybach.API.Services
                 {
                     StatusCode = HttpStatusCode.UnprocessableEntity,
                     Content = new StringContent(
-                        $"The sync for {monthNameToDisplay} {year} will not be completed for the following reason: {newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeDisplayName}.{(newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeID == (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed ? $" Error Message:{newSyncHistory.ErrorMessage}" : "")}")
+                        $"The sync for {monthNameToDisplay} {year} will not be completed for the following reason: {newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeDisplayName}.{(newSyncHistory.OpenETSyncResultType.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.Failed ? $" Error Message:{newSyncHistory.ErrorMessage}" : "")}")
                 };
             }
 
@@ -260,14 +260,14 @@ namespace Zybach.API.Services
                     JsonConvert.DeserializeObject<TimeseriesMultipolygonSuccessfulResponse>(body);
 
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress, null, responseObject.FileRetrievalURL);
+                    OpenETSyncResultTypeEnum.InProgress, null, responseObject.FileRetrievalURL);
 
                 return response;
             }
             catch (TaskCanceledException ex)
             {
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, "OpenET API did not respond");
+                    OpenETSyncResultTypeEnum.Failed, "OpenET API did not respond");
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error communicating with OpenET API.");
                 return new HttpResponseMessage()
                 {
@@ -279,7 +279,7 @@ namespace Zybach.API.Services
             catch (Exception ex)
             {
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, newSyncHistory.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, ex.Message);
+                    OpenETSyncResultTypeEnum.Failed, ex.Message);
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error communicating with OpenET API.");
                 return new HttpResponseMessage()
                 {
@@ -300,12 +300,12 @@ namespace Zybach.API.Services
         {
             var timeBetweenSyncCreationAndNow = DateTime.UtcNow.Subtract(syncHistory.CreateDate).TotalHours;
             var resultType = timeBetweenSyncCreationAndNow > 24
-                ? OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed
-                : OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress;
+                ? OpenETSyncResultTypeEnum.Failed
+                : OpenETSyncResultTypeEnum.InProgress;
 
             //One very unfortunate thing about OpenET's design is that they're forced to create a queue of requests and can't process multiple requests at once.
             //That, combined with no (at this moment 7/14/21) means of knowing whether or not a run has completed or failed other than checking to see if the file is ready for export means we have to implement some kind of terminal state.
-            OpenETSyncHistory.UpdateOpenETSyncEntityByID(zybachDbContext, syncHistory.OpenETSyncHistoryID, resultType, resultType == OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed ? errorMessage : null);
+            OpenETSyncHistory.UpdateOpenETSyncEntityByID(zybachDbContext, syncHistory.OpenETSyncHistoryID, resultType, resultType == OpenETSyncResultTypeEnum.Failed ? errorMessage : null);
         }
 
         /// <summary>
@@ -317,7 +317,7 @@ namespace Zybach.API.Services
             var syncHistoryObject = OpenETSyncHistory.GetByOpenETSyncHistoryID(_zybachDbContext, syncHistoryID);
 
             if (syncHistoryObject == null || syncHistoryObject.OpenETSyncResultType.OpenETSyncResultTypeID !=
-                (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress)
+                (int)OpenETSyncResultTypeEnum.InProgress)
             {
                 //Bad request, we completed already and somehow were called again, or someone else decided we were done
                 return;
@@ -328,7 +328,7 @@ namespace Zybach.API.Services
                 //We are somehow storing sync histories without file retrieval urls, this is not good
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, new OpenETException(
                     $"OpenETSyncHistory record:{syncHistoryObject.OpenETSyncHistoryID} was saved without a file retrieval URL but we attempted to update with it. Check integration!"), "Error communicating with OpenET API.");
-                OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, "Record was saved with a Google Bucket File Retrieval URL. Support has been notified.");
+                OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypeEnum.Failed, "Record was saved with a Google Bucket File Retrieval URL. Support has been notified.");
                 return;
             }
 
@@ -369,7 +369,7 @@ namespace Zybach.API.Services
                 //This shouldn't happen, but if we enter here we've attempted to grab data for a water year that was finalized
                 if (!distinctRecords.Any())
                 {
-                    OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum.NoNewData);
+                    OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypeEnum.NoNewData);
                     return;
                 }
 
@@ -403,13 +403,13 @@ namespace Zybach.API.Services
                 _zybachDbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData");
 
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Succeeded);
+                    OpenETSyncResultTypeEnum.Succeeded);
             }
             catch (Exception ex)
             {
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error parsing file from OpenET or getting records into database.");
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, ex.Message);
+                    OpenETSyncResultTypeEnum.Failed, ex.Message);
             }
         }
 
@@ -422,7 +422,7 @@ namespace Zybach.API.Services
             var syncHistoryObject = OpenETSyncHistory.GetByOpenETSyncHistoryID(_zybachDbContext, syncHistoryID);
 
             if (syncHistoryObject == null || syncHistoryObject.OpenETSyncResultType.OpenETSyncResultTypeID !=
-                (int)OpenETSyncResultTypes.OpenETSyncResultTypeEnum.InProgress)
+                (int)OpenETSyncResultTypeEnum.InProgress)
             {
                 //Bad request, we completed already and somehow were called again, or someone else decided we were done
                 return;
@@ -433,7 +433,7 @@ namespace Zybach.API.Services
                 //We are somehow storing sync histories without file retrieval urls, this is not good
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, new OpenETException(
                     $"OpenETSyncHistory record:{syncHistoryObject.OpenETSyncHistoryID} was saved without a file retrieval URL but we attempted to update with it. Check integration!"), "Error communicating with OpenET API.");
-                OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, "Record was saved with a Google Bucket File Retrieval URL. Support has been notified.");
+                OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypeEnum.Failed, "Record was saved with a Google Bucket File Retrieval URL. Support has been notified.");
                 return;
             }
 
@@ -474,7 +474,7 @@ namespace Zybach.API.Services
                 //This shouldn't happen, but if we enter here we've attempted to grab data for a water year that was finalized
                 if (!distinctRecords.Any())
                 {
-                    OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypes.OpenETSyncResultTypeEnum.NoNewData);
+                    OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID, OpenETSyncResultTypeEnum.NoNewData);
                     return;
                 }
 
@@ -508,13 +508,13 @@ namespace Zybach.API.Services
                 _zybachDbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData");
 
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Succeeded);
+                    OpenETSyncResultTypeEnum.Succeeded);
             }
             catch (Exception ex)
             {
                 TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error parsing file from OpenET or getting records into database.");
                 OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, syncHistoryObject.OpenETSyncHistoryID,
-                    OpenETSyncResultTypes.OpenETSyncResultTypeEnum.Failed, ex.Message);
+                    OpenETSyncResultTypeEnum.Failed, ex.Message);
             }
         }
 

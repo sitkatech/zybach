@@ -23,24 +23,21 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<ChemigationInjectionUnitTypeDto>> GetChemigationInjectionUnitTypes()
         {
-            var chemigationInjectionUnitTypes = ChemigationInjectionUnitTypes.ListAsDto(_dbContext);
-            return Ok(chemigationInjectionUnitTypes);
+            return Ok(ChemigationInjectionUnitType.AllAsDto);
         }
 
         [HttpGet("/chemigationPermitAnnualRecordFeeTypes")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitAnnualRecordFeeTypeDto>> GetChemigationPermitAnnualRecordFeeTypes()
         {
-            var chemigationPermitAnnualRecordFeeTypesDto = ChemigationPermitAnnualRecordFeeTypes.List(_dbContext);
-            return Ok(chemigationPermitAnnualRecordFeeTypesDto);
+            return Ok(ChemigationPermitAnnualRecordFeeType.AllAsDto);
         }
 
         [HttpGet("/chemigationPermitAnnualRecordStatuses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitAnnualRecordStatusDto>> GetChemigationPermitAnnualRecordStatuses()
         {
-            var chemigationPermitAnnualRecordStatusesDto = ChemigationPermitAnnualRecordStatus.List(_dbContext);
-            return Ok(chemigationPermitAnnualRecordStatusesDto);
+            return Ok(ChemigationPermitAnnualRecordStatus.AllAsDto);
         }
 
         [HttpGet("/chemigationPermitAnnualRecords")]
