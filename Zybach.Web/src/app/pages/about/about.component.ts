@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 
 @Component({
   selector: 'zybach-about',
@@ -10,7 +10,7 @@ export class AboutComponent implements OnInit {
 
   constructor() { }
 
-  public richTextTypeID : number = CustomRichTextType.PlatformOverview;
+  public richTextTypeID : number = CustomRichTextTypeEnum.PlatformOverview;
 
   ngOnInit() {
   }

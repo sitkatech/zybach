@@ -14,9 +14,5 @@ namespace Zybach.EFModels.Entities
         public int FieldDefinitionTypeID { get; set; }
         [Unicode(false)]
         public string FieldDefinitionValue { get; set; }
-
-        [ForeignKey("FieldDefinitionTypeID")]
-        [InverseProperty("FieldDefinitions")]
-        public virtual FieldDefinitionType FieldDefinitionType { get; set; }
     }
 }

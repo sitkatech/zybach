@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { RoleEnum } from 'src/app/shared/models/enums/role.enum';
+import { RoleEnum } from 'src/app/shared/generated/enum/role-enum';
 import { environment } from 'src/environments/environment';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -15,7 +15,7 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     public watchUserChangeSubscription: any;
     public currentUser: UserDto;
 
-    public richTextTypeID : number = CustomRichTextType.Homepage;
+    public richTextTypeID : number = CustomRichTextTypeEnum.Homepage;
 
     constructor(private authenticationService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
     }

@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
             _vegaRenderService = vegaRenderService;
         }
 
-        [HttpGet("api/reportTemplates")]
+        [HttpGet("reportTemplates")]
         [ZybachEditFeature]
         public ActionResult<List<ReportTemplateDto>> ListAllReports()
         {
@@ -31,32 +31,7 @@ namespace Zybach.API.Controllers
             return reportTemplateDtos;
         }
 
-        [HttpGet("api/reportTemplatesByModelID/{reportTemplateModelID}")]
-        [ZybachEditFeature]
-        public ActionResult<List<ReportTemplateDto>> ListAllReportsByModelID([FromRoute] int reportTemplateModelID)
-        {
-            var reportTemplateDtos = EFModels.Entities.ReportTemplates.ListByModelIDAsDtos(_dbContext, reportTemplateModelID);
-            return reportTemplateDtos;
-        }
-
-        [HttpGet("api/reportTemplateModels")]
-        [ZybachEditFeature]
-        public IActionResult GetReportTemplateModels()
-        {
-            var reportTemplateModelDtos = (IEnumerable<ReportTemplateModelDto>)ReportTemplateModel.AllAsDto;
-            return Ok(reportTemplateModelDtos);
-        }
-
-
-        [HttpGet("api/reportTemplates/{reportTemplateID}")]
-        [ZybachEditFeature]
-        public ActionResult<ReportTemplateDto> GetReport([FromRoute] int reportTemplateID)
-        {
-            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
-            return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateID);
-        }
-
-        [HttpPost("/reportTemplates/new")]
+        [HttpPost("reportTemplates")]
         [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
         [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]
         [AdminFeature]
@@ -93,7 +68,15 @@ namespace Zybach.API.Controllers
             return Ok(reportTemplateDto);
         }
 
-        [HttpPut("api/reportTemplates/{reportTemplateID}")]
+        [HttpGet("reportTemplates/{reportTemplateID}")]
+        [ZybachEditFeature]
+        public ActionResult<ReportTemplateDto> GetReport([FromRoute] int reportTemplateID)
+        {
+            var reportTemplateDto = EFModels.Entities.ReportTemplates.GetByReportTemplateIDAsDto(_dbContext, reportTemplateID);
+            return RequireNotNullThrowNotFound(reportTemplateDto, "ReportTemplate", reportTemplateID);
+        }
+
+        [HttpPut("reportTemplates/{reportTemplateID}")]
         [RequestSizeLimit(10L * 1024L * 1024L * 1024L)]
         [RequestFormLimits(MultipartBodyLengthLimit = 10L * 1024L * 1024L * 1024L)]
         [AdminFeature]
@@ -164,7 +147,7 @@ namespace Zybach.API.Controllers
             return reportTemplate;
         }
 
-        [HttpPost("/reportTemplates/generateReports")]
+        [HttpPost("reportTemplates/generateReports")]
         [ZybachEditFeature]
         public async Task<ActionResult> GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {

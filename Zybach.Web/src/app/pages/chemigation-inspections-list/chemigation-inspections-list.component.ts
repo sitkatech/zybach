@@ -5,7 +5,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ChemigationInspectionSimpleDto } from 'src/app/shared/generated/model/chemigation-inspection-simple-dto';
@@ -23,7 +23,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
   
   private currentUser: UserDto;
   
-  public richTextTypeID : number = CustomRichTextType.ChemigationInspections;
+  public richTextTypeID : number = CustomRichTextTypeEnum.ChemigationInspections;
   
   public rowData: Array<ChemigationInspectionSimpleDto>;
   public columnDefs: ColDef[];

@@ -8,7 +8,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { FontAwesomeIconLinkRendererComponent } from 'src/app/shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { SensorAnomalySimpleDto } from 'src/app/shared/generated/model/sensor-anomaly-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -30,7 +30,7 @@ export class SensorAnomalyListComponent implements OnInit {
   public sensorAnomalies: Array<SensorAnomalySimpleDto>;
   public columnDefs: any[];
   public defaultColDef: ColDef;
-  public richTextTypeID : number = CustomRichTextType.AnomalyReportList;
+  public richTextTypeID : number = CustomRichTextTypeEnum.AnomalyReportList;
   
   private modalReference: NgbModalRef;
   public deleteColumnID = 1;

@@ -23,7 +23,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionTypeDto>> GetChemigationInspectionTypes()
         {
-            var chemigationInspectionTypeDtos = ChemigationInspectionTypes.ListAsDto(_dbContext);
+            var chemigationInspectionTypeDtos = ChemigationInspectionType.AllAsDto.OrderBy(x => x.ChemigationInspectionTypeDisplayName);
             return Ok(chemigationInspectionTypeDtos);
         }
 
@@ -31,7 +31,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInspectionStatusDto>> GetChemigationInspectionStatuses()
         {
-            var chemigationInspectionStatusDtos = ChemigationInspectionStatuses.ListAsDto(_dbContext);
+            var chemigationInspectionStatusDtos = ChemigationInspectionStatus.AllAsDto.OrderBy(x => x.ChemigationInspectionStatusDisplayName);
             return Ok(chemigationInspectionStatusDtos);
         }
 
@@ -71,7 +71,8 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationLowPressureValveDto>> GetLowPressureValves()
         {
-            var lowPressureValveDtos = ChemigationLowPressureValves.ListAsDto(_dbContext);
+            var lowPressureValveDtos =
+                ChemigationLowPressureValve.AllAsDto.OrderBy(x => x.ChemigationLowPressureValveDisplayName);
             return Ok(lowPressureValveDtos);
         }
 
@@ -87,7 +88,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationInterlockTypeDto>> GetInterlockTypes()
         {
-            var interlockTypeDtos = ChemigationInterlockTypes.ListAsDto(_dbContext);
+            var interlockTypeDtos = ChemigationInterlockType.AllAsDto.OrderBy(x => x.ChemigationInterlockTypeDisplayName);
             return Ok(interlockTypeDtos);
         }
 

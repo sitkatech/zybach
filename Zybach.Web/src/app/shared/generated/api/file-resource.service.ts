@@ -66,10 +66,10 @@ export class FileResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFileResourceCkEditorUploadPost(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiFileResourceCkEditorUploadPost(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiFileResourceCkEditorUploadPost(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiFileResourceCkEditorUploadPost(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public fileResourceCkEditorUploadPost(observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public fileResourceCkEditorUploadPost(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public fileResourceCkEditorUploadPost(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public fileResourceCkEditorUploadPost(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -85,7 +85,7 @@ export class FileResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.post<any>(`${this.basePath}/api/FileResource/CkEditorUpload`,
+        return this.httpClient.post<any>(`${this.basePath}/FileResource/CkEditorUpload`,
             null,
             {
                 withCredentials: this.configuration.withCredentials,
@@ -103,13 +103,13 @@ export class FileResourceService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiFileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiFileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiFileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public fileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public fileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public fileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public fileResourceFileResourceGuidAsStringGet(fileResourceGuidAsString: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (fileResourceGuidAsString === null || fileResourceGuidAsString === undefined) {
-            throw new Error('Required parameter fileResourceGuidAsString was null or undefined when calling apiFileResourceFileResourceGuidAsStringGet.');
+            throw new Error('Required parameter fileResourceGuidAsString was null or undefined when calling fileResourceFileResourceGuidAsStringGet.');
         }
 
         let headers = this.defaultHeaders;
@@ -126,7 +126,7 @@ export class FileResourceService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<any>(`${this.basePath}/api/FileResource/${encodeURIComponent(String(fileResourceGuidAsString))}`,
+        return this.httpClient.get<any>(`${this.basePath}/FileResource/${encodeURIComponent(String(fileResourceGuidAsString))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

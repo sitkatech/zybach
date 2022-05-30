@@ -6,7 +6,7 @@ import { AlertService } from '../../services/alert.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { FieldDefinitionTypeEnum } from '../../models/enums/field-definition-type.enum';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 import { FieldDefinitionDto } from '../../generated/model/field-definition-dto';
 import { UserDto } from '../../generated/model/user-dto';
 

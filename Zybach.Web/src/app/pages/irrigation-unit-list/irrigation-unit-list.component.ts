@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -8,7 +8,7 @@ import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-re
 import { MultiLinkRendererComponent } from 'src/app/shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { AgHubIrrigationUnitSimpleDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class IrrigationUnitListComponent implements OnInit {
 
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.IrrigationUnitIndex;
+  public richTextTypeID : number = CustomRichTextTypeEnum.IrrigationUnitIndex;
 
   public columnDefs: any[];
   public defaultColDef: ColDef;

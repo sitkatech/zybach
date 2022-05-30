@@ -97,18 +97,12 @@ namespace Zybach.EFModels.Entities
         [Unicode(false)]
         public string Notes { get; set; }
 
-        [ForeignKey("CountyID")]
-        [InverseProperty("Wells")]
-        public virtual County County { get; set; }
         [ForeignKey("StreamflowZoneID")]
         [InverseProperty("Wells")]
         public virtual StreamFlowZone StreamflowZone { get; set; }
         [ForeignKey("WellParticipationID")]
         [InverseProperty("Wells")]
         public virtual WellParticipation WellParticipation { get; set; }
-        [ForeignKey("WellUseID")]
-        [InverseProperty("Wells")]
-        public virtual WellUse WellUse { get; set; }
         [InverseProperty("Well")]
         public virtual AgHubWell AgHubWell { get; set; }
         [InverseProperty("Well")]

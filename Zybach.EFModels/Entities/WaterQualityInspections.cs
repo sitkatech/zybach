@@ -135,8 +135,6 @@ namespace Zybach.EFModels.Entities
             var clearinghouseWaterQualityInspections = dbContext.WaterQualityInspections
                 .Include(x => x.Well)
                     .ThenInclude(x => x.WellParticipation)
-                .Include(x => x.Well)
-                    .ThenInclude(x => x.WellUse)
                 .Where(x => x.Well.Clearinghouse != null)
                 .OrderByDescending(x => x.InspectionDate)
                 .AsNoTracking()

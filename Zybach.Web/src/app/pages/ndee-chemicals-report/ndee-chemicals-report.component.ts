@@ -3,7 +3,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemicalFormulationYearlyTotalDto } from 'src/app/shared/generated/model/chemical-formulation-yearly-total-dto';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
@@ -21,7 +21,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
     
     private currentUser: UserDto;
 
-    public richTextTypeID : number = CustomRichTextType.NDEEChemicalsReport;
+    public richTextTypeID : number = CustomRichTextTypeEnum.NDEEChemicalsReport;
     
     public rowData: Array<ChemicalFormulationYearlyTotalDto>;
     public columnDefs: ColDef[];

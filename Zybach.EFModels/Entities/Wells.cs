@@ -90,8 +90,6 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.Sensors)
                 .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
-                .Include(x => x.WellUse)
-                .Include(x => x.County)
                 .AsNoTracking();
         }
 

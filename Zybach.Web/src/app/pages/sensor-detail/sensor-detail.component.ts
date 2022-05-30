@@ -17,7 +17,7 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
 import { IAngularMyDpOptions } from 'angular-mydatepicker';
-import { SensorTypeEnum } from 'src/app/shared/models/enums/sensor-type.enum';
+import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 import { SensorAnomalyService } from 'src/app/shared/generated/api/sensor-anomaly.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';

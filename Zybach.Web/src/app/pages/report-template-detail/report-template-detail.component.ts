@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
+import { ReportService } from 'src/app/shared/generated/api/report.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -21,7 +21,7 @@ export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
   constructor(
       private route: ActivatedRoute,
       private router: Router,
-      private reportTemplateService: ReportTemplateService,
+      private reportService: ReportService,
       private authenticationService: AuthenticationService,
       private cdr: ChangeDetectorRef
   ) {
@@ -36,7 +36,7 @@ export class ReportTemplateDetailComponent implements OnInit, OnDestroy {
 
           const id = parseInt(this.route.snapshot.paramMap.get("id"));
           if (id) {
-              this.reportTemplateService.getReportTemplate(id).subscribe(reportTemplate => {
+              this.reportService.reportTemplatesReportTemplateIDGet(id).subscribe(reportTemplate => {
                   this.reportTemplate = reportTemplate as ReportTemplateDto;
                   this.reportTemplateFileLinkValue = `${mainAppApiUrl}/FileResource/${this.reportTemplate.FileResource.FileResourceGUID}`;
                   this.cdr.detectChanges();

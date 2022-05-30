@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
 import { ChemigationPermitAnnualRecordChemicalFormulationUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-chemical-formulation-upsert-dto';
@@ -12,8 +11,8 @@ import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemi
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-fee-type.enum';
-import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
+import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/generated/enum/chemigation-permit-annual-record-fee-type-enum';
+import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/generated/enum/chemigation-permit-annual-record-status-enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 
@@ -40,7 +39,6 @@ export class ChemigationPermitAddRecordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private chemigationPermitService: ChemigationPermitService,
     private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService

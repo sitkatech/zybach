@@ -11,11 +11,11 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
 import { WaterYearMonthService } from 'src/app/shared/generated/api/water-year-month.service';
 import { finalize } from 'rxjs/operators';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { OpenETSyncHistoryDto } from 'src/app/shared/generated/model/open-et-sync-history-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterYearMonthDto } from 'src/app/shared/generated/model/water-year-month-dto';
-import { OpenETSyncResultTypeEnum } from 'src/app/shared/models/enums/openet-sync-result-type.enum';
+import { OpenETSyncResultTypeEnum } from 'src/app/shared/generated/enum/open-e-t-sync-result-type-enum';
 
 @Component({
   selector: 'zybach-openet-sync-water-year-month-status-list',
@@ -25,7 +25,7 @@ import { OpenETSyncResultTypeEnum } from 'src/app/shared/models/enums/openet-syn
 export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
   
   public currentUser: UserDto;
-  public richTextTypeID: number = CustomRichTextType.OpenETIntegration;
+  public richTextTypeID: number = CustomRichTextTypeEnum.OpenETIntegration;
   public modalReference: NgbModalRef;
 
   public waterYearMonthDtos: Array<WaterYearMonthDto>;

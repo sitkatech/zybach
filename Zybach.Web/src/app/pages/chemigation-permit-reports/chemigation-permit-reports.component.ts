@@ -2,22 +2,22 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
+import { ReportService } from 'src/app/shared/generated/api/report.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
-import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
+import { ReportTemplateModelEnum } from 'src/app/shared/generated/enum/report-template-model-enum';
 import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
+import { ReportTemplateModelService } from 'src/app/shared/generated/api/report-template-model.service';
 
 @Component({
   selector: 'zybach-chemigation-permit-reports',
@@ -30,7 +30,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
   
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.ChemigationPermitReport;
+  public richTextTypeID : number = CustomRichTextTypeEnum.ChemigationPermitReport;
   
   public rowData: Array<ChemigationPermitAnnualRecordDto>;
   public columnDefs: ColDef[];
@@ -53,10 +53,10 @@ export class ChemigationPermitReportsComponent implements OnInit {
   constructor(
     private alertService: AlertService,
     private authenticationService: AuthenticationService,
-    private chemigationPermitService: ChemigationPermitService,
     private chemigationPermitAnnualRecordService: ChemigationPermitAnnualRecordService,
     private cdr: ChangeDetectorRef,
-    private reportTemplateService: ReportTemplateService,
+    private reportService: ReportService,
+    private reportTemplateModelService: ReportTemplateModelService,
     private utilityFunctionsService: UtilityFunctionsService
   ) { }
 
@@ -64,7 +64,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
     this.currentYear = new Date().getFullYear();
     this.yearToDisplay = new Date().getFullYear(); 
     
-    this.reportTemplateService.getReportTemplatesByModelID(ReportTemplateModelEnum.ChemigationPermit).subscribe(reportTemplates => {
+    this.reportTemplateModelService.reportTemplateModelsReportTemplateModelIDReportsGet(ReportTemplateModelEnum.ChemigationPermit).subscribe(reportTemplates => {
       this.reportTemplates = reportTemplates;
       if (this.reportTemplates.length == 1) {
         this.selectedReportTemplateID = reportTemplates[0].ReportTemplateID;
@@ -252,7 +252,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         var generateChemigationPermitReportsDto = new GenerateReportsDto();
         generateChemigationPermitReportsDto.ReportTemplateID = this.selectedReportTemplateID;
         generateChemigationPermitReportsDto.ModelIDList = selectedFilteredSortedRows;
-        this.reportTemplateService.generateReport(generateChemigationPermitReportsDto)
+        this.reportService.reportTemplatesGenerateReportsPost(generateChemigationPermitReportsDto)
           .subscribe(response => {
             this.isLoadingSubmit = false;
     

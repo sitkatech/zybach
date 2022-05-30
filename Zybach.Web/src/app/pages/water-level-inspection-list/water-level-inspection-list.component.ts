@@ -10,7 +10,7 @@ import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-re
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterLevelInspectionSimpleDto } from 'src/app/shared/generated/model/water-level-inspection-simple-dto';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 
 @Component({
   selector: 'zybach-water-level-inspection-list',
@@ -23,7 +23,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
   
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.WaterLevelInspections;
+  public richTextTypeID : number = CustomRichTextTypeEnum.WaterLevelInspections;
 
   public columnDefs: any[];
   public defaultColDef: ColDef;

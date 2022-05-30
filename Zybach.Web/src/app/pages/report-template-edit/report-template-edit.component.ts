@@ -8,7 +8,8 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ReportTemplateUpdateDto } from 'src/app/shared/models/report-template-update-dto';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
+import { ReportService } from 'src/app/shared/generated/api/report.service';
+import { ReportTemplateModelService } from 'src/app/shared/generated/api/report-template-model.service';
 
 @Component({
   selector: 'zybach-report-template-edit',
@@ -36,7 +37,8 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private reportTemplateService: ReportTemplateService,
+    private reportService: ReportService,
+    private reportTemplateModelService: ReportTemplateModelService,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService
   ) {
@@ -48,7 +50,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
 
-      this.reportTemplateService.getReportTemplateModels().subscribe(reportTemplateModels => {
+      this.reportTemplateModelService.reportTemplateModelsGet().subscribe(reportTemplateModels => {
         this.reportTemplateModels = reportTemplateModels.sort((a: ReportTemplateModelDto, b: ReportTemplateModelDto) => {
           if (a.ReportTemplateModelDisplayName > b.ReportTemplateModelDisplayName)
             return 1;
@@ -60,7 +62,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
 
       if(!(this.route.snapshot.paramMap.get("id") === null || this.route.snapshot.paramMap.get("id") === undefined)){
         this.reportTemplateID = parseInt(this.route.snapshot.paramMap.get("id"));
-        this.reportTemplateService.getReportTemplate(this.reportTemplateID).subscribe(reportTemplate => {
+        this.reportService.reportTemplatesReportTemplateIDGet(this.reportTemplateID).subscribe(reportTemplate => {
           this.reportTemplate = reportTemplate as ReportTemplateDto;
           this.model.DisplayName = reportTemplate.DisplayName;
           this.model.Description = reportTemplate.Description;
@@ -116,7 +118,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
     this.isLoadingSubmit = true;
     this.alertService.clearAlerts();
     if(this.reportTemplateID !== undefined){
-      this.reportTemplateService.updateReportTemplate(this.reportTemplateID, this.model)
+      this.reportService.reportTemplatesReportTemplateIDPut(this.reportTemplateID, this.model.DisplayName, this.model.ReportTemplateModelID, this.model.FileResource, this.model.Description)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         this.router.navigateByUrl("/reports/" + this.reportTemplateID).then(x => {
@@ -130,7 +132,7 @@ export class ReportTemplateEditComponent implements OnInit, OnDestroy {
         }
       );
     } else {
-      this.reportTemplateService.newReportTemplate(this.model)
+      this.reportService.reportTemplatesPost(this.model.FileResource, this.model.DisplayName, this.model.ReportTemplateModelID, this.model.Description)
       .subscribe(response => {
         this.isLoadingSubmit = false;
         newReportTemplateForm.reset();

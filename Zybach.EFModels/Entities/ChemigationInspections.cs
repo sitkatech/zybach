@@ -12,20 +12,10 @@ namespace Zybach.EFModels.Entities
             return dbContext.ChemigationInspections
                 .Include(x => x.ChemigationPermitAnnualRecord)
                     .ThenInclude(x => x.ChemigationPermit)
-                        .ThenInclude(x => x.ChemigationPermitStatus)
-                .Include(x => x.ChemigationPermitAnnualRecord)
-                    .ThenInclude(x => x.ChemigationPermit)
-                        .ThenInclude(x => x.County)
-                .Include(x => x.ChemigationPermitAnnualRecord)
-                    .ThenInclude(x => x.ChemigationPermit)
                         .ThenInclude(x => x.Well)
-                .Include(x => x.ChemigationInspectionStatus)
                 .Include(x => x.ChemigationInspectionFailureReason)
-                .Include(x => x.ChemigationInspectionType)
                 .Include(x => x.ChemigationMainlineCheckValve)
-                .Include(x => x.ChemigationLowPressureValve)
                 .Include(x => x.ChemigationInjectionValve)
-                .Include(x => x.ChemigationInterlockType)
                 .Include(x => x.Tillage)
                 .Include(x => x.CropType)
                 .Include(x => x.InspectorUser)
@@ -89,8 +79,8 @@ namespace Zybach.EFModels.Entities
             var blankChemigationInspectionUpsertDto = new ChemigationInspectionUpsertDto()
             {
                 ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecordID,
-                ChemigationInspectionStatusID = (int)ChemigationInspectionStatuses.ChemigationInspectionStatusEnum.Pending,
-                ChemigationInspectionTypeID = (int)ChemigationInspectionTypes.ChemigationInspectionTypeEnum.NewInitialOrReactivation,
+                ChemigationInspectionStatusID = (int)ChemigationInspectionStatusEnum.Pending,
+                ChemigationInspectionTypeID = (int)ChemigationInspectionTypeEnum.NEWINITIALORREACTIVATION,
                 HasVacuumReliefValve = true,
                 HasInspectionPort = true
             };

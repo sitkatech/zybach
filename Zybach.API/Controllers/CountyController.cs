@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,7 +21,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<CountyDto>> GetCounties()
         {
-            var counties = Counties.ListAsDto(_dbContext);
+            var counties = County.AllAsDto.OrderBy(x => x.CountyDisplayName);
             return Ok(counties);
         }
     }

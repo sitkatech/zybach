@@ -20,7 +20,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<ChemigationPermitStatusDto>> GetChemigationPermitStatuses()
         {
-            var chemigationPermitStatusesDto = ChemigationPermitStatuses.ListAsDto(_dbContext);
+            var chemigationPermitStatusesDto = ChemigationPermitStatus.AllAsDto;
             return Ok(chemigationPermitStatusesDto);
         }
 

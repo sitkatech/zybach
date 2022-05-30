@@ -4,7 +4,7 @@ import { SensorService } from 'src/app/shared/generated/api/sensor.service';
 import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWaterLevelMapSummaryDto } from 'src/app/shared/generated/model/well-water-level-map-summary-dto';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { WellWaterLevelMapComponent } from '../well-water-level-map/well-water-level-map.component';
 import { default as vegaEmbed } from 'vega-embed';
 import * as vega from 'vega';
@@ -26,8 +26,8 @@ export class WaterLevelExplorerComponent implements OnInit {
   public selectedSensors: SensorSimpleDto[];
   public wellsGeoJson: any;
   
-  public richTextTypeID : number = CustomRichTextType.WaterLevelExplorerMap;
-  public disclaimerRichTextTypeID : number = CustomRichTextType.WaterLevelExplorerMapDisclaimer;
+  public richTextTypeID : number = CustomRichTextTypeEnum.WaterLevelExplorerMap;
+  public disclaimerRichTextTypeID : number = CustomRichTextTypeEnum.WaterLevelExplorerMapDisclaimer;
 
   public chartID: string;
   chartColor: string = "#13B5EA";

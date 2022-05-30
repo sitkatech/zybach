@@ -17,6 +17,7 @@ import { ManagerDashboardService } from './api/manager-dashboard.service';
 import { MapDataService } from './api/map-data.service';
 import { OpenETService } from './api/open-et.service';
 import { ReportService } from './api/report.service';
+import { ReportTemplateModelService } from './api/report-template-model.service';
 import { RobustReviewScenarioService } from './api/robust-review-scenario.service';
 import { RoleService } from './api/role.service';
 import { SearchService } from './api/search.service';
@@ -50,6 +51,7 @@ import { ZybachAPIService } from './api/zybach-api.service';
     MapDataService,
     OpenETService,
     ReportService,
+    ReportTemplateModelService,
     RobustReviewScenarioService,
     RoleService,
     SearchService,

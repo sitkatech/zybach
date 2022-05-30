@@ -65,251 +65,6 @@ export class ReportService {
     /**
      * 
      * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiReportTemplateModelsGet(observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public apiReportTemplateModelsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public apiReportTemplateModelsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public apiReportTemplateModelsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<any>(`${this.basePath}/api/reportTemplateModels`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param reportTemplateModelID 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiReportTemplatesByModelIDReportTemplateModelIDGet(reportTemplateModelID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<ReportTemplateDto>>;
-    public apiReportTemplatesByModelIDReportTemplateModelIDGet(reportTemplateModelID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ReportTemplateDto>>>;
-    public apiReportTemplatesByModelIDReportTemplateModelIDGet(reportTemplateModelID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ReportTemplateDto>>>;
-    public apiReportTemplatesByModelIDReportTemplateModelIDGet(reportTemplateModelID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (reportTemplateModelID === null || reportTemplateModelID === undefined) {
-            throw new Error('Required parameter reportTemplateModelID was null or undefined when calling apiReportTemplatesByModelIDReportTemplateModelIDGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<ReportTemplateDto>>(`${this.basePath}/api/reportTemplatesByModelID/${encodeURIComponent(String(reportTemplateModelID))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiReportTemplatesGet(observe?: 'body', reportProgress?: boolean): Observable<Array<ReportTemplateDto>>;
-    public apiReportTemplatesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ReportTemplateDto>>>;
-    public apiReportTemplatesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ReportTemplateDto>>>;
-    public apiReportTemplatesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<ReportTemplateDto>>(`${this.basePath}/api/reportTemplates`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param reportTemplateID 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiReportTemplatesReportTemplateIDGet(reportTemplateID: number, observe?: 'body', reportProgress?: boolean): Observable<ReportTemplateDto>;
-    public apiReportTemplatesReportTemplateIDGet(reportTemplateID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReportTemplateDto>>;
-    public apiReportTemplatesReportTemplateIDGet(reportTemplateID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReportTemplateDto>>;
-    public apiReportTemplatesReportTemplateIDGet(reportTemplateID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (reportTemplateID === null || reportTemplateID === undefined) {
-            throw new Error('Required parameter reportTemplateID was null or undefined when calling apiReportTemplatesReportTemplateIDGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<ReportTemplateDto>(`${this.basePath}/api/reportTemplates/${encodeURIComponent(String(reportTemplateID))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param reportTemplateID 
-     * @param displayName 
-     * @param reportTemplateModelID 
-     * @param fileResource 
-     * @param description 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiReportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe?: 'body', reportProgress?: boolean): Observable<ReportTemplateDto>;
-    public apiReportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReportTemplateDto>>;
-    public apiReportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReportTemplateDto>>;
-    public apiReportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (reportTemplateID === null || reportTemplateID === undefined) {
-            throw new Error('Required parameter reportTemplateID was null or undefined when calling apiReportTemplatesReportTemplateIDPut.');
-        }
-
-        if (displayName === null || displayName === undefined) {
-            throw new Error('Required parameter displayName was null or undefined when calling apiReportTemplatesReportTemplateIDPut.');
-        }
-
-        if (reportTemplateModelID === null || reportTemplateModelID === undefined) {
-            throw new Error('Required parameter reportTemplateModelID was null or undefined when calling apiReportTemplatesReportTemplateIDPut.');
-        }
-
-
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'multipart/form-data',
-        ];
-
-        const canConsumeForm = this.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): void | HttpParams; };
-        let useForm = false;
-        let convertFormParamsToString = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        }
-
-        if (fileResource !== undefined) {
-            formParams = formParams.append('FileResource', <any>fileResource) || formParams;
-        }
-        if (displayName !== undefined) {
-            formParams = formParams.append('DisplayName', <any>displayName) || formParams;
-        }
-        if (description !== undefined) {
-            formParams = formParams.append('Description', <any>description) || formParams;
-        }
-        if (reportTemplateModelID !== undefined) {
-            formParams = formParams.append('ReportTemplateModelID', <any>reportTemplateModelID) || formParams;
-        }
-
-        return this.httpClient.put<ReportTemplateDto>(`${this.basePath}/api/reportTemplates/${encodeURIComponent(String(reportTemplateID))}`,
-            convertFormParamsToString ? formParams.toString() : formParams,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
      * @param generateReportsDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -356,6 +111,44 @@ export class ReportService {
     /**
      * 
      * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public reportTemplatesGet(observe?: 'body', reportProgress?: boolean): Observable<Array<ReportTemplateDto>>;
+    public reportTemplatesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ReportTemplateDto>>>;
+    public reportTemplatesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ReportTemplateDto>>>;
+    public reportTemplatesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<ReportTemplateDto>>(`${this.basePath}/reportTemplates`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
      * @param fileResource 
      * @param displayName 
      * @param reportTemplateModelID 
@@ -363,21 +156,21 @@ export class ReportService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public reportTemplatesNewPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe?: 'body', reportProgress?: boolean): Observable<ReportTemplateDto>;
-    public reportTemplatesNewPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReportTemplateDto>>;
-    public reportTemplatesNewPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReportTemplateDto>>;
-    public reportTemplatesNewPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public reportTemplatesPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe?: 'body', reportProgress?: boolean): Observable<ReportTemplateDto>;
+    public reportTemplatesPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReportTemplateDto>>;
+    public reportTemplatesPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReportTemplateDto>>;
+    public reportTemplatesPost(fileResource: Blob, displayName: string, reportTemplateModelID: number, description?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (fileResource === null || fileResource === undefined) {
-            throw new Error('Required parameter fileResource was null or undefined when calling reportTemplatesNewPost.');
+            throw new Error('Required parameter fileResource was null or undefined when calling reportTemplatesPost.');
         }
 
         if (displayName === null || displayName === undefined) {
-            throw new Error('Required parameter displayName was null or undefined when calling reportTemplatesNewPost.');
+            throw new Error('Required parameter displayName was null or undefined when calling reportTemplatesPost.');
         }
 
         if (reportTemplateModelID === null || reportTemplateModelID === undefined) {
-            throw new Error('Required parameter reportTemplateModelID was null or undefined when calling reportTemplatesNewPost.');
+            throw new Error('Required parameter reportTemplateModelID was null or undefined when calling reportTemplatesPost.');
         }
 
 
@@ -426,7 +219,136 @@ export class ReportService {
             formParams = formParams.append('ReportTemplateModelID', <any>reportTemplateModelID) || formParams;
         }
 
-        return this.httpClient.post<ReportTemplateDto>(`${this.basePath}/reportTemplates/new`,
+        return this.httpClient.post<ReportTemplateDto>(`${this.basePath}/reportTemplates`,
+            convertFormParamsToString ? formParams.toString() : formParams,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param reportTemplateID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public reportTemplatesReportTemplateIDGet(reportTemplateID: number, observe?: 'body', reportProgress?: boolean): Observable<ReportTemplateDto>;
+    public reportTemplatesReportTemplateIDGet(reportTemplateID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReportTemplateDto>>;
+    public reportTemplatesReportTemplateIDGet(reportTemplateID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReportTemplateDto>>;
+    public reportTemplatesReportTemplateIDGet(reportTemplateID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (reportTemplateID === null || reportTemplateID === undefined) {
+            throw new Error('Required parameter reportTemplateID was null or undefined when calling reportTemplatesReportTemplateIDGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<ReportTemplateDto>(`${this.basePath}/reportTemplates/${encodeURIComponent(String(reportTemplateID))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param reportTemplateID 
+     * @param displayName 
+     * @param reportTemplateModelID 
+     * @param fileResource 
+     * @param description 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public reportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe?: 'body', reportProgress?: boolean): Observable<ReportTemplateDto>;
+    public reportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ReportTemplateDto>>;
+    public reportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ReportTemplateDto>>;
+    public reportTemplatesReportTemplateIDPut(reportTemplateID: number, displayName: string, reportTemplateModelID: number, fileResource?: Blob, description?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (reportTemplateID === null || reportTemplateID === undefined) {
+            throw new Error('Required parameter reportTemplateID was null or undefined when calling reportTemplatesReportTemplateIDPut.');
+        }
+
+        if (displayName === null || displayName === undefined) {
+            throw new Error('Required parameter displayName was null or undefined when calling reportTemplatesReportTemplateIDPut.');
+        }
+
+        if (reportTemplateModelID === null || reportTemplateModelID === undefined) {
+            throw new Error('Required parameter reportTemplateModelID was null or undefined when calling reportTemplatesReportTemplateIDPut.');
+        }
+
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'multipart/form-data',
+        ];
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): void | HttpParams; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        }
+
+        if (fileResource !== undefined) {
+            formParams = formParams.append('FileResource', <any>fileResource) || formParams;
+        }
+        if (displayName !== undefined) {
+            formParams = formParams.append('DisplayName', <any>displayName) || formParams;
+        }
+        if (description !== undefined) {
+            formParams = formParams.append('Description', <any>description) || formParams;
+        }
+        if (reportTemplateModelID !== undefined) {
+            formParams = formParams.append('ReportTemplateModelID', <any>reportTemplateModelID) || formParams;
+        }
+
+        return this.httpClient.put<ReportTemplateDto>(`${this.basePath}/reportTemplates/${encodeURIComponent(String(reportTemplateID))}`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 withCredentials: this.configuration.withCredentials,

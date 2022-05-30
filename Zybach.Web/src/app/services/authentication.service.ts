@@ -5,7 +5,7 @@ import { Observable, race, Subject } from 'rxjs';
 import { filter, finalize, first, map } from 'rxjs/operators';
 import { CookieStorageService } from '../shared/services/cookies/cookie-storage.service';
 import { Router } from '@angular/router';
-import { RoleEnum } from '../shared/models/enums/role.enum';
+import { RoleEnum } from 'src/app/shared/generated/enum/role-enum';
 import { AlertService } from '../shared/services/alert.service';
 import { Alert } from '../shared/models/alert';
 import { AlertContext } from '../shared/models/enums/alert-context.enum';

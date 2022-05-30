@@ -36,18 +36,6 @@ namespace Zybach.EFModels.Entities
         [ForeignKey("ChemigationInspectionFailureReasonID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationInspectionFailureReason ChemigationInspectionFailureReason { get; set; }
-        [ForeignKey("ChemigationInspectionStatusID")]
-        [InverseProperty("ChemigationInspections")]
-        public virtual ChemigationInspectionStatus ChemigationInspectionStatus { get; set; }
-        [ForeignKey("ChemigationInspectionTypeID")]
-        [InverseProperty("ChemigationInspections")]
-        public virtual ChemigationInspectionType ChemigationInspectionType { get; set; }
-        [ForeignKey("ChemigationInterlockTypeID")]
-        [InverseProperty("ChemigationInspections")]
-        public virtual ChemigationInterlockType ChemigationInterlockType { get; set; }
-        [ForeignKey("ChemigationLowPressureValveID")]
-        [InverseProperty("ChemigationInspections")]
-        public virtual ChemigationLowPressureValve ChemigationLowPressureValve { get; set; }
         [ForeignKey("ChemigationMainlineCheckValveID")]
         [InverseProperty("ChemigationInspections")]
         public virtual ChemigationMainlineCheckValve ChemigationMainlineCheckValve { get; set; }

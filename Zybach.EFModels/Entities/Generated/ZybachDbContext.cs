@@ -28,21 +28,14 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<ChemigationInjectionValve> ChemigationInjectionValves { get; set; }
         public virtual DbSet<ChemigationInspection> ChemigationInspections { get; set; }
         public virtual DbSet<ChemigationInspectionFailureReason> ChemigationInspectionFailureReasons { get; set; }
-        public virtual DbSet<ChemigationInspectionStatus> ChemigationInspectionStatuses { get; set; }
-        public virtual DbSet<ChemigationInspectionType> ChemigationInspectionTypes { get; set; }
-        public virtual DbSet<ChemigationInterlockType> ChemigationInterlockTypes { get; set; }
-        public virtual DbSet<ChemigationLowPressureValve> ChemigationLowPressureValves { get; set; }
         public virtual DbSet<ChemigationMainlineCheckValve> ChemigationMainlineCheckValves { get; set; }
         public virtual DbSet<ChemigationPermit> ChemigationPermits { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecord> ChemigationPermitAnnualRecords { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecordApplicator> ChemigationPermitAnnualRecordApplicators { get; set; }
         public virtual DbSet<ChemigationPermitAnnualRecordChemicalFormulation> ChemigationPermitAnnualRecordChemicalFormulations { get; set; }
-        public virtual DbSet<ChemigationPermitStatus> ChemigationPermitStatuses { get; set; }
-        public virtual DbSet<County> Counties { get; set; }
         public virtual DbSet<CropType> CropTypes { get; set; }
         public virtual DbSet<CustomRichText> CustomRichTexts { get; set; }
         public virtual DbSet<FieldDefinition> FieldDefinitions { get; set; }
-        public virtual DbSet<FieldDefinitionType> FieldDefinitionTypes { get; set; }
         public virtual DbSet<FileResource> FileResources { get; set; }
         public virtual DbSet<GeoOptixSensorStaging> GeoOptixSensorStagings { get; set; }
         public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
@@ -65,7 +58,6 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WellParticipation> WellParticipations { get; set; }
         public virtual DbSet<WellSensorMeasurement> WellSensorMeasurements { get; set; }
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
-        public virtual DbSet<WellUse> WellUses { get; set; }
         public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
         public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
 
@@ -125,11 +117,6 @@ namespace Zybach.EFModels.Entities
 
             modelBuilder.Entity<ChemigationInspection>(entity =>
             {
-                entity.HasOne(d => d.ChemigationInspectionStatus)
-                    .WithMany(p => p.ChemigationInspections)
-                    .HasForeignKey(d => d.ChemigationInspectionStatusID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
                 entity.HasOne(d => d.ChemigationPermitAnnualRecord)
                     .WithMany(p => p.ChemigationInspections)
                     .HasForeignKey(d => d.ChemigationPermitAnnualRecordID)
@@ -146,42 +133,9 @@ namespace Zybach.EFModels.Entities
                 entity.Property(e => e.ChemigationInspectionFailureReasonID).ValueGeneratedNever();
             });
 
-            modelBuilder.Entity<ChemigationInspectionStatus>(entity =>
-            {
-                entity.Property(e => e.ChemigationInspectionStatusID).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<ChemigationInspectionType>(entity =>
-            {
-                entity.Property(e => e.ChemigationInspectionTypeID).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<ChemigationInterlockType>(entity =>
-            {
-                entity.Property(e => e.ChemigationInterlockTypeID).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<ChemigationLowPressureValve>(entity =>
-            {
-                entity.Property(e => e.ChemigationLowPressureValveID).ValueGeneratedNever();
-            });
-
             modelBuilder.Entity<ChemigationMainlineCheckValve>(entity =>
             {
                 entity.Property(e => e.ChemigationMainlineCheckValveID).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<ChemigationPermit>(entity =>
-            {
-                entity.HasOne(d => d.ChemigationPermitStatus)
-                    .WithMany(p => p.ChemigationPermits)
-                    .HasForeignKey(d => d.ChemigationPermitStatusID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.County)
-                    .WithMany(p => p.ChemigationPermits)
-                    .HasForeignKey(d => d.CountyID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<ChemigationPermitAnnualRecord>(entity =>
@@ -221,19 +175,6 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<CropType>(entity =>
             {
                 entity.Property(e => e.CropTypeID).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<FieldDefinition>(entity =>
-            {
-                entity.HasOne(d => d.FieldDefinitionType)
-                    .WithMany(p => p.FieldDefinitions)
-                    .HasForeignKey(d => d.FieldDefinitionTypeID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<FieldDefinitionType>(entity =>
-            {
-                entity.Property(e => e.FieldDefinitionTypeID).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<FileResource>(entity =>
@@ -335,11 +276,6 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<WellParticipation>(entity =>
             {
                 entity.Property(e => e.WellParticipationID).ValueGeneratedNever();
-            });
-
-            modelBuilder.Entity<WellUse>(entity =>
-            {
-                entity.Property(e => e.WellUseID).ValueGeneratedNever();
             });
 
             modelBuilder.Entity<WellWaterQualityInspectionType>(entity =>

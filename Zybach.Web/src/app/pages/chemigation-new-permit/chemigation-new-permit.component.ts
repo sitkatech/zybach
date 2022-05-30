@@ -5,19 +5,19 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
-import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum'
+import { ChemigationPermitStatusEnum } from 'src/app/shared/generated/enum/chemigation-permit-status-enum'
 import { ChemigationPermitAnnualRecordUpsertComponent } from 'src/app/shared/components/chemigation-permit-annual-record-upsert/chemigation-permit-annual-record-upsert.component';
-import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-status.enum';
+import { ChemigationPermitAnnualRecordStatusEnum } from 'src/app/shared/generated/enum/chemigation-permit-annual-record-status-enum';
 import { ChemigationPermitNewDto } from 'src/app/shared/generated/model/chemigation-permit-new-dto';
 import { ChemigationPermitStatusDto } from 'src/app/shared/generated/model/chemigation-permit-status-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ChemigationPermitAnnualRecordApplicatorUpsertDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-applicator-upsert-dto';
-import { ChemigationInjectionUnitTypeEnum } from 'src/app/shared/models/enums/chemigation-injection-unit-type.enum';
+import { ChemigationInjectionUnitTypeEnum } from 'src/app/shared/generated/enum/chemigation-injection-unit-type-enum';
 import { Observable, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { CountyDto } from 'src/app/shared/generated/model/county-dto';
-import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/models/enums/chemigation-permit-annual-record-fee-type.enum';
+import { ChemigationPermitAnnualRecordFeeTypeEnum } from 'src/app/shared/generated/enum/chemigation-permit-annual-record-fee-type-enum';
 import { CountyService } from 'src/app/shared/generated/api/county.service';
 
 @Component({

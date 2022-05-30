@@ -30,7 +30,8 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<WellUseDto>> GetWellUses()
         {
-            var wellUseDtos = WellUses.ListAsDto(_dbContext);
+            var wellUseDtos = (IEnumerable<WellUseDto>)WellUse.AllAsDto
+                .OrderBy(x => x.WellUseDisplayName);
             return Ok(wellUseDtos);
         }
 

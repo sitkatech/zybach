@@ -5,7 +5,7 @@ import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WellRegistrationIDDto } from 'src/app/shared/generated/model/well-registration-id-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -18,7 +18,7 @@ export class WellRegistrationIdEditComponent implements OnInit {
   public wellRegistrationID: string;
   public newWellRegistrationIDDto: WellRegistrationIDDto;
   
-  public richTextTypeID : number = CustomRichTextType.WellRegistrationIDChangeHelpText;
+  public richTextTypeID : number = CustomRichTextTypeEnum.WellRegistrationIDChangeHelpText;
   public isLoadingSubmit: boolean;
 
   constructor(

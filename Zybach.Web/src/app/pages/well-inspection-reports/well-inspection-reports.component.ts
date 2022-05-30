@@ -5,14 +5,14 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
+import { ReportService } from 'src/app/shared/generated/api/report.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
-import { ReportTemplateModelEnum } from 'src/app/shared/models/enums/report-template-model-enum';
+import { ReportTemplateModelEnum } from 'src/app/shared/generated/enum/report-template-model-enum';
 import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 import { WellInspectionSummaryDto } from 'src/app/shared/generated/model/well-inspection-summary-dto';
 import { WellService } from 'src/app/shared/generated/api/well.service';
@@ -30,7 +30,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
 
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.WellInspectionReports;
+  public richTextTypeID : number = CustomRichTextTypeEnum.WellInspectionReports;
   
   public rowData: Array<WellInspectionSummaryDto>;
   public columnDefs: any[];
@@ -49,12 +49,12 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
     private datePipe: DatePipe,
     private wellService: WellService,
     private cdr: ChangeDetectorRef,
-    private reportTemplateService: ReportTemplateService,
+    private reportService: ReportService,
     private utilityFunctionsService: UtilityFunctionsService
   ) { }
 
   ngOnInit(): void {
-    this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
+    this.reportService.reportTemplatesGet().subscribe(reportTemplates => {
       this.reportTemplates = reportTemplates.filter(x => 
         x.ReportTemplateModel.ReportTemplateModelID == ReportTemplateModelEnum.WellWaterQualityInspection ||
         x.ReportTemplateModel.ReportTemplateModelID == ReportTemplateModelEnum.WellWaterLevelInspection);
@@ -263,7 +263,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         var generateChemigationPermitReportsDto = new GenerateReportsDto();
         generateChemigationPermitReportsDto.ReportTemplateID = this.selectedReportTemplateID;
         generateChemigationPermitReportsDto.ModelIDList = selectedFilteredSortedRows;
-        this.reportTemplateService.generateReport(generateChemigationPermitReportsDto)
+        this.reportService.reportTemplatesGenerateReportsPost(generateChemigationPermitReportsDto)
           .subscribe(response => {
             this.isLoadingSubmit = false;
     

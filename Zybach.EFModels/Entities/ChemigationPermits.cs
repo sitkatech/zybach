@@ -100,8 +100,6 @@ namespace Zybach.EFModels.Entities
         private static IQueryable<ChemigationPermit> GetChemigationPermitImpl(ZybachDbContext dbContext)
         {
             return dbContext.ChemigationPermits
-                .Include(x => x.ChemigationPermitStatus)
-                .Include(x => x.County)
                 .Include(x => x.Well)
                 .AsNoTracking();
         }

@@ -1,18 +1,13 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
-import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 import { ReportTemplateDto } from 'src/app/shared/generated/model/report-template-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { Alert } from 'src/app/shared/models/alert';
-import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
-import { AlertService } from 'src/app/shared/services/alert.service';
-import { ReportTemplateService } from 'src/app/shared/services/report-template.service';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
+import { ReportService } from 'src/app/shared/generated/api/report.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -26,23 +21,21 @@ export class ReportsListComponent implements OnInit, OnDestroy {
   
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.ReportsList;
+  public richTextTypeID : number = CustomRichTextTypeEnum.ReportsList;
 
   public rowData: Array<ReportTemplateDto>;
   public columnDefs: ColDef[];
 
   constructor(
-    private reportTemplateService: ReportTemplateService,
+    private reportTemplateService: ReportService,
     private authenticationService: AuthenticationService,
-    private router: Router,
-    private alertService: AlertService,
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.reportTemplatesGrid?.api.showLoadingOverlay();
-      this.reportTemplateService.listAllReportTemplates().subscribe(reportTemplates => {
+      this.reportTemplateService.reportTemplatesGet().subscribe(reportTemplates => {
         this.rowData = reportTemplates;
         this.reportTemplatesGrid.api.sizeColumnsToFit();
         this.reportTemplatesGrid.api.hideOverlay();

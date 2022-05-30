@@ -7,7 +7,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { WaterQualityInspectionService } from 'src/app/shared/generated/api/water-quality-inspection.service';
 import { ClearinghouseWaterQualityInspectionDto } from 'src/app/shared/generated/model/clearinghouse-water-quality-inspection-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 
 @Component({
@@ -21,7 +21,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
     
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.ClearinghouseReport;
+  public richTextTypeID : number = CustomRichTextTypeEnum.ClearinghouseReport;
   
   public rowData: Array<ClearinghouseWaterQualityInspectionDto>;
   public columnDefs: ColDef[];

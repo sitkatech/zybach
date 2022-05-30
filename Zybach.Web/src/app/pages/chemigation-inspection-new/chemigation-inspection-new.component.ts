@@ -9,7 +9,7 @@ import { ChemigationPermitAnnualRecordDetailedDto } from 'src/app/shared/generat
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { ChemigationInspectionStatusEnum } from 'src/app/shared/models/enums/chemigation-inspection-status';
+import { ChemigationInspectionStatusEnum } from 'src/app/shared/generated/enum/chemigation-inspection-status-enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 

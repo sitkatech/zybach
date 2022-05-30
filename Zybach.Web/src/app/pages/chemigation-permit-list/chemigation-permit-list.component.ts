@@ -5,7 +5,7 @@ import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ChemigationPermitService } from 'src/app/shared/generated/api/chemigation-permit.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ChemigationPermitDetailedDto } from 'src/app/shared/generated/model/chemigation-permit-detailed-dto';
@@ -14,7 +14,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { ChemigationPermitStatusEnum } from 'src/app/shared/models/enums/chemigation-permit-status.enum';
+import { ChemigationPermitStatusEnum } from 'src/app/shared/generated/enum/chemigation-permit-status-enum';
 import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
 
 @Component({
@@ -29,7 +29,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
   
   private currentUser: UserDto;
 
-  public richTextTypeID : number = CustomRichTextType.Chemigation;
+  public richTextTypeID : number = CustomRichTextTypeEnum.Chemigation;
 
   public columnDefs: any[];
   public defaultColDef: ColDef;

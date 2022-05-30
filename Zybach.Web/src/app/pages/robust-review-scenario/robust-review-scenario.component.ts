@@ -1,9 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular/lib/ag-grid-angular.component';
 import { ColDef } from 'ag-grid-community';
 import { Subject, timer } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { RobustReviewScenarioService } from 'src/app/shared/generated/api/robust-review-scenario.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
@@ -12,7 +12,7 @@ import { RobustReviewScenarioGETRunHistoryDto } from 'src/app/shared/generated/m
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
 
@@ -24,7 +24,7 @@ import { environment } from 'src/environments/environment';
 export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   @ViewChild('robustReviewScenarioGETRunHistoryGrid') robustReviewScenarioGETRunHistoryGrid: AgGridAngular;
 
-  public richTextTypeID: number = CustomRichTextType.RobustReviewScenario;
+  public richTextTypeID: number = CustomRichTextTypeEnum.RobustReviewScenario;
   public fileDownloading: boolean = false;
 
   public watchUserChangeSubscription: any;

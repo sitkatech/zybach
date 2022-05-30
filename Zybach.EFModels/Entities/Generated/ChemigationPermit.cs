@@ -24,12 +24,6 @@ namespace Zybach.EFModels.Entities
         public int CountyID { get; set; }
         public int? WellID { get; set; }
 
-        [ForeignKey("ChemigationPermitStatusID")]
-        [InverseProperty("ChemigationPermits")]
-        public virtual ChemigationPermitStatus ChemigationPermitStatus { get; set; }
-        [ForeignKey("CountyID")]
-        [InverseProperty("ChemigationPermits")]
-        public virtual County County { get; set; }
         [ForeignKey("WellID")]
         [InverseProperty("ChemigationPermits")]
         public virtual Well Well { get; set; }

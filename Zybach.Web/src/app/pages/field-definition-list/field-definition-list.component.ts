@@ -3,7 +3,7 @@ import { FieldDefinitionService } from 'src/app/shared/services/field-definition
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { ColDef } from 'ag-grid-community';
-import { CustomRichTextType } from 'src/app/shared/models/enums/custom-rich-text-type.enum';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { AgGridAngular } from 'ag-grid-angular';
 import { FieldDefinitionDto } from 'src/app/shared/generated/model/field-definition-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
@@ -20,7 +20,7 @@ export class FieldDefinitionListComponent implements OnInit, OnDestroy {
   private currentUser: UserDto;
 
   public fieldDefinitions: Array<FieldDefinitionDto>
-  public richTextTypeID : number = CustomRichTextType.LabelsAndDefinitionsList;
+  public richTextTypeID : number = CustomRichTextTypeEnum.LabelsAndDefinitionsList;
 
   public rowData = [];
   public columnDefs: ColDef[];

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
@@ -19,7 +18,7 @@ namespace Zybach.API.Controllers
         {
         }
 
-        [HttpPost("api/FileResource/CkEditorUpload")]
+        [HttpPost("FileResource/CkEditorUpload")]
         [ZybachViewFeature]
         public async Task<ActionResult<object>> CkEditorUpload()
         {
@@ -59,7 +58,7 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("api/FileResource/{fileResourceGuidAsString}")]
+        [HttpGet("FileResource/{fileResourceGuidAsString}")]
         public ActionResult DisplayResource(string fileResourceGuidAsString)
         {
             var isStringAGuid = Guid.TryParse(fileResourceGuidAsString, out var fileResourceGuid);

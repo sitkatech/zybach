@@ -13,6 +13,7 @@ api/irrigation-unit.service.ts
 api/manager-dashboard.service.ts
 api/map-data.service.ts
 api/open-et.service.ts
+api/report-template-model.service.ts
 api/report.service.ts
 api/robust-review-scenario.service.ts
 api/role.service.ts
