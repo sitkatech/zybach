@@ -1780,18 +1780,6 @@
         }
       }
     },
-    "/FileResource/CkEditorUpload": {
-      "post": {
-        "tags": [
-          "FileResource"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/FileResource/{fileResourceGuidAsString}": {
       "get": {
         "tags": [

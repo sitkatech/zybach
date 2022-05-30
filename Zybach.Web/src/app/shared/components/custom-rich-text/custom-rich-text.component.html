@@ -18,19 +18,11 @@
         </div>
         <div *ngIf="!showEditButton()" [innerHtml]="customRichTextContent"></div>
     </ng-container>
-    <div *ngIf="isEditing" [ngClass]="{'ckEditorDisabled':isUploadingImage()}">
-        <div *ngIf="isUploadingImage()">
-            <em>Please wait while the image is uploaded...</em>
-            <span class="mt-1 fa fa-spinner loading-spinner" style="float:right;"></span>
-        </div>
-        <ckeditor [editor]="Editor" [(ngModel)]="editedContent" (ready)="ckEditorReady($event)" [config]="ckConfig"></ckeditor>
-        <div style="float:right;" *ngIf="!isUploadingImage()">
+    <div *ngIf="isEditing">
+        <ckeditor [editor]="Editor" [(ngModel)]="editedContent"></ckeditor>
+        <div style="float:right;">
             <button type="button" class="btn btn-zybach mt-1 mr-1" (click)="saveEdit()">Save</button>
             <button type="button" class="btn btn-secondary mt-1" (click)="cancelEdit()">Cancel</button>
-        </div>
-        <div *ngIf="isUploadingImage()">
-            <em>Please wait while the image is uploaded...</em>
-            <span class="mt-1 fa fa-spinner loading-spinner" style="float:right;"></span>
         </div>
     </div>
 </div>

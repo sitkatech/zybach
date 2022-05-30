@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
@@ -22,7 +22,6 @@ export class FieldDefinitionEditComponent implements OnInit {
   public Editor = ClassicEditor;
   public editor;
 
-  public ckConfig = {"removePlugins": ["MediaEmbed", "ImageUpload"]};
   isLoadingSubmit: boolean;
 
   constructor(
@@ -36,30 +35,23 @@ export class FieldDefinitionEditComponent implements OnInit {
   }
 
   ngOnInit() {
-      this.authenticationService.getCurrentUser().subscribe(currentUser => {
-          this.currentUser = currentUser;
-          const id = parseInt(this.route.snapshot.paramMap.get("id"));
-          if (id) {
-              this.fieldDefinitionService.getFieldDefinition(id).subscribe(fieldDefinition => {
-                this.fieldDefinition = fieldDefinition;
-              })
-          }
-      });
+    this.authenticationService.getCurrentUser().subscribe(currentUser => {
+        this.currentUser = currentUser;
+        const id = parseInt(this.route.snapshot.paramMap.get("id"));
+        if (id) {
+            this.fieldDefinitionService.getFieldDefinition(id).subscribe(fieldDefinition => {
+              this.fieldDefinition = fieldDefinition;
+            })
+        }
+    });
   }
 
   ngOnDestroy() {
-      
-           this.cdr.detach();
+    this.cdr.detach();
   }
 
   public currentUserIsAdmin(): boolean {
-      return this.authenticationService.isUserAnAdministrator(this.currentUser);
-  }
-
-  // tell CkEditor to use the class below as its upload adapter
-  // see https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#how-does-the-image-upload-work
-  public ckEditorReady(editor) {
-    this.editor = editor;
+    return this.authenticationService.isUserAnAdministrator(this.currentUser);
   }
 
   saveDefinition(): void {

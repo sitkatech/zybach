@@ -35,7 +35,6 @@
     "@angular/platform-server": "^12.2.13",
     "@angular/router": "^12.2.13",
     "@ckeditor/ckeditor5-angular": "^1.2.3",
-    "@ckeditor/ckeditor5-build-classic": "^18.0.0",
     "@ckeditor/ckeditor5-upload": "^18.0.0",
     "@microsoft/applicationinsights-web": "^2.5.10",
     "@ng-bootstrap/ng-bootstrap": "^10.0.0",

@@ -1,14 +1,15 @@
 import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { Alert } from '../../models/alert';
-import { FieldDefinitionService } from '../../services/field-definition-service';
+import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { FieldDefinitionService } from 'src/app/shared/generated/api/field-definition.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AlertService } from '../../services/alert.service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
+import { FieldDefinitionTypeEnum } from '../../generated/enum/field-definition-type-enum';
 import { FieldDefinitionDto } from '../../generated/model/field-definition-dto';
-import { UserDto } from '../../generated/model/user-dto';
+
 
 declare var $ : any
 
@@ -30,11 +31,10 @@ export class FieldDefinitionComponent implements OnInit {
   public watchUserChangeSubscription: any;
   public Editor = ClassicEditor;
   public editedContent: string;
-  public editor;
+  public labelTextWithoutLastWord: string;
+  public labelTextLastWord: string;
 
   currentUser: UserDto;
-
-  public ckConfig = {"removePlugins": ["MediaEmbed", "ImageUpload"]};
 
   constructor(private fieldDefinitionService: FieldDefinitionService,
     private authenticationService: AuthenticationService,
@@ -43,23 +43,14 @@ export class FieldDefinitionComponent implements OnInit {
     private elem: ElementRef) { }
 
   ngOnInit() {
-    this.fieldDefinitionService.getFieldDefinition(FieldDefinitionTypeEnum[this.fieldDefinitionType]).subscribe(x => {
+    this.fieldDefinitionService.fieldDefinitionsFieldDefinitionTypeIDGet(FieldDefinitionTypeEnum[this.fieldDefinitionType]).subscribe(x => {
       this.loadFieldDefinition(x);
     });
   }
 
   ngOnDestroy() {
-       this.cdr.detach();
-  }
-
-  // tell CkEditor to use the class below as its upload adapter
-  // see https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#how-does-the-image-upload-work
-  public ckEditorReady(editor) {
-    this.editor = editor;
-  }
-
-  public getLabelText() {
-    return this.labelOverride !== null && this.labelOverride !== undefined ? this.labelOverride : this.fieldDefinition.FieldDefinitionType.FieldDefinitionTypeDisplayName;
+    
+    this.cdr.detach();
   }
 
   public showEditButton(): boolean {
@@ -80,7 +71,7 @@ export class FieldDefinitionComponent implements OnInit {
     this.isEditing = false;
     this.isLoading = true;
     this.fieldDefinition.FieldDefinitionValue = this.editedContent;
-    this.fieldDefinitionService.updateFieldDefinition(this.fieldDefinition).subscribe(x => {
+    this.fieldDefinitionService.fieldDefinitionsFieldDefinitionTypeIDPut(this.fieldDefinition.FieldDefinitionType.FieldDefinitionTypeID, this.fieldDefinition).subscribe(x => {
       this.loadFieldDefinition(x);
     }, error => {
       this.isLoading = false;
@@ -88,11 +79,20 @@ export class FieldDefinitionComponent implements OnInit {
     });
   }
 
-  private loadFieldDefinition(fieldDefinition:FieldDefinitionDto)
+  private loadFieldDefinition(fieldDefinition: FieldDefinitionDto)
   {
     this.fieldDefinition = fieldDefinition;
     this.emptyContent = fieldDefinition.FieldDefinitionValue?.length > 0 ? false : true;
     this.isLoading = false;
+    let labelText = this.labelOverride !== null && this.labelOverride !== undefined ? this.labelOverride : this.fieldDefinition.FieldDefinitionType.FieldDefinitionTypeDisplayName;
+    let labelTextSplitOnSpaces = labelText.split(" ");
+    if (labelTextSplitOnSpaces.length == 1) {
+      this.labelTextWithoutLastWord = "";
+      this.labelTextLastWord = labelTextSplitOnSpaces[0];
+      return;
+    }
+    this.labelTextLastWord = labelTextSplitOnSpaces.splice(labelTextSplitOnSpaces.length - 1, 1)[0];
+    this.labelTextWithoutLastWord = labelTextSplitOnSpaces.join(" ");
   }
 
   public notEditingMouseEnter() {
