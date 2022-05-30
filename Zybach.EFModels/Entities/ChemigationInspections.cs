@@ -80,7 +80,7 @@ namespace Zybach.EFModels.Entities
             {
                 ChemigationPermitAnnualRecordID = chemigationPermitAnnualRecordID,
                 ChemigationInspectionStatusID = (int)ChemigationInspectionStatusEnum.Pending,
-                ChemigationInspectionTypeID = (int)ChemigationInspectionTypeEnum.NEWINITIALORREACTIVATION,
+                ChemigationInspectionTypeID = (int)ChemigationInspectionTypeEnum.NewInitialOrReactivation,
                 HasVacuumReliefValve = true,
                 HasInspectionPort = true
             };

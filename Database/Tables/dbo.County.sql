@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[County](
-	[CountyID] [int] IDENTITY(1,1) NOT NULL,
+	[CountyID] [int] NOT NULL,
 	[CountyName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[CountyDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
  CONSTRAINT [PK_County_CountyID] PRIMARY KEY CLUSTERED 

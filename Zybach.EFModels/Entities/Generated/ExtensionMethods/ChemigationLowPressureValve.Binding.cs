@@ -15,8 +15,8 @@ namespace Zybach.EFModels.Entities
 {
     public abstract partial class ChemigationLowPressureValve
     {
-        public static readonly ChemigationLowPressureValveRUBBERDAM RUBBERDAM = Zybach.EFModels.Entities.ChemigationLowPressureValveRUBBERDAM.Instance;
-        public static readonly ChemigationLowPressureValveSPRINGLOADED SPRINGLOADED = Zybach.EFModels.Entities.ChemigationLowPressureValveSPRINGLOADED.Instance;
+        public static readonly ChemigationLowPressureValveRubberDam RubberDam = Zybach.EFModels.Entities.ChemigationLowPressureValveRubberDam.Instance;
+        public static readonly ChemigationLowPressureValveSpringLoaded SpringLoaded = Zybach.EFModels.Entities.ChemigationLowPressureValveSpringLoaded.Instance;
 
         public static readonly List<ChemigationLowPressureValve> All;
         public static readonly List<ChemigationLowPressureValveDto> AllAsDto;
@@ -28,8 +28,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static ChemigationLowPressureValve()
         {
-            All = new List<ChemigationLowPressureValve> { RUBBERDAM, SPRINGLOADED };
-            AllAsDto = new List<ChemigationLowPressureValveDto> { RUBBERDAM.AsDto(), SPRINGLOADED.AsDto() };
+            All = new List<ChemigationLowPressureValve> { RubberDam, SpringLoaded };
+            AllAsDto = new List<ChemigationLowPressureValveDto> { RubberDam.AsDto(), SpringLoaded.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, ChemigationLowPressureValve>(All.ToDictionary(x => x.ChemigationLowPressureValveID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, ChemigationLowPressureValveDto>(AllAsDto.ToDictionary(x => x.ChemigationLowPressureValveID));
         }
@@ -100,10 +100,10 @@ namespace Zybach.EFModels.Entities
         {
             switch (enumValue)
             {
-                case ChemigationLowPressureValveEnum.RUBBERDAM:
-                    return RUBBERDAM;
-                case ChemigationLowPressureValveEnum.SPRINGLOADED:
-                    return SPRINGLOADED;
+                case ChemigationLowPressureValveEnum.RubberDam:
+                    return RubberDam;
+                case ChemigationLowPressureValveEnum.SpringLoaded:
+                    return SpringLoaded;
                 default:
                     throw new ArgumentException("Unable to map Enum: {enumValue}");
             }
@@ -112,19 +112,19 @@ namespace Zybach.EFModels.Entities
 
     public enum ChemigationLowPressureValveEnum
     {
-        RUBBERDAM = 1,
-        SPRINGLOADED = 2
+        RubberDam = 1,
+        SpringLoaded = 2
     }
 
-    public partial class ChemigationLowPressureValveRUBBERDAM : ChemigationLowPressureValve
+    public partial class ChemigationLowPressureValveRubberDam : ChemigationLowPressureValve
     {
-        private ChemigationLowPressureValveRUBBERDAM(int chemigationLowPressureValveID, string chemigationLowPressureValveName, string chemigationLowPressureValveDisplayName) : base(chemigationLowPressureValveID, chemigationLowPressureValveName, chemigationLowPressureValveDisplayName) {}
-        public static readonly ChemigationLowPressureValveRUBBERDAM Instance = new ChemigationLowPressureValveRUBBERDAM(1, @"RUBBER DAM", @"RUBBER DAM");
+        private ChemigationLowPressureValveRubberDam(int chemigationLowPressureValveID, string chemigationLowPressureValveName, string chemigationLowPressureValveDisplayName) : base(chemigationLowPressureValveID, chemigationLowPressureValveName, chemigationLowPressureValveDisplayName) {}
+        public static readonly ChemigationLowPressureValveRubberDam Instance = new ChemigationLowPressureValveRubberDam(1, @"RubberDam", @"Rubber Dam");
     }
 
-    public partial class ChemigationLowPressureValveSPRINGLOADED : ChemigationLowPressureValve
+    public partial class ChemigationLowPressureValveSpringLoaded : ChemigationLowPressureValve
     {
-        private ChemigationLowPressureValveSPRINGLOADED(int chemigationLowPressureValveID, string chemigationLowPressureValveName, string chemigationLowPressureValveDisplayName) : base(chemigationLowPressureValveID, chemigationLowPressureValveName, chemigationLowPressureValveDisplayName) {}
-        public static readonly ChemigationLowPressureValveSPRINGLOADED Instance = new ChemigationLowPressureValveSPRINGLOADED(2, @"SPRING LOADED", @"SPRING LOADED");
+        private ChemigationLowPressureValveSpringLoaded(int chemigationLowPressureValveID, string chemigationLowPressureValveName, string chemigationLowPressureValveDisplayName) : base(chemigationLowPressureValveID, chemigationLowPressureValveName, chemigationLowPressureValveDisplayName) {}
+        public static readonly ChemigationLowPressureValveSpringLoaded Instance = new ChemigationLowPressureValveSpringLoaded(2, @"SpringLoaded", @"Spring Loaded");
     }
 }

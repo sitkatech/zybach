@@ -3,7 +3,7 @@
 //  Source Table: [dbo].[ChemigationInspectionType]
 
 export enum ChemigationInspectionTypeEnum {
-  EQUIPMENTREPAIRORREPLACE = 1,
-  NEWINITIALORREACTIVATION = 2,
-  RENEWALROUTINEMONITORING = 3
+  EquipmentRepairOrReplace = 1,
+  NewInitialOrReactivation = 2,
+  RenewalRoutineMonitoring = 3
 }

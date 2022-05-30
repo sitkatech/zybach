@@ -3,6 +3,6 @@
 //  Source Table: [dbo].[ChemigationLowPressureValve]
 
 export enum ChemigationLowPressureValveEnum {
-  RUBBERDAM = 1,
-  SPRINGLOADED = 2
+  RubberDam = 1,
+  SpringLoaded = 2
 }

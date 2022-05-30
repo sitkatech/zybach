@@ -15,8 +15,8 @@ namespace Zybach.EFModels.Entities
 {
     public abstract partial class ChemigationInterlockType
     {
-        public static readonly ChemigationInterlockTypeMECHANICAL MECHANICAL = Zybach.EFModels.Entities.ChemigationInterlockTypeMECHANICAL.Instance;
-        public static readonly ChemigationInterlockTypeELECTRICAL ELECTRICAL = Zybach.EFModels.Entities.ChemigationInterlockTypeELECTRICAL.Instance;
+        public static readonly ChemigationInterlockTypeMechanical Mechanical = Zybach.EFModels.Entities.ChemigationInterlockTypeMechanical.Instance;
+        public static readonly ChemigationInterlockTypeElectrical Electrical = Zybach.EFModels.Entities.ChemigationInterlockTypeElectrical.Instance;
 
         public static readonly List<ChemigationInterlockType> All;
         public static readonly List<ChemigationInterlockTypeDto> AllAsDto;
@@ -28,8 +28,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static ChemigationInterlockType()
         {
-            All = new List<ChemigationInterlockType> { MECHANICAL, ELECTRICAL };
-            AllAsDto = new List<ChemigationInterlockTypeDto> { MECHANICAL.AsDto(), ELECTRICAL.AsDto() };
+            All = new List<ChemigationInterlockType> { Mechanical, Electrical };
+            AllAsDto = new List<ChemigationInterlockTypeDto> { Mechanical.AsDto(), Electrical.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, ChemigationInterlockType>(All.ToDictionary(x => x.ChemigationInterlockTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, ChemigationInterlockTypeDto>(AllAsDto.ToDictionary(x => x.ChemigationInterlockTypeID));
         }
@@ -100,10 +100,10 @@ namespace Zybach.EFModels.Entities
         {
             switch (enumValue)
             {
-                case ChemigationInterlockTypeEnum.ELECTRICAL:
-                    return ELECTRICAL;
-                case ChemigationInterlockTypeEnum.MECHANICAL:
-                    return MECHANICAL;
+                case ChemigationInterlockTypeEnum.Electrical:
+                    return Electrical;
+                case ChemigationInterlockTypeEnum.Mechanical:
+                    return Mechanical;
                 default:
                     throw new ArgumentException("Unable to map Enum: {enumValue}");
             }
@@ -112,19 +112,19 @@ namespace Zybach.EFModels.Entities
 
     public enum ChemigationInterlockTypeEnum
     {
-        MECHANICAL = 1,
-        ELECTRICAL = 2
+        Mechanical = 1,
+        Electrical = 2
     }
 
-    public partial class ChemigationInterlockTypeMECHANICAL : ChemigationInterlockType
+    public partial class ChemigationInterlockTypeMechanical : ChemigationInterlockType
     {
-        private ChemigationInterlockTypeMECHANICAL(int chemigationInterlockTypeID, string chemigationInterlockTypeName, string chemigationInterlockTypeDisplayName) : base(chemigationInterlockTypeID, chemigationInterlockTypeName, chemigationInterlockTypeDisplayName) {}
-        public static readonly ChemigationInterlockTypeMECHANICAL Instance = new ChemigationInterlockTypeMECHANICAL(1, @"MECHANICAL", @"MECHANICAL");
+        private ChemigationInterlockTypeMechanical(int chemigationInterlockTypeID, string chemigationInterlockTypeName, string chemigationInterlockTypeDisplayName) : base(chemigationInterlockTypeID, chemigationInterlockTypeName, chemigationInterlockTypeDisplayName) {}
+        public static readonly ChemigationInterlockTypeMechanical Instance = new ChemigationInterlockTypeMechanical(1, @"Mechanical", @"Mechanical");
     }
 
-    public partial class ChemigationInterlockTypeELECTRICAL : ChemigationInterlockType
+    public partial class ChemigationInterlockTypeElectrical : ChemigationInterlockType
     {
-        private ChemigationInterlockTypeELECTRICAL(int chemigationInterlockTypeID, string chemigationInterlockTypeName, string chemigationInterlockTypeDisplayName) : base(chemigationInterlockTypeID, chemigationInterlockTypeName, chemigationInterlockTypeDisplayName) {}
-        public static readonly ChemigationInterlockTypeELECTRICAL Instance = new ChemigationInterlockTypeELECTRICAL(2, @"ELECTRICAL", @"ELECTRICAL");
+        private ChemigationInterlockTypeElectrical(int chemigationInterlockTypeID, string chemigationInterlockTypeName, string chemigationInterlockTypeDisplayName) : base(chemigationInterlockTypeID, chemigationInterlockTypeName, chemigationInterlockTypeDisplayName) {}
+        public static readonly ChemigationInterlockTypeElectrical Instance = new ChemigationInterlockTypeElectrical(2, @"Electrical", @"Electrical");
     }
 }

@@ -15,9 +15,9 @@ namespace Zybach.EFModels.Entities
 {
     public abstract partial class ChemigationInspectionType
     {
-        public static readonly ChemigationInspectionTypeEQUIPMENTREPAIRORREPLACE EQUIPMENTREPAIRORREPLACE = Zybach.EFModels.Entities.ChemigationInspectionTypeEQUIPMENTREPAIRORREPLACE.Instance;
-        public static readonly ChemigationInspectionTypeNEWINITIALORREACTIVATION NEWINITIALORREACTIVATION = Zybach.EFModels.Entities.ChemigationInspectionTypeNEWINITIALORREACTIVATION.Instance;
-        public static readonly ChemigationInspectionTypeRENEWALROUTINEMONITORING RENEWALROUTINEMONITORING = Zybach.EFModels.Entities.ChemigationInspectionTypeRENEWALROUTINEMONITORING.Instance;
+        public static readonly ChemigationInspectionTypeEquipmentRepairOrReplace EquipmentRepairOrReplace = Zybach.EFModels.Entities.ChemigationInspectionTypeEquipmentRepairOrReplace.Instance;
+        public static readonly ChemigationInspectionTypeNewInitialOrReactivation NewInitialOrReactivation = Zybach.EFModels.Entities.ChemigationInspectionTypeNewInitialOrReactivation.Instance;
+        public static readonly ChemigationInspectionTypeRenewalRoutineMonitoring RenewalRoutineMonitoring = Zybach.EFModels.Entities.ChemigationInspectionTypeRenewalRoutineMonitoring.Instance;
 
         public static readonly List<ChemigationInspectionType> All;
         public static readonly List<ChemigationInspectionTypeDto> AllAsDto;
@@ -29,8 +29,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static ChemigationInspectionType()
         {
-            All = new List<ChemigationInspectionType> { EQUIPMENTREPAIRORREPLACE, NEWINITIALORREACTIVATION, RENEWALROUTINEMONITORING };
-            AllAsDto = new List<ChemigationInspectionTypeDto> { EQUIPMENTREPAIRORREPLACE.AsDto(), NEWINITIALORREACTIVATION.AsDto(), RENEWALROUTINEMONITORING.AsDto() };
+            All = new List<ChemigationInspectionType> { EquipmentRepairOrReplace, NewInitialOrReactivation, RenewalRoutineMonitoring };
+            AllAsDto = new List<ChemigationInspectionTypeDto> { EquipmentRepairOrReplace.AsDto(), NewInitialOrReactivation.AsDto(), RenewalRoutineMonitoring.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, ChemigationInspectionType>(All.ToDictionary(x => x.ChemigationInspectionTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, ChemigationInspectionTypeDto>(AllAsDto.ToDictionary(x => x.ChemigationInspectionTypeID));
         }
@@ -101,12 +101,12 @@ namespace Zybach.EFModels.Entities
         {
             switch (enumValue)
             {
-                case ChemigationInspectionTypeEnum.EQUIPMENTREPAIRORREPLACE:
-                    return EQUIPMENTREPAIRORREPLACE;
-                case ChemigationInspectionTypeEnum.NEWINITIALORREACTIVATION:
-                    return NEWINITIALORREACTIVATION;
-                case ChemigationInspectionTypeEnum.RENEWALROUTINEMONITORING:
-                    return RENEWALROUTINEMONITORING;
+                case ChemigationInspectionTypeEnum.EquipmentRepairOrReplace:
+                    return EquipmentRepairOrReplace;
+                case ChemigationInspectionTypeEnum.NewInitialOrReactivation:
+                    return NewInitialOrReactivation;
+                case ChemigationInspectionTypeEnum.RenewalRoutineMonitoring:
+                    return RenewalRoutineMonitoring;
                 default:
                     throw new ArgumentException("Unable to map Enum: {enumValue}");
             }
@@ -115,26 +115,26 @@ namespace Zybach.EFModels.Entities
 
     public enum ChemigationInspectionTypeEnum
     {
-        EQUIPMENTREPAIRORREPLACE = 1,
-        NEWINITIALORREACTIVATION = 2,
-        RENEWALROUTINEMONITORING = 3
+        EquipmentRepairOrReplace = 1,
+        NewInitialOrReactivation = 2,
+        RenewalRoutineMonitoring = 3
     }
 
-    public partial class ChemigationInspectionTypeEQUIPMENTREPAIRORREPLACE : ChemigationInspectionType
+    public partial class ChemigationInspectionTypeEquipmentRepairOrReplace : ChemigationInspectionType
     {
-        private ChemigationInspectionTypeEQUIPMENTREPAIRORREPLACE(int chemigationInspectionTypeID, string chemigationInspectionTypeName, string chemigationInspectionTypeDisplayName) : base(chemigationInspectionTypeID, chemigationInspectionTypeName, chemigationInspectionTypeDisplayName) {}
-        public static readonly ChemigationInspectionTypeEQUIPMENTREPAIRORREPLACE Instance = new ChemigationInspectionTypeEQUIPMENTREPAIRORREPLACE(1, @"EQUIPMENT REPAIR OR REPLACE", @"EQUIPMENT REPAIR OR REPLACE");
+        private ChemigationInspectionTypeEquipmentRepairOrReplace(int chemigationInspectionTypeID, string chemigationInspectionTypeName, string chemigationInspectionTypeDisplayName) : base(chemigationInspectionTypeID, chemigationInspectionTypeName, chemigationInspectionTypeDisplayName) {}
+        public static readonly ChemigationInspectionTypeEquipmentRepairOrReplace Instance = new ChemigationInspectionTypeEquipmentRepairOrReplace(1, @"EquipmentRepairOrReplace", @"Equipment Repair or Replace");
     }
 
-    public partial class ChemigationInspectionTypeNEWINITIALORREACTIVATION : ChemigationInspectionType
+    public partial class ChemigationInspectionTypeNewInitialOrReactivation : ChemigationInspectionType
     {
-        private ChemigationInspectionTypeNEWINITIALORREACTIVATION(int chemigationInspectionTypeID, string chemigationInspectionTypeName, string chemigationInspectionTypeDisplayName) : base(chemigationInspectionTypeID, chemigationInspectionTypeName, chemigationInspectionTypeDisplayName) {}
-        public static readonly ChemigationInspectionTypeNEWINITIALORREACTIVATION Instance = new ChemigationInspectionTypeNEWINITIALORREACTIVATION(2, @"NEW - INITIAL OR RE-ACTIVATION", @"NEW - INITIAL OR RE-ACTIVATION");
+        private ChemigationInspectionTypeNewInitialOrReactivation(int chemigationInspectionTypeID, string chemigationInspectionTypeName, string chemigationInspectionTypeDisplayName) : base(chemigationInspectionTypeID, chemigationInspectionTypeName, chemigationInspectionTypeDisplayName) {}
+        public static readonly ChemigationInspectionTypeNewInitialOrReactivation Instance = new ChemigationInspectionTypeNewInitialOrReactivation(2, @"NewInitialOrReactivation", @"New - Initial or Re-activation");
     }
 
-    public partial class ChemigationInspectionTypeRENEWALROUTINEMONITORING : ChemigationInspectionType
+    public partial class ChemigationInspectionTypeRenewalRoutineMonitoring : ChemigationInspectionType
     {
-        private ChemigationInspectionTypeRENEWALROUTINEMONITORING(int chemigationInspectionTypeID, string chemigationInspectionTypeName, string chemigationInspectionTypeDisplayName) : base(chemigationInspectionTypeID, chemigationInspectionTypeName, chemigationInspectionTypeDisplayName) {}
-        public static readonly ChemigationInspectionTypeRENEWALROUTINEMONITORING Instance = new ChemigationInspectionTypeRENEWALROUTINEMONITORING(3, @"RENEWAL - ROUTINE MONITORING", @"RENEWAL - ROUTINE MONITORING");
+        private ChemigationInspectionTypeRenewalRoutineMonitoring(int chemigationInspectionTypeID, string chemigationInspectionTypeName, string chemigationInspectionTypeDisplayName) : base(chemigationInspectionTypeID, chemigationInspectionTypeName, chemigationInspectionTypeDisplayName) {}
+        public static readonly ChemigationInspectionTypeRenewalRoutineMonitoring Instance = new ChemigationInspectionTypeRenewalRoutineMonitoring(3, @"RenewalRoutineMonitoring", @"Renewal - Routine Monitoring");
     }
 }

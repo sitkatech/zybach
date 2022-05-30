@@ -3,6 +3,6 @@
 //  Source Table: [dbo].[ChemigationInterlockType]
 
 export enum ChemigationInterlockTypeEnum {
-  MECHANICAL = 1,
-  ELECTRICAL = 2
+  Mechanical = 1,
+  Electrical = 2
 }

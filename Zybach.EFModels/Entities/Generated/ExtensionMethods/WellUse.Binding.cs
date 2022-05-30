@@ -133,7 +133,7 @@ namespace Zybach.EFModels.Entities
     public partial class WellUsePublicSupply : WellUse
     {
         private WellUsePublicSupply(int wellUseID, string wellUseName, string wellUseDisplayName) : base(wellUseID, wellUseName, wellUseDisplayName) {}
-        public static readonly WellUsePublicSupply Instance = new WellUsePublicSupply(2, @"Public Supply", @"Public Supply");
+        public static readonly WellUsePublicSupply Instance = new WellUsePublicSupply(2, @"PublicSupply", @"Public Supply");
     }
 
     public partial class WellUseDomestic : WellUse
