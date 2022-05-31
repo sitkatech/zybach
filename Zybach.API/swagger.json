@@ -6987,6 +6987,14 @@
           "MeasurementTypeDisplayName": {
             "type": "string",
             "nullable": true
+          },
+          "InfluxMeasurementName": {
+            "type": "string",
+            "nullable": true
+          },
+          "InfluxFieldName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

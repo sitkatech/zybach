@@ -6,5 +6,6 @@ export enum MeasurementTypeEnum {
   FlowMeter = 1,
   ContinuityMeter = 2,
   ElectricalUsage = 3,
-  WellPressure = 4
+  WellPressure = 4,
+  BatteryVoltage = 5
 }

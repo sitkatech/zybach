@@ -1,0 +1,1 @@
+alter table dbo.MeasurementType add InfluxMeasurementName varchar(50), InfluxFieldName varchar(50)

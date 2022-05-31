@@ -32,10 +32,28 @@ namespace Zybach.API.Services
 
         public async Task<List<WellSensorMeasurementStaging>> GetFlowMeterSeries(DateTime fromDate)
         {
+            var measurementType = MeasurementType.FlowMeter;
+            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType);
+        }
+
+        public async Task<List<WellSensorMeasurementStaging>> GetWaterLevelSeries(DateTime fromDate)
+        {
+            var measurementType = MeasurementType.WellPressure;
+            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType);
+        }
+
+        public async Task<List<WellSensorMeasurementStaging>> GetBatteryVoltageSeries(DateTime fromDate)
+        {
+            var measurementType = MeasurementType.BatteryVoltage;
+            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType);
+        }
+
+        private async Task<List<WellSensorMeasurementStaging>> GetWellSensorMeasurementStagingsImpl(DateTime fromDate, MeasurementType measurementType)
+        {
             var flux = FilterByDateRange(fromDate, DateTime.Now) +
-                       FilterByMeasurement(new List<string> {MeasurementNames.Gallons}) +
-                       FilterByField(FieldNames.Pumped) +
-                       GroupBy(new List<string> {FieldNames.RegistrationID, FieldNames.SensorName}) +
+                       FilterByMeasurement(new List<string> { measurementType.InfluxMeasurementName }) +
+                       FilterByField(measurementType.InfluxFieldName) +
+                       GroupBy(new List<string> { FieldNames.RegistrationID, FieldNames.SensorName }) +
                        AggregateSumDaily(false);
 
             var fluxTables = await RunInfluxQueryAsync(flux);
@@ -45,19 +63,22 @@ namespace Zybach.API.Services
                 ReadingYear = x.Time.Year,
                 ReadingMonth = x.Time.Month,
                 ReadingDay = x.Time.Day,
-                MeasurementTypeID = (int) MeasurementTypeEnum.FlowMeter, MeasurementValue = x.Value, SensorName = x.Sensor
+                MeasurementTypeID = measurementType.MeasurementTypeID,
+                MeasurementValue = x.Value,
+                SensorName = x.Sensor
             }).ToList();
         }
 
         public async Task<List<WellSensorMeasurementStaging>> GetContinuityMeterSeries(DateTime fromDate)
         {
+            var measurementType = MeasurementType.ContinuityMeter;
             var fluxQuery =
                 "import \"math\" " +
                 "import \"contrib/tomhollingworth/events\" " +
                 $"from(bucket: \"{_zybachConfiguration.INFLUX_BUCKET}\") " +
                 FilterByDateRange(fromDate, DateTime.Now) +
-                FilterByMeasurement(new List<string> {MeasurementNames.Continuity}) +
-                FilterByField(FieldNames.On) +
+                FilterByMeasurement(new List<string> { measurementType.InfluxMeasurementName}) +
+                FilterByField(measurementType.InfluxFieldName) +
                 GroupBy(new List<string> {FieldNames.RegistrationID, FieldNames.SensorName}) +
                 "|> sort(columns: [\"_time\"]) " +
                 "|> events.duration(unit: 1ns, columnName: \"run-time-ns\", timeColumn: \"_time\", stopColumn: \"_stop\") " +
@@ -80,27 +101,6 @@ namespace Zybach.API.Services
             }).ToList();
         }
 
-        public async Task<List<WellSensorMeasurementStaging>> GetWaterLevelSeries(DateTime fromDate)
-        {
-            var flux = FilterByDateRange(fromDate, DateTime.Now) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.Depth }) +
-                       FilterByField(FieldNames.WaterBelowGroundLevel) +
-                       GroupBy(new List<string> { FieldNames.RegistrationID, FieldNames.SensorName }) +
-                       AggregateMeanDaily(false);
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new WellSensorMeasurementStaging
-            {
-                WellRegistrationID = x.RegistrationID,
-                ReadingYear = x.Time.Year,
-                ReadingMonth = x.Time.Month,
-                ReadingDay = x.Time.Day,
-                MeasurementTypeID = (int)MeasurementTypeEnum.WellPressure,
-                MeasurementValue = x.Value,
-                SensorName = x.Sensor
-            }).ToList();
-        }
-
         public async Task<Dictionary<string, int>> GetLastMessageAgeBySensor()
         {
             var fluxQuery = "ageInSeconds = (x) => { " +
@@ -118,22 +118,6 @@ namespace Zybach.API.Services
             var fluxTables = await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReading>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
             return fluxTables.Where(x => !string.IsNullOrWhiteSpace(x.Sensor)).ToDictionary(x => x.Sensor.ToUpper(), registration => registration.EventAge);
         }
-
-        // TODO: ported this but do we need this?
-        public async Task<List<ResultFromInfluxDB>> GetFlowMeterSeries(List<string> wellRegistrationIDs, DateTime startDate, DateTime endDate, int interval)
-        {
-            var flux = FilterByDateRange(startDate, endDate) +
-                       FilterByMeasurement(new List<string> { MeasurementNames.PumpedVolume }) +
-                       FilterByField("gallons") +
-                       FilterByRegistrationID(wellRegistrationIDs) + 
-                       $"|> aggregateWindow(every: {interval}m, fn: sum, column: \"_value\", timeSrc: \"_stop\", timeDst: \"_time\", createEmpty: false ) " +
-                       "|> sort(columns:[\"_time\"])";
-
-            var fluxTables = await RunInfluxQueryAsync(flux);
-            return fluxTables.Select(x => new ResultFromInfluxDB(x.Time, x.Value, x.RegistrationID)).ToList();
-        }
-
-
 
         private async Task<List<MeasurementReading>> RunInfluxQueryAsync(string flux)
         {
@@ -256,13 +240,7 @@ namespace Zybach.API.Services
 
         private struct MeasurementNames
         {
-            public const string PumpedVolume = "pumped-volume";
-            public const string EstimatedPumpedVolume = "estimated-pumped-volume";
             public const string IngestCount = "ingest-count";
-
-            public const string Gallons = "gallons";
-            public const string Continuity = "continuity";
-            public const string Depth = "depth";
         }
 
         private struct FieldNames
@@ -270,10 +248,7 @@ namespace Zybach.API.Services
             public const string RegistrationID = "registration-id";
             public const string Measurement = "_measurement";
             public const string SensorName = "sn";
-            public const string On = "on";
             public const string Field = "_field";
-            public const string Pumped = "pumped";
-            public const string WaterBelowGroundLevel = "water-bgl";
         }
     }
 }

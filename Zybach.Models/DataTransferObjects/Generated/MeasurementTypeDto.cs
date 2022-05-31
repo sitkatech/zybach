@@ -12,6 +12,8 @@ namespace Zybach.Models.DataTransferObjects
         public int MeasurementTypeID { get; set; }
         public string MeasurementTypeName { get; set; }
         public string MeasurementTypeDisplayName { get; set; }
+        public string InfluxMeasurementName { get; set; }
+        public string InfluxFieldName { get; set; }
     }
 
     public partial class MeasurementTypeSimpleDto
@@ -19,6 +21,8 @@ namespace Zybach.Models.DataTransferObjects
         public int MeasurementTypeID { get; set; }
         public string MeasurementTypeName { get; set; }
         public string MeasurementTypeDisplayName { get; set; }
+        public string InfluxMeasurementName { get; set; }
+        public string InfluxFieldName { get; set; }
     }
 
 }

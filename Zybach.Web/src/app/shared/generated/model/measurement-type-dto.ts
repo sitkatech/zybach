@@ -14,6 +14,8 @@ export class MeasurementTypeDto {
     MeasurementTypeID?: number;
     MeasurementTypeName?: string;
     MeasurementTypeDisplayName?: string;
+    InfluxMeasurementName?: string;
+    InfluxFieldName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
