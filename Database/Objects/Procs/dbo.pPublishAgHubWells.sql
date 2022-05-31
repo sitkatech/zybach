@@ -17,11 +17,14 @@ begin
 	left join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 	where aws.AgHubWellStagingID is null
 
-	insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
+	insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate, RequiresChemigation, RequiresWaterLevelInspection, IsReplacement)
 	select	upper(aws.WellRegistrationID) as WellRegistrationID, 
 			aws.WellGeometry,
 			@fetchDate as CreateDate,
-			@fetchDate as LastUpdateDate
+			@fetchDate as LastUpdateDate,
+			0 as RequiresChemigation,
+			0 as RequiresWaterLevelInspection,
+			0 as IsReplacement
 	from dbo.AgHubWellStaging aws
 	left join dbo.Well aw on aws.WellRegistrationID = aw.WellRegistrationID
 	where aw.WellID is null
