@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
@@ -33,6 +34,8 @@ namespace Zybach.API.Controllers
             var wellSummariesWithSensors = _wellService.GetAghubAndGeoOptixWells()
                 .Where(x => x.Sensors.Any(y => y.SensorType != MeasurementTypes.ElectricalUsage)).ToList();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
+            var batteryVoltagesBySensor =
+                _dbContext.WellSensorMeasurements.AsNoTracking().Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).ToList().ToLookup(x => x.SensorName);
 
             return wellSummariesWithSensors.Select(well => new WellWithSensorMessageAgeDto
             {
@@ -41,18 +44,22 @@ namespace Zybach.API.Controllers
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
-                Sensors = well.Sensors.Where(x=>x.SensorType != MeasurementTypes.ElectricalUsage).Select(sensor =>
+                Sensors = well.Sensors.Where(x=> x.SensorType != MeasurementTypes.ElectricalUsage).Select(sensor =>
                 {
                     try
                     {
                         var messageAge = sensorMessageAges.ContainsKey(sensor.SensorName)
                             ? sensorMessageAges[sensor.SensorName]
                             : (int?) null;
+                        var lastVoltageReading = batteryVoltagesBySensor.Contains(sensor.SensorName)
+                            ? batteryVoltagesBySensor[sensor.SensorName].MaxBy(x => x.MeasurementDate)?.MeasurementValue
+                            : null;
                         return new SensorMessageAgeDto
                         {
                             SensorName = sensor.SensorName,
                             SensorID = sensor.SensorID,
                             MessageAge = messageAge,
+                            LastVoltageReading = lastVoltageReading,
                             SensorType = sensor.SensorType,
                             IsActive = sensor.IsActive
                         };

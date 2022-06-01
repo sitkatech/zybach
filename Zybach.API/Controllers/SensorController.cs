@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
@@ -30,8 +31,8 @@ namespace Zybach.API.Controllers
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
-            var wellSensorMeasurementDatesBySensor =
-                WellSensorMeasurements.ListReadingDatesBySensor(_dbContext);
+            var wellSensorMeasurementsBySensor =
+                _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
 
             var currentDate = DateTime.Now;
 
@@ -43,12 +44,14 @@ namespace Zybach.API.Controllers
 
                 sensorSimpleDto.MessageAge = messageAge;
 
-                if (wellSensorMeasurementDatesBySensor.ContainsKey(sensorSimpleDto.SensorName))
+                if (wellSensorMeasurementsBySensor.Contains(sensorSimpleDto.SensorName))
                 {
-                    sensorSimpleDto.FirstReadingDate = wellSensorMeasurementDatesBySensor[sensorSimpleDto.SensorName].Min();
+                    sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.MeasurementDateInPacificTime);
                     var numberOfDays = currentDate.Subtract(sensorSimpleDto.FirstReadingDate.Value).Days;
                     // correlates with ZeroFillMissingDaysAsDto
                     sensorSimpleDto.LastReadingDate = sensorSimpleDto.FirstReadingDate.Value.AddDays(numberOfDays - 1);
+                    sensorSimpleDto.LastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
+                        .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID).MaxBy(x => x.MeasurementDate)?.MeasurementValue;
                 }
             }
 

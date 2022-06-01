@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
 import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
@@ -15,7 +16,7 @@ export class SensorStatusMapPopupComponent implements OnInit {
   @Input() AgHubRegisteredUser: string;
   @Input() fieldName: string;
 
-  constructor() { }
+  constructor(private decimalPipe: DecimalPipe) { }
 
   ngOnInit(): void {
   }
@@ -38,5 +39,13 @@ export class SensorStatusMapPopupComponent implements OnInit {
     }
 
     return `${Math.floor(sensor.MessageAge / 3600)} hours`;
+  }
+
+  getLastVoltageReading(sensor: SensorMessageAgeDto){
+    if (sensor.LastVoltageReading === null){
+      return 'N/A'
+    }
+
+    return `${this.decimalPipe.transform(sensor.LastVoltageReading, "1.0-0")} millivolts`;
   }
 }

@@ -113,6 +113,7 @@ namespace Zybach.Models.DataTransferObjects
         public int SensorID { get; set; }
         public string SensorName { get; set; }
         public int? MessageAge { get; set; }
+        public double? LastVoltageReading { get; set; }
         public string SensorType { get; set; }
         public bool IsActive { get; set; }
     }

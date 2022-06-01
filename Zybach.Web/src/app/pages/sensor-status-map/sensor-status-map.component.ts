@@ -192,7 +192,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
           fill: true,
           fillOpacity: 0.4,
           color: "#3388ff",
-          weight: 5,
+          weight: 5, 
           stroke: true
         };
       }

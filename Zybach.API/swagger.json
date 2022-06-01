@@ -7366,6 +7366,11 @@
             "format": "int32",
             "nullable": true
           },
+          "LastVoltageReading": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "SensorType": {
             "type": "string",
             "nullable": true
@@ -7422,6 +7427,11 @@
           "MessageAge": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "LastVoltageReading": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           },
           "FirstReadingDate": {

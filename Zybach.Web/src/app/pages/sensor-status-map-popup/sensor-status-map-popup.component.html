@@ -6,5 +6,6 @@
 
 <div *ngFor="let sensor of sensors">
     <label class="rowHeader">{{getSensorDisplay(sensor)}}</label><br />
-    <label class="rowHeader">Last Message Received:</label> {{getLastMessageReceived(sensor)}}
+    <label class="rowHeader">Last Message Received:</label> {{getLastMessageReceived(sensor)}}<br />
+    <label class="rowHeader">Last Voltage Reading:</label> {{getLastVoltageReading(sensor)}}
 </div>

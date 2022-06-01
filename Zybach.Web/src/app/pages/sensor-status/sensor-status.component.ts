@@ -104,6 +104,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         filter: 'agNumberColumnFilter',
         sortable: true, resizable: true
       },
+      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading', 'LastVoltageReading', null, 0),
       { headerName: 'Sensor Type', field: 'SensorType',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
