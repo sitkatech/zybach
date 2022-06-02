@@ -109,7 +109,7 @@ export class SensorListComponent implements OnInit {
       filter: 'agNumberColumnFilter',
       sortable: true, resizable: true
     },
-    this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading', 'LastVoltageReading', null, 0),
+    this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0),
     this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
     this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
     {

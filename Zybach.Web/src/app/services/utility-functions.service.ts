@@ -42,7 +42,6 @@ export class UtilityFunctionsService {
       headerName: headerName, filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }, sortable: true, resizable: true,
       valueGetter: params => this.decimalValueGetter(params, fieldName),
       valueFormatter: params => _decimalPipe.transform(params.value, decimalFormatString),
-      filterValueGetter: params => parseFloat(_decimalPipe.transform(this.decimalValueGetter(params, fieldName), decimalFormatString))
     }
     if (width) {
       decimalColDef.width = width
