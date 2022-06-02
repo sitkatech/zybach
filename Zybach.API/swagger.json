@@ -2485,26 +2485,20 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/RobustReviewDto"
-                  }
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -6981,24 +6975,6 @@
         },
         "additionalProperties": false
       },
-      "MonthlyPumpedVolume": {
-        "type": "object",
-        "properties": {
-          "Month": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "VolumePumpedGallons": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
       "OpenETDataTypeDto": {
         "type": "object",
         "properties": {
@@ -7140,39 +7116,6 @@
           },
           "ReportTemplateModelTypeDescription": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "RobustReviewDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellTPID": {
-            "type": "string",
-            "nullable": true
-          },
-          "Latitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "Longitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "DataSource": {
-            "type": "string",
-            "nullable": true
-          },
-          "MonthlyPumpedVolumeGallons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MonthlyPumpedVolume"
-            },
             "nullable": true
           }
         },

@@ -10,6 +10,7 @@ using System.Text.Json;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Hangfire;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -42,6 +43,7 @@ namespace Zybach.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("/robustReviewScenario/download/robustReviewScenarioJson")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileStreamResult))]
         public List<RobustReviewDto> GetRobustReviewJsonFile()
         {
             return _wellService.GetRobustReviewDtos();

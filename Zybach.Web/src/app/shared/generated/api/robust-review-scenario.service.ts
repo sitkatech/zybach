@@ -18,7 +18,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { RobustReviewDto } from '../model/robust-review-dto';
 import { RobustReviewScenarioGETRunHistoryDto } from '../model/robust-review-scenario-get-run-history-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -106,9 +105,9 @@ export class RobustReviewScenarioService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public robustReviewScenarioDownloadRobustReviewScenarioJsonGet(observe?: 'body', reportProgress?: boolean): Observable<Array<RobustReviewDto>>;
-    public robustReviewScenarioDownloadRobustReviewScenarioJsonGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<RobustReviewDto>>>;
-    public robustReviewScenarioDownloadRobustReviewScenarioJsonGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<RobustReviewDto>>>;
+    public robustReviewScenarioDownloadRobustReviewScenarioJsonGet(observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public robustReviewScenarioDownloadRobustReviewScenarioJsonGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public robustReviewScenarioDownloadRobustReviewScenarioJsonGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
     public robustReviewScenarioDownloadRobustReviewScenarioJsonGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -128,8 +127,9 @@ export class RobustReviewScenarioService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<RobustReviewDto>>(`${this.basePath}/robustReviewScenario/download/robustReviewScenarioJson`,
+        return this.httpClient.get(`${this.basePath}/robustReviewScenario/download/robustReviewScenarioJson`,
             {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
