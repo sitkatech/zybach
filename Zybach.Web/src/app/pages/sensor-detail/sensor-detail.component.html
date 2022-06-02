@@ -6,7 +6,7 @@
         <li class="breadcrumb-item active" aria-current="page">{{sensor?.SensorName}}</li>
     </ol>
 </nav>
-<div class="container">
+<div class="container" *ngIf="sensor">
     <app-alert-display></app-alert-display>
 
     <div class="row mt-4">
@@ -88,14 +88,23 @@
                                             <div class="col-12 col-sm-6" *ngIf="installation.FlowmeterSerialNumber"><>{{installation.FlowmeterSerialNumber}}</div>
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-6 text-center">
-                                        <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName] && installationPhotos[installation.InstallationCanonicalName].length > 0; else noInstallationPhotos">
-                                            <ng-container *ngIf="installationPhotos[installation.InstallationCanonicalName].length === 1; else manyInstallationPhotos">
-                                                <img class="img img-fluid" src="{{installation.PhotoDataUrls[0].path}}" style="height: 300px" />
-                                            </ng-container>
-                                            <ng-template #manyInstallationPhotos>
-                                                <carousel [images]="installation.PhotoDataUrls" [height]="300" [cellsToShow]="1" [objectFit]="contain" [dots]="true"></carousel>
-                                            </ng-template>
+                                    <div class="col-12 col-md-6 text-center" *ngIf="installationPhotos">
+                                        <ng-container *ngIf="installationPhotos.length > 0; else noInstallationPhotos">
+                                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <div class="carousel-item" [class.active]="isFirst" *ngFor="let photo of installationPhotos; first as isFirst">
+                                                    <img class="d-block w-100" [src]="photo.path" alt="First slide" style="height: 300px">
+                                                    </div>
+                                                </div>
+                                                <a *ngIf="installationPhotos.length > 1" class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a *ngIf="installationPhotos.length > 1" class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </div>
                                         </ng-container>
                                         <ng-template #noInstallationPhotos>
                                             <img class="img img-fluid" style="height:300px" src="/assets/main/no-photo-available.jpg" />

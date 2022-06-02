@@ -39,7 +39,7 @@ export class SensorDetailComponent implements OnInit {
   public sensor: SensorSimpleDto;
 
   public installations: InstallationRecordDto[] = [];
-  public installationPhotos: Map<string, any[]>; 
+  public installationPhotos: any[]; 
 
   public isLoadingSubmit: boolean = false;
   public isDisplayingSensorAnomalyPanel = false;
@@ -108,10 +108,8 @@ export class SensorDetailComponent implements OnInit {
   private getInstallationDetails() {
     this.wellService.wellsWellIDInstallationGet(this.wellID).subscribe(installations => {
       this.installations = installations.filter(x => x.SensorSerialNumber == this.sensor.SensorName);
-      this.installationPhotos = new Map();
       for (const installation of installations) {
-        const installationPhotoDataUrls = this.getPhotoRecords(installation);
-        this.installationPhotos.set(installation.InstallationCanonicalName, installationPhotoDataUrls);
+        this.installationPhotos = this.getPhotoRecords(installation);
       }
     });
   }

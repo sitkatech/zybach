@@ -645,9 +645,9 @@ export class WellService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(wellID: number, installationCanonicalName: string, photoCanonicalName: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(wellID: number, installationCanonicalName: string, photoCanonicalName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(wellID: number, installationCanonicalName: string, photoCanonicalName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(wellID: number, installationCanonicalName: string, photoCanonicalName: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(wellID: number, installationCanonicalName: string, photoCanonicalName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(wellID: number, installationCanonicalName: string, photoCanonicalName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
     public wellsWellIDInstallationInstallationCanonicalNamePhotoPhotoCanonicalNameGet(wellID: number, installationCanonicalName: string, photoCanonicalName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (wellID === null || wellID === undefined) {
@@ -666,6 +666,7 @@ export class WellService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'image/png',
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -676,8 +677,9 @@ export class WellService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<any>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/installation/${encodeURIComponent(String(installationCanonicalName))}/photo/${encodeURIComponent(String(photoCanonicalName))}`,
+        return this.httpClient.get(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/installation/${encodeURIComponent(String(installationCanonicalName))}/photo/${encodeURIComponent(String(photoCanonicalName))}`,
             {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
