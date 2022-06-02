@@ -695,9 +695,9 @@ export class WellService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public wellsWellIDNitrateChartSpecGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public wellsWellIDNitrateChartSpecGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public wellsWellIDNitrateChartSpecGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public wellsWellIDNitrateChartSpecGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public wellsWellIDNitrateChartSpecGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public wellsWellIDNitrateChartSpecGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     public wellsWellIDNitrateChartSpecGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (wellID === null || wellID === undefined) {
@@ -708,9 +708,6 @@ export class WellService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -721,7 +718,7 @@ export class WellService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<string>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/nitrateChartSpec`,
+        return this.httpClient.get<any>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/nitrateChartSpec`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -875,9 +872,9 @@ export class WellService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
     public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (wellID === null || wellID === undefined) {
@@ -888,9 +885,6 @@ export class WellService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -901,7 +895,7 @@ export class WellService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<string>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelChartSpec`,
+        return this.httpClient.get<any>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelChartSpec`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

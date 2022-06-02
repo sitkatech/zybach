@@ -200,7 +200,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
             this.hasNitrateChartData = false;
             return;
           }
-          this.buildNitrateChart(JSON.parse(result));
+          this.buildNitrateChart(result);
           return;
         })
       } else {
@@ -214,7 +214,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
             return;
           }
 
-          this.buildWaterLevelChart(JSON.parse(result));
+          this.buildWaterLevelChart(result);
           return;
         })
       } else {
