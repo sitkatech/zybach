@@ -69,9 +69,9 @@ export class ReportService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public reportTemplatesGenerateReportsPost(generateReportsDto?: GenerateReportsDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public reportTemplatesGenerateReportsPost(generateReportsDto?: GenerateReportsDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public reportTemplatesGenerateReportsPost(generateReportsDto?: GenerateReportsDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public reportTemplatesGenerateReportsPost(generateReportsDto?: GenerateReportsDto, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
+    public reportTemplatesGenerateReportsPost(generateReportsDto?: GenerateReportsDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
+    public reportTemplatesGenerateReportsPost(generateReportsDto?: GenerateReportsDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
     public reportTemplatesGenerateReportsPost(generateReportsDto?: GenerateReportsDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
@@ -79,6 +79,7 @@ export class ReportService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -97,9 +98,10 @@ export class ReportService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<any>(`${this.basePath}/reportTemplates/generateReports`,
+        return this.httpClient.post(`${this.basePath}/reportTemplates/generateReports`,
             generateReportsDto,
             {
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

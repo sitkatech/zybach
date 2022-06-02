@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -148,6 +149,8 @@ namespace Zybach.API.Controllers
         }
 
         [HttpPost("reportTemplates/generateReports")]
+        [Produces(@"application/vnd.openxmlformats-officedocument.wordprocessingml.document")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileStreamResult))]
         [ZybachEditFeature]
         public async Task<ActionResult> GenerateReports([FromBody] GenerateReportsDto generateReportsDto)
         {
