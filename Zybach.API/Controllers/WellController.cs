@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -384,6 +385,8 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/wells/{wellID}/installation/{installationCanonicalName}/photo/{photoCanonicalName}")]
+        [Produces(@"image/jpeg")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileStreamResult))]
         [ZybachViewFeature]
         public async Task<IActionResult> GetPhoto([FromRoute] int wellID, [FromRoute] string installationCanonicalName,
             [FromRoute] string photoCanonicalName)

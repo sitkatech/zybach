@@ -666,7 +666,7 @@ export class WellService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
-            'image/png',
+            'image/jpeg',
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
