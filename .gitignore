@@ -19,3 +19,4 @@ obj
 *.user
 *.pem
 /Build/build.ini
+.gitmodules
