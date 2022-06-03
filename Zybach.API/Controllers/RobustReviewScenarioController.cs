@@ -1,26 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text.Json;
-using GeoJSON.Net.Feature;
-using GeoJSON.Net.Geometry;
 using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Zybach.API.Models;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Zybach.API.Controllers
 {
