@@ -25,6 +25,8 @@
                                 <div class="col-12 col-sm-6 text-left">{{sensor.SensorTypeName}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>Last Message Age (Hours): </strong></div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor.MessageAge}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Last Voltage Reading (mV): </strong></div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>First Reading Date: </strong> </div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor?.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
                                 <div class="col-12 col-sm-6 label"><strong>Last Reading Date: </strong></div>
