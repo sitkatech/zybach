@@ -1,0 +1,224 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/sensors">Sensors</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{sensor?.SensorName}}</li>
+    </ol>
+</nav>
+<div class="container" *ngIf="sensor">
+    <app-alert-display></app-alert-display>
+
+    <div class="row mt-4">
+        <div class="col-5">
+            <div class="card">
+                <div class="card-header">
+                    Sensor Info
+                </div>
+                <div class="card-body text-center" *ngIf="sensor">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>Well: </strong> </div>
+                                <div class="col-12 col-sm-6 text-left"><a routerLink="/wells/{{sensor.WellID}}">{{sensor.WellRegistrationID}}</a></div>
+                                <div class="col-12 col-sm-6 label"><strong>Sensor Type: </strong> </div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.SensorTypeName}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Last Message Age (Hours): </strong></div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.MessageAge}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Last Voltage Reading (mV): </strong></div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>First Reading Date: </strong> </div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor?.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Last Reading Date: </strong></div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor?.LastReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Status: </strong></div>
+                                <div class="col-12 col-sm-6 text-left">
+                                    <div class="btn-group btn-group-toggle float-left">
+                                        <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
+                                        <input type="radio" name="sensorIsActive" (click)="toggleIsActive(true)" [disabled]="sensor.IsActive"> Enabled
+                                        </label>
+                                        <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''">
+                                        <input type="radio" name="sensorIsActive" (click)="toggleIsActive(false)" [disabled]="!sensor.IsActive"> Disabled
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <ng-container *ngIf="!sensor">
+                        <span class="fas fa-spinner loading-spinner"></span>
+                        <p>Loading...</p>
+                    </ng-container>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-7">
+            <div class="card">
+                <div class="card-header">
+                    Installation Details
+                    <a *ngIf="sensor?.InGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
+                        View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <ng-container *ngIf="installations; else installationsLoading">
+                        <ng-container *ngIf="installations.length === 0; else installationsDetails">
+                            <p class="font-italic">
+                                No Installation Records were found for this well.
+                            </p>
+                        </ng-container>
+                        <ng-template #installationsDetails>
+                            <ng-container *ngFor="let installation of installations; index as i">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-6 label"><strong>Installation Name: </strong> </div>
+                                            <div class="col-12 col-sm-6">{{installation.InstallationCanonicalName}}</div>
+                                            <div class="col-12 col-sm-6 label"><strong>Installation Status: </strong> </div>
+                                            <div class="col-12 col-sm-6">{{installation.Status}}</div>
+                                            <div class="col-12 col-sm-6 label"><strong>Installation Date: </strong></div>
+                                            <div class="col-12 col-sm-6">{{getInstallationDate(installation)}}</div>
+                                            <div class="col-12 col-sm-6 label"><strong>GPS Location: </strong></div>
+                                            <div class="col-12 col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
+                                                {{installation.Longitude | number: '1.0-3'}}</div>
+                                            <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
+                                            <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
+                                            <div class="col-12 col-sm-6 label" *ngIf="installation.FlowmeterSerialNumber"><strong>Flowmeter Serial Number: </strong></div>
+                                            <div class="col-12 col-sm-6" *ngIf="installation.FlowmeterSerialNumber"><>{{installation.FlowmeterSerialNumber}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 text-center" *ngIf="installationPhotos">
+                                        <ng-container *ngIf="installationPhotos.length > 0; else noInstallationPhotos">
+                                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    <div class="carousel-item" [class.active]="isFirst" *ngFor="let photo of installationPhotos; first as isFirst">
+                                                    <img class="d-block w-100" [src]="photo.path" alt="First slide" style="height: 300px">
+                                                    </div>
+                                                </div>
+                                                <a *ngIf="installationPhotos.length > 1" class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a *ngIf="installationPhotos.length > 1" class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </div>
+                                        </ng-container>
+                                        <ng-template #noInstallationPhotos>
+                                            <img class="img img-fluid" style="height:300px" src="/assets/main/no-photo-available.jpg" />
+                                        </ng-template>        
+                                    </div>
+                                </div>
+                                <hr *ngIf="i != installations.length - 1" />
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #installationsLoading>
+                        <div class="row text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div [ngClass]="isDisplayingSensorAnomalyPanel ? 'col-sm-9' : 'col-sm-12'">
+            <div class="card">
+                <div class="card-header">
+                    Sensor Data Readings
+                    <a *ngIf="!noTimeSeriesData" class="btn btn-sm btn-zybach float-right" (click)="exportChartData()">
+                        <span class="fas fa-download"></span> Download CSV</a>  
+                    <a *ngIf="!noTimeSeriesData && isSensorTypeWithAnomalies()" class="btn btn-sm btn-zybach float-right mr-2" (click)="displaySensorAnomalyPanel()">
+                        <span class="fas fa-plus"></span> Add Sensor Anomaly</a>  
+                </div>
+                <div class="card-body">
+                    <div class="row" *ngIf="!timeSeries">
+                        <div class="text-center">
+                            <span class="fas fa-spinner loading-spinner"></span>
+                            <p>Loading...</p>
+                        </div>
+                    </div>
+                    <div class="row mb-1" *ngIf="!noTimeSeriesData">
+                        <div class="input-group col-xl-5 col-lg-6 col-sm-8">
+                            <span class="font-weight-bold mt-1 mx-3">Date Range:</span>
+                            <!-- input box -->
+                            <input id="dateRangeInput" class="form-control" name="mydate" placeholder="Select a date" 
+                                   angular-mydatepicker #dp="angular-mydatepicker" 
+                                   [(ngModel)]="dateRange" [options]="myDpOptions"
+                                   (dateChanged)="onDateChanged($event)"/>
+                          
+                            <!-- toggle calendar button -->
+                            <div class="input-group-append">
+                              <button type="button" class="btn btn-secondary" (click)="dp.toggleCalendar()">
+                                <i class="fa fa-calendar-o"></i>
+                              </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-zybach" (click)="useFullDateRange()">Use Full Date Range</button>
+                        </div>
+                    </div>
+                    <div *ngIf="!noTimeSeriesData" id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+                    <em *ngIf="!noTimeSeriesData">All data are displayed in Central Daylight Time</em>
+                    <em *ngIf="noTimeSeriesData">No time series data available for this sensor.</em>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3" *ngIf="isDisplayingSensorAnomalyPanel">
+            <div class="card">
+                <div class="card-header">Create Anomaly Report</div>
+                <div class="card-body">
+                    <div>
+                        <span class="font-weight-bold required">Start Date</span>
+                        <div class="input-group mt-1">
+                            <input class="form-control" placeholder="Select a start date"
+                                [(ngModel)]="sensorAnomalyModel.StartDate" ngbDatepicker #d1="ngbDatepicker" required >
+                            <div class="input-group-append">
+                            <button class="btn btn-secondary far fa-calendar" (click)="d1.toggle()" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="font-weight-bold required">End Date</span>
+                        <div class="input-group mt-1">
+                            <input class="form-control" placeholder="Select an end date"
+                                [(ngModel)]="sensorAnomalyModel.EndDate" ngbDatepicker #d2="ngbDatepicker" required >
+                            <div class="input-group-append">
+                            <button class="btn btn-secondary far fa-calendar" (click)="d2.toggle()" type="button"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="font-weight-bold">Notes</span>
+                        <textarea class="form-control" style="height: 100px"
+                            [(ngModel)]="sensorAnomalyModel.Notes">
+                        </textarea>
+                    </div>
+                    <div class="col">
+                        <i class="fas fa-bolt"></i> Required field
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-auto ml-auto">
+                            <button class="btn btn-zybach" [disabled]=" isLoadingSubmit" (click)="submitSensorAnomaly()">
+                                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                                Save
+                            </button>
+                            <button class="btn btn-secondary ml-1" [disabled]=" isLoadingSubmit" (click)="closeSensorAnomalyPanel()">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+</div>

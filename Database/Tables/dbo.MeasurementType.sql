@@ -6,6 +6,8 @@ CREATE TABLE [dbo].[MeasurementType](
 	[MeasurementTypeID] [int] NOT NULL,
 	[MeasurementTypeName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[MeasurementTypeDisplayName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[InfluxMeasurementName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[InfluxFieldName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_MeasurementType_MeasurementTypeID] PRIMARY KEY CLUSTERED 
 (
 	[MeasurementTypeID] ASC

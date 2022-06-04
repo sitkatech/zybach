@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[ChemigationPermitStatus](
-	[ChemigationPermitStatusID] [int] IDENTITY(1,1) NOT NULL,
+	[ChemigationPermitStatusID] [int] NOT NULL,
 	[ChemigationPermitStatusName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[ChemigationPermitStatusDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
  CONSTRAINT [PK_ChemigationPermitStatus_ChemigationPermitStatusID] PRIMARY KEY CLUSTERED 

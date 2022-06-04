@@ -1,0 +1,100 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/irrigation-units">Irrigation Units</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">{{irrigationUnit?.WellTPID}}</li>
+    </ol>
+</nav>
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-12 col-md-6">
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card" *ngIf="irrigationUnit">
+                        <div class="card-header">
+                            Basics
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>TPID: </strong></div>
+                                <div class="col-12 col-sm-6">{{irrigationUnit.WellTPID}}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Area (ac): </strong></div>
+                                <div class="col-12 col-sm-6">{{irrigationUnit.IrrigationUnitAreaInAcres | number: '1.2-2' }}</div>
+                                <div class="col-12 col-sm-6 label"><strong>Associated Wells: </strong></div>
+                                <div class="col-12 col-sm-6">
+                                    <p *ngFor="let well of irrigationUnit.AssociatedWells" class="m-0">
+                                        <a routerLink="/wells/{{well.WellID}}">{{well.WellRegistrationID}}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card" *ngIf="irrigationUnit">
+                        <div class="card-header">
+                            Location
+                        </div>
+                        <div class="card-body">
+                            <zybach-irrigation-unit-map #irrigationUnitMap [irrigationUnit]="irrigationUnit"></zybach-irrigation-unit-map>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-header">
+                    OpenET Data
+                </div>
+                <div class="card-body mb-3">
+                    <div *ngIf="openETData?.length > 0; then hasOpenETData else noOpenETData"></div>
+                    <ng-template #hasOpenETData>
+                        <div class="row col float-left">
+                            <!-- <label>Units:&nbsp;</label> -->
+                            <div class="btn-group btn-group-toggle float-left">
+                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="unitsShown == 'ac-ft' ? 'active' : ''">
+                                <input type="radio" name="ETAndPrecipUnits" (click)="toggleUnitsShown()" [disabled]="unitsShown == 'ac-ft'"> ac-ft
+                                </label>
+                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="unitsShown == 'in' ? 'active' : ''">
+                                <input type="radio" name="ETAndPrecipUnits" (click)="toggleUnitsShown()" [disabled]="unitsShown == 'in'"> in
+                                </label>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                                ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                                <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="openETDataGrid">
+                                </fresca-clear-grid-filters-button>
+                            </div> 
+                        </div>
+                        <div class="table-responsive">
+                            <ag-grid-angular #openETDataGrid style="width: 100%; height: 300px;" 
+                                class="ag-theme-balham" [rowData]="openETData"
+                                [columnDefs]="columnDefs" (firstDataRendered)="onFirstDataRendered($event)"
+                                [pagination]="true" [paginationPageSize]="10" [suppressMenuHide]="true">
+                            </ag-grid-angular>
+                        </div>
+                    </ng-template>
+                    <ng-template #noOpenETData>
+                        <p>
+                            <em>This Irrigation Unit has no available OpenET data at this time</em>
+                        </p>
+                    </ng-template>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -14,8 +14,8 @@ import { {{classname}} } from './{{importPath}}';
   declarations: [],
   exports:      [],
   providers: [
-    {{#apiInfo}}{{#apis}}{{classname}}{{#hasMore}},
-    {{/hasMore}}{{/apis}}{{/apiInfo}} ]
+    {{#apiInfo}}{{#apis}}{{classname}},
+    {{/apis}}{{/apiInfo}} ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders{{#genericModuleWithProviders}}<ApiModule>{{/genericModuleWithProviders}} {
