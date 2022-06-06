@@ -60,6 +60,10 @@ import { WaterLevelExplorerComponent } from './pages/water-level-explorer/water-
 import { IrrigationUnitListComponent } from './pages/irrigation-unit-list/irrigation-unit-list.component';
 import { IrrigationUnitDetailComponent } from './pages/irrigation-unit-detail/irrigation-unit-detail.component';
 import { OpenetSyncWaterYearMonthStatusListComponent } from './pages/openet-sync-water-year-month-status-list/openet-sync-water-year-month-status-list.component';
+import { SupportTicketListComponent } from './pages/support-ticket-list/support-ticket-list.component';
+import { SupportTicketDetailComponent } from './pages/support-ticket-detail/support-ticket-detail.component';
+import { SupportTicketNewComponent } from './pages/support-ticket-new/support-ticket-new.component';
+import { SupportTicketEditComponent } from './pages/support-ticket-edit/support-ticket-edit.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -67,6 +71,10 @@ const routes: Routes = [
   { path: "dashboard", component: DashboardComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "openet-integration", component: OpenetSyncWaterYearMonthStatusListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensors", component: SensorListComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "support-tickets", component: SupportTicketListComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "support-tickets/new", component: SupportTicketNewComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "support-tickets/:id", component: SupportTicketDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "support-tickets/:id/edit", component: SupportTicketEditComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensors/:id", component: SensorDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-anomalies", component: SensorAnomalyListComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },

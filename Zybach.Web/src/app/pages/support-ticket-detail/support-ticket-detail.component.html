@@ -1,0 +1,188 @@
+<nav aria-label="breadcrumb" *ngIf="supportTicket">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/support-tickets">Support Tickets</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Support Ticket #{{supportTicket?.SupportTicketID}}: {{supportTicket.SupportTicketTitle}}
+        </li>
+    </ol>
+</nav>
+<app-alert-display></app-alert-display>
+<div class="row m-3" *ngIf="supportTicket">
+    <div class="col-12">
+        <h2 class="d-inline-block">Support Ticket #{{supportTicket.SupportTicketID}}: {{supportTicket.SupportTicketTitle}}</h2>
+    </div>
+
+    <div class="row container">
+        <div class="col-12 col-sm-6 label"><strong>Status: </strong></div>
+        <div class="col-12 col-sm-6">{{supportTicket.Status.SupportTicketStatusDisplayName}}
+        </div>
+        <div class="col-12 col-sm-6 label"><strong>Priority: </strong></div>
+        <div class="col-12 col-sm-6">{{supportTicket.Priority.SupportTicketPriorityDisplayName}}</div>
+        <div class="col-12 col-sm-6 label"><strong>Description: </strong></div>
+        <div class="col-12 col-sm-6">
+            <p>
+                <em *ngIf="!supportTicket.SupportTicketDescription" class="text-muted">N/A</em>
+                {{supportTicket.SupportTicketDescription}}
+            </p>
+        </div>
+    </div>
+
+    <!-- <div class="col-12">
+        <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-right" role="button" data-toggle="dropdown" 
+            aria-haspopup="true" aria-expanded="false">
+            Other Actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
+                <span class="fas fa-edit"></span>
+                Edit Permit 
+            </a>
+            <a class="dropdown-item" [ngClass]="{'disabled': permitHasCurrentRecord()}" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
+                <span class="fas fa-plus"></span> 
+                Create Renewal 
+            </a>
+        </div>
+    </div> -->
+
+</div>
+<div class="row mt-4 m-3" *ngIf="supportTicket">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header align-items-center">
+                Support Ticket #{{supportTicket.SupportTicketID}}: {{supportTicket.SupportTicketTitle}}
+                <div class="float-right">
+                    <!-- [ngClass]="{'disabled': !currentYearAnnualRecord}" -->
+                    <a class="btn btn-zybach btn-sm float-right" 
+                        routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
+                        <span class="fas fa-edit"></span> Edit
+                    </a>
+                </div>
+             
+            </div>
+            <div class="card-body">
+                <div class="row col-12">
+                    <div class="row col-12">
+                        <div class="row col-6">
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Created By: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{supportTicket.CreatorUser.FullName}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Assigned To: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{supportTicket.AssigneeUser?.FullName}}
+                                        <em *ngIf="!supportTicket.AssigneeUser" class="text-muted">N/A</em>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Date Created: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{supportTicket.DateCreated | date:'shortDate'}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Date Updated: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p>{{supportTicket.DateUpdated | date:'shortDate'}}
+                                    </p>
+                                </div>
+                            </div>
+        
+                            <!-- <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Annual Record Notes: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p *ngIf="currentYearAnnualRecord.AnnualNotes">
+                                        {{currentYearAnnualRecord.AnnualNotes}}
+                                    </p>
+                                    <em *ngIf="!currentYearAnnualRecord.AnnualNotes" class="text-muted">
+                                        N/A
+                                    </em>
+                                </div>
+                            </div> -->
+                        </div>
+
+                        <div class="row col-6">
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Well: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <a routerLink="/wells/{{supportTicket.Well.WellID}}">
+                                        {{supportTicket.Well.WellRegistrationID}}
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="row col-12">
+                                <div class="col-6 text-right">
+                                    <p><strong>Sensor: </strong></p>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <a routerLink="/sensors/{{supportTicket.Sensor?.SensorID}}" *ngIf="supportTicket.Sensor">
+                                        {{supportTicket.Sensor?.SensorName}}
+                                    </a>
+                                    <em *ngIf="!supportTicket.Sensor" class="text-muted">
+                                        N/A
+                                    </em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4 m-3" *ngFor="let ticketComment of supportTicket.Comments">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header align-items-center">
+                {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate'}}
+                <div class="float-right">
+                    <!-- [ngClass]="{'disabled': !currentYearAnnualRecord}" -->
+                    <!-- <a class="btn btn-zybach btn-sm float-right" 
+                        routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
+                        <span class="fas fa-edit"></span> Edit
+                    </a> -->
+                </div>
+            </div>
+            <div class="card-body">
+                <p>
+                    {{ticketComment.CommentNotes}}
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row col-sm-12 mt-4 m-3">
+    <div class="row col-2 float-left">
+        <a class="btn btn-zybach btn-md float-left mb-3 mr-3"
+            routerLink="/support-tickets/{{supportTicket.SupportTicketID}}/add-comment">
+            <span class="fas fa-plus"></span> Add Comment
+        </a>
+    
+    </div>
+
+</div>
