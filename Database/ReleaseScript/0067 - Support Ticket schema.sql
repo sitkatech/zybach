@@ -5,24 +5,12 @@ create table dbo.SupportTicketStatus (
 	SortOrder int not null
 )
 
-insert into dbo.SupportTicketStatus (SupportTicketStatusID, SupportTicketStatusName, SupportTicketStatusDisplayName, SortOrder) 
-values
-(1, 'Open', 'Open', 10),
-(2, 'InProgress', 'In Progress', 20),
-(3, 'Resolved', 'Resolved', 30)
-
 create table dbo.SupportTicketPriority (
 	SupportTicketPriorityID int not null constraint PK_SupportTicketPriority_SupportTicketPriorityID primary key,
 	SupportTicketPriorityName varchar(50) not null,
 	SupportTicketPriorityDisplayName varchar(50) not null,
 	SortOrder int not null
 )
-
-insert into dbo.SupportTicketPriority (SupportTicketPriorityID, SupportTicketPriorityName, SupportTicketPriorityDisplayName, SortOrder) 
-values
-(1, 'High', 'High', 10),
-(2, 'Medium', 'Medium', 20),
-(3, 'Low', 'Low', 30)
 
 go
 
