@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Feature;
-using GeoJSON.Net.Geometry;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite.Geometries;
-using ProjNet.Geometries;
 using Zybach.Models.DataTransferObjects;
 using Point = GeoJSON.Net.Geometry.Point;
 using Position = GeoJSON.Net.Geometry.Position;

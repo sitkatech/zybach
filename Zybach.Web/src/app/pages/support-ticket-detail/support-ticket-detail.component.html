@@ -91,7 +91,7 @@
                                     <p><strong>Date Created: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <p>{{supportTicket.DateCreated | date:'shortDate'}}
+                                    <p>{{supportTicket.DateCreated | date:'shortDate':'UTC'}}
                                     </p>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                                     <p><strong>Date Updated: </strong></p>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <p>{{supportTicket.DateUpdated | date:'shortDate'}}
+                                    <p>{{supportTicket.DateUpdated | date:'shortDate':'UTC'}}
                                     </p>
                                 </div>
                             </div>
@@ -154,11 +154,11 @@
         </div>
     </div>
 </div>
-<div class="row mt-4 m-3" *ngFor="let ticketComment of supportTicket.Comments">
+<div class="row mt-4 m-3" *ngFor="let ticketComment of supportTicket?.Comments">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-header align-items-center">
-                {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate'}}
+                {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate':'UTC'}}
                 <div class="float-right">
                     <!-- [ngClass]="{'disabled': !currentYearAnnualRecord}" -->
                     <!-- <a class="btn btn-zybach btn-sm float-right" 
@@ -179,7 +179,7 @@
 <div class="row col-sm-12 mt-4 m-3">
     <div class="row col-2 float-left">
         <a class="btn btn-zybach btn-md float-left mb-3 mr-3"
-            routerLink="/support-tickets/{{supportTicket.SupportTicketID}}/add-comment">
+            routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
             <span class="fas fa-plus"></span> Add Comment
         </a>
     

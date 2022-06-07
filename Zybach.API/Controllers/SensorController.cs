@@ -62,13 +62,18 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<ActionResult<SensorSimpleDto>> GetByID([FromRoute] int sensorID)
         {
-            if (GetSensorSimpleDtoAndThrowIfNotFound(sensorID, out var sensorSimpleDto, out var actionResult)) return actionResult;
+            if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
 
+            var sensorSimpleDto = sensor.AsSimpleDto();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
             var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
                 ? sensorMessageAges[sensorSimpleDto.SensorName]
                 : (int?)null;
             sensorSimpleDto.MessageAge = messageAge;
+
+            sensorSimpleDto.OpenSupportTickets = SupportTickets.GetSupportTicketsImpl(_dbContext)
+                .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.SensorID == sensor.SensorID)
+                .Select(x => x.AsSimpleDto()).ToList();
 
             var wellSensorMeasurementDtos = WellSensorMeasurements.ListBySensorAsDto(_dbContext, sensorSimpleDto.SensorName);
             sensorSimpleDto.FirstReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Min(x => x.MeasurementDate) : null;
@@ -95,10 +100,10 @@ namespace Zybach.API.Controllers
             return sensors;
         }
 
-        private bool GetSensorSimpleDtoAndThrowIfNotFound(int sensorID, out SensorSimpleDto sensorSimpleDto, out ActionResult actionResult)
+        private bool GetSensorAndThrowIfNotFound(int sensorID, out Sensor sensor, out ActionResult actionResult)
         {
-            sensorSimpleDto = Sensors.GetByIDAsSimpleDto(_dbContext, sensorID);
-            return ThrowNotFound(sensorSimpleDto, "Sensor", sensorID, out actionResult);
+            sensor = Sensors.GetByID(_dbContext, sensorID);
+            return ThrowNotFound(sensor, "Sensor", sensorID, out actionResult);
         }
     }
 }

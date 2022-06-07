@@ -8,9 +8,9 @@ namespace Zybach.EFModels.Entities
         static partial void DoCustomSimpleDtoMappings(SupportTicket supportTicket, SupportTicketSimpleDto supportTicketSimpleDto)
         {
             supportTicketSimpleDto.Well = supportTicket.Well.AsMinimalDto();
-            supportTicketSimpleDto.Sensor = supportTicket.Sensor.AsSimpleDto();
+            supportTicketSimpleDto.Sensor = supportTicket.Sensor?.AsSimpleDto();
             supportTicketSimpleDto.CreatorUser = supportTicket.CreatorUser.AsSimpleDto();
-            supportTicketSimpleDto.AssigneeUser = supportTicket.AssigneeUser.AsSimpleDto();
+            supportTicketSimpleDto.AssigneeUser = supportTicket.AssigneeUser?.AsSimpleDto();
             supportTicketSimpleDto.Status = supportTicket.SupportTicketStatus.AsSimpleDto();
             supportTicketSimpleDto.Priority = supportTicket.SupportTicketPriority.AsSimpleDto();
         }
@@ -25,9 +25,9 @@ namespace Zybach.EFModels.Entities
                 SupportTicketTitle = supportTicket.SupportTicketTitle,
                 SupportTicketDescription = supportTicket.SupportTicketDescription,
                 Well = supportTicket.Well.AsMinimalDto(),
-                Sensor = supportTicket.Sensor.AsSimpleDto(),
+                Sensor = supportTicket.Sensor?.AsSimpleDto(),
                 CreatorUser = supportTicket.CreatorUser.AsSimpleDto(),
-                AssigneeUser = supportTicket.AssigneeUser.AsSimpleDto(),
+                AssigneeUser = supportTicket.AssigneeUser?.AsSimpleDto(),
                 Status = supportTicket.SupportTicketStatus.AsSimpleDto(),
                 Priority = supportTicket.SupportTicketPriority.AsSimpleDto(),
                 Comments = supportTicket.SupportTicketComments.Select(x => x.AsSimpleDto()).ToList()

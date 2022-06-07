@@ -105,7 +105,7 @@ export class SupportTicketListComponent implements OnInit {
       {
         headerName: 'Sensor',
         valueGetter: function (params: any) {
-          return { LinkValue: params.data.Sensor.SensorID, LinkDisplay: params.data.Sensor.SensorName };
+          return { LinkValue: params.data.Sensor?.SensorID, LinkDisplay: params.data.Sensor?.SensorName };
         }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors/" },
@@ -145,7 +145,9 @@ export class SupportTicketListComponent implements OnInit {
       },
       { 
         headerName: 'Assigned To',
-        field: 'AssigneeUser.FullName',
+        valueGetter: function (params: any) {
+          return params.data.AssigneeUser?.FullName;
+        },
         filter: true,
         resizable: true,
         sortable: true

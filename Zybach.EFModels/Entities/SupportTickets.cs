@@ -8,7 +8,7 @@ namespace Zybach.EFModels.Entities
 {
     public class SupportTickets
     {
-        private static IQueryable<SupportTicket> GetSupportTicketsImpl(ZybachDbContext dbContext)
+        public static IQueryable<SupportTicket> GetSupportTicketsImpl(ZybachDbContext dbContext)
         {
             return dbContext.SupportTickets
                 .Include(x => x.Well)

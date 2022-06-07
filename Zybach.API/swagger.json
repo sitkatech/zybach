@@ -7676,6 +7676,13 @@
               "$ref": "#/components/schemas/WellSensorMeasurementDto"
             },
             "nullable": true
+          },
+          "OpenSupportTickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SupportTicketSimpleDto"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9232,6 +9239,13 @@
           },
           "IrrigationUnitGeoJSON": {
             "type": "string",
+            "nullable": true
+          },
+          "OpenSupportTickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SupportTicketSimpleDto"
+            },
             "nullable": true
           },
           "Sensors": {

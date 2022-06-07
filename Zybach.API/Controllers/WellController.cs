@@ -192,6 +192,11 @@ namespace Zybach.API.Controllers
             }).ToList();
             wellDetailDto.Sensors = sensors;
 
+            var openSupportTickets = SupportTickets.GetSupportTicketsImpl(_dbContext)
+                .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.WellID == well.WellID)
+                .Select(x => x.AsSimpleDto()).ToList();
+            wellDetailDto.OpenSupportTickets = openSupportTickets;
+
             var annualPumpedVolumes = new List<AnnualPumpedVolume>();
 
             annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors,
