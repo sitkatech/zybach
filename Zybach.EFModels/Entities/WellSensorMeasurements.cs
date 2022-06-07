@@ -18,7 +18,7 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
-        private static IQueryable<WellSensorMeasurement> GetWellSensorMeasurementsImpl(ZybachDbContext dbContext)
+        public static IQueryable<WellSensorMeasurement> GetWellSensorMeasurementsImpl(ZybachDbContext dbContext)
         {
             return dbContext.WellSensorMeasurements.AsNoTracking();
         }
@@ -113,7 +113,7 @@ namespace Zybach.EFModels.Entities
                     x => x.Select(y => y.MeasurementDateInPacificTime).ToList());
         }
 
-        private static List<WellSensorMeasurementDto> ZeroFillMissingDaysAsDto(
+        public static List<WellSensorMeasurementDto> ZeroFillMissingDaysAsDto(
             List<WellSensorMeasurement> wellSensorMeasurements)
         {
             if (!wellSensorMeasurements.Any())
