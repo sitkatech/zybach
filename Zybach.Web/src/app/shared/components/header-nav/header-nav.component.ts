@@ -69,6 +69,7 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         return this.router.url.startsWith('/dashboard') 
         || this.router.url.startsWith('/sensor-status')
         || this.router.url.startsWith('/sensor')
+        || this.router.url.startsWith('/support-tickets')
         || this.router.url.startsWith('/irrigation-units');
     }
 

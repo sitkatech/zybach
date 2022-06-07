@@ -85,12 +85,13 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     else {
       this.alertService.pushAlert(new Alert(`No location was provided for ${this.well.WellRegistrationID}.`))
     }
-    if (this.well.IrrigationUnitGeoJSON != null && this.well.IrrigationUnitGeoJSON != undefined) {
+    if (this.well.IrrigationUnitGeoJSON != null && this.well.IrrigationUnitGeoJSON != "null" && this.well.IrrigationUnitGeoJSON != undefined) {
       this.addIrrigationUnitToMap();
     }
+
   }
 
-  public addIrrigationUnitToMap() : void {    
+  private addIrrigationUnitToMap() : void {    
     const irrigationUnitGeoJSON = L.geoJSON(JSON.parse(this.well.IrrigationUnitGeoJSON)).addTo(this.map);
     const unitBoundingBox = irrigationUnitGeoJSON.getBounds();
     let target = (this.map as any)._getBoundsCenterZoom(unitBoundingBox, null);
@@ -99,7 +100,7 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
     this.map.setView(target.center, 15, null);
   }
 
-  public addWellToMap() {
+  private addWellToMap() {
     const sensorTypes = this.well.Sensors.map(x => x.SensorType);
     let mapIcon;
 

@@ -2685,6 +2685,54 @@
         }
       }
     },
+    "/sensors/search/{sensorName}": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sensors/{sensorID}": {
       "get": {
         "tags": [
@@ -3093,6 +3141,370 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/supportTickets/statuses": {
+      "get": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketStatusDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketStatusDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supportTickets/priorities": {
+      "get": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketPriorityDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketPriorityDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketPriorityDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supportTickets": {
+      "get": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supportTicketComments": {
+      "post": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketCommentSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketCommentSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketCommentSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supportTicketComments/{supportTicketCommentID}": {
+      "delete": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "parameters": [
+          {
+            "name": "supportTicketCommentID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/supportTickets/{supportTicketID}": {
+      "get": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "parameters": [
+          {
+            "name": "supportTicketID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "parameters": [
+          {
+            "name": "supportTicketID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketDetailDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "parameters": [
+          {
+            "name": "supportTicketID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -7388,6 +7800,13 @@
               "$ref": "#/components/schemas/WellSensorMeasurementDto"
             },
             "nullable": true
+          },
+          "OpenSupportTickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SupportTicketSimpleDto"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7503,6 +7922,356 @@
           },
           "Result": {
             "$ref": "#/components/schemas/StructuredResults"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketCommentSimpleDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketCommentID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "DateUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "CreatorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CommentNotes": {
+            "type": "string",
+            "nullable": true
+          },
+          "CreatorUser": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketCommentUpsertDto": {
+        "required": [
+          "CommentNotes",
+          "CreatorUserID",
+          "SupportTicketID"
+        ],
+        "type": "object",
+        "properties": {
+          "CreatorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CommentNotes": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketDetailDto": {
+        "type": "object",
+        "properties": {
+          "Comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SupportTicketCommentSimpleDto"
+            },
+            "nullable": true
+          },
+          "SupportTicketID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "DateUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "CreatorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AssigneeUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SupportTicketStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketPriorityID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "SupportTicketDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellMinimalDto"
+          },
+          "Sensor": {
+            "$ref": "#/components/schemas/SensorSimpleDto"
+          },
+          "CreatorUser": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "AssigneeUser": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/SupportTicketStatusSimpleDto"
+          },
+          "Priority": {
+            "$ref": "#/components/schemas/SupportTicketPrioritySimpleDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketPriorityDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketPriorityID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketPriorityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SupportTicketPriorityDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SortOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketPrioritySimpleDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketPriorityID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketPriorityName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SupportTicketPriorityDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SortOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketSimpleDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "DateCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "DateUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "CreatorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AssigneeUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SupportTicketStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketPriorityID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "SupportTicketDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "Well": {
+            "$ref": "#/components/schemas/WellMinimalDto"
+          },
+          "Sensor": {
+            "$ref": "#/components/schemas/SensorSimpleDto"
+          },
+          "CreatorUser": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "AssigneeUser": {
+            "$ref": "#/components/schemas/UserSimpleDto"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/SupportTicketStatusSimpleDto"
+          },
+          "Priority": {
+            "$ref": "#/components/schemas/SupportTicketPrioritySimpleDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketStatusDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SupportTicketStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SortOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketStatusSimpleDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SupportTicketStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SortOrder": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketUpsertDto": {
+        "required": [
+          "CreatorUserID",
+          "SupportTicketPriorityID",
+          "SupportTicketStatusID",
+          "SupportTicketTitle",
+          "WellRegistrationID"
+        ],
+        "type": "object",
+        "properties": {
+          "WellRegistrationID": {
+            "type": "string"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "CreatorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AssigneeUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SupportTicketPriorityID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketTitle": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "SupportTicketDescription": {
+            "maxLength": 200,
+            "minLength": 0,
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8626,6 +9395,13 @@
           },
           "IrrigationUnitGeoJSON": {
             "type": "string",
+            "nullable": true
+          },
+          "OpenSupportTickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SupportTicketSimpleDto"
+            },
             "nullable": true
           },
           "Sensors": {

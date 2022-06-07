@@ -15,5 +15,6 @@ namespace Zybach.Models.DataTransferObjects
         public string WellOwnerName { get; set; }
         public string WellTownshipRangeSection { get; set; }
         public List<WellSensorMeasurementDto> WellSensorMeasurements { get; set; }
+        public List<SupportTicketSimpleDto> OpenSupportTickets { get; set; }
     }
 }

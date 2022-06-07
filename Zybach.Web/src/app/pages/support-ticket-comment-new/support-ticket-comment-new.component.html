@@ -1,0 +1,61 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/support-tickets">Support Tickets</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a routerLink="/support-tickets/{{model?.SupportTicketID}}">Support Ticket #{{model?.SupportTicketID}}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Add Support Ticket Comment
+        </li>
+    </ol>
+</nav>
+
+<div class="container" *ngIf="model">
+    <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">Add Comment to Support Ticket</h2>
+        </div>
+
+    </div>
+
+    <form (ngSubmit)="onSubmit(newSupportTicketCommentForm)" #newSupportTicketCommentForm="ngForm" class="container">
+
+        <div class="row col-8 mt-4">
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Comments: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <textarea class="form-control" name="CommentNotes"
+                    [(ngModel)]="model.CommentNotes">
+                </textarea>
+            </div>    
+    
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Created By: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                {{currentUser?.FullName}}
+            </div>
+
+        </div>
+
+        <div class="col-12 text-right mt-3 mr-3">
+            <div class="col-sm text-left float-right">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
+            <button type="submit" class="btn btn-zybach mr-1">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+            <a class="btn btn-secondary ml-1"
+                routerLink="..">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>

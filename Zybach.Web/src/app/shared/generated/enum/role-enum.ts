@@ -7,5 +7,5 @@ export enum RoleEnum {
   Normal = 2,
   Unassigned = 3,
   Disabled = 4,
-  WaterDataProgramReadOnly = 5
+  WaterDataProgramSupportOnly = 5
 }

@@ -48,6 +48,8 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<Sensor> Sensors { get; set; }
         public virtual DbSet<SensorAnomaly> SensorAnomalies { get; set; }
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
+        public virtual DbSet<SupportTicket> SupportTickets { get; set; }
+        public virtual DbSet<SupportTicketComment> SupportTicketComments { get; set; }
         public virtual DbSet<Tillage> Tillages { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WaterLevelInspection> WaterLevelInspections { get; set; }
@@ -224,6 +226,39 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.Sensor)
                     .WithMany(p => p.SensorAnomalies)
                     .HasForeignKey(d => d.SensorID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<SupportTicket>(entity =>
+            {
+                entity.HasOne(d => d.AssigneeUser)
+                    .WithMany(p => p.SupportTicketAssigneeUsers)
+                    .HasForeignKey(d => d.AssigneeUserID)
+                    .HasConstraintName("FK_SupportTicket_User_AssigneeUserID_UserID");
+
+                entity.HasOne(d => d.CreatorUser)
+                    .WithMany(p => p.SupportTicketCreatorUsers)
+                    .HasForeignKey(d => d.CreatorUserID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SupportTicket_User_CreatorUserID_UserID");
+
+                entity.HasOne(d => d.Well)
+                    .WithMany(p => p.SupportTickets)
+                    .HasForeignKey(d => d.WellID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<SupportTicketComment>(entity =>
+            {
+                entity.HasOne(d => d.CreatorUser)
+                    .WithMany(p => p.SupportTicketComments)
+                    .HasForeignKey(d => d.CreatorUserID)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SupportTicketComment_User_CreatorUserID_UserID");
+
+                entity.HasOne(d => d.SupportTicket)
+                    .WithMany(p => p.SupportTicketComments)
+                    .HasForeignKey(d => d.SupportTicketID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
