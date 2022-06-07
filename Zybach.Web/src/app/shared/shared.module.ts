@@ -23,7 +23,7 @@ import { CustomDropdownFilterComponent } from './components/custom-dropdown-filt
 import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
 import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { NgxMaskModule } from 'ngx-mask';
-import { SupportTicketUpsertComponent } from './components/support-ticket-upsert/support-ticket-upsert.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     declarations: [
@@ -41,8 +41,7 @@ import { SupportTicketUpsertComponent } from './components/support-ticket-upsert
         WaterYearSelectComponent,
         CustomDropdownFilterComponent,
         ClearGridFiltersButtonComponent,
-        CustomPinnedRowRendererComponent,
-        SupportTicketUpsertComponent
+        CustomPinnedRowRendererComponent
     ],
     imports: [
         CommonModule,
@@ -53,6 +52,7 @@ import { SupportTicketUpsertComponent } from './components/support-ticket-upsert
         CKEditorModule,
         NgbModule,
         AutoCompleteModule,
+        NgSelectModule,
         NgxMaskModule.forChild(),
     ],
     exports: [

@@ -19,7 +19,7 @@ namespace Zybach.EFModels.Entities
         public static readonly RoleNormal Normal = Zybach.EFModels.Entities.RoleNormal.Instance;
         public static readonly RoleUnassigned Unassigned = Zybach.EFModels.Entities.RoleUnassigned.Instance;
         public static readonly RoleDisabled Disabled = Zybach.EFModels.Entities.RoleDisabled.Instance;
-        public static readonly RoleWaterDataProgramReadOnly WaterDataProgramReadOnly = Zybach.EFModels.Entities.RoleWaterDataProgramReadOnly.Instance;
+        public static readonly RoleWaterDataProgramSupportOnly WaterDataProgramSupportOnly = Zybach.EFModels.Entities.RoleWaterDataProgramSupportOnly.Instance;
 
         public static readonly List<Role> All;
         public static readonly List<RoleDto> AllAsDto;
@@ -31,8 +31,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static Role()
         {
-            All = new List<Role> { Admin, Normal, Unassigned, Disabled, WaterDataProgramReadOnly };
-            AllAsDto = new List<RoleDto> { Admin.AsDto(), Normal.AsDto(), Unassigned.AsDto(), Disabled.AsDto(), WaterDataProgramReadOnly.AsDto() };
+            All = new List<Role> { Admin, Normal, Unassigned, Disabled, WaterDataProgramSupportOnly };
+            AllAsDto = new List<RoleDto> { Admin.AsDto(), Normal.AsDto(), Unassigned.AsDto(), Disabled.AsDto(), WaterDataProgramSupportOnly.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, Role>(All.ToDictionary(x => x.RoleID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, RoleDto>(AllAsDto.ToDictionary(x => x.RoleID));
         }
@@ -115,8 +115,8 @@ namespace Zybach.EFModels.Entities
                     return Normal;
                 case RoleEnum.Unassigned:
                     return Unassigned;
-                case RoleEnum.WaterDataProgramReadOnly:
-                    return WaterDataProgramReadOnly;
+                case RoleEnum.WaterDataProgramSupportOnly:
+                    return WaterDataProgramSupportOnly;
                 default:
                     throw new ArgumentException("Unable to map Enum: {enumValue}");
             }
@@ -129,7 +129,7 @@ namespace Zybach.EFModels.Entities
         Normal = 2,
         Unassigned = 3,
         Disabled = 4,
-        WaterDataProgramReadOnly = 5
+        WaterDataProgramSupportOnly = 5
     }
 
     public partial class RoleAdmin : Role
@@ -156,9 +156,9 @@ namespace Zybach.EFModels.Entities
         public static readonly RoleDisabled Instance = new RoleDisabled(4, @"Disabled", @"Disabled", @"", 40);
     }
 
-    public partial class RoleWaterDataProgramReadOnly : Role
+    public partial class RoleWaterDataProgramSupportOnly : Role
     {
-        private RoleWaterDataProgramReadOnly(int roleID, string roleName, string roleDisplayName, string roleDescription, int sortOrder) : base(roleID, roleName, roleDisplayName, roleDescription, sortOrder) {}
-        public static readonly RoleWaterDataProgramReadOnly Instance = new RoleWaterDataProgramReadOnly(5, @"WaterDataProgramReadOnly", @"Water Data Program Read-Only", @"", 15);
+        private RoleWaterDataProgramSupportOnly(int roleID, string roleName, string roleDisplayName, string roleDescription, int sortOrder) : base(roleID, roleName, roleDisplayName, roleDescription, sortOrder) {}
+        public static readonly RoleWaterDataProgramSupportOnly Instance = new RoleWaterDataProgramSupportOnly(5, @"WaterDataProgramSupportOnly", @"Water Data Program Support Only", @"", 15);
     }
 }

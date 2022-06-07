@@ -167,7 +167,7 @@ export class AuthenticationService {
     const role = user && user.Role
     ? user.Role.RoleID
     : null;
-    return role === RoleEnum.WaterDataProgramReadOnly;
+    return role === RoleEnum.WaterDataProgramSupportOnly;
   }
   
   public isUserNormalOrHigher(user: UserDto): boolean {
@@ -179,7 +179,7 @@ export class AuthenticationService {
   }
 
   public doesUserHaveReadOnlyRightsOrHigher(user: UserDto): boolean {
-    const readOnlyRoles = new Array(RoleEnum.Admin, RoleEnum.Normal, RoleEnum.WaterDataProgramReadOnly);
+    const readOnlyRoles = new Array(RoleEnum.Admin, RoleEnum.Normal, RoleEnum.WaterDataProgramSupportOnly);
     const role = user && user.Role
       ? user.Role.RoleID
       : null;

@@ -30,7 +30,7 @@ namespace Zybach.EFModels.Entities
                 AssigneeUser = supportTicket.AssigneeUser?.AsSimpleDto(),
                 Status = supportTicket.SupportTicketStatus.AsSimpleDto(),
                 Priority = supportTicket.SupportTicketPriority.AsSimpleDto(),
-                Comments = supportTicket.SupportTicketComments.Select(x => x.AsSimpleDto()).ToList()
+                Comments = supportTicket.SupportTicketComments.Select(x => x.AsSimpleDto()).OrderByDescending(x => x.DateCreated).ToList()
             };
 
             return supportTicketDetailDto;

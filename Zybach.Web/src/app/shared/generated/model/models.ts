@@ -74,6 +74,7 @@ export * from '././stream-flow-zone-pumping-depth-dto';
 export * from '././structured-results';
 export * from '././structured-results-dto';
 export * from '././support-ticket-comment-simple-dto';
+export * from '././support-ticket-comment-upsert-dto';
 export * from '././support-ticket-detail-dto';
 export * from '././support-ticket-priority-dto';
 export * from '././support-ticket-priority-simple-dto';

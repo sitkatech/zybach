@@ -2685,6 +2685,54 @@
         }
       }
     },
+    "/sensors/search/{sensorName}": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sensors/{sensorID}": {
       "get": {
         "tags": [
@@ -3258,6 +3306,82 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/supportTicketComments": {
+      "post": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupportTicketCommentUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketCommentSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketCommentSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupportTicketCommentSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supportTicketComments/{supportTicketCommentID}": {
+      "delete": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "parameters": [
+          {
+            "name": "supportTicketCommentID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -7835,6 +7959,30 @@
         },
         "additionalProperties": false
       },
+      "SupportTicketCommentUpsertDto": {
+        "required": [
+          "CommentNotes",
+          "CreatorUserID",
+          "SupportTicketID"
+        ],
+        "type": "object",
+        "properties": {
+          "CreatorUserID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CommentNotes": {
+            "maxLength": 500,
+            "minLength": 0,
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
       "SupportTicketDetailDto": {
         "type": "object",
         "properties": {
@@ -8088,6 +8236,10 @@
             "format": "int32",
             "nullable": true
           },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
           "SensorID": {
             "type": "integer",
             "format": "int32",
@@ -8111,9 +8263,13 @@
             "format": "int32"
           },
           "SupportTicketTitle": {
+            "maxLength": 100,
+            "minLength": 0,
             "type": "string"
           },
           "SupportTicketDescription": {
+            "maxLength": 200,
+            "minLength": 0,
             "type": "string",
             "nullable": true
           }

@@ -64,6 +64,7 @@ import { SupportTicketListComponent } from './pages/support-ticket-list/support-
 import { SupportTicketDetailComponent } from './pages/support-ticket-detail/support-ticket-detail.component';
 import { SupportTicketNewComponent } from './pages/support-ticket-new/support-ticket-new.component';
 import { SupportTicketEditComponent } from './pages/support-ticket-edit/support-ticket-edit.component';
+import { SupportTicketCommentNewComponent } from './pages/support-ticket-comment-new/support-ticket-comment-new.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -75,6 +76,7 @@ const routes: Routes = [
   { path: "support-tickets/new", component: SupportTicketNewComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "support-tickets/:id", component: SupportTicketDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "support-tickets/:id/edit", component: SupportTicketEditComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "support-tickets/:id/add-comment", component: SupportTicketCommentNewComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensors/:id", component: SensorDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-anomalies", component: SensorAnomalyListComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },

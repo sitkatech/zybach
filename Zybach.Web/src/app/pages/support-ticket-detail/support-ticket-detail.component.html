@@ -29,37 +29,18 @@
         </div>
     </div>
 
-    <!-- <div class="col-12">
-        <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-right" role="button" data-toggle="dropdown" 
-            aria-haspopup="true" aria-expanded="false">
-            Other Actions
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/edit">
-                <span class="fas fa-edit"></span>
-                Edit Permit 
-            </a>
-            <a class="dropdown-item" [ngClass]="{'disabled': permitHasCurrentRecord()}" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}/add-record">
-                <span class="fas fa-plus"></span> 
-                Create Renewal 
-            </a>
-        </div>
-    </div> -->
-
 </div>
 <div class="row mt-4 m-3" *ngIf="supportTicket">
-    <div class="col-sm-12">
+    <div class="col-6">
         <div class="card">
             <div class="card-header align-items-center">
                 Support Ticket #{{supportTicket.SupportTicketID}}: {{supportTicket.SupportTicketTitle}}
                 <div class="float-right">
-                    <!-- [ngClass]="{'disabled': !currentYearAnnualRecord}" -->
-                    <a class="btn btn-zybach btn-sm float-right" 
+                    <a class="btn btn-zybach btn-sm float-right"
                         routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
                         <span class="fas fa-edit"></span> Edit
                     </a>
-                </div>
-             
+                </div>                
             </div>
             <div class="card-body">
                 <div class="row col-12">
@@ -106,19 +87,6 @@
                                 </div>
                             </div>
         
-                            <!-- <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Annual Record Notes: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <p *ngIf="currentYearAnnualRecord.AnnualNotes">
-                                        {{currentYearAnnualRecord.AnnualNotes}}
-                                    </p>
-                                    <em *ngIf="!currentYearAnnualRecord.AnnualNotes" class="text-muted">
-                                        N/A
-                                    </em>
-                                </div>
-                            </div> -->
                         </div>
 
                         <div class="row col-6">
@@ -152,37 +120,61 @@
                 </div>
             </div>
         </div>
+
     </div>
-</div>
-<div class="row mt-4 m-3" *ngFor="let ticketComment of supportTicket?.Comments">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-header align-items-center">
-                {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate':'UTC'}}
-                <div class="float-right">
-                    <!-- [ngClass]="{'disabled': !currentYearAnnualRecord}" -->
-                    <!-- <a class="btn btn-zybach btn-sm float-right" 
-                        routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
-                        <span class="fas fa-edit"></span> Edit
-                    </a> -->
+
+    <div class="col-6">
+        <div class="row" *ngFor="let ticketComment of supportTicket?.Comments">
+            <div class="col-sm-12 mb-3">
+                <div class="card">
+                    <div class="card-header align-items-center">
+                        {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate':'UTC'}}
+                        <div class="float-right">
+                            <button class="btn btn-zybach btn-sm"
+                            (click)="launchDeleteModal(deleteCommentModal, ticketComment.SupportTicketCommentID)"
+                            [disabled]="!currentUserIsTicketOwner()">
+                            <span class="fa fa-trash"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            {{ticketComment.CommentNotes}}
+                        </p>
+                    </div>
+        
                 </div>
             </div>
-            <div class="card-body">
-                <p>
-                    {{ticketComment.CommentNotes}}
-                </p>
-            </div>
+        </div>
 
+        <div class="row float-right">
+            <a class="btn btn-zybach btn-md float-right mb-3 mr-3"
+                routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
+                <span class="fas fa-plus"></span> Add Comment
+            </a>
         </div>
     </div>
 </div>
-<div class="row col-sm-12 mt-4 m-3">
-    <div class="row col-2 float-left">
-        <a class="btn btn-zybach btn-md float-left mb-3 mr-3"
-            routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
-            <span class="fas fa-plus"></span> Add Comment
-        </a>
-    
-    </div>
 
-</div>
+<ng-template #deleteCommentModal let-modal>
+    <div class="modal-header bg-secondary">
+        <h5 class="modal-title" id="deleteCommentModalTitle">Delete Comment</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>
+            Are you sure you wish to delete this comment?
+            <br/>
+            This action cannot be undone
+        </p>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger btn-md" (click)="deleteComment()">
+                <span *ngIf="isLoadingDelete" class="fa fa-spinner loading-spinner"></span>
+                Delete
+            </button>
+            <button type="button" class="btn btn-secondary btn-md" (click)="modal.close('Cancel click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>

@@ -44,8 +44,8 @@ namespace Zybach.EFModels.Entities
                 // ReSharper disable once PossibleInvalidOperationException - null check performed in controller
                 WellID = supportTicketUpsertDto.WellID.Value,
                 SensorID = supportTicketUpsertDto.SensorID,
-                SupportTicketStatusID = supportTicketUpsertDto.SupportTicketStatusID,
-                SupportTicketPriorityID = supportTicketUpsertDto.SupportTicketPriorityID,
+                SupportTicketStatusID = supportTicketUpsertDto.SupportTicketStatusID.Value,
+                SupportTicketPriorityID = supportTicketUpsertDto.SupportTicketPriorityID.Value,
                 SupportTicketTitle = supportTicketUpsertDto.SupportTicketTitle,
                 SupportTicketDescription = supportTicketUpsertDto.SupportTicketDescription
             };
@@ -65,8 +65,8 @@ namespace Zybach.EFModels.Entities
             // ReSharper disable once PossibleInvalidOperationException - null check performed in controller
             supportTicket.WellID = supportTicketUpsertDto.WellID.Value;
             supportTicket.SensorID = supportTicketUpsertDto.SensorID;
-            supportTicket.SupportTicketStatusID = supportTicketUpsertDto.SupportTicketStatusID;
-            supportTicket.SupportTicketPriorityID = supportTicketUpsertDto.SupportTicketPriorityID;
+            supportTicket.SupportTicketStatusID = supportTicketUpsertDto.SupportTicketStatusID.Value;
+            supportTicket.SupportTicketPriorityID = supportTicketUpsertDto.SupportTicketPriorityID.Value;
             supportTicket.SupportTicketTitle = supportTicketUpsertDto.SupportTicketTitle;
             supportTicket.SupportTicketDescription = supportTicketUpsertDto.SupportTicketDescription;
             dbContext.SaveChanges();

@@ -10,17 +10,10 @@
  * Do not edit the class manually.
  */
 
-export class SupportTicketUpsertDto { 
-    WellRegistrationID: string;
-    WellID?: number;
-    SensorName?: string;
-    SensorID?: number;
+export class SupportTicketCommentUpsertDto { 
     CreatorUserID: number;
-    AssigneeUserID?: number;
-    SupportTicketPriorityID: number;
-    SupportTicketStatusID: number;
-    SupportTicketTitle: string;
-    SupportTicketDescription?: string;
+    SupportTicketID: number;
+    CommentNotes: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

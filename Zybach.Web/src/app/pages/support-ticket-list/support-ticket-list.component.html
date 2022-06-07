@@ -3,15 +3,15 @@
     <div class="row">
         <div class="col-12">
             <h2 class="d-inline-block">Support Tickets</h2>
-            <!-- <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text> -->
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         </div>
     </div>
     <div class="row">
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
-                    <!-- <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/support-tickets/new"
-                    ngbTooltip="Create New Support Ticket"><span class="fas fa-plus"></span> New Support Ticket </a> -->
+                    <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/support-tickets/new"
+                    ngbTooltip="Create New Support Ticket"><span class="fas fa-plus"></span> New Support Ticket </a>
                     <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
                     ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
                     <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="supportTicketGrid">
@@ -20,7 +20,7 @@
             </div>
             <div class="table-responsive">
                 <ag-grid-angular #supportTicketGrid style="width: 100%; height: 500px;" 
-                    class="ag-theme-balham"
+                    class="ag-theme-balham" (cellClicked)="onCellClicked($event)"
                     [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" (firstDataRendered)="onFirstDataRendered($event)"
                     [pagination]="true" [paginationPageSize]="100" [suppressMenuHide]="true">
                 </ag-grid-angular>
@@ -28,3 +28,28 @@
         </div>
     </div>
 </div>
+<ng-template #deleteSupportTicketModal let-modal>
+    <div class="modal-header bg-secondary">
+        <h5 class="modal-title" id="deleteSupportTicketModalTitle">Warning</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p *ngIf="!currentUserIsTicketOwner(supportTicketToDelete)">
+            You are not authorized to delete support tickets which you did not create or have assigned you.
+        </p>
+        <p *ngIf="currentUserIsTicketOwner(supportTicketToDelete)">
+            You are about to delete Support Ticket <b>#{{supportTicketToDelete.SupportTicketID}}</b> 
+            <br><br>
+            Are you sure you wish to proceed?
+        </p>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="deleteSupportTicket()" [disabled]="!currentUserIsTicketOwner(supportTicketToDelete)">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Delete
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Cancel click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>

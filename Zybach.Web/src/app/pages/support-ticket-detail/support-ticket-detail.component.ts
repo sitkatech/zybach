@@ -1,9 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SupportTicketService } from 'src/app/shared/generated/api/support-ticket.service';
 import { SupportTicketDetailDto } from 'src/app/shared/generated/model/support-ticket-detail-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { Alert } from 'src/app/shared/models/alert';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 
 @Component({
@@ -12,10 +15,15 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./support-ticket-detail.component.scss']
 })
 export class SupportTicketDetailComponent implements OnInit {
-
+  @ViewChild('deleteCommentModal') deleteCommentModal;
+  
   public currentUser: UserDto;
   public supportTicketID: number;
   public supportTicket: SupportTicketDetailDto;
+
+  public isLoadingDelete: boolean = false;
+  private modalReference: NgbModalRef;
+  public commentIDToRemove: number;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -23,6 +31,7 @@ export class SupportTicketDetailComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService,
+    private modalService: NgbModal,
     private supportTicketService: SupportTicketService
   ) { }
 
@@ -33,6 +42,47 @@ export class SupportTicketDetailComponent implements OnInit {
       this.supportTicketService.supportTicketsSupportTicketIDGet(this.supportTicketID).subscribe(supportTicket => {
         this.supportTicket = supportTicket;
       });
+    })
+  }
+
+  public currentUserIsTicketOwner(): boolean {
+    return this.currentUser.UserID == this.supportTicket.CreatorUser.UserID || this.currentUser.UserID == this.supportTicket.AssigneeUser?.UserID;
+  }
+
+  private checkIfDeleting(): boolean {
+    return this.isLoadingDelete;
+  }
+  
+  public launchDeleteModal(modalContent: any, commentIDToRemove: number): void {
+    this.commentIDToRemove = commentIDToRemove;
+    this.modalReference = this.modalService.open(
+      modalContent, 
+      { 
+        ariaLabelledBy: 'deleteCommentModal', beforeDismiss: () => this.checkIfDeleting(), backdrop: 'static', keyboard: false
+      });
+  }
+
+  private refreshTicket() {
+    this.supportTicketService.supportTicketsSupportTicketIDGet(this.supportTicketID).subscribe(supportTicket => {
+      this.supportTicket = supportTicket;
+    });
+  }
+  
+  public deleteComment() {
+    this.isLoadingDelete = true;
+
+    this.supportTicketService.supportTicketCommentsSupportTicketCommentIDDelete(this.commentIDToRemove).subscribe(() => {
+      this.isLoadingDelete = false;
+      this.modalReference.close();
+      this.alertService.pushAlert(new Alert('Commment was successfully deleted.', AlertContext.Success, true));
+      this.refreshTicket();
+      window.scroll(0,0);
+      this.cdr.detectChanges();
+    }, error => {
+      this.isLoadingDelete = false;
+      this.modalReference.close();
+      window.scroll(0,0);
+      this.cdr.detectChanges();
     })
   }
 

@@ -58,6 +58,14 @@ namespace Zybach.API.Controllers
             return sensorSimpleDtos;
         }
 
+        [HttpGet("/sensors/search/{sensorName}")]
+        [ZybachViewFeature]
+        public ActionResult<List<string>> SearchBySensorName([FromRoute] string sensorName)
+        {
+            var sensors = Sensors.SearchBySensorName(_dbContext, sensorName);
+            return Ok(sensors.Select(x => x.SensorName).OrderBy(x => x));
+        }
+
         [HttpGet("/sensors/{sensorID}")]
         [ZybachViewFeature]
         public async Task<ActionResult<SensorSimpleDto>> GetByID([FromRoute] int sensorID)

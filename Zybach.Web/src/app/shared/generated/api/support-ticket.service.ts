@@ -18,6 +18,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { SupportTicketCommentSimpleDto } from '../model/support-ticket-comment-simple-dto';
+import { SupportTicketCommentUpsertDto } from '../model/support-ticket-comment-upsert-dto';
 import { SupportTicketDetailDto } from '../model/support-ticket-detail-dto';
 import { SupportTicketPriorityDto } from '../model/support-ticket-priority-dto';
 import { SupportTicketSimpleDto } from '../model/support-ticket-simple-dto';
@@ -64,6 +66,95 @@ export class SupportTicketService {
         return false;
     }
 
+
+    /**
+     * 
+     * 
+     * @param supportTicketCommentUpsertDto 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public supportTicketCommentsPost(supportTicketCommentUpsertDto?: SupportTicketCommentUpsertDto, observe?: 'body', reportProgress?: boolean): Observable<SupportTicketCommentSimpleDto>;
+    public supportTicketCommentsPost(supportTicketCommentUpsertDto?: SupportTicketCommentUpsertDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SupportTicketCommentSimpleDto>>;
+    public supportTicketCommentsPost(supportTicketCommentUpsertDto?: SupportTicketCommentUpsertDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SupportTicketCommentSimpleDto>>;
+    public supportTicketCommentsPost(supportTicketCommentUpsertDto?: SupportTicketCommentUpsertDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json-patch+json',
+            'application/json',
+            'text/json',
+            'application/_*+json',
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.post<SupportTicketCommentSimpleDto>(`${this.basePath}/supportTicketComments`,
+            supportTicketCommentUpsertDto,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param supportTicketCommentID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public supportTicketCommentsSupportTicketCommentIDDelete(supportTicketCommentID: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public supportTicketCommentsSupportTicketCommentIDDelete(supportTicketCommentID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public supportTicketCommentsSupportTicketCommentIDDelete(supportTicketCommentID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public supportTicketCommentsSupportTicketCommentIDDelete(supportTicketCommentID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (supportTicketCommentID === null || supportTicketCommentID === undefined) {
+            throw new Error('Required parameter supportTicketCommentID was null or undefined when calling supportTicketCommentsSupportTicketCommentIDDelete.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.delete<any>(`${this.basePath}/supportTicketComments/${encodeURIComponent(String(supportTicketCommentID))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
 
     /**
      * 
