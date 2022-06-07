@@ -44,76 +44,74 @@
             </div>
             <div class="card-body">
                 <div class="row col-12">
-                    <div class="row col-12">
-                        <div class="row col-6">
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Created By: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <p>{{supportTicket.CreatorUser.FullName}}
-                                    </p>
-                                </div>
+                    <div class="row col-6">
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Created By: </strong></p>
                             </div>
-
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Assigned To: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <p>{{supportTicket.AssigneeUser?.FullName}}
-                                        <em *ngIf="!supportTicket.AssigneeUser" class="text-muted">N/A</em>
-                                    </p>
-                                </div>
+                            <div class="col-6 text-left">
+                                <p>{{supportTicket.CreatorUser.FullName}}
+                                </p>
                             </div>
-
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Date Created: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <p>{{supportTicket.DateCreated | date:'shortDate':'UTC'}}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Date Updated: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <p>{{supportTicket.DateUpdated | date:'shortDate':'UTC'}}
-                                    </p>
-                                </div>
-                            </div>
-        
                         </div>
 
-                        <div class="row col-6">
-
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Well: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <a routerLink="/wells/{{supportTicket.Well.WellID}}">
-                                        {{supportTicket.Well.WellRegistrationID}}
-                                    </a>
-                                </div>
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Assigned To: </strong></p>
                             </div>
+                            <div class="col-6 text-left">
+                                <p>{{supportTicket.AssigneeUser?.FullName}}
+                                    <em *ngIf="!supportTicket.AssigneeUser" class="text-muted">N/A</em>
+                                </p>
+                            </div>
+                        </div>
 
-                            <div class="row col-12">
-                                <div class="col-6 text-right">
-                                    <p><strong>Sensor: </strong></p>
-                                </div>
-                                <div class="col-6 text-left">
-                                    <a routerLink="/sensors/{{supportTicket.Sensor?.SensorID}}" *ngIf="supportTicket.Sensor">
-                                        {{supportTicket.Sensor?.SensorName}}
-                                    </a>
-                                    <em *ngIf="!supportTicket.Sensor" class="text-muted">
-                                        N/A
-                                    </em>
-                                </div>
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Date Created: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{supportTicket.DateCreated | date:'shortDate':'UTC'}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Date Updated: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>{{supportTicket.DateUpdated | date:'shortDate':'UTC'}}
+                                </p>
+                            </div>
+                        </div>
+    
+                    </div>
+
+                    <div class="row col-6">
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Well: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <a routerLink="/wells/{{supportTicket.Well.WellID}}">
+                                    {{supportTicket.Well.WellRegistrationID}}
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Sensor: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <a routerLink="/sensors/{{supportTicket.Sensor?.SensorID}}" *ngIf="supportTicket.Sensor">
+                                    {{supportTicket.Sensor?.SensorName}}
+                                </a>
+                                <em *ngIf="!supportTicket.Sensor" class="text-muted">
+                                    N/A
+                                </em>
                             </div>
                         </div>
                     </div>
@@ -124,34 +122,48 @@
     </div>
 
     <div class="col-6">
-        <div class="row" *ngFor="let ticketComment of supportTicket?.Comments">
-            <div class="col-sm-12 mb-3">
-                <div class="card">
-                    <div class="card-header align-items-center">
-                        {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate':'UTC'}}
-                        <div class="float-right">
-                            <button class="btn btn-zybach btn-sm"
-                            (click)="launchDeleteModal(deleteCommentModal, ticketComment.SupportTicketCommentID)"
-                            [disabled]="!currentUserIsTicketOwner()">
-                            <span class="fa fa-trash"></span>
-                            </button>
+        <div class="card">
+            <div class="card-header align-items-center">
+                Comments
+            </div>
+            <div class="card-body">
+                <div class="row" *ngFor="let ticketComment of supportTicket?.Comments">
+                    <div class="col-sm-12 mb-3">
+                        <div class="row">
+                            <div class="col-10">
+                                <p><strong>
+                                    {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate':'UTC'}}
+                                </strong></p>
+                            </div>
+                            <div class="col-2 text-center">
+                                <button class="btn btn-zybach btn-sm"
+                                (click)="launchDeleteModal(deleteCommentModal, ticketComment.SupportTicketCommentID)"
+                                [disabled]="!currentUserIsTicketOwner()">
+                                <span class="fa fa-trash"></span>
+                                </button>
+                            </div>
+
                         </div>
+                        <div class="row col-12">
+                            <p>
+                                {{ticketComment.CommentNotes}}
+                            </p>
+                        </div>
+                            
+                        <div class="col-12">
+                            <hr class="w-90" />
+                        </div>
+                        
                     </div>
-                    <div class="card-body">
-                        <p>
-                            {{ticketComment.CommentNotes}}
-                        </p>
-                    </div>
-        
                 </div>
             </div>
-        </div>
 
-        <div class="row float-right">
-            <a class="btn btn-zybach btn-md float-right mb-3 mr-3"
-                routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
-                <span class="fas fa-plus"></span> Add Comment
-            </a>
+            <div class="row col-12">
+                <a class="btn btn-zybach btn-md m-3"
+                    routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
+                    <span class="fas fa-plus"></span> Add Comment
+                </a>
+            </div>
         </div>
     </div>
 </div>

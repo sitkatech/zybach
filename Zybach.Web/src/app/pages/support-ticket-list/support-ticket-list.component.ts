@@ -125,7 +125,7 @@ export class SupportTicketListComponent implements OnInit {
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors/" },
         filterValueGetter: function (params: any) {
-          return params.data.Sensor.SensorName;
+          return params.data.Sensor?.SensorName;
         },
         filter: true,
         resizable: true,
