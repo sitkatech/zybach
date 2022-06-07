@@ -83,10 +83,18 @@ namespace Zybach.API.Controllers
                 .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.SensorID == sensor.SensorID)
                 .Select(x => x.AsSimpleDto()).ToList();
 
-            var wellSensorMeasurementDtos = WellSensorMeasurements.ListBySensorAsDto(_dbContext, sensorSimpleDto.SensorName);
-            sensorSimpleDto.FirstReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Min(x => x.MeasurementDate) : null;
-            sensorSimpleDto.LastReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Max(x => x.MeasurementDate) : null;
+            var wellSensorMeasurements = WellSensorMeasurements.GetWellSensorMeasurementsImpl(_dbContext)
+                .Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
+
+            sensorSimpleDto.FirstReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : null;
+            sensorSimpleDto.LastReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : null;
+            var anomalousDates = SensorAnomalies.GetAnomolousDatesBySensorName(_dbContext, sensorSimpleDto.SensorName);
+            var wellSensorMeasurementDtos = WellSensorMeasurements.ZeroFillMissingDaysAsDto(wellSensorMeasurements.Where(x => !anomalousDates.Contains(x.MeasurementDate)).ToList());
+            
             sensorSimpleDto.WellSensorMeasurements = wellSensorMeasurementDtos;
+            var batteryVoltages = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).OrderByDescending(x => x.MeasurementDate).ToList();
+            var lastVoltageReading = batteryVoltages.Any() ? batteryVoltages.FirstOrDefault()?.MeasurementValue : null;
+            sensorSimpleDto.LastVoltageReading = lastVoltageReading;
 
             return sensorSimpleDto;
         }
