@@ -43,13 +43,13 @@ export class WaterQualityInspectionUpsertComponent implements OnInit {
     forkJoin({
       inspectionTypes: this.waterQualityInspectionService.waterQualityInspectionTypesGet(),
       cropTypes: this.chemigationInspectionService.cropTypesGet(),
-      users: this.userService.usersGet(),
+      users: this.userService.usersNotUnassignedOrDisabledGet(),
 
     }).subscribe(({ inspectionTypes, cropTypes, users }) => {
 
       this.inspectionTypes = inspectionTypes;
       this.cropTypes = cropTypes;
-      this.users = users.filter(x => x.Role.RoleID != RoleEnum.Unassigned && x.Role.RoleID != RoleEnum.Disabled);
+      this.users = users;
 
       this.cdr.detectChanges();
     });

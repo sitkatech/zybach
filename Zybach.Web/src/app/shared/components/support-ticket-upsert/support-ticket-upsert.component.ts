@@ -43,12 +43,12 @@ export class SupportTicketUpsertComponent implements OnInit {
     forkJoin({
       supportTicketStatuses: this.supportTicketService.supportTicketsStatusesGet(),
       supportTicketPriorities: this.supportTicketService.supportTicketsPrioritiesGet(),
-      users: this.userService.usersGet(),
+      users: this.userService.usersNotUnassignedOrDisabledGet(),
       currentUser: this.authenticationService.getCurrentUser()
     }).subscribe(({ supportTicketStatuses, supportTicketPriorities, users, currentUser }) => {
       this.supportTicketStatuses = supportTicketStatuses;
       this.supportTicketPriorities = supportTicketPriorities;
-      this.users = users.filter(x => x.Role.RoleID != RoleEnum.Unassigned && x.Role.RoleID != RoleEnum.Disabled);
+      this.users = users;
       this.currentUser = currentUser;
       this.cdr.detectChanges();
     });

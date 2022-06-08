@@ -54,7 +54,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
       chemigationInspectionFailureReasons: this.chemigationInspectionService.chemigationInspectionsFailureReasonsGet(),
       tillages: this.chemigationInspectionService.tillageTypesGet(),
       cropTypes: this.chemigationInspectionService.cropTypesGet(),
-      users: this.userService.usersGet(),
+      users: this.userService.usersNotUnassignedOrDisabledGet(),
       chemigationMainlineCheckValves: this.chemigationInspectionService.chemigationInspectionsMainlineCheckValvesGet(),
       chemigationLowPressureValves: this.chemigationInspectionService.chemigationInspectionsLowPressureValvesGet(),
       chemigationInjectionValves: this.chemigationInspectionService.chemigationInspectionsInjectionValvesGet(),
@@ -67,7 +67,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
       this.chemigationInspectionFailureReasons = chemigationInspectionFailureReasons;
       this.tillages = tillages;
       this.cropTypes = cropTypes;
-      this.users = users.filter(x => x.Role.RoleID != RoleEnum.Unassigned && x.Role.RoleID != RoleEnum.Disabled);
+      this.users = users;
       this.chemigationMainlineCheckValves = chemigationMainlineCheckValves;
       this.chemigationLowPressureValves = chemigationLowPressureValves;
       this.chemigationInjectionValves = chemigationInjectionValves;
