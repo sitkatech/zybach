@@ -20,7 +20,7 @@ public class BatteryVoltageSeriesFetchDailyJob : ScheduledBackgroundJobBase<Batt
         _influxDbService = influxDbService;
     }
 
-    public override List<RunEnvironment> RunEnvironments => new() {RunEnvironment.Development, RunEnvironment.Staging, RunEnvironment.Production};
+    public override List<RunEnvironment> RunEnvironments => new() {RunEnvironment.Production};
 
     protected override void RunJobImplementation()
     {

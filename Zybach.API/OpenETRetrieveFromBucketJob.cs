@@ -30,7 +30,7 @@ namespace Zybach.API
             _httpClient = httpClientFactory.CreateClient("GenericClient");
         }
 
-        public override List<RunEnvironment> RunEnvironments => new() { RunEnvironment.Staging, RunEnvironment.Production };
+        public override List<RunEnvironment> RunEnvironments => new() { RunEnvironment.Production };
 
         public const string JobName = "OpenET Retrieve from Google Bucket and Update Usage Data";
 
