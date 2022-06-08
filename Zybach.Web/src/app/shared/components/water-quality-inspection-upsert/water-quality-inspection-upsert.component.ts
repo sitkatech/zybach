@@ -12,6 +12,7 @@ import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
 import { debounceTime, distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WaterQualityInspectionTypeDto } from '../../generated/model/water-quality-inspection-type-dto';
+import { RoleEnum } from '../../generated/enum/role-enum';
 
 @Component({
   selector: 'zybach-water-quality-inspection-upsert',
@@ -48,7 +49,7 @@ export class WaterQualityInspectionUpsertComponent implements OnInit {
 
       this.inspectionTypes = inspectionTypes;
       this.cropTypes = cropTypes;
-      this.users = users;
+      this.users = users.filter(x => x.Role.RoleID != RoleEnum.Unassigned && x.Role.RoleID != RoleEnum.Disabled);
 
       this.cdr.detectChanges();
     });

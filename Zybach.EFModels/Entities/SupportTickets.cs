@@ -23,7 +23,8 @@ namespace Zybach.EFModels.Entities
         public static List<SupportTicketSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
             return GetSupportTicketsImpl(dbContext)
-                .OrderByDescending(x => x.DateUpdated)
+                .OrderBy(x => x.SupportTicketStatusID)
+                .ThenByDescending(x => x.DateUpdated)
                 .Select(x => x.AsSimpleDto())
                 .ToList();
         }

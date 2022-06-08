@@ -16,16 +16,13 @@
 
     <div class="row container">
         <div class="col-12 col-sm-6 label"><strong>Status: </strong></div>
-        <div class="col-12 col-sm-6">{{supportTicket.Status.SupportTicketStatusDisplayName}}
-        </div>
+        <div class="col-12 col-sm-6">{{supportTicket.Status.SupportTicketStatusDisplayName}}</div>
         <div class="col-12 col-sm-6 label"><strong>Priority: </strong></div>
         <div class="col-12 col-sm-6">{{supportTicket.Priority.SupportTicketPriorityDisplayName}}</div>
-        <div class="col-12 col-sm-6 label"><strong>Description: </strong></div>
-        <div class="col-12 col-sm-6">
-            <p>
-                <em *ngIf="!supportTicket.SupportTicketDescription" class="text-muted">N/A</em>
-                {{supportTicket.SupportTicketDescription}}
-            </p>
+        <div class="col-12 col-sm-6 label"><strong>Assigned To: </strong></div>
+        <div class="col-12 col-sm-6"> 
+            {{supportTicket.AssigneeUser?.FullName}}
+            <em *ngIf="!supportTicket.AssigneeUser" class="text-muted">N/A</em>
         </div>
     </div>
 
@@ -34,7 +31,7 @@
     <div class="col-6">
         <div class="card">
             <div class="card-header align-items-center">
-                Support Ticket #{{supportTicket.SupportTicketID}}: {{supportTicket.SupportTicketTitle}}
+                Ticket Details
                 <div class="float-right">
                     <a class="btn btn-zybach btn-sm float-right"
                         routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
@@ -57,17 +54,6 @@
 
                         <div class="row col-12">
                             <div class="col-6 text-right">
-                                <p><strong>Assigned To: </strong></p>
-                            </div>
-                            <div class="col-6 text-left">
-                                <p>{{supportTicket.AssigneeUser?.FullName}}
-                                    <em *ngIf="!supportTicket.AssigneeUser" class="text-muted">N/A</em>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row col-12">
-                            <div class="col-6 text-right">
                                 <p><strong>Date Created: </strong></p>
                             </div>
                             <div class="col-6 text-left">
@@ -82,6 +68,18 @@
                             </div>
                             <div class="col-6 text-left">
                                 <p>{{supportTicket.DateUpdated | date:'shortDate':'UTC'}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="row col-12">
+                            <div class="col-6 text-right">
+                                <p><strong>Description: </strong></p>
+                            </div>
+                            <div class="col-6 text-left">
+                                <p>
+                                    <em *ngIf="!supportTicket.SupportTicketDescription" class="text-muted">N/A</em>
+                                    {{supportTicket.SupportTicketDescription}}
                                 </p>
                             </div>
                         </div>

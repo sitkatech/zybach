@@ -11,6 +11,7 @@ import { SupportTicketPriorityDto } from '../../generated/model/support-ticket-p
 import { SupportTicketStatusDto } from '../../generated/model/support-ticket-status-dto';
 import { SupportTicketUpsertDto } from '../../generated/model/support-ticket-upsert-dto';
 import { UserDto } from '../../generated/model/user-dto';
+import { RoleEnum } from '../../generated/enum/role-enum';
 
 @Component({
   selector: 'zybach-support-ticket-upsert',
@@ -47,7 +48,7 @@ export class SupportTicketUpsertComponent implements OnInit {
     }).subscribe(({ supportTicketStatuses, supportTicketPriorities, users, currentUser }) => {
       this.supportTicketStatuses = supportTicketStatuses;
       this.supportTicketPriorities = supportTicketPriorities;
-      this.users = users;
+      this.users = users.filter(x => x.Role.RoleID != RoleEnum.Unassigned && x.Role.RoleID != RoleEnum.Disabled);
       this.currentUser = currentUser;
       this.cdr.detectChanges();
     });

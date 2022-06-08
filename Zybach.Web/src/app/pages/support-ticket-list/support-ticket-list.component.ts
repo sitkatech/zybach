@@ -69,17 +69,7 @@ export class SupportTicketListComponent implements OnInit {
         }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/support-tickets/" },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkValue;
-          let link2 = id2.LinkValue;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
           return params.data.SupportTicketID;
         },
@@ -97,12 +87,21 @@ export class SupportTicketListComponent implements OnInit {
         filterValueGetter: function (params: any) {
           return params.data.SupportTicketTitle;
         },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         filter: true,
         resizable: true,
         sortable: true
       },
       this.utilityFunctionsService.createDateColumnDef('Date Updated', 'DateUpdated', 'M/d/yyyy', 'UTC', 130),
-      this.utilityFunctionsService.createDateColumnDef('Date Created', 'DateCreated', 'M/d/yyyy', 'UTC', 130),
+      { 
+        headerName: 'Assigned To',
+        valueGetter: function (params: any) {
+          return params.data.AssigneeUser?.FullName;
+        },
+        filter: true,
+        resizable: true,
+        sortable: true
+      },
       {
         headerName: 'Well',
         valueGetter: function (params: any) {
@@ -113,6 +112,7 @@ export class SupportTicketListComponent implements OnInit {
         filterValueGetter: function (params: any) {
           return params.data.Well.WellRegistrationID;
         },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         filter: true,
         resizable: true,
         sortable: true
@@ -127,6 +127,7 @@ export class SupportTicketListComponent implements OnInit {
         filterValueGetter: function (params: any) {
           return params.data.Sensor?.SensorName;
         },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         filter: true,
         resizable: true,
         sortable: true
@@ -158,15 +159,7 @@ export class SupportTicketListComponent implements OnInit {
         resizable: true,
         sortable: true
       },
-      { 
-        headerName: 'Assigned To',
-        valueGetter: function (params: any) {
-          return params.data.AssigneeUser?.FullName;
-        },
-        filter: true,
-        resizable: true,
-        sortable: true
-      }
+      this.utilityFunctionsService.createDateColumnDef('Date Created', 'DateCreated', 'M/d/yyyy', 'UTC', 130)
     ]
   }
 
