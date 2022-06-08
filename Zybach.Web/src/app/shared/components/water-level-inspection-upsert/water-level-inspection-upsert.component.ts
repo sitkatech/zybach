@@ -36,11 +36,11 @@ export class WaterLevelInspectionUpsertComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin({
-      users: this.userService.usersGet(),
+      users: this.userService.usersNotUnassignedOrDisabledGet(),
       waterLevelMeasuringEquipment: this.waterLevelInspectionService.waterLevelInspectionsMeasuringEquipmentGet()
 
     }).subscribe(({ users, waterLevelMeasuringEquipment }) => {
-      this.users = users.filter(x => x.Role.RoleID != RoleEnum.Unassigned && x.Role.RoleID != RoleEnum.Disabled);
+      this.users = users;
       this.waterLevelMeasuringEquipment = waterLevelMeasuringEquipment;
 
       this.cdr.detectChanges();

@@ -81,6 +81,17 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsDto()).AsEnumerable();
         }
 
+        public static IEnumerable<UserDto> ListWithoutUnassignedAndDisabled(ZybachDbContext dbContext)
+        {
+            return dbContext.Users
+                .AsNoTracking()
+                .Where(x => x.RoleID != (int)RoleEnum.Unassigned
+                            && x.RoleID != (int)RoleEnum.Disabled)
+                .OrderBy(x => x.LastName)
+                .ThenBy(x => x.FirstName)
+                .Select(x => x.AsDto()).AsEnumerable();
+        }
+
         public static IEnumerable<UserDto> ListByRole(ZybachDbContext dbContext, RoleEnum roleEnum)
         {
             var users = GetUserImpl(dbContext)
