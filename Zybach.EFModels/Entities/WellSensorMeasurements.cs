@@ -97,7 +97,7 @@ namespace Zybach.EFModels.Entities
                 .Where(x => x.SensorName == sensorName).ToList();
 
             var anomalousDates = SensorAnomalies.GetAnomolousDatesBySensorName(dbContext, sensorName);
-            wellSensorMeasurements = wellSensorMeasurements.Where(x => !anomalousDates.Contains(x.MeasurementDate)).ToList();
+            wellSensorMeasurements = wellSensorMeasurements.Where(x => x.MeasurementType.MeasurementTypeID != MeasurementType.BatteryVoltage.MeasurementTypeID && !anomalousDates.Contains(x.MeasurementDate)).ToList();
             
             return ZeroFillMissingDaysAsDto(wellSensorMeasurements);
         }
