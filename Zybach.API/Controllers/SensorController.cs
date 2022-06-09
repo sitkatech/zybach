@@ -89,9 +89,9 @@ namespace Zybach.API.Controllers
             sensorSimpleDto.FirstReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : null;
             sensorSimpleDto.LastReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : null;
             var anomalousDates = SensorAnomalies.GetAnomolousDatesBySensorName(_dbContext, sensorSimpleDto.SensorName);
-            var wellSensorMeasurementDtos = WellSensorMeasurements.ZeroFillMissingDaysAsDto(wellSensorMeasurements.Where(x => !anomalousDates.Contains(x.MeasurementDate)).ToList());
+            var wellSensorMeasurementDtos = WellSensorMeasurements.ZeroFillMissingDaysAsDto(wellSensorMeasurements.Where(x => x.MeasurementType.MeasurementTypeID != (int) MeasurementTypeEnum.BatteryVoltage && !anomalousDates.Contains(x.MeasurementDate)).ToList());
             
-            sensorSimpleDto.WellSensorMeasurements = wellSensorMeasurementDtos.Where(x => x.MeasurementType.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
+            sensorSimpleDto.WellSensorMeasurements = wellSensorMeasurementDtos;
             var batteryVoltages = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).OrderByDescending(x => x.MeasurementDate).ToList();
             var lastVoltageReading = batteryVoltages.Any() ? batteryVoltages.FirstOrDefault()?.MeasurementValue : null;
             sensorSimpleDto.LastVoltageReading = lastVoltageReading;
@@ -110,7 +110,7 @@ namespace Zybach.API.Controllers
                 var wellSensorMeasurementDtos = WellSensorMeasurements.ListBySensorAsDto(_dbContext, sensor.SensorName);
                 sensor.FirstReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Min(x => x.MeasurementDate) : null;
                 sensor.LastReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Max(x => x.MeasurementDate) : null;
-                sensor.WellSensorMeasurements = wellSensorMeasurementDtos.Where(x => x.MeasurementType.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
+                sensor.WellSensorMeasurements = wellSensorMeasurementDtos;
             }
 
             return sensors;
