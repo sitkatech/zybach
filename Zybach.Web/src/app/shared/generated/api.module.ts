@@ -25,6 +25,7 @@ import { SensorService } from './api/sensor.service';
 import { SensorAnomalyService } from './api/sensor-anomaly.service';
 import { SensorStatusService } from './api/sensor-status.service';
 import { StreamFlowZoneService } from './api/stream-flow-zone.service';
+import { SupportTicketService } from './api/support-ticket.service';
 import { UserService } from './api/user.service';
 import { WaterLevelInspectionService } from './api/water-level-inspection.service';
 import { WaterQualityInspectionService } from './api/water-quality-inspection.service';
@@ -59,6 +60,7 @@ import { ZybachAPIService } from './api/zybach-api.service';
     SensorAnomalyService,
     SensorStatusService,
     StreamFlowZoneService,
+    SupportTicketService,
     UserService,
     WaterLevelInspectionService,
     WaterQualityInspectionService,

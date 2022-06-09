@@ -15,6 +15,9 @@ namespace Zybach.EFModels.Entities
             ChemigationInspections = new HashSet<ChemigationInspection>();
             FileResources = new HashSet<FileResource>();
             RobustReviewScenarioGETRunHistories = new HashSet<RobustReviewScenarioGETRunHistory>();
+            SupportTicketAssigneeUsers = new HashSet<SupportTicket>();
+            SupportTicketComments = new HashSet<SupportTicketComment>();
+            SupportTicketCreatorUsers = new HashSet<SupportTicket>();
             WaterLevelInspections = new HashSet<WaterLevelInspection>();
             WaterQualityInspections = new HashSet<WaterQualityInspection>();
         }
@@ -61,6 +64,12 @@ namespace Zybach.EFModels.Entities
         public virtual ICollection<FileResource> FileResources { get; set; }
         [InverseProperty("CreateByUser")]
         public virtual ICollection<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
+        [InverseProperty("AssigneeUser")]
+        public virtual ICollection<SupportTicket> SupportTicketAssigneeUsers { get; set; }
+        [InverseProperty("CreatorUser")]
+        public virtual ICollection<SupportTicketComment> SupportTicketComments { get; set; }
+        [InverseProperty("CreatorUser")]
+        public virtual ICollection<SupportTicket> SupportTicketCreatorUsers { get; set; }
         [InverseProperty("InspectorUser")]
         public virtual ICollection<WaterLevelInspection> WaterLevelInspections { get; set; }
         [InverseProperty("InspectorUser")]

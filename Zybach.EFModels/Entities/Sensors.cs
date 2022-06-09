@@ -14,9 +14,9 @@ namespace Zybach.EFModels.Entities
             WellPressure = 3
         }
 
-        public static Sensor GetBySensorName(ZybachDbContext dbContext, string sensorName)
+        public static List<Sensor> SearchBySensorName(ZybachDbContext dbContext, string searchText)
         {
-            return GetSensorsImpl(dbContext).SingleOrDefault(x => x.SensorName.Equals(sensorName));
+            return dbContext.Sensors.AsNoTracking().Where(x => x.SensorName.Contains(searchText)).ToList();
         }
 
         private static IQueryable<Sensor> GetSensorsImpl(ZybachDbContext dbContext)
@@ -33,11 +33,10 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
-        public static SensorSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int sensorID)
+        public static Sensor GetByID(ZybachDbContext dbContext, int sensorID)
         {
             return GetSensorsImpl(dbContext)
-                .SingleOrDefault(x => x.SensorID == sensorID)?
-                .AsSimpleDto();
+                .SingleOrDefault(x => x.SensorID == sensorID);
         }
 
         public static List<SensorSimpleDto> ListByWellIDAsSimpleDto(ZybachDbContext dbContext, int wellID)

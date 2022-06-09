@@ -4,6 +4,7 @@ import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { ChemigationInspectionService } from 'src/app/shared/generated/api/chemigation-inspection.service';
 import { UserService } from 'src/app/shared/generated/api/user.service';
+import { RoleEnum } from '../../generated/enum/role-enum';
 import { ChemigationInjectionValveDto } from '../../generated/model/chemigation-injection-valve-dto';
 import { ChemigationInspectionFailureReasonDto } from '../../generated/model/chemigation-inspection-failure-reason-dto';
 import { ChemigationInspectionStatusDto } from '../../generated/model/chemigation-inspection-status-dto';
@@ -53,7 +54,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
       chemigationInspectionFailureReasons: this.chemigationInspectionService.chemigationInspectionsFailureReasonsGet(),
       tillages: this.chemigationInspectionService.tillageTypesGet(),
       cropTypes: this.chemigationInspectionService.cropTypesGet(),
-      users: this.userService.usersGet(),
+      users: this.userService.usersNotUnassignedOrDisabledGet(),
       chemigationMainlineCheckValves: this.chemigationInspectionService.chemigationInspectionsMainlineCheckValvesGet(),
       chemigationLowPressureValves: this.chemigationInspectionService.chemigationInspectionsLowPressureValvesGet(),
       chemigationInjectionValves: this.chemigationInspectionService.chemigationInspectionsInjectionValvesGet(),

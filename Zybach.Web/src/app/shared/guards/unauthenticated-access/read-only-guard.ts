@@ -26,7 +26,7 @@ export class ReadOnlyGuard implements CanActivate {
     return this.authenticationService.getCurrentUser()
       .pipe(
         map(x => {
-          const readOnlyRoles = new Array(RoleEnum.Admin, RoleEnum.Normal, RoleEnum.WaterDataProgramReadOnly);
+          const readOnlyRoles = new Array(RoleEnum.Admin, RoleEnum.Normal, RoleEnum.WaterDataProgramSupportOnly);
           if (readOnlyRoles.includes(x.Role.RoleID)) {
             return true;
           } else {

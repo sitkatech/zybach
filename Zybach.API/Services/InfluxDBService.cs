@@ -33,28 +33,29 @@ namespace Zybach.API.Services
         public async Task<List<WellSensorMeasurementStaging>> GetFlowMeterSeries(DateTime fromDate)
         {
             var measurementType = MeasurementType.FlowMeter;
-            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType);
+            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType, AggregationType.Sum);
         }
 
         public async Task<List<WellSensorMeasurementStaging>> GetWaterLevelSeries(DateTime fromDate)
         {
             var measurementType = MeasurementType.WellPressure;
-            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType);
+            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType, AggregationType.Mean);
         }
 
         public async Task<List<WellSensorMeasurementStaging>> GetBatteryVoltageSeries(DateTime fromDate)
         {
             var measurementType = MeasurementType.BatteryVoltage;
-            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType);
+            return await GetWellSensorMeasurementStagingsImpl(fromDate, measurementType, AggregationType.Mean);
         }
 
-        private async Task<List<WellSensorMeasurementStaging>> GetWellSensorMeasurementStagingsImpl(DateTime fromDate, MeasurementType measurementType)
+        private async Task<List<WellSensorMeasurementStaging>> GetWellSensorMeasurementStagingsImpl(DateTime fromDate, MeasurementType measurementType, AggregationType aggregationType)
         {
+            
             var flux = FilterByDateRange(fromDate, DateTime.Now) +
                        FilterByMeasurement(new List<string> { measurementType.InfluxMeasurementName }) +
                        FilterByField(measurementType.InfluxFieldName) +
                        GroupBy(new List<string> { FieldNames.RegistrationID, FieldNames.SensorName }) +
-                       AggregateSumDaily(false);
+                       AggregrateDailyBy(aggregationType, false);
 
             var fluxTables = await RunInfluxQueryAsync(flux);
             return fluxTables.Select(x => new WellSensorMeasurementStaging
@@ -126,14 +127,10 @@ namespace Zybach.API.Services
             return await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReading>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
         }
 
-        private static string AggregateSumDaily(bool createEmpty)
+        private static string AggregrateDailyBy(AggregationType aggregationType, bool createEmpty)
         {
-            return $"|> aggregateWindow(every: 1d, fn: sum, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\", offset: 5h)";
-        }
-
-        private static string AggregateMeanDaily(bool createEmpty)
-        {
-            return $"|> aggregateWindow(every: 1d, fn: mean, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\", offset: 5h)";
+            return
+                $"|> aggregateWindow(every: 1d, fn: {aggregationType.ToString().ToLower()}, createEmpty: {(createEmpty ? "true" : "false")}, timeSrc: \"_start\", offset: 5h)";
         }
 
         private string FilterByStartDate()
@@ -249,6 +246,12 @@ namespace Zybach.API.Services
             public const string Measurement = "_measurement";
             public const string SensorName = "sn";
             public const string Field = "_field";
+        }
+
+        private enum AggregationType
+        {
+            Mean,
+            Sum
         }
     }
 }

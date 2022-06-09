@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { AnnualPumpedVolume } from '././annual-pumped-volume';
+import { SupportTicketSimpleDto } from '././support-ticket-simple-dto';
 import { SensorSummaryDto } from '././sensor-summary-dto';
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 
@@ -42,6 +43,7 @@ export class WellDetailDto {
     ScreenInterval?: string;
     ScreenDepth?: number;
     IrrigationUnitGeoJSON?: string;
+    OpenSupportTickets?: Array<SupportTicketSimpleDto>;
     Sensors?: Array<SensorSummaryDto>;
     WellConnectedMeter?: boolean;
     WellID?: number;

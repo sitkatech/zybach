@@ -132,6 +132,14 @@ namespace Zybach.API.Controllers
             return Ok(userDtos);
         }
 
+        [HttpGet("/users/notUnassignedOrDisabled")]
+        [ZybachViewFeature]
+        public ActionResult<IEnumerable<UserDto>> ListActiveUsers()
+        {
+            var userDtos = EFModels.Entities.User.ListWithoutUnassignedAndDisabled(_dbContext);
+            return Ok(userDtos);
+        }
+
         [HttpGet("/users/unassigned-report")]
         [ZybachViewFeature]
         public ActionResult<UnassignedUserReportDto> GetUnassignedUserReport()

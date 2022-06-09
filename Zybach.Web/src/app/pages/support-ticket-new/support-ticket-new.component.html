@@ -1,0 +1,52 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/support-tickets">Support Tickets</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            Create Support Ticket
+        </li>
+    </ol>
+</nav>
+
+<div class="container" *ngIf="model">
+    <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col-12">
+            <h2 class="d-inline-block">Create New Support Ticket</h2>
+        </div>
+
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-12">
+            <p>Create a support ticket using the form below
+            </p>
+        </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit(newSupportTicketForm)" #newSupportTicketForm="ngForm" class="container">
+
+        <zybach-support-ticket-upsert #supportTicketUpsertForm [(model)]="model">
+        </zybach-support-ticket-upsert >
+
+        <div class="col-12 text-right mt-3 mr-3">
+            <div class="col-sm text-left float-right">
+                <i class="fas fa-bolt"></i> Required field
+            </div>
+            <button type="submit" class="btn btn-zybach mr-1">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+            <a class="btn btn-secondary ml-1"
+                routerLink="..">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+
+

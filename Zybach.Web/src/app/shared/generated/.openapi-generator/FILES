@@ -22,6 +22,7 @@ api/sensor-anomaly.service.ts
 api/sensor-status.service.ts
 api/sensor.service.ts
 api/stream-flow-zone.service.ts
+api/support-ticket.service.ts
 api/user.service.ts
 api/water-level-inspection.service.ts
 api/water-quality-inspection.service.ts
@@ -106,6 +107,15 @@ model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
 model/structured-results-dto.ts
 model/structured-results.ts
+model/support-ticket-comment-simple-dto.ts
+model/support-ticket-comment-upsert-dto.ts
+model/support-ticket-detail-dto.ts
+model/support-ticket-priority-dto.ts
+model/support-ticket-priority-simple-dto.ts
+model/support-ticket-simple-dto.ts
+model/support-ticket-status-dto.ts
+model/support-ticket-status-simple-dto.ts
+model/support-ticket-upsert-dto.ts
 model/tillage-dto.ts
 model/unassigned-user-report-dto.ts
 model/user-create-dto.ts

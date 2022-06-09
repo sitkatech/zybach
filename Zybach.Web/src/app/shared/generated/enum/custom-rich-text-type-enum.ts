@@ -25,5 +25,6 @@ export enum CustomRichTextTypeEnum {
   WaterLevelExplorerMap = 20,
   WaterLevelExplorerMapDisclaimer = 21,
   IrrigationUnitIndex = 22,
-  OpenETIntegration = 23
+  OpenETIntegration = 23,
+  SupportTicketIndex = 24
 }
