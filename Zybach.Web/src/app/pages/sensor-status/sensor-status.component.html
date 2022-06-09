@@ -8,7 +8,7 @@
 </div>
 
 <div class="container navCaretMargin" *ngIf="wellsGeoJson">
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-6 mb-3">
         <h2 class="d-inline-block">Sensor Status</h2>
     </div>
     <zybach-sensor-status-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"></zybach-sensor-status-map>
