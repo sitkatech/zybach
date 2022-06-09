@@ -14,10 +14,10 @@ export class UtilityFunctionsService {
     private decimalPipe: DecimalPipe
   ) { }
 
-  private decimalValueGetter(params: any, fieldName): number {
+  private decimalValueGetter(params: any, fieldName, allowNullData?: boolean): number {
     const fieldNames = fieldName.split('.');
     if (fieldNames.length == 1) {
-      return params.data[fieldName] ?? 0;
+      return params.data[fieldName] ?? (allowNullData ? null : 0);
     }
 
     // checks that each part of a nested field is not null
@@ -25,7 +25,7 @@ export class UtilityFunctionsService {
     fieldNames.forEach(x => {
       fieldValue = fieldValue[x];
       if (!fieldValue) {
-        fieldValue = 0;
+        fieldValue = allowNullData ? null : 0;
         return;
       }
     });
@@ -33,14 +33,14 @@ export class UtilityFunctionsService {
     return fieldValue;
   }
 
-  public createDecimalColumnDef(headerName: string, fieldName: string, width?: number, decimalPlacesToDisplay?: number) {
+  public createDecimalColumnDef(headerName: string, fieldName: string, width?: number, decimalPlacesToDisplay?: number, allowNullData?: boolean) {
     const _decimalPipe = this.decimalPipe;
     const decimalFormatString = decimalPlacesToDisplay != null ? 
       '1.' + decimalPlacesToDisplay + '-' + decimalPlacesToDisplay : '1.2-2';
   
     var decimalColDef: ColDef = {
       headerName: headerName, filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }, sortable: true, resizable: true,
-      valueGetter: params => this.decimalValueGetter(params, fieldName),
+      valueGetter: params => this.decimalValueGetter(params, fieldName, allowNullData),
       valueFormatter: params => _decimalPipe.transform(params.value, decimalFormatString),
     }
     if (width) {

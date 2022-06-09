@@ -1,8 +1,22 @@
 <div class="row mb-2">
-    <div class="col-12 col-lg-6">
-        <ng-select [(ngModel)]="selectedDataSources" placeholder="No Data Source Selected" [multiple]="true"
-            [closeOnSelect]="false" (change)="onDataSourceFilterChange()" [selectableGroup]="true"
-            [selectableGroupAsModel]="false" groupBy="group_name" [items]="dataSourceDropdownList" bindLabel="item_text"
+    <div class="col-lg-3"   >
+        <div class="row mb-3 align-items-end">
+            <div class="col-auto pr-0">
+                <label class="control-label d-inline-block">Filter By</label>
+            </div>
+            <div class="col">
+                <select (change)="onMapFilterChange($event.target.value)" name="fitlerOptionSelect" class="form-control d-inline-block">
+                    <option [value]="true">Last Message Age</option>
+                    <option [value]="false">Last Voltage Reading</option>
+    
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5"> 
+        <ng-select [(ngModel)]="selectedFilterOptions" placeholder="No map filters selected" [multiple]="true"
+            [closeOnSelect]="false" (change)="onSelectedFilterOptionsChange()" [selectableGroup]="true"
+            [selectableGroupAsModel]="false" groupBy="group_name" [items]="filterOptionsDropdownList" bindLabel="item_text"
             bindValue="item_id">
             <ng-template ng-optgroup-tmp let-item="item" let-item$="item$" let-index="index">
                 <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> Select All
@@ -12,7 +26,7 @@
             </ng-template>
         </ng-select>
     </div>
-    <div class="col-12 col-lg-6">
+    <div class="col-lg-4">
         <div class="input-group">
             <input type="text" name="mapSearchQuery" class="form-control" placeholder="Search map by address..." [(ngModel)]="mapSearchQuery" (keyup.enter)="mapSearch()"/>
             <div class="input-group-append">
