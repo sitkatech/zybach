@@ -25,7 +25,7 @@ create table dbo.SupportTicket (
 	SupportTicketStatusID int not null constraint FK_SupportTicket_SupportTicketStatus_SupportTicketStatusID foreign key (SupportTicketStatusID) references dbo.SupportTicketStatus(SupportTicketStatusID),
 	SupportTicketPriorityID int not null constraint FK_SupportTicket_SupportTicketPriority_SupportTicketPriorityID foreign key (SupportTicketPriorityID) references dbo.SupportTicketPriority(SupportTicketPriorityID),
 	SupportTicketTitle varchar(100) not null,
-	SupportTicketDescription varchar(200) null
+	SupportTicketDescription varchar(500) null
 )
 
 create table dbo.SupportTicketComment (

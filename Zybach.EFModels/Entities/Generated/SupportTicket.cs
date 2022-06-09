@@ -30,7 +30,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         [Unicode(false)]
         public string SupportTicketTitle { get; set; }
-        [StringLength(200)]
+        [StringLength(500)]
         [Unicode(false)]
         public string SupportTicketDescription { get; set; }
 

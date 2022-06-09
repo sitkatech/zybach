@@ -8,7 +8,6 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { AgHubIrrigationUnitDetailDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-detail-dto';
 import { AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { ETAndPrecipitationUnitTypes } from 'src/app/shared/models/enums/et-and-precip-units.enum';
 import { IrrigationUnitMapComponent } from '../irrigation-unit-map/irrigation-unit-map.component';
 
 @Component({
@@ -21,16 +20,13 @@ export class IrrigationUnitDetailComponent implements OnInit {
   @ViewChild("irrigationUnitMap") irrigationUnitMap: IrrigationUnitMapComponent;
   @ViewChild('openETDataGrid') openETDataGrid: AgGridAngular;
  
-  currentUser: UserDto;
+  public currentUser: UserDto;
   public irrigationUnit: AgHubIrrigationUnitDetailDto;
   public irrigationUnitID: number;
 
   public columnDefs: any[];
   public defaultColDef: ColDef;
   public openETData: Array<AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto>;
-
-  public unitsShown: string;
-  public defaultUnitsShown: string = ETAndPrecipitationUnitTypes.AcreFeet;
 
   public gridApi: any;
 
@@ -44,7 +40,6 @@ export class IrrigationUnitDetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.unitsShown = this.defaultUnitsShown;
     this.irrigationUnitID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -64,13 +59,6 @@ export class IrrigationUnitDetailComponent implements OnInit {
     })
   }
 
-  public toggleUnitsShown(): void {
-    this.unitsShown = this.unitsShown == ETAndPrecipitationUnitTypes.AcreFeet ? ETAndPrecipitationUnitTypes.Inches : ETAndPrecipitationUnitTypes.AcreFeet;
-    this.initializeGrid();
-    this.openETDataGrid?.api.showLoadingOverlay();
-    setTimeout(() => this.gridApi.sizeColumnsToFit(), 200);
-  }
-
   private initializeGrid(): void {
     this.columnDefs = [
       {
@@ -87,10 +75,10 @@ export class IrrigationUnitDetailComponent implements OnInit {
         },
         sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
-      this.utilityFunctionsService.createDecimalColumnDef(`Evapotranspiration (${this.unitsShown})`,
-        this.unitsShown === ETAndPrecipitationUnitTypes.AcreFeet ? 'EvapotranspirationAcreFeet' : 'EvapotranspirationInches'),
-      this.utilityFunctionsService.createDecimalColumnDef(`Precipitation (${this.unitsShown})`, 
-        this.unitsShown === ETAndPrecipitationUnitTypes.AcreFeet ? 'PrecipitationAcreFeet' : 'PrecipitationInches')
+      this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration (ac-ft)', 'EvapotranspirationAcreFeet'),
+      this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration (in)', 'EvapotranspirationInches'),
+      this.utilityFunctionsService.createDecimalColumnDef('Precipitation (ac-ft)', 'PrecipitationAcreFeet'),
+      this.utilityFunctionsService.createDecimalColumnDef('Precipitation (in)', 'PrecipitationInches')
     ];
   }
 

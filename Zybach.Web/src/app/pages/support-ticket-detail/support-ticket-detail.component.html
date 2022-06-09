@@ -41,7 +41,7 @@
             </div>
             <div class="card-body">
                 <div class="row col-12">
-                    <div class="row col-6">
+                    <div class="col-6">
                         <div class="row col-12">
                             <div class="col-6 text-right">
                                 <p><strong>Created By: </strong></p>
@@ -72,21 +72,9 @@
                             </div>
                         </div>
 
-                        <div class="row col-12">
-                            <div class="col-6 text-right">
-                                <p><strong>Description: </strong></p>
-                            </div>
-                            <div class="col-6 text-left">
-                                <p>
-                                    <em *ngIf="!supportTicket.SupportTicketDescription" class="text-muted">N/A</em>
-                                    {{supportTicket.SupportTicketDescription}}
-                                </p>
-                            </div>
-                        </div>
-    
                     </div>
 
-                    <div class="row col-6">
+                    <div class="col-6">
 
                         <div class="row col-12">
                             <div class="col-6 text-right">
@@ -112,6 +100,21 @@
                                 </em>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row col-12">
+                        <div class="row col-12">
+                            <div class="col-3 text-right">
+                                <p><strong>Description: </strong></p>
+                            </div>
+                            <div class="col-9 text-left">
+                                <p>
+                                    <em *ngIf="!supportTicket.SupportTicketDescription" class="text-muted">N/A</em>
+                                    {{supportTicket.SupportTicketDescription}}
+                                </p>
+                            </div>
+                        </div>
+    
                     </div>
                 </div>
             </div>

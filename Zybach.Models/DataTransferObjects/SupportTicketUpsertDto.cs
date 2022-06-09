@@ -20,7 +20,7 @@ namespace Zybach.Models.DataTransferObjects
         [Required]
         [StringLength(100, ErrorMessage = "Ticket name cannot exceed 100 characters.")]
         public string SupportTicketTitle { get; set; }
-        [StringLength(200, ErrorMessage = "Description cannot exceed 200 characters.")]
+        [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string SupportTicketDescription { get; set; }
 
     }
