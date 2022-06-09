@@ -8306,7 +8306,7 @@
             "type": "string"
           },
           "SupportTicketDescription": {
-            "maxLength": 200,
+            "maxLength": 500,
             "minLength": 0,
             "type": "string",
             "nullable": true
