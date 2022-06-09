@@ -15,6 +15,7 @@ namespace Zybach.EFModels.Entities
         {
             ChemigationPermits = new HashSet<ChemigationPermit>();
             Sensors = new HashSet<Sensor>();
+            SupportTickets = new HashSet<SupportTicket>();
             WaterLevelInspections = new HashSet<WaterLevelInspection>();
             WaterQualityInspections = new HashSet<WaterQualityInspection>();
             WellWaterQualityInspectionTypes = new HashSet<WellWaterQualityInspectionType>();
@@ -111,6 +112,8 @@ namespace Zybach.EFModels.Entities
         public virtual ICollection<ChemigationPermit> ChemigationPermits { get; set; }
         [InverseProperty("Well")]
         public virtual ICollection<Sensor> Sensors { get; set; }
+        [InverseProperty("Well")]
+        public virtual ICollection<SupportTicket> SupportTickets { get; set; }
         [InverseProperty("Well")]
         public virtual ICollection<WaterLevelInspection> WaterLevelInspections { get; set; }
         [InverseProperty("Well")]

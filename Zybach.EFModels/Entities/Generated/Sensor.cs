@@ -13,6 +13,7 @@ namespace Zybach.EFModels.Entities
         public Sensor()
         {
             SensorAnomalies = new HashSet<SensorAnomaly>();
+            SupportTickets = new HashSet<SupportTicket>();
         }
 
         [Key]
@@ -35,5 +36,7 @@ namespace Zybach.EFModels.Entities
         public virtual Well Well { get; set; }
         [InverseProperty("Sensor")]
         public virtual ICollection<SensorAnomaly> SensorAnomalies { get; set; }
+        [InverseProperty("Sensor")]
+        public virtual ICollection<SupportTicket> SupportTickets { get; set; }
     }
 }

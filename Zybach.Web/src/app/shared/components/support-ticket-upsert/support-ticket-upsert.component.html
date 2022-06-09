@@ -1,0 +1,84 @@
+<form #supportTicketForm="ngForm">
+
+    <div class="row col-12 mt-4">
+        <div class="row col-6">
+            
+            <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Ticket Name: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <textarea class="form-control" name="SupportTicketTitle"
+                    [(ngModel)]="model.SupportTicketTitle">
+                </textarea>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Status: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <ng-select [(ngModel)]="model.SupportTicketStatusID"
+                    [items]="supportTicketStatuses" bindLabel="SupportTicketStatusDisplayName" bindValue="SupportTicketStatusID" 
+                    placeholder="Choose One" name="SupportTicketStatusID">
+                </ng-select>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Priority Level: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <ng-select [(ngModel)]="model.SupportTicketPriorityID"
+                    [items]="supportTicketPriorities" bindLabel="SupportTicketPriorityDisplayName" bindValue="SupportTicketPriorityID" 
+                    placeholder="Choose One" name="SupportTicketPriorityID">
+                </ng-select>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Assignee: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <ng-select [(ngModel)]="model.AssigneeUserID" required
+                    [items]="users" bindLabel="FullNameLastFirst" bindValue="UserID" 
+                    placeholder="Choose One" name="AssigneeUserID">
+                </ng-select>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Description: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <textarea class="form-control" name="SupportTicketDescription" rows="5"
+                    placeholder="Description" [(ngModel)]="model.SupportTicketDescription">
+                </textarea>
+            </div>
+
+        </div>
+
+        <div class="row col-6">
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Created By: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                {{currentUser?.FullName}}
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label class="required"><strong>Well: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <input type="text" class="form-control" name="WellRegistrationID" required [(ngModel)]="model.WellRegistrationID" [ngbTypeahead]="wellSearchApi" placeholder="Search by Reg #" />
+                <small class="form-text text-muted font-italic" *ngIf="wellSearchFailed">Suggestions could not be loaded.</small>
+            </div>
+
+            <div class="col-6 control-label text-right mb-2">
+                <label><strong>Sensor: </strong></label>
+            </div>
+            <div class="col-6 text-left mb-2">
+                <input type="text" class="form-control" name="SensorName" required [(ngModel)]="model.SensorName" [ngbTypeahead]="sensorSearchApi" placeholder="Search by Name" />
+                <small class="form-text text-muted font-italic" *ngIf="sensorSearchFailed">Suggestions could not be loaded.</small>
+            </div>
+     
+        </div>
+    </div>
+
+</form>

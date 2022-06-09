@@ -23,6 +23,7 @@ import { CustomDropdownFilterComponent } from './components/custom-dropdown-filt
 import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters-button/clear-grid-filters-button.component';
 import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { NgxMaskModule } from 'ngx-mask';
         CKEditorModule,
         NgbModule,
         AutoCompleteModule,
+        NgSelectModule,
         NgxMaskModule.forChild(),
     ],
     exports: [

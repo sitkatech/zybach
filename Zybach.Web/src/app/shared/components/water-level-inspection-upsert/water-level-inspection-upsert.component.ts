@@ -10,6 +10,7 @@ import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WaterLevelInspectionUpsertDto } from '../../generated/model/water-level-inspection-upsert-dto';
 import { WaterLevelInspectionService } from 'src/app/shared/generated/api/water-level-inspection.service';
 import { WaterLevelMeasuringEquipmentDto } from '../../generated/model/water-level-measuring-equipment-dto';
+import { RoleEnum } from '../../generated/enum/role-enum';
 
 @Component({
   selector: 'zybach-water-level-inspection-upsert',
@@ -35,7 +36,7 @@ export class WaterLevelInspectionUpsertComponent implements OnInit {
 
   ngOnInit(): void {
     forkJoin({
-      users: this.userService.usersGet(),
+      users: this.userService.usersNotUnassignedOrDisabledGet(),
       waterLevelMeasuringEquipment: this.waterLevelInspectionService.waterLevelInspectionsMeasuringEquipmentGet()
 
     }).subscribe(({ users, waterLevelMeasuringEquipment }) => {

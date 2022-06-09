@@ -145,6 +145,49 @@ export class SensorService {
     /**
      * 
      * 
+     * @param sensorName 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sensorsSearchSensorNameGet(sensorName: string, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public sensorsSearchSensorNameGet(sensorName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public sensorsSearchSensorNameGet(sensorName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public sensorsSearchSensorNameGet(sensorName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (sensorName === null || sensorName === undefined) {
+            throw new Error('Required parameter sensorName was null or undefined when calling sensorsSearchSensorNameGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<string>>(`${this.basePath}/sensors/search/${encodeURIComponent(String(sensorName))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
      * @param sensorID 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.

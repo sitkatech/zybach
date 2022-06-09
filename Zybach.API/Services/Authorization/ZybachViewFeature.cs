@@ -4,7 +4,7 @@ namespace Zybach.API.Services.Authorization
 {
     public class ZybachViewFeature : BaseAuthorizationAttribute
     {
-        public ZybachViewFeature() : base(new []{RoleEnum.Normal, RoleEnum.Admin, RoleEnum.WaterDataProgramReadOnly})
+        public ZybachViewFeature() : base(new []{RoleEnum.Normal, RoleEnum.Admin, RoleEnum.WaterDataProgramSupportOnly})
         {
         }
     }

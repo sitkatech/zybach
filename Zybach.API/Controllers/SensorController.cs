@@ -58,17 +58,30 @@ namespace Zybach.API.Controllers
             return sensorSimpleDtos;
         }
 
+        [HttpGet("/sensors/search/{sensorName}")]
+        [ZybachViewFeature]
+        public ActionResult<List<string>> SearchBySensorName([FromRoute] string sensorName)
+        {
+            var sensors = Sensors.SearchBySensorName(_dbContext, sensorName);
+            return Ok(sensors.Select(x => x.SensorName).OrderBy(x => x));
+        }
+
         [HttpGet("/sensors/{sensorID}")]
         [ZybachViewFeature]
         public async Task<ActionResult<SensorSimpleDto>> GetByID([FromRoute] int sensorID)
         {
-            if (GetSensorSimpleDtoAndThrowIfNotFound(sensorID, out var sensorSimpleDto, out var actionResult)) return actionResult;
+            if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
 
+            var sensorSimpleDto = sensor.AsSimpleDto();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
             var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
                 ? sensorMessageAges[sensorSimpleDto.SensorName]
                 : (int?)null;
             sensorSimpleDto.MessageAge = messageAge;
+
+            sensorSimpleDto.OpenSupportTickets = SupportTickets.GetSupportTicketsImpl(_dbContext)
+                .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.SensorID == sensor.SensorID)
+                .Select(x => x.AsSimpleDto()).ToList();
 
             var wellSensorMeasurements = WellSensorMeasurements.GetWellSensorMeasurementsImpl(_dbContext)
                 .Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
@@ -77,7 +90,8 @@ namespace Zybach.API.Controllers
             sensorSimpleDto.LastReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : null;
             var anomalousDates = SensorAnomalies.GetAnomolousDatesBySensorName(_dbContext, sensorSimpleDto.SensorName);
             var wellSensorMeasurementDtos = WellSensorMeasurements.ZeroFillMissingDaysAsDto(wellSensorMeasurements.Where(x => !anomalousDates.Contains(x.MeasurementDate)).ToList());
-            sensorSimpleDto.WellSensorMeasurements = wellSensorMeasurementDtos;
+            
+            sensorSimpleDto.WellSensorMeasurements = wellSensorMeasurementDtos.Where(x => x.MeasurementType.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
             var batteryVoltages = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).OrderByDescending(x => x.MeasurementDate).ToList();
             var lastVoltageReading = batteryVoltages.Any() ? batteryVoltages.FirstOrDefault()?.MeasurementValue : null;
             sensorSimpleDto.LastVoltageReading = lastVoltageReading;
@@ -96,16 +110,16 @@ namespace Zybach.API.Controllers
                 var wellSensorMeasurementDtos = WellSensorMeasurements.ListBySensorAsDto(_dbContext, sensor.SensorName);
                 sensor.FirstReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Min(x => x.MeasurementDate) : null;
                 sensor.LastReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Max(x => x.MeasurementDate) : null;
-                sensor.WellSensorMeasurements = wellSensorMeasurementDtos;
+                sensor.WellSensorMeasurements = wellSensorMeasurementDtos.Where(x => x.MeasurementType.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
             }
 
             return sensors;
         }
 
-        private bool GetSensorSimpleDtoAndThrowIfNotFound(int sensorID, out SensorSimpleDto sensorSimpleDto, out ActionResult actionResult)
+        private bool GetSensorAndThrowIfNotFound(int sensorID, out Sensor sensor, out ActionResult actionResult)
         {
-            sensorSimpleDto = Sensors.GetByIDAsSimpleDto(_dbContext, sensorID);
-            return ThrowNotFound(sensorSimpleDto, "Sensor", sensorID, out actionResult);
+            sensor = Sensors.GetByID(_dbContext, sensorID);
+            return ThrowNotFound(sensor, "Sensor", sensorID, out actionResult);
         }
     }
 }
