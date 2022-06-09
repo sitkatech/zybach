@@ -16,9 +16,9 @@
 <div class="container navCaretMargin">
     <div class="row mt-2">
         <div class="col">
-            <p>The following grid shows all sensors that have not sent a message in 8 or more hours.</p>
+            <p>The following grid shows all sensors that have not sent a message in 8 or more hours, or with a most recent voltage reading of less than 2500 millivolts.</p>
         </div>
-        <div class="col">
+        <div class="col-auto">
             <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="downloadCsv()" placement="top"
             ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
             <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="wellsGrid">
