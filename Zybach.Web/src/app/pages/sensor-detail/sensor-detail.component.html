@@ -24,19 +24,40 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="row">
-                                <div class="col-12 col-sm-6 label"><strong>Well: </strong> </div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
+                                    </field-definition>
+                                </strong> </div>
                                 <div class="col-12 col-sm-6 text-left"><a routerLink="/wells/{{sensor.WellID}}">{{sensor.WellRegistrationID}}</a></div>
-                                <div class="col-12 col-sm-6 label"><strong>Sensor Type: </strong> </div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'SensorType'">
+                                    </field-definition>
+                                </strong> </div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor.SensorTypeName}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>Last Message Age (Hours): </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'SensorLastMessageAgeHours'">
+                                    </field-definition>
+                                </strong></div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor.MessageAge}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>Last Voltage Reading (mV): </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'SensorLastVoltageReading'">
+                                    </field-definition>
+                                </strong></div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>First Reading Date: </strong> </div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'SensorFirstReadingDate'">
+                                    </field-definition>
+                                </strong> </div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor?.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
-                                <div class="col-12 col-sm-6 label"><strong>Last Reading Date: </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'SensorLastReadingDate'">
+                                    </field-definition>
+                                </strong></div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor?.LastReadingDate | date: "MM/dd/yyyy" }}</div>
-                                <div class="col-12 col-sm-6 label"><strong>Status: </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'SensorStatus'">
+                                    </field-definition>
+                                </strong></div>
                                 <div class="col-12 col-sm-6 text-left">
                                     <div class="btn-group btn-group-toggle float-left">
                                         <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">

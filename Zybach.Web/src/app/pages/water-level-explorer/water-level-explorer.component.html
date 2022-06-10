@@ -24,7 +24,10 @@
                         <div *ngIf="selectedWell; else noWellSelected">
                             <div class="col-12">
                                 <div class="row">
-                                    <div class="col-6 label"><strong>Well Registration ID: </strong> </div>
+                                    <div class="col-6 label"><strong>
+                                        <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
+                                        </field-definition>
+                                    </strong> </div>
                                     <div class="col-6">{{ selectedWell?.WellRegistrationID }}</div>
                                     <div class="col-6 label"><strong>Legal Description: </strong></div>
                                     <div class="col-6">{{ selectedWell?.TownshipRangeSection }}</div>

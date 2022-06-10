@@ -104,6 +104,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return params.data.Well.WellNickname;
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         sortable: true, filter: true, resizable: true,        
       },
       {

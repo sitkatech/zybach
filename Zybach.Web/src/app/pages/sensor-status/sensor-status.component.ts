@@ -8,6 +8,8 @@ import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-messa
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorMessageAgeDto } from 'src/app/shared/generated/model/well-with-sensor-message-age-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-sensor-status',
@@ -48,12 +50,14 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       {
         headerName: "AgHub Registered User",
         field: "AgHubRegisteredUser",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser},
         width: 170,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Field Name",
         field: "fieldName",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
         width: 115,
         sortable: true, filter: true, resizable: true
       },
@@ -134,6 +138,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   
   public onGridReady(params) {
     this.gridApi = params.api;
+    this.wellsGrid.api.sizeColumnsToFit();
   }
 
   public onSelectionChanged(event: Event) {

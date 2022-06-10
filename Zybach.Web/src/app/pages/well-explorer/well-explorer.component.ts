@@ -11,6 +11,8 @@ import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-wi
 import { WellMapComponent } from '../well-map/well-map.component';
 import { MapDataService } from 'src/app/shared/generated/api/map-data.service';
 import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-well-explorer',
@@ -100,21 +102,25 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         filterValueGetter: function (params: any) {
           return params.data.WellRegistrationID;
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         sortable: true, filter: true, resizable: true,        
       },
       {
         headerName: "Nickname",
         field: "WellNickname",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         sortable: true, filter: true, resizable: true,        
       },
       {
         headerName: "AgHub Registered User",
         field: "AgHubRegisteredUser",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser},
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Field Name",
         field: "FieldName",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
         sortable: true, filter: true, resizable: true
       },      
       {
@@ -125,6 +131,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Owner Name",
         field: "OwnerName",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName},
         sortable: true, filter: true, resizable: true
       },
       {
@@ -141,6 +148,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         filterParams: {
         field: 'HasWaterQualityInspections'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation},
         sortable: true, resizable: true
       },
       {
@@ -152,10 +160,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         filterParams: {
         field: 'HasWaterLevelInspections'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterLevelInspectionParticipation},
         sortable: true, resizable: true
       },
-      this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
-      this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
+      this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
+      this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
       {
         headerName: "Has Flow Meter?",
         valueGetter: function (params) {
@@ -212,6 +221,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Irrigation Unit ID",
         field: "WellTPID",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.IrrigationUnitID},
         sortable: true, filter: true, resizable: true
       },
       {
@@ -267,8 +277,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
   }
 
-  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string): ColDef {
-    return {
+  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string, fieldDefinitionTypeID?: number): ColDef {
+    var dateColDef: ColDef = 
+    {
       headerName: headerName, valueGetter: function (params: any) {
         return datePipe.transform(params.data[fieldName], dateFormat);
       },
@@ -281,6 +292,13 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       resizable: true,
       sortable: true
     };
+
+    if (fieldDefinitionTypeID) {
+      dateColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
+    }
+
+    return 
   }
   
   public onSelectionChanged(event: Event) {

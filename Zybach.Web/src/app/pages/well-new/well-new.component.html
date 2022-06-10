@@ -13,7 +13,10 @@
             <div class="col">
                 <div class="form-group mt-4">
                     <div class="col-sm-5 control-label">
-                        <label class="required">Well Registration ID</label>
+                        <label class="required">
+                            <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
+                            </field-definition>
+                        </label>
                     </div>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" name="WellRegistrationID"

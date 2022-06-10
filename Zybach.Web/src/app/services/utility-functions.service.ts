@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { CsvExportParams } from 'ag-grid-community';
+import { FieldDefinitionGridHeaderComponent } from '../shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from '../shared/generated/enum/field-definition-type-enum';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +35,7 @@ export class UtilityFunctionsService {
     return fieldValue;
   }
 
-  public createDecimalColumnDef(headerName: string, fieldName: string, width?: number, decimalPlacesToDisplay?: number, allowNullData?: boolean) {
+  public createDecimalColumnDef(headerName: string, fieldName: string, width?: number, decimalPlacesToDisplay?: number, allowNullData?: boolean, fieldDefinitionTypeID?: number) {
     const _decimalPipe = this.decimalPipe;
     const decimalFormatString = decimalPlacesToDisplay != null ? 
       '1.' + decimalPlacesToDisplay + '-' + decimalPlacesToDisplay : '1.2-2';
@@ -45,6 +47,10 @@ export class UtilityFunctionsService {
     }
     if (width) {
       decimalColDef.width = width
+    }
+    if (fieldDefinitionTypeID) {
+      decimalColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      decimalColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
     }
   
     return decimalColDef;
@@ -69,7 +75,7 @@ export class UtilityFunctionsService {
     return (date1 > date2)  ?  1 : 0;
   }
 
-  public createDateColumnDef(headerName: string, fieldName: string, dateFormat: string, dateTimezone?: string, width?: number): ColDef {
+  public createDateColumnDef(headerName: string, fieldName: string, dateFormat: string, dateTimezone?: string, width?: number, fieldDefinitionTypeID?: number): ColDef {
     const _datePipe = this.datePipe;
     var dateColDef: ColDef = {
       headerName: headerName, valueGetter: function (params: any) {
@@ -87,6 +93,10 @@ export class UtilityFunctionsService {
     };
     if (width) {
       dateColDef.width = width;
+    }
+    if (fieldDefinitionTypeID) {
+      dateColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
     }
 
     return dateColDef;

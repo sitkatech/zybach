@@ -69,6 +69,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Well Name',
         field: 'WellNickname',
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         filter: true,
         resizable: true,
         sortable: true

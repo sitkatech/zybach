@@ -16,6 +16,8 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ChemigationPermitStatusEnum } from 'src/app/shared/generated/enum/chemigation-permit-status-enum';
 import { ChemigationPermitAnnualRecordService } from 'src/app/shared/generated/api/chemigation-permit-annual-record.service';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-chemigation-permit-list',
@@ -282,6 +284,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       {
         headerName: "Nickname",
         field: "Well.WellNickname",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         width: 125,
         sortable: true, filter: true, resizable: true,        
       },

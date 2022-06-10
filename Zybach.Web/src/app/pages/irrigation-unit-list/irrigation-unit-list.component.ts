@@ -10,6 +10,8 @@ import { AgHubIrrigationUnitSimpleDto } from 'src/app/shared/generated/model/ag-
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-irrigation-unit-list',
@@ -68,6 +70,7 @@ export class IrrigationUnitListComponent implements OnInit {
         filterValueGetter: function (params: any) {
           return params.data.WellTPID;
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.IrrigationUnitID},
         filter: true,
         resizable: true,
         sortable: true
