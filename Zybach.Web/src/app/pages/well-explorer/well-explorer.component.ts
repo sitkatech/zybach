@@ -10,6 +10,7 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
 import { MapDataService } from 'src/app/shared/generated/api/map-data.service';
+import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 
 @Component({
   selector: 'zybach-well-explorer',
@@ -158,7 +159,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Flow Meter?",
         valueGetter: function (params) {
-          const flowMeters = params.data.Sensors.filter(x => x.SensorType == "Flow Meter").map(x => x.SensorName);
+          const flowMeters = params.data.Sensors.filter(x => x.SensorTypeID == SensorTypeEnum.FlowMeter).map(x => x.SensorName);
           if (flowMeters.length > 0) {
             return `Yes (${flowMeters.join('; ')})`;
           } else {
@@ -170,9 +171,22 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Continuity Meter?",
         valueGetter: function (params) {
-          const continuityMeters = params.data.Sensors.filter(x => x.SensorType == "Continuity Meter").map(x => x.SensorName);
+          const continuityMeters = params.data.Sensors.filter(x => x.SensorTypeID == SensorTypeEnum.PumpMonitor).map(x => x.SensorName);
           if (continuityMeters.length > 0) {
             return `Yes (${continuityMeters.join('; ')})`;
+          } else {
+            return "No";
+          }
+        },
+        filter: true,
+        sortable: true, resizable: true
+      },
+      {
+        headerName: "Has Pressure Sensor?",
+        valueGetter: function (params) {
+          const pressureSensors = params.data.Sensors.filter(x => x.SensorTypeID == SensorTypeEnum.WellPressure).map(x => x.SensorName);
+          if (pressureSensors.length > 0) {
+            return `Yes (${pressureSensors.join('; ')})`;
           } else {
             return "No";
           }
@@ -196,7 +210,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       {
-        headerName: "TPID",
+        headerName: "Irrigation Unit ID",
         field: "WellTPID",
         sortable: true, filter: true, resizable: true
       },

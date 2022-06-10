@@ -48,7 +48,7 @@ export class IrrigationUnitListComponent implements OnInit {
   private initializeGrid(): void {
     this.columnDefs = [
       {
-        headerName: 'TPID',
+        headerName: 'Irrigation Unit ID',
         valueGetter: function (params: any) {
           return { LinkValue: params.data.AgHubIrrigationUnitID, LinkDisplay: params.data.WellTPID };
         }, 
