@@ -18,6 +18,7 @@ import { WellInspectionSummaryDto } from 'src/app/shared/generated/model/well-in
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { DatePipe } from '@angular/common';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-well-inspection-reports',
@@ -129,7 +130,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterQualityInspections'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'HasWaterQualityInspections'},
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.HasWaterQualityInspections },
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Quality Inspection', 'LatestWaterQualityInspectionDate', 'M/d/yyyy'),
@@ -146,7 +147,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.HasWaterLevelInspections'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: 'HasWaterLevelInspections'},
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.HasWaterLevelInspections },
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
@@ -190,6 +191,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
   }
 
   private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string): ColDef {
+    let thisFieldDefinitionTypeID = FieldDefinitionTypeEnum[`${fieldName}`];
     return {
       headerName: headerName, valueGetter: function (params: any) {
         return datePipe.transform(params.data[fieldName], dateFormat);
@@ -200,7 +202,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterOptions: ['inRange'],
         comparator: this.dateFilterComparator
       },
-      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionType: fieldName},
+      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: thisFieldDefinitionTypeID },
       resizable: true,
       sortable: true
     };

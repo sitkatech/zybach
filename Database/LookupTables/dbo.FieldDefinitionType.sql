@@ -4,7 +4,24 @@ USING (VALUES
 (2, 'HasWaterLevelInspections', 'Has Water Level Inspections?'),
 (3, 'HasWaterQualityInspections', 'Has Water Quality Inspections?'),
 (4, 'LatestWaterLevelInspectionDate', 'Latest Water Level Inspection Date'),
-(5, 'LatestWaterQualityInspectionDate', 'Latest Water Quality Inspection Date')
+(5, 'LatestWaterQualityInspectionDate', 'Latest Water Quality Inspection Date'),
+(6, 'WellRegistrationNumber', 'Well Registration #'),
+(7, 'WellNickname', 'Well Nickname'),
+(8, 'AgHubRegisteredUser', 'AgHub Registered User'),
+(9, 'WellFieldName', 'Field Name'),
+(10, 'IrrigationUnitID', 'Irrigation Unit ID'),
+(11, 'IrrigatedAcres', 'Irrigated Acres'),
+(12, 'WellChemigationInspectionParticipation', 'Requires Chemigation Inspections?'),
+(13, 'WellWaterLevelInspectionParticipation', 'Requires Water Level Inspections?'),
+(14, 'WellWaterQualityInspectionParticipation', 'Water Quality Inspection Type'),
+(15, 'WellProgramParticipation', 'Well Participation'),
+(16, 'WellOwnerName', 'Owner'),
+(17, 'SensorLastMessageAgeHours', 'Last Message Age (Hours)'),
+(18, 'SensorLastVoltageReading', 'Last Voltage Reading (mV)'),
+(19, 'SensorFirstReadingDate', 'First Reading Date'),
+(20, 'SensorLastReadingDate', 'Last Reading Date'),
+(21, 'SensorStatus', 'Status'),
+(22, 'SensorType', 'Sensor Type')
 )
 AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID
