@@ -322,7 +322,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
   
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
-    this.gridApi.sizeColumnsToFit();
+    this.gridApi.autoSizeAllColumns();
   }
 
   public updateGridData(): void {

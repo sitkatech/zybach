@@ -148,7 +148,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         filterParams: {
         field: 'HasWaterQualityInspections'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation},
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation, labelOverride: 'Has Water Quality Inspections?'},
         sortable: true, resizable: true
       },
       {
@@ -298,7 +298,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
     }
 
-    return 
+    return dateColDef;
   }
   
   public onSelectionChanged(event: Event) {
