@@ -40,17 +40,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
           return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkDisplay;
-          let link2 = id2.LinkDisplay;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         width: 160,
         resizable: true
       },
@@ -80,17 +70,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors/" },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkValue;
-          let link2 = id2.LinkValue;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
           return params.data.SensorName;
         },
@@ -104,7 +84,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         filter: 'agNumberColumnFilter',
         sortable: true, resizable: true
       },
-      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0),
+      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true),
       { headerName: 'Sensor Type', field: 'SensorType',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
@@ -136,7 +116,9 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             })
         }
 
-        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), []).filter(sensor => sensor.MessageAge > 3600 * 8 && sensor.IsActive);
+        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
+          sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), [])
+          .filter(sensor => (sensor.MessageAge > 3600 * 8 || (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500)) && sensor.IsActive);
       })
     });
   }

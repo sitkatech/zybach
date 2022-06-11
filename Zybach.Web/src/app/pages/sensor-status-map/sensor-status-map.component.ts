@@ -31,6 +31,7 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { SensorStatusMapPopupComponent } from '../sensor-status-map-popup/sensor-status-map-popup.component';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'zybach-sensor-status-map',
@@ -65,18 +66,53 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   public wellsLayer: GeoJSON<any>;
   selectedFeatureLayer: any;
 
-  public dataSourceDropdownList: { group_name: string, item_id: number, item_text: string }[];
-  public selectedDataSources: MessageAgeFilterOption[];
+  public filterOptionsDropdownList: { group_name: string, item_id: number, item_text: string }[];
+  public selectedFilterOptions: MapFilterOption[];
+  public sensorStatusLegend: Control;
 
   public mapSearchQuery: string;
   public maxZoom: number = 17;
 
   searchErrormessage: string = "Sorry, the address you searched is not within the NRD area. Click a well on the map or search another address.";
 
+  public filterMapByLastMessageAge: boolean = true;
+
   showZeroToThirty: boolean = true;
   showThirtyToSixty: boolean = true;
   showSixtyPlus: boolean = true;
-  showNoData: boolean = false;
+  showNoMessageData: boolean = false;
+
+  showLessThan2500: boolean = false;
+  show2500To2700: boolean = false;
+  show2700To4000: boolean = false;
+  showGreaterThan4000: boolean = false;
+  showNoVoltageData: boolean = false;
+
+  static blueMarkerIcon = icon.glyph({
+    prefix: "fas",
+    glyph: "tint",
+    iconUrl: "/assets/main/0b2c7a.png"
+  });
+  static lightBlueMarkerIcon = icon.glyph({
+    prefix: "fas",
+    glyph: "tint",
+    iconUrl: "/assets/main/flowMeterMarker.png"
+  });
+  static yellowMarkerIcon = icon.glyph({
+    prefix: "fas",
+    glyph: "tint",
+    iconUrl: "/assets/main/fcf003.png"
+  });
+  static redMarkerIcon = icon.glyph({
+    prefix: "fas",
+    glyph: "tint",
+    iconUrl: "/assets/main/c2523c.png"
+  });
+  static greyMarkerIcon = icon.glyph({
+    prefix: "fas",
+    glyph: "tint",
+    iconUrl: "/assets/main/noDataSourceMarker.png"
+  });
 
   constructor(
     private appRef: ApplicationRef,
@@ -103,13 +139,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.compileService.configure(this.appRef);
 
-    this.dataSourceDropdownList = [
-      { group_name: "Select All", item_id: MessageAgeFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
-      { group_name: "Select All", item_id: MessageAgeFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
-      { group_name: "Select All", item_id: MessageAgeFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
-      { group_name: "Select All", item_id: MessageAgeFilterOption.NO_DATA, item_text: "No Data" }
-    ];
-    this.selectedDataSources = [MessageAgeFilterOption.TWO_HOURS, MessageAgeFilterOption.EIGHT_HOURS, MessageAgeFilterOption.EIGHT_PLUS_HOURS];
+    // this.setLastMessageAgeFilterOptionsDropdownList();
+    this.setLastMessageAgeFilterOptionsDropdownList();
+    this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS];
   }
 
   public ngAfterViewInit(): void {
@@ -126,56 +158,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.map.fitBounds([[this.boundingBox.Bottom, this.boundingBox.Left], [this.boundingBox.Top, this.boundingBox.Right]], this.defaultFitBoundsOptions);
 
-    const blueMarkerIcon = icon.glyph({
-      prefix: "fas",
-      glyph: "tint",
-      iconUrl: "/assets/main/0b2c7a.png"
-    });
-    const yellowMarkerIcon = icon.glyph({
-      prefix: "fas",
-      glyph: "tint",
-      iconUrl: "/assets/main/fcf003.png"
-    });
-    const redMarkerIcon = icon.glyph({
-      prefix: "fas",
-      glyph: "tint",
-      iconUrl: "/assets/main/c2523c.png"
-    });
-    const greyMarkerIcon = icon.glyph({
-      prefix: "fas",
-      glyph: "tint",
-      iconUrl: "/assets/main/noDataSourceMarker.png"
-    });
-
-
-    this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
-      pointToLayer: (feature, latlng) => {
-        var sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
-        var maxMessageAge = Math.max(...sensorMessageAges);
-
-        let icon;
-        if (!sensorMessageAges.some(x => x !== null)) {
-          icon = greyMarkerIcon;
-        } else if (maxMessageAge <= 3600 * 2) {
-          icon = blueMarkerIcon;
-        } else if (maxMessageAge <= 3600 * 8) {
-          icon = yellowMarkerIcon;
-        } else {
-          icon = redMarkerIcon;
-        }
-
-        return marker(latlng, { icon: icon })
-      },
-      filter: (feature) => {
-        var sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
-        var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
-
-        return (this.showNoData && maxMessageAge === null) ||
-          (this.showZeroToThirty && maxMessageAge <= 3600 * 2 && maxMessageAge != null) ||
-          (this.showThirtyToSixty && 3600 * 2 < maxMessageAge && maxMessageAge <= 3600 * 8) ||
-          (this.showSixtyPlus && maxMessageAge > 3600 * 8 )
-      }
-    });
+    this.wellsLayer = this.filterMapByLastMessageAge ? this.getWellLayerGeoJSONFilteredByLastMessageAge() : this.getWellLayerGeoJSONFilteredByLastVoltageReading();
 
     this.wellsLayer.addTo(this.map);
 
@@ -209,11 +192,82 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     this.setControl();
   }
 
+  private getWellLayerGeoJSONFilteredByLastMessageAge(): GeoJSON {
+    return new GeoJSON(this.wellsGeoJson, {
+      pointToLayer: (feature, latlng) => {
+        const sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
+        var maxMessageAge = Math.max(...sensorMessageAges);
+
+        let icon;
+        if (!sensorMessageAges.some(x => x !== null)) {
+          icon = SensorStatusMapComponent.greyMarkerIcon;
+        } else if (maxMessageAge <= 3600 * 2) {
+          icon = SensorStatusMapComponent.blueMarkerIcon;
+        } else if (maxMessageAge <= 3600 * 8) {
+          icon = SensorStatusMapComponent.yellowMarkerIcon;
+        } else {
+          icon = SensorStatusMapComponent.redMarkerIcon;
+        }
+
+        return marker(latlng, { icon: icon })
+      },
+      filter: (feature) => {
+        var sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
+        var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
+
+        return (this.showNoMessageData && maxMessageAge === null) ||
+          (this.showZeroToThirty && maxMessageAge <= 3600 * 2 && maxMessageAge != null) ||
+          (this.showThirtyToSixty && 3600 * 2 < maxMessageAge && maxMessageAge <= 3600 * 8) ||
+          (this.showSixtyPlus && maxMessageAge > 3600 * 8 )
+      }
+    });
+  }
+
+  private getWellLayerGeoJSONFilteredByLastVoltageReading(): GeoJSON {
+    return new GeoJSON(this.wellsGeoJson, {
+      pointToLayer: (feature, latlng) => {
+        var lastVoltageReadings = feature.properties.sensors.map(x => x.LastVoltageReading);
+        var minVoltageReading = !lastVoltageReadings.some(x => x !== null) ? null : Math.min(...lastVoltageReadings.filter(x => x != null));
+
+        let icon;
+        if (minVoltageReading == null) {
+          icon = SensorStatusMapComponent.greyMarkerIcon;
+        } else if (minVoltageReading >= 4000) {
+          icon = SensorStatusMapComponent.lightBlueMarkerIcon;
+        } else if (minVoltageReading >= 2700) {
+          icon = SensorStatusMapComponent.blueMarkerIcon;
+        } else if (minVoltageReading >= 2500) {
+          icon = SensorStatusMapComponent.yellowMarkerIcon;
+        } else {
+          icon = SensorStatusMapComponent.redMarkerIcon;
+        }
+
+        return marker(latlng, { icon: icon })
+      },
+      filter: (feature) => {
+        var lastVoltageReadings = feature.properties.sensors.map(x => x.LastVoltageReading);
+        var minVoltageReading = !lastVoltageReadings.some(x => x !== null) ? null : Math.min(...lastVoltageReadings.filter(x => x != null));
+
+        return (minVoltageReading == null && this.showNoVoltageData) ||  
+          minVoltageReading != null && (
+            (this.showLessThan2500 && minVoltageReading < 2500) ||
+            (this.show2500To2700 && minVoltageReading >= 2500 && minVoltageReading < 2700) ||
+            (this.show2700To4000 && minVoltageReading >= 2700 && minVoltageReading < 4000) ||
+            (this.showGreaterThan4000 && minVoltageReading >= 4000)
+          );
+      }
+    });
+  }
 
   public setControl(): void {
-    this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: false })
-      .addTo(this.map);
+    if (!this.layerControl) {
+      this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: false }).addTo(this.map);
+    }
+    if (this.sensorStatusLegend) {
+      this.sensorStatusLegend.remove();
+    }
 
+    const legend = (displayLastMessageAgeLegend: boolean) => {
       const SensorStatusLegend = Control.extend({
         onAdd: function(map) {
           var legendElement = DomUtil.create("div", "legend-control");
@@ -222,28 +276,120 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
           legendElement.style.cursor = "default";
           legendElement.style.padding = "6px";
   
-          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 0-2 Hours<br/>"
-          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/fcf003.png'/> 2-8 Hours<br/>"
-          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> >8 Hours<br/>"
-          legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>"
+          if (displayLastMessageAgeLegend) {
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 0-2 Hours<br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/fcf003.png'/> 2-8 Hours<br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> >8 Hours<br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>"
+          } else {
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/flowMeterMarker.png'/> >4000 mV <br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 2700-4000 mV <br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/fcf003.png'/> 2500-2700 mV <br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> <2500 mV <br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>"
+          }
   
           return legendElement;
         }
       });  
-  
-      new SensorStatusLegend().addTo(this.map);
+
+      return new SensorStatusLegend();
+    };
+
+    this.sensorStatusLegend = legend(this.filterMapByLastMessageAge);
+    this.sensorStatusLegend.addTo(this.map);
   }
 
-  public onDataSourceFilterChange() {
-    const selectedDataSourceOptions = this.selectedDataSources;
+  private setLastMessageAgeFilterOptionsDropdownList() {
+    this.filterOptionsDropdownList = [
+      { group_name: "Select All", item_id: MapFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
+      { group_name: "Select All", item_id: MapFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
+      { group_name: "Select All", item_id: MapFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
+      { group_name: "Select All", item_id: MapFilterOption.NO_MESSAGE_DATA, item_text: "No Data" }
+    ];
+  }
 
-    this.showZeroToThirty = selectedDataSourceOptions.includes(MessageAgeFilterOption.TWO_HOURS)
-    this.showThirtyToSixty = selectedDataSourceOptions.includes(MessageAgeFilterOption.EIGHT_HOURS)
-    this.showSixtyPlus = selectedDataSourceOptions.includes(MessageAgeFilterOption.EIGHT_PLUS_HOURS)
-    this.showNoData = selectedDataSourceOptions.includes(MessageAgeFilterOption.NO_DATA)
+  private setVoltageFilterOptionsDropdownList() {
+    this.filterOptionsDropdownList = [
+      { group_name: "Select All", item_id: MapFilterOption.LESS_THAN_2500, item_text: "<2500 mV" },
+      { group_name: "Select All", item_id: MapFilterOption.FROM_2500_TO_2700, item_text: "2500-2700 mV" },
+      { group_name: "Select All", item_id: MapFilterOption.FROM_2700_TO_4000, item_text: "2700-4000 mV" },
+      { group_name: "Select All", item_id: MapFilterOption.GREATER_THAN_4000, item_text: ">4000 mV" },
+      { group_name: "Select All", item_id: MapFilterOption.NO_VOLTAGE_DATA, item_text: "No Data" }
+    ];
+  }
+
+  public onMapFilterChange(filterByLastMessageAge: string) {
+    this.filterMapByLastMessageAge = filterByLastMessageAge == 'true';
+
+    this.clearLayer(this.selectedFeatureLayer);
+    this.setControl();
+
+    if (this.filterMapByLastMessageAge) {
+      this.setLastMessageAgeFilterOptionsDropdownList();
+      this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS];
+
+      this.showZeroToThirty = true;
+      this.showThirtyToSixty = true;
+      this.showSixtyPlus = true;
+
+      this.showLessThan2500 = false;
+      this.show2500To2700 = false;
+      this.show2700To4000 = false;
+      this.showGreaterThan4000 = false;
+      this.showNoVoltageData = false;
+    } else {
+      this.setVoltageFilterOptionsDropdownList();
+      this.selectedFilterOptions = [MapFilterOption.LESS_THAN_2500, MapFilterOption.FROM_2500_TO_2700, MapFilterOption.FROM_2700_TO_4000, MapFilterOption.GREATER_THAN_4000];
+  
+      this.showZeroToThirty = false;
+      this.showThirtyToSixty = false;
+      this.showSixtyPlus = false;
+      this.showNoMessageData = false;
+  
+      this.showLessThan2500 = true;
+      this.show2500To2700 = true;
+      this.show2700To4000 = true;
+      this.showGreaterThan4000 = true;
+    }
+
+    this.clearLayer(this.wellsLayer);
+
+    this.wellsLayer = this.filterMapByLastMessageAge ? this.getWellLayerGeoJSONFilteredByLastMessageAge() : this.getWellLayerGeoJSONFilteredByLastVoltageReading();
+    this.wellsLayer.addTo(this.map);
+
+    this.wellsLayer.on("click", (event: LeafletEvent) => {
+      this.selectFeature(event.propagatedFrom.feature);
+      this.onWellSelected.emit(event.propagatedFrom.feature.properties.wellRegistrationID);
+    });
+  }
+
+  public onSelectedFilterOptionsChange() {
+    this.clearLayer(this.selectedFeatureLayer);
+    
+    if (this.filterMapByLastMessageAge) {
+      this.updateLastMessageAgeMapFilter();
+    } else {
+      this.updateVoltageMapFilter();
+    }
 
     this.wellsLayer.clearLayers();
     this.wellsLayer.addData(this.wellsGeoJson);
+  }
+
+  private updateLastMessageAgeMapFilter() {
+    this.showZeroToThirty = this.selectedFilterOptions.includes(MapFilterOption.TWO_HOURS)
+    this.showThirtyToSixty = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_HOURS)
+    this.showSixtyPlus = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_PLUS_HOURS)
+    this.showNoMessageData = this.selectedFilterOptions.includes(MapFilterOption.NO_MESSAGE_DATA)
+  }
+
+  private updateVoltageMapFilter() {
+    this.showLessThan2500 = this.selectedFilterOptions.includes(MapFilterOption.LESS_THAN_2500);
+    this.show2500To2700 = this.selectedFilterOptions.includes(MapFilterOption.FROM_2500_TO_2700);
+    this.show2700To4000 = this.selectedFilterOptions.includes(MapFilterOption.FROM_2700_TO_4000);
+    this.showGreaterThan4000 = this.selectedFilterOptions.includes(MapFilterOption.GREATER_THAN_4000);
+    this.showNoVoltageData = this.selectedFilterOptions.includes(MapFilterOption.NO_VOLTAGE_DATA);
   }
 
   public mapSearch() {
@@ -315,9 +461,19 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
 }
 
-enum MessageAgeFilterOption {
+enum MapFilterOption {
   TWO_HOURS = 1,
   EIGHT_HOURS = 2,
   EIGHT_PLUS_HOURS = 3,
-  NO_DATA = 4
+  NO_MESSAGE_DATA = 4,
+
+  LESS_THAN_2500 = 5,
+  FROM_2500_TO_2700 = 6,
+  FROM_2700_TO_4000 = 7,
+  GREATER_THAN_4000 = 8,
+  NO_VOLTAGE_DATA = 9
+}
+
+enum VoltageFilterOption {
+  
 }
