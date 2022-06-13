@@ -22,7 +22,10 @@
                                     </field-definition>:
                                 </strong></div>
                                 <div class="col-12 col-sm-6">{{irrigationUnit.WellTPID}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>Area (ac): </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'IrrigationUnitAcres'">
+                                    </field-definition>: 
+                                </strong></div>
                                 <div class="col-12 col-sm-6">{{irrigationUnit.IrrigationUnitAreaInAcres | number: '1.2-2' }}</div>
                                 <div class="col-12 col-sm-6 label"><strong>Associated Wells: </strong></div>
                                 <div class="col-12 col-sm-6">

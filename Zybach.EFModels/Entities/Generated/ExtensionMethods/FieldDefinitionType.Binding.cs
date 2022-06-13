@@ -25,7 +25,7 @@ namespace Zybach.EFModels.Entities
         public static readonly FieldDefinitionTypeAgHubRegisteredUser AgHubRegisteredUser = Zybach.EFModels.Entities.FieldDefinitionTypeAgHubRegisteredUser.Instance;
         public static readonly FieldDefinitionTypeWellFieldName WellFieldName = Zybach.EFModels.Entities.FieldDefinitionTypeWellFieldName.Instance;
         public static readonly FieldDefinitionTypeIrrigationUnitID IrrigationUnitID = Zybach.EFModels.Entities.FieldDefinitionTypeIrrigationUnitID.Instance;
-        public static readonly FieldDefinitionTypeIrrigatedAcres IrrigatedAcres = Zybach.EFModels.Entities.FieldDefinitionTypeIrrigatedAcres.Instance;
+        public static readonly FieldDefinitionTypeWellIrrigatedAcres WellIrrigatedAcres = Zybach.EFModels.Entities.FieldDefinitionTypeWellIrrigatedAcres.Instance;
         public static readonly FieldDefinitionTypeWellChemigationInspectionParticipation WellChemigationInspectionParticipation = Zybach.EFModels.Entities.FieldDefinitionTypeWellChemigationInspectionParticipation.Instance;
         public static readonly FieldDefinitionTypeWellWaterLevelInspectionParticipation WellWaterLevelInspectionParticipation = Zybach.EFModels.Entities.FieldDefinitionTypeWellWaterLevelInspectionParticipation.Instance;
         public static readonly FieldDefinitionTypeWellWaterQualityInspectionParticipation WellWaterQualityInspectionParticipation = Zybach.EFModels.Entities.FieldDefinitionTypeWellWaterQualityInspectionParticipation.Instance;
@@ -37,6 +37,7 @@ namespace Zybach.EFModels.Entities
         public static readonly FieldDefinitionTypeSensorLastReadingDate SensorLastReadingDate = Zybach.EFModels.Entities.FieldDefinitionTypeSensorLastReadingDate.Instance;
         public static readonly FieldDefinitionTypeSensorStatus SensorStatus = Zybach.EFModels.Entities.FieldDefinitionTypeSensorStatus.Instance;
         public static readonly FieldDefinitionTypeSensorType SensorType = Zybach.EFModels.Entities.FieldDefinitionTypeSensorType.Instance;
+        public static readonly FieldDefinitionTypeIrrigationUnitAcres IrrigationUnitAcres = Zybach.EFModels.Entities.FieldDefinitionTypeIrrigationUnitAcres.Instance;
 
         public static readonly List<FieldDefinitionType> All;
         public static readonly List<FieldDefinitionTypeDto> AllAsDto;
@@ -48,8 +49,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static FieldDefinitionType()
         {
-            All = new List<FieldDefinitionType> { Name, HasWaterLevelInspections, HasWaterQualityInspections, LatestWaterLevelInspectionDate, LatestWaterQualityInspectionDate, WellRegistrationNumber, WellNickname, AgHubRegisteredUser, WellFieldName, IrrigationUnitID, IrrigatedAcres, WellChemigationInspectionParticipation, WellWaterLevelInspectionParticipation, WellWaterQualityInspectionParticipation, WellProgramParticipation, WellOwnerName, SensorLastMessageAgeHours, SensorLastVoltageReading, SensorFirstReadingDate, SensorLastReadingDate, SensorStatus, SensorType };
-            AllAsDto = new List<FieldDefinitionTypeDto> { Name.AsDto(), HasWaterLevelInspections.AsDto(), HasWaterQualityInspections.AsDto(), LatestWaterLevelInspectionDate.AsDto(), LatestWaterQualityInspectionDate.AsDto(), WellRegistrationNumber.AsDto(), WellNickname.AsDto(), AgHubRegisteredUser.AsDto(), WellFieldName.AsDto(), IrrigationUnitID.AsDto(), IrrigatedAcres.AsDto(), WellChemigationInspectionParticipation.AsDto(), WellWaterLevelInspectionParticipation.AsDto(), WellWaterQualityInspectionParticipation.AsDto(), WellProgramParticipation.AsDto(), WellOwnerName.AsDto(), SensorLastMessageAgeHours.AsDto(), SensorLastVoltageReading.AsDto(), SensorFirstReadingDate.AsDto(), SensorLastReadingDate.AsDto(), SensorStatus.AsDto(), SensorType.AsDto() };
+            All = new List<FieldDefinitionType> { Name, HasWaterLevelInspections, HasWaterQualityInspections, LatestWaterLevelInspectionDate, LatestWaterQualityInspectionDate, WellRegistrationNumber, WellNickname, AgHubRegisteredUser, WellFieldName, IrrigationUnitID, WellIrrigatedAcres, WellChemigationInspectionParticipation, WellWaterLevelInspectionParticipation, WellWaterQualityInspectionParticipation, WellProgramParticipation, WellOwnerName, SensorLastMessageAgeHours, SensorLastVoltageReading, SensorFirstReadingDate, SensorLastReadingDate, SensorStatus, SensorType, IrrigationUnitAcres };
+            AllAsDto = new List<FieldDefinitionTypeDto> { Name.AsDto(), HasWaterLevelInspections.AsDto(), HasWaterQualityInspections.AsDto(), LatestWaterLevelInspectionDate.AsDto(), LatestWaterQualityInspectionDate.AsDto(), WellRegistrationNumber.AsDto(), WellNickname.AsDto(), AgHubRegisteredUser.AsDto(), WellFieldName.AsDto(), IrrigationUnitID.AsDto(), WellIrrigatedAcres.AsDto(), WellChemigationInspectionParticipation.AsDto(), WellWaterLevelInspectionParticipation.AsDto(), WellWaterQualityInspectionParticipation.AsDto(), WellProgramParticipation.AsDto(), WellOwnerName.AsDto(), SensorLastMessageAgeHours.AsDto(), SensorLastVoltageReading.AsDto(), SensorFirstReadingDate.AsDto(), SensorLastReadingDate.AsDto(), SensorStatus.AsDto(), SensorType.AsDto(), IrrigationUnitAcres.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, FieldDefinitionType>(All.ToDictionary(x => x.FieldDefinitionTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, FieldDefinitionTypeDto>(AllAsDto.ToDictionary(x => x.FieldDefinitionTypeID));
         }
@@ -126,8 +127,8 @@ namespace Zybach.EFModels.Entities
                     return HasWaterLevelInspections;
                 case FieldDefinitionTypeEnum.HasWaterQualityInspections:
                     return HasWaterQualityInspections;
-                case FieldDefinitionTypeEnum.IrrigatedAcres:
-                    return IrrigatedAcres;
+                case FieldDefinitionTypeEnum.IrrigationUnitAcres:
+                    return IrrigationUnitAcres;
                 case FieldDefinitionTypeEnum.IrrigationUnitID:
                     return IrrigationUnitID;
                 case FieldDefinitionTypeEnum.LatestWaterLevelInspectionDate:
@@ -152,6 +153,8 @@ namespace Zybach.EFModels.Entities
                     return WellChemigationInspectionParticipation;
                 case FieldDefinitionTypeEnum.WellFieldName:
                     return WellFieldName;
+                case FieldDefinitionTypeEnum.WellIrrigatedAcres:
+                    return WellIrrigatedAcres;
                 case FieldDefinitionTypeEnum.WellNickname:
                     return WellNickname;
                 case FieldDefinitionTypeEnum.WellOwnerName:
@@ -182,7 +185,7 @@ namespace Zybach.EFModels.Entities
         AgHubRegisteredUser = 8,
         WellFieldName = 9,
         IrrigationUnitID = 10,
-        IrrigatedAcres = 11,
+        WellIrrigatedAcres = 11,
         WellChemigationInspectionParticipation = 12,
         WellWaterLevelInspectionParticipation = 13,
         WellWaterQualityInspectionParticipation = 14,
@@ -193,7 +196,8 @@ namespace Zybach.EFModels.Entities
         SensorFirstReadingDate = 19,
         SensorLastReadingDate = 20,
         SensorStatus = 21,
-        SensorType = 22
+        SensorType = 22,
+        IrrigationUnitAcres = 23
     }
 
     public partial class FieldDefinitionTypeName : FieldDefinitionType
@@ -256,10 +260,10 @@ namespace Zybach.EFModels.Entities
         public static readonly FieldDefinitionTypeIrrigationUnitID Instance = new FieldDefinitionTypeIrrigationUnitID(10, @"IrrigationUnitID", @"Irrigation Unit ID");
     }
 
-    public partial class FieldDefinitionTypeIrrigatedAcres : FieldDefinitionType
+    public partial class FieldDefinitionTypeWellIrrigatedAcres : FieldDefinitionType
     {
-        private FieldDefinitionTypeIrrigatedAcres(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
-        public static readonly FieldDefinitionTypeIrrigatedAcres Instance = new FieldDefinitionTypeIrrigatedAcres(11, @"IrrigatedAcres", @"Irrigated Acres");
+        private FieldDefinitionTypeWellIrrigatedAcres(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
+        public static readonly FieldDefinitionTypeWellIrrigatedAcres Instance = new FieldDefinitionTypeWellIrrigatedAcres(11, @"WellIrrigatedAcres", @"Irrigated Acres");
     }
 
     public partial class FieldDefinitionTypeWellChemigationInspectionParticipation : FieldDefinitionType
@@ -326,5 +330,11 @@ namespace Zybach.EFModels.Entities
     {
         private FieldDefinitionTypeSensorType(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
         public static readonly FieldDefinitionTypeSensorType Instance = new FieldDefinitionTypeSensorType(22, @"SensorType", @"Sensor Type");
+    }
+
+    public partial class FieldDefinitionTypeIrrigationUnitAcres : FieldDefinitionType
+    {
+        private FieldDefinitionTypeIrrigationUnitAcres(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
+        public static readonly FieldDefinitionTypeIrrigationUnitAcres Instance = new FieldDefinitionTypeIrrigationUnitAcres(23, @"IrrigationUnitAcres", @"Irrigation Unit Area (ac)");
     }
 }
