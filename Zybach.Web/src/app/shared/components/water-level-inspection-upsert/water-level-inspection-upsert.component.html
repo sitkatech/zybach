@@ -20,7 +20,10 @@
                 </div>
 
                 <div class="col-6 control-label text-right mb-2">
-                    <label class="required"><strong>Well: </strong></label>
+                    <label class="required"><strong>
+                        <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
+                        </field-definition>:
+                    </strong></label>
                 </div>
                 <div class="col-6 text-left mb-2">
                     <input type="text" class="form-control" name="WellRegistrationID" required [(ngModel)]="inspection.WellRegistrationID" [ngbTypeahead]="searchApi" placeholder="Search by Reg #" />

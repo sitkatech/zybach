@@ -17,7 +17,10 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 col-sm-6 label"><strong>TPID: </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'IrrigationUnitID'">
+                                    </field-definition>:
+                                </strong></div>
                                 <div class="col-12 col-sm-6">{{irrigationUnit.WellTPID}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>Area (ac): </strong></div>
                                 <div class="col-12 col-sm-6">{{irrigationUnit.IrrigationUnitAreaInAcres | number: '1.2-2' }}</div>

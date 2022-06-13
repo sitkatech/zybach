@@ -7,8 +7,10 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { FontAwesomeIconLinkRendererComponent } from 'src/app/shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { SupportTicketService } from 'src/app/shared/generated/api/support-ticket.service';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 import { SupportTicketSimpleDto } from 'src/app/shared/generated/model/support-ticket-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
@@ -92,7 +94,7 @@ export class SupportTicketListComponent implements OnInit {
         resizable: true,
         sortable: true
       },
-      this.utilityFunctionsService.createDateColumnDef('Date Updated', 'DateUpdated', 'M/d/yyyy', 'UTC', 130),
+      this.utilityFunctionsService.createDateColumnDef('Date Updated', 'DateUpdated', 'M/d/yyyy', 'UTC', 130, null),
       { 
         headerName: 'Assigned To',
         valueGetter: function (params: any) {
@@ -114,6 +116,7 @@ export class SupportTicketListComponent implements OnInit {
         },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filter: true,
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         resizable: true,
         sortable: true
       },      
@@ -159,7 +162,7 @@ export class SupportTicketListComponent implements OnInit {
         resizable: true,
         sortable: true
       },
-      this.utilityFunctionsService.createDateColumnDef('Date Created', 'DateCreated', 'M/d/yyyy', 'UTC', 130)
+      this.utilityFunctionsService.createDateColumnDef('Date Created', 'DateCreated', 'M/d/yyyy', 'UTC', 130, null)
     ]
   }
 

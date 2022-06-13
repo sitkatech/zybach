@@ -78,7 +78,10 @@
 
                         <div class="row col-12">
                             <div class="col-6 text-right">
-                                <p><strong>Well: </strong></p>
+                                <p><strong>
+                                    <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
+                                    </field-definition>: 
+                                </strong></p>
                             </div>
                             <div class="col-6 text-left">
                                 <a routerLink="/wells/{{supportTicket.Well.WellID}}">

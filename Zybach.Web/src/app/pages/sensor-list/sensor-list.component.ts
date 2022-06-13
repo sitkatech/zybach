@@ -10,6 +10,8 @@ import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-
 import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 
 @Component({
   selector: 'zybach-sensor-list',
@@ -46,7 +48,7 @@ export class SensorListComponent implements OnInit {
 
         this.sensorsGrid ? this.sensorsGrid.api.setRowData(sensors) : null;
   
-        this.sensorsGrid.api.sizeColumnsToFit();
+        this.sensorsGrid.columnApi.autoSizeAllColumns();
       });
     });
   }
@@ -101,17 +103,19 @@ export class SensorListComponent implements OnInit {
       filterParams: {
       field: 'IsActive'
       },
+      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorStatus },
       resizable: true, sortable: true, width: 120
     },
     { 
       headerName: 'Last Message Age (Hours)',
       valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
       filter: 'agNumberColumnFilter',
+      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
       sortable: true, resizable: true
     },
-    this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true),
-    this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy'),
-    this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy'),
+    this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
+    this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
+    this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
     {
       headerName: 'Well',
       children: [
@@ -132,6 +136,7 @@ export class SensorListComponent implements OnInit {
         filterValueGetter: function (params: any) {
           return params.data.WellRegistrationID;
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
         filter: true,
         width: 120,
         resizable: true,
@@ -140,6 +145,7 @@ export class SensorListComponent implements OnInit {
       {
         headerName: 'Well Owner Name', 
         field: 'WellOwnerName', 
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName },
         sortable: true, filter: true, resizable: true
       },
       {
@@ -176,8 +182,9 @@ export class SensorListComponent implements OnInit {
     return (cellDate < filterLocalDateAtMidnight) ? -1 : 1;
   }
 
-  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string): ColDef {
-    return {
+  private createDateColumnDef(datePipe: DatePipe, headerName: string, fieldName: string, dateFormat: string, fieldDefinitionTypeID?: number): ColDef { 
+    var dateColDef: ColDef =
+    {
       headerName: headerName, valueGetter: function (params: any) {
         return datePipe.transform(params.data[fieldName], dateFormat);
       },
@@ -189,7 +196,13 @@ export class SensorListComponent implements OnInit {
       },
       resizable: true,
       sortable: true
-    };
+    }
+
+    if (fieldDefinitionTypeID) {
+      dateColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
+    }
+    return dateColDef;
   }
 
   ngOnDestroy(): void {

@@ -11,6 +11,8 @@ import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WaterQualityInspectionSimpleDto } from 'src/app/shared/generated/model/water-quality-inspection-simple-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-water-quality-inspection-list',
@@ -123,6 +125,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filterValueGetter: function (params: any) {
           return params.data.Well?.WellRegistrationID;
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
         filter: true,
         width: 100,
         resizable: true,
@@ -132,6 +135,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         headerName: 'Well Nickname', 
         field: 'Well.WellNickname',
         filter: true,
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         width: 140,
         resizable: true,
         sortable: true
@@ -223,6 +227,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'Well.WellParticipationName'
         }, 
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
         width: 120,
         resizable: true, sortable: true 
       },

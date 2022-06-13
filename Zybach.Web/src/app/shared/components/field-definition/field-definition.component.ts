@@ -19,8 +19,8 @@ declare var $ : any
   styleUrls: ['./field-definition.component.scss']
 })
 export class FieldDefinitionComponent implements OnInit {
-
   @Input() fieldDefinitionType: string;
+  @Input() fieldDefinitionTypeID: number;
   @Input() labelOverride: string;
   @ViewChild('p') public popover: NgbPopover;
   @ViewChild('popContent') public content: any;
@@ -43,9 +43,16 @@ export class FieldDefinitionComponent implements OnInit {
     private elem: ElementRef) { }
 
   ngOnInit() {
-    this.fieldDefinitionService.fieldDefinitionsFieldDefinitionTypeIDGet(FieldDefinitionTypeEnum[this.fieldDefinitionType]).subscribe(x => {
-      this.loadFieldDefinition(x);
-    });
+    if (this.fieldDefinitionType != null) {
+      this.fieldDefinitionService.fieldDefinitionsFieldDefinitionTypeIDGet(FieldDefinitionTypeEnum[this.fieldDefinitionType]).subscribe(x => {
+        this.loadFieldDefinition(x);
+      });
+    } else {
+      this.fieldDefinitionService.fieldDefinitionsFieldDefinitionTypeIDGet(this.fieldDefinitionTypeID).subscribe(x => {
+        this.loadFieldDefinition(x);
+      });
+
+    }
   }
 
   ngOnDestroy() {
