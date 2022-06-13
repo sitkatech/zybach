@@ -43,10 +43,14 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
-        width: 160,
+        width: 100,
         resizable: true
       },
-      { headerName: 'Well Number', field: 'WellRegistrationID', width: 120, sortable: true, filter: true, resizable: true },
+      { 
+        headerName: 'Well Number', 
+        field: 'WellRegistrationID', 
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
+        width: 120, sortable: true, filter: true, resizable: true },
       {
         headerName: "AgHub Registered User",
         field: "AgHubRegisteredUser",
@@ -86,14 +90,16 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       { headerName: 'Last Message Age (Hours)',
         valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
         filter: 'agNumberColumnFilter',
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
         sortable: true, resizable: true
       },
-      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true),
+      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
       { headerName: 'Sensor Type', field: 'SensorType',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'SensorType'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
         resizable: true, sortable: true
       }
     ];
@@ -138,6 +144,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   
   public onGridReady(params) {
     this.gridApi = params.api;
+    this.wellsGrid.columnApi.autoSizeAllColumns();
     this.wellsGrid.api.sizeColumnsToFit();
   }
 

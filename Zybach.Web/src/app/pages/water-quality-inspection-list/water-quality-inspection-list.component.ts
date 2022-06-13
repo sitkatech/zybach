@@ -227,6 +227,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'Well.WellParticipationName'
         }, 
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
         width: 120,
         resizable: true, sortable: true 
       },

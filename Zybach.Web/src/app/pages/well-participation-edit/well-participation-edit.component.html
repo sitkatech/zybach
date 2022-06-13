@@ -36,7 +36,10 @@
                                 <div class="row col-6">
                     
                                     <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>Well Participation: </strong></label>
+                                        <label><strong>                                    
+                                            <field-definition [fieldDefinitionType]="'WellProgramParticipation'">
+                                            </field-definition>: 
+                                        </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
                                         <ng-select [(ngModel)]="wellParticipationInfo.WellParticipationID"
@@ -56,7 +59,10 @@
                                     </div>
                                     
                                     <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>Requires Chemigation Inspection?: </strong></label>
+                                        <label><strong>
+                                            <field-definition [fieldDefinitionType]="'WellChemigationInspectionParticipation'">
+                                            </field-definition>: 
+                                        </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2 form-group">
                                         <div class="input-group">
@@ -70,7 +76,10 @@
                                     </div>
 
                                     <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>Requires Water Level Inspection?: </strong></label>
+                                        <label><strong>
+                                            <field-definition [fieldDefinitionType]="'WellWaterLevelInspectionParticipation'">
+                                            </field-definition>: 
+                                        </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2 form-group">
                                         <div class="input-group">
@@ -84,7 +93,10 @@
                                     </div>
                     
                                     <div class="col-6 control-label text-right mb-2">
-                                        <label><strong>Water Quality Inspection Type: </strong></label>
+                                        <label><strong>
+                                            <field-definition [fieldDefinitionType]="'WellWaterQualityInspectionParticipation'">
+                                            </field-definition>: 
+                                        </strong></label>
                                     </div>
                                     <div class="col-6 text-left mb-2">
                                         <ng-select [multiple]="true" [(ngModel)]="wellParticipationInfo.WaterQualityInspectionTypeIDs"

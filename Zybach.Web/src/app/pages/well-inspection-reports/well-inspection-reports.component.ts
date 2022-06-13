@@ -96,6 +96,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
           return params.data.Well.WellRegistrationID;
         },
         filter: true,
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         resizable: true,
         sortable: true,
       },
@@ -116,6 +117,7 @@ export class WellInspectionReportsComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'params.data.Well.WellParticipationName'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
         sortable: true, filter: true, resizable: true,        
       },
       {

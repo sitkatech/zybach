@@ -317,6 +317,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           return params.data.Well?.WellRegistrationID;
         },
         filter: true,
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         width: 100,
         resizable: true,
         sortable: true

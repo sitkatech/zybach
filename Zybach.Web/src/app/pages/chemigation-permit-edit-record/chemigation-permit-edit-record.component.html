@@ -35,7 +35,10 @@
                         <div class="row col-12">
                             <div class="row col-6 mt-4">
                                 <div class="col-6 control-label text-right mb-2">
-                                    <label><strong>Well: </strong></label>
+                                    <label><strong>
+                                        <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
+                                        </field-definition>: 
+                                    </strong></label>
                                 </div>
                                 <div class="col-6 text-left mb-2">
                                     <a *ngIf="chemigationPermit.Well" routerLink="/wells/{{chemigationPermit.Well.WellID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
