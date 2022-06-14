@@ -156,6 +156,8 @@ namespace Zybach.API.Controllers
 
             _dbContext.SupportTicketComments.RemoveRange(
                 _dbContext.SupportTicketComments.Where(x => x.SupportTicketID == supportTicketID));
+            _dbContext.SupportTicketNotifications.RemoveRange(
+                _dbContext.SupportTicketNotifications.Where(x => x.SupportTicketID == supportTicketID));
             _dbContext.SupportTickets.Remove(supportTicket);
             _dbContext.SaveChanges();
             return Ok();
