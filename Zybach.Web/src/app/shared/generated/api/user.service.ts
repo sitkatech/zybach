@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { SupportTicketSimpleDto } from '../model/support-ticket-simple-dto';
 import { UnassignedUserReportDto } from '../model/unassigned-user-report-dto';
 import { UserCreateDto } from '../model/user-create-dto';
 import { UserDto } from '../model/user-dto';
@@ -454,6 +455,49 @@ export class UserService {
 
         return this.httpClient.put<UserDto>(`${this.basePath}/users/${encodeURIComponent(String(userID))}`,
             userUpsertDto,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param userID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public usersUserIDSupportTicketsGet(userID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SupportTicketSimpleDto>>;
+    public usersUserIDSupportTicketsGet(userID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SupportTicketSimpleDto>>>;
+    public usersUserIDSupportTicketsGet(userID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SupportTicketSimpleDto>>>;
+    public usersUserIDSupportTicketsGet(userID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (userID === null || userID === undefined) {
+            throw new Error('Required parameter userID was null or undefined when calling usersUserIDSupportTicketsGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SupportTicketSimpleDto>>(`${this.basePath}/users/${encodeURIComponent(String(userID))}/supportTickets`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

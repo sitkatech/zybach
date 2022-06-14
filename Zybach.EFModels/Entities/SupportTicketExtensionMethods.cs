@@ -35,5 +35,15 @@ namespace Zybach.EFModels.Entities
 
             return supportTicketDetailDto;
         }
+
+        public static string GetUrlFragment(this SupportTicketDetailDto supportTicket)
+        {
+            return $"support-tickets/{supportTicket.SupportTicketID}";
+        }
+
+        public static string GetUrlFragment(this SupportTicketSimpleDto supportTicket)
+        {
+            return $"support-tickets/{supportTicket.SupportTicketID}";
+        }
     }
 }

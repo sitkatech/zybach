@@ -3509,6 +3509,55 @@
         }
       }
     },
+    "/supportTickets/{supportTicketID}/notifications": {
+      "get": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "parameters": [
+          {
+            "name": "supportTicketID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketNotificationSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketNotificationSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketNotificationSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/invite": {
       "post": {
         "tags": [
@@ -3892,6 +3941,55 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userID}/supportTickets": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
                 }
               }
             }
@@ -8094,6 +8192,36 @@
           },
           "Priority": {
             "$ref": "#/components/schemas/SupportTicketPrioritySimpleDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketNotificationSimpleDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketNotificationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "EmailAddresses": {
+            "type": "string",
+            "nullable": true
+          },
+          "EmailSubject": {
+            "type": "string",
+            "nullable": true
+          },
+          "EmailBody": {
+            "type": "string",
+            "nullable": true
+          },
+          "SentDate": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false

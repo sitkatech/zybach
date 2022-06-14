@@ -65,6 +65,41 @@
             <div class="mt-2">
                 <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
             </div>
+
+            <ng-container *ngIf="currentUser && !userIsUnassigned() && !userRoleIsDisabled()">
+                <h3 class="mb-3">Assigned Support Tickets</h3>
+                <ngb-alert [type]="'info'" [dismissible]="false">
+                    <span>
+                        There {{supportTickets?.length == 1 ? 'is' : 'are'}} {{supportTickets?.length}} active support ticket{{supportTickets?.length == 1 ? '' : 's'}} assigned to you.
+                        <a routerLink="/support-tickets"><u>Go To Ticket Management</u></a>
+                    </span>
+                </ngb-alert>
+
+                <div class="table-responsive mt-3" *ngIf="supportTickets?.length > 0">
+                    <table class="table">
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Ticket Name</th>
+                            <th>Well Reg #</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Date Updated</th>
+                        </tr>
+                        <tr *ngFor="let supportTicket of supportTickets">
+                            <td>
+                                <a routerLink="/support-tickets/{{supportTicket.SupportTicketID}}" class="btn btn-sm btn-primary">View</a>
+                            </td>
+                            <td>{{supportTicket.SupportTicketID}}</td>
+                            <td>{{supportTicket.SupportTicketTitle}}</td>
+                            <td>{{supportTicket.Well.WellRegistrationID}}</td>
+                            <td>{{supportTicket.Status.SupportTicketStatusDisplayName}}</td>
+                            <td>{{supportTicket.Priority.SupportTicketPriorityDisplayName}}</td>
+                            <td>{{supportTicket.DateUpdated | date:'short'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </ng-container>
         </div>
     </div>
 </div>

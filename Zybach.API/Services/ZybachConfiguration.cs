@@ -12,7 +12,6 @@
         public string PlatformLongName { get; set; }
         public string PlatformShortName { get; set; }
         public string SupportEmail { get; set; }
-        public string DoNotReplyEmail { get; set; }
         public string APPINSIGHTS_INSTRUMENTATIONKEY { get; set; }
         public string API_KEY_VALUE { get; set; }
         public string INFLUXDB_URL { get; set; }
@@ -33,7 +32,7 @@
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID { get; set; }
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID { get; set; }
         public string VEGA_RENDER_URL { get; set; }
-
+        public string SendGridApiKey { get; set; }
         public string OPENET_API_KEY { get; set; }
         public string OPENET_SHAPEFILE_PATH { get; set; }
         public string OpenETAPIBaseUrl { get; set; }
