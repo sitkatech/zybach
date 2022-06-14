@@ -14,6 +14,8 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-sensor-anomaly-list',
@@ -93,18 +95,20 @@ export class SensorAnomalyListComponent implements OnInit {
         }, 
         cellRendererFramework: LinkRendererComponent, cellRendererParams: { inRouterLink: "/wells/" },
         filterValueGetter: params => params.data.Sensor.WellRegistrationID,
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         width: 180
       },
       {
         headerName: 'Sensor Type', field: 'Sensor.SensorTypeName', width: 180,
         filterFramework: CustomDropdownFilterComponent,
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
         filterParams: {
           field: 'Sensor.SensorTypeName',
         }, 
       },
-      this.utilityFunctionsService.createDateColumnDef('Start Date', 'StartDate', 'M/d/yyyy', 'UTC'),
-      this.utilityFunctionsService.createDateColumnDef('End Date', 'EndDate', 'M/d/yyyy', 'UTC'),
+      this.utilityFunctionsService.createDateColumnDef('Start Date', 'StartDate', 'M/d/yyyy', 'UTC', null, null),
+      this.utilityFunctionsService.createDateColumnDef('End Date', 'EndDate', 'M/d/yyyy', 'UTC', null, null),
       this.utilityFunctionsService.createDecimalColumnDef('Number of Days', 'NumberOfAnomalousDays', 120, 0),
       {headerName: 'Notes', field: 'Notes' }
     ];

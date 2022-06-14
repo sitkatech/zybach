@@ -9,6 +9,8 @@ import { ClearinghouseWaterQualityInspectionDto } from 'src/app/shared/generated
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-clearinghouse-wqi-report',
@@ -62,24 +64,22 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
           field: 'Year'
         },
         resizable: true,
-        sortable: true,
-        width: 100
+        sortable: true
       },
       {
         headerName: 'Well Name',
         field: 'WellNickname',
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         filter: true,
         resizable: true,
-        sortable: true,
-        width: 150
+        sortable: true
       },
       {
         headerName: 'Clearinghouse',
         field: 'Clearinghouse',
         filter: true,
         resizable: true,
-        sortable: true,
-        width: 120
+        sortable: true
       },
       {
         headerName: 'Contaminant',
@@ -89,8 +89,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
           field: 'Contaminant'
         },
         resizable: true,
-        sortable: true,
-        width: 120
+        sortable: true
       },
       {
         headerName: 'Sampling Date', valueGetter: function (params: any) {
@@ -103,32 +102,28 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
           comparator: this.dateFilterComparator
         },
         resizable: true,
-        sortable: true,
-        width: 140
+        sortable: true
       },
       { 
         headerName: 'Concentration', 
         field: 'LabConcentration',
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        width: 120
+        sortable: true
       },
       { 
         headerName: 'Field Concentration', 
         field: 'FieldConcentration',
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        width: 150
+        sortable: true
       },
       { 
         headerName: 'Reporting Limit', 
         field: 'ReportingLimit',
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        width: 130
+        sortable: true
       },
       {
         headerName: 'Laboratory',
@@ -138,16 +133,15 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
           field: 'Laboratory'
         },
         resizable: true,
-        sortable: true,
-        width: 110
+        sortable: true
       },
       {
         headerName: 'Well Registration #',
         field: 'WellRegistrationID',
         filter: true,
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         resizable: true,
-        sortable: true,
-        width: 150
+        sortable: true
       },
       {
         headerName: 'Replacement Well?', 
@@ -163,24 +157,21 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
           field: 'IsReplacement'
         },
         sortable: true, 
-        resizable: true,
-        width: 130
+        resizable: true
       },
       { 
         headerName: 'TRS',
         field: 'TownshipRangeSection', 
         filter: true, 
         resizable: true,
-        sortable: true,
-        width: 120
+        sortable: true
       },
       { 
         headerName: 'Well Depth', 
         field: 'WellDepth',
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        width: 110
+        sortable: true
       },
       { 
         headerName: 'Participation', 
@@ -189,9 +180,9 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'WellParticipation'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
         resizable: true, 
-        sortable: true,
-        width: 120 
+        sortable: true
       },
       {
         headerName: 'Chemigation?', 
@@ -206,9 +197,9 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
         filterParams: {
           field: 'RequiresChemigationInspection'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellChemigationInspectionParticipation},
         sortable: true, 
-        resizable: true,
-        width: 120 
+        resizable: true
       },
       {
         headerName: 'Inspection Type', 
@@ -218,8 +209,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
           field: 'WaterQualityInspectionType'
         },
         resizable: true,
-        sortable: true,
-        width: 130 
+        sortable: true
       },
       { 
         headerName: 'Well Use',
@@ -229,32 +219,28 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
           field: 'WellUse'
         },
         resizable: true,
-        sortable: true,
-        width: 100 
+        sortable: true
       },
       { 
         headerName: 'Pre Level', 
         field: 'WellPreLevel',
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        width: 100 
+        sortable: true
       },
       { 
         headerName: 'Post Level', 
         field: 'WellPostLevel',
         filter: 'agNumberColumnFilter',
         resizable: true,
-        sortable: true,
-        width: 100 
+        sortable: true
       },
       { 
         headerName: 'Screen Interval', 
         field: 'ScreenInterval',
         filter: true,
         resizable: true,
-        sortable: true,
-        width: 130 
+        sortable: true
       },
     ];
 
@@ -285,6 +271,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
   public onGridReady(params) {
     this.waterQualityInspectionService.clearinghouseWaterQualityInspectionsGet().subscribe(clearinghouseWaterQualityInspections => {
       this.rowData = clearinghouseWaterQualityInspections;
+      this.clearinghouseReportGrid.columnApi.autoSizeAllColumns();
       this.clearinghouseReportGrid.api.hideOverlay();
     });
 

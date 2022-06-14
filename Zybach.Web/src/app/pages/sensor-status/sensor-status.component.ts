@@ -8,6 +8,8 @@ import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-messa
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellWithSensorMessageAgeDto } from 'src/app/shared/generated/model/well-with-sensor-message-age-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 
 @Component({
   selector: 'zybach-sensor-status',
@@ -41,19 +43,25 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
-        width: 160,
+        width: 100,
         resizable: true
       },
-      { headerName: 'Well Number', field: 'WellRegistrationID', width: 120, sortable: true, filter: true, resizable: true },
+      { 
+        headerName: 'Well Number', 
+        field: 'WellRegistrationID', 
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
+        width: 120, sortable: true, filter: true, resizable: true },
       {
         headerName: "AgHub Registered User",
         field: "AgHubRegisteredUser",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser},
         width: 170,
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Field Name",
         field: "fieldName",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
         width: 115,
         sortable: true, filter: true, resizable: true
       },
@@ -82,14 +90,16 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       { headerName: 'Last Message Age (Hours)',
         valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
         filter: 'agNumberColumnFilter',
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
         sortable: true, resizable: true
       },
-      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true),
+      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
       { headerName: 'Sensor Type', field: 'SensorType',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
           field: 'SensorType'
         },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
         resizable: true, sortable: true
       }
     ];
@@ -134,6 +144,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   
   public onGridReady(params) {
     this.gridApi = params.api;
+    this.wellsGrid.columnApi.autoSizeAllColumns();
+    this.wellsGrid.api.sizeColumnsToFit();
   }
 
   public onSelectionChanged(event: Event) {

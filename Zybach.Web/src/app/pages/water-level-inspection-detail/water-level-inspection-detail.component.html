@@ -17,7 +17,10 @@
         <h2 class="d-inline-block">{{waterLevelInspection.InspectionDate | date:'MM/dd/yyyy, h:mm a'}}</h2>
     </div>
     <div class="row container" *ngIf="waterLevelInspection">
-        <div class="col-12 col-sm-6 label"><strong>Well: </strong></div>
+        <div class="col-12 col-sm-6 label"><strong>
+            <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
+            </field-definition>: 
+        </strong></div>
         <div class="col-12 col-sm-6"><a *ngIf="waterLevelInspection.Well" routerLink="/wells/{{waterLevelInspection.Well.WellID}}">{{waterLevelInspection.Well.WellRegistrationID}}</a></div>
         <div class="col-12 col-sm-6 label"><strong>Inspected By: </strong></div>
         <div class="col-12 col-sm-6"><a *ngIf="waterLevelInspection.Inspector" routerLink="/users/{{waterLevelInspection.Inspector.UserID}}">{{waterLevelInspection.Inspector.FullNameLastFirst}}</a></div>
