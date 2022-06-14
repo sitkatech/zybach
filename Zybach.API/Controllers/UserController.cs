@@ -98,7 +98,7 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/users")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<UserDto> CreateUser([FromBody] UserCreateDto userCreateDto)
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserCreateDto userCreateDto)
         {
             // Validate request body; all fields required in Dto except Org Name and Phone
             if (userCreateDto == null)
@@ -119,7 +119,7 @@ namespace Zybach.API.Controllers
             var mailMessage = GenerateUserCreatedEmail(_zybachConfiguration.WEB_URL, user, _dbContext, smtpClient);
             SitkaSmtpClientService.AddCcRecipientsToEmail(mailMessage,
                         EFModels.Entities.User.GetEmailAddressesForAdminsThatReceiveSupportEmails(_dbContext));
-            SendEmailMessage(smtpClient, mailMessage);
+            await SendEmailMessage(smtpClient, mailMessage);
 
             return Ok(user);
         }
@@ -245,12 +245,12 @@ namespace Zybach.API.Controllers
             return mailMessage;
         }
 
-        private void SendEmailMessage(SitkaSmtpClientService smtpClient, MailMessage mailMessage)
+        private async Task SendEmailMessage(SitkaSmtpClientService smtpClient, MailMessage mailMessage)
         {
             mailMessage.IsBodyHtml = true;
             mailMessage.From = smtpClient.GetDefaultEmailFrom();
             mailMessage.ReplyToList.Add("donotreply@sitkatech.com");
-            smtpClient.Send(mailMessage);
+            await smtpClient.Send(mailMessage);
         }
     }
 }
