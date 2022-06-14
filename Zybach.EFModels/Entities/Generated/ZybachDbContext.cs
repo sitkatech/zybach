@@ -50,6 +50,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<StreamFlowZone> StreamFlowZones { get; set; }
         public virtual DbSet<SupportTicket> SupportTickets { get; set; }
         public virtual DbSet<SupportTicketComment> SupportTicketComments { get; set; }
+        public virtual DbSet<SupportTicketNotification> SupportTicketNotifications { get; set; }
         public virtual DbSet<Tillage> Tillages { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WaterLevelInspection> WaterLevelInspections { get; set; }
@@ -258,6 +259,14 @@ namespace Zybach.EFModels.Entities
 
                 entity.HasOne(d => d.SupportTicket)
                     .WithMany(p => p.SupportTicketComments)
+                    .HasForeignKey(d => d.SupportTicketID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<SupportTicketNotification>(entity =>
+            {
+                entity.HasOne(d => d.SupportTicket)
+                    .WithMany(p => p.SupportTicketNotifications)
                     .HasForeignKey(d => d.SupportTicketID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });

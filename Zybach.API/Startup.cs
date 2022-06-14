@@ -22,6 +22,7 @@ using Serilog;
 using Zybach.API.Services;
 using Zybach.API.Services.Telemetry;
 using Zybach.EFModels.Entities;
+using SendGrid.Extensions.DependencyInjection;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DependencyCollector;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -159,9 +160,11 @@ namespace Zybach.API
             var logger = GetSerilogLogger();
             services.AddSingleton(logger);
 
+            services.AddSendGrid(options => { options.ApiKey = zybachConfiguration.SendGridApiKey; });
+
             services.AddTransient(s => new KeystoneService(s.GetService<IHttpContextAccessor>(), keystoneHost));
 
-            services.AddSingleton(x => new SitkaSmtpClientService(zybachConfiguration));
+            services.AddSingleton<SitkaSmtpClientService>();
 
             services.AddHttpClient("OpenETClient", c =>
             {

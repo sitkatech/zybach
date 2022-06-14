@@ -33,7 +33,7 @@
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID { get; set; }
         public int GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID { get; set; }
         public string VEGA_RENDER_URL { get; set; }
-
+        public string SendGridApiKey { get; set; }
         public string OPENET_API_KEY { get; set; }
         public string OPENET_SHAPEFILE_PATH { get; set; }
         public string OpenETAPIBaseUrl { get; set; }

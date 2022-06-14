@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
+using Zybach.API.Services.Notifications;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
 
@@ -64,6 +66,12 @@ namespace Zybach.API.Controllers
             }
             supportTicketUpsertDto.WellID = well.WellID;
             var supportTicket = SupportTickets.CreateNewSupportTicket(_dbContext, supportTicketUpsertDto);
+
+            if (supportTicket.AssigneeUser != null)
+            {
+                var currentUser = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+                BackgroundJob.Enqueue<SupportTicketAssigneeChanged>(x => x.QueueNotification(supportTicket, currentUser));
+            }
             return Ok(supportTicket);
         }
 
@@ -71,8 +79,11 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<SupportTicketCommentSimpleDto> CreateComment([FromBody] SupportTicketCommentUpsertDto supportTicketCommentUpsertDto)
         {
-            var supportTicketComment =
-                SupportTicketComments.CreateNewSupportTicketComment(_dbContext, supportTicketCommentUpsertDto);
+            var supportTicketComment = SupportTicketComments.CreateNewSupportTicketComment(_dbContext, supportTicketCommentUpsertDto);
+
+            var currentUser = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+            BackgroundJob.Enqueue<SupportTicketCommentAdded>(x => x.QueueNotification(supportTicketComment.SupportTicketID, currentUser));
+
             return Ok(supportTicketComment);
         }
 
@@ -119,7 +130,21 @@ namespace Zybach.API.Controllers
             {
                 supportTicketUpsertDto.SensorID = null;
             }
+
+            var assigneeUserID = supportTicket.AssigneeUserID;
+            var statusID = supportTicket.SupportTicketStatusID;
             var updatedSupportTicket = SupportTickets.UpdateSupportTicket(_dbContext, supportTicket, supportTicketUpsertDto);
+
+            var currentUser = UserContext.GetUserFromHttpContext(_dbContext, HttpContext);
+            if (updatedSupportTicket.AssigneeUser != null && updatedSupportTicket.AssigneeUser.UserID != assigneeUserID)
+            {
+                BackgroundJob.Enqueue<SupportTicketAssigneeChanged>(x => x.QueueNotification(updatedSupportTicket, currentUser));
+            }
+            if (updatedSupportTicket.SupportTicketStatusID != statusID)
+            {
+                BackgroundJob.Enqueue<SupportTicketStatusChanged>(x => x.QueueNotification(updatedSupportTicket, currentUser, statusID));
+            }
+
             return Ok(updatedSupportTicket);
         }
 
@@ -134,6 +159,18 @@ namespace Zybach.API.Controllers
             _dbContext.SupportTickets.Remove(supportTicket);
             _dbContext.SaveChanges();
             return Ok();
+        }
+
+        [HttpGet("/supportTickets/{supportTicketID}/notifications")]
+        [ZybachViewFeature]
+        public ActionResult<List<SupportTicketNotificationSimpleDto>> GetSupportTicketNotificationsByID([FromRoute] int supportTicketID)
+        {
+            var supportTicketSimpleDtos = _dbContext.SupportTicketNotifications
+                .Where(x => x.SupportTicketID == supportTicketID)
+                .OrderByDescending(x => x.SentDate)
+                .Select(x => x.AsSimpleDto()).ToList();
+
+            return Ok(supportTicketSimpleDtos);
         }
 
         private bool GetSupportTicketAndThrowIfNotFound(int supportTicketID, out SupportTicket supportTicket, out ActionResult actionResult)
