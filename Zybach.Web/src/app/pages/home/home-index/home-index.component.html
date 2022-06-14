@@ -67,6 +67,7 @@
             </div>
 
             <ng-container *ngIf="currentUser && !userIsUnassigned() && !userRoleIsDisabled()">
+                <h3 class="mb-3">Assigned Support Tickets</h3>
                 <ngb-alert [type]="'info'" [dismissible]="false">
                     <span>
                         There {{supportTickets?.length == 1 ? 'is' : 'are'}} {{supportTickets?.length}} active support ticket{{supportTickets?.length == 1 ? '' : 's'}} assigned to you.
@@ -74,8 +75,7 @@
                     </span>
                 </ngb-alert>
 
-                <div class="table-responsive mt-4" *ngIf="supportTickets?.length > 0">
-                    <h3>Assigned Support Tickets</h3>
+                <div class="table-responsive mt-3" *ngIf="supportTickets?.length > 0">
                     <table class="table">
                         <tr>
                             <th></th>
@@ -95,7 +95,7 @@
                             <td>{{supportTicket.Well.WellRegistrationID}}</td>
                             <td>{{supportTicket.Status.SupportTicketStatusDisplayName}}</td>
                             <td>{{supportTicket.Priority.SupportTicketPriorityDisplayName}}</td>
-                            <td>{{supportTicket.DateUpdated}}</td>
+                            <td>{{supportTicket.DateUpdated | date:'short'}}</td>
                         </tr>
                     </table>
                 </div>

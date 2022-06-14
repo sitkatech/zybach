@@ -183,7 +183,7 @@
                             <p><strong>Date:</strong></p>
                         </div>
                         <div class="col-9">
-                            <p>{{notification.SentDate | date:'shortDate'}}</p>
+                            <p>{{notification.SentDate | date:'short'}}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -206,8 +206,7 @@
                         <div class="col-3 text-right">
                             <p><strong>Body:</strong></p>
                         </div>
-                        <div class="col-9">
-                            <p>{{notification.EmailBody}}</p>
+                        <div class="col-9" [innerHtml]="notification.EmailBody">
                         </div>
                     </div>
                     <hr *ngIf="!last">

@@ -30,6 +30,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
 using Zybach.API.Services.Authorization;
+using Zybach.API.Services.Notifications;
 using ILogger = Serilog.ILogger;
 
 namespace Zybach.API
@@ -116,6 +117,7 @@ namespace Zybach.API
 
             services.AddScoped<InfluxDBService>();
             services.AddScoped<WellService>();
+            services.AddScoped<SupportTicketNotificationService>();
 
             var keystoneHost = zybachConfiguration.KEYSTONE_HOST;
 
