@@ -162,7 +162,7 @@
                     Sensor Data Readings
                     <a *ngIf="!noTimeSeriesData" class="btn btn-sm btn-zybach float-right" (click)="exportChartData()">
                         <span class="fas fa-download"></span> Download CSV</a>  
-                    <a *ngIf="!noTimeSeriesData && isSensorTypeWithAnomalies()" class="btn btn-sm btn-zybach float-right mr-2" (click)="displaySensorAnomalyPanel()">
+                    <a *ngIf="!noTimeSeriesData" class="btn btn-sm btn-zybach float-right mr-2" (click)="displaySensorAnomalyPanel()">
                         <span class="fas fa-plus"></span> Add Sensor Anomaly</a>  
                 </div>
                 <div class="card-body">

@@ -179,10 +179,6 @@ export class SensorDetailComponent implements OnInit {
     return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.sensor.WellRegistrationID}`;
   }
 
-  public isSensorTypeWithAnomalies(): boolean {
-    return this.sensor.SensorTypeID == SensorTypeEnum.FlowMeter || this.sensor.SensorTypeID == SensorTypeEnum.PumpMonitor;
-  }
-
   public displaySensorAnomalyPanel() {
     this.isDisplayingSensorAnomalyPanel = true;
     
