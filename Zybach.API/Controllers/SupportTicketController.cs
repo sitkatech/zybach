@@ -140,7 +140,7 @@ namespace Zybach.API.Controllers
             {
                 BackgroundJob.Enqueue<SupportTicketAssigneeChanged>(x => x.QueueNotification(updatedSupportTicket, currentUser));
             }
-            if (updatedSupportTicket.SupportTicketStatusID != statusID)
+            if (updatedSupportTicket.Status.SupportTicketStatusID != statusID)
             {
                 BackgroundJob.Enqueue<SupportTicketStatusChanged>(x => x.QueueNotification(updatedSupportTicket, currentUser, statusID));
             }
