@@ -110,6 +110,7 @@ model/structured-results.ts
 model/support-ticket-comment-simple-dto.ts
 model/support-ticket-comment-upsert-dto.ts
 model/support-ticket-detail-dto.ts
+model/support-ticket-notification-simple-dto.ts
 model/support-ticket-priority-dto.ts
 model/support-ticket-priority-simple-dto.ts
 model/support-ticket-simple-dto.ts

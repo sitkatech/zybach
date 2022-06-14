@@ -21,6 +21,7 @@ import { Observable }                                        from 'rxjs';
 import { SupportTicketCommentSimpleDto } from '../model/support-ticket-comment-simple-dto';
 import { SupportTicketCommentUpsertDto } from '../model/support-ticket-comment-upsert-dto';
 import { SupportTicketDetailDto } from '../model/support-ticket-detail-dto';
+import { SupportTicketNotificationSimpleDto } from '../model/support-ticket-notification-simple-dto';
 import { SupportTicketPriorityDto } from '../model/support-ticket-priority-dto';
 import { SupportTicketSimpleDto } from '../model/support-ticket-simple-dto';
 import { SupportTicketStatusDto } from '../model/support-ticket-status-dto';
@@ -32,9 +33,7 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from '../../services';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class SupportTicketService {
 
     protected basePath = 'http://localhost';
@@ -393,6 +392,49 @@ export class SupportTicketService {
         ];
 
         return this.httpClient.get<SupportTicketDetailDto>(`${this.basePath}/supportTickets/${encodeURIComponent(String(supportTicketID))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param supportTicketID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public supportTicketsSupportTicketIDNotificationsGet(supportTicketID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SupportTicketNotificationSimpleDto>>;
+    public supportTicketsSupportTicketIDNotificationsGet(supportTicketID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SupportTicketNotificationSimpleDto>>>;
+    public supportTicketsSupportTicketIDNotificationsGet(supportTicketID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SupportTicketNotificationSimpleDto>>>;
+    public supportTicketsSupportTicketIDNotificationsGet(supportTicketID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (supportTicketID === null || supportTicketID === undefined) {
+            throw new Error('Required parameter supportTicketID was null or undefined when calling supportTicketsSupportTicketIDNotificationsGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SupportTicketNotificationSimpleDto>>(`${this.basePath}/supportTickets/${encodeURIComponent(String(supportTicketID))}/notifications`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

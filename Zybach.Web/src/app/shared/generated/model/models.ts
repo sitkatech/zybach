@@ -76,6 +76,7 @@ export * from '././structured-results-dto';
 export * from '././support-ticket-comment-simple-dto';
 export * from '././support-ticket-comment-upsert-dto';
 export * from '././support-ticket-detail-dto';
+export * from '././support-ticket-notification-simple-dto';
 export * from '././support-ticket-priority-dto';
 export * from '././support-ticket-priority-simple-dto';
 export * from '././support-ticket-simple-dto';

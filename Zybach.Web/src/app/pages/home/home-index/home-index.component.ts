@@ -5,6 +5,8 @@ import { environment } from 'src/environments/environment';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from 'src/app/shared/generated/api/user.service';
+import { SupportTicketSimpleDto } from 'src/app/shared/generated/model/support-ticket-simple-dto';
 
 @Component({
     selector: 'app-home-index',
@@ -14,10 +16,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class HomeIndexComponent implements OnInit, OnDestroy {
     public watchUserChangeSubscription: any;
     public currentUser: UserDto;
+    public supportTickets: SupportTicketSimpleDto[];
 
     public richTextTypeID : number = CustomRichTextTypeEnum.Homepage;
 
-    constructor(private authenticationService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
+    constructor(private authenticationService: AuthenticationService, private router: Router, private route: ActivatedRoute, private userService: UserService) {
     }
 
     public ngOnInit(): void {
@@ -35,6 +38,13 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
 
             this.authenticationService.getCurrentUser().subscribe(currentUser => {
                 this.currentUser = currentUser;
+
+                if (!this.userIsUnassigned() && !this.userRoleIsDisabled()) {
+                    this.userService.usersUserIDSupportTicketsGet(this.currentUser.UserID).subscribe(supportTickets => {
+                        this.supportTickets = supportTickets;
+                        console.log(supportTickets);
+                    });
+                }
             });
 
         });

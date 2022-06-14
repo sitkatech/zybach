@@ -169,6 +169,58 @@
     </div>
 </div>
 
+<div class="row mt-4 m-3">
+    <div class="col">
+        <div class="card m-3">
+            <div class="card-header align-items-center">
+                Notifications              
+            </div>
+            <div class="card-body">
+    
+                <ng-container *ngFor="let notification of notifications; let last = last">
+                    <div class="row">
+                        <div class="col-3 text-right">
+                            <p><strong>Date:</strong></p>
+                        </div>
+                        <div class="col-9">
+                            <p>{{notification.SentDate | date:'shortDate'}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 text-right">
+                            <p><strong>To/CC:</strong></p>
+                        </div>
+                        <div class="col-9">
+                            <p>{{notification.EmailAddresses}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 text-right">
+                            <p><strong>Subject:</strong></p>
+                        </div>
+                        <div class="col-9">
+                            <p>{{notification.EmailSubject}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 text-right">
+                            <p><strong>Body:</strong></p>
+                        </div>
+                        <div class="col-9">
+                            <p>{{notification.EmailBody}}</p>
+                        </div>
+                    </div>
+                    <hr *ngIf="!last">
+                </ng-container>
+                <ng-container *ngIf="notifications?.length == 0">
+                    <em>No notifications to display.</em>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <ng-template #deleteCommentModal let-modal>
     <div class="modal-header bg-secondary">
         <h5 class="modal-title" id="deleteCommentModalTitle">Delete Comment</h5>
