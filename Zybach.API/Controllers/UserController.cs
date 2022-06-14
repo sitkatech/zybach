@@ -219,14 +219,21 @@ namespace Zybach.API.Controllers
             return Ok(updatedUserDto);
         }
 
+        [HttpGet("/users/{userID}/supportTickets")]
+        public ActionResult<List<SupportTicketSimpleDto>> GetSupportTicketsByUserID([FromRoute] int userID)
+        {
+            var supportTicketSimpleDtos = SupportTickets.ListByAssigneeUserID(_dbContext, userID);
+            return Ok(supportTicketSimpleDtos);
+        }
+
 
         private MailMessage GenerateUserCreatedEmail(string zybachUrl, UserDto user, ZybachDbContext dbContext,
             SitkaSmtpClientService smtpClient)
         {
             var messageBody = $@"A new user has signed up to the {_zybachConfiguration.PlatformLongName}: <br/><br/>
- {user.FullName} ({user.Email}) <br/><br/>
-As an administrator of the {_zybachConfiguration.PlatformShortName}, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
-{smtpClient.GetSupportNotificationEmailSignature()}";
+                {user.FullName} ({user.Email}) <br/><br/>
+                As an administrator of the {_zybachConfiguration.PlatformShortName}, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
+                {smtpClient.GetSupportNotificationEmailSignature()}";
 
             var mailMessage = new MailMessage
             {
