@@ -10,7 +10,7 @@ USING (VALUES
 (8, 'AgHubRegisteredUser', 'AgHub Registered User'),
 (9, 'WellFieldName', 'Field Name'),
 (10, 'IrrigationUnitID', 'Irrigation Unit ID'),
-(11, 'IrrigatedAcres', 'Irrigated Acres'),
+(11, 'WellIrrigatedAcres', 'Irrigated Acres'),
 (12, 'WellChemigationInspectionParticipation', 'Requires Chemigation Inspections?'),
 (13, 'WellWaterLevelInspectionParticipation', 'Requires Water Level Inspections?'),
 (14, 'WellWaterQualityInspectionParticipation', 'Water Quality Inspection Type'),
@@ -21,7 +21,8 @@ USING (VALUES
 (19, 'SensorFirstReadingDate', 'First Reading Date'),
 (20, 'SensorLastReadingDate', 'Last Reading Date'),
 (21, 'SensorStatus', 'Status'),
-(22, 'SensorType', 'Sensor Type')
+(22, 'SensorType', 'Sensor Type'),
+(23, 'IrrigationUnitAcres', 'Irrigation Unit Area (ac)')
 )
 AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID

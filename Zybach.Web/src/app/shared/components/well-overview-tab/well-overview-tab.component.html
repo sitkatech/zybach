@@ -61,8 +61,9 @@
                                 </div>
                                 <div class="col-12 col-sm-6">{{getLastReadingDate()}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>
-                                    <field-definition [fieldDefinitionType]="'IrrigatedAcres'">
-                                    </field-definition>: </strong></div>
+                                    <field-definition [fieldDefinitionType]="'WellIrrigatedAcres'">
+                                    </field-definition>:
+                                </strong></div>
                                 <div class="col-12 col-sm-6">
                                     <ng-container *ngIf="displayIrrigatedAcres(); else irrigatedAcresPerYearEmpty">
                                         <p *ngFor="let result of getWellIrrigatedAcresPerYear()" class="m-0">
@@ -92,7 +93,10 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-12 col-sm-6 label"><strong>Owner: </strong> </div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'WellOwnerName'">
+                                    </field-definition>:
+                                </strong> </div>
                                 <div class="col-12 col-sm-6" [innerHtml]="getWellOwner()"></div>
                                 <div class="col-12 col-sm-6 label"><strong>Additional Contact: </strong></div>
                                 <div class="col-12 col-sm-6" [innerHtml]="getWellAdditionalContact()"></div>
@@ -100,7 +104,10 @@
                                 <div class="col-12 col-sm-6">{{well.TownshipRangeSection}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>County: </strong></div>
                                 <div class="col-12 col-sm-6">{{well.County}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>Nickname: </strong></div>
+                                <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'WellNickname'">
+                                    </field-definition>:
+                                </strong></div>
                                 <div class="col-12 col-sm-6">{{well.WellNickname}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>Notes: </strong></div>
                                 <div class="col-12 col-sm-6">{{well.Notes}}</div>
@@ -149,15 +156,18 @@
                                     <div class="col-12 col-sm-3">{{well.WellUseName}}</div>
                                     <div class="col-12 col-sm-9 label"><strong>                                        
                                         <field-definition [fieldDefinitionType]="'WellChemigationInspectionParticipation'">
-                                        </field-definition> </strong></div>
+                                        </field-definition>
+                                    </strong></div>
                                     <div class="col-12 col-sm-3">{{well.RequiresChemigation ? "Yes" : "No"}}</div>
                                     <div class="col-12 col-sm-9 label"><strong>
                                         <field-definition [fieldDefinitionType]="'WellWaterLevelInspectionParticipation'">
-                                        </field-definition> </strong></div>
+                                        </field-definition>
+                                    </strong></div>
                                     <div class="col-12 col-sm-3">{{well.RequiresWaterLevelInspection ? "Yes" : "No"}}</div>
                                     <div class="col-12 col-sm-9 label"><strong>                                        
                                         <field-definition [fieldDefinitionType]="'WellWaterQualityInspectionParticipation'">
-                                        </field-definition>:  </strong></div>
+                                        </field-definition>
+                                    </strong></div>
                                     <div class="col-12 col-sm-3">{{well.WaterQualityInspectionTypes}}</div>
                                 </div>  
                             </div>

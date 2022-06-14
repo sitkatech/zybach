@@ -13,7 +13,7 @@ export enum FieldDefinitionTypeEnum {
   AgHubRegisteredUser = 8,
   WellFieldName = 9,
   IrrigationUnitID = 10,
-  IrrigatedAcres = 11,
+  WellIrrigatedAcres = 11,
   WellChemigationInspectionParticipation = 12,
   WellWaterLevelInspectionParticipation = 13,
   WellWaterQualityInspectionParticipation = 14,
@@ -24,5 +24,6 @@ export enum FieldDefinitionTypeEnum {
   SensorFirstReadingDate = 19,
   SensorLastReadingDate = 20,
   SensorStatus = 21,
-  SensorType = 22
+  SensorType = 22,
+  IrrigationUnitAcres = 23
 }

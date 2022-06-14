@@ -115,7 +115,7 @@ export class IrrigationUnitListComponent implements OnInit {
         },
         sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
-      this.utilityFunctionsService.createDecimalColumnDef('Area (ac)', 'IrrigationUnitAreaInAcres', 130, 2)
+      this.utilityFunctionsService.createDecimalColumnDef('Area (ac)', 'IrrigationUnitAreaInAcres', 130, 2, null, FieldDefinitionTypeEnum.IrrigationUnitAcres)
     ]
   }
 

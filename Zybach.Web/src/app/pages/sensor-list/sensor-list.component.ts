@@ -92,6 +92,7 @@ export class SensorListComponent implements OnInit {
       filterParams: {
       field: 'SensorTypeName'
       },
+      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       resizable: true, sortable: true, width: 120
     },
     { 
@@ -107,7 +108,7 @@ export class SensorListComponent implements OnInit {
       resizable: true, sortable: true, width: 120
     },
     { 
-      headerName: 'Last Message Age (Hours)',
+      headerName: 'Last Message Age (Hours)', 
       valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
       filter: 'agNumberColumnFilter',
       headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
