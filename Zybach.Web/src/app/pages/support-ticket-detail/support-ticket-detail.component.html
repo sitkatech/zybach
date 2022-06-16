@@ -155,6 +155,9 @@
                             <hr *ngIf="!last" />
                         </div>
                     </div>
+                    <ng-container *ngIf="supportTicket?.Comments?.length == 0">
+                        <em>No comments to display.</em>
+                    </ng-container>
                 </div>
             </div>
         </div>
