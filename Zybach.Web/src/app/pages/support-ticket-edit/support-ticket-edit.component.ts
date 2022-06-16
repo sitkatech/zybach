@@ -6,6 +6,7 @@ import { SupportTicketService } from 'src/app/shared/generated/api/support-ticke
 import { SupportTicketDetailDto } from 'src/app/shared/generated/model/support-ticket-detail-dto';
 import { SupportTicketUpsertDto } from 'src/app/shared/generated/model/support-ticket-upsert-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { UserSimpleDto } from 'src/app/shared/generated/model/user-simple-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -22,6 +23,7 @@ export class SupportTicketEditComponent implements OnInit {
   public model: SupportTicketUpsertDto;
   public isLoadingSubmit: boolean = false;
   public supportTicketID: number;
+  public creatorUser: UserSimpleDto;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -38,6 +40,7 @@ export class SupportTicketEditComponent implements OnInit {
       this.supportTicketID = parseInt(this.route.snapshot.paramMap.get("id"));
 
       this.supportTicketService.supportTicketsSupportTicketIDGet(this.supportTicketID).subscribe(supportTicketDetailDto => {
+        this.creatorUser = supportTicketDetailDto.CreatorUser;
         this.initializeSupportTicketModel(supportTicketDetailDto);
       });
 
