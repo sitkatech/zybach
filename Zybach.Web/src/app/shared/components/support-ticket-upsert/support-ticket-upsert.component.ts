@@ -52,6 +52,10 @@ export class SupportTicketUpsertComponent implements OnInit {
       this.supportTicketPriorities = supportTicketPriorities;
       this.users = users;
       this.currentUser = currentUser;
+      if (!this.creatorUser) {
+        this.creatorUser = currentUser;
+      }
+
       this.cdr.detectChanges();
     });
   }
