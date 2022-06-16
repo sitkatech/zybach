@@ -11,8 +11,8 @@ namespace Zybach.EFModels.Entities
         {
             var supportTicketComment = new SupportTicketComment()
             {
-                DateCreated = DateTime.Now.Date,
-                DateUpdated = DateTime.Now.Date,
+                DateCreated = DateTime.Now,
+                DateUpdated = DateTime.Now,
                 CreatorUserID = supportTicketCommentUpsertDto.CreatorUserID,
                 CommentNotes = supportTicketCommentUpsertDto.CommentNotes,
                 SupportTicketID = supportTicketCommentUpsertDto.SupportTicketID

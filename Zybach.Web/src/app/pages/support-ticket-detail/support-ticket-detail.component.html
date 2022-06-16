@@ -9,218 +9,208 @@
     </ol>
 </nav>
 <app-alert-display></app-alert-display>
-<div class="row m-3" *ngIf="supportTicket">
-    <div class="col-12">
-        <h2 class="d-inline-block">Support Ticket #{{supportTicket.SupportTicketID}}: {{supportTicket.SupportTicketTitle}}</h2>
-    </div>
-
-    <div class="row container">
-        <div class="col-12 col-sm-6 label"><strong>Status: </strong></div>
-        <div class="col-12 col-sm-6">{{supportTicket.Status.SupportTicketStatusDisplayName}}</div>
-        <div class="col-12 col-sm-6 label"><strong>Priority: </strong></div>
-        <div class="col-12 col-sm-6">{{supportTicket.Priority.SupportTicketPriorityDisplayName}}</div>
-        <div class="col-12 col-sm-6 label"><strong>Assigned To: </strong></div>
-        <div class="col-12 col-sm-6"> 
-            {{supportTicket.AssigneeUser?.FullName}}
-            <em *ngIf="!supportTicket.AssigneeUser" class="text-muted">N/A</em>
+<div class="container">
+    <div class="row" *ngIf="supportTicket">
+        <div class="col-12">
+            <h2 class="d-inline-block">Support Ticket #{{supportTicket.SupportTicketID}}: {{supportTicket.SupportTicketTitle}}</h2>
+        </div>
+    
+        <div class="row container">
+            <div class="col-12 col-sm-6 label"><strong>Status: </strong></div>
+            <div class="col-12 col-sm-6">{{supportTicket.Status.SupportTicketStatusDisplayName}}</div>
+            <div class="col-12 col-sm-6 label"><strong>Priority: </strong></div>
+            <div class="col-12 col-sm-6">{{supportTicket.Priority.SupportTicketPriorityDisplayName}}</div>
+            <div class="col-12 col-sm-6 label"><strong>Assigned To: </strong></div>
+            <div class="col-12 col-sm-6"> 
+                {{supportTicket.AssigneeUser?.FullName}}
+                <em *ngIf="!supportTicket.AssigneeUser" class="text-muted">N/A</em>
+            </div>
         </div>
     </div>
 
-</div>
-<div class="row mt-4 m-3" *ngIf="supportTicket">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header align-items-center">
-                Ticket Details
-                <div class="float-right">
-                    <a class="btn btn-zybach btn-sm float-right"
-                        routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
-                        <span class="fas fa-edit"></span> Edit
-                    </a>
-                </div>                
-            </div>
-            <div class="card-body">
-                <div class="row col-12">
-                    <div class="col-6">
-                        <div class="row col-12">
-                            <div class="col-6 text-right">
-                                <p><strong>Created By: </strong></p>
+    <div class="row mt-4" *ngIf="supportTicket">
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header align-items-center">
+                    Ticket Details
+                    <div class="float-right">
+                        <a class="btn btn-zybach btn-sm"
+                            routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
+                            <span class="fas fa-edit"></span> Edit
+                        </a>
+                    </div>                
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-6">
+
+                            <div class="row mt-2">
+                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                    <strong>Created By: </strong>
+                                </div>
+                                <div class="col-xl-6 col-sm-8">
+                                    {{supportTicket.CreatorUser.FullName}}
+                                </div>
                             </div>
-                            <div class="col-6 text-left">
-                                <p>{{supportTicket.CreatorUser.FullName}}
-                                </p>
+    
+                            <div class="row mt-2">
+                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                    <strong>Date Created: </strong>
+                                </div>
+                                <div class="col-xl-6 col-sm-8">
+                                    {{supportTicket.DateCreated | date:'shortDate':'UTC'}}
+                                </div>
                             </div>
+    
+                            <div class="row mt-2">
+                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                    <strong>Date Updated: </strong>
+                                </div>
+                                <div class="col-xl-6 col-sm-8">
+                                    {{supportTicket.DateUpdated | date:'shortDate':'UTC'}}
+                                </div>
+                            </div>
+    
                         </div>
-
-                        <div class="row col-12">
-                            <div class="col-6 text-right">
-                                <p><strong>Date Created: </strong></p>
+    
+                        <div class="col-xl-6">
+    
+                            <div class="row mt-2">
+                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                    <strong>
+                                        <field-definition [fieldDefinitionType]="'WellRegistrationNumber'" labelOverride="Well Reg #">
+                                        </field-definition>: 
+                                    </strong>
+                                </div>
+                                <div class="col-xl-6 col-sm-8">
+                                    <a routerLink="/wells/{{supportTicket.Well.WellID}}">
+                                        {{supportTicket.Well.WellRegistrationID}}
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-6 text-left">
-                                <p>{{supportTicket.DateCreated | date:'shortDate':'UTC'}}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="row col-12">
-                            <div class="col-6 text-right">
-                                <p><strong>Date Updated: </strong></p>
-                            </div>
-                            <div class="col-6 text-left">
-                                <p>{{supportTicket.DateUpdated | date:'shortDate':'UTC'}}
-                                </p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-6">
-
-                        <div class="row col-12">
-                            <div class="col-6 text-right">
-                                <p><strong>
-                                    <field-definition [fieldDefinitionType]="'WellRegistrationNumber'" labelOverride="Well Reg #">
-                                    </field-definition>: 
-                                </strong></p>
-                            </div>
-                            <div class="col-6 text-left">
-                                <a routerLink="/wells/{{supportTicket.Well.WellID}}">
-                                    {{supportTicket.Well.WellRegistrationID}}
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="row col-12">
-                            <div class="col-6 text-right">
-                                <p><strong>Sensor: </strong></p>
-                            </div>
-                            <div class="col-6 text-left">
-                                <a routerLink="/sensors/{{supportTicket.Sensor?.SensorID}}" *ngIf="supportTicket.Sensor">
-                                    {{supportTicket.Sensor?.SensorName}}
-                                </a>
-                                <em *ngIf="!supportTicket.Sensor" class="text-muted">
-                                    N/A
-                                </em>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row col-12">
-                        <div class="row col-12">
-                            <div class="col-3 text-right">
-                                <p><strong>Description: </strong></p>
-                            </div>
-                            <div class="col-9 text-left">
-                                <p>
-                                    <em *ngIf="!supportTicket.SupportTicketDescription" class="text-muted">N/A</em>
-                                    {{supportTicket.SupportTicketDescription}}
-                                </p>
+    
+                            <div class="row mt-2">
+                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                    <strong>Sensor: </strong>
+                                </div>
+                                <div class="col-xl-6 col-sm-8">
+                                    <a routerLink="/sensors/{{supportTicket.Sensor?.SensorID}}" *ngIf="supportTicket.Sensor">
+                                        {{supportTicket.Sensor?.SensorName}}
+                                    </a>
+                                    <em *ngIf="!supportTicket.Sensor" class="text-muted">
+                                        N/A
+                                    </em>
+                                </div>
                             </div>
                         </div>
     
+                        <div class="row mt-2 m-1">
+                            <div class="col-xl-3 col-sm-4 text-sm-right">
+                                <strong>Description: </strong>
+                            </div>
+                            <div class="col-xl-9 col-sm-8">
+                                <em *ngIf="!supportTicket.SupportTicketDescription" class="text-muted">N/A</em>
+                                {{supportTicket.SupportTicketDescription}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+    
         </div>
-
-    </div>
-
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header align-items-center">
-                Comments
-            </div>
-            <div class="card-body">
-                <div class="row" *ngFor="let ticketComment of supportTicket?.Comments">
-                    <div class="col-sm-12 mb-3">
-                        <div class="row">
-                            <div class="col-10">
-                                <p><strong>
-                                    {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'shortDate':'UTC'}}
-                                </strong></p>
+    
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header align-items-center">
+                    Comments
+                    <div class="float-right">
+                        <a class="btn btn-zybach btn-sm"
+                            routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
+                            <span class="fas fa-plus"></span> Add Comment
+                        </a>
+                    </div> 
+                </div>
+                <div class="card-body" id="comment-display">
+                    <div class="row" *ngFor="let ticketComment of supportTicket?.Comments; let last=last">
+                        <div class="col-sm-12">
+                            <div class="row align-items-end">
+                                <div class="col-10">
+                                    <strong>
+                                        {{ticketComment.CreatorUser.FullName}} on {{ticketComment.DateUpdated | date:'short'}}
+                                    </strong>
+                                </div>
+                                <div class="col-2 text-center">
+                                    <button class="btn btn-zybach btn-sm"
+                                        (click)="launchDeleteModal(deleteCommentModal, ticketComment.SupportTicketCommentID)"
+                                        [disabled]="!currentUserIsTicketOwner()">
+                                    <span class="fa fa-trash"></span>
+                                    </button>
+                                </div>
+    
                             </div>
-                            <div class="col-2 text-center">
-                                <button class="btn btn-zybach btn-sm"
-                                (click)="launchDeleteModal(deleteCommentModal, ticketComment.SupportTicketCommentID)"
-                                [disabled]="!currentUserIsTicketOwner()">
-                                <span class="fa fa-trash"></span>
-                                </button>
-                            </div>
-
-                        </div>
-                        <div class="row col-12">
-                            <p>
+                            <div class="m-2 mt-3">
                                 {{ticketComment.CommentNotes}}
-                            </p>
+                            </div>
+                                
+                            <hr *ngIf="!last" />
                         </div>
-                            
-                        <div class="col-12">
-                            <hr class="w-90" />
-                        </div>
-                        
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="row col-12">
-                <a class="btn btn-zybach btn-md m-3"
-                    routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
-                    <span class="fas fa-plus"></span> Add Comment
-                </a>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header align-items-center">
+                    Notifications              
+                </div>
+                <div class="card-body" id="notification-display">
+        
+                    <ng-container *ngFor="let notification of notifications; let last = last">
+                        <div class="row">
+                            <div class="col-3 text-right">
+                                <p><strong>Date:</strong></p>
+                            </div>
+                            <div class="col-9">
+                                <p>{{notification.SentDate | date:'short'}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3 text-right">
+                                <p><strong>To/CC:</strong></p>
+                            </div>
+                            <div class="col-9">
+                                <p>{{notification.EmailAddresses}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3 text-right">
+                                <p><strong>Subject:</strong></p>
+                            </div>
+                            <div class="col-9">
+                                <p>{{notification.EmailSubject}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3 text-right">
+                                <p><strong>Body:</strong></p>
+                            </div>
+                            <div class="col-9" [innerHtml]="notification.EmailBody">
+                            </div>
+                        </div>
+                        <hr *ngIf="!last">
+                    </ng-container>
+                    <ng-container *ngIf="notifications?.length == 0">
+                        <em>No notifications to display.</em>
+                    </ng-container>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row mt-4 m-3">
-    <div class="col">
-        <div class="card m-3">
-            <div class="card-header align-items-center">
-                Notifications              
-            </div>
-            <div class="card-body">
-    
-                <ng-container *ngFor="let notification of notifications; let last = last">
-                    <div class="row">
-                        <div class="col-3 text-right">
-                            <p><strong>Date:</strong></p>
-                        </div>
-                        <div class="col-9">
-                            <p>{{notification.SentDate | date:'short'}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 text-right">
-                            <p><strong>To/CC:</strong></p>
-                        </div>
-                        <div class="col-9">
-                            <p>{{notification.EmailAddresses}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 text-right">
-                            <p><strong>Subject:</strong></p>
-                        </div>
-                        <div class="col-9">
-                            <p>{{notification.EmailSubject}}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 text-right">
-                            <p><strong>Body:</strong></p>
-                        </div>
-                        <div class="col-9" [innerHtml]="notification.EmailBody">
-                        </div>
-                    </div>
-                    <hr *ngIf="!last">
-                </ng-container>
-                <ng-container *ngIf="notifications?.length == 0">
-                    <em>No notifications to display.</em>
-                </ng-container>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <ng-template #deleteCommentModal let-modal>
