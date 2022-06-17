@@ -17,7 +17,6 @@ namespace Zybach.EFModels.Entities
                 WellTPID = openETGoogleBucketResponsePrecipitationDatum.WellTPID,
                 WaterMonth = openETGoogleBucketResponsePrecipitationDatum.WaterMonth,
                 WaterYear = openETGoogleBucketResponsePrecipitationDatum.WaterYear,
-                PrecipitationAcreFeet = openETGoogleBucketResponsePrecipitationDatum.PrecipitationAcreFeet,
                 PrecipitationInches = openETGoogleBucketResponsePrecipitationDatum.PrecipitationInches
             };
             DoCustomMappings(openETGoogleBucketResponsePrecipitationDatum, openETGoogleBucketResponsePrecipitationDatumDto);
@@ -34,7 +33,6 @@ namespace Zybach.EFModels.Entities
                 WellTPID = openETGoogleBucketResponsePrecipitationDatum.WellTPID,
                 WaterMonth = openETGoogleBucketResponsePrecipitationDatum.WaterMonth,
                 WaterYear = openETGoogleBucketResponsePrecipitationDatum.WaterYear,
-                PrecipitationAcreFeet = openETGoogleBucketResponsePrecipitationDatum.PrecipitationAcreFeet,
                 PrecipitationInches = openETGoogleBucketResponsePrecipitationDatum.PrecipitationInches
             };
             DoCustomSimpleDtoMappings(openETGoogleBucketResponsePrecipitationDatum, openETGoogleBucketResponsePrecipitationDatumSimpleDto);

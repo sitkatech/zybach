@@ -36,10 +36,10 @@ namespace Zybach.EFModels.Entities
                     (pr, et) => new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
                     {
                         WaterYearMonth = et.WaterYearMonth.AsDto(),
-                        EvapotranspirationAcreFeet = et.EvapotranspirationRateAcreFeet,
-                        EvapotranspirationInches = et.EvapotranspirationRateInches,
-                        PrecipitationAcreFeet = pr.PrecipitationAcreFeet,
-                        PrecipitationInches = pr.PrecipitationInches
+                        EvapotranspirationInches = et.EvapotranspirationInches,
+                        EvapotranspirationAcreInches = et.EvapotranspirationAcreInches,
+                        PrecipitationInches = pr.PrecipitationInches,
+                        PrecipitationAcreInches = pr.PrecipitationAcreInches
                     })
                 .OrderByDescending(x => x.WaterYearMonth.Year)
                 .ThenByDescending(x => x.WaterYearMonth.Month)
