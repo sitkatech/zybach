@@ -38,17 +38,25 @@ namespace Zybach.EFModels.Entities
         /// <summary>
         /// Protected constructor only for use in instantiating the set of static lookup values that match database
         /// </summary>
-        protected SensorType(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName)
+        protected SensorType(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName, string chartColor, string anomalousChartColor, string yAxisTitle, bool reverseYAxisScale)
         {
             SensorTypeID = sensorTypeID;
             SensorTypeName = sensorTypeName;
             SensorTypeDisplayName = sensorTypeDisplayName;
+            ChartColor = chartColor;
+            AnomalousChartColor = anomalousChartColor;
+            YAxisTitle = yAxisTitle;
+            ReverseYAxisScale = reverseYAxisScale;
         }
 
         [Key]
         public int SensorTypeID { get; private set; }
         public string SensorTypeName { get; private set; }
         public string SensorTypeDisplayName { get; private set; }
+        public string ChartColor { get; private set; }
+        public string AnomalousChartColor { get; private set; }
+        public string YAxisTitle { get; private set; }
+        public bool ReverseYAxisScale { get; private set; }
         [NotMapped]
         public int PrimaryKey { get { return SensorTypeID; } }
 
@@ -122,19 +130,19 @@ namespace Zybach.EFModels.Entities
 
     public partial class SensorTypeFlowMeter : SensorType
     {
-        private SensorTypeFlowMeter(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName) : base(sensorTypeID, sensorTypeName, sensorTypeDisplayName) {}
-        public static readonly SensorTypeFlowMeter Instance = new SensorTypeFlowMeter(1, @"FlowMeter", @"Flow Meter");
+        private SensorTypeFlowMeter(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName, string chartColor, string anomalousChartColor, string yAxisTitle, bool reverseYAxisScale) : base(sensorTypeID, sensorTypeName, sensorTypeDisplayName, chartColor, anomalousChartColor, yAxisTitle, reverseYAxisScale) {}
+        public static readonly SensorTypeFlowMeter Instance = new SensorTypeFlowMeter(1, @"FlowMeter", @"Flow Meter", @"#42C3EE", @"#294263", @"Gallons", false);
     }
 
     public partial class SensorTypePumpMonitor : SensorType
     {
-        private SensorTypePumpMonitor(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName) : base(sensorTypeID, sensorTypeName, sensorTypeDisplayName) {}
-        public static readonly SensorTypePumpMonitor Instance = new SensorTypePumpMonitor(2, @"PumpMonitor", @"Continuity Meter");
+        private SensorTypePumpMonitor(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName, string chartColor, string anomalousChartColor, string yAxisTitle, bool reverseYAxisScale) : base(sensorTypeID, sensorTypeName, sensorTypeDisplayName, chartColor, anomalousChartColor, yAxisTitle, reverseYAxisScale) {}
+        public static readonly SensorTypePumpMonitor Instance = new SensorTypePumpMonitor(2, @"PumpMonitor", @"Continuity Meter", @"#4AAA42", @"#255521", @"Gallons", false);
     }
 
     public partial class SensorTypeWellPressure : SensorType
     {
-        private SensorTypeWellPressure(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName) : base(sensorTypeID, sensorTypeName, sensorTypeDisplayName) {}
-        public static readonly SensorTypeWellPressure Instance = new SensorTypeWellPressure(3, @"WellPressure", @"Well Pressure");
+        private SensorTypeWellPressure(int sensorTypeID, string sensorTypeName, string sensorTypeDisplayName, string chartColor, string anomalousChartColor, string yAxisTitle, bool reverseYAxisScale) : base(sensorTypeID, sensorTypeName, sensorTypeDisplayName, chartColor, anomalousChartColor, yAxisTitle, reverseYAxisScale) {}
+        public static readonly SensorTypeWellPressure Instance = new SensorTypeWellPressure(3, @"WellPressure", @"Well Pressure", @"#42C3EE", @"#294263", @"Depth to Groundwater (ft)", true);
     }
 }

@@ -6,6 +6,10 @@ CREATE TABLE [dbo].[SensorType](
 	[SensorTypeID] [int] NOT NULL,
 	[SensorTypeName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[SensorTypeDisplayName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ChartColor] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[AnomalousChartColor] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[YAxisTitle] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ReverseYAxisScale] [bit] NOT NULL,
  CONSTRAINT [PK_SensorType_SensorTypeID] PRIMARY KEY CLUSTERED 
 (
 	[SensorTypeID] ASC

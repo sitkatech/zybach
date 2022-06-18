@@ -87,12 +87,12 @@ export class WaterLevelExplorerComponent implements OnInit {
 
   getChartDataAndBuildChart() {
     this.selectedSensors.forEach(sensor => {
-      if (sensor.WellSensorMeasurements.length === 0) {
+      if (sensor.SensorMeasurements.length === 0) {
         this.timeSeries = [];
       }
       else {
         this.noTimeSeriesData = false;
-        this.timeSeries = sensor.WellSensorMeasurements;      
+        this.timeSeries = sensor.SensorMeasurements;      
         this.setRangeMax(this.timeSeries);
       }
       this.tooltipFields = [{ "field": sensor.SensorTypeName, "type": "ordinal" }];

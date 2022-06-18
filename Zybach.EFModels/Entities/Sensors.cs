@@ -39,11 +39,10 @@ namespace Zybach.EFModels.Entities
                 .SingleOrDefault(x => x.SensorID == sensorID);
         }
 
-        public static List<SensorSimpleDto> ListByWellIDAsSimpleDto(ZybachDbContext dbContext, int wellID)
+        public static List<Sensor> ListByWellID(ZybachDbContext dbContext, int wellID)
         {
             return GetSensorsImpl(dbContext)
                 .Where(x => x.WellID == wellID)
-                .Select(x => x.AsSimpleDto())
                 .ToList();
         }
     }

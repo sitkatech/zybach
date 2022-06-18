@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Services
@@ -151,8 +152,8 @@ namespace Zybach.API.Services
             ],
             ""title"": {{
                 ""text"":""Nitrate Levels""
-                {(!isForWeb ? ",\"fontSize\": 30 ": "")}
-            }}{ (!isForWeb ? "," + reportDocumentOnlyConfig : "")}
+                {(!isForWeb ? ",\"fontSize\": 30 " : "")}
+            }}{(!isForWeb ? "," + reportDocumentOnlyConfig : "")}
         }}";
         }
 
@@ -305,8 +306,259 @@ namespace Zybach.API.Services
             ""title"": {{
                 ""text"":""Depth to Groundwater""
                 {(!isForWeb ? ",\"fontSize\": 30 " : "")}
-            }}{ (!isForWeb ? "," + reportDocumentOnlyConfig : "")}
+            }}{(!isForWeb ? "," + reportDocumentOnlyConfig : "")}
         }}";
+        }
+
+        public static string GetSensorDetailChartSpec(Sensor sensor)
+        {
+            var yAxisTitle = $"\"{sensor.SensorType.YAxisTitle}\"";
+            var yAxisScaleReverse = (sensor.SensorType.ReverseYAxisScale ? "true" : "false");
+            var vegaLiteChartSpec =
+                $@"
+{{
+  ""$schema"": ""https://vega.github.io/schema/vega-lite/v5.1.json"",
+  ""description"": ""A chart"",
+  ""width"": ""container"",
+  ""height"": ""container"",
+  ""data"": {{ ""name"": ""TimeSeries"" }},
+  ""encoding"": {{
+    ""x"": {{
+      ""field"": ""MeasurementDate"",
+      ""timeUnit"": ""yearmonthdate"",
+      ""type"": ""temporal"",
+      ""axis"": {{
+        ""title"": ""Date""
+      }}
+    }}
+  }},
+  ""layer"": [
+    {{
+      ""mark"": {{
+        ""type"": ""line""
+      }},
+      ""encoding"": {{
+        ""color"": {{
+          ""field"": ""DataSourceName"",
+          ""type"": ""nominal"",
+          ""legend"": {{
+            ""title"": ""Data Source""
+          }},
+          ""scale"": {{
+            ""domain"": [
+              ""{sensor.SensorType.SensorTypeDisplayName}""
+            ],
+            ""range"": [
+              ""{sensor.SensorType.ChartColor}""
+            ]
+          }}
+        }}
+      }},
+      ""layer"": [
+        {{
+          ""mark"": ""line""
+        }},
+        {{
+          ""transform"": [
+            {{
+              ""filter"": {{
+                ""selection"": ""hover""
+              }}
+            }}
+          ],
+          ""mark"": ""point""
+        }}
+      ]
+    }},
+    {{
+      ""mark"": {{
+        ""type"": ""line"",
+        ""color"": ""{sensor.SensorType.AnomalousChartColor}""
+      }},
+      ""transform"": [
+        {{
+          ""as"": ""MeasurementValue"",
+          ""calculate"": ""if(datum.IsAnomalous == true, datum.MeasurementValue, null)""
+        }},
+        {{
+          ""calculate"": ""true"",
+          ""as"": ""baseline""
+        }}
+      ]
+    }},
+    {{
+      ""mark"": {{
+        ""type"": ""circle"",
+        ""color"": ""{sensor.SensorType.AnomalousChartColor}""
+      }},
+      ""transform"": [
+        {{
+          ""filter"": ""datum.IsAnomalous == true""
+        }},
+        {{
+          ""calculate"": ""true"",
+          ""as"": ""baseline""
+        }}
+      ]
+    }},
+    {{
+      ""mark"": ""rule"",
+      ""encoding"": {{
+        ""opacity"": {{
+          ""condition"": {{
+            ""value"": 0.3,
+            ""selection"": ""hover""
+          }},
+          ""value"": 0
+        }},
+        ""tooltip"": [
+          {{
+            ""field"": ""MeasurementDate"",
+            ""type"": ""temporal"",
+            ""title"": ""Date""
+          }},
+          {{
+            ""field"": ""MeasurementValueString"",
+            ""type"": ""ordinal"",
+            ""title"": {yAxisTitle}
+          }}
+        ]
+      }},
+      ""selection"": {{
+        ""hover"": {{
+          ""type"": ""single"",
+          ""fields"": [
+            ""MeasurementDate"",
+            ""MeasurementValueString""
+          ],
+          ""nearest"": true,
+          ""on"": ""mouseover"",
+          ""empty"": ""none"",
+          ""clear"": ""mouseout""
+        }}
+      }}
+    }}
+  ],
+  ""encoding"": {{
+    ""x"": {{
+      ""field"": ""MeasurementDate"",
+      ""type"": ""temporal"",
+      ""timeUnit"": ""yearmonthdate"",
+      ""axis"": {{
+        ""title"": ""Date"",
+        ""grid"": false
+      }}
+    }},
+    ""y"": {{
+      ""field"": ""MeasurementValue"",
+      ""type"": ""quantitative"",
+      ""axis"": {{
+        ""title"": {yAxisTitle},
+        ""grid"": false
+      }},
+      ""scale"": {{
+        ""reverse"": {yAxisScaleReverse}
+      }}
+    }},
+    ""detail"": {{
+      ""field"": ""DataSourceName"",
+      ""type"": ""nominal""
+    }}
+  }}
+}}";
+            return vegaLiteChartSpec;
+        }
+
+        public static string GetSensorDetailChartSpecOld(Sensor sensor)
+        {
+            var yAxisTitle = $"\"{sensor.SensorType.YAxisTitle}\"";
+            var yAxisScaleReverse = (sensor.SensorType.ReverseYAxisScale ? "true" : "false");
+            var domains =
+                $"\"{sensor.SensorType.SensorTypeDisplayName}\", \"{sensor.SensorType.SensorTypeDisplayName} Anomalies\"";
+            var chartColors = $"\"{sensor.SensorType.ChartColor}\", \"{sensor.SensorType.AnomalousChartColor}\"";
+            var tooltipFields = $"{{\"field\": \"{sensor.SensorType.SensorTypeDisplayName}\", \"type\": \"ordinal\" }}, {{\"field\": \"{sensor.SensorType.SensorTypeDisplayName} Anomalies\", \"type\": \"ordinal\" }}";
+            var vegaLiteChartSpec =
+                $@"
+{{
+  ""$schema"": ""https://vega.github.io/schema/vega-lite/v5.1.json"",
+  ""description"": ""A chart"",
+  ""width"": ""container"",
+  ""height"": ""container"",
+  ""data"": {{ ""name"": ""TimeSeries"" }},
+  ""encoding"": {{
+    ""x"": {{
+      ""field"": ""MeasurementDate"",
+      ""timeUnit"": ""yearmonthdate"",
+      ""type"": ""temporal"",
+      ""axis"": {{
+        ""title"": ""Date""
+      }}
+    }}
+  }},
+  ""layer"": [
+    {{
+      ""encoding"": {{
+        ""y"": {{
+          ""field"": ""MeasurementValue"",
+          ""type"": ""quantitative"",
+          ""axis"": {{
+            ""title"": {yAxisTitle}
+          }},
+          ""scale"": {{
+            ""reverse"": {yAxisScaleReverse}
+          }}
+        }},
+        ""color"": {{
+          ""field"": ""DataSourceName"",
+          ""type"": ""nominal"",
+          ""axis"": {{
+            ""title"": ""Data Source""
+          }},
+          ""scale"": {{
+            ""domain"": [{domains}],
+            ""range"": [{chartColors}]
+          }}
+        }}
+      }},
+      ""layer"": [
+        {{ ""mark"": ""line"" }},
+        {{ ""transform"": [{{ ""filter"": {{ ""selection"": ""hover"" }} }}], ""mark"": ""point"" }}
+      ]
+    }},
+    {{
+      ""transform"": [
+        {{
+            ""pivot"": ""DataSourceName"",
+            ""value"": ""MeasurementValueString"",
+            ""groupby"": [""MeasurementDate""],
+            ""op"": ""max""
+        }}
+      ],
+      ""mark"": ""rule"",
+      ""encoding"": {{
+        ""opacity"": {{
+          ""condition"": {{ ""value"": 0.3, ""selection"": ""hover"" }},
+          ""value"": 0
+        }},
+        ""tooltip"": [
+          {{ ""field"": ""MeasurementDate"", ""type"": ""temporal"", ""title"": ""Date"" }},
+          {tooltipFields}
+        ]
+      }},
+      ""selection"": {{
+        ""hover"": {{
+          ""type"": ""single"",
+          ""fields"": [""MeasurementDate"", ""MeasurementValueString""],
+          ""nearest"": true,
+          ""on"": ""mouseover"",
+          ""empty"": ""none"",
+          ""clear"": ""mouseout""
+        }}
+      }}
+    }}
+  ]
+}}";
+            return vegaLiteChartSpec;
         }
     }
 }

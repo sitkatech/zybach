@@ -87,7 +87,6 @@ model/icrs-object.ts
 model/installation-record-dto.ts
 model/interval-volume-dto.ts
 model/irrigated-acres-per-year-dto.ts
-model/measurement-type-dto.ts
 model/models.ts
 model/open-et-data-type-dto.ts
 model/open-et-sync-history-dto.ts
@@ -100,6 +99,7 @@ model/role-dto.ts
 model/search-summary-dto.ts
 model/sensor-anomaly-simple-dto.ts
 model/sensor-anomaly-upsert-dto.ts
+model/sensor-measurement-dto.ts
 model/sensor-message-age-dto.ts
 model/sensor-simple-dto.ts
 model/sensor-summary-dto.ts
@@ -144,7 +144,6 @@ model/well-new-dto.ts
 model/well-participation-dto.ts
 model/well-participation-info-dto.ts
 model/well-registration-id-dto.ts
-model/well-sensor-measurement-dto.ts
 model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-water-level-map-summary-dto.ts

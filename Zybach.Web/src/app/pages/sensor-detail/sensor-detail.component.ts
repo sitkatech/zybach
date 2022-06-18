@@ -86,7 +86,11 @@ export class SensorDetailComponent implements OnInit {
   }
   
   private getSensorDetails() {
-    this.sensorService.sensorsSensorIDGet(this.sensorID).subscribe(sensor => {
+    forkJoin({
+      sensor: this.sensorService.sensorsSensorIDGet(this.sensorID), 
+      chartSpec: this.sensorService.sensorsSensorIDChartSpecGet(this.sensorID)
+    })
+    .subscribe(({sensor, chartSpec}) => {
       this.sensor = sensor;
       // convert to hours
       this.sensor.MessageAge = Math.floor(this.sensor.MessageAge / 3600);
@@ -101,7 +105,7 @@ export class SensorDetailComponent implements OnInit {
 
       this.getInstallationDetails();
       this.initDateRange(new Date(this.sensor.FirstReadingDate), new Date(this.sensor.LastReadingDate));
-      this.getChartDataAndBuildChart();
+      this.getChartDataAndBuildChart(chartSpec);
     });
   }
 
@@ -222,18 +226,18 @@ export class SensorDetailComponent implements OnInit {
 
   // Begin section: chart
 
-  getChartDataAndBuildChart() {
-      if (this.sensor.WellSensorMeasurements.length === 0) {
+  getChartDataAndBuildChart(chartSpec: any) {
+      if (this.sensor.SensorMeasurements.length === 0) {
         this.noTimeSeriesData = true;
         this.timeSeries = [];
         return;
       }
 
-      this.timeSeries = this.sensor.WellSensorMeasurements;      
+      this.timeSeries = this.sensor.SensorMeasurements;      
       this.cdr.detectChanges();
       this.setRangeMax(this.timeSeries);
       this.tooltipFields = [{ "field": this.sensor.SensorTypeName, "type": "ordinal" }];
-      this.buildChart();
+      this.buildChart(chartSpec);
   }
 
   async exportChartData(){
@@ -295,9 +299,10 @@ export class SensorDetailComponent implements OnInit {
     return pivotedAndSorted;
   }
 
-  buildChart() {
+  buildChart(chartSpec: any) {
     var self = this;
-    vegaEmbed(`#${this.chartID}`, this.getVegaSpec(), {
+    console.log(chartSpec);
+    vegaEmbed(`#${this.chartID}`, chartSpec, {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.vegaView = res.view;
@@ -344,7 +349,7 @@ export class SensorDetailComponent implements OnInit {
     });
 
     this.setRangeMax(filteredTimeSeries);
-
+    console.log(filteredTimeSeries);
     var changeSet = vega.changeset().remove(x => true).insert(filteredTimeSeries);
     this.vegaView.change('TimeSeries', changeSet).run();
     this.resizeWindow();
@@ -363,82 +368,6 @@ export class SensorDetailComponent implements OnInit {
     else
     {
       this.rangeMax = 10000;
-    }
-  }
-
-  getVegaSpec(): any {
-    return {
-      "$schema": "https://vega.github.io/schema/vega-lite/v5.1.json",
-      "description": "A chart",
-      "width": "container",
-      "height": "container",
-      "data": { "name": "TimeSeries" },
-      "encoding": {
-        "x": {
-          "field": "MeasurementDate",
-          "timeUnit": "yearmonthdate",
-          "type": "temporal",
-          "axis": {
-            "title": "Date"
-          }
-        }
-      },
-
-      "layer": [
-        {
-          "encoding": {
-            "y": {
-              "field": "MeasurementValue",
-              "type": "quantitative",
-              "axis": {
-                "title": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? "Depth to Groundwater (ft)" : "Gallons"
-              },
-              "scale": {
-                "reverse": this.sensor.SensorTypeID === SensorTypeEnum.WellPressure ? true : false
-              }
-            },
-            "color": {
-              "field": "MeasurementType.MeasurementTypeDisplayName",
-              "type": "nominal",
-              "axis": {
-                "title": "Data Source"
-              },
-              "scale": {
-                "domain": [this.sensor.SensorTypeName],
-                "range": [this.chartColor]
-              }
-            }
-          },
-          "layer": [
-            { "mark": "line" },
-            { "transform": [{ "filter": { "selection": "hover" } }], "mark": "point" }
-          ]
-        },
-        {
-          "transform": [{ "pivot": "MeasurementType.MeasurementTypeDisplayName", "value": "MeasurementValueString", "groupby": ["MeasurementDate"], "op": "max" }],
-          "mark": "rule",
-          "encoding": {
-            "opacity": {
-              "condition": { "value": 0.3, "selection": "hover" },
-              "value": 0
-            },
-            "tooltip": [
-              { "field": "MeasurementDate", "type": "temporal", "title": "Date" },
-              ...this.tooltipFields
-            ]
-          },
-          "selection": {
-            "hover": {
-              "type": "single",
-              "fields": ["MeasurementDate"],
-              "nearest": true,
-              "on": "mouseover",
-              "empty": "none",
-              "clear": "mouseout"
-            }
-          }
-        }
-      ]
     }
   }
   // End section: chart

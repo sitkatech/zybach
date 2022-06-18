@@ -12,6 +12,10 @@ namespace Zybach.Models.DataTransferObjects
         public int SensorTypeID { get; set; }
         public string SensorTypeName { get; set; }
         public string SensorTypeDisplayName { get; set; }
+        public string ChartColor { get; set; }
+        public string AnomalousChartColor { get; set; }
+        public string YAxisTitle { get; set; }
+        public bool ReverseYAxisScale { get; set; }
     }
 
     public partial class SensorTypeSimpleDto
@@ -19,6 +23,10 @@ namespace Zybach.Models.DataTransferObjects
         public int SensorTypeID { get; set; }
         public string SensorTypeName { get; set; }
         public string SensorTypeDisplayName { get; set; }
+        public string ChartColor { get; set; }
+        public string AnomalousChartColor { get; set; }
+        public string YAxisTitle { get; set; }
+        public bool ReverseYAxisScale { get; set; }
     }
 
 }

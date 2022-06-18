@@ -2773,6 +2773,29 @@
         }
       }
     },
+    "/sensors/{sensorID}/chartSpec": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/sensors/byWellID/{wellID}": {
       "get": {
         "tags": [
@@ -7497,32 +7520,6 @@
         },
         "additionalProperties": false
       },
-      "MeasurementTypeDto": {
-        "type": "object",
-        "properties": {
-          "MeasurementTypeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "MeasurementTypeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementTypeDisplayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "InfluxMeasurementName": {
-            "type": "string",
-            "nullable": true
-          },
-          "InfluxFieldName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "OpenETDataTypeDto": {
         "type": "object",
         "properties": {
@@ -7823,6 +7820,36 @@
         },
         "additionalProperties": false
       },
+      "SensorMeasurementDto": {
+        "type": "object",
+        "properties": {
+          "DataSourceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MeasurementValueString": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementValue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "IsAnomalous": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
@@ -7930,10 +7957,10 @@
             "type": "string",
             "nullable": true
           },
-          "WellSensorMeasurements": {
+          "SensorMeasurements": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WellSensorMeasurementDto"
+              "$ref": "#/components/schemas/SensorMeasurementDto"
             },
             "nullable": true
           },
@@ -9997,59 +10024,6 @@
             "maxLength": 100,
             "minLength": 0,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "WellSensorMeasurementDto": {
-        "type": "object",
-        "properties": {
-          "WellSensorMeasurementID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementType": {
-            "$ref": "#/components/schemas/MeasurementTypeDto"
-          },
-          "ReadingYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ReadingMonth": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ReadingDay": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "SensorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementValue": {
-            "type": "number",
-            "format": "double"
-          },
-          "IsAnomalous": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "MeasurementDateInPacificTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "MeasurementDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "MeasurementValueString": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
