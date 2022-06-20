@@ -13,7 +13,6 @@ namespace Zybach.Models.DataTransferObjects
         public string WellTPID { get; set; }
         public int WaterMonth { get; set; }
         public int WaterYear { get; set; }
-        public decimal? PrecipitationAcreFeet { get; set; }
         public decimal? PrecipitationInches { get; set; }
     }
 
@@ -23,7 +22,6 @@ namespace Zybach.Models.DataTransferObjects
         public string WellTPID { get; set; }
         public int WaterMonth { get; set; }
         public int WaterYear { get; set; }
-        public decimal? PrecipitationAcreFeet { get; set; }
         public decimal? PrecipitationInches { get; set; }
     }
 

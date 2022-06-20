@@ -16,8 +16,8 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigationUnitWaterYearMonthPrecipitationDatumID = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.AgHubIrrigationUnitWaterYearMonthPrecipitationDatumID,
                 AgHubIrrigationUnit = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.AgHubIrrigationUnit.AsDto(),
                 WaterYearMonth = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.WaterYearMonth.AsDto(),
-                PrecipitationAcreFeet = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationAcreFeet,
-                PrecipitationInches = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationInches
+                PrecipitationInches = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationInches,
+                PrecipitationAcreInches = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationAcreInches
             };
             DoCustomMappings(agHubIrrigationUnitWaterYearMonthPrecipitationDatum, agHubIrrigationUnitWaterYearMonthPrecipitationDatumDto);
             return agHubIrrigationUnitWaterYearMonthPrecipitationDatumDto;
@@ -32,8 +32,8 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigationUnitWaterYearMonthPrecipitationDatumID = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.AgHubIrrigationUnitWaterYearMonthPrecipitationDatumID,
                 AgHubIrrigationUnitID = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.AgHubIrrigationUnitID,
                 WaterYearMonthID = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.WaterYearMonthID,
-                PrecipitationAcreFeet = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationAcreFeet,
-                PrecipitationInches = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationInches
+                PrecipitationInches = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationInches,
+                PrecipitationAcreInches = agHubIrrigationUnitWaterYearMonthPrecipitationDatum.PrecipitationAcreInches
             };
             DoCustomSimpleDtoMappings(agHubIrrigationUnitWaterYearMonthPrecipitationDatum, agHubIrrigationUnitWaterYearMonthPrecipitationDatumSimpleDto);
             return agHubIrrigationUnitWaterYearMonthPrecipitationDatumSimpleDto;

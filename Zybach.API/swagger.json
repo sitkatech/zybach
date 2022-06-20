@@ -5745,7 +5745,7 @@
           "WaterYearMonth": {
             "$ref": "#/components/schemas/WaterYearMonthDto"
           },
-          "PrecipitationAcreFeet": {
+          "PrecipitationAcreInches": {
             "type": "number",
             "format": "double",
             "nullable": true
@@ -5755,7 +5755,7 @@
             "format": "double",
             "nullable": true
           },
-          "EvapotranspirationAcreFeet": {
+          "EvapotranspirationAcreInches": {
             "type": "number",
             "format": "double",
             "nullable": true

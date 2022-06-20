@@ -13,8 +13,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellTPID { get; set; }
         public int WaterMonth { get; set; }
         public int WaterYear { get; set; }
-        public decimal? EvapotranspirationRateInches { get; set; }
-        public decimal? EvapotranspirationRateAcreFeet { get; set; }
+        public decimal? EvapotranspirationInches { get; set; }
     }
 
     public partial class OpenETGoogleBucketResponseEvapotranspirationDatumSimpleDto
@@ -23,8 +22,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellTPID { get; set; }
         public int WaterMonth { get; set; }
         public int WaterYear { get; set; }
-        public decimal? EvapotranspirationRateInches { get; set; }
-        public decimal? EvapotranspirationRateAcreFeet { get; set; }
+        public decimal? EvapotranspirationInches { get; set; }
     }
 
 }

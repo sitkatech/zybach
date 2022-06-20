@@ -58,8 +58,6 @@ namespace Zybach.API
                     }
                     
                 });
-
-                _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pUpdateAgHubIrrigationUnitMonthlyETAndPrecipDatum");
             }
 
             //Fail any created syncs that have been in a created state for longer than 15 minutes
