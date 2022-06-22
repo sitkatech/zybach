@@ -9,11 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { SensorSummaryDto } from '././sensor-summary-dto';
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
+import { SensorSimpleDto } from '././sensor-simple-dto';
 
 export class WellWithSensorSummaryDto { 
-    Sensors?: Array<SensorSummaryDto>;
+    Sensors?: Array<SensorSimpleDto>;
     WellConnectedMeter?: boolean;
     WellID?: number;
     WellRegistrationID?: string;

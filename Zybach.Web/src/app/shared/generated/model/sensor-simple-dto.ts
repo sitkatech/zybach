@@ -9,8 +9,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { SensorMeasurementDto } from '././sensor-measurement-dto';
-import { SupportTicketSimpleDto } from '././support-ticket-simple-dto';
 
 export class SensorSimpleDto { 
     SensorID?: number;
@@ -30,8 +28,11 @@ export class SensorSimpleDto {
     WellPageNumber?: number;
     WellOwnerName?: string;
     WellTownshipRangeSection?: string;
-    SensorMeasurements?: Array<SensorMeasurementDto>;
-    OpenSupportTickets?: Array<SupportTicketSimpleDto>;
+    ChartDataSourceName?: string;
+    ChartAnomaliesDataSourceName?: string;
+    ChartDomains?: Array<string>;
+    ChartColors?: Array<string>;
+    ChartTooltipFields?: Array<string>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

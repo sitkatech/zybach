@@ -1,0 +1,60 @@
+<div class="row" *ngIf="!timeSeries">
+  <div class="text-center">
+    <span class="fas fa-spinner loading-spinner"></span>
+    <p>Loading...</p>
+  </div>
+</div>
+
+<div *ngIf="noTimeSeriesData; else timeSeriesTemplate">
+
+  <div class="mt-2">
+    <em>No time series data available for this Well.</em>
+  </div>
+  <div #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+</div>
+<ng-template #timeSeriesTemplate>
+  <div class="row mb-1 mt-2">
+    <div class="col">
+      <button (click)="lastThirtyDays($event)" class="btn btn-zybach mr-2">
+        Last 30 Days
+      </button>
+      <button (click)="lastSixMonths($event)" class="btn btn-zybach mr-2">
+        6 Months
+      </button>
+      <button (click)="lastOneYear($event)" class="btn btn-zybach mr-2">
+        One Year
+      </button>
+      <button (click)="fullDateRange($event)" class="btn btn-zybach mr-2">
+        Full Range
+      </button>
+      <a *ngIf="!noTimeSeriesData" class="btn btn btn-zybach float-right" (click)="exportChartData()"><span class="fas fa-download"></span> Download CSV</a>
+    </div>
+  </div>
+  <div class="row mb-1 mt-2">
+    <div class="input-group col-6">
+      <span class="font-weight-bold mt-1 mx-2">Start Date:</span>
+      <div class="input-group">
+        <input class="form-control" name="d1" ngbDatepicker #d1="ngbDatepicker" placeholder="yyyy-mm-dd"
+          (ngModelChange)="onStartDateChanged($event)" [(ngModel)]="startDate" />
+        <div class="input-group-append">
+          <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()"
+            type="button"></button>
+        </div>
+      </div>
+    </div>
+    <div class="input-group col-6">
+      <span class="font-weight-bold mt-1 mx-2">End Date:</span>
+      <div class="input-group">
+        <input class="form-control" name="d2" ngbDatepicker #d2="ngbDatepicker" placeholder="yyyy-mm-dd"
+          (ngModelChange)="onEndDateChanged($event)" [(ngModel)]="endDate" />
+        <div class="input-group-append">
+          <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d2.toggle()"
+            type="button"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div #{{chartID}} id="{{chartID}}" style="width: 100%; min-height: 340px;"></div>
+  <em>All data are displayed in Central Daylight Time</em>
+
+</ng-template>

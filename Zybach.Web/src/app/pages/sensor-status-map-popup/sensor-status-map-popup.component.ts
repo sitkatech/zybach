@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, Input } from '@angular/core';
 import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
-import { SensorSummaryDto } from 'src/app/shared/generated/model/sensor-summary-dto';
+import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 
 @Component({
   selector: 'zybach-sensor-status-map-popup',
@@ -25,12 +25,12 @@ export class SensorStatusMapPopupComponent implements OnInit {
     return `Sensor${this.sensors.length != 1 ? "s":""}:`;
   }
 
-  getSensorDisplay(sensor: SensorSummaryDto): string {
+  getSensorDisplay(sensor: SensorSimpleDto): string {
     if (sensor.SensorName == null || sensor.SensorName == undefined) {
-      return sensor.SensorType;
+      return sensor.SensorTypeName;
     }
 
-    return `${sensor.SensorType} (${sensor.SensorName})`;
+    return `${sensor.SensorTypeName} (${sensor.SensorName})`;
   }
 
   getLastMessageReceived(sensor: SensorMessageAgeDto){

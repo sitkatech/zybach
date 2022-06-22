@@ -24,6 +24,7 @@ import { ClearGridFiltersButtonComponent } from './components/clear-grid-filters
 import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SensorChartComponent } from './components/sensor-chart/sensor-chart.component';
 
 @NgModule({
     declarations: [
@@ -39,6 +40,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
+        SensorChartComponent,
         CustomDropdownFilterComponent,
         ClearGridFiltersButtonComponent,
         CustomPinnedRowRendererComponent
@@ -65,6 +67,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
         FieldDefinitionComponent,
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
+        SensorChartComponent,
         ClearGridFiltersButtonComponent
     ]
 })

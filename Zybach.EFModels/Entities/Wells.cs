@@ -24,7 +24,7 @@ namespace Zybach.EFModels.Entities
             return well?.AsSimpleDto();
         }
 
-        public static List<WellWithSensorSummaryDto> ListAsWellWithSensorSummaryDto(ZybachDbContext dbContext)
+        public static List<WellWithSensorSimpleDto> ListAsWellWithSensorSimpleDto(ZybachDbContext dbContext)
         {
             var wellsWithWaterLevelInspections = dbContext.WaterLevelInspections
                 .Include(x => x.Well)
@@ -38,7 +38,7 @@ namespace Zybach.EFModels.Entities
                 .ToDictionary(x => x.Key, y => y.Any());
             return GetWellsImpl(dbContext)
                 .OrderBy(x => x.WellRegistrationID)
-                .Select(x => WellWithSensorSummaryDtoFromWell(x,
+                .Select(x => WellWithSensorSimpleDtoFromWell(x,
                     wellsWithWaterLevelInspections.ContainsKey(x.WellID)
                         ? wellsWithWaterLevelInspections[x.WellID]
                         : null,
@@ -48,12 +48,12 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
-        public static WellWithSensorSummaryDto GetByIDAsWellWithSensorSummaryDto(ZybachDbContext dbContext, int wellID)
+        public static WellWithSensorSimpleDto GetByIDAsWellWithSensorSimpleDto(ZybachDbContext dbContext, int wellID)
         {
             var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
             if (well != null)
             {
-                return WellWithSensorSummaryDtoFromWell(well, null, null);
+                return WellWithSensorSimpleDtoFromWell(well, null, null);
             }
             return null;
         }
@@ -91,9 +91,9 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking();
         }
 
-        private static WellWithSensorSummaryDto WellWithSensorSummaryDtoFromWell(Well well, bool? hasWaterLevelInspections, bool? hasWaterQualityInspections)
+        private static WellWithSensorSimpleDto WellWithSensorSimpleDtoFromWell(Well well, bool? hasWaterLevelInspections, bool? hasWaterQualityInspections)
         {
-            var wellWithSensorSummaryDto = new WellWithSensorSummaryDto
+            var wellWithSensorSimpleDto = new WellWithSensorSimpleDto
             {
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
@@ -109,41 +109,34 @@ namespace Zybach.EFModels.Entities
                 HasWaterQualityInspections = hasWaterQualityInspections
             };
 
-            var sensors = well.Sensors.Select(x => new SensorSummaryDto()
-            {
-                SensorName = x.SensorName,
-                SensorID = x.SensorID,
-                SensorTypeID = x.SensorTypeID,
-                SensorType = x.SensorType.SensorTypeDisplayName,
-                WellRegistrationID = well.WellRegistrationID,
-                IsActive = x.IsActive
-            }).ToList();
+            var sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList();
 
             var agHubWell = well.AgHubWell;
             if (agHubWell != null)
             {
-                wellWithSensorSummaryDto.WellTPID = agHubWell.AgHubIrrigationUnit?.WellTPID;
-                wellWithSensorSummaryDto.HasElectricalData = agHubWell.HasElectricalData;
-                wellWithSensorSummaryDto.WellConnectedMeter = agHubWell.WellConnectedMeter;
-                wellWithSensorSummaryDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
-                wellWithSensorSummaryDto.FieldName = agHubWell.FieldName;
+                wellWithSensorSimpleDto.WellTPID = agHubWell.AgHubIrrigationUnit?.WellTPID;
+                wellWithSensorSimpleDto.HasElectricalData = agHubWell.HasElectricalData;
+                wellWithSensorSimpleDto.WellConnectedMeter = agHubWell.WellConnectedMeter;
+                wellWithSensorSimpleDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
+                wellWithSensorSimpleDto.FieldName = agHubWell.FieldName;
 
                 if (agHubWell.HasElectricalData)
                 {
-                    sensors.Add(new SensorSummaryDto()
+                    sensors.Add(new SensorSimpleDto()
                     {
                         WellRegistrationID = well.WellRegistrationID,
-                        SensorType = "Electrical Usage" // TODO: Use a static enum
+                        SensorTypeName = SensorType.ElectricalUsage.SensorTypeDisplayName,
+                        ChartDataSourceName = SensorType.ElectricalUsage.SensorTypeDisplayName
                     });
                 }
 
-                wellWithSensorSummaryDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres
+                wellWithSensorSimpleDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres
                     .Select(x => new IrrigatedAcresPerYearDto { Acres = x.Acres, Year = x.IrrigationYear }).ToList();
             }
 
-            wellWithSensorSummaryDto.Sensors = sensors;
+            wellWithSensorSimpleDto.Sensors = sensors;
 
-            return wellWithSensorSummaryDto;
+            return wellWithSensorSimpleDto;
         }
 
         public static List<WellSimpleDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)

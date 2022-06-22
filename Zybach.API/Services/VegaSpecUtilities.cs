@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
 
@@ -310,7 +311,7 @@ namespace Zybach.API.Services
         }}";
         }
 
-        public static string GetSensorDetailChartSpec(Sensor sensor)
+        public static string GetSensorDetailChartSpecAsOneSeries(Sensor sensor)
         {
             var yAxisTitle = $"\"{sensor.SensorType.YAxisTitle}\"";
             var yAxisScaleReverse = (sensor.SensorType.ReverseYAxisScale ? "true" : "false");
@@ -469,14 +470,33 @@ namespace Zybach.API.Services
             return vegaLiteChartSpec;
         }
 
-        public static string GetSensorDetailChartSpecOld(Sensor sensor)
+        public static string GetSensorTypeChartSpec(Sensor sensor)
         {
-            var yAxisTitle = $"\"{sensor.SensorType.YAxisTitle}\"";
-            var yAxisScaleReverse = (sensor.SensorType.ReverseYAxisScale ? "true" : "false");
-            var domains =
-                $"\"{sensor.SensorType.SensorTypeDisplayName}\", \"{sensor.SensorType.SensorTypeDisplayName} Anomalies\"";
-            var chartColors = $"\"{sensor.SensorType.ChartColor}\", \"{sensor.SensorType.AnomalousChartColor}\"";
-            var tooltipFields = $"{{\"field\": \"{sensor.SensorType.SensorTypeDisplayName}\", \"type\": \"ordinal\" }}, {{\"field\": \"{sensor.SensorType.SensorTypeDisplayName} Anomalies\", \"type\": \"ordinal\" }}";
+            return GetSensorTypeChartSpec(new List<SensorSimpleDto>{sensor.AsSimpleDto()}, sensor.SensorType);
+        }
+
+        public static string GetSensorTypeChartSpec(List<SensorSimpleDto> sensors, SensorType sensorType)
+        {
+            if (!sensors.Any())
+            {
+                return null;
+            }
+            var domains = new List<string>();
+            var chartColors = new List<string>();
+            var tooltipFields = new List<string>();
+            foreach (var sensor in sensors)
+            {
+                domains.AddRange(sensor.ChartDomains);
+                chartColors.AddRange(sensor.ChartColors);
+                tooltipFields.AddRange(sensor.ChartTooltipFields);
+            }
+            // this assumes that the sensors passed in are all of the same y axis scale and x axis scale, as in their Sensor Types are comparable
+            return GetSensorTypeChartSpec(sensorType.YAxisTitle, sensorType.ReverseYAxisScale, domains, chartColors, tooltipFields);
+        }
+
+        public static string GetSensorTypeChartSpec(string yAxisTitle, bool reverseYAxisScale, List<string> domains, List<string> chartColors, List<string> tooltipFields)
+        {
+            var yAxisScaleReverse = (reverseYAxisScale ? "true" : "false");
             var vegaLiteChartSpec =
                 $@"
 {{
@@ -502,7 +522,7 @@ namespace Zybach.API.Services
           ""field"": ""MeasurementValue"",
           ""type"": ""quantitative"",
           ""axis"": {{
-            ""title"": {yAxisTitle}
+            ""title"": ""{yAxisTitle}""
           }},
           ""scale"": {{
             ""reverse"": {yAxisScaleReverse}
@@ -515,8 +535,8 @@ namespace Zybach.API.Services
             ""title"": ""Data Source""
           }},
           ""scale"": {{
-            ""domain"": [{domains}],
-            ""range"": [{chartColors}]
+            ""domain"": [{string.Join(", ", domains)}],
+            ""range"": [{string.Join(", ", chartColors)}]
           }}
         }}
       }},
@@ -542,7 +562,7 @@ namespace Zybach.API.Services
         }},
         ""tooltip"": [
           {{ ""field"": ""MeasurementDate"", ""type"": ""temporal"", ""title"": ""Date"" }},
-          {tooltipFields}
+          {string.Join(", ", tooltipFields)}
         ]
       }},
       ""selection"": {{

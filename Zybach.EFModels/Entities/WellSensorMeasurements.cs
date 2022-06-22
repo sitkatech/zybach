@@ -18,42 +18,16 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
-        public static IQueryable<WellSensorMeasurement> GetWellSensorMeasurementsImpl(ZybachDbContext dbContext)
+        private static IQueryable<WellSensorMeasurement> GetWellSensorMeasurementsImpl(ZybachDbContext dbContext)
         {
             return dbContext.WellSensorMeasurements.AsNoTracking();
         }
 
-        public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(
-            ZybachDbContext dbContext, string wellRegistrationID, MeasurementTypeEnum measurementTypeEnum,
-            IEnumerable<SensorSummaryDto> sensorTypeSensors)
-        {
-            var sensorNames = sensorTypeSensors.Select(y => y.SensorName);
-            return GetWellSensorMeasurementsImpl(dbContext)
-                .Where(x => x.WellRegistrationID == wellRegistrationID &&
-                            x.MeasurementTypeID == (int)measurementTypeEnum &&
-                            sensorNames.Contains(x.SensorName)).Select(x => x.AsDto())
-                .ToList();
-        }
-
-        public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(
-            ZybachDbContext dbContext, string wellRegistrationID, List<MeasurementTypeEnum> measurementTypeEnums,
-            IEnumerable<SensorSummaryDto> sensorTypeSensors)
-        {
-            var measurementTypeIDs = measurementTypeEnums.Select(x => (int) x);
-            var sensorNames = sensorTypeSensors.Select(y => y.SensorName);
-            return GetWellSensorMeasurementsImpl(dbContext)
-                .Where(x => x.WellRegistrationID == wellRegistrationID &&
-                            measurementTypeIDs.Contains(x.MeasurementTypeID) &&
-                            sensorNames.Contains(x.SensorName)).Select(x => x.AsDto())
-                .ToList();
-        }
-
-        public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsForWellByMeasurementType(
-            ZybachDbContext dbContext, string wellRegistrationID, MeasurementTypeEnum measurementTypeEnum)
+        public static List<WellSensorMeasurementDto> GetElectricalUsagesForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
             return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.WellRegistrationID == wellRegistrationID &&
-                            x.MeasurementTypeID == (int)measurementTypeEnum).Select(x => x.AsDto())
+                            x.MeasurementTypeID == (int)MeasurementTypeEnum.ElectricalUsage).Select(x => x.AsDto())
                 .ToList();
         }
 
@@ -91,32 +65,49 @@ namespace Zybach.EFModels.Entities
             return wellSensorReadingDates;
         }
 
-        public static List<SensorMeasurementDto> ListBySensorAsSensorMeasurementDto(ZybachDbContext dbContext, Sensor sensor)
+        public static List<SensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensors(
+            ZybachDbContext dbContext, string wellRegistrationID,
+            IEnumerable<SensorSimpleDto> sensors)
         {
-            var sensorName = sensor.SensorName;
+            // we need to filter by sensor names when looking at it from the well level because sensors can be moved from a well and reused.
+            var sensorMeasurementDtos = new List<SensorMeasurementDto>();
+            foreach (var sensor in sensors)
+            {
+                sensorMeasurementDtos.AddRange(ListByWellAndSensorAsSensorMeasurementDto(dbContext, wellRegistrationID, sensor.SensorName, sensor.SensorID, sensor.ChartDataSourceName, sensor.ChartAnomaliesDataSourceName));
+            }
+
+            return sensorMeasurementDtos;
+        }
+
+        public static List<SensorMeasurementDto> ListByWellAndSensorAsSensorMeasurementDto(ZybachDbContext dbContext, string wellRegistrationID, string sensorName, int sensorID, string dataSourceName, string anomalousDataSourceName)
+        {
+            var wellSensorMeasurements = GetWellSensorMeasurementsImpl(dbContext)
+                .Where(x => x.WellRegistrationID == wellRegistrationID && x.SensorName == sensorName).ToList();
+
+            return ListAsSensorMeasurementDtos(dbContext, sensorID, dataSourceName, anomalousDataSourceName, wellSensorMeasurements);
+        }
+
+        public static List<SensorMeasurementDto> ListBySensorAsSensorMeasurementDto(ZybachDbContext dbContext, string sensorName, int sensorID, string dataSourceName, string anomalousDataSourceName)
+        {
             var wellSensorMeasurements = GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.SensorName == sensorName).ToList();
 
-            var sensorAnomalies = dbContext.SensorAnomalies.Where(x => x.SensorID == sensor.SensorID).ToList();
-            wellSensorMeasurements = wellSensorMeasurements.Where(x => x.MeasurementType.MeasurementTypeID != MeasurementType.BatteryVoltage.MeasurementTypeID).ToList();
-            
-            return ZeroFillMissingDaysAsSensorMeasurementDto(wellSensorMeasurements, sensorAnomalies, sensor);
+            return ListAsSensorMeasurementDtos(dbContext, sensorID, dataSourceName, anomalousDataSourceName, wellSensorMeasurements);
         }
 
-        public static Dictionary<string, List<DateTime>> ListReadingDatesBySensor(ZybachDbContext dbContext)
+        private static List<SensorMeasurementDto> ListAsSensorMeasurementDtos(ZybachDbContext dbContext, int sensorID, string dataSourceName,
+            string anomalousDataSourceName, List<WellSensorMeasurement> wellSensorMeasurements)
         {
-            return dbContext.WellSensorMeasurements
-                .Where(x => !string.IsNullOrWhiteSpace(x.SensorName))
-                .AsNoTracking()
-                .ToList()
-                .GroupBy(x => x.SensorName)
-                .ToDictionary(x => x.Key,
-                    x => x.Select(y => y.MeasurementDateInPacificTime).ToList());
+            var sensorAnomalies = dbContext.SensorAnomalies.Where(x => x.SensorID == sensorID).ToList();
+            wellSensorMeasurements = wellSensorMeasurements
+                .Where(x => x.MeasurementType.MeasurementTypeID != MeasurementType.BatteryVoltage.MeasurementTypeID).ToList();
+
+            return ZeroFillMissingDaysAsSensorMeasurementDto(wellSensorMeasurements, sensorAnomalies, dataSourceName,
+                anomalousDataSourceName);
         }
 
         public static List<SensorMeasurementDto> ZeroFillMissingDaysAsSensorMeasurementDto(
-            List<WellSensorMeasurement> wellSensorMeasurements, List<SensorAnomaly> sensorAnomalies,
-            Sensor sensor)
+            List<WellSensorMeasurement> wellSensorMeasurements, List<SensorAnomaly> sensorAnomalies, string dataSourceName, string anomalousDataSourceName)
         {
             var allSensorMeasurementDtos = new List<SensorMeasurementDto>();
 
@@ -132,7 +123,81 @@ namespace Zybach.EFModels.Entities
             // for the non anomalous series, we need to flip the values for the anomalous dates to null
             // for the anomalous series, we need to flip the values of the non-anomalous dates to null, except for the value right before the anomalous date range and the value right after, so that it will give the appearance of "connecting" the non-anomalous and anomalous series
 
-            var sensorName = sensor.SensorName;
+            var units = wellSensorMeasurements.First().MeasurementType.UnitsDisplayPlural;
+            var measurementValues = wellSensorMeasurements.ToLookup(
+                x => x.MeasurementDate.ToShortDateString());
+            var startDate = wellSensorMeasurements.Min(x => x.MeasurementDateInPacificTime);
+            var endDate = DateTime.Today;
+            var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
+                .ToList();
+            var anomalousDateAsShortDateStrings = new List<string>();
+            foreach (var sensorAnomaly in sensorAnomalies)
+            {
+                var anomalousDateRange = Enumerable.Range(0, (sensorAnomaly.EndDate - sensorAnomaly.StartDate).Days + 1)
+                    .Select(d => sensorAnomaly.StartDate.AddDays(d).ToShortDateString());
+
+                anomalousDateAsShortDateStrings.AddRange(anomalousDateRange);
+            }
+
+            var bookendDatesOfAnomalies =
+            sensorAnomalies.Select(x => x.StartDate.AddDays(-1).ToShortDateString())
+                .Union(sensorAnomalies.Select(x => x.EndDate.AddDays(1).ToShortDateString()));
+
+            var nonAnomalousSensorMeasurementDtos = list.Select(a =>
+            {
+                var measurementDate = startDate.AddDays(a);
+                var measurementValue = measurementValues.Contains(measurementDate.ToShortDateString()) ? measurementValues[measurementDate.ToShortDateString()].Sum(x => x.MeasurementValue) : 0;
+                return new SensorMeasurementDto(dataSourceName, measurementDate, measurementValue, $"{measurementValue:N1} {units}", false);
+            }).ToList();
+
+            if (anomalousDateAsShortDateStrings.Any())
+            {
+                var anomalousSensorMeasurementDtos = nonAnomalousSensorMeasurementDtos.Select(x =>
+                {
+                    var currentDate = x.MeasurementDate.ToShortDateString();
+                    var measurementValue =
+                        anomalousDateAsShortDateStrings.Contains(currentDate) ||
+                        bookendDatesOfAnomalies.Contains(currentDate)
+                            ? x.MeasurementValue
+                            : null;
+                    var measurementValueString = measurementValue != null ? $"{measurementValue:N1} {units}" : null;
+                    return new SensorMeasurementDto(anomalousDataSourceName, x.MeasurementDate, measurementValue,
+                        measurementValueString, true);
+                }).ToList();
+
+                foreach (var nonAnomalousSensorMeasurementDto in nonAnomalousSensorMeasurementDtos
+                             .Where(
+                                 x => anomalousDateAsShortDateStrings.Contains(x.MeasurementDate.ToShortDateString()))
+                             .ToList())
+                {
+                    nonAnomalousSensorMeasurementDto.MeasurementValue = null;
+                    nonAnomalousSensorMeasurementDto.MeasurementValueString = null;
+                }
+                allSensorMeasurementDtos.AddRange(anomalousSensorMeasurementDtos);
+            }
+
+            allSensorMeasurementDtos.AddRange(nonAnomalousSensorMeasurementDtos);
+
+            return allSensorMeasurementDtos;
+        }
+
+        public static List<SensorMeasurementDto> ZeroFillMissingDaysAsSensorMeasurementDtoAlternatePath(
+    List<WellSensorMeasurement> wellSensorMeasurements, List<SensorAnomaly> sensorAnomalies, string sensorName, string sensorTypeDisplayName)
+        {
+            var allSensorMeasurementDtos = new List<SensorMeasurementDto>();
+
+            if (!wellSensorMeasurements.Any())
+            {
+                return allSensorMeasurementDtos;
+            }
+
+            // first we need to zero fill missing dates, since the sensor data we get from Influx is sparse on purpose
+            // to create the chart to display the non-anomalous and anomalous data together
+            // we need to create two sets of data here: one for the non-anomalous and one for the anomalous
+            // both series will have the same date/value data points
+            // for the non anomalous series, we need to flip the values for the anomalous dates to null
+            // for the anomalous series, we need to flip the values of the non-anomalous dates to null, except for the value right before the anomalous date range and the value right after, so that it will give the appearance of "connecting" the non-anomalous and anomalous series
+
             var measurementValues = wellSensorMeasurements.ToLookup(
                 x => x.MeasurementDate.ToShortDateString());
             var startDate = wellSensorMeasurements.Min(x => x.MeasurementDateInPacificTime);
@@ -157,77 +222,11 @@ namespace Zybach.EFModels.Entities
                 var measurementDate = startDate.AddDays(a);
                 var measurementDateAsShortDateString = measurementDate.ToShortDateString();
                 var measurementValue = measurementValues.Contains(measurementDateAsShortDateString) ? measurementValues[measurementDateAsShortDateString].Sum(x => x.MeasurementValue) : 0;
-                var isAnomalous = anomalousDateAsShortDateStrings.Contains(measurementDateAsShortDateString) || bookendDatesOfAnomalies.Contains(measurementDateAsShortDateString) ;
-                return new SensorMeasurementDto(sensorName, sensor.SensorType.SensorTypeDisplayName, measurementDate, measurementValue, $"{measurementValue:N1}", isAnomalous);
+                var isAnomalous = anomalousDateAsShortDateStrings.Contains(measurementDateAsShortDateString) || bookendDatesOfAnomalies.Contains(measurementDateAsShortDateString);
+                return new SensorMeasurementDto($"{sensorName} - {sensorTypeDisplayName}", measurementDate, measurementValue, $"{measurementValue:N1}", isAnomalous);
             }).ToList();
 
             allSensorMeasurementDtos.AddRange(nonAnomalousSensorMeasurementDtos);
-
-            return allSensorMeasurementDtos;
-        }
-
-        public static List<SensorMeasurementDto> ZeroFillMissingDaysAsSensorMeasurementDto2(
-            List<WellSensorMeasurement> wellSensorMeasurements, List<SensorAnomaly> sensorAnomalies,
-            SensorSimpleDto sensor)
-        {
-            var allSensorMeasurementDtos = new List<SensorMeasurementDto>();
-
-            if (!wellSensorMeasurements.Any())
-            {
-                return allSensorMeasurementDtos;
-            }
-
-            // first we need to zero fill missing dates, since the sensor data we get from Influx is sparse on purpose
-            // to create the chart to display the non-anomalous and anomalous data together
-            // we need to create two sets of data here: one for the non-anomalous and one for the anomalous
-            // both series will have the same date/value data points
-            // for the non anomalous series, we need to flip the values for the anomalous dates to null
-            // for the anomalous series, we need to flip the values of the non-anomalous dates to null, except for the value right before the anomalous date range and the value right after, so that it will give the appearance of "connecting" the non-anomalous and anomalous series
-
-            var units = wellSensorMeasurements.First().MeasurementType.UnitsDisplayPlural;
-            var sensorName = sensor.SensorName;
-            var measurementValues = wellSensorMeasurements.ToLookup(
-                x => x.MeasurementDate.ToShortDateString());
-            var startDate = wellSensorMeasurements.Min(x => x.MeasurementDateInPacificTime);
-            var endDate = DateTime.Today;
-            var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
-                .ToList();
-            var anomalousDateAsShortDateStrings = new List<string>();
-            foreach (var sensorAnomaly in sensorAnomalies)
-            {
-                var anomalousDateRange = Enumerable.Range(0, (sensorAnomaly.EndDate - sensorAnomaly.StartDate).Days + 1)
-                    .Select(d => sensorAnomaly.StartDate.AddDays(d).ToShortDateString());
-
-                anomalousDateAsShortDateStrings.AddRange(anomalousDateRange);
-            }
-
-            var bookendDatesOfAnomalies =
-            sensorAnomalies.Select(x => x.StartDate.AddDays(-1).ToShortDateString())
-                .Union(sensorAnomalies.Select(x => x.EndDate.AddDays(1).ToShortDateString()));
-
-            var nonAnomalousSensorMeasurementDtos = list.Select(a =>
-            {
-                var measurementDate = startDate.AddDays(a);
-                var measurementValue = measurementValues.Contains(measurementDate.ToShortDateString()) ? measurementValues[measurementDate.ToShortDateString()].Sum(x => x.MeasurementValue) : 0;
-                return new SensorMeasurementDto(sensorName, sensor.SensorTypeName, measurementDate, measurementValue, $"{measurementValue:N1} {units}", false);
-            }).ToList();
-
-            var anomalousSensorMeasurementDtos = nonAnomalousSensorMeasurementDtos.Select(x =>
-            {
-                var currentDate = x.MeasurementDate.ToShortDateString();
-                var measurementValue = anomalousDateAsShortDateStrings.Contains(currentDate) || bookendDatesOfAnomalies.Contains(currentDate) ? x.MeasurementValue : null;
-                var measurementValueString = measurementValue != null ? $"{measurementValue:N1} {units}" : null;
-                return new SensorMeasurementDto(sensorName, $"{sensor.SensorTypeName} Anomalies", x.MeasurementDate, measurementValue, measurementValueString, true);
-            }).ToList();
-
-            foreach (var nonAnomalousSensorMeasurementDto in nonAnomalousSensorMeasurementDtos.Where(x => anomalousDateAsShortDateStrings.Contains(x.MeasurementDate.ToShortDateString())).ToList())
-            {
-                nonAnomalousSensorMeasurementDto.MeasurementValue = null;
-                nonAnomalousSensorMeasurementDto.MeasurementValueString = null;
-            }
-
-            allSensorMeasurementDtos.AddRange(nonAnomalousSensorMeasurementDtos);
-            allSensorMeasurementDtos.AddRange(anomalousSensorMeasurementDtos);
 
             return allSensorMeasurementDtos;
         }

@@ -101,7 +101,7 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
   }
 
   private addWellToMap() {
-    const sensorTypes = this.well.Sensors.map(x => x.SensorType);
+    const sensorTypes = this.well.Sensors.map(x => x.SensorTypeName);
     let mapIcon;
 
     if (sensorTypes.includes("Flow Meter")) {
@@ -170,7 +170,7 @@ export class WellOverviewTabComponent implements OnInit, AfterViewInit {
   }
 
   getSensorTypes() {
-    return new Set(this.well.Sensors.map(sensor => {return sensor.SensorType}));
+    return new Set(this.well.Sensors.map(sensor => {return sensor.SensorTypeName}));
   }
 
   getWellIrrigatedAcresPerYear(){

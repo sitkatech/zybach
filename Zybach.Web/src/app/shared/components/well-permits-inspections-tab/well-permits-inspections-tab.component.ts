@@ -249,7 +249,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
   }
 
   hasWellPressureSensor(): boolean{
-    return this.sensorsWithStatus?.filter(x => x.SensorType === "Well Pressure").length > 0;
+    return this.sensorsWithStatus?.filter(x => x.SensorTypeName === "Well Pressure").length > 0;
   }
 
   private buildNitrateChart(nitrateChartVegaSpec : any) {

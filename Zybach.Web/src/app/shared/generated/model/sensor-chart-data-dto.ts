@@ -9,14 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { SensorMeasurementDto } from '././sensor-measurement-dto';
 
-export class SensorSummaryDto { 
-    WellRegistrationID?: string;
-    SensorID?: number;
-    SensorName?: string;
-    SensorTypeID?: number;
-    SensorType?: string;
-    IsActive?: boolean;
+export class SensorChartDataDto { 
+    SensorMeasurements?: Array<SensorMeasurementDto>;
+    FirstReadingDate?: string;
+    LastReadingDate?: string;
+    ChartSpec?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

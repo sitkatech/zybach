@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 
 import { ChemigationPermitDetailedDto } from '../model/chemigation-permit-detailed-dto';
 import { InstallationRecordDto } from '../model/installation-record-dto';
+import { SensorChartDataDto } from '../model/sensor-chart-data-dto';
 import { WaterLevelInspectionSummaryDto } from '../model/water-level-inspection-summary-dto';
 import { WaterQualityInspectionSummaryDto } from '../model/water-quality-inspection-summary-dto';
 import { WellContactInfoDto } from '../model/well-contact-info-dto';
@@ -557,6 +558,49 @@ export class WellService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public wellsWellIDFlowMeterSensorsGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<SensorChartDataDto>;
+    public wellsWellIDFlowMeterSensorsGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SensorChartDataDto>>;
+    public wellsWellIDFlowMeterSensorsGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SensorChartDataDto>>;
+    public wellsWellIDFlowMeterSensorsGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (wellID === null || wellID === undefined) {
+            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDFlowMeterSensorsGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<SensorChartDataDto>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/flowMeterSensors`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param wellID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public wellsWellIDGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<WellDetailDto>;
     public wellsWellIDGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<WellDetailDto>>;
     public wellsWellIDGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<WellDetailDto>>;
@@ -939,6 +983,49 @@ export class WellService {
         ];
 
         return this.httpClient.get<Array<WaterLevelInspectionSummaryDto>>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelInspections`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param wellID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<SensorChartDataDto>;
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SensorChartDataDto>>;
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SensorChartDataDto>>;
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (wellID === null || wellID === undefined) {
+            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDWaterLevelSensorsGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<SensorChartDataDto>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelSensors`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

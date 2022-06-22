@@ -14,8 +14,8 @@ export class SensorMeasurementDto {
     DataSourceName?: string;
     MeasurementDate?: string;
     MeasurementValueString?: string;
-    SensorName?: string;
     MeasurementValue?: number;
+    IsAnomalous?: boolean;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

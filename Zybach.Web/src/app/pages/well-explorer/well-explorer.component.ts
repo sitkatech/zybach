@@ -180,7 +180,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Has Continuity Meter?",
         valueGetter: function (params) {
-          const continuityMeters = params.data.Sensors.filter(x => x.SensorTypeID == SensorTypeEnum.PumpMonitor).map(x => x.SensorName);
+          const continuityMeters = params.data.Sensors.filter(x => x.SensorTypeID == SensorTypeEnum.ContinuityMeter).map(x => x.SensorName);
           if (continuityMeters.length > 0) {
             return `Yes (${continuityMeters.join('; ')})`;
           } else {

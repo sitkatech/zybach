@@ -12,6 +12,11 @@ namespace Zybach.EFModels.Entities
             sensorSimpleDto.WellPageNumber = sensor.Well?.PageNumber;
             sensorSimpleDto.WellOwnerName = sensor.Well?.OwnerName;
             sensorSimpleDto.WellTownshipRangeSection = sensor.Well?.TownshipRangeSection;
+            sensorSimpleDto.ChartDataSourceName = sensor.GetChartDataSourceName();
+            sensorSimpleDto.ChartAnomaliesDataSourceName = sensor.GetChartAnomaliesDataSourceName();
+            sensorSimpleDto.ChartColors = sensor.GetChartColors();
+            sensorSimpleDto.ChartTooltipFields = sensor.GetChartTooltipFields();
+            sensorSimpleDto.ChartDomains = sensor.GetChartDomains();
         }
     }
 }

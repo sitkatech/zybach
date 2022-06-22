@@ -84,7 +84,7 @@ export class IrrigationUnitMapComponent implements OnInit, AfterViewInit {
   }
 
   public addWellToMap(well: WellMinimalDto) {
-    const sensorTypes = well.Sensors.map(x => x.SensorType);
+    const sensorTypes = well.Sensors.map(x => x.SensorTypeName);
     let mapIcon;
 
     if (sensorTypes.includes("Flow Meter")) {

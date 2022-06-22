@@ -4,7 +4,6 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellDetailDto } from 'src/app/shared/generated/model/well-detail-dto';
-import { InstallationRecordDto } from 'src/app/shared/generated/model/installation-record-dto';
 
 @Component({
   selector: 'zybach-well-detail',

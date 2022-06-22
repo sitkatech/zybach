@@ -7,13 +7,6 @@ namespace Zybach.EFModels.Entities
 {
     public class Sensors
     {
-        public enum SensorTypeEnum
-        {
-            FlowMeter = 1,
-            ContinuityMeter = 2,
-            WellPressure = 3
-        }
-
         public static List<Sensor> SearchBySensorName(ZybachDbContext dbContext, string searchText)
         {
             return dbContext.Sensors.AsNoTracking().Where(x => x.SensorName.Contains(searchText)).ToList();
@@ -23,6 +16,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.Sensors
                 .Include(x => x.Well)
+                .Include(x => x.SensorAnomalies)
                 .AsNoTracking();
         }
 
@@ -37,13 +31,6 @@ namespace Zybach.EFModels.Entities
         {
             return GetSensorsImpl(dbContext)
                 .SingleOrDefault(x => x.SensorID == sensorID);
-        }
-
-        public static List<Sensor> ListByWellID(ZybachDbContext dbContext, int wellID)
-        {
-            return GetSensorsImpl(dbContext)
-                .Where(x => x.WellID == wellID)
-                .ToList();
         }
     }
 }
