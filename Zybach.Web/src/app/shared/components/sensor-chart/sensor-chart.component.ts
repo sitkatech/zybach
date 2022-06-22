@@ -29,10 +29,8 @@ export class SensorChartComponent {
     if(val)
     {
       this.chartSpec = JSON.parse(this._sensorChartDataDto.ChartSpec);
-      console.log(this.chartSpec);
       this.timeSeries = this._sensorChartDataDto.SensorMeasurements;
       const currentYear = new Date().getFullYear();
-      console.log(this.timeSeries);
   
       this.startDate = new Date(currentYear, 0, 1).toISOString();
       this.endDate = new Date().toISOString();

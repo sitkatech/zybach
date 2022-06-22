@@ -6,6 +6,6 @@ namespace Zybach.EFModels.Entities
 {
     public partial class Sensor
     {
-        public SensorType SensorType => SensorTypeID.HasValue ? SensorType.AllLookupDictionary[SensorTypeID.Value] : null;
+        public SensorType SensorType => SensorType.AllLookupDictionary[SensorTypeID];
     }
 }

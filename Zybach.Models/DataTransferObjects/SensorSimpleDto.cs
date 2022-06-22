@@ -14,10 +14,5 @@ namespace Zybach.Models.DataTransferObjects
         public int? WellPageNumber { get; set; }
         public string WellOwnerName { get; set; }
         public string WellTownshipRangeSection { get; set; }
-        public string ChartDataSourceName { get; set; }
-        public string ChartAnomaliesDataSourceName { get; set; }
-        public List<string> ChartDomains { get; set; }
-        public List<string> ChartColors { get; set; }
-        public List<string> ChartTooltipFields { get; set; }
     }
 }

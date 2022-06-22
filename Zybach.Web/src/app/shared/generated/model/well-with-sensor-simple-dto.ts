@@ -12,7 +12,7 @@
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 import { SensorSimpleDto } from '././sensor-simple-dto';
 
-export class WellWithSensorSummaryDto { 
+export class WellWithSensorSimpleDto { 
     Sensors?: Array<SensorSimpleDto>;
     WellConnectedMeter?: boolean;
     WellID?: number;

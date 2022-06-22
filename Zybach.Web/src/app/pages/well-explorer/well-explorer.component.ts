@@ -7,12 +7,12 @@ import { WellService } from 'src/app/shared/generated/api/well.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { WellWithSensorSummaryDto } from 'src/app/shared/generated/model/well-with-sensor-summary-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
 import { MapDataService } from 'src/app/shared/generated/api/map-data.service';
 import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
+import { WellWithSensorSimpleDto } from 'src/app/shared/generated/model/well-with-sensor-simple-dto';
 
 @Component({
   selector: 'zybach-well-explorer',
@@ -27,7 +27,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
   public wellsObservable: any;
-  public wells: WellWithSensorSummaryDto[];
+  public wells: WellWithSensorSimpleDto[];
   public wellsGeoJson: any;
 
   public columnDefs: any[];

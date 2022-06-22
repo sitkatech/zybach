@@ -86,6 +86,7 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.GeoOptixWell)
                 .Include(x => x.AgHubWell.AgHubWellIrrigatedAcres)
                 .Include(x => x.Sensors)
+                    .ThenInclude(x => x.SensorAnomalies)
                 .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
                 .AsNoTracking();
@@ -119,19 +120,14 @@ namespace Zybach.EFModels.Entities
                 wellWithSensorSimpleDto.WellConnectedMeter = agHubWell.WellConnectedMeter;
                 wellWithSensorSimpleDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
                 wellWithSensorSimpleDto.FieldName = agHubWell.FieldName;
-
-                if (agHubWell.HasElectricalData)
-                {
-                    sensors.Add(new SensorSimpleDto()
-                    {
-                        WellRegistrationID = well.WellRegistrationID,
-                        SensorTypeName = SensorType.ElectricalUsage.SensorTypeDisplayName,
-                        ChartDataSourceName = SensorType.ElectricalUsage.SensorTypeDisplayName
-                    });
-                }
-
                 wellWithSensorSimpleDto.IrrigatedAcresPerYear = agHubWell.AgHubWellIrrigatedAcres
                     .Select(x => new IrrigatedAcresPerYearDto { Acres = x.Acres, Year = x.IrrigationYear }).ToList();
+            }
+            else
+            {
+                wellWithSensorSimpleDto.WellConnectedMeter = false;
+                wellWithSensorSimpleDto.HasElectricalData = false;
+                wellWithSensorSimpleDto.InAgHub = false;
             }
 
             wellWithSensorSimpleDto.Sensors = sensors;

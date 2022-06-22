@@ -71,24 +71,12 @@ namespace Zybach.API.Services
                 return null;
             }
 
-            string dataSource;
-            List<SensorMeasurementDto> sensorMeasurementDtos;
-            if (wellWithSensorSimpleDto.HasElectricalData)
-            {
-                sensorMeasurementDtos = WellSensorMeasurements.GetElectricalUsagesForWell(
-                    _dbContext,
-                    wellRegistrationID).Select(x => new SensorMeasurementDto(SensorType.ElectricalUsage.SensorTypeDisplayName, x.MeasurementDate, x.MeasurementValue, x.MeasurementValueString, false)).ToList();
-                dataSource = SensorType.ElectricalUsage.SensorTypeDisplayName;
-            }
-            else
-            {
-                var continuityMeter = SensorType.ContinuityMeter.SensorTypeDisplayName;
-                sensorMeasurementDtos =
-                    WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensors(_dbContext,
-                        wellRegistrationID,
-                        wellWithSensorSimpleDto.Sensors.Where(y => y.SensorTypeName == continuityMeter));
-                dataSource = continuityMeter;
-            }
+            var sensorTypeDisplayName = wellWithSensorSimpleDto.WellConnectedMeter
+                ? SensorType.ElectricalUsage.SensorTypeDisplayName
+                : SensorType.ContinuityMeter.SensorTypeDisplayName;
+            var sensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorSimples(_dbContext,
+                wellRegistrationID,
+                wellWithSensorSimpleDto.Sensors.Where(y => y.SensorTypeName == sensorTypeDisplayName));
 
             var monthlyPumpedVolume = sensorMeasurementDtos.GroupBy(x => x.MeasurementDate.ToString("yyyyMM"))
                 .Select(x =>
@@ -102,7 +90,7 @@ namespace Zybach.API.Services
                 WellTPID = wellWithSensorSimpleDto.WellTPID,
                 Latitude = point.Coordinates.Latitude,
                 Longitude = point.Coordinates.Longitude,
-                DataSource = dataSource,
+                DataSource = sensorTypeDisplayName,
                 MonthlyPumpedVolumeGallons = monthlyPumpedVolume
             };
 

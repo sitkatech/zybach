@@ -472,10 +472,10 @@ namespace Zybach.API.Services
 
         public static string GetSensorTypeChartSpec(Sensor sensor)
         {
-            return GetSensorTypeChartSpec(new List<SensorSimpleDto>{sensor.AsSimpleDto()}, sensor.SensorType);
+            return GetSensorTypeChartSpec(new List<Sensor>{sensor}, sensor.SensorType);
         }
 
-        public static string GetSensorTypeChartSpec(List<SensorSimpleDto> sensors, SensorType sensorType)
+        public static string GetSensorTypeChartSpec(List<Sensor> sensors, SensorType sensorType)
         {
             if (!sensors.Any())
             {
@@ -486,9 +486,9 @@ namespace Zybach.API.Services
             var tooltipFields = new List<string>();
             foreach (var sensor in sensors)
             {
-                domains.AddRange(sensor.ChartDomains);
-                chartColors.AddRange(sensor.ChartColors);
-                tooltipFields.AddRange(sensor.ChartTooltipFields);
+                domains.AddRange(sensor.GetChartDomains());
+                chartColors.AddRange(sensor.GetChartColors());
+                tooltipFields.AddRange(sensor.GetChartTooltipFields());
             }
             // this assumes that the sensors passed in are all of the same y axis scale and x axis scale, as in their Sensor Types are comparable
             return GetSensorTypeChartSpec(sensorType.YAxisTitle, sensorType.ReverseYAxisScale, domains, chartColors, tooltipFields);

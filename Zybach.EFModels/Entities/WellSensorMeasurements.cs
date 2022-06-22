@@ -23,14 +23,6 @@ namespace Zybach.EFModels.Entities
             return dbContext.WellSensorMeasurements.AsNoTracking();
         }
 
-        public static List<WellSensorMeasurementDto> GetElectricalUsagesForWell(ZybachDbContext dbContext, string wellRegistrationID)
-        {
-            return GetWellSensorMeasurementsImpl(dbContext)
-                .Where(x => x.WellRegistrationID == wellRegistrationID &&
-                            x.MeasurementTypeID == (int)MeasurementTypeEnum.ElectricalUsage).Select(x => x.AsDto())
-                .ToList();
-        }
-
         public static DateTime? GetFirstReadingDateTimeForWell(ZybachDbContext dbContext, string wellRegistrationID)
         {
             var wellSensorMeasurements = dbContext.WellSensorMeasurements.Where(x => x.WellRegistrationID == wellRegistrationID).ToList();
@@ -67,16 +59,46 @@ namespace Zybach.EFModels.Entities
 
         public static List<SensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensors(
             ZybachDbContext dbContext, string wellRegistrationID,
+            IEnumerable<Sensor> sensors)
+        {
+            // we need to filter by sensor names when looking at it from the well level because sensors can be moved from a well and reused.
+            var sensorMeasurementDtos = new List<SensorMeasurementDto>();
+            foreach (var sensor in sensors)
+            {
+                sensorMeasurementDtos.AddRange(ListByWellAndSensorAsSensorMeasurementDto(dbContext, wellRegistrationID, sensor.SensorName, sensor.SensorID, sensor.GetChartDataSourceName(), sensor.GetChartAnomaliesDataSourceName()));
+            }
+
+            return sensorMeasurementDtos;
+        }
+
+        /// <summary>
+        /// If you have sensor simples and don't care about charts use this
+        /// </summary>
+        public static List<SensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensorSimples(
+            ZybachDbContext dbContext, string wellRegistrationID,
             IEnumerable<SensorSimpleDto> sensors)
         {
             // we need to filter by sensor names when looking at it from the well level because sensors can be moved from a well and reused.
             var sensorMeasurementDtos = new List<SensorMeasurementDto>();
             foreach (var sensor in sensors)
             {
-                sensorMeasurementDtos.AddRange(ListByWellAndSensorAsSensorMeasurementDto(dbContext, wellRegistrationID, sensor.SensorName, sensor.SensorID, sensor.ChartDataSourceName, sensor.ChartAnomaliesDataSourceName));
+                sensorMeasurementDtos.AddRange(ListByWellAndSensorAsSensorMeasurementDto(dbContext, wellRegistrationID, sensor.SensorName, sensor.SensorID, null, null));
             }
 
             return sensorMeasurementDtos;
+        }
+
+        public static List<AnnualPumpedVolume> GetAnnualPumpedVolumeForWellAndSensorType(ZybachDbContext dbContext, string wellRegistrationID,
+            List<Sensor> sensors, SensorType sensorType)
+        {
+            var sensorMeasurementDtos =
+                GetWellSensorMeasurementsForWellAndSensors(dbContext,
+                    wellRegistrationID, sensors.Where(y => y.SensorTypeID == sensorType.SensorTypeID)).Where(x => !x.IsAnomalous);
+
+            var annualPumpedVolumes = sensorMeasurementDtos.GroupBy(x => x.MeasurementDate.Year)
+                .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue ?? 0), sensorType.SensorTypeDisplayName)).ToList();
+
+            return annualPumpedVolumes;
         }
 
         public static List<SensorMeasurementDto> ListByWellAndSensorAsSensorMeasurementDto(ZybachDbContext dbContext, string wellRegistrationID, string sensorName, int sensorID, string dataSourceName, string anomalousDataSourceName)

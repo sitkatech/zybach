@@ -72,7 +72,7 @@ begin
 	update dbo.AgHubWell
 	Set AgHubWellGeometry.STSrid = 4326, AgHubIrrigationUnitID = null
 
-	-- add irrigiation units
+	-- add irrigation units
 	-- first get the new list of possible AgHubWell Irrigation Units
 	-- then do a merge (delete, insert, update)
 	select distinct aws.IrrigationUnitGeometry.STAsText() as IrrigationUnitGeometry,
@@ -137,6 +137,48 @@ begin
 	from dbo.StreamFlowZone sfz
 	join dbo.Well aw on aw.WellGeometry.STWithin(sfz.StreamFlowZoneGeometry) = 1
 
+
+    insert into dbo.Sensor(SensorName, SensorTypeID, CreateDate, LastUpdateDate, InGeoOptix, IsActive, WellID)
+    select	concat('E-', upper(w.WellRegistrationID)) as SensorName, 
+		    4 as SensorTypeID,
+		    getutcdate() as CreateDate,
+		    getutcdate() as LastUpdateDate,
+		    0 as InGeoOptix,
+		    1 as IsActive,
+            w.WellID
+    from dbo.AgHubWell aw
+    join dbo.Well w on aw.WellID = w.WellID
+    left join dbo.Sensor s on concat('E-', upper(w.WellRegistrationID)) = s.SensorName
+    where aw.WellConnectedMeter = 1 and s.SensorID is null
+
+    -- we need to mark electrical usage sensors as inactive if no longer a wellconnectedmeter
+    update s
+    set s.IsActive = 0, s.LastUpdateDate = getutcdate()
+    from dbo.Sensor s 
+    left join 
+    (
+        select concat('E-', upper(w.WellRegistrationID)) as SensorName
+        from dbo.AgHubWell aw
+        join dbo.Well w on aw.WellID = w.WellID
+        where aw.WellConnectedMeter = 1
+    ) a on s.SensorName = a.SensorName
+    where s.SensorTypeID = 4 and a.SensorName is null
+
+    -- we need to mark electrical usage sensors as active if they are a wellconnectedmeter
+    update s
+    set s.IsActive = 1, s.LastUpdateDate = getutcdate()
+    from dbo.Sensor s 
+    join 
+    (
+        select concat('E-', upper(w.WellRegistrationID)) as SensorName
+        from dbo.AgHubWell aw
+        join dbo.Well w on aw.WellID = w.WellID
+        where aw.WellConnectedMeter = 1
+    ) a on s.SensorName = a.SensorName
+    where s.SensorTypeID = 4 and s.IsActive = 0
+
+
+    -- finally create sensors with SensorY
 	exec dbo.pPublishWellSensorMeasurementStaging
 
 end

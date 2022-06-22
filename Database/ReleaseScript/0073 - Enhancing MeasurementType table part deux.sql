@@ -14,6 +14,11 @@ update dbo.SensorType
 set ChartColor = '#0076C0', AnomalousChartColor = '#0076C0', YAxisTitle = 'Gallons', ReverseYAxisScale = 0
 where SensorTypeID	= 3
 
+insert into dbo.SensorType(SensorTypeID, SensorTypeName, SensorTypeDisplayName, ChartColor, AnomalousChartColor, YAxisTitle, ReverseYAxisScale)
+values
+(4, 'ElectricalUsage', 'Electrical Usage', '#0076C0', '#0076C0', 'Gallons', 1)
+
+
 update dbo.MeasurementType
 set UnitsDisplay = 'gallon', UnitsDisplayPlural = 'gallons'
 where MeasurementTypeID	= 1

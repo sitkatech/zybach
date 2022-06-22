@@ -22,7 +22,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/mapData/wells")]
-        public List<WellWithSensorSummaryDto> GetWellsWithSensors()
+        public List<WellWithSensorSimpleDto> GetWellsWithSensors()
         {
             return _wellService.GetAghubAndGeoOptixWells();
         }

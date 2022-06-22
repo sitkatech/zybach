@@ -33,9 +33,9 @@ namespace Zybach.API.Controllers
             return new DistrictStatisticsDto
             { 
                 NumberOfWellsTracked = allWells.Count,
-                NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorTypeName == SensorType.ContinuityMeter.SensorTypeDisplayName)).Select(x => x.WellRegistrationID).Distinct().Count(),
+                NumberOfContinuityMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorTypeID == SensorType.ContinuityMeter.SensorTypeID)).Select(x => x.WellRegistrationID).Distinct().Count(),
                 NumberOfAgHubWellsWithConnectedElectricalMeters = allWells.Where(x => x.WellConnectedMeter).Select(x => x.WellRegistrationID).Distinct().Count(),
-                NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorTypeName == SensorType.FlowMeter.SensorTypeDisplayName)).Select(x => x.WellRegistrationID).Distinct().Count()
+                NumberOfFlowMeters = allWells.Where(x => x.Sensors.Any(y => y.SensorTypeID == SensorType.FlowMeter.SensorTypeID)).Select(x => x.WellRegistrationID).Distinct().Count()
             };
         }
 

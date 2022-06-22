@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
@@ -162,6 +161,7 @@ namespace Zybach.API.Controllers
                 wellDetailDto.AgHubRegisteredUser = agHubWell.AgHubRegisteredUser;
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
+                wellDetailDto.WellConnectedMeter = agHubWell.WellConnectedMeter;
                 wellDetailDto.InAgHub = true;
                 var agHubIrrigationUnit = agHubWell.AgHubIrrigationUnit;
                 if (agHubIrrigationUnit != null)
@@ -172,6 +172,7 @@ namespace Zybach.API.Controllers
             else
             {
                 wellDetailDto.HasElectricalData = false;
+                wellDetailDto.WellConnectedMeter = false;
                 wellDetailDto.InAgHub = false;
             }
 
@@ -182,8 +183,8 @@ namespace Zybach.API.Controllers
             wellDetailDto.FirstReadingDate = firstReadingDate;
             wellDetailDto.LastReadingDate = lastReadingDate;
 
-            var sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList();
-            wellDetailDto.Sensors = sensors;
+            var sensorSimples = well.Sensors.Select(x => x.AsSimpleDto()).ToList();
+            wellDetailDto.Sensors = sensorSimples;
 
             var openSupportTickets = SupportTickets.GetSupportTicketsImpl(_dbContext)
                 .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.WellID == well.WellID)
@@ -191,23 +192,16 @@ namespace Zybach.API.Controllers
             wellDetailDto.OpenSupportTickets = openSupportTickets;
 
             var annualPumpedVolumes = new List<AnnualPumpedVolume>();
-
-            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors,
-                SensorType.FlowMeter.SensorTypeDisplayName));
-            annualPumpedVolumes.AddRange(GetAnnualPumpedVolumeForWellAndSensorType(wellRegistrationID, sensors,
-                SensorType.ContinuityMeter.SensorTypeDisplayName));
-
-            if (wellDetailDto.HasElectricalData)
-            {
-                var wellSensorMeasurementDtos =
-                    WellSensorMeasurements.GetElectricalUsagesForWell(_dbContext,
-                        wellRegistrationID);
-                var pumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.ReadingYear)
-                    .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue),
-                        SensorType.ElectricalUsage.SensorTypeDisplayName)).ToList();
-
-                annualPumpedVolumes.AddRange(pumpedVolumes);
-            }
+            var sensors = well.Sensors.Where(x => x.IsActive).ToList();
+            annualPumpedVolumes.AddRange(WellSensorMeasurements.GetAnnualPumpedVolumeForWellAndSensorType(_dbContext,
+                wellRegistrationID, sensors,
+                SensorType.FlowMeter));
+            annualPumpedVolumes.AddRange(WellSensorMeasurements.GetAnnualPumpedVolumeForWellAndSensorType(_dbContext,
+                wellRegistrationID, sensors,
+                SensorType.ContinuityMeter));
+            annualPumpedVolumes.AddRange(WellSensorMeasurements.GetAnnualPumpedVolumeForWellAndSensorType(_dbContext,
+                wellRegistrationID, sensors,
+                SensorType.ElectricalUsage));
 
             wellDetailDto.AnnualPumpedVolume = annualPumpedVolumes;
 
@@ -378,7 +372,7 @@ namespace Zybach.API.Controllers
         public async Task<ActionResult<List<InstallationRecordDto>>> GetInstallationRecordForWell(
             [FromRoute] int wellID)
         {
-            if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             return await _geoOptixService.GetInstallationRecords(well.WellRegistrationID);
         }
 
@@ -389,7 +383,7 @@ namespace Zybach.API.Controllers
         public async Task<IActionResult> GetPhoto([FromRoute] int wellID, [FromRoute] string installationCanonicalName,
             [FromRoute] string photoCanonicalName)
         {
-            if (GetWellWithTrackingAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             try
             {
                 var photoBuffer = await _geoOptixService.GetPhoto(well.WellRegistrationID, installationCanonicalName,
@@ -400,19 +394,6 @@ namespace Zybach.API.Controllers
             {
                 return NoContent();
             }
-        }
-
-        private List<AnnualPumpedVolume> GetAnnualPumpedVolumeForWellAndSensorType(string wellRegistrationID,
-            List<SensorSimpleDto> sensors, string sensorType)
-        {
-            var wellSensorMeasurementDtos =
-                WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensors(_dbContext,
-                    wellRegistrationID, sensors.Where(y => y.SensorTypeName == sensorType));
-
-            var annualPumpedVolumes = wellSensorMeasurementDtos.GroupBy(x => x.MeasurementDate.Year)
-                .Select(x => new AnnualPumpedVolume(x.Key, x.Sum(y => y.MeasurementValue ?? 0), sensorType)).ToList();
-
-            return annualPumpedVolumes;
         }
 
         [HttpPost("/wells/new")]
@@ -446,13 +427,12 @@ namespace Zybach.API.Controllers
         [UserViewFeature]
         public ActionResult<SensorChartDataDto> GetWaterLevelSensorsByWellID([FromRoute] int wellID)
         {
-            var well = Wells.GetByIDAsWellWithSensorSimpleDto(_dbContext, wellID);
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             var sensorTypes = new List<int>
             {
                 SensorType.WellPressure.SensorTypeID
             };
-            var sensors = well.Sensors.Where(x => x.IsActive && x.SensorTypeID.HasValue && sensorTypes.Contains(x.SensorTypeID.Value)).ToList();
-
+            var sensors = well.Sensors.Where(x => x.IsActive && sensorTypes.Contains(x.SensorTypeID)).ToList();
             var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensors, SensorType.WellPressure);
 
             var wellRegistrationID = well.WellRegistrationID;
@@ -471,34 +451,23 @@ namespace Zybach.API.Controllers
         [UserViewFeature]
         public ActionResult<SensorChartDataDto> GetFlowMeterSensorsByWellID([FromRoute] int wellID)
         {
-            var well = Wells.GetByIDAsWellWithSensorSimpleDto(_dbContext, wellID);
+            if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
             var sensorTypes = new List<int>
             {
                 SensorType.FlowMeter.SensorTypeID,
                 SensorType.ContinuityMeter.SensorTypeID,
+                SensorType.ElectricalUsage.SensorTypeID
             };
-            //TODO: NEED TO ADD ELECTRICAL USAGE SENSORS
-            //if (well.AgHubWell.HasElectricalData)
-            //{
-            //    sensorTypes.Add(SensorType.s);
-            //}
 
-            var sensors = well.Sensors.Where(x => x.IsActive == true && x.SensorTypeID.HasValue && sensorTypes.Contains(x.SensorTypeID.Value)).ToList();
-            var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensors.ToList(), SensorType.FlowMeter);
-            var hasElectricalData = well.HasElectricalData;
+            var sensors = well.Sensors.Where(x => x.IsActive && sensorTypes.Contains(x.SensorTypeID)).ToList();
+            var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensors, SensorType.FlowMeter);
 
             var sensorMeasurements = new List<SensorMeasurementDto>();
 
             var wellRegistrationID = well.WellRegistrationID;
             sensorMeasurements.AddRange(GetSensorMeasurementsForWellAndSensorType(wellRegistrationID, sensors, SensorType.FlowMeter));
             sensorMeasurements.AddRange(GetSensorMeasurementsForWellAndSensorType(wellRegistrationID, sensors, SensorType.ContinuityMeter));
-
-            if (hasElectricalData)
-            {
-                var wellSensorMeasurementDtos = WellSensorMeasurements.GetElectricalUsagesForWell(_dbContext, wellRegistrationID);
-                var electricalBasedFlowEstimateSeries = ZeroFillMissingDaysAndConvertToSensorMeasurementDto(wellSensorMeasurementDtos, SensorType.ElectricalUsage.SensorTypeDisplayName);
-                sensorMeasurements.AddRange(electricalBasedFlowEstimateSeries);
-            }
+            sensorMeasurements.AddRange(GetSensorMeasurementsForWellAndSensorType(wellRegistrationID, sensors, SensorType.ElectricalUsage));
 
             var sensorChartDataDto = new SensorChartDataDto
             {
@@ -510,39 +479,15 @@ namespace Zybach.API.Controllers
             return sensorChartDataDto;
         }
 
-        private List<SensorMeasurementDto> GetSensorMeasurementsForWellAndSensorType(string wellRegistrationID, IEnumerable<SensorSimpleDto> sensors, SensorType sensorType)
+        private List<SensorMeasurementDto> GetSensorMeasurementsForWellAndSensorType(string wellRegistrationID, IEnumerable<Sensor> sensors, SensorType sensorType)
         {
-            var sensorTypeSensors = sensors.Where(x => x.SensorTypeName == sensorType.SensorTypeDisplayName).ToList();
+            var sensorTypeSensors = sensors.Where(x => x.SensorTypeID == sensorType.SensorTypeID).ToList();
 
             if (!sensorTypeSensors.Any())
             {
                 return new List<SensorMeasurementDto>();
             }
             var sensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensors(_dbContext, wellRegistrationID, sensorTypeSensors);
-            return sensorMeasurementDtos;
-        }
-
-        private static IEnumerable<SensorMeasurementDto> ZeroFillMissingDaysAndConvertToSensorMeasurementDto(List<WellSensorMeasurementDto> wellSensorMeasurementDtos, string sensorType)
-        {
-            if (!wellSensorMeasurementDtos.Any())
-            {
-                return new List<SensorMeasurementDto>();
-            }
-
-            var measurementValues = wellSensorMeasurementDtos
-                .Where(x => x.SensorName == null)
-                .ToLookup(x => x.MeasurementDate.ToShortDateString());
-
-            var startDate = wellSensorMeasurementDtos.Min(x => x.MeasurementDateInPacificTime);
-            var endDate = DateTime.Today;
-            var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
-                .ToList();
-            var sensorMeasurementDtos = list.Select(a =>
-            {
-                var dateTime = startDate.AddDays(a);
-                var gallons = measurementValues.Contains(dateTime.ToShortDateString()) ? measurementValues[dateTime.ToShortDateString()].Sum(x => x.MeasurementValue) : 0;
-                return new SensorMeasurementDto(sensorType, dateTime, gallons, $"{gallons:N1} gallons" , false);
-            });
             return sensorMeasurementDtos;
         }
     }

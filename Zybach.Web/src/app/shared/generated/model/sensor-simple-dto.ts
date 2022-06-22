@@ -28,11 +28,6 @@ export class SensorSimpleDto {
     WellPageNumber?: number;
     WellOwnerName?: string;
     WellTownshipRangeSection?: string;
-    ChartDataSourceName?: string;
-    ChartAnomaliesDataSourceName?: string;
-    ChartDomains?: Array<string>;
-    ChartColors?: Array<string>;
-    ChartTooltipFields?: Array<string>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

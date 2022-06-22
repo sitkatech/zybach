@@ -52,7 +52,7 @@
                     <tbody>
                         <tr *ngFor="let sensor of sensorsWithStatus">
                             <td><a routerLink="/sensors/{{sensor.SensorID}}">{{sensor.SensorName}}</a></td>
-                            <td>{{sensor.SensorType}}</td>
+                            <td>{{sensor.SensorTypeName}}</td>
                             <td>{{sensor.MessageAge}}</td>
                             <td>{{sensor.IsActive ? 'Enabled' : 'Disabled'}}</td>
                         </tr>

@@ -32,7 +32,7 @@ namespace Zybach.API.Controllers
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
             var wellSummariesWithSensors = _wellService.GetAghubAndGeoOptixWells()
-                .Where(x => x.Sensors.Any(y => y.SensorTypeName != SensorType.ElectricalUsage.SensorTypeDisplayName)).ToList();
+                .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)).ToList();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
             var batteryVoltagesBySensor =
                 _dbContext.WellSensorMeasurements.AsNoTracking().Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).ToList().ToLookup(x => x.SensorName);
@@ -44,7 +44,7 @@ namespace Zybach.API.Controllers
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
-                Sensors = well.Sensors.Where(x=> x.SensorTypeName != SensorType.ElectricalUsage.SensorTypeDisplayName).Select(sensor =>
+                Sensors = well.Sensors.Where(x=> x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).Select(sensor =>
                 {
                     try
                     {
@@ -60,6 +60,7 @@ namespace Zybach.API.Controllers
                             SensorID = sensor.SensorID,
                             MessageAge = messageAge,
                             LastVoltageReading = lastVoltageReading,
+                            SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive
                         };
@@ -86,7 +87,7 @@ namespace Zybach.API.Controllers
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
-                Sensors = well.Sensors.Where(x => x.SensorTypeName != SensorType.ElectricalUsage.SensorTypeDisplayName).Select(sensor =>
+                Sensors = well.Sensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).Select(sensor =>
                 {
                     try
                     {
@@ -98,6 +99,7 @@ namespace Zybach.API.Controllers
                             SensorName = sensor.SensorName,
                             SensorID = sensor.SensorID,
                             MessageAge = messageAge,
+                            SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive
                         };

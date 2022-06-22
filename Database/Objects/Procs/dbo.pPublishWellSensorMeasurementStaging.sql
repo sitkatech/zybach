@@ -21,7 +21,7 @@ begin
 		and wsms.ReadingYear = wsm.ReadingYear
 		and wsms.ReadingMonth = wsm.ReadingMonth
 		and wsms.ReadingDay = wsm.ReadingDay
-		and isnull(wsms.SensorName, '') = isnull(wsm.SensorName, '')
+		and wsms.SensorName = wsm.SensorName
 	where wsm.WellSensorMeasurementID is null
 
 	update wsm
@@ -33,7 +33,7 @@ begin
 		and wsm.ReadingYear = wsms.ReadingYear
 		and wsm.ReadingMonth = wsms.ReadingMonth
 		and wsm.ReadingDay = wsms.ReadingDay
-		and isnull(wsm.SensorName, '') = isnull(wsms.SensorName, '')
+		and wsm.SensorName = wsms.SensorName
 end
 
 GO

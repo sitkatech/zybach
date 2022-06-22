@@ -7927,6 +7927,10 @@
             "format": "double",
             "nullable": true
           },
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
           "SensorTypeName": {
             "type": "string",
             "nullable": true
@@ -7950,8 +7954,7 @@
           },
           "SensorTypeID": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "WellID": {
             "type": "integer",
@@ -8011,35 +8014,6 @@
           },
           "WellTownshipRangeSection": {
             "type": "string",
-            "nullable": true
-          },
-          "ChartDataSourceName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChartAnomaliesDataSourceName": {
-            "type": "string",
-            "nullable": true
-          },
-          "ChartDomains": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "ChartColors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "ChartTooltipFields": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
             "nullable": true
           }
         },

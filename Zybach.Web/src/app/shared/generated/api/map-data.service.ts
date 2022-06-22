@@ -19,7 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { WellWaterLevelMapSummaryDto } from '../model/well-water-level-map-summary-dto';
-import { WellWithSensorSummaryDto } from '../model/well-with-sensor-summary-dto';
+import { WellWithSensorSimpleDto } from '../model/well-with-sensor-simple-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -68,9 +68,9 @@ export class MapDataService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public mapDataWellsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellWithSensorSummaryDto>>;
-    public mapDataWellsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellWithSensorSummaryDto>>>;
-    public mapDataWellsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellWithSensorSummaryDto>>>;
+    public mapDataWellsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellWithSensorSimpleDto>>;
+    public mapDataWellsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellWithSensorSimpleDto>>>;
+    public mapDataWellsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellWithSensorSimpleDto>>>;
     public mapDataWellsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -90,7 +90,7 @@ export class MapDataService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<WellWithSensorSummaryDto>>(`${this.basePath}/mapData/wells`,
+        return this.httpClient.get<Array<WellWithSensorSimpleDto>>(`${this.basePath}/mapData/wells`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

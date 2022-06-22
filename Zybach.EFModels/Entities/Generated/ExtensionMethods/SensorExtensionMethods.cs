@@ -15,7 +15,7 @@ namespace Zybach.EFModels.Entities
             {
                 SensorID = sensor.SensorID,
                 SensorName = sensor.SensorName,
-                SensorType = sensor.SensorType?.AsDto(),
+                SensorType = sensor.SensorType.AsDto(),
                 Well = sensor.Well?.AsDto(),
                 InGeoOptix = sensor.InGeoOptix,
                 CreateDate = sensor.CreateDate,

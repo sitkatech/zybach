@@ -112,4 +112,4 @@ export * from '././well-simple-dto';
 export * from '././well-use-dto';
 export * from '././well-water-level-map-summary-dto';
 export * from '././well-with-sensor-message-age-dto';
-export * from '././well-with-sensor-summary-dto';
+export * from '././well-with-sensor-simple-dto';

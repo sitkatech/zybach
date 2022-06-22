@@ -145,5 +145,5 @@ model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-water-level-map-summary-dto.ts
 model/well-with-sensor-message-age-dto.ts
-model/well-with-sensor-summary-dto.ts
+model/well-with-sensor-simple-dto.ts
 variables.ts

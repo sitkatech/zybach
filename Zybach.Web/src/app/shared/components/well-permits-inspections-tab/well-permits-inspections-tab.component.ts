@@ -15,6 +15,7 @@ import { AlertService } from '../../services/alert.service';
 import { LinkRendererComponent } from '../ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from '../custom-dropdown-filter/custom-dropdown-filter.component';
 import { default as vegaEmbed } from 'vega-embed';
+import { SensorTypeEnum } from '../../generated/enum/sensor-type-enum';
 
 @Component({
   selector: 'zybach-well-permits-inspections-tab',
@@ -249,7 +250,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
   }
 
   hasWellPressureSensor(): boolean{
-    return this.sensorsWithStatus?.filter(x => x.SensorTypeName === "Well Pressure").length > 0;
+    return this.sensorsWithStatus?.filter(x => x.SensorTypeID == SensorTypeEnum.WellPressure).length > 0;
   }
 
   private buildNitrateChart(nitrateChartVegaSpec : any) {

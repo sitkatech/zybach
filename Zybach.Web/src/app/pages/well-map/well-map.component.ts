@@ -30,6 +30,7 @@ import { WellMapPopupComponent } from '../well-map-popup/well-map-popup.componen
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
+import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 
 @Component({
   selector: 'zybach-well-map',
@@ -152,7 +153,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
     this.wellsLayer = new GeoJSON(this.wellsGeoJson, {
       pointToLayer: function (feature, latlng) {
-        var sensorTypes = feature.properties.sensors.map(x => x.SensorType);
+        var sensorTypes = feature.properties.sensors.map(x => x.SensorTypeName);
         if (sensorTypes.includes("Flow Meter")) {
           var icon = flowMeterMarkerIcon
         } else if (sensorTypes.includes("Continuity Meter")) {
@@ -165,11 +166,11 @@ export class WellMapComponent implements OnInit, AfterViewInit {
         return marker(latlng, { icon: icon})
       },
       filter: (feature) => {
-        if (feature.properties.sensors === null || feature.properties.sensors.length === 0 || (feature.properties.sensors.length === 1 && feature.properties.sensors[0].SensorType === "Well Pressure") || (feature.properties.sensors.length === 2 && feature.properties.sensors[0].SensorType === "Well Pressure" && feature.properties.sensors[1].SensorType === "Well Pressure")) {
+        if (feature.properties.sensors === null || feature.properties.sensors.length === 0 || (feature.properties.sensors.length === 1 && feature.properties.sensors[0].SensorTypeID == SensorTypeEnum.WellPressure) || (feature.properties.sensors.length === 2 && feature.properties.sensors[0].SensorTypeID == SensorTypeEnum.WellPressure && feature.properties.sensors[1].SensorTypeID == SensorTypeEnum.WellPressure)) {
           return this.showNoEstimate;
         }
 
-        var sensorTypes = feature.properties.sensors.map(x => x.SensorType);
+        var sensorTypes = feature.properties.sensors.map(x => x.SensorTypeName);
 
         return (this.showFlowMeters && sensorTypes.includes("Flow Meter")) || 
           (this.showContinuityMeters && sensorTypes.includes("Continuity Meter")) ||
