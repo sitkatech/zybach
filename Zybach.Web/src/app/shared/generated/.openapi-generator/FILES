@@ -1,6 +1,5 @@
 .gitignore
 api.module.ts
-api/chart-data.service.ts
 api/chemigation-inspection.service.ts
 api/chemigation-permit-annual-record-chemical-formulation.service.ts
 api/chemigation-permit-annual-record.service.ts
@@ -72,7 +71,6 @@ model/crop-type-dto.ts
 model/crs-type.ts
 model/custom-rich-text-dto.ts
 model/custom-rich-text-type-dto.ts
-model/daily-pumped-volume.ts
 model/daily-sensor-volume-dto.ts
 model/district-statistics-dto.ts
 model/feature.ts
@@ -87,7 +85,6 @@ model/icrs-object.ts
 model/installation-record-dto.ts
 model/interval-volume-dto.ts
 model/irrigated-acres-per-year-dto.ts
-model/measurement-type-dto.ts
 model/models.ts
 model/open-et-data-type-dto.ts
 model/open-et-sync-history-dto.ts
@@ -100,9 +97,10 @@ model/role-dto.ts
 model/search-summary-dto.ts
 model/sensor-anomaly-simple-dto.ts
 model/sensor-anomaly-upsert-dto.ts
+model/sensor-chart-data-dto.ts
+model/sensor-measurement-dto.ts
 model/sensor-message-age-dto.ts
 model/sensor-simple-dto.ts
-model/sensor-summary-dto.ts
 model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
 model/structured-results-dto.ts
@@ -110,6 +108,7 @@ model/structured-results.ts
 model/support-ticket-comment-simple-dto.ts
 model/support-ticket-comment-upsert-dto.ts
 model/support-ticket-detail-dto.ts
+model/support-ticket-notification-simple-dto.ts
 model/support-ticket-priority-dto.ts
 model/support-ticket-priority-simple-dto.ts
 model/support-ticket-simple-dto.ts
@@ -133,7 +132,6 @@ model/water-quality-inspection-summary-dto.ts
 model/water-quality-inspection-type-dto.ts
 model/water-quality-inspection-upsert-dto.ts
 model/water-year-month-dto.ts
-model/well-chart-data-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
@@ -143,10 +141,9 @@ model/well-new-dto.ts
 model/well-participation-dto.ts
 model/well-participation-info-dto.ts
 model/well-registration-id-dto.ts
-model/well-sensor-measurement-dto.ts
 model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-water-level-map-summary-dto.ts
 model/well-with-sensor-message-age-dto.ts
-model/well-with-sensor-summary-dto.ts
+model/well-with-sensor-simple-dto.ts
 variables.ts

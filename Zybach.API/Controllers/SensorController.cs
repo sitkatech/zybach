@@ -31,8 +31,7 @@ namespace Zybach.API.Controllers
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
-            var wellSensorMeasurementsBySensor =
-                _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
+            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
 
             var currentDate = DateTime.Now;
 
@@ -79,19 +78,11 @@ namespace Zybach.API.Controllers
                 : (int?)null;
             sensorSimpleDto.MessageAge = messageAge;
 
-            sensorSimpleDto.OpenSupportTickets = SupportTickets.GetSupportTicketsImpl(_dbContext)
-                .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.SensorID == sensor.SensorID)
-                .Select(x => x.AsSimpleDto()).ToList();
-
-            var wellSensorMeasurements = WellSensorMeasurements.GetWellSensorMeasurementsImpl(_dbContext)
-                .Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
+            var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking().Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
 
             sensorSimpleDto.FirstReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : null;
             sensorSimpleDto.LastReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : null;
-            var anomalousDates = SensorAnomalies.GetAnomolousDatesBySensorName(_dbContext, sensorSimpleDto.SensorName);
-            var wellSensorMeasurementDtos = WellSensorMeasurements.ZeroFillMissingDaysAsDto(wellSensorMeasurements.Where(x => x.MeasurementType.MeasurementTypeID != (int) MeasurementTypeEnum.BatteryVoltage && !anomalousDates.Contains(x.MeasurementDate)).ToList());
-            
-            sensorSimpleDto.WellSensorMeasurements = wellSensorMeasurementDtos;
+
             var batteryVoltages = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).OrderByDescending(x => x.MeasurementDate).ToList();
             var lastVoltageReading = batteryVoltages.Any() ? batteryVoltages.FirstOrDefault()?.MeasurementValue : null;
             sensorSimpleDto.LastVoltageReading = lastVoltageReading;
@@ -99,22 +90,36 @@ namespace Zybach.API.Controllers
             return sensorSimpleDto;
         }
 
-        [HttpGet("/sensors/byWellID/{wellID}")]
-        [UserViewFeature]
-        public ActionResult<List<SensorSimpleDto>> GetSensorsByWellID([FromRoute] int wellID)
+
+        [HttpGet("/sensors/{sensorID}/openSupportTickets")]
+        [ZybachViewFeature]
+        public ActionResult<List<SupportTicketSimpleDto>> ListOpenSupportTickersBySensor([FromRoute] int sensorID)
         {
-            var sensors = Sensors.ListByWellIDAsSimpleDto(_dbContext, wellID);
+            if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
 
-            foreach (var sensor in sensors)
-            {
-                var wellSensorMeasurementDtos = WellSensorMeasurements.ListBySensorAsDto(_dbContext, sensor.SensorName);
-                sensor.FirstReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Min(x => x.MeasurementDate) : null;
-                sensor.LastReadingDate = wellSensorMeasurementDtos.Any() ? wellSensorMeasurementDtos.Max(x => x.MeasurementDate) : null;
-                sensor.WellSensorMeasurements = wellSensorMeasurementDtos;
-            }
-
-            return sensors;
+            return SupportTickets.GetSupportTicketsImpl(_dbContext)
+                .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.SensorID == sensor.SensorID)
+                .Select(x => x.AsSimpleDto()).ToList();
         }
+
+
+        [HttpGet("/sensors/{sensorID}/chartData")]
+        [ZybachViewFeature]
+        public ActionResult<SensorChartDataDto> GetChartSpecForSensorByID([FromRoute] int sensorID)
+        {
+            if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
+            var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensor);
+            var sensorMeasurements = WellSensorMeasurements.ListBySensorAsSensorMeasurementDto(_dbContext, sensor.SensorName, sensor.SensorID, sensor.GetChartDataSourceName(), sensor.GetChartAnomaliesDataSourceName());
+            var sensorChartDataDto = new SensorChartDataDto
+            {
+                FirstReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Min(x => x.MeasurementDate) : null,
+                LastReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Max(x => x.MeasurementDate) : null,
+                SensorMeasurements = sensorMeasurements,
+                ChartSpec = vegaLiteChartSpec
+            };
+            return sensorChartDataDto;
+        }
+
 
         private bool GetSensorAndThrowIfNotFound(int sensorID, out Sensor sensor, out ActionResult actionResult)
         {

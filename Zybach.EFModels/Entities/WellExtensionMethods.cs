@@ -65,15 +65,7 @@ namespace Zybach.EFModels.Entities
 
         public static WellWaterLevelMapSummaryDto AsWaterLevelMapSummaryDto(this Well well)
         {
-            var sensors = well.Sensors.Select(x => new SensorSummaryDto()
-            {
-                SensorName = x.SensorName,
-                SensorID = x.SensorID,
-                SensorTypeID = x.SensorTypeID,
-                SensorType = x.SensorType.SensorTypeDisplayName,
-                WellRegistrationID = well.WellRegistrationID,
-                IsActive = x.IsActive
-            }).ToList();
+            var sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList();
 
             var wellWaterLevelMapSummaryDto = new WellWaterLevelMapSummaryDto()
             {
@@ -90,15 +82,7 @@ namespace Zybach.EFModels.Entities
 
         public static WellMinimalDto AsMinimalDto(this Well well)
         {
-            var sensors = well.Sensors.Select(x => new SensorSummaryDto()
-            {
-                SensorName = x.SensorName,
-                SensorID = x.SensorID,
-                SensorTypeID = x.SensorTypeID,
-                SensorType = x.SensorType.SensorTypeDisplayName,
-                WellRegistrationID = well.WellRegistrationID,
-                IsActive = x.IsActive
-            }).ToList();
+            var sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList();
 
             return new WellMinimalDto
             {

@@ -380,13 +380,12 @@ namespace Zybach.API.Services
                 table.Columns.Add("WellTPID", typeof(string));
                 table.Columns.Add("WaterMonth", typeof(int));
                 table.Columns.Add("WaterYear", typeof(int));
-                table.Columns.Add("EvapotranspirationRateInches", typeof(decimal));
-                table.Columns.Add("EvapotranspirationRateAcreFeet", typeof(decimal));
+                table.Columns.Add("EvapotranspirationInches", typeof(decimal));
 
                 var index = 0;
                 distinctRecords.ForEach(x =>
                 {
-                    table.Rows.Add(++index, x.WellTPID, x.WaterMonth, x.WaterYear, x.EvapotranspirationRateInches, x.EvapotranspirationRateAcreFeet);
+                    table.Rows.Add(++index, x.WellTPID, x.WaterMonth, x.WaterYear, x.EvapotranspirationInches);
                 });
 
                 using (SqlConnection con = new SqlConnection(_zybachConfiguration.DB_CONNECTION_STRING))
@@ -485,13 +484,12 @@ namespace Zybach.API.Services
                 table.Columns.Add("WellTPID", typeof(string));
                 table.Columns.Add("WaterMonth", typeof(int));
                 table.Columns.Add("WaterYear", typeof(int));
-                table.Columns.Add("PrecipitationAcreFeet", typeof(decimal));
                 table.Columns.Add("PrecipitationInches", typeof(decimal));
 
                 var index = 0;
                 distinctRecords.ForEach(x =>
                 {
-                    table.Rows.Add(++index, x.WellTPID, x.WaterMonth, x.WaterYear, x.PrecipitationAcreFeet, x.PrecipitationInches);
+                    table.Rows.Add(++index, x.WellTPID, x.WaterMonth, x.WaterYear, x.PrecipitationInches);
                 });
 
                 using (SqlConnection con = new SqlConnection(_zybachConfiguration.DB_CONNECTION_STRING))
@@ -566,8 +564,7 @@ namespace Zybach.API.Services
     {
         public string WellTPID { get; set; }
         public DateTime Date { get; set; }
-        public decimal EvapotranspirationRateInches { get; set; }
-        public decimal EvapotranspirationRateAcreFeet { get; set; }
+        public decimal EvapotranspirationInches { get; set; }
     }
 
     public class OpenETPrecipCSVFormat
@@ -575,7 +572,6 @@ namespace Zybach.API.Services
         public string WellTPID { get; set; }
         public DateTime Date { get; set; }
         public decimal PrecipitationInches { get; set; }
-        public decimal PrecipitationAcreFeet { get; set; }
     }
 
     public class OpenETEvapCSVFormatMap : ClassMap<OpenETEvapCSVFormat>
@@ -584,8 +580,7 @@ namespace Zybach.API.Services
         {
             Map(m => m.WellTPID).Name(irrigationUnitTPIDColumnName);
             Map(m => m.Date).Name("time");
-            Map(m => m.EvapotranspirationRateInches).Name("et_mean");
-            Map(m => m.EvapotranspirationRateAcreFeet).Name("volume_acre_feet");
+            Map(m => m.EvapotranspirationInches).Name("et_mean");
         }
     }
 
@@ -596,7 +591,6 @@ namespace Zybach.API.Services
             Map(m => m.WellTPID).Name(irrigationUnitTPIDColumnName);
             Map(m => m.Date).Name("time");
             Map(m => m.PrecipitationInches).Name("pr_mean");
-            Map(m => m.PrecipitationAcreFeet).Name("volume_acre_feet");
         }
     }
 
@@ -607,14 +601,14 @@ namespace Zybach.API.Services
         {
             return x.WellTPID == y.WellTPID &&
                    x.Date == y.Date &&
-                   x.EvapotranspirationRateInches == y.EvapotranspirationRateInches;
+                   x.EvapotranspirationInches == y.EvapotranspirationInches;
         }
 
         public int GetHashCode(OpenETEvapCSVFormat obj)
         {
             return obj.WellTPID.GetHashCode() ^
                    obj.Date.GetHashCode() ^
-                   obj.EvapotranspirationRateInches.GetHashCode();
+                   obj.EvapotranspirationInches.GetHashCode();
         }
     }
 
@@ -645,8 +639,7 @@ namespace Zybach.API.Services
                 WellTPID = openEtEvapCsvFormat.WellTPID,
                 WaterYear = openEtEvapCsvFormat.Date.Year,
                 WaterMonth = openEtEvapCsvFormat.Date.Month,
-                EvapotranspirationRateInches = openEtEvapCsvFormat.EvapotranspirationRateInches,
-                EvapotranspirationRateAcreFeet = openEtEvapCsvFormat.EvapotranspirationRateAcreFeet
+                EvapotranspirationInches = openEtEvapCsvFormat.EvapotranspirationInches
             };
         }
 
@@ -657,8 +650,7 @@ namespace Zybach.API.Services
                 WellTPID = openEtPrecipCsvFormat.WellTPID,
                 WaterYear = openEtPrecipCsvFormat.Date.Year,
                 WaterMonth = openEtPrecipCsvFormat.Date.Month,
-                PrecipitationInches = openEtPrecipCsvFormat.PrecipitationInches,
-                PrecipitationAcreFeet = openEtPrecipCsvFormat.PrecipitationAcreFeet
+                PrecipitationInches = openEtPrecipCsvFormat.PrecipitationInches
             };
         }
     }

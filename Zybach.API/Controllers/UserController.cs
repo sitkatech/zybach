@@ -98,7 +98,7 @@ namespace Zybach.API.Controllers
 
         [HttpPost("/users")]
         [LoggedInUnclassifiedFeature]
-        public ActionResult<UserDto> CreateUser([FromBody] UserCreateDto userCreateDto)
+        public async Task<ActionResult<UserDto>> CreateUser([FromBody] UserCreateDto userCreateDto)
         {
             // Validate request body; all fields required in Dto except Org Name and Phone
             if (userCreateDto == null)
@@ -119,7 +119,7 @@ namespace Zybach.API.Controllers
             var mailMessage = GenerateUserCreatedEmail(_zybachConfiguration.WEB_URL, user, _dbContext, smtpClient);
             SitkaSmtpClientService.AddCcRecipientsToEmail(mailMessage,
                         EFModels.Entities.User.GetEmailAddressesForAdminsThatReceiveSupportEmails(_dbContext));
-            SendEmailMessage(smtpClient, mailMessage);
+            await SendEmailMessage(smtpClient, mailMessage);
 
             return Ok(user);
         }
@@ -219,14 +219,21 @@ namespace Zybach.API.Controllers
             return Ok(updatedUserDto);
         }
 
+        [HttpGet("/users/{userID}/supportTickets")]
+        public ActionResult<List<SupportTicketSimpleDto>> GetSupportTicketsByUserID([FromRoute] int userID)
+        {
+            var supportTicketSimpleDtos = SupportTickets.ListByAssigneeUserID(_dbContext, userID);
+            return Ok(supportTicketSimpleDtos);
+        }
+
 
         private MailMessage GenerateUserCreatedEmail(string zybachUrl, UserDto user, ZybachDbContext dbContext,
             SitkaSmtpClientService smtpClient)
         {
             var messageBody = $@"A new user has signed up to the {_zybachConfiguration.PlatformLongName}: <br/><br/>
- {user.FullName} ({user.Email}) <br/><br/>
-As an administrator of the {_zybachConfiguration.PlatformShortName}, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
-{smtpClient.GetSupportNotificationEmailSignature()}";
+                {user.FullName} ({user.Email}) <br/><br/>
+                As an administrator of the {_zybachConfiguration.PlatformShortName}, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
+                {smtpClient.GetSupportNotificationEmailSignature()}";
 
             var mailMessage = new MailMessage
             {
@@ -238,12 +245,12 @@ As an administrator of the {_zybachConfiguration.PlatformShortName}, you can ass
             return mailMessage;
         }
 
-        private void SendEmailMessage(SitkaSmtpClientService smtpClient, MailMessage mailMessage)
+        private async Task SendEmailMessage(SitkaSmtpClientService smtpClient, MailMessage mailMessage)
         {
             mailMessage.IsBodyHtml = true;
             mailMessage.From = smtpClient.GetDefaultEmailFrom();
             mailMessage.ReplyToList.Add("donotreply@sitkatech.com");
-            smtpClient.Send(mailMessage);
+            await smtpClient.Send(mailMessage);
         }
     }
 }

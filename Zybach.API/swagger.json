@@ -5,46 +5,6 @@
     "version": "v1"
   },
   "paths": {
-    "/chartData/{wellID}": {
-      "get": {
-        "tags": [
-          "ChartData"
-        ],
-        "parameters": [
-          {
-            "name": "wellID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/WellChartDataDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WellChartDataDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WellChartDataDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/chemigationInspections/inspectionTypes": {
       "get": {
         "tags": [
@@ -1960,7 +1920,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               },
@@ -1968,7 +1928,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               },
@@ -1976,7 +1936,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSummaryDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               }
@@ -2773,14 +2733,14 @@
         }
       }
     },
-    "/sensors/byWellID/{wellID}": {
+    "/sensors/{sensorID}/openSupportTickets": {
       "get": {
         "tags": [
           "Sensor"
         ],
         "parameters": [
           {
-            "name": "wellID",
+            "name": "sensorID",
             "in": "path",
             "required": true,
             "schema": {
@@ -2797,7 +2757,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SensorSimpleDto"
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
                   }
                 }
               },
@@ -2805,7 +2765,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SensorSimpleDto"
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
                   }
                 }
               },
@@ -2813,8 +2773,48 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/SensorSimpleDto"
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sensors/{sensorID}/chartData": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
                 }
               }
             }
@@ -3080,22 +3080,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSimpleDto"
               }
             },
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSimpleDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSimpleDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/SensorSummaryDto"
+                "$ref": "#/components/schemas/SensorSimpleDto"
               }
             }
           }
@@ -3509,6 +3509,55 @@
         }
       }
     },
+    "/supportTickets/{supportTicketID}/notifications": {
+      "get": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "parameters": [
+          {
+            "name": "supportTicketID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketNotificationSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketNotificationSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketNotificationSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/invite": {
       "post": {
         "tags": [
@@ -3892,6 +3941,55 @@
               "text/json": {
                 "schema": {
                   "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userID}/supportTickets": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "userID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SupportTicketSimpleDto"
+                  }
                 }
               }
             }
@@ -5454,6 +5552,86 @@
         }
       }
     },
+    "/wells/{wellID}/waterLevelSensors": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wells/{wellID}/flowMeterSensors": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/pumpedVolume": {
       "get": {
         "tags": [
@@ -5624,7 +5802,7 @@
           "WaterYearMonth": {
             "$ref": "#/components/schemas/WaterYearMonthDto"
           },
-          "PrecipitationAcreFeet": {
+          "PrecipitationAcreInches": {
             "type": "number",
             "format": "double",
             "nullable": true
@@ -5634,7 +5812,7 @@
             "format": "double",
             "nullable": true
           },
-          "EvapotranspirationAcreFeet": {
+          "EvapotranspirationAcreInches": {
             "type": "number",
             "format": "double",
             "nullable": true
@@ -7008,30 +7186,6 @@
         },
         "additionalProperties": false
       },
-      "DailyPumpedVolume": {
-        "type": "object",
-        "properties": {
-          "Time": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "Gallons": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "DataSource": {
-            "type": "string",
-            "nullable": true
-          },
-          "GallonsString": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "DailySensorVolumeDto": {
         "type": "object",
         "properties": {
@@ -7399,32 +7553,6 @@
         },
         "additionalProperties": false
       },
-      "MeasurementTypeDto": {
-        "type": "object",
-        "properties": {
-          "MeasurementTypeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "MeasurementTypeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementTypeDisplayName": {
-            "type": "string",
-            "nullable": true
-          },
-          "InfluxMeasurementName": {
-            "type": "string",
-            "nullable": true
-          },
-          "InfluxFieldName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "OpenETDataTypeDto": {
         "type": "object",
         "properties": {
@@ -7725,6 +7853,59 @@
         },
         "additionalProperties": false
       },
+      "SensorChartDataDto": {
+        "type": "object",
+        "properties": {
+          "SensorMeasurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorMeasurementDto"
+            },
+            "nullable": true
+          },
+          "FirstReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ChartSpec": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorMeasurementDto": {
+        "type": "object",
+        "properties": {
+          "DataSourceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "MeasurementValueString": {
+            "type": "string",
+            "nullable": true
+          },
+          "MeasurementValue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "IsAnomalous": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorMessageAgeDto": {
         "type": "object",
         "properties": {
@@ -7746,7 +7927,11 @@
             "format": "double",
             "nullable": true
           },
-          "SensorType": {
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorTypeName": {
             "type": "string",
             "nullable": true
           },
@@ -7769,8 +7954,7 @@
           },
           "SensorTypeID": {
             "type": "integer",
-            "format": "int32",
-            "nullable": true
+            "format": "int32"
           },
           "WellID": {
             "type": "integer",
@@ -7831,50 +8015,6 @@
           "WellTownshipRangeSection": {
             "type": "string",
             "nullable": true
-          },
-          "WellSensorMeasurements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WellSensorMeasurementDto"
-            },
-            "nullable": true
-          },
-          "OpenSupportTickets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SupportTicketSimpleDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SensorSummaryDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "SensorID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "SensorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "SensorTypeID": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "SensorType": {
-            "type": "string",
-            "nullable": true
-          },
-          "IsActive": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false
@@ -8094,6 +8234,36 @@
           },
           "Priority": {
             "$ref": "#/components/schemas/SupportTicketPrioritySimpleDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SupportTicketNotificationSimpleDto": {
+        "type": "object",
+        "properties": {
+          "SupportTicketNotificationID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SupportTicketID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "EmailAddresses": {
+            "type": "string",
+            "nullable": true
+          },
+          "EmailSubject": {
+            "type": "string",
+            "nullable": true
+          },
+          "EmailBody": {
+            "type": "string",
+            "nullable": true
+          },
+          "SentDate": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -9200,26 +9370,6 @@
         },
         "additionalProperties": false
       },
-      "WellChartDataDto": {
-        "type": "object",
-        "properties": {
-          "TimeSeries": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DailyPumpedVolume"
-            },
-            "nullable": true
-          },
-          "Sensors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SensorSummaryDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "WellContactInfoDto": {
         "type": "object",
         "properties": {
@@ -9445,7 +9595,7 @@
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SensorSummaryDto"
+              "$ref": "#/components/schemas/SensorSimpleDto"
             },
             "nullable": true
           },
@@ -9715,7 +9865,7 @@
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SensorSummaryDto"
+              "$ref": "#/components/schemas/SensorSimpleDto"
             },
             "nullable": true
           }
@@ -9869,59 +10019,6 @@
             "maxLength": 100,
             "minLength": 0,
             "type": "string"
-          }
-        },
-        "additionalProperties": false
-      },
-      "WellSensorMeasurementDto": {
-        "type": "object",
-        "properties": {
-          "WellSensorMeasurementID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementType": {
-            "$ref": "#/components/schemas/MeasurementTypeDto"
-          },
-          "ReadingYear": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ReadingMonth": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ReadingDay": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "SensorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementValue": {
-            "type": "number",
-            "format": "double"
-          },
-          "IsAnomalous": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "MeasurementDateInPacificTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "MeasurementDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "MeasurementValueString": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -10113,7 +10210,7 @@
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SensorSummaryDto"
+              "$ref": "#/components/schemas/SensorSimpleDto"
             },
             "nullable": true
           }
@@ -10216,13 +10313,13 @@
         },
         "additionalProperties": false
       },
-      "WellWithSensorSummaryDto": {
+      "WellWithSensorSimpleDto": {
         "type": "object",
         "properties": {
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SensorSummaryDto"
+              "$ref": "#/components/schemas/SensorSimpleDto"
             },
             "nullable": true
           },

@@ -4,10 +4,12 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SupportTicketService } from 'src/app/shared/generated/api/support-ticket.service';
 import { SupportTicketDetailDto } from 'src/app/shared/generated/model/support-ticket-detail-dto';
+import { SupportTicketNotificationSimpleDto } from 'src/app/shared/generated/model/support-ticket-notification-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'zybach-support-ticket-detail',
@@ -20,6 +22,7 @@ export class SupportTicketDetailComponent implements OnInit {
   public currentUser: UserDto;
   public supportTicketID: number;
   public supportTicket: SupportTicketDetailDto;
+  public notifications: SupportTicketNotificationSimpleDto[];
 
   public isLoadingDelete: boolean = false;
   private modalReference: NgbModalRef;
@@ -39,8 +42,12 @@ export class SupportTicketDetailComponent implements OnInit {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.supportTicketID = parseInt(this.route.snapshot.paramMap.get("id"));
-      this.supportTicketService.supportTicketsSupportTicketIDGet(this.supportTicketID).subscribe(supportTicket => {
+      forkJoin({
+        supportTicket: this.supportTicketService.supportTicketsSupportTicketIDGet(this.supportTicketID),
+        notifications: this.supportTicketService.supportTicketsSupportTicketIDNotificationsGet(this.supportTicketID)
+      }).subscribe(({supportTicket, notifications}) => {
         this.supportTicket = supportTicket;
+        this.notifications = notifications;
       });
     })
   }

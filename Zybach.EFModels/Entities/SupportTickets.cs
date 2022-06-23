@@ -34,6 +34,16 @@ namespace Zybach.EFModels.Entities
             return GetSupportTicketsImpl(dbContext).SingleOrDefault(x => x.SupportTicketID == supportTicketID);
         }
 
+        public static List<SupportTicketSimpleDto> ListByAssigneeUserID(ZybachDbContext dbContext, int assigneeUserID)
+        {
+            var supportTicketSimpleDtos = GetSupportTicketsImpl(dbContext)
+                .Where(x => x.AssigneeUserID == assigneeUserID && (x.SupportTicketStatusID == (int)SupportTicketStatusEnum.Open || x.SupportTicketStatusID == (int)SupportTicketStatusEnum.InProgress))
+                .Select(x => x.AsSimpleDto()).ToList()
+                .OrderBy(x => x.Priority.SortOrder);
+
+            return supportTicketSimpleDtos.ToList();
+        }
+
         public static SupportTicketDetailDto CreateNewSupportTicket(ZybachDbContext dbContext, SupportTicketUpsertDto supportTicketUpsertDto)
         {
             var supportTicket = new SupportTicket()

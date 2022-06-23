@@ -18,7 +18,9 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { SensorChartDataDto } from '../model/sensor-chart-data-dto';
 import { SensorSimpleDto } from '../model/sensor-simple-dto';
+import { SupportTicketSimpleDto } from '../model/support-ticket-simple-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -60,49 +62,6 @@ export class SensorService {
         return false;
     }
 
-
-    /**
-     * 
-     * 
-     * @param wellID 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public sensorsByWellIDWellIDGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SensorSimpleDto>>;
-    public sensorsByWellIDWellIDGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SensorSimpleDto>>>;
-    public sensorsByWellIDWellIDGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SensorSimpleDto>>>;
-    public sensorsByWellIDWellIDGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (wellID === null || wellID === undefined) {
-            throw new Error('Required parameter wellID was null or undefined when calling sensorsByWellIDWellIDGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<SensorSimpleDto>>(`${this.basePath}/sensors/byWellID/${encodeURIComponent(String(wellID))}`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
 
     /**
      * 
@@ -192,6 +151,49 @@ export class SensorService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public sensorsSensorIDChartDataGet(sensorID: number, observe?: 'body', reportProgress?: boolean): Observable<SensorChartDataDto>;
+    public sensorsSensorIDChartDataGet(sensorID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SensorChartDataDto>>;
+    public sensorsSensorIDChartDataGet(sensorID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SensorChartDataDto>>;
+    public sensorsSensorIDChartDataGet(sensorID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (sensorID === null || sensorID === undefined) {
+            throw new Error('Required parameter sensorID was null or undefined when calling sensorsSensorIDChartDataGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<SensorChartDataDto>(`${this.basePath}/sensors/${encodeURIComponent(String(sensorID))}/chartData`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param sensorID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public sensorsSensorIDGet(sensorID: number, observe?: 'body', reportProgress?: boolean): Observable<SensorSimpleDto>;
     public sensorsSensorIDGet(sensorID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SensorSimpleDto>>;
     public sensorsSensorIDGet(sensorID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SensorSimpleDto>>;
@@ -219,6 +221,49 @@ export class SensorService {
         ];
 
         return this.httpClient.get<SensorSimpleDto>(`${this.basePath}/sensors/${encodeURIComponent(String(sensorID))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param sensorID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sensorsSensorIDOpenSupportTicketsGet(sensorID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<SupportTicketSimpleDto>>;
+    public sensorsSensorIDOpenSupportTicketsGet(sensorID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SupportTicketSimpleDto>>>;
+    public sensorsSensorIDOpenSupportTicketsGet(sensorID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SupportTicketSimpleDto>>>;
+    public sensorsSensorIDOpenSupportTicketsGet(sensorID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (sensorID === null || sensorID === undefined) {
+            throw new Error('Required parameter sensorID was null or undefined when calling sensorsSensorIDOpenSupportTicketsGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<SupportTicketSimpleDto>>(`${this.basePath}/sensors/${encodeURIComponent(String(sensorID))}/openSupportTickets`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

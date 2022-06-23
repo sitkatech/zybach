@@ -18,8 +18,6 @@ namespace Zybach.EFModels.Entities
         public int WaterMonth { get; set; }
         public int WaterYear { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
-        public decimal? EvapotranspirationRateInches { get; set; }
-        [Column(TypeName = "decimal(20, 4)")]
-        public decimal? EvapotranspirationRateAcreFeet { get; set; }
+        public decimal? EvapotranspirationInches { get; set; }
     }
 }

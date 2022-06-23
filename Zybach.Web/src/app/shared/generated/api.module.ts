@@ -3,7 +3,6 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { ChartDataService } from './api/chart-data.service';
 import { ChemigationInspectionService } from './api/chemigation-inspection.service';
 import { ChemigationPermitService } from './api/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordService } from './api/chemigation-permit-annual-record.service';
@@ -38,7 +37,6 @@ import { ZybachAPIService } from './api/zybach-api.service';
   declarations: [],
   exports:      [],
   providers: [
-    ChartDataService,
     ChemigationInspectionService,
     ChemigationPermitService,
     ChemigationPermitAnnualRecordService,

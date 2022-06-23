@@ -40,13 +40,15 @@ namespace Zybach.EFModels.Entities
         /// <summary>
         /// Protected constructor only for use in instantiating the set of static lookup values that match database
         /// </summary>
-        protected MeasurementType(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName)
+        protected MeasurementType(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName, string unitsDisplay, string unitsDisplayPlural)
         {
             MeasurementTypeID = measurementTypeID;
             MeasurementTypeName = measurementTypeName;
             MeasurementTypeDisplayName = measurementTypeDisplayName;
             InfluxMeasurementName = influxMeasurementName;
             InfluxFieldName = influxFieldName;
+            UnitsDisplay = unitsDisplay;
+            UnitsDisplayPlural = unitsDisplayPlural;
         }
 
         [Key]
@@ -55,6 +57,8 @@ namespace Zybach.EFModels.Entities
         public string MeasurementTypeDisplayName { get; private set; }
         public string InfluxMeasurementName { get; private set; }
         public string InfluxFieldName { get; private set; }
+        public string UnitsDisplay { get; private set; }
+        public string UnitsDisplayPlural { get; private set; }
         [NotMapped]
         public int PrimaryKey { get { return MeasurementTypeID; } }
 
@@ -134,31 +138,31 @@ namespace Zybach.EFModels.Entities
 
     public partial class MeasurementTypeFlowMeter : MeasurementType
     {
-        private MeasurementTypeFlowMeter(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName) {}
-        public static readonly MeasurementTypeFlowMeter Instance = new MeasurementTypeFlowMeter(1, @"FlowMeter", @"Flow Meter", @"gallons", @"pumped");
+        private MeasurementTypeFlowMeter(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName, string unitsDisplay, string unitsDisplayPlural) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName, unitsDisplay, unitsDisplayPlural) {}
+        public static readonly MeasurementTypeFlowMeter Instance = new MeasurementTypeFlowMeter(1, @"FlowMeter", @"Flow Meter", @"gallons", @"pumped", @"gallon", @"gallons");
     }
 
     public partial class MeasurementTypeContinuityMeter : MeasurementType
     {
-        private MeasurementTypeContinuityMeter(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName) {}
-        public static readonly MeasurementTypeContinuityMeter Instance = new MeasurementTypeContinuityMeter(2, @"ContinuityMeter", @"Continuity Meter", @"continuity", @"on");
+        private MeasurementTypeContinuityMeter(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName, string unitsDisplay, string unitsDisplayPlural) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName, unitsDisplay, unitsDisplayPlural) {}
+        public static readonly MeasurementTypeContinuityMeter Instance = new MeasurementTypeContinuityMeter(2, @"ContinuityMeter", @"Continuity Meter", @"continuity", @"on", @"gallon", @"gallons");
     }
 
     public partial class MeasurementTypeElectricalUsage : MeasurementType
     {
-        private MeasurementTypeElectricalUsage(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName) {}
-        public static readonly MeasurementTypeElectricalUsage Instance = new MeasurementTypeElectricalUsage(3, @"ElectricalUsage", @"Electrical Usage", null, null);
+        private MeasurementTypeElectricalUsage(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName, string unitsDisplay, string unitsDisplayPlural) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName, unitsDisplay, unitsDisplayPlural) {}
+        public static readonly MeasurementTypeElectricalUsage Instance = new MeasurementTypeElectricalUsage(3, @"ElectricalUsage", @"Electrical Usage", null, null, @"gallon", @"gallons");
     }
 
     public partial class MeasurementTypeWellPressure : MeasurementType
     {
-        private MeasurementTypeWellPressure(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName) {}
-        public static readonly MeasurementTypeWellPressure Instance = new MeasurementTypeWellPressure(4, @"WellPressure", @"Well Pressure", @"depth", @"water-bgl");
+        private MeasurementTypeWellPressure(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName, string unitsDisplay, string unitsDisplayPlural) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName, unitsDisplay, unitsDisplayPlural) {}
+        public static readonly MeasurementTypeWellPressure Instance = new MeasurementTypeWellPressure(4, @"WellPressure", @"Well Pressure", @"depth", @"water-bgl", @"foot", @"feet");
     }
 
     public partial class MeasurementTypeBatteryVoltage : MeasurementType
     {
-        private MeasurementTypeBatteryVoltage(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName) {}
-        public static readonly MeasurementTypeBatteryVoltage Instance = new MeasurementTypeBatteryVoltage(5, @"BatteryVoltage", @"Battery Voltage", @"battery-voltage", @"millivolts");
+        private MeasurementTypeBatteryVoltage(int measurementTypeID, string measurementTypeName, string measurementTypeDisplayName, string influxMeasurementName, string influxFieldName, string unitsDisplay, string unitsDisplayPlural) : base(measurementTypeID, measurementTypeName, measurementTypeDisplayName, influxMeasurementName, influxFieldName, unitsDisplay, unitsDisplayPlural) {}
+        public static readonly MeasurementTypeBatteryVoltage Instance = new MeasurementTypeBatteryVoltage(5, @"BatteryVoltage", @"Battery Voltage", @"battery-voltage", @"millivolts", @"millivolt", @"millivolts");
     }
 }

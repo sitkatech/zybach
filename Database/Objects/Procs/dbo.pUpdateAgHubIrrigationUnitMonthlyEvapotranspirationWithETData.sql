@@ -13,8 +13,8 @@ begin
 	(
 		SELECT ahiu.AgHubIrrigationUnitID, 
 			   wym.WaterYearMonthID,
-			   ogbretd.EvapotranspirationRateInches, 
-			   ogbretd.EvapotranspirationRateAcreFeet
+			   ogbretd.EvapotranspirationInches,
+			   ogbretd.EvapotranspirationInches * ahiu.IrrigationUnitAreaInAcres as EtAcreInches
 		from dbo.OpenETGoogleBucketResponseEvapotranspirationDatum ogbretd
 		join AgHubIrrigationUnit ahiu on ahiu.WellTPID = ogbretd.WellTPID
 		join WaterYearMonth wym on wym.[Year] = ogbretd.[WaterYear]	
@@ -22,9 +22,9 @@ begin
 	) AS Source
 	ON Source.AgHubIrrigationUnitID = Target.AgHubIrrigationUnitID and Source.WaterYearMonthID = Target.WaterYearMonthID
 	WHEN MATCHED THEN
-		update set Target.EvapotranspirationRateInches = Source.EvapotranspirationRateInches,
-				   Target.EvapotranspirationRateAcreFeet = Source.EvapotranspirationRateAcreFeet
+		update set Target.EvapotranspirationInches = Source.EvapotranspirationInches,
+				   Target.EvapotranspirationAcreInches = Source.EtAcreInches
     WHEN NOT MATCHED by Target THEN
-		insert (AgHubIrrigationUnitID, WaterYearMonthID, EvapotranspirationRateInches, EvapotranspirationRateAcreFeet)
-		values (Source.AgHubIrrigationUnitID, Source.WaterYearMonthID, Source.EvapotranspirationRateInches, Source.EvapotranspirationRateAcreFeet);
+		insert (AgHubIrrigationUnitID, WaterYearMonthID, EvapotranspirationInches, EvapotranspirationAcreInches)
+		values (Source.AgHubIrrigationUnitID, Source.WaterYearMonthID, Source.EvapotranspirationInches, Source.EtAcreInches);
 end

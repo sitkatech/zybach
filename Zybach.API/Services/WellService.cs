@@ -21,9 +21,9 @@ namespace Zybach.API.Services
             _logger = logger;
         }
 
-        public List<WellWithSensorSummaryDto> GetAghubAndGeoOptixWells()
+        public List<WellWithSensorSimpleDto> GetAghubAndGeoOptixWells()
         {
-            var wells = Wells.ListAsWellWithSensorSummaryDto(_dbContext);
+            var wells = Wells.ListAsWellWithSensorSimpleDto(_dbContext);
             var lastReadingDateTimes = WellSensorMeasurements.GetLastReadingDateTimes(_dbContext);
             var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(_dbContext);
             wells.ForEach(x =>
@@ -42,7 +42,7 @@ namespace Zybach.API.Services
         public List<WellWaterLevelMapSummaryDto> GetWellPressureWellsForWaterLevelSummary()
         {
             var wells = Wells.ListAsWaterLevelMapSummaryDtos(_dbContext)
-                .Where(x => x.Sensors.Any(y => y.SensorTypeID == (int)Sensors.SensorTypeEnum.WellPressure))
+                .Where(x => x.Sensors.Any(y => y.SensorTypeID == (int)SensorTypeEnum.WellPressure))
                 .ToList();
             var lastReadingDateTimes = WellSensorMeasurements.GetLastReadingDateTimes(_dbContext);
             wells.ForEach(x =>
@@ -57,54 +57,40 @@ namespace Zybach.API.Services
 
         public List<RobustReviewDto> GetRobustReviewDtos()
         {
-            var wellWithSensorSummaryDtos = GetAghubAndGeoOptixWells();
+            var wellWithSensorSimpleDtos = GetAghubAndGeoOptixWells();
             var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(_dbContext);
-            var robustReviewDtos = wellWithSensorSummaryDtos.Select(wellWithSensorSummaryDto => CreateRobustReviewDto(wellWithSensorSummaryDto, firstReadingDateTimes)).ToList();
+            var robustReviewDtos = wellWithSensorSimpleDtos.Select(x => CreateRobustReviewDto(x, firstReadingDateTimes)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();
         }
 
-        private RobustReviewDto CreateRobustReviewDto(WellWithSensorSummaryDto wellWithSensorSummaryDto, Dictionary<string, DateTime> firstReadingDateTimes)
+        private RobustReviewDto CreateRobustReviewDto(WellWithSensorSimpleDto wellWithSensorSimpleDto, Dictionary<string, DateTime> firstReadingDateTimes)
         {
-            var wellRegistrationID = wellWithSensorSummaryDto.WellRegistrationID;
+            var wellRegistrationID = wellWithSensorSimpleDto.WellRegistrationID;
             if (!firstReadingDateTimes.ContainsKey(wellRegistrationID))
             {
                 return null;
             }
 
-            string dataSource;
-            List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
-            if (wellWithSensorSummaryDto.HasElectricalData)
-            {
-                wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellByMeasurementType(
-                    _dbContext,
-                    wellRegistrationID, MeasurementTypeEnum.ElectricalUsage);
-                dataSource = MeasurementTypes.ElectricalUsage;
-            }
-            else
-            {
-                const string continuityMeter = MeasurementTypes.ContinuityMeter;
-                wellSensorMeasurementDtos =
-                    WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorsByMeasurementType(_dbContext,
-                        wellRegistrationID,
-                        new List<MeasurementTypeEnum>
-                            {MeasurementTypeEnum.ContinuityMeter, MeasurementTypeEnum.FlowMeter},
-                        wellWithSensorSummaryDto.Sensors.Where(y => y.SensorType == continuityMeter));
-                dataSource = continuityMeter;
-            }
+            var sensorTypeDisplayName = wellWithSensorSimpleDto.WellConnectedMeter
+                ? SensorType.ElectricalUsage.SensorTypeDisplayName
+                : SensorType.ContinuityMeter.SensorTypeDisplayName;
+            var sensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorSimples(_dbContext,
+                wellRegistrationID,
+                wellWithSensorSimpleDto.Sensors.Where(y => y.SensorTypeName == sensorTypeDisplayName));
 
-            var monthlyPumpedVolume = wellSensorMeasurementDtos.GroupBy(x => x.MeasurementDate.ToString("yyyyMM"))
+            var monthlyPumpedVolume = sensorMeasurementDtos.GroupBy(x => x.MeasurementDate.ToString("yyyyMM"))
                 .Select(x =>
-                    new MonthlyPumpedVolume(x.First().ReadingYear, x.First().ReadingMonth,
-                        x.Sum(y => y.MeasurementValue))).ToList();
+                    new MonthlyPumpedVolume(x.First().MeasurementDate.Year, x.First().MeasurementDate.Month,
+                        x.Sum(y => y.MeasurementValue ?? 0))).ToList();
 
-            var point = (Point)((Feature)wellWithSensorSummaryDto.Location).Geometry;
+            var point = (Point)((Feature)wellWithSensorSimpleDto.Location).Geometry;
             var robustReviewDto = new RobustReviewDto
             {
                 WellRegistrationID = wellRegistrationID,
-                WellTPID = wellWithSensorSummaryDto.WellTPID,
+                WellTPID = wellWithSensorSimpleDto.WellTPID,
                 Latitude = point.Coordinates.Latitude,
                 Longitude = point.Coordinates.Longitude,
-                DataSource = dataSource,
+                DataSource = sensorTypeDisplayName,
                 MonthlyPumpedVolumeGallons = monthlyPumpedVolume
             };
 

@@ -12,6 +12,7 @@ namespace Zybach.EFModels.Entities
         public SupportTicket()
         {
             SupportTicketComments = new HashSet<SupportTicketComment>();
+            SupportTicketNotifications = new HashSet<SupportTicketNotification>();
         }
 
         [Key]
@@ -48,5 +49,7 @@ namespace Zybach.EFModels.Entities
         public virtual Well Well { get; set; }
         [InverseProperty("SupportTicket")]
         public virtual ICollection<SupportTicketComment> SupportTicketComments { get; set; }
+        [InverseProperty("SupportTicket")]
+        public virtual ICollection<SupportTicketNotification> SupportTicketNotifications { get; set; }
     }
 }

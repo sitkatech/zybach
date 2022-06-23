@@ -9,21 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { MeasurementTypeDto } from '././measurement-type-dto';
 
-export class WellSensorMeasurementDto { 
-    WellSensorMeasurementID?: number;
-    WellRegistrationID?: string;
-    MeasurementType?: MeasurementTypeDto;
-    ReadingYear?: number;
-    ReadingMonth?: number;
-    ReadingDay?: number;
-    SensorName?: string;
-    MeasurementValue?: number;
-    IsAnomalous?: boolean;
-    MeasurementDateInPacificTime?: string;
+export class SensorMeasurementDto { 
+    DataSourceName?: string;
     MeasurementDate?: string;
     MeasurementValueString?: string;
+    MeasurementValue?: number;
+    IsAnomalous?: boolean;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

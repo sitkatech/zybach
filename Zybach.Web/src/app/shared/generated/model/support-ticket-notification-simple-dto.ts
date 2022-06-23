@@ -10,13 +10,13 @@
  * Do not edit the class manually.
  */
 
-export class SensorSummaryDto { 
-    WellRegistrationID?: string;
-    SensorID?: number;
-    SensorName?: string;
-    SensorTypeID?: number;
-    SensorType?: string;
-    IsActive?: boolean;
+export class SupportTicketNotificationSimpleDto { 
+    SupportTicketNotificationID?: number;
+    SupportTicketID?: number;
+    EmailAddresses?: string;
+    EmailSubject?: string;
+    EmailBody?: string;
+    SentDate?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

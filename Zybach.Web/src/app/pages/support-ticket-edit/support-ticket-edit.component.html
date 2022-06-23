@@ -30,7 +30,7 @@
 
     <form (ngSubmit)="onSubmit(editSupportTicketForm)" #editSupportTicketForm="ngForm" class="container">
 
-        <zybach-support-ticket-upsert #supportTicketUpsertForm [(model)]="model">
+        <zybach-support-ticket-upsert #supportTicketUpsertForm [(model)]="model" [creatorUser]="creatorUser">
         </zybach-support-ticket-upsert >
 
         <div class="col-12 text-right mt-3 mr-3">

@@ -11,8 +11,8 @@
  */
 import { AnnualPumpedVolume } from '././annual-pumped-volume';
 import { SupportTicketSimpleDto } from '././support-ticket-simple-dto';
-import { SensorSummaryDto } from '././sensor-summary-dto';
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
+import { SensorSimpleDto } from '././sensor-simple-dto';
 
 export class WellDetailDto { 
     AgHubIrrigationUnitID?: number;
@@ -44,7 +44,7 @@ export class WellDetailDto {
     ScreenDepth?: number;
     IrrigationUnitGeoJSON?: string;
     OpenSupportTickets?: Array<SupportTicketSimpleDto>;
-    Sensors?: Array<SensorSummaryDto>;
+    Sensors?: Array<SensorSimpleDto>;
     WellConnectedMeter?: boolean;
     WellID?: number;
     WellRegistrationID?: string;

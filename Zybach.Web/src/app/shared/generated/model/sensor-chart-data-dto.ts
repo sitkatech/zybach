@@ -9,12 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { SensorSummaryDto } from '././sensor-summary-dto';
-import { DailyPumpedVolume } from '././daily-pumped-volume';
+import { SensorMeasurementDto } from '././sensor-measurement-dto';
 
-export class WellChartDataDto { 
-    TimeSeries?: Array<DailyPumpedVolume>;
-    Sensors?: Array<SensorSummaryDto>;
+export class SensorChartDataDto { 
+    SensorMeasurements?: Array<SensorMeasurementDto>;
+    FirstReadingDate?: string;
+    LastReadingDate?: string;
+    ChartSpec?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -16,7 +16,6 @@ services:
       - PlatformLongName=${PlatformLongName}
       - PlatformShortName=${PlatformShortName}
       - SupportEmail=${SupportEmail}
-      - DoNotReplyEmail=${DoNotReplyEmail}
       - INFLUXDB_URL=${INFLUXDB_URL}
       - GEOOPTIX_HOSTNAME=${GEOOPTIX_HOSTNAME}
       - GEOOPTIX_SEARCH_HOSTNAME=${GEOOPTIX_SEARCH_HOSTNAME}

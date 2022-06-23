@@ -19,7 +19,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellNickname { get; set; }
         public string TownshipRangeSection { get; set; }
 
-        public List<SensorSummaryDto> Sensors { get; set; }
+        public List<SensorSimpleDto> Sensors { get; set; }
     }
 
     public class WellMinimalDto
@@ -27,7 +27,7 @@ namespace Zybach.Models.DataTransferObjects
         public int WellID { get; set; }
         public string WellRegistrationID { get; set; }
         public object Location { get; set; }
-        public List<SensorSummaryDto> Sensors { get; set; }
+        public List<SensorSimpleDto> Sensors { get; set; }
     }
 
     public class WellSummaryDto
@@ -54,19 +54,9 @@ namespace Zybach.Models.DataTransferObjects
         public bool? HasWaterLevelInspections { get; set; }
     }
 
-    public class SensorSummaryDto
+    public class WellWithSensorSimpleDto : WellSummaryDto
     {
-        public string WellRegistrationID { get; set; }
-        public int SensorID { get; set; }
-        public string SensorName { get; set; }
-        public int? SensorTypeID { get; set; }
-        public string SensorType { get; set; }
-        public bool IsActive{ get; set; }
-    }
-
-    public class WellWithSensorSummaryDto : WellSummaryDto
-    {
-        public List<SensorSummaryDto> Sensors { get; set; }
+        public List<SensorSimpleDto> Sensors { get; set; }
         public bool WellConnectedMeter { get; set; }
     }
 
@@ -75,7 +65,7 @@ namespace Zybach.Models.DataTransferObjects
         public List<SensorMessageAgeDto> Sensors { get; set; }
     }
 
-    public class WellDetailDto : WellWithSensorSummaryDto
+    public class WellDetailDto : WellWithSensorSimpleDto
     {
         public int? AgHubIrrigationUnitID { get; set; }
         public List<AnnualPumpedVolume> AnnualPumpedVolume { get; set; }
@@ -115,7 +105,8 @@ namespace Zybach.Models.DataTransferObjects
         public string SensorName { get; set; }
         public int? MessageAge { get; set; }
         public double? LastVoltageReading { get; set; }
-        public string SensorType { get; set; }
+        public int SensorTypeID { get; set; }
+        public string SensorTypeName { get; set; }
         public bool IsActive { get; set; }
     }
 
@@ -123,25 +114,6 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int Year { get; set; }
         public double Acres { get; set; }
-    }
-
-    public class DailyPumpedVolume
-    {
-        public DailyPumpedVolume()
-        {
-        }
-
-        public DailyPumpedVolume(DateTime time, double gallons, string dataSource)
-        {
-            Time = time;
-            Gallons = gallons;
-            DataSource = dataSource;
-        }
-
-        public DateTime Time { get; set; }
-        public double? Gallons { get; set; }
-        public string DataSource { get; set; }
-        public string GallonsString => Gallons != null ? $"{Gallons:N1} gallons" : "N/A";
     }
 
     public class MonthlyPumpedVolume

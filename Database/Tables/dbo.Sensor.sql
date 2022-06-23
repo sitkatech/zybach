@@ -5,7 +5,7 @@ GO
 CREATE TABLE [dbo].[Sensor](
 	[SensorID] [int] IDENTITY(1,1) NOT NULL,
 	[SensorName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[SensorTypeID] [int] NULL,
+	[SensorTypeID] [int] NOT NULL,
 	[WellID] [int] NULL,
 	[InGeoOptix] [bit] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,

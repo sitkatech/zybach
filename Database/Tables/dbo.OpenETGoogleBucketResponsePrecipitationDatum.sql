@@ -7,7 +7,6 @@ CREATE TABLE [dbo].[OpenETGoogleBucketResponsePrecipitationDatum](
 	[WellTPID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[WaterMonth] [int] NOT NULL,
 	[WaterYear] [int] NOT NULL,
-	[PrecipitationAcreFeet] [decimal](20, 4) NULL,
 	[PrecipitationInches] [decimal](20, 4) NULL,
  CONSTRAINT [PK_OpenETGoogleBucketResponsePrecipitationDatum_OpenETGoogleBucketResponsePrecipitationDatumID] PRIMARY KEY CLUSTERED 
 (

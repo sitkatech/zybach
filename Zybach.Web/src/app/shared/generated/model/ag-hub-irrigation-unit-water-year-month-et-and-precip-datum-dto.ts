@@ -13,9 +13,9 @@ import { WaterYearMonthDto } from '././water-year-month-dto';
 
 export class AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto { 
     WaterYearMonth?: WaterYearMonthDto;
-    PrecipitationAcreFeet?: number;
+    PrecipitationAcreInches?: number;
     PrecipitationInches?: number;
-    EvapotranspirationAcreFeet?: number;
+    EvapotranspirationAcreInches?: number;
     EvapotranspirationInches?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);

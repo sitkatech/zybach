@@ -32,7 +32,7 @@ namespace Zybach.API.Controllers
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
             var wellSummariesWithSensors = _wellService.GetAghubAndGeoOptixWells()
-                .Where(x => x.Sensors.Any(y => y.SensorType != MeasurementTypes.ElectricalUsage)).ToList();
+                .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)).ToList();
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
             var batteryVoltagesBySensor =
                 _dbContext.WellSensorMeasurements.AsNoTracking().Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).ToList().ToLookup(x => x.SensorName);
@@ -44,7 +44,7 @@ namespace Zybach.API.Controllers
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
-                Sensors = well.Sensors.Where(x=> x.SensorType != MeasurementTypes.ElectricalUsage).Select(sensor =>
+                Sensors = well.Sensors.Where(x=> x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).Select(sensor =>
                 {
                     try
                     {
@@ -60,7 +60,8 @@ namespace Zybach.API.Controllers
                             SensorID = sensor.SensorID,
                             MessageAge = messageAge,
                             LastVoltageReading = lastVoltageReading,
-                            SensorType = sensor.SensorType,
+                            SensorTypeID = sensor.SensorTypeID,
+                            SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive
                         };
                     }
@@ -76,7 +77,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<WellWithSensorMessageAgeDto> GetSensorMessageAgesForWell([FromRoute] int wellID)
         {
-            var well = Wells.GetByIDAsWellWithSensorSummaryDto(_dbContext, wellID);
+            var well = Wells.GetByIDAsWellWithSensorSimpleDto(_dbContext, wellID);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
             return new WellWithSensorMessageAgeDto
@@ -86,7 +87,7 @@ namespace Zybach.API.Controllers
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
                 Location = well.Location,
-                Sensors = well.Sensors.Where(x => x.SensorType != MeasurementTypes.ElectricalUsage).Select(sensor =>
+                Sensors = well.Sensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).Select(sensor =>
                 {
                     try
                     {
@@ -98,7 +99,8 @@ namespace Zybach.API.Controllers
                             SensorName = sensor.SensorName,
                             SensorID = sensor.SensorID,
                             MessageAge = messageAge,
-                            SensorType = sensor.SensorType,
+                            SensorTypeID = sensor.SensorTypeID,
+                            SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive
                         };
                     }
@@ -113,19 +115,19 @@ namespace Zybach.API.Controllers
 
         [HttpPut("/sensorStatus/enableDisable")]
         [ZybachViewFeature]
-        public IActionResult UpdateSensorIsActive([FromBody] SensorSummaryDto sensorSummaryDto)
+        public IActionResult UpdateSensorIsActive([FromBody] SensorSimpleDto sensorSimpleDto)
         {
-            var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorName.Equals(sensorSummaryDto.SensorName));
+            var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorName.Equals(sensorSimpleDto.SensorName));
             if (sensor == null)
             {
-                throw new Exception($"Sensor with Sensor Name {sensorSummaryDto.SensorName} not found!");
+                throw new Exception($"Sensor with Sensor Name {sensorSimpleDto.SensorName} not found!");
             }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            sensor.IsActive = sensorSummaryDto.IsActive;
+            sensor.IsActive = sensorSimpleDto.IsActive;
             _dbContext.SaveChanges();
             return Ok();
         }

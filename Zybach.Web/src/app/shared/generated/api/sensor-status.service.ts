@@ -18,7 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { SensorSummaryDto } from '../model/sensor-summary-dto';
+import { SensorSimpleDto } from '../model/sensor-simple-dto';
 import { WellWithSensorMessageAgeDto } from '../model/well-with-sensor-message-age-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -65,14 +65,14 @@ export class SensorStatusService {
     /**
      * 
      * 
-     * @param sensorSummaryDto 
+     * @param sensorSimpleDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sensorStatusEnableDisablePut(sensorSummaryDto?: SensorSummaryDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public sensorStatusEnableDisablePut(sensorSummaryDto?: SensorSummaryDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public sensorStatusEnableDisablePut(sensorSummaryDto?: SensorSummaryDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public sensorStatusEnableDisablePut(sensorSummaryDto?: SensorSummaryDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public sensorStatusEnableDisablePut(sensorSimpleDto?: SensorSimpleDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public sensorStatusEnableDisablePut(sensorSimpleDto?: SensorSimpleDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public sensorStatusEnableDisablePut(sensorSimpleDto?: SensorSimpleDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public sensorStatusEnableDisablePut(sensorSimpleDto?: SensorSimpleDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let headers = this.defaultHeaders;
@@ -98,7 +98,7 @@ export class SensorStatusService {
         }
 
         return this.httpClient.put<any>(`${this.basePath}/sensorStatus/enableDisable`,
-            sensorSummaryDto,
+            sensorSimpleDto,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

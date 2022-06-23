@@ -19,6 +19,7 @@ namespace Zybach.EFModels.Entities
         public int ReadingYear { get; set; }
         public int ReadingMonth { get; set; }
         public int ReadingDay { get; set; }
+        [Required]
         [StringLength(100)]
         [Unicode(false)]
         public string SensorName { get; set; }

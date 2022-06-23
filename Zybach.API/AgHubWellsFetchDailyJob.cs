@@ -89,6 +89,7 @@ namespace Zybach.API
                         var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
                             pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
                             {
+                                SensorName = $"E-{wellRegistrationID.ToUpper()}",
                                 MeasurementTypeID = (int) MeasurementTypeEnum.ElectricalUsage,
                                 ReadingYear = pumpedVolumeTimeSeries.MeasurementDate.Year, 
                                 ReadingMonth = pumpedVolumeTimeSeries.MeasurementDate.Month, 

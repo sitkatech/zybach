@@ -22,7 +22,7 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         [Unicode(false)]
         public string SensorName { get; set; }
-        public int? SensorTypeID { get; set; }
+        public int SensorTypeID { get; set; }
         public int? WellID { get; set; }
         public bool InGeoOptix { get; set; }
         [Column(TypeName = "datetime")]

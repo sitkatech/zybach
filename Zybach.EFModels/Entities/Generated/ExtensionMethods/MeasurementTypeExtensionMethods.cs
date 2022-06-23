@@ -17,7 +17,9 @@ namespace Zybach.EFModels.Entities
                 MeasurementTypeName = measurementType.MeasurementTypeName,
                 MeasurementTypeDisplayName = measurementType.MeasurementTypeDisplayName,
                 InfluxMeasurementName = measurementType.InfluxMeasurementName,
-                InfluxFieldName = measurementType.InfluxFieldName
+                InfluxFieldName = measurementType.InfluxFieldName,
+                UnitsDisplay = measurementType.UnitsDisplay,
+                UnitsDisplayPlural = measurementType.UnitsDisplayPlural
             };
             DoCustomMappings(measurementType, measurementTypeDto);
             return measurementTypeDto;
@@ -33,7 +35,9 @@ namespace Zybach.EFModels.Entities
                 MeasurementTypeName = measurementType.MeasurementTypeName,
                 MeasurementTypeDisplayName = measurementType.MeasurementTypeDisplayName,
                 InfluxMeasurementName = measurementType.InfluxMeasurementName,
-                InfluxFieldName = measurementType.InfluxFieldName
+                InfluxFieldName = measurementType.InfluxFieldName,
+                UnitsDisplay = measurementType.UnitsDisplay,
+                UnitsDisplayPlural = measurementType.UnitsDisplayPlural
             };
             DoCustomSimpleDtoMappings(measurementType, measurementTypeSimpleDto);
             return measurementTypeSimpleDto;

@@ -15,7 +15,11 @@ namespace Zybach.EFModels.Entities
             {
                 SensorTypeID = sensorType.SensorTypeID,
                 SensorTypeName = sensorType.SensorTypeName,
-                SensorTypeDisplayName = sensorType.SensorTypeDisplayName
+                SensorTypeDisplayName = sensorType.SensorTypeDisplayName,
+                ChartColor = sensorType.ChartColor,
+                AnomalousChartColor = sensorType.AnomalousChartColor,
+                YAxisTitle = sensorType.YAxisTitle,
+                ReverseYAxisScale = sensorType.ReverseYAxisScale
             };
             DoCustomMappings(sensorType, sensorTypeDto);
             return sensorTypeDto;
@@ -29,7 +33,11 @@ namespace Zybach.EFModels.Entities
             {
                 SensorTypeID = sensorType.SensorTypeID,
                 SensorTypeName = sensorType.SensorTypeName,
-                SensorTypeDisplayName = sensorType.SensorTypeDisplayName
+                SensorTypeDisplayName = sensorType.SensorTypeDisplayName,
+                ChartColor = sensorType.ChartColor,
+                AnomalousChartColor = sensorType.AnomalousChartColor,
+                YAxisTitle = sensorType.YAxisTitle,
+                ReverseYAxisScale = sensorType.ReverseYAxisScale
             };
             DoCustomSimpleDtoMappings(sensorType, sensorTypeSimpleDto);
             return sensorTypeSimpleDto;

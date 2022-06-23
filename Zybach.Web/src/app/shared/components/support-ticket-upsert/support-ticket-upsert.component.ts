@@ -12,6 +12,7 @@ import { SupportTicketStatusDto } from '../../generated/model/support-ticket-sta
 import { SupportTicketUpsertDto } from '../../generated/model/support-ticket-upsert-dto';
 import { UserDto } from '../../generated/model/user-dto';
 import { RoleEnum } from '../../generated/enum/role-enum';
+import { UserSimpleDto } from '../../generated/model/user-simple-dto';
 
 @Component({
   selector: 'zybach-support-ticket-upsert',
@@ -20,6 +21,7 @@ import { RoleEnum } from '../../generated/enum/role-enum';
 })
 export class SupportTicketUpsertComponent implements OnInit {
   @Input() model: SupportTicketUpsertDto;
+  @Input() creatorUser?: UserSimpleDto
   @ViewChild('supportTicketForm',  {static: true}) public supportTicketForm: NgForm;
 
   public supportTicketStatuses: Array<SupportTicketStatusDto>;
@@ -44,12 +46,16 @@ export class SupportTicketUpsertComponent implements OnInit {
       supportTicketStatuses: this.supportTicketService.supportTicketsStatusesGet(),
       supportTicketPriorities: this.supportTicketService.supportTicketsPrioritiesGet(),
       users: this.userService.usersNotUnassignedOrDisabledGet(),
-      currentUser: this.authenticationService.getCurrentUser()
+      currentUser: this.authenticationService.getCurrentUser(),
     }).subscribe(({ supportTicketStatuses, supportTicketPriorities, users, currentUser }) => {
       this.supportTicketStatuses = supportTicketStatuses;
       this.supportTicketPriorities = supportTicketPriorities;
       this.users = users;
       this.currentUser = currentUser;
+      if (!this.creatorUser) {
+        this.creatorUser = currentUser;
+      }
+
       this.cdr.detectChanges();
     });
   }
