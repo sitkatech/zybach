@@ -534,6 +534,7 @@ namespace Zybach.API.Services
           ""axis"": {{
             ""title"": ""Data Source""
           }},
+          ""legend"": {{ ""title"": ""Data Source"", ""orient"": ""bottom"" }},
           ""scale"": {{
             ""domain"": [{string.Join(", ", domains)}],
             ""range"": [{string.Join(", ", chartColors)}]
