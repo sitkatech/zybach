@@ -81,6 +81,18 @@ begin
 	from dbo.AgHubWellStaging aws
 	where aws.WellTPID is not null and aws.IrrigationUnitGeometry is not null
 
+	delete ahiuwymed
+	from dbo.AgHubIrrigationUnitWaterYearMonthETDatum ahiuwymed
+	join AgHubIrrigationUnit ahiu on ahiu.AgHubIrrigationUnitID = ahiuwymed.AgHubIrrigationUnitID
+	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
+	where ahiu.IrrigationUnitGeometry is null
+
+	delete ahiuwympd
+	from dbo.AgHubIrrigationUnitWaterYearMonthPrecipitationDatum ahiuwympd
+	join AgHubIrrigationUnit ahiu on ahiu.AgHubIrrigationUnitID = ahiuwympd.AgHubIrrigationUnitID
+	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
+	where ahiu.IrrigationUnitGeometry is null
+
 	delete ahiu
 	from dbo.AgHubIrrigationUnit ahiu
 	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
