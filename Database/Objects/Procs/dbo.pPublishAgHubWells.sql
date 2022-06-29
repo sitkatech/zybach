@@ -161,7 +161,7 @@ begin
     from dbo.AgHubWell aw
     join dbo.Well w on aw.WellID = w.WellID
     left join dbo.Sensor s on concat('E-', upper(w.WellRegistrationID)) = s.SensorName
-    where aw.WellConnectedMeter = 1 and s.SensorID is null
+    where aw.HasElectricalData = 1 and s.SensorID is null
 
     -- we need to mark electrical usage sensors as inactive if no longer a wellconnectedmeter
     update s
@@ -172,7 +172,7 @@ begin
         select concat('E-', upper(w.WellRegistrationID)) as SensorName
         from dbo.AgHubWell aw
         join dbo.Well w on aw.WellID = w.WellID
-        where aw.WellConnectedMeter = 1
+        where aw.HasElectricalData = 1
     ) a on s.SensorName = a.SensorName
     where s.SensorTypeID = 4 and a.SensorName is null
 
@@ -185,7 +185,7 @@ begin
         select concat('E-', upper(w.WellRegistrationID)) as SensorName
         from dbo.AgHubWell aw
         join dbo.Well w on aw.WellID = w.WellID
-        where aw.WellConnectedMeter = 1
+        where aw.HasElectricalData = 1
     ) a on s.SensorName = a.SensorName
     where s.SensorTypeID = 4 and s.IsActive = 0
 
