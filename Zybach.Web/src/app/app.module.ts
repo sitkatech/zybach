@@ -106,6 +106,7 @@ import { SupportTicketEditComponent } from './pages/support-ticket-edit/support-
 import { SupportTicketNewComponent } from './pages/support-ticket-new/support-ticket-new.component';
 import { SupportTicketUpsertComponent } from './shared/components/support-ticket-upsert/support-ticket-upsert.component';
 import { SupportTicketCommentNewComponent } from './pages/support-ticket-comment-new/support-ticket-comment-new.component';
+import { WellPumpingSummaryComponent } from './pages/well-pumping-summary/well-pumping-summary.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -168,7 +169,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WellOverviewTabComponent,
     WellWaterDataTabComponent,
     WellPermitsInspectionsTabComponent,
-    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WellInspectionReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent, WaterLevelExplorerComponent, WellWaterLevelMapComponent, IrrigationUnitListComponent, IrrigationUnitDetailComponent, IrrigationUnitMapComponent, OpenetSyncWaterYearMonthStatusListComponent, SupportTicketListComponent, SupportTicketDetailComponent, SupportTicketEditComponent, SupportTicketNewComponent, SupportTicketUpsertComponent, SupportTicketCommentNewComponent
+    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WellInspectionReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent, WaterLevelExplorerComponent, WellWaterLevelMapComponent, IrrigationUnitListComponent, IrrigationUnitDetailComponent, IrrigationUnitMapComponent, OpenetSyncWaterYearMonthStatusListComponent, SupportTicketListComponent, SupportTicketDetailComponent, SupportTicketEditComponent, SupportTicketNewComponent, SupportTicketUpsertComponent, SupportTicketCommentNewComponent, WellPumpingSummaryComponent
   ],
   imports: [
     AppRoutingModule,

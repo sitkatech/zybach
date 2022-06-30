@@ -29,6 +29,7 @@ import { WellInspectionSummaryDto } from '../model/well-inspection-summary-dto';
 import { WellNewDto } from '../model/well-new-dto';
 import { WellParticipationDto } from '../model/well-participation-dto';
 import { WellParticipationInfoDto } from '../model/well-participation-info-dto';
+import { WellPumpingSummaryDto } from '../model/well-pumping-summary-dto';
 import { WellRegistrationIDDto } from '../model/well-registration-id-dto';
 import { WellSimpleDto } from '../model/well-simple-dto';
 import { WellUseDto } from '../model/well-use-dto';
@@ -1069,6 +1070,54 @@ export class WellService {
         ];
 
         return this.httpClient.get<Array<WaterQualityInspectionSummaryDto>>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterQualityInspections`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param startDate 
+     * @param endDate 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe?: 'body', reportProgress?: boolean): Observable<Array<WellPumpingSummaryDto>>;
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellPumpingSummaryDto>>>;
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellPumpingSummaryDto>>>;
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (startDate === null || startDate === undefined) {
+            throw new Error('Required parameter startDate was null or undefined when calling wellsWellPumpingSummaryStartDateEndDateGet.');
+        }
+
+        if (endDate === null || endDate === undefined) {
+            throw new Error('Required parameter endDate was null or undefined when calling wellsWellPumpingSummaryStartDateEndDateGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<WellPumpingSummaryDto>>(`${this.basePath}/wells/wellPumpingSummary/${encodeURIComponent(String(startDate.toISOString()))}/${encodeURIComponent(String(endDate.toISOString()))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
