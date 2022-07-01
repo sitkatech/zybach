@@ -15,7 +15,8 @@ export class WellPumpingSummaryDto {
     WellID?: number;
     WellRegistrationID?: string;
     OwnerName?: string;
-    MostRecentSupportTicket?: SupportTicketSimpleDto;
+    MostRecentSupportTicketID?: number;
+    MostRecentSupportTicketTitle?: string;
     HasContinuityMeter?: boolean;
     HasElectricalUsage?: boolean;
     FlowMeterPumpedVolume?: number;

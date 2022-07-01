@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Rio.EFModels.Entities;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -489,6 +491,14 @@ namespace Zybach.API.Controllers
             }
             var sensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensors(_dbContext, wellRegistrationID, sensorTypeSensors);
             return sensorMeasurementDtos;
+        }
+
+        [HttpGet("wells/wellPumpingSummary/{startDate}/{endDate}")]
+        [UserViewFeature]
+        public ActionResult<List<WellPumpingSummaryDto>> GetWellPumpingSummariesForDateRange([FromRoute] DateTime startDate, [FromRoute] DateTime endDate)
+        {
+            var wellPumpingSummaryDtos = WellPumpingSummary.GetForDateRange(_dbContext, startDate, endDate);
+            return Ok(wellPumpingSummaryDtos);
         }
     }
 }

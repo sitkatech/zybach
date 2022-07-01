@@ -41,7 +41,6 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
       const startDate = new Date(new Date().getFullYear(), 0, 1);
       const endDate = new Date();
       this.wellService.wellsWellPumpingSummaryStartDateEndDateGet(startDate, endDate).subscribe(wellPumpingSummaries => {
-        console.log(wellPumpingSummaries);
         this.wellPumpingSummaries = wellPumpingSummaries;
       })
       this.cdr.detectChanges;
@@ -82,7 +81,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
       {
         headerName: "Most Recent Support Ticket",
         valueGetter: params => {
-          return { LinkValue: params.data.MostRecentSupportTicket.SupportTicketID, LinkDisplay: params.data.MostRecentSupportTicket.SupportTicketName }
+          return { LinkValue: params.data.MostRecentSupportTicketID, LinkDisplay: params.data.MostRecentSupportTicketTitle }
         },
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/support-tickets/"},
@@ -90,17 +89,20 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         filterValueGetter: params => params.data.MostRecentSupportTicket.SupportTicketName
       },
       { 
-        headerName: "Has Flow Meter?", field: "HasFlowMeter",
+        headerName: "Has Flow Meter?",
+        valueGetter: params => params.data.HasFlowMeter ? 'Yes' : 'No',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: { field: "HasFlowMeter" }
       },
       { 
-        headerName: "Has Continuity Meter?", field: "HasContinuityMeter",
+        headerName: "Has Continuity Meter?",
+        valueGetter: params => params.data.HasContinuityMeter ? 'Yes' : 'No',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: { field: "HasContinuityMeter" }
       },
       { 
-        headerName: "Has Electrical Usage?", field: "HasElectricalUsage",
+        headerName: "Has Electrical Usage?",
+        valueGetter: params => params.data.HasElectricalUsage ? 'Yes' : 'No',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: { field: "HasElectricalUsage" }
       },

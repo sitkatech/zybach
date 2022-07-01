@@ -5632,6 +5632,64 @@
         }
       }
     },
+    "/wells/wellPumpingSummary/{startDate}/{endDate}": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellPumpingSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellPumpingSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellPumpingSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/pumpedVolume": {
       "get": {
         "tags": [
@@ -10002,6 +10060,67 @@
             "maximum": 999999.9999,
             "minimum": 0,
             "pattern": "^\\d{0,6}\\.?\\d{0,4}|\\.\\d{0,4}$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellPumpingSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MostRecentSupportTicketID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "MostRecentSupportTicketTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasFlowMeter": {
+            "type": "boolean"
+          },
+          "HasContinuityMeter": {
+            "type": "boolean"
+          },
+          "HasElectricalUsage": {
+            "type": "boolean"
+          },
+          "FlowMeterPumpedVolume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ContinuityMeterPumpedVolume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ElectricalUsagePumpedVolume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterContinuityMeterDifference": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterElectricalUsageDifference": {
             "type": "number",
             "format": "double",
             "nullable": true

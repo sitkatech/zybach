@@ -94,10 +94,11 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
-      { headerName: 'Sensor Type', field: 'SensorType',
+      { 
+        headerName: 'Sensor Type', field: 'SensorTypeName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'SensorType'
+          field: 'SensorTypeName'
         },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
         resizable: true, sortable: true
@@ -108,6 +109,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.sensorStatusGet().subscribe(wells => {
+        console.log(wells)
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
