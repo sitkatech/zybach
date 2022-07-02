@@ -1087,10 +1087,10 @@ export class WellService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe?: 'body', reportProgress?: boolean): Observable<Array<WellPumpingSummaryDto>>;
-    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellPumpingSummaryDto>>>;
-    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellPumpingSummaryDto>>>;
-    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: Date, endDate: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: string, endDate: string, observe?: 'body', reportProgress?: boolean): Observable<Array<WellPumpingSummaryDto>>;
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: string, endDate: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellPumpingSummaryDto>>>;
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: string, endDate: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellPumpingSummaryDto>>>;
+    public wellsWellPumpingSummaryStartDateEndDateGet(startDate: string, endDate: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (startDate === null || startDate === undefined) {
             throw new Error('Required parameter startDate was null or undefined when calling wellsWellPumpingSummaryStartDateEndDateGet.');
@@ -1117,7 +1117,7 @@ export class WellService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<WellPumpingSummaryDto>>(`${this.basePath}/wells/wellPumpingSummary/${encodeURIComponent(String(startDate.toISOString()))}/${encodeURIComponent(String(endDate.toISOString()))}`,
+        return this.httpClient.get<Array<WellPumpingSummaryDto>>(`${this.basePath}/wells/wellPumpingSummary/${encodeURIComponent(String(startDate))}/${encodeURIComponent(String(endDate))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

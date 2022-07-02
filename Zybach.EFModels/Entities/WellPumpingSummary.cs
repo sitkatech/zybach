@@ -29,7 +29,7 @@ namespace Rio.EFModels.Entities
         public double? FlowMeterContinuityMeterDifference { get; set; }
         public double? FlowMeterElectricalUsageDifference { get; set; }
 
-        public static IEnumerable<WellPumpingSummaryDto> GetForDateRange(ZybachDbContext dbContext, DateTime startDate, DateTime endDate)
+        public static IEnumerable<WellPumpingSummaryDto> GetForDateRange(ZybachDbContext dbContext, string startDate, string endDate)
         {
             var wellPumpingSummaries = dbContext.WellPumpingSummaries
                 .FromSqlRaw($"EXECUTE dbo.pWellPumpingSummary @startDate, @endDate", new SqlParameter("startDate", startDate), new SqlParameter("endDate", endDate))

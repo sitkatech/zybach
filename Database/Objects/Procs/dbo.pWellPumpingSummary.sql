@@ -24,33 +24,27 @@ begin
 	) mrst on w.WellID = mrst.WellID and mrst.Ranking = 1
 	left join 
 	(
-		select s.WellID,
-			(case when s.SensorTypeID = 1 then 1 else 0 end) as HasFlowMeter,
-			(case when s.SensorTypeID = 2 then 1 else 0 end) as HasContinuityMeter,
-			(case when s.SensorTypeID = 4 then 1 else 0 end) as HasElectricalUsage
-		from 
-		(
-			select WellID, SensorTypeID
-			from dbo.Sensor
-			group by WellID, SensorTypeID
-		) s
+		select WellID,
+			max(case when SensorTypeID = 1 then 1 else 0 end) as HasFlowMeter,
+			max(case when SensorTypeID = 2 then 1 else 0 end) as HasContinuityMeter,
+			max(case when SensorTypeID = 4 then 1 else 0 end) as HasElectricalUsage
+		from Sensor 
+		group by WellID
 	) wst on w.WellID = wst.WellID
 	left join 
 	(
 		select wsm.WellRegistrationID,
-			sum(case when wsm.MeasurementTypeID = 1 then wsm.MeasurementValue else 0 end) as FlowMeterPumpedVolume,
-			sum(case when wsm.MeasurementTypeID = 2 then wsm.MeasurementValue else 0 end) as ContinuityMeterPumpedVolume,
-			sum(case when wsm.MeasurementTypeID = 3 then wsm.MeasurementValue else 0 end) as ElectricalUsagePumpedVolume
+			sum(case when wsm.MeasurementTypeID = 1 then wsm.MeasurementValue else null end) as FlowMeterPumpedVolume,
+			sum(case when wsm.MeasurementTypeID = 2 then wsm.MeasurementValue else null end) as ContinuityMeterPumpedVolume,
+			sum(case when wsm.MeasurementTypeID = 3 then wsm.MeasurementValue else null end) as ElectricalUsagePumpedVolume
 		from
 		(
 			select WellRegistrationID, MeasurementTypeID, MeasurementValue, IsAnomalous, datefromparts(ReadingYear, ReadingMonth, ReadingDay) as ReadingDate
 			from WellSensorMeasurement
 		) wsm 
-		where IsAnomalous = 0 or IsAnomalous is null --and ReadingDate >= @startDate and ReadingDate <= @endDate
+		where (IsAnomalous = 0 or IsAnomalous is null) and ReadingDate >= @startDate and ReadingDate <= @endDate
 		group by wsm.WellRegistrationID
 	) wps on w.WellRegistrationID = wps.WellRegistrationID
 end
 
 GO
-
-select * from WellSensorMeasurement

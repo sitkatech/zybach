@@ -43,7 +43,7 @@ export class UtilityFunctionsService {
     var decimalColDef: ColDef = {
       headerName: headerName, filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }, sortable: true, resizable: true,
       valueGetter: params => this.decimalValueGetter(params, fieldName, allowNullData),
-      valueFormatter: params => _decimalPipe.transform(params.value, decimalFormatString),
+      valueFormatter: params => params.value ? _decimalPipe.transform(params.value, decimalFormatString) : '-',
     }
     if (width) {
       decimalColDef.width = width

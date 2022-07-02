@@ -495,7 +495,7 @@ namespace Zybach.API.Controllers
 
         [HttpGet("wells/wellPumpingSummary/{startDate}/{endDate}")]
         [UserViewFeature]
-        public ActionResult<List<WellPumpingSummaryDto>> GetWellPumpingSummariesForDateRange([FromRoute] DateTime startDate, [FromRoute] DateTime endDate)
+        public ActionResult<List<WellPumpingSummaryDto>> GetWellPumpingSummariesForDateRange([FromRoute] string startDate, [FromRoute] string endDate)
         {
             var wellPumpingSummaryDtos = WellPumpingSummary.GetForDateRange(_dbContext, startDate, endDate);
             return Ok(wellPumpingSummaryDtos);

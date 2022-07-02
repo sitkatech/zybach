@@ -8,6 +8,31 @@
 </div>
 <ng-template #wellPumpingSummariesList>
     <div class="container mt-2">
+        <div class="row my-3 align-items-end">
+            <div class="input-group col-sm col-12">
+              <span class="font-weight-bold mt-1">Start Date:</span>
+              <div class="input-group">
+                <input class="form-control" name="d1" ngbDatepicker #d1="ngbDatepicker" placeholder="yyyy-mm-dd" [(ngModel)]="startDate" />
+                <div class="input-group-append">
+                  <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()"
+                    type="button"></button>
+                </div>
+              </div>
+            </div>
+            <div class="input-group col-sm col-12">
+              <span class="font-weight-bold mt-1">End Date:</span>
+              <div class="input-group">
+                <input class="form-control" name="d2" ngbDatepicker #d2="ngbDatepicker" placeholder="yyyy-mm-dd" [(ngModel)]="endDate" />
+                <div class="input-group-append">
+                  <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d2.toggle()"
+                    type="button"></button>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto mt-2">
+                <button class="btn btn-zybach" (click)="updateWellPumpingSummaries()">Update</button>
+            </div>
+        </div>
         <div class="row my-2">
             <div class="col">
                 <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="downloadCsv()" placement="top"

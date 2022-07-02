@@ -5643,8 +5643,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "date-time"
+              "type": "string"
             }
           },
           {
@@ -5652,8 +5651,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "date-time"
+              "type": "string"
             }
           }
         ],
