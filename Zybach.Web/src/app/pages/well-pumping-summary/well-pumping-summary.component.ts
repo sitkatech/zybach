@@ -8,6 +8,7 @@ import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-adapter-from-string';
 import { WellService } from 'src/app/shared/generated/api/well.service';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellPumpingSummaryDto } from 'src/app/shared/generated/model/well-pumping-summary-dto';
@@ -30,7 +31,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
 
-  public isLoadingUpdate = false;
+  public richTextTypeID = CustomRichTextTypeEnum.WellPumpingSummary;
 
   constructor(
     private authenticationService: AuthenticationService,
