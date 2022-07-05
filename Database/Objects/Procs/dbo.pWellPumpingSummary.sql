@@ -28,7 +28,7 @@ begin
 			max(case when SensorTypeID = 1 then 1 else 0 end) as HasFlowMeter,
 			max(case when SensorTypeID = 2 then 1 else 0 end) as HasContinuityMeter,
 			max(case when SensorTypeID = 4 then 1 else 0 end) as HasElectricalUsage
-		from Sensor 
+		from dbo.Sensor 
 		group by WellID
 	) wst on w.WellID = wst.WellID
 	left join 
@@ -40,7 +40,7 @@ begin
 		from
 		(
 			select WellRegistrationID, MeasurementTypeID, MeasurementValue, IsAnomalous, datefromparts(ReadingYear, ReadingMonth, ReadingDay) as ReadingDate
-			from WellSensorMeasurement
+			from dbo.WellSensorMeasurement
 		) wsm 
 		where (IsAnomalous = 0 or IsAnomalous is null) and ReadingDate >= @startDate and ReadingDate <= @endDate
 		group by wsm.WellRegistrationID
