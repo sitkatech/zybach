@@ -189,9 +189,16 @@ begin
     ) a on s.SensorName = a.SensorName
     where s.SensorTypeID = 4 and s.IsActive = 0
 
+    --set the well id again just in case it got unhooked
+    update s
+    set s.WellID = w.WellID
+    from dbo.Sensor s 
+    join dbo.Well w on s.SensorName = concat('E-', upper(w.WellRegistrationID))
+    where s.SensorTypeID = 4
+
 
     -- finally create sensors with SensorY
-	exec dbo.pPublishWellSensorMeasurementStaging
+    exec dbo.pPublishWellSensorMeasurementStaging
 
 end
 
