@@ -1,0 +1,55 @@
+<div class="container" *ngIf="!wellPumpingSummaries else wellPumpingSummariesList">
+    <div class="row">
+        <div class="col text-center">
+            <span class="fas fa-spinner loading-spinner"></span>
+            <p>Loading...</p>
+        </div>
+    </div>
+</div>
+<ng-template #wellPumpingSummariesList>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <h2 class="d-inline-block">Well Pumping Summary</h2>
+                <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+            </div>
+        </div>
+
+        <div class="row mb-4 align-items-end">
+            <div class="input-group col-sm col-12">
+              <span class="font-weight-bold mt-1">Start Date:</span>
+              <div class="input-group">
+                <input class="form-control" name="d1" ngbDatepicker #d1="ngbDatepicker" placeholder="yyyy-mm-dd" [(ngModel)]="startDate" />
+                <div class="input-group-append">
+                  <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()"
+                    type="button"></button>
+                </div>
+              </div>
+            </div>
+            <div class="input-group col-sm col-12">
+              <span class="font-weight-bold mt-1">End Date:</span>
+              <div class="input-group">
+                <input class="form-control" name="d2" ngbDatepicker #d2="ngbDatepicker" placeholder="yyyy-mm-dd" [(ngModel)]="endDate" />
+                <div class="input-group-append">
+                  <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d2.toggle()"
+                    type="button"></button>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto mt-2">
+                <button class="btn btn-zybach" (click)="updateWellPumpingSummaries()">Update</button>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col">
+                <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="downloadCsv()" placement="top"
+                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="wellPumpingSummariesGrid"></fresca-clear-grid-filters-button>
+            </div>
+        </div>
+        <ag-grid-angular #wellPumpingSummariesGrid style="width: 100%; height: 500px;" class="ag-theme-balham" 
+            [rowData]="wellPumpingSummaries" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+            [pagination]="true" [rowSelection]="'single'" [paginationPageSize]="100">
+        </ag-grid-angular>
+    </div>
+</ng-template>

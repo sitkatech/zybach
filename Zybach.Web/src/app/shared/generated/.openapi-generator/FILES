@@ -140,6 +140,7 @@ model/well-minimal-dto.ts
 model/well-new-dto.ts
 model/well-participation-dto.ts
 model/well-participation-info-dto.ts
+model/well-pumping-summary-dto.ts
 model/well-registration-id-dto.ts
 model/well-simple-dto.ts
 model/well-use-dto.ts

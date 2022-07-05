@@ -1,12 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SupportTicketUpsertComponent } from 'src/app/shared/components/support-ticket-upsert/support-ticket-upsert.component';
 import { SupportTicketService } from 'src/app/shared/generated/api/support-ticket.service';
+import { WellService } from 'src/app/shared/generated/api/well.service';
 import { SupportTicketPriorityEnum } from 'src/app/shared/generated/enum/support-ticket-priority-enum';
 import { SupportTicketStatusEnum } from 'src/app/shared/generated/enum/support-ticket-status-enum';
 import { SupportTicketUpsertDto } from 'src/app/shared/generated/model/support-ticket-upsert-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import { WellSimpleDto } from 'src/app/shared/generated/model/well-simple-dto';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -16,7 +18,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   templateUrl: './support-ticket-new.component.html',
   styleUrls: ['./support-ticket-new.component.scss']
 })
-export class SupportTicketNewComponent implements OnInit {
+export class SupportTicketNewComponent implements OnInit, OnDestroy {
   @ViewChild('supportTicketForm') private supportTicketUpsertComponent: SupportTicketUpsertComponent;
   
   private currentUser: UserDto;
@@ -26,7 +28,9 @@ export class SupportTicketNewComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     private router: Router,
+    private route: ActivatedRoute,
     private supportTicketService: SupportTicketService,
+    private wellService: WellService,
     private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) { }
@@ -34,13 +38,25 @@ export class SupportTicketNewComponent implements OnInit {
   ngOnInit(): void {   
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
+
+      this.model = new SupportTicketUpsertDto();
+      this.model.CreatorUserID = this.currentUser.UserID;
+      this.model.SupportTicketPriorityID = SupportTicketPriorityEnum.High;
+      this.model.SupportTicketStatusID = SupportTicketStatusEnum.Open;
+
+      const wellID = parseInt(this.route.snapshot.paramMap.get("id"));
+      if (wellID) {
+        this.wellService.wellsWellIDGet(wellID).subscribe(well => {
+          this.model.WellRegistrationID = well.WellRegistrationID;
+        });
+      }
+
+      this.cdr.detectChanges();
     });
+  }
 
-    this.model = new SupportTicketUpsertDto();
-    this.model.CreatorUserID = this.currentUser.UserID;
-    this.model.SupportTicketPriorityID = SupportTicketPriorityEnum.High;
-    this.model.SupportTicketStatusID = SupportTicketStatusEnum.Open;
-
+  ngOnDestroy(): void {
+    this.cdr.detach();
   }
 
   public onSubmit(newSupportTicketForm: HTMLFormElement): void {

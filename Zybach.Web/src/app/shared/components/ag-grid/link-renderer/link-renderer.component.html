@@ -1,2 +1,2 @@
-<a [routerLink]="[params.inRouterLink, params.value.LinkValue]" *ngIf="params.value.LinkDisplay && !params.isExternalUrl" [className]="params.value.CssClasses">{{params.value.LinkDisplay}}</a>
+<a [routerLink]="[params.inRouterLink + '/' + params.value.LinkValue]" *ngIf="params.value.LinkDisplay && !params.isExternalUrl" [className]="params.value.CssClasses">{{params.value.LinkDisplay}}</a>
 <a href={{params.value.LinkValue}} title={{params.value.LinkDisplay}} *ngIf="params.value.LinkDisplay && params.isExternalUrl" [className]="params.value.CssClasses">{{params.value.LinkDisplay}}</a>

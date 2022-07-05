@@ -23,7 +23,8 @@ USING (VALUES
 (21, 'WaterLevelExplorerMapDisclaimer', 'Water Level Explorer Map Disclaimer'),
 (22, 'IrrigationUnitIndex', 'Irrigation Unit Index'),
 (23, 'OpenETIntegration', 'OpenET Integration'),
-(24, 'SupportTicketIndex', 'Support Ticket Index')
+(24, 'SupportTicketIndex', 'Support Ticket Index'),
+(25, 'WellPumpingSummary', 'Well Pumping Summary')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

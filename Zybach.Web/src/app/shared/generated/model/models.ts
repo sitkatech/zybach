@@ -107,6 +107,7 @@ export * from '././well-minimal-dto';
 export * from '././well-new-dto';
 export * from '././well-participation-dto';
 export * from '././well-participation-info-dto';
+export * from '././well-pumping-summary-dto';
 export * from '././well-registration-id-dto';
 export * from '././well-simple-dto';
 export * from '././well-use-dto';
