@@ -15,15 +15,15 @@ begin
 	where aws.GeoOptixSensorStagingID is null
 
 	insert into dbo.Sensor(SensorName, SensorTypeID, CreateDate, LastUpdateDate, InGeoOptix, IsActive)
-	select	upper(aws.SensorName) as SensorName, 
+	select	upper(ltrim(rtrim(aws.SensorName))) as SensorName, 
 			st.SensorTypeID,
 			@fetchDate as CreateDate,
 			@fetchDate as LastUpdateDate,
 			1 as InGeoOptix,
 			1 as IsActive
 	from dbo.GeoOptixSensorStaging aws
-	left join dbo.Sensor aw on aws.SensorName = aw.SensorName
-	left join dbo.SensorType st on aws.SensorType = st.SensorTypeName
+	left join dbo.Sensor aw on upper(ltrim(rtrim(aws.SensorName))) = aw.SensorName
+	join dbo.SensorType st on case when aws.SensorType  = 'PumpMonitor' then 'ContinuityMeter' else aws.SensorType end = st.SensorTypeName
 	where aw.SensorID is null
 
 	-- set WellID to null for all Sensors
