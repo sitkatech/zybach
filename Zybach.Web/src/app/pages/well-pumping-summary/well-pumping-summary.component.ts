@@ -46,9 +46,11 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
 
       this.createColumnDefs();
 
-      const currentYear = new Date().getFullYear();
-      this.startDate = new Date(currentYear, 0, 1).toISOString().split('T')[0];
-      this.endDate = new Date().toISOString().split('T')[0];
+      const today = new Date();
+      const yesterday = new Date().setDate(today.getDate() - 1);
+      
+      this.startDate = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
+      this.endDate = new Date(yesterday).toISOString().split('T')[0];
 
       this.updateWellPumpingSummaries();
 
@@ -90,32 +92,29 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
       {
         headerName: "Most Recent Support Ticket",
         valueGetter: params => {
-          return { LinkValue: params.data.MostRecentSupportTicketID, LinkDisplay: params.data.MostRecentSupportTicketTitle }
+          return { 
+            LinkValue: params.data.MostRecentSupportTicketID, 
+            LinkDisplay: params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
+          }
         },
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/support-tickets/"},
         comparator: this.utilityFunctionsService.linkRendererComparator,
-        filterValueGetter: params => params.data.MostRecentSupportTicket.SupportTicketName
+        filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
       },
       { 
         headerName: "Has Flow Meter?",
-        valueGetter: params => params.data.HasFlowMeter ? 'Yes' : 'No',
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: { field: "HasFlowMeter" },
+        valueGetter: params => params.data.FlowMeters ? `Yes (${params.data.FlowMeters})` : 'No',
         width: 170
       },
       { 
         headerName: "Has Continuity Meter?",
-        valueGetter: params => params.data.HasContinuityMeter ? 'Yes' : 'No',
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: { field: "HasContinuityMeter" },
+        valueGetter: params => params.data.ContinuityMeters ? `Yes (${params.data.ContinuityMeters})` : 'No',
         width: 170
       },
       { 
         headerName: "Has Electrical Usage?",
-        valueGetter: params => params.data.HasElectricalUsage ? 'Yes' : 'No',
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: { field: "HasElectricalUsage" },
+        valueGetter: params => params.data.ElectricalUsage ? `Yes (${params.data.ElectricalUsage})` : 'No',
         width: 170
       },
       this.utilityFunctionsService.createDecimalColumnDef("Flow Meter Pumped Volume (gal)", "FlowMeterPumpedVolume", 220, 1, true),

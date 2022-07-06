@@ -9,7 +9,6 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { SupportTicketSimpleDto } from '././support-ticket-simple-dto';
 
 export class WellPumpingSummaryDto { 
     WellID?: number;
@@ -17,8 +16,9 @@ export class WellPumpingSummaryDto {
     OwnerName?: string;
     MostRecentSupportTicketID?: number;
     MostRecentSupportTicketTitle?: string;
-    HasContinuityMeter?: boolean;
-    HasElectricalUsage?: boolean;
+    FlowMeters?: string;
+    ContinuityMeters?: string;
+    ElectricalUsage?: string;
     FlowMeterPumpedVolume?: number;
     ContinuityMeterPumpedVolume?: number;
     ElectricalUsagePumpedVolume?: number;

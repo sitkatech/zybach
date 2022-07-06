@@ -10089,14 +10089,17 @@
             "type": "string",
             "nullable": true
           },
-          "HasFlowMeter": {
-            "type": "boolean"
+          "FlowMeters": {
+            "type": "string",
+            "nullable": true
           },
-          "HasContinuityMeter": {
-            "type": "boolean"
+          "ContinuityMeters": {
+            "type": "string",
+            "nullable": true
           },
-          "HasElectricalUsage": {
-            "type": "boolean"
+          "ElectricalUsage": {
+            "type": "string",
+            "nullable": true
           },
           "FlowMeterPumpedVolume": {
             "type": "number",
