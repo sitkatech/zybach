@@ -7,9 +7,9 @@ public class WellPumpingSummaryDto
     public string OwnerName { get; set; }
     public int? MostRecentSupportTicketID { get; set; }
     public string MostRecentSupportTicketTitle { get; set; }
-    public bool HasFlowMeter { get; set; }
-    public bool HasContinuityMeter { get; set; }
-    public bool HasElectricalUsage { get; set; }
+    public string FlowMeters { get; set; }
+    public string ContinuityMeters { get; set; }
+    public string ElectricalUsage { get; set; }
     public double? FlowMeterPumpedVolume { get; set; }
     public double? ContinuityMeterPumpedVolume { get; set; }
     public double? ElectricalUsagePumpedVolume { get; set; }

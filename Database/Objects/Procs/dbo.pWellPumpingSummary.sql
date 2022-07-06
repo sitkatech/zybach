@@ -12,23 +12,24 @@ begin
 	
 	select w.WellID, w.WellRegistrationID, w.OwnerName, 
 		mrst.SupportTicketID as MostRecentSupportTicketID, mrst.SupportTicketTitle as MostRecentSupportTicketTitle,
-		wst.HasFlowMeter, wst.HasContinuityMeter, wst.HasElectricalUsage,
+		wst.FlowMeters, wst.ContinuityMeters, wst.ElectricalUsage,
 		wps.FlowMeterPumpedVolume, wps.ContinuityMeterPumpedVolume, wps.ElectricalUsagePumpedVolume,
 		wps.FlowMeterPumpedVolume - wps.ContinuityMeterPumpedVolume as FlowMeterContinuityMeterDifference,
 		wps.FlowMeterPumpedVolume - wps.ElectricalUsagePumpedVolume as FlowMeterElectricalUsageDifference
 	from dbo.Well w
 	left join 
 	(
-		select WellID, SupportTicketID, SupportTicketTitle, rank() over(partition by WellID order by DateUpdated desc) as Ranking 
+		select WellID, SupportTicketID, SupportTicketTitle, DateUpdated, rank() over(partition by WellID order by DateUpdated desc) as Ranking 
 		from dbo.SupportTicket
 	) mrst on w.WellID = mrst.WellID and mrst.Ranking = 1
 	left join 
 	(
 		select WellID,
-			max(case when SensorTypeID = 1 then 1 else 0 end) as HasFlowMeter,
-			max(case when SensorTypeID = 2 then 1 else 0 end) as HasContinuityMeter,
-			max(case when SensorTypeID = 4 then 1 else 0 end) as HasElectricalUsage
+			string_agg(case when SensorTypeID = 1 then SensorName else null end, ',') as FlowMeters,
+			string_agg(case when SensorTypeID = 2 then SensorName else null end, ',') as ContinuityMeters,
+			string_agg(case when SensorTypeID = 4 then SensorName else null end, ',') as ElectricalUsage
 		from dbo.Sensor 
+		where WellID is not null
 		group by WellID
 	) wst on w.WellID = wst.WellID
 	left join 

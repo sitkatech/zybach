@@ -48,8 +48,8 @@ namespace Zybach.EFModels.Entities
         {
             var supportTicket = new SupportTicket()
             {
-                DateCreated = DateTime.Now.Date,
-                DateUpdated = DateTime.Now.Date,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
                 CreatorUserID = supportTicketUpsertDto.CreatorUserID,
                 AssigneeUserID = supportTicketUpsertDto.AssigneeUserID,
                 // ReSharper disable once PossibleInvalidOperationException - null check performed in controller
@@ -70,7 +70,7 @@ namespace Zybach.EFModels.Entities
 
         public static SupportTicketDetailDto UpdateSupportTicket(ZybachDbContext dbContext, SupportTicket supportTicket, SupportTicketUpsertDto supportTicketUpsertDto)
         {
-            supportTicket.DateUpdated = DateTime.Now.Date;
+            supportTicket.DateUpdated = DateTime.UtcNow;
             supportTicket.CreatorUserID = supportTicketUpsertDto.CreatorUserID;
             supportTicket.AssigneeUserID = supportTicketUpsertDto.AssigneeUserID;
             // ReSharper disable once PossibleInvalidOperationException - null check performed in controller

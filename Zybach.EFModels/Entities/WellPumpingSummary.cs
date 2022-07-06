@@ -20,9 +20,9 @@ namespace Rio.EFModels.Entities
         public string OwnerName { get; set; }
         public int? MostRecentSupportTicketID { get; set; }
         public string MostRecentSupportTicketTitle { get; set; }
-        public int? HasFlowMeter { get; set; }
-        public int? HasContinuityMeter { get; set; }
-        public int? HasElectricalUsage { get; set; }
+        public string FlowMeters { get; set; }
+        public string ContinuityMeters { get; set; }
+        public string ElectricalUsage { get; set; }
         public double? FlowMeterPumpedVolume { get; set; }
         public double? ContinuityMeterPumpedVolume { get; set; }
         public double? ElectricalUsagePumpedVolume { get; set; }
@@ -42,9 +42,9 @@ namespace Rio.EFModels.Entities
                 OwnerName = x.OwnerName,
                 MostRecentSupportTicketID = x.MostRecentSupportTicketID,
                 MostRecentSupportTicketTitle = x.MostRecentSupportTicketTitle,
-                HasFlowMeter = x.HasFlowMeter > 0,
-                HasContinuityMeter = x.HasContinuityMeter > 0,
-                HasElectricalUsage = x.HasElectricalUsage > 0,
+                FlowMeters = x.FlowMeters,
+                ContinuityMeters = x.ContinuityMeters,
+                ElectricalUsage = x.ElectricalUsage,
                 FlowMeterPumpedVolume = x.FlowMeterPumpedVolume,
                 ContinuityMeterPumpedVolume = x.ContinuityMeterPumpedVolume,
                 ElectricalUsagePumpedVolume = x.ElectricalUsagePumpedVolume,
