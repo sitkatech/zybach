@@ -25,5 +25,6 @@ export enum FieldDefinitionTypeEnum {
   SensorLastReadingDate = 20,
   SensorStatus = 21,
   SensorType = 22,
-  IrrigationUnitAcres = 23
+  IrrigationUnitAcres = 23,
+  SensorRetirementDate = 24
 }

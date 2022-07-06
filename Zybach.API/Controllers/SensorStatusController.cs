@@ -128,6 +128,8 @@ namespace Zybach.API.Controllers
             }
 
             sensor.IsActive = sensorSimpleDto.IsActive;
+            sensor.RetirementDate = sensorSimpleDto.RetirementDate;
+
             _dbContext.SaveChanges();
             return Ok();
         }
