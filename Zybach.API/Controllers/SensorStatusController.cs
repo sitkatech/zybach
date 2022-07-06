@@ -122,6 +122,21 @@ namespace Zybach.API.Controllers
             {
                 throw new Exception($"Sensor with Sensor Name {sensorSimpleDto.SensorName} not found!");
             }
+            if (!sensorSimpleDto.IsActive)
+            {
+                if (!sensorSimpleDto.RetirementDate.HasValue)
+                {
+                    ModelState.AddModelError("Retirement Date", "The Retirement Date field is required.");
+                }
+                else
+                {
+                    var currentDate = DateTime.UtcNow;
+                    if (DateTime.Compare(sensorSimpleDto.RetirementDate.Value, DateTime.UtcNow) > 0)
+                    {
+                        ModelState.AddModelError("Retirement Date", "Future retirement dates are not allowed.");
+                    }
+                }
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

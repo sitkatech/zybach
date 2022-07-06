@@ -73,7 +73,12 @@
                                         <field-definition [fieldDefinitionType]="'SensorRetirementDate'"></field-definition>:
                                     </strong>
                                 </div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor?.RetirementDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 text-left">
+                                    <span *ngIf="sensor?.RetirementDate; else noRetirementDate">{{sensor?.RetirementDate | date: "MM/dd/yyyy"}}</span>
+                                </div>
+                                <ng-template #noRetirementDate>
+                                    <em class="text-muted">N/A</em>
+                                </ng-template>
                             </div>
                         </div>
                     </div>
@@ -241,7 +246,6 @@
                     <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()" type="button"></button>
                 </div>
             </div>
-            {{retirementDate}}
         </ng-container>
 
         <ng-template #enableSensor>
