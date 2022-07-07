@@ -33,8 +33,6 @@ namespace Zybach.API.Controllers
 
             var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
 
-            var currentDate = DateTime.Now;
-
             foreach (var sensorSimpleDto in sensorSimpleDtos)
             {
                 var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
@@ -47,9 +45,6 @@ namespace Zybach.API.Controllers
                 {
                     sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.MeasurementDate);
                     sensorSimpleDto.LastReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Max(x => x.MeasurementDate);
-                    //var numberOfDays = currentDate.Subtract(sensorSimpleDto.FirstReadingDate.Value).Days;
-                    //// correlates with ZeroFillMissingDaysAsDto
-                    //sensorSimpleDto.LastReadingDate = sensorSimpleDto.FirstReadingDate.Value.AddDays(numberOfDays - 1);
                     var lastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
                         .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID)
                         .MaxBy(x => x.MeasurementDate);
