@@ -7983,6 +7983,11 @@
             "format": "double",
             "nullable": true
           },
+          "LastVoltageReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "SensorTypeID": {
             "type": "integer",
             "format": "int32"
@@ -8047,6 +8052,11 @@
           "LastVoltageReading": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          },
+          "LastVoltageReadingDate": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "FirstReadingDate": {
