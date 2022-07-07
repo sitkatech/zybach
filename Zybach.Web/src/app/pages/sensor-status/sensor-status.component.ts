@@ -46,6 +46,14 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         width: 100,
         resizable: true
       },
+      {
+        valueGetter: params => {
+          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+        },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/sensors" },
+        sortable: false, filter: false, width: 140
+      },
       { 
         headerName: 'Well Number', 
         field: 'WellRegistrationID', 
@@ -146,8 +154,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   
   public onGridReady(params) {
     this.gridApi = params.api;
-    this.wellsGrid.columnApi.autoSizeAllColumns();
-    this.wellsGrid.api.sizeColumnsToFit();
   }
 
   public onSelectionChanged(event: Event) {
