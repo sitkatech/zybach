@@ -23,6 +23,7 @@ export class SensorSimpleDto {
     SensorTypeName?: string;
     MessageAge?: number;
     LastVoltageReading?: number;
+    LastVoltageReadingDate?: string;
     FirstReadingDate?: string;
     LastReadingDate?: string;
     WellPageNumber?: number;
