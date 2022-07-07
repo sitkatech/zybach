@@ -1,8 +1,8 @@
 insert into dbo.FieldDefinitionType (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 values
-(24, 'SensorRetirementDate', 'Sensor Retirement Date')
+(24, 'SensorLastVoltageReadingDate', 'Last Voltage Reading Date')
 
 
 insert into dbo.FieldDefinition (FieldDefinitionTypeID, FieldDefinitionValue)
 values
-(24, 'Sensor Retirement Date')
+(24, 'Last Voltage Reading Date')

@@ -94,6 +94,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
+      this.utilityFunctionsService.createDateColumnDef('Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', null, 140, FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
       { 
         headerName: 'Sensor Type', field: 'SensorTypeName',
         filterFramework: CustomDropdownFilterComponent,
@@ -109,7 +110,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.sensorStatusGet().subscribe(wells => {
-        console.log(wells)
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
@@ -134,7 +134,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       })
     });
   }
-
+  
   ngOnDestroy(): void {
     
     this.wellsObservable.unsubscribe();
