@@ -45,15 +45,20 @@
                                 </strong></div>
                                 <div class="col-12 col-sm-6 text-left">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
                                 <div class="col-12 col-sm-6 label"><strong>
+                                    <field-definition [fieldDefinitionType]="'SensorLastVoltageReadingDate'">
+                                    </field-definition>:
+                                </strong></div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.LastVoltageReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorFirstReadingDate'">
                                     </field-definition>:
-                                </strong> </div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor?.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
+                                </strong></div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
                                 <div class="col-12 col-sm-6 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastReadingDate'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor?.LastReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 text-left">{{sensor.LastReadingDate | date: "MM/dd/yyyy" }}</div>
                                 <div class="col-12 col-sm-6 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorStatus'">
                                     </field-definition>:

@@ -191,6 +191,19 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       {
+        headerName: "Has Electrical Usage?",
+        valueGetter: function (params) {
+          const continuityMeters = params.data.Sensors.filter(x => x.SensorTypeID == SensorTypeEnum.ElectricalUsage).map(x => x.SensorName);
+          if (continuityMeters.length > 0) {
+            return `Yes (${continuityMeters.join('; ')})`;
+          } else {
+            return "No";
+          }
+        },
+        filter: true,
+        sortable: true, resizable: true
+      },
+      {
         headerName: "Has Pressure Sensor?",
         valueGetter: function (params) {
           const pressureSensors = params.data.Sensors.filter(x => x.SensorTypeID == SensorTypeEnum.WellPressure).map(x => x.SensorName);

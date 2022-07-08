@@ -65,6 +65,7 @@ import { SupportTicketDetailComponent } from './pages/support-ticket-detail/supp
 import { SupportTicketNewComponent } from './pages/support-ticket-new/support-ticket-new.component';
 import { SupportTicketEditComponent } from './pages/support-ticket-edit/support-ticket-edit.component';
 import { SupportTicketCommentNewComponent } from './pages/support-ticket-comment-new/support-ticket-comment-new.component';
+import { WellPumpingSummaryComponent } from './pages/well-pumping-summary/well-pumping-summary.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -87,9 +88,11 @@ const routes: Routes = [
   { path: "wells/:id", component: WellDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/new-water-level-inspection", component: WaterLevelInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "wells/:id/new-water-quality-inspection", component: WaterQualityInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
+  { path: "wells/:id/new-support-ticket", component: SupportTicketNewComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/edit-registration-id", component: WellRegistrationIdEditComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/edit-contact", component: WellContactEditComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
   { path: "wells/:id/edit-participation", component: WellParticipationEditComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
+  { path: "well-pumping-summary", component: WellPumpingSummaryComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "robust-review-scenario",  component: RobustReviewScenarioComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports",  component: ReportsListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/chemigation-permit-reports",  component: ChemigationPermitReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},

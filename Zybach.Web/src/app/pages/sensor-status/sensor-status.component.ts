@@ -94,10 +94,12 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
-      { headerName: 'Sensor Type', field: 'SensorType',
+      this.utilityFunctionsService.createDateColumnDef('Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', null, 140, FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
+      { 
+        headerName: 'Sensor Type', field: 'SensorTypeName',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: {
-          field: 'SensorType'
+          field: 'SensorTypeName'
         },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
         resizable: true, sortable: true
@@ -132,7 +134,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       })
     });
   }
-
+  
   ngOnDestroy(): void {
     
     this.wellsObservable.unsubscribe();

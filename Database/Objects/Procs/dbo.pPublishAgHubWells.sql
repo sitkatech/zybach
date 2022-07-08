@@ -79,12 +79,24 @@ begin
 			aws.WellTPID
 	into #agIrrigationUnits
 	from dbo.AgHubWellStaging aws
-	where aws.WellTPID is not null
+	where aws.WellTPID is not null and aws.IrrigationUnitGeometry is not null
+
+	delete ahiuwymed
+	from dbo.AgHubIrrigationUnitWaterYearMonthETDatum ahiuwymed
+	join AgHubIrrigationUnit ahiu on ahiu.AgHubIrrigationUnitID = ahiuwymed.AgHubIrrigationUnitID
+	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
+	where ahiuNew.IrrigationUnitGeometry is null
+
+	delete ahiuwympd
+	from dbo.AgHubIrrigationUnitWaterYearMonthPrecipitationDatum ahiuwympd
+	join AgHubIrrigationUnit ahiu on ahiu.AgHubIrrigationUnitID = ahiuwympd.AgHubIrrigationUnitID
+	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
+	where ahiuNew.IrrigationUnitGeometry is null
 
 	delete ahiu
 	from dbo.AgHubIrrigationUnit ahiu
 	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
-	where ahiuNew.WellTPID is null
+	where ahiuNew.WellTPID is null or ahiu.IrrigationUnitGeometry is null
 
 	insert into dbo.AgHubIrrigationUnit (WellTPID, IrrigationUnitGeometry)
 	select ahiuNew.WellTPID,
@@ -149,7 +161,7 @@ begin
     from dbo.AgHubWell aw
     join dbo.Well w on aw.WellID = w.WellID
     left join dbo.Sensor s on concat('E-', upper(w.WellRegistrationID)) = s.SensorName
-    where aw.WellConnectedMeter = 1 and s.SensorID is null
+    where aw.HasElectricalData = 1 and s.SensorID is null
 
     -- we need to mark electrical usage sensors as inactive if no longer a wellconnectedmeter
     update s
@@ -160,7 +172,7 @@ begin
         select concat('E-', upper(w.WellRegistrationID)) as SensorName
         from dbo.AgHubWell aw
         join dbo.Well w on aw.WellID = w.WellID
-        where aw.WellConnectedMeter = 1
+        where aw.HasElectricalData = 1
     ) a on s.SensorName = a.SensorName
     where s.SensorTypeID = 4 and a.SensorName is null
 
@@ -173,13 +185,20 @@ begin
         select concat('E-', upper(w.WellRegistrationID)) as SensorName
         from dbo.AgHubWell aw
         join dbo.Well w on aw.WellID = w.WellID
-        where aw.WellConnectedMeter = 1
+        where aw.HasElectricalData = 1
     ) a on s.SensorName = a.SensorName
     where s.SensorTypeID = 4 and s.IsActive = 0
 
+    --set the well id again just in case it got unhooked
+    update s
+    set s.WellID = w.WellID
+    from dbo.Sensor s 
+    join dbo.Well w on s.SensorName = concat('E-', upper(w.WellRegistrationID))
+    where s.SensorTypeID = 4
+
 
     -- finally create sensors with SensorY
-	exec dbo.pPublishWellSensorMeasurementStaging
+    exec dbo.pPublishWellSensorMeasurementStaging
 
 end
 

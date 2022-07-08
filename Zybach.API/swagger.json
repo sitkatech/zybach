@@ -5632,6 +5632,62 @@
         }
       }
     },
+    "/wells/wellPumpingSummary/{startDate}/{endDate}": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "startDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellPumpingSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellPumpingSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellPumpingSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/pumpedVolume": {
       "get": {
         "tags": [
@@ -7927,6 +7983,11 @@
             "format": "double",
             "nullable": true
           },
+          "LastVoltageReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "SensorTypeID": {
             "type": "integer",
             "format": "int32"
@@ -7991,6 +8052,11 @@
           "LastVoltageReading": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          },
+          "LastVoltageReadingDate": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "FirstReadingDate": {
@@ -10002,6 +10068,70 @@
             "maximum": 999999.9999,
             "minimum": 0,
             "pattern": "^\\d{0,6}\\.?\\d{0,4}|\\.\\d{0,4}$",
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellPumpingSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "OwnerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "MostRecentSupportTicketID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "MostRecentSupportTicketTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "FlowMeters": {
+            "type": "string",
+            "nullable": true
+          },
+          "ContinuityMeters": {
+            "type": "string",
+            "nullable": true
+          },
+          "ElectricalUsage": {
+            "type": "string",
+            "nullable": true
+          },
+          "FlowMeterPumpedVolume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ContinuityMeterPumpedVolume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ElectricalUsagePumpedVolume": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterContinuityMeterDifference": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterElectricalUsageDifference": {
             "type": "number",
             "format": "double",
             "nullable": true
