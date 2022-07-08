@@ -19,6 +19,7 @@ export class SensorSimpleDto {
     CreateDate?: string;
     LastUpdateDate?: string;
     IsActive?: boolean;
+    RetirementDate?: string;
     WellRegistrationID?: string;
     SensorTypeName?: string;
     MessageAge?: number;

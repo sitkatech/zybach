@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import moment from 'moment';
 import { forkJoin } from 'rxjs';
@@ -16,7 +16,7 @@ import { IAngularMyDpOptions } from 'angular-mydatepicker';
 import { SensorAnomalyService } from 'src/app/shared/generated/api/sensor-anomaly.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
-import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-adapter-from-string';
 import { SensorAnomalyUpsertDto } from 'src/app/shared/generated/model/sensor-anomaly-upsert-dto';
 import { SensorChartDataDto } from 'src/app/shared/generated/model/sensor-chart-data-dto';
@@ -29,6 +29,8 @@ import { SupportTicketSimpleDto } from 'src/app/shared/generated/model/support-t
   providers: [{provide: NgbDateAdapter, useClass: NgbDateAdapterFromString}]
 })
 export class SensorDetailComponent implements OnInit {
+  @ViewChild('confirmStatusChangeModal') confirmStatusChangeModal;
+
   public sensorID: number;
   public wellID: number;
   
@@ -38,7 +40,10 @@ export class SensorDetailComponent implements OnInit {
   public installations: InstallationRecordDto[] = [];
   public installationPhotos: any[]; 
 
+  public retirementDate: string;
+  private modalReference: NgbModalRef;
   public isLoadingSubmit: boolean = false;
+
   public isDisplayingSensorAnomalyPanel = false;
   public sensorAnomalyModel: SensorAnomalyUpsertDto;
 
@@ -53,7 +58,8 @@ export class SensorDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService,
-    private sensorAnomalyService: SensorAnomalyService
+    private sensorAnomalyService: SensorAnomalyService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
@@ -132,25 +138,39 @@ export class SensorDetailComponent implements OnInit {
     const timepiece = time.format('h:mm a');
     return time.format('M/D/yyyy ') + timepiece;
   }
+
+  public launchConfirmStatusModal(): void {
+    this.modalReference = this.modalService.open(
+      this.confirmStatusChangeModal, 
+      { ariaLabelledBy: "confirmStatusChangeModalTitle", beforeDismiss: () => this.checkIfUpdating(), backdrop: 'static', keyboard: false }
+    );
+  }
+
+  private checkIfUpdating(): boolean {
+    return this.isLoadingSubmit;
+  }
   
-  public toggleIsActive(isActive : boolean): void {
+  private toggleIsActive(isActive : boolean): void {
     this.isLoadingSubmit = true;
+    this.modalReference.close();
+
     var sensorSimpleDto = new SensorSimpleDto();
     sensorSimpleDto.SensorName = this.sensor.SensorName;
     sensorSimpleDto.SensorID = this.sensor.SensorID;
-    sensorSimpleDto.IsActive = isActive
-    this.sensorStatusService.sensorStatusEnableDisablePut(sensorSimpleDto)
-      .subscribe(() => {
-        this.isLoadingSubmit = false;
-        this.sensor.IsActive = isActive;
-        // this.alertService.pushAlert(new Alert(`Sensor '${sensorName}' now ${isActive ? "enabled" : "disabled"}`, AlertContext.Success));
-      }
-        ,
-        () => {
-          this.isLoadingSubmit = false;
-          this.cdr.detectChanges();
-        }
-      );
+    sensorSimpleDto.IsActive = isActive;
+    sensorSimpleDto.RetirementDate = isActive ? null : this.retirementDate;
+
+    this.sensorStatusService.sensorStatusEnableDisablePut(sensorSimpleDto).subscribe(() => {
+      this.isLoadingSubmit = false;
+      this.sensor.IsActive = isActive;
+      this.sensor.RetirementDate = isActive ? null : this.retirementDate;
+      this.retirementDate = null;
+
+      this.alertService.pushAlert(new Alert(`Sensor '${this.sensor.SensorName}' successfully ${isActive ? "enabled" : "disabled"}.`, AlertContext.Success));
+    }, error => {
+      this.isLoadingSubmit = false;
+      this.cdr.detectChanges();
+    });
   }
 
   public wellInGeoOptixUrl(): string {

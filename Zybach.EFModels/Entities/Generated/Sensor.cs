@@ -30,6 +30,8 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "datetime")]
         public DateTime LastUpdateDate { get; set; }
         public bool IsActive { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? RetirementDate { get; set; }
 
         [ForeignKey("WellID")]
         [InverseProperty("Sensors")]

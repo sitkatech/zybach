@@ -66,13 +66,24 @@
                                 <div class="col-12 col-sm-6 text-left">
                                     <div class="btn-group btn-group-toggle float-left">
                                         <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
-                                        <input type="radio" name="sensorIsActive" (click)="toggleIsActive(true)" [disabled]="sensor.IsActive"> Enabled
+                                        <input type="radio" name="sensorIsActive" (click)="launchConfirmStatusModal()" [disabled]="sensor.IsActive"> Enabled
                                         </label>
                                         <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.IsActive ? 'active' : ''">
-                                        <input type="radio" name="sensorIsActive" (click)="toggleIsActive(false)" [disabled]="!sensor.IsActive"> Disabled
+                                        <input type="radio" name="sensorIsActive" (click)="launchConfirmStatusModal()" [disabled]="!sensor.IsActive"> Disabled
                                         </label>
                                     </div>
                                 </div>
+                                <div class="col-12 col-sm-6 label">
+                                    <strong>
+                                        <field-definition [fieldDefinitionType]="'SensorRetirementDate'"></field-definition>:
+                                    </strong>
+                                </div>
+                                <div class="col-12 col-sm-6 text-left">
+                                    <span *ngIf="sensor?.RetirementDate; else noRetirementDate">{{sensor?.RetirementDate | date: "MM/dd/yyyy"}}</span>
+                                </div>
+                                <ng-template #noRetirementDate>
+                                    <em class="text-muted">N/A</em>
+                                </ng-template>
                             </div>
                         </div>
                     </div>
@@ -118,7 +129,7 @@
                                             <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
                                             <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
                                             <div class="col-12 col-sm-6 label" *ngIf="installation.FlowmeterSerialNumber"><strong>Flowmeter Serial Number: </strong></div>
-                                            <div class="col-12 col-sm-6" *ngIf="installation.FlowmeterSerialNumber"><>{{installation.FlowmeterSerialNumber}}</div>
+                                            <div class="col-12 col-sm-6" *ngIf="installation.FlowmeterSerialNumber">{{installation.FlowmeterSerialNumber}}</div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 text-center" *ngIf="installationPhotos">
@@ -223,3 +234,37 @@
     </div>  
 
 </div>
+
+<ng-template #confirmStatusChangeModal let-modal>
+    <div class="modal-header bg-secondary">
+        <h5 class="modal-title" id="confirmStatusChangeModalTitle">{{sensor.IsActive ? 'Disable' : 'Enable'}} Sensor</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <ng-container *ngIf="sensor.IsActive; else enableSensor">
+            <label for="dp1">Select a Retirement Date:</label>
+            <div class="input-group">
+                <input class="form-control" name="dp1" id="dp1" placeholder="yyyy-mm-dd" [(ngModel)]="retirementDate" ngbDatepicker #d1="ngbDatepicker"/>
+                <div class="input-group-append">
+                    <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()" type="button"></button>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #enableSensor>
+            <p>Are you sure you want to re-enable sensor {{sensor.SensorName}}? This will delete the current Retirement Date of {{sensor.RetirementDate | date:"MM/dd/yyyy"}}.</p>
+        </ng-template>
+
+        <p class="mt-4"><em>Reminder: Please review the data and create anomaly reports if needed for this sensor.</em></p>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-zybach" (click)="toggleIsActive(!sensor.IsActive)">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                {{sensor.IsActive ? 'Disable' : 'Enable'}}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Cancel click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>

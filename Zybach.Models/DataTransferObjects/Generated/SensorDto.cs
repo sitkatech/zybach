@@ -17,6 +17,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime CreateDate { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? RetirementDate { get; set; }
     }
 
     public partial class SensorSimpleDto
@@ -29,6 +30,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime CreateDate { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? RetirementDate { get; set; }
     }
 
 }

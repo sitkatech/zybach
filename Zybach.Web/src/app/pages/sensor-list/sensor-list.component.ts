@@ -118,6 +118,7 @@ export class SensorListComponent implements OnInit {
     this.createDateColumnDef(datePipe, 'Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
     this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
     this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
+    this.createDateColumnDef(datePipe, 'Retirement Date', 'RetirementDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorRetirementDate),
     {
       headerName: 'Well',
       children: [
@@ -202,7 +203,7 @@ export class SensorListComponent implements OnInit {
 
     if (fieldDefinitionTypeID) {
       dateColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
-      dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
+      dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID, labelOverride: headerName }
     }
     return dateColDef;
   }

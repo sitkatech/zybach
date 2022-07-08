@@ -40,10 +40,13 @@ begin
 			sum(case when wsm.MeasurementTypeID = 3 then wsm.MeasurementValue else null end) as ElectricalUsagePumpedVolume
 		from
 		(
-			select WellRegistrationID, MeasurementTypeID, MeasurementValue, IsAnomalous, datefromparts(ReadingYear, ReadingMonth, ReadingDay) as ReadingDate
-			from dbo.WellSensorMeasurement
+			select wsm.WellRegistrationID, wsm.MeasurementTypeID, wsm.MeasurementValue, wsm.IsAnomalous, 
+				datefromparts(wsm.ReadingYear, wsm.ReadingMonth, wsm.ReadingDay) as ReadingDate,
+				(case when s.RetirementDate is not null and s.RetirementDate < @endDate then s.RetirementDate else @endDate end) as EndDate
+			from dbo.WellSensorMeasurement wsm
+			join dbo.Sensor s on wsm.SensorName = s.SensorName
 		) wsm 
-		where (IsAnomalous = 0 or IsAnomalous is null) and ReadingDate >= @startDate and ReadingDate <= @endDate
+		where (IsAnomalous = 0 or IsAnomalous is null) and ReadingDate >= @startDate and ReadingDate <= EndDate
 		group by wsm.WellRegistrationID
 	) wps on w.WellRegistrationID = wps.WellRegistrationID
 end
