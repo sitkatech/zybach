@@ -39,6 +39,7 @@ namespace Zybach.EFModels.Entities
         public static readonly FieldDefinitionTypeSensorType SensorType = Zybach.EFModels.Entities.FieldDefinitionTypeSensorType.Instance;
         public static readonly FieldDefinitionTypeIrrigationUnitAcres IrrigationUnitAcres = Zybach.EFModels.Entities.FieldDefinitionTypeIrrigationUnitAcres.Instance;
         public static readonly FieldDefinitionTypeSensorLastVoltageReadingDate SensorLastVoltageReadingDate = Zybach.EFModels.Entities.FieldDefinitionTypeSensorLastVoltageReadingDate.Instance;
+        public static readonly FieldDefinitionTypeSensorRetirementDate SensorRetirementDate = Zybach.EFModels.Entities.FieldDefinitionTypeSensorRetirementDate.Instance;
 
         public static readonly List<FieldDefinitionType> All;
         public static readonly List<FieldDefinitionTypeDto> AllAsDto;
@@ -50,8 +51,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static FieldDefinitionType()
         {
-            All = new List<FieldDefinitionType> { Name, HasWaterLevelInspections, HasWaterQualityInspections, LatestWaterLevelInspectionDate, LatestWaterQualityInspectionDate, WellRegistrationNumber, WellNickname, AgHubRegisteredUser, WellFieldName, IrrigationUnitID, WellIrrigatedAcres, WellChemigationInspectionParticipation, WellWaterLevelInspectionParticipation, WellWaterQualityInspectionParticipation, WellProgramParticipation, WellOwnerName, SensorLastMessageAgeHours, SensorLastVoltageReading, SensorFirstReadingDate, SensorLastReadingDate, SensorStatus, SensorType, IrrigationUnitAcres, SensorLastVoltageReadingDate };
-            AllAsDto = new List<FieldDefinitionTypeDto> { Name.AsDto(), HasWaterLevelInspections.AsDto(), HasWaterQualityInspections.AsDto(), LatestWaterLevelInspectionDate.AsDto(), LatestWaterQualityInspectionDate.AsDto(), WellRegistrationNumber.AsDto(), WellNickname.AsDto(), AgHubRegisteredUser.AsDto(), WellFieldName.AsDto(), IrrigationUnitID.AsDto(), WellIrrigatedAcres.AsDto(), WellChemigationInspectionParticipation.AsDto(), WellWaterLevelInspectionParticipation.AsDto(), WellWaterQualityInspectionParticipation.AsDto(), WellProgramParticipation.AsDto(), WellOwnerName.AsDto(), SensorLastMessageAgeHours.AsDto(), SensorLastVoltageReading.AsDto(), SensorFirstReadingDate.AsDto(), SensorLastReadingDate.AsDto(), SensorStatus.AsDto(), SensorType.AsDto(), IrrigationUnitAcres.AsDto(), SensorLastVoltageReadingDate.AsDto() };
+            All = new List<FieldDefinitionType> { Name, HasWaterLevelInspections, HasWaterQualityInspections, LatestWaterLevelInspectionDate, LatestWaterQualityInspectionDate, WellRegistrationNumber, WellNickname, AgHubRegisteredUser, WellFieldName, IrrigationUnitID, WellIrrigatedAcres, WellChemigationInspectionParticipation, WellWaterLevelInspectionParticipation, WellWaterQualityInspectionParticipation, WellProgramParticipation, WellOwnerName, SensorLastMessageAgeHours, SensorLastVoltageReading, SensorFirstReadingDate, SensorLastReadingDate, SensorStatus, SensorType, IrrigationUnitAcres, SensorLastVoltageReadingDate, SensorRetirementDate };
+            AllAsDto = new List<FieldDefinitionTypeDto> { Name.AsDto(), HasWaterLevelInspections.AsDto(), HasWaterQualityInspections.AsDto(), LatestWaterLevelInspectionDate.AsDto(), LatestWaterQualityInspectionDate.AsDto(), WellRegistrationNumber.AsDto(), WellNickname.AsDto(), AgHubRegisteredUser.AsDto(), WellFieldName.AsDto(), IrrigationUnitID.AsDto(), WellIrrigatedAcres.AsDto(), WellChemigationInspectionParticipation.AsDto(), WellWaterLevelInspectionParticipation.AsDto(), WellWaterQualityInspectionParticipation.AsDto(), WellProgramParticipation.AsDto(), WellOwnerName.AsDto(), SensorLastMessageAgeHours.AsDto(), SensorLastVoltageReading.AsDto(), SensorFirstReadingDate.AsDto(), SensorLastReadingDate.AsDto(), SensorStatus.AsDto(), SensorType.AsDto(), IrrigationUnitAcres.AsDto(), SensorLastVoltageReadingDate.AsDto(), SensorRetirementDate.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, FieldDefinitionType>(All.ToDictionary(x => x.FieldDefinitionTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, FieldDefinitionTypeDto>(AllAsDto.ToDictionary(x => x.FieldDefinitionTypeID));
         }
@@ -148,6 +149,8 @@ namespace Zybach.EFModels.Entities
                     return SensorLastVoltageReading;
                 case FieldDefinitionTypeEnum.SensorLastVoltageReadingDate:
                     return SensorLastVoltageReadingDate;
+                case FieldDefinitionTypeEnum.SensorRetirementDate:
+                    return SensorRetirementDate;
                 case FieldDefinitionTypeEnum.SensorStatus:
                     return SensorStatus;
                 case FieldDefinitionTypeEnum.SensorType:
@@ -201,7 +204,8 @@ namespace Zybach.EFModels.Entities
         SensorStatus = 21,
         SensorType = 22,
         IrrigationUnitAcres = 23,
-        SensorLastVoltageReadingDate = 24
+        SensorLastVoltageReadingDate = 24,
+        SensorRetirementDate = 25
     }
 
     public partial class FieldDefinitionTypeName : FieldDefinitionType
@@ -346,5 +350,11 @@ namespace Zybach.EFModels.Entities
     {
         private FieldDefinitionTypeSensorLastVoltageReadingDate(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
         public static readonly FieldDefinitionTypeSensorLastVoltageReadingDate Instance = new FieldDefinitionTypeSensorLastVoltageReadingDate(24, @"SensorLastVoltageReadingDate", @"Last Voltage Reading Date");
+    }
+
+    public partial class FieldDefinitionTypeSensorRetirementDate : FieldDefinitionType
+    {
+        private FieldDefinitionTypeSensorRetirementDate(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
+        public static readonly FieldDefinitionTypeSensorRetirementDate Instance = new FieldDefinitionTypeSensorRetirementDate(25, @"SensorRetirementDate", @"Sensor Retirement Date");
     }
 }
