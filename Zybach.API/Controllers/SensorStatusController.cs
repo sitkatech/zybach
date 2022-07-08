@@ -63,7 +63,9 @@ namespace Zybach.API.Controllers
                             LastVoltageReadingDate = lastVoltageReading?.MeasurementDate,
                             SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
-                            IsActive = sensor.IsActive
+                            IsActive = sensor.IsActive,
+                            MostRecentSupportTicketID = sensor.MostRecentSupportTicketID,
+                            MostRecentSupportTicketTitle = sensor.MostRecentSupportTicketTitle
                         };
                     }
                     catch
@@ -110,7 +112,6 @@ namespace Zybach.API.Controllers
                         return null;
                     }
                 }).ToList()
-
             };
         }
 

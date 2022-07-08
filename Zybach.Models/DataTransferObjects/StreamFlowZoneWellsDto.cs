@@ -109,6 +109,8 @@ namespace Zybach.Models.DataTransferObjects
         public int SensorTypeID { get; set; }
         public string SensorTypeName { get; set; }
         public bool IsActive { get; set; }
+        public int? MostRecentSupportTicketID { get; set; }
+        public string MostRecentSupportTicketTitle { get; set; }
     }
 
     public class IrrigatedAcresPerYearDto
