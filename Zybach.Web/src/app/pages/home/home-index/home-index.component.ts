@@ -42,7 +42,6 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
                 if (!this.userIsUnassigned() && !this.userRoleIsDisabled()) {
                     this.userService.usersUserIDSupportTicketsGet(this.currentUser.UserID).subscribe(supportTickets => {
                         this.supportTickets = supportTickets;
-                        console.log(supportTickets);
                     });
                 }
             });

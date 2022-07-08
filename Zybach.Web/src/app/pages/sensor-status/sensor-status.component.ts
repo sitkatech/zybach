@@ -131,7 +131,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.wellsObservable = this.sensorStatusService.sensorStatusGet().subscribe(wells => {
-        console.log(wells.filter)
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
@@ -149,12 +148,9 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
               return geoJsonPoint;
             })
         }
-        console.log(wells.find(x => x.WellID = 12780).Sensors);
         this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
           sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))), [])
           .filter(sensor => (sensor.MessageAge > 3600 * 8 || (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500)) && sensor.IsActive);
-      
-        console.log(this.redSensors);
       })
     });
   }
