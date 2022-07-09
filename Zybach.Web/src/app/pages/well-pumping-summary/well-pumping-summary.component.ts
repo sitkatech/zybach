@@ -126,7 +126,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
       {
         headerValueGetter: () => "Flow Meter Pumped " + (this.unitsShown == 'in' ? "Depth (in)" : "Volume (gal)"),
         valueGetter: params => this.unitsShown == 'in' ? params.data.FlowMeterPumpedDepthInches : params.data.FlowMeterPumpedVolumeGallons,
-        valueFormatter: params => params.value ? `${_decimalPipe.transform(params.value,'1.2-2')} ${this.unitsShown}` : '-',
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.2-2') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
       },
       {
