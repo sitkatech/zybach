@@ -20,7 +20,8 @@ namespace Zybach.EFModels.Entities
                 InGeoOptix = sensor.InGeoOptix,
                 CreateDate = sensor.CreateDate,
                 LastUpdateDate = sensor.LastUpdateDate,
-                IsActive = sensor.IsActive
+                IsActive = sensor.IsActive,
+                RetirementDate = sensor.RetirementDate
             };
             DoCustomMappings(sensor, sensorDto);
             return sensorDto;
@@ -39,7 +40,8 @@ namespace Zybach.EFModels.Entities
                 InGeoOptix = sensor.InGeoOptix,
                 CreateDate = sensor.CreateDate,
                 LastUpdateDate = sensor.LastUpdateDate,
-                IsActive = sensor.IsActive
+                IsActive = sensor.IsActive,
+                RetirementDate = sensor.RetirementDate
             };
             DoCustomSimpleDtoMappings(sensor, sensorSimpleDto);
             return sensorSimpleDto;

@@ -11,6 +11,7 @@ CREATE TABLE [dbo].[Sensor](
 	[CreateDate] [datetime] NOT NULL,
 	[LastUpdateDate] [datetime] NOT NULL,
 	[IsActive] [bit] NOT NULL,
+	[RetirementDate] [datetime] NULL,
  CONSTRAINT [PK_Sensor_SensorID] PRIMARY KEY CLUSTERED 
 (
 	[SensorID] ASC

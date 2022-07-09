@@ -194,7 +194,7 @@ namespace Zybach.API.Controllers
             wellDetailDto.OpenSupportTickets = openSupportTickets;
 
             var annualPumpedVolumes = new List<AnnualPumpedVolume>();
-            var sensors = well.Sensors.Where(x => x.IsActive).ToList();
+            var sensors = well.Sensors.ToList();
             annualPumpedVolumes.AddRange(WellSensorMeasurements.GetAnnualPumpedVolumeForWellAndSensorType(_dbContext,
                 wellRegistrationID, sensors,
                 SensorType.FlowMeter));
@@ -434,7 +434,7 @@ namespace Zybach.API.Controllers
             {
                 SensorType.WellPressure.SensorTypeID
             };
-            var sensors = well.Sensors.Where(x => x.IsActive && sensorTypes.Contains(x.SensorTypeID)).ToList();
+            var sensors = well.Sensors.Where(x => sensorTypes.Contains(x.SensorTypeID)).ToList();
             var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensors, SensorType.WellPressure);
 
             var wellRegistrationID = well.WellRegistrationID;
@@ -461,7 +461,7 @@ namespace Zybach.API.Controllers
                 SensorType.ElectricalUsage.SensorTypeID
             };
 
-            var sensors = well.Sensors.Where(x => x.IsActive && sensorTypes.Contains(x.SensorTypeID)).ToList();
+            var sensors = well.Sensors.Where(x => sensorTypes.Contains(x.SensorTypeID)).ToList();
             var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensors, SensorType.FlowMeter);
 
             var sensorMeasurements = new List<SensorMeasurementDto>();

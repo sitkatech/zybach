@@ -8036,6 +8036,11 @@
           "IsActive": {
             "type": "boolean"
           },
+          "RetirementDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
