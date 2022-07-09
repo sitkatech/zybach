@@ -10116,30 +10116,59 @@
             "type": "string",
             "nullable": true
           },
-          "FlowMeterPumpedVolume": {
+          "FlowMeterPumpedVolumeGallons": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "ContinuityMeterPumpedVolume": {
+          "FlowMeterPumpedDepthInches": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "ElectricalUsagePumpedVolume": {
+          "ContinuityMeterPumpedVolumeGallons": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "FlowMeterContinuityMeterDifference": {
+          "ContinuityMeterPumpedDepthInches": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "FlowMeterElectricalUsageDifference": {
+          "ElectricalUsagePumpedVolumeGallons": {
             "type": "number",
             "format": "double",
             "nullable": true
+          },
+          "ElectricalUsagePumpedDepthInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterContinuityMeterDifferenceGallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "readOnly": true
+          },
+          "FlowMeterContinuityMeterDifferenceInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "readOnly": true
+          },
+          "FlowMeterElectricalUsageDifferenceGallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "readOnly": true
+          },
+          "FlowMeterElectricalUsageDifferenceInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
