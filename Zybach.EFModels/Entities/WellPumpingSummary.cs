@@ -15,19 +15,20 @@ namespace Rio.EFModels.Entities
         {
         }
 
+        public const double GallonsToInchesConversionRate = 27154;
+
         public int WellID { get; set; }
         public string WellRegistrationID { get; set; }
         public string OwnerName { get; set; }
+        public double? Acres { get; set; }
         public int? MostRecentSupportTicketID { get; set; }
         public string MostRecentSupportTicketTitle { get; set; }
         public string FlowMeters { get; set; }
         public string ContinuityMeters { get; set; }
         public string ElectricalUsage { get; set; }
-        public double? FlowMeterPumpedVolume { get; set; }
-        public double? ContinuityMeterPumpedVolume { get; set; }
-        public double? ElectricalUsagePumpedVolume { get; set; }
-        public double? FlowMeterContinuityMeterDifference { get; set; }
-        public double? FlowMeterElectricalUsageDifference { get; set; }
+        public double? FlowMeterPumpedVolumeGallons { get; set; }
+        public double? ContinuityMeterPumpedVolumeGallons { get; set; }
+        public double? ElectricalUsagePumpedVolumeGallons { get; set; }
 
         public static IEnumerable<WellPumpingSummaryDto> GetForDateRange(ZybachDbContext dbContext, string startDate, string endDate)
         {
@@ -45,11 +46,12 @@ namespace Rio.EFModels.Entities
                 FlowMeters = x.FlowMeters,
                 ContinuityMeters = x.ContinuityMeters,
                 ElectricalUsage = x.ElectricalUsage,
-                FlowMeterPumpedVolume = x.FlowMeterPumpedVolume,
-                ContinuityMeterPumpedVolume = x.ContinuityMeterPumpedVolume,
-                ElectricalUsagePumpedVolume = x.ElectricalUsagePumpedVolume,
-                FlowMeterContinuityMeterDifference = x.FlowMeterContinuityMeterDifference,
-                FlowMeterElectricalUsageDifference = x.FlowMeterElectricalUsageDifference
+                FlowMeterPumpedVolumeGallons = x.FlowMeterPumpedVolumeGallons,
+                FlowMeterPumpedDepthInches = (x.FlowMeterPumpedVolumeGallons / GallonsToInchesConversionRate) / x.Acres,
+                ContinuityMeterPumpedVolumeGallons = x.ContinuityMeterPumpedVolumeGallons,
+                ContinuityMeterPumpedDepthInches = (x.ContinuityMeterPumpedVolumeGallons / GallonsToInchesConversionRate) / x.Acres,
+                ElectricalUsagePumpedVolumeGallons = x.ElectricalUsagePumpedVolumeGallons,
+                ElectricalUsagePumpedDepthInches = (x.ElectricalUsagePumpedVolumeGallons / GallonsToInchesConversionRate) / x.Acres,
             });
 
             return wellPumpingSummaryDtos;

@@ -19,11 +19,16 @@ export class WellPumpingSummaryDto {
     FlowMeters?: string;
     ContinuityMeters?: string;
     ElectricalUsage?: string;
-    FlowMeterPumpedVolume?: number;
-    ContinuityMeterPumpedVolume?: number;
-    ElectricalUsagePumpedVolume?: number;
-    FlowMeterContinuityMeterDifference?: number;
-    FlowMeterElectricalUsageDifference?: number;
+    FlowMeterPumpedVolumeGallons?: number;
+    FlowMeterPumpedDepthInches?: number;
+    ContinuityMeterPumpedVolumeGallons?: number;
+    ContinuityMeterPumpedDepthInches?: number;
+    ElectricalUsagePumpedVolumeGallons?: number;
+    ElectricalUsagePumpedDepthInches?: number;
+    readonly FlowMeterContinuityMeterDifferenceGallons?: number;
+    readonly FlowMeterContinuityMeterDifferenceInches?: number;
+    readonly FlowMeterElectricalUsageDifferenceGallons?: number;
+    readonly FlowMeterElectricalUsageDifferenceInches?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
