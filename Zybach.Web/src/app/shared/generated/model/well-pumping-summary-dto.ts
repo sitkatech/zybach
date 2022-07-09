@@ -25,6 +25,10 @@ export class WellPumpingSummaryDto {
     ContinuityMeterPumpedDepthInches?: number;
     ElectricalUsagePumpedVolumeGallons?: number;
     ElectricalUsagePumpedDepthInches?: number;
+    readonly FlowMeterContinuityMeterDifferenceGallons?: number;
+    readonly FlowMeterContinuityMeterDifferenceInches?: number;
+    readonly FlowMeterElectricalUsageDifferenceGallons?: number;
+    readonly FlowMeterElectricalUsageDifferenceInches?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
