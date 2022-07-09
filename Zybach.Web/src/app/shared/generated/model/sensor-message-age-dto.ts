@@ -19,6 +19,8 @@ export class SensorMessageAgeDto {
     SensorTypeID?: number;
     SensorTypeName?: string;
     IsActive?: boolean;
+    MostRecentSupportTicketID?: number;
+    MostRecentSupportTicketTitle?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

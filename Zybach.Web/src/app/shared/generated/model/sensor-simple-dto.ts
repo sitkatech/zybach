@@ -30,6 +30,8 @@ export class SensorSimpleDto {
     WellPageNumber?: number;
     WellOwnerName?: string;
     WellTownshipRangeSection?: string;
+    MostRecentSupportTicketID?: number;
+    MostRecentSupportTicketTitle?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

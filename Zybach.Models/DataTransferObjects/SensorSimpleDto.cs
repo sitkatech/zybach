@@ -15,5 +15,8 @@ namespace Zybach.Models.DataTransferObjects
         public int? WellPageNumber { get; set; }
         public string WellOwnerName { get; set; }
         public string WellTownshipRangeSection { get; set; }
+        public int? MostRecentSupportTicketID { get; set; }
+        public string MostRecentSupportTicketTitle { get; set; }
+
     }
 }
