@@ -78,16 +78,8 @@ namespace Zybach.API.Services
                 PlainTextContent = mailMessage.Body,
                 HtmlContent = mailMessage.IsBodyHtml ? mailMessage.Body : null
             };
-            sendGridMessage.AddTos(mailMessage.To.Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList());
-            if (mailMessage.CC.Any())
-            {
-                sendGridMessage.AddCcs(mailMessage.CC.Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList());
-            }
 
-            if (mailMessage.Bcc.Any())
-            {
-                sendGridMessage.AddBccs(mailMessage.Bcc.Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList());
-            }
+            sendGridMessage = AddUniqueSendGridRecipientsFromMailMessage(sendGridMessage, mailMessage);
 
             var response = await _sendGridClient.SendEmailAsync(sendGridMessage);
 
@@ -96,9 +88,44 @@ namespace Zybach.API.Services
                 var responseBody = await response.Body.ReadAsStringAsync();
                 _logger.Error($"Encountered {response.StatusCode} status code sending email. Email sent response response body of \"{responseBody}\"");
             }
-
             
         }
+        /// <summary>
+        /// SendGrid was giving errors with mail messages that contained the same addresses in the to, cc, or bcc fields.
+        /// This method makes sure email addresses are unique in prioritized order by to -> cc -> bcc
+        /// </summary>
+        /// <param name="sendGridMessage"></param>
+        /// <param name="mailMessage"></param>
+        /// <returns></returns>
+        private SendGridMessage AddUniqueSendGridRecipientsFromMailMessage(SendGridMessage sendGridMessage, MailMessage mailMessage)
+        {
+            var addedEmailAddresses = new List<string>();
+
+            var distinctToAddresses = mailMessage.To.DistinctBy(x => x.Address).Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList();
+            sendGridMessage.AddTos(distinctToAddresses);
+            addedEmailAddresses.AddRange(distinctToAddresses.Select(x => x.Email));
+
+            if (mailMessage.CC.Any())
+            {
+                var distinctCcAddresses = mailMessage.CC.DistinctBy(x => x.Address)
+                    .Where(x => !addedEmailAddresses.Contains(x.Address))
+                    .Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList();
+                sendGridMessage.AddCcs(distinctCcAddresses);
+                addedEmailAddresses.AddRange(distinctCcAddresses.Select(x => x.Email));
+            }
+
+            if (mailMessage.Bcc.Any())
+            {
+                var distinctBccAddresses = mailMessage.Bcc.DistinctBy(x => x.Address)
+                    .Where(x => !addedEmailAddresses.Contains(x.Address))
+                    .Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList();
+                sendGridMessage.AddBccs(distinctBccAddresses);
+                addedEmailAddresses.AddRange(distinctBccAddresses.Select(x => x.Email));
+            }
+
+            return sendGridMessage;
+        }
+
 
         /// <summary>
         /// Alter message TO, CC, BCC if the setting <see cref="ZybachConfiguration.SITKA_EMAIL_REDIRECT"/> is set
