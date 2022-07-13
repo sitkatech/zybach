@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Serilog;
 
 namespace Zybach.API.Services
 {
@@ -16,12 +17,13 @@ namespace Zybach.API.Services
         private readonly ISendGridClient _sendGridClient;
         private readonly ZybachConfiguration _zybachConfiguration;
 
-        //private static readonly ILog _logger = LogManager.GetLogger(typeof(SitkaSmtpClient));
+        private static ILogger _logger { get; set; }
 
-        public SitkaSmtpClientService(ISendGridClient sendGridClient, IOptions<ZybachConfiguration> zybachConfiguration)
+        public SitkaSmtpClientService(ISendGridClient sendGridClient, IOptions<ZybachConfiguration> zybachConfiguration, ILogger logger)
         {
             _sendGridClient = sendGridClient;
             _zybachConfiguration = zybachConfiguration.Value;
+            _logger = logger;
         }
 
         /// <summary>
@@ -88,7 +90,14 @@ namespace Zybach.API.Services
             }
 
             var response = await _sendGridClient.SendEmailAsync(sendGridMessage);
-            //_logger.Info($"Email sent to SMTP server \"{smtpClient.Host}\", Details:\r\n{humanReadableDisplayOfMessage}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Body.ReadAsStringAsync();
+                _logger.Error($"Encountered {response.StatusCode} status code sending email. Email sent response response body of \"{responseBody}\"");
+            }
+
+            
         }
 
         /// <summary>
