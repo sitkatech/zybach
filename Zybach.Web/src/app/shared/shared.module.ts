@@ -25,6 +25,7 @@ import { CustomPinnedRowRendererComponent } from './components/ag-grid/custom-pi
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SensorChartComponent } from './components/sensor-chart/sensor-chart.component';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { SensorChartComponent } from './components/sensor-chart/sensor-chart.com
         SensorChartComponent,
         CustomDropdownFilterComponent,
         ClearGridFiltersButtonComponent,
-        CustomPinnedRowRendererComponent
+        CustomPinnedRowRendererComponent,
+        ConfirmModalComponent
     ],
     imports: [
         CommonModule,

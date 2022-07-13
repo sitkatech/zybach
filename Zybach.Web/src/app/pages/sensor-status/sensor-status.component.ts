@@ -46,6 +46,14 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         width: 100,
         resizable: true
       },
+      {
+        valueGetter: params => {
+          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+        },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/sensors" },
+        sortable: false, filter: false, width: 140
+      },
       { 
         headerName: 'Well Number', 
         field: 'WellRegistrationID', 
@@ -87,6 +95,20 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         sortable: true,
         width: 120
       },
+      {
+        headerName: "Most Recent Support Ticket",
+        valueGetter: params => {
+          return { 
+            LinkValue: params.data.MostRecentSupportTicketID, 
+            LinkDisplay: params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
+          }
+        },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/support-tickets/"},
+        comparator: this.utilityFunctionsService.linkRendererComparator,
+        filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : '',
+        filter: true, resizable: true, sortable: true
+      },
       { headerName: 'Last Message Age (Hours)',
         valueGetter: (params) => Math.floor(params.data.MessageAge / 3600),
         filter: 'agNumberColumnFilter',
@@ -105,7 +127,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         resizable: true, sortable: true
       }
     ];
-
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
@@ -127,9 +148,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
               return geoJsonPoint;
             })
         }
-
         this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
-          sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName }))), [])
+          sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))), [])
           .filter(sensor => (sensor.MessageAge > 3600 * 8 || (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500)) && sensor.IsActive);
       })
     });
@@ -146,8 +166,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   
   public onGridReady(params) {
     this.gridApi = params.api;
-    this.wellsGrid.columnApi.autoSizeAllColumns();
-    this.wellsGrid.api.sizeColumnsToFit();
   }
 
   public onSelectionChanged(event: Event) {

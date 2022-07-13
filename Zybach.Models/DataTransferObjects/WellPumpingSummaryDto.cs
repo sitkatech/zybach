@@ -10,9 +10,17 @@ public class WellPumpingSummaryDto
     public string FlowMeters { get; set; }
     public string ContinuityMeters { get; set; }
     public string ElectricalUsage { get; set; }
-    public double? FlowMeterPumpedVolume { get; set; }
-    public double? ContinuityMeterPumpedVolume { get; set; }
-    public double? ElectricalUsagePumpedVolume { get; set; }
-    public double? FlowMeterContinuityMeterDifference { get; set; }
-    public double? FlowMeterElectricalUsageDifference { get; set; }
+    public double? FlowMeterPumpedVolumeGallons { get; set; }
+    public double? FlowMeterPumpedDepthInches { get; set; }
+    public double? ContinuityMeterPumpedVolumeGallons { get; set; }
+    public double? ContinuityMeterPumpedDepthInches { get; set; }
+    public double? ElectricalUsagePumpedVolumeGallons { get; set; }
+    public double? ElectricalUsagePumpedDepthInches { get; set; }
+    public double? FlowMeterContinuityMeterDifferenceGallons => FlowMeterPumpedVolumeGallons - ContinuityMeterPumpedVolumeGallons;
+    public double? FlowMeterContinuityMeterDifferenceInches => FlowMeterPumpedDepthInches - ContinuityMeterPumpedDepthInches;
+    public double? FlowMeterElectricalUsageDifferenceGallons => FlowMeterPumpedVolumeGallons - ElectricalUsagePumpedVolumeGallons;
+    public double? FlowMeterElectricalUsageDifferenceInches => FlowMeterPumpedDepthInches - ElectricalUsagePumpedDepthInches;
+
+
+
 }

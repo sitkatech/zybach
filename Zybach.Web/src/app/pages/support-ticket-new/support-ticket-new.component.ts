@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { ActivatedRoute, ActivationEnd, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SupportTicketUpsertComponent } from 'src/app/shared/components/support-ticket-upsert/support-ticket-upsert.component';
+import { SensorService } from 'src/app/shared/generated/api/sensor.service';
 import { SupportTicketService } from 'src/app/shared/generated/api/support-ticket.service';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { SupportTicketPriorityEnum } from 'src/app/shared/generated/enum/support-ticket-priority-enum';
@@ -31,6 +32,7 @@ export class SupportTicketNewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private supportTicketService: SupportTicketService,
     private wellService: WellService,
+    private sensorService: SensorService,
     private authenticationService: AuthenticationService,
     private alertService: AlertService
   ) { }
@@ -44,10 +46,18 @@ export class SupportTicketNewComponent implements OnInit, OnDestroy {
       this.model.SupportTicketPriorityID = SupportTicketPriorityEnum.High;
       this.model.SupportTicketStatusID = SupportTicketStatusEnum.Open;
 
-      const wellID = parseInt(this.route.snapshot.paramMap.get("id"));
+      const wellID = parseInt(this.route.snapshot.paramMap.get("well-id"));
+      const sensorID = parseInt(this.route.snapshot.paramMap.get("sensor-id"));
+
       if (wellID) {
         this.wellService.wellsWellIDGet(wellID).subscribe(well => {
           this.model.WellRegistrationID = well.WellRegistrationID;
+        });
+      } else if (sensorID) {
+        this.sensorService.sensorsSensorIDGet(sensorID).subscribe(sensor => {
+          this.model.SensorID = sensor.SensorID;
+          this.model.SensorName = sensor.SensorName;
+          this.model.WellRegistrationID = sensor.WellRegistrationID;
         });
       }
 

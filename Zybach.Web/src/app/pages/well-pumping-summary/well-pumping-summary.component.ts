@@ -1,3 +1,4 @@
+import { DecimalPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { ColDef } from 'ag-grid-community';
@@ -31,13 +32,16 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
 
+  public unitsShown: string = "gal"; // gal or in
+
   public richTextTypeID = CustomRichTextTypeEnum.WellPumpingSummary;
 
   constructor(
     private authenticationService: AuthenticationService,
     private cdr: ChangeDetectorRef,
     private utilityFunctionsService: UtilityFunctionsService,
-    private wellService: WellService
+    private wellService: WellService,
+    private decimalPipe: DecimalPipe
   ) { }
 
   ngOnInit(): void {
@@ -63,6 +67,8 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
   }
 
   private createColumnDefs() {
+    const _decimalPipe = this.decimalPipe;
+
     this.columnDefs = [
       {
         valueGetter: params => {
@@ -117,11 +123,36 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         valueGetter: params => params.data.ElectricalUsage ? `Yes (${params.data.ElectricalUsage})` : 'No',
         width: 170
       },
-      this.utilityFunctionsService.createDecimalColumnDef("Flow Meter Pumped Volume (gal)", "FlowMeterPumpedVolume", 220, 1, true),
-      this.utilityFunctionsService.createDecimalColumnDef("Continuity Meter Pumped Volume (gal)", "ContinuityMeterPumpedVolume", 220, 1, true),
-      this.utilityFunctionsService.createDecimalColumnDef("Electrical Usage Pumped Volume (gal)", "ElectricalUsagePumpedVolume", 220, 1, true),
-      this.utilityFunctionsService.createDecimalColumnDef("Flowmeter - Continuity Meter (gal)", "FlowMeterContinuityMeterDifference", 220, 1, true),
-      this.utilityFunctionsService.createDecimalColumnDef("Flowmeter - Electrical Usage (gal)", "FlowMeterElectricalUsageDifference", 220, 1, true)
+      {
+        headerValueGetter: () => "Flow Meter Pumped " + (this.unitsShown == 'in' ? "Depth (in)" : "Volume (gal)"),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.FlowMeterPumpedDepthInches : params.data.FlowMeterPumpedVolumeGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.2-2') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
+      },
+      {
+        headerValueGetter: () => "Continuity Meter Pumped " + (this.unitsShown == 'in' ? "Depth (in)" : "Volume (gal)"),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.ContinuityMeterPumpedDepthInches : params.data.ContinuityMeterPumpedVolumeGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value, '1.2-2') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
+      },
+      {
+        headerValueGetter: () => "Electrical Usage Pumped " + (this.unitsShown == 'in' ? "Depth (in)" : "Volume (gal)"),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.ElectricalUsagePumpedDepthInches : params.data.ElectricalUsagePumpedVolumeGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value, '1.2-2') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
+      },
+      {
+        headerValueGetter: () => "Flow Meter - Continuity Meter " + (this.unitsShown == 'in' ? '(in)' : '(gal)'),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.FlowMeterContinuityMeterDifferenceInches : params.data.FlowMeterContinuityMeterDifferenceGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value, '1.2-2') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
+      },
+      {
+        headerValueGetter: () => "Flow Meter - Electrical Usage " + (this.unitsShown == 'in' ? '(in)' : '(gal)'),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.FlowMeterElectricalUsageDifferenceInches : params.data.FlowMeterElectricalUsageDifferenceGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value, '1.2-2') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
+      }
     ];
 
     this.defaultColDef = { sortable: true, filter: true, resizable: true };
@@ -137,5 +168,12 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
   public downloadCsv(){
     var colIDsToExport = this.wellPumpingSummariesGrid.columnApi.getAllGridColumns().map(x => x.getId()).slice(1);
     this.utilityFunctionsService.exportGridToCsv(this.wellPumpingSummariesGrid, 'well-pumping-summary.csv', colIDsToExport);
+  }
+
+  public toggleUnitsShown(units : string): void {
+    this.unitsShown = units;
+
+    this.wellPumpingSummariesGrid.api.setRowData(this.wellPumpingSummaries);
+    this.wellPumpingSummariesGrid.api.refreshHeader();
   }
 }

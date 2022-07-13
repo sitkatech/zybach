@@ -1,4 +1,5 @@
-﻿using Zybach.Models.DataTransferObjects;
+﻿using System.Linq;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
@@ -12,6 +13,16 @@ namespace Zybach.EFModels.Entities
             sensorSimpleDto.WellPageNumber = sensor.Well?.PageNumber;
             sensorSimpleDto.WellOwnerName = sensor.Well?.OwnerName;
             sensorSimpleDto.WellTownshipRangeSection = sensor.Well?.TownshipRangeSection;
+
+
+            var mostRecentSupportTicket = new SupportTicket();
+            if (sensor.SupportTickets != null)
+            {
+                mostRecentSupportTicket = sensor.SupportTickets?.MaxBy(x => x.DateUpdated);
+            }
+
+            sensorSimpleDto.MostRecentSupportTicketID = mostRecentSupportTicket?.SupportTicketID;
+            sensorSimpleDto.MostRecentSupportTicketTitle = mostRecentSupportTicket?.SupportTicketTitle;
         }
     }
 }
