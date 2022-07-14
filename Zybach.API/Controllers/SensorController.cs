@@ -31,7 +31,7 @@ namespace Zybach.API.Controllers
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
-            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList().ToLookup(x => x.SensorName);
+            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
 
             foreach (var sensorSimpleDto in sensorSimpleDtos)
             {
@@ -43,8 +43,12 @@ namespace Zybach.API.Controllers
 
                 if (wellSensorMeasurementsBySensor.Contains(sensorSimpleDto.SensorName))
                 {
+                    var wellSensorMeasurementsExcludingBatteryVoltage = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
+                            .Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
+
                     sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.MeasurementDate);
-                    sensorSimpleDto.LastReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Max(x => x.MeasurementDate);
+                    sensorSimpleDto.LastReadingDate = wellSensorMeasurementsExcludingBatteryVoltage.Any() ? wellSensorMeasurementsExcludingBatteryVoltage.Max(x => x.MeasurementDate) : null;
+                    
                     var lastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
                         .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID)
                         .MaxBy(x => x.MeasurementDate);
@@ -78,10 +82,12 @@ namespace Zybach.API.Controllers
             sensorSimpleDto.MessageAge = messageAge;
 
             var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking()
-                .Where(x => x.SensorName == sensorSimpleDto.SensorName && x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
-
+                .Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
+            var wellSensorMeasurementsExcludingBatteryVoltage = wellSensorMeasurements
+                .Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
+            
             sensorSimpleDto.FirstReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : null;
-            sensorSimpleDto.LastReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : null;
+            sensorSimpleDto.LastReadingDate = wellSensorMeasurementsExcludingBatteryVoltage.Any() ? wellSensorMeasurementsExcludingBatteryVoltage.Max(x => x.MeasurementDate) : null;
 
             var batteryVoltages = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).OrderByDescending(x => x.MeasurementDate).ToList();
             var lastVoltageReading = batteryVoltages.Any() ? batteryVoltages.FirstOrDefault() : null;
