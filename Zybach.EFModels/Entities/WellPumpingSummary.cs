@@ -23,6 +23,9 @@ namespace Rio.EFModels.Entities
         public double? Acres { get; set; }
         public int? MostRecentSupportTicketID { get; set; }
         public string MostRecentSupportTicketTitle { get; set; }
+        public int? WellAuditPumpRate { get; set; }
+        public int? RegisteredPumpRate { get; set; }
+        public int? WellTPNRDPumpRate { get; set; }
         public string FlowMeters { get; set; }
         public string ContinuityMeters { get; set; }
         public string ElectricalUsage { get; set; }
@@ -43,6 +46,10 @@ namespace Rio.EFModels.Entities
                 OwnerName = x.OwnerName,
                 MostRecentSupportTicketID = x.MostRecentSupportTicketID,
                 MostRecentSupportTicketTitle = x.MostRecentSupportTicketTitle,
+                PumpingRateGallonsPerMinute = x.WellAuditPumpRate ?? x.RegisteredPumpRate ?? x.WellTPNRDPumpRate ?? 0,
+                PumpingRateSource = x.WellAuditPumpRate != null ? "Audited" :
+                    x.RegisteredPumpRate != null ? "Registered" :
+                    x.WellTPNRDPumpRate != null ? "District" : "",
                 FlowMeters = x.FlowMeters,
                 ContinuityMeters = x.ContinuityMeters,
                 ElectricalUsage = x.ElectricalUsage,

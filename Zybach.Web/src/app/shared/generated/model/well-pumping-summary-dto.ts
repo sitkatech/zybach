@@ -16,6 +16,8 @@ export class WellPumpingSummaryDto {
     OwnerName?: string;
     MostRecentSupportTicketID?: number;
     MostRecentSupportTicketTitle?: string;
+    PumpingRateGallonsPerMinute?: number;
+    PumpingRateSource?: string;
     FlowMeters?: string;
     ContinuityMeters?: string;
     ElectricalUsage?: string;

@@ -10,9 +10,8 @@ create procedure dbo.pWellPumpingSummary
 as
 begin
 
-	declare @GallonsToInchesConversionRate float = 27154
-	
 	select w.WellID, w.WellRegistrationID, w.OwnerName, agw.Acres,
+		agw.WellAuditPumpRate, agw.RegisteredPumpRate, agw.WellTPNRDPumpRate,
 		mrst.SupportTicketID as MostRecentSupportTicketID, mrst.SupportTicketTitle as MostRecentSupportTicketTitle,
 		wst.FlowMeters, wst.ContinuityMeters, wst.ElectricalUsage,
 		wps.FlowMeterPumpedVolumeGallons, wps.ContinuityMeterPumpedVolumeGallons, wps.ElectricalUsagePumpedVolumeGallons
@@ -23,8 +22,9 @@ begin
 		from dbo.SupportTicket
 	) mrst on w.WellID = mrst.WellID and mrst.Ranking = 1
 	left join (
-		select aw.WellID, awia.Acres from dbo.AgHubWell aw
-		join dbo.AgHubWellIrrigatedAcre awia on aw.AgHubWellID = awia.AgHubWellID
+		select aw.WellID, aw.WellAuditPumpRate, aw.RegisteredPumpRate, aw.WellTPNRDPumpRate, awia.Acres 
+		from dbo.AgHubWell aw
+		left join dbo.AgHubWellIrrigatedAcre awia on aw.AgHubWellID = awia.AgHubWellID
 		where awia.IrrigationYear = year(getdate())
 	) agw on w.WellID = agw.WellID
 	left join 

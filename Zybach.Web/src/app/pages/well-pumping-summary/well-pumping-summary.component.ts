@@ -152,6 +152,13 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         valueGetter: params => this.unitsShown == 'in' ? params.data.FlowMeterElectricalUsageDifferenceInches : params.data.FlowMeterElectricalUsageDifferenceGallons,
         valueFormatter: params => params.value ? _decimalPipe.transform(params.value, '1.2-2') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
+      },
+      this.utilityFunctionsService.createDecimalColumnDef('Pump Rate (GPM)', 'PumpingRateGallonsPerMinute', 120, 0),
+      {
+        headerName: 'Pump Source',
+        valueGetter: params => params.data.PumpingRateSource ? params.data.PumpingRateSource :  'None',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: { field: 'PumpingRateSource' }
       }
     ];
 
