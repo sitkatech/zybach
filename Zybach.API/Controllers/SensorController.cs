@@ -31,7 +31,7 @@ namespace Zybach.API.Controllers
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
-            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
+            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList().ToLookup(x => x.SensorName);
 
             foreach (var sensorSimpleDto in sensorSimpleDtos)
             {
@@ -77,7 +77,8 @@ namespace Zybach.API.Controllers
                 : (int?)null;
             sensorSimpleDto.MessageAge = messageAge;
 
-            var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking().Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
+            var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking()
+                .Where(x => x.SensorName == sensorSimpleDto.SensorName && x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
 
             sensorSimpleDto.FirstReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : null;
             sensorSimpleDto.LastReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Max(x => x.MeasurementDate) : null;
