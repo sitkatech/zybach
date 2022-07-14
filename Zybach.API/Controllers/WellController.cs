@@ -164,6 +164,10 @@ namespace Zybach.API.Controllers
                 wellDetailDto.FieldName = agHubWell.FieldName;
                 wellDetailDto.HasElectricalData = agHubWell.HasElectricalData;
                 wellDetailDto.WellConnectedMeter = agHubWell.WellConnectedMeter;
+                wellDetailDto.PumpingRateGallonsPerMinute = agHubWell.PumpingRateGallonsPerMinute;
+                wellDetailDto.PumpingRateSource = agHubWell.WellAuditPumpRate != null ? "Audited" :
+                    agHubWell.RegisteredPumpRate != null ? "Registered" :
+                    agHubWell.WellTPNRDPumpRate != null ? "District" : "";
                 wellDetailDto.InAgHub = true;
                 var agHubIrrigationUnit = agHubWell.AgHubIrrigationUnit;
                 if (agHubIrrigationUnit != null)
