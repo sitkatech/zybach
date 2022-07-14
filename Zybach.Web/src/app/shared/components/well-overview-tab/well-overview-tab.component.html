@@ -74,6 +74,14 @@
                                         <em>Irrigated Acres are not available for this parcel</em>
                                     </ng-template>
                                 </div>
+                                <div class="col-12 col-sm-6 label">
+                                    <strong>Pump Rate:</strong>
+                                </div>
+                                <div class="col-12 col-sm-6">{{well.PumpingRateGallonsPerMinute}} GPM</div>
+                                <div class="col-12 col-sm-6 label">
+                                    <strong>Pump Rate Source:</strong>
+                                </div>
+                                <div class="col-12 col-sm-6">{{well.PumpingRateSource ?? 'None'}}</div>
                             </div>
                         </div>
                     </div>

@@ -44,6 +44,8 @@ export class WellDetailDto {
     ScreenDepth?: number;
     IrrigationUnitGeoJSON?: string;
     OpenSupportTickets?: Array<SupportTicketSimpleDto>;
+    PumpingRateGallonsPerMinute?: number;
+    PumpingRateSource?: string;
     Sensors?: Array<SensorSimpleDto>;
     WellConnectedMeter?: boolean;
     WellID?: number;

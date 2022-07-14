@@ -96,6 +96,8 @@ namespace Zybach.Models.DataTransferObjects
         public decimal? ScreenDepth { get; set; }
         public string IrrigationUnitGeoJSON { get; set; }
         public List<SupportTicketSimpleDto> OpenSupportTickets { get; set; }
+        public decimal PumpingRateGallonsPerMinute { get; set; }
+        public string PumpingRateSource { get; set; }
     }
 
 

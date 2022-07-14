@@ -9681,6 +9681,14 @@
             },
             "nullable": true
           },
+          "PumpingRateGallonsPerMinute": {
+            "type": "number",
+            "format": "double"
+          },
+          "PumpingRateSource": {
+            "type": "string",
+            "nullable": true
+          },
           "Sensors": {
             "type": "array",
             "items": {
@@ -10119,6 +10127,14 @@
             "nullable": true
           },
           "MostRecentSupportTicketTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "PumpingRateGallonsPerMinute": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PumpingRateSource": {
             "type": "string",
             "nullable": true
           },
