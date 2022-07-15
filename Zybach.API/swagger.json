@@ -7978,6 +7978,11 @@
             "format": "int32",
             "nullable": true
           },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "LastVoltageReading": {
             "type": "number",
             "format": "double",
