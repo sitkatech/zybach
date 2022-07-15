@@ -125,7 +125,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
         resizable: true, sortable: true
-      }
+      },
+      this.utilityFunctionsService.createDateColumnDef('Last Reading Date', 'LastReadingDate', 'M/d/yyyy', null, 140),
     ];
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
