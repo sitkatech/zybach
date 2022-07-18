@@ -7,6 +7,8 @@ public class WellPumpingSummaryDto
     public string OwnerName { get; set; }
     public int? MostRecentSupportTicketID { get; set; }
     public string MostRecentSupportTicketTitle { get; set; }
+    public int PumpingRateGallonsPerMinute { get; set; }
+    public string PumpingRateSource { get; set; }
     public string FlowMeters { get; set; }
     public string ContinuityMeters { get; set; }
     public string ElectricalUsage { get; set; }
@@ -20,7 +22,4 @@ public class WellPumpingSummaryDto
     public double? FlowMeterContinuityMeterDifferenceInches => FlowMeterPumpedDepthInches - ContinuityMeterPumpedDepthInches;
     public double? FlowMeterElectricalUsageDifferenceGallons => FlowMeterPumpedVolumeGallons - ElectricalUsagePumpedVolumeGallons;
     public double? FlowMeterElectricalUsageDifferenceInches => FlowMeterPumpedDepthInches - ElectricalUsagePumpedDepthInches;
-
-
-
 }

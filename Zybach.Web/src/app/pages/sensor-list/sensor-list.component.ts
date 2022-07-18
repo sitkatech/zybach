@@ -65,21 +65,19 @@ export class SensorListComponent implements OnInit {
     let datePipe = this.datePipe;
     this.sensorColumnDefs = [
     {
+      valueGetter: params => {
+        return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+      },
+      cellRendererFramework: LinkRendererComponent,
+      cellRendererParams: { inRouterLink: "/sensors" },
+      sortable: false, filter: false, width: 140
+    },
+    {
       headerName: 'Sensor Name', valueGetter: function (params: any) {
         return { LinkValue: params.data.SensorID, LinkDisplay: params.data.SensorName };
       }, cellRendererFramework: LinkRendererComponent,
       cellRendererParams: { inRouterLink: "/sensors/" },
-      comparator: function (id1: any, id2: any) {
-        let link1 = id1.LinkDisplay;
-        let link2 = id2.LinkDisplay;
-        if (link1 < link2) {
-          return -1;
-        }
-        if (link1 > link2) {
-          return 1;
-        }
-        return 0;
-      },
+      comparator: this.utilityFunctionsService.linkRendererComparator,
       filterValueGetter: function (params: any) {
         return params.data.SensorName;
       },

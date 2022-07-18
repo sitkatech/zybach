@@ -14,6 +14,7 @@ export class SensorMessageAgeDto {
     SensorID?: number;
     SensorName?: string;
     MessageAge?: number;
+    LastReadingDate?: string;
     LastVoltageReading?: number;
     LastVoltageReadingDate?: string;
     SensorTypeID?: number;
