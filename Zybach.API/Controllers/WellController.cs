@@ -172,8 +172,8 @@ namespace Zybach.API.Controllers
                 var agHubIrrigationUnit = agHubWell.AgHubIrrigationUnit;
                 if (agHubIrrigationUnit != null)
                 {
-                    wellDetailDto.IrrigationUnitGeoJSON = agHubIrrigationUnit.AgHubIrrigationUnitGeometries.Any() ? 
-                        GeoJsonHelpers.GetGeoJsonFromGeometry(agHubIrrigationUnit.AgHubIrrigationUnitGeometries.First().IrrigationUnitGeometry) : null;
+                    wellDetailDto.IrrigationUnitGeoJSON = agHubIrrigationUnit.AgHubIrrigationUnitGeometry != null ? 
+                        GeoJsonHelpers.GetGeoJsonFromGeometry(agHubIrrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry) : null;
                 }
             }
             else

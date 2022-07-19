@@ -12,7 +12,6 @@ namespace Zybach.EFModels.Entities
     {
         public AgHubIrrigationUnit()
         {
-            AgHubIrrigationUnitGeometries = new HashSet<AgHubIrrigationUnitGeometry>();
             AgHubIrrigationUnitWaterYearMonthETData = new HashSet<AgHubIrrigationUnitWaterYearMonthETDatum>();
             AgHubIrrigationUnitWaterYearMonthPrecipitationData = new HashSet<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum>();
             AgHubWells = new HashSet<AgHubWell>();
@@ -27,7 +26,7 @@ namespace Zybach.EFModels.Entities
         public double? IrrigationUnitAreaInAcres { get; set; }
 
         [InverseProperty("AgHubIrrigationUnit")]
-        public virtual ICollection<AgHubIrrigationUnitGeometry> AgHubIrrigationUnitGeometries { get; set; }
+        public virtual AgHubIrrigationUnitGeometry AgHubIrrigationUnitGeometry { get; set; }
         [InverseProperty("AgHubIrrigationUnit")]
         public virtual ICollection<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
         [InverseProperty("AgHubIrrigationUnit")]

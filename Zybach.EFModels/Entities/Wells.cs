@@ -83,7 +83,7 @@ namespace Zybach.EFModels.Entities
             return dbContext.Wells
                 .Include(x => x.AgHubWell)
                     .ThenInclude(x => x.AgHubIrrigationUnit)
-                    .ThenInclude(x => x.AgHubIrrigationUnitGeometries)
+                    .ThenInclude(x => x.AgHubIrrigationUnitGeometry)
                 .Include(x => x.GeoOptixWell)
                 .Include(x => x.AgHubWell.AgHubWellIrrigatedAcres)
                 .Include(x => x.Sensors)

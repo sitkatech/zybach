@@ -70,8 +70,8 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<AgHubIrrigationUnitGeometry>(entity =>
             {
                 entity.HasOne(d => d.AgHubIrrigationUnit)
-                    .WithMany(p => p.AgHubIrrigationUnitGeometries)
-                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
+                    .WithOne(p => p.AgHubIrrigationUnitGeometry)
+                    .HasForeignKey<AgHubIrrigationUnitGeometry>(d => d.AgHubIrrigationUnitID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

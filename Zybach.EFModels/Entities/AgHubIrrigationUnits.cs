@@ -54,8 +54,8 @@ namespace Zybach.EFModels.Entities
                 WellTPID = irrigationUnit.WellTPID,
                 IrrigationUnitAreaInAcres = irrigationUnit.IrrigationUnitAreaInAcres,
                 AssociatedWells = associatedWells,
-                IrrigationUnitGeoJSON = irrigationUnit.AgHubIrrigationUnitGeometries.Any() ? 
-                    GeoJsonHelpers.GetGeoJsonFromGeometry(irrigationUnit.AgHubIrrigationUnitGeometries.First().IrrigationUnitGeometry) : null,
+                IrrigationUnitGeoJSON = irrigationUnit.AgHubIrrigationUnitGeometry != null ? 
+                    GeoJsonHelpers.GetGeoJsonFromGeometry(irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry) : null,
                 WaterYearMonthETAndPrecipData = waterYearMonthETAndPrecipData
             };
             
@@ -65,7 +65,7 @@ namespace Zybach.EFModels.Entities
         public static IQueryable<AgHubIrrigationUnit> GetAgHubIrrigationUnitImpl(ZybachDbContext dbContext)
         {
             return dbContext.AgHubIrrigationUnits
-                .Include(x => x.AgHubIrrigationUnitGeometries)
+                .Include(x => x.AgHubIrrigationUnitGeometry)
                 .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
                     .ThenInclude(x => x.WaterYearMonth)
                 .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)

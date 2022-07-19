@@ -8,6 +8,7 @@ using NetTopologySuite.Geometries;
 namespace Zybach.EFModels.Entities
 {
     [Table("AgHubIrrigationUnitGeometry")]
+    [Index("AgHubIrrigationUnitID", Name = "AK_AgHubIrrigationUnitGeometry_AgHubIrrigationUnitID", IsUnique = true)]
     public partial class AgHubIrrigationUnitGeometry
     {
         [Key]
@@ -18,7 +19,7 @@ namespace Zybach.EFModels.Entities
         public Geometry IrrigationUnitGeometry { get; set; }
 
         [ForeignKey("AgHubIrrigationUnitID")]
-        [InverseProperty("AgHubIrrigationUnitGeometries")]
+        [InverseProperty("AgHubIrrigationUnitGeometry")]
         public virtual AgHubIrrigationUnit AgHubIrrigationUnit { get; set; }
     }
 }
