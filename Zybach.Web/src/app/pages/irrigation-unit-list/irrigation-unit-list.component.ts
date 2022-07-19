@@ -43,7 +43,11 @@ export class IrrigationUnitListComponent implements OnInit {
       this.currentUser = currentUser;
       this.initializeGrid();
       this.irrigationUnitGrid?.api.showLoadingOverlay();
-      this.updateGridData();
+
+      this.irrigationUnitService.irrigationUnitsGet().subscribe(irrigationUnits => {
+        this.irrigationUnits = irrigationUnits;
+        this.irrigationUnitGrid?.api.hideOverlay();
+      });
     });
   }
 
@@ -56,17 +60,7 @@ export class IrrigationUnitListComponent implements OnInit {
         }, 
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/irrigation-units/" },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.LinkValue;
-          let link2 = id2.LinkValue;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
           return params.data.WellTPID;
         },
@@ -93,17 +87,7 @@ export class IrrigationUnitListComponent implements OnInit {
 
           return downloadDisplay ?? "";
         },
-        comparator: function (id1: any, id2: any) {
-          let link1 = id1.DownloadDisplay;
-          let link2 = id2.DownloadDisplay;
-          if (link1 < link2) {
-            return -1;
-          }
-          if (link1 > link2) {
-            return 1;
-          }
-          return 0;
-        }, 
+        comparator: this.utilityFunctionsService.linkRendererComparator, 
         resizable: true, sortable: true, filter: true,
         cellRendererParams: { inRouterLink: "/wells/" },
         cellRendererFramework: MultiLinkRendererComponent
@@ -117,13 +101,6 @@ export class IrrigationUnitListComponent implements OnInit {
       },
       this.utilityFunctionsService.createDecimalColumnDef('Area (ac)', 'IrrigationUnitAreaInAcres', 130, 2, null, FieldDefinitionTypeEnum.IrrigationUnitAcres)
     ]
-  }
-
-  public updateGridData(): void {
-    this.irrigationUnitService.irrigationUnitsGet().subscribe(irrigationUnits => {
-      this.irrigationUnits = irrigationUnits;
-      this.irrigationUnitGrid ? this.irrigationUnitGrid.api.setRowData(irrigationUnits) : null;
-    });
   }
 
   public onFirstDataRendered(params): void {
