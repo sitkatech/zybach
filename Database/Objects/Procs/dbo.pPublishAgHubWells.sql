@@ -93,24 +93,35 @@ begin
 	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
 	where ahiuNew.IrrigationUnitGeometry is null
 
+	delete ahiug
+	from dbo.AgHubIrrigationUnitGeometry ahiug
+	join AgHubIrrigationUnit ahiu on ahiug.AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
+	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
+	where ahiuNew.IrrigationUnitGeometry is null
+
 	delete ahiu
 	from dbo.AgHubIrrigationUnit ahiu
 	left join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
 	where ahiuNew.WellTPID is null or ahiu.IrrigationUnitGeometry is null
 
-	insert into dbo.AgHubIrrigationUnit (WellTPID, IrrigationUnitGeometry)
-	select ahiuNew.WellTPID,
-			ahiuNew.IrrigationUnitGeometry
-	from #agIrrigationUnits ahiuNew
+	insert into dbo.AgHubIrrigationUnit (WellTPID)
+	select ahiuNew.WellTPID from #agIrrigationUnits ahiuNew
 	left join dbo.AgHubIrrigationUnit ahiu on ahiuNew.WellTPID = ahiu.WellTPID
 	where ahiu.AgHubIrrigationUnitID is null
 
-	update ahiu
-	set ahiu.IrrigationUnitGeometry = ahiuNew.IrrigationUnitGeometry
-	from dbo.AgHubIrrigationUnit ahiu 
+	insert into dbo.AgHubIrrigationUnitGeometry (IrrigationUnitGeometry)
+	select ahiuNew.IrrigationUnitGeometry from #agIrrigationUnits ahiuNew
+	left join dbo.AgHubIrrigationUnit ahiu on ahiuNew.WellTPID = ahiu.WellTPID
+	left join dbo.AgHubIrrigationUnitGeometry ahiug on ahiu.AgHubIrrigationUnitID = ahuig.AgHubIrrigationUnitID
+	where ahiug.AgHubIrrigationUnitGeometryID is null
+
+	update ahiug
+	set ahiug.IrrigationUnitGeometry = ahiuNew.IrrigationUnitGeometry
+	from dbo.AgHubIrrigationUnitGeometry ahiug
+	join AgHubIrrigationUnit ahiu on ahiug.AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
 	join #agIrrigationUnits ahiuNew on ahiu.WellTPID = ahiuNew.WellTPID
 
-	update dbo.AgHubIrrigationUnit
+	update dbo.AgHubIrrigationUnitGeometry
 	Set IrrigationUnitGeometry.STSrid = 4326
 	WHERE IrrigationUnitGeometry is not null
 	

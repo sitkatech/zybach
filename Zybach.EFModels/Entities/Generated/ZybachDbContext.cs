@@ -17,6 +17,7 @@ namespace Zybach.EFModels.Entities
         }
 
         public virtual DbSet<AgHubIrrigationUnit> AgHubIrrigationUnits { get; set; }
+        public virtual DbSet<AgHubIrrigationUnitGeometry> AgHubIrrigationUnitGeometries { get; set; }
         public virtual DbSet<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
         public virtual DbSet<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthPrecipitationData { get; set; }
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
@@ -66,6 +67,14 @@ namespace Zybach.EFModels.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AgHubIrrigationUnitGeometry>(entity =>
+            {
+                entity.HasOne(d => d.AgHubIrrigationUnit)
+                    .WithMany(p => p.AgHubIrrigationUnitGeometries)
+                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthETDatum>(entity =>
             {
                 entity.HasOne(d => d.AgHubIrrigationUnit)

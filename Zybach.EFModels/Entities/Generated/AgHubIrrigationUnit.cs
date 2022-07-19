@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite.Geometries;
 
 namespace Zybach.EFModels.Entities
 {
@@ -13,6 +12,7 @@ namespace Zybach.EFModels.Entities
     {
         public AgHubIrrigationUnit()
         {
+            AgHubIrrigationUnitGeometries = new HashSet<AgHubIrrigationUnitGeometry>();
             AgHubIrrigationUnitWaterYearMonthETData = new HashSet<AgHubIrrigationUnitWaterYearMonthETDatum>();
             AgHubIrrigationUnitWaterYearMonthPrecipitationData = new HashSet<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum>();
             AgHubWells = new HashSet<AgHubWell>();
@@ -24,10 +24,10 @@ namespace Zybach.EFModels.Entities
         [StringLength(100)]
         [Unicode(false)]
         public string WellTPID { get; set; }
-        [Column(TypeName = "geometry")]
-        public Geometry IrrigationUnitGeometry { get; set; }
         public double? IrrigationUnitAreaInAcres { get; set; }
 
+        [InverseProperty("AgHubIrrigationUnit")]
+        public virtual ICollection<AgHubIrrigationUnitGeometry> AgHubIrrigationUnitGeometries { get; set; }
         [InverseProperty("AgHubIrrigationUnit")]
         public virtual ICollection<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
         [InverseProperty("AgHubIrrigationUnit")]
