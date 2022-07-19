@@ -80,14 +80,10 @@ export class IrrigationUnitListComponent implements OnInit {
           return { links: names, DownloadDisplay: downloadDisplay ?? "" };
         },
         filterValueGetter: function (params: any) {
-          let names = params.data.AssociatedWells?.map(x => {
-            return { LinkValue: x.WellID, LinkDisplay: x.WellRegistrationID }
-          });
-          const downloadDisplay = names?.map(x => x.LinkDisplay).join(", ");
-
-          return downloadDisplay ?? "";
+          let names = params.data.AssociatedWells?.map(x => x.WellRegistrationID);
+          return names ? names.join(", ") : "";
         },
-        comparator: this.utilityFunctionsService.linkRendererComparator, 
+        comparator: this.utilityFunctionsService.multiLinkRendererComparator, 
         resizable: true, sortable: true, filter: true,
         cellRendererParams: { inRouterLink: "/wells/" },
         cellRendererFramework: MultiLinkRendererComponent
