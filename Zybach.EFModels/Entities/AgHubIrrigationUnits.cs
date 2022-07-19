@@ -10,7 +10,10 @@ namespace Zybach.EFModels.Entities
     {
         public static IEnumerable<AgHubIrrigationUnitSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
-            return GetAgHubIrrigationUnitImpl(dbContext)
+            return dbContext.AgHubIrrigationUnits
+                .Include(x => x.AgHubWells)
+                    .ThenInclude(x => x.Well)
+                    .ThenInclude(x => x.Sensors)
                 .OrderBy(x => x.WellTPID)
                 .Select(x => AgHubIrrigationUnitAsSimpleDto(x))
                 .ToList();
@@ -51,7 +54,8 @@ namespace Zybach.EFModels.Entities
                 WellTPID = irrigationUnit.WellTPID,
                 IrrigationUnitAreaInAcres = irrigationUnit.IrrigationUnitAreaInAcres,
                 AssociatedWells = associatedWells,
-                IrrigationUnitGeoJSON = GeoJsonHelpers.GetGeoJsonFromGeometry(irrigationUnit.IrrigationUnitGeometry),
+                IrrigationUnitGeoJSON = irrigationUnit.AgHubIrrigationUnitGeometries.Any() ? 
+                    GeoJsonHelpers.GetGeoJsonFromGeometry(irrigationUnit.AgHubIrrigationUnitGeometries.First().IrrigationUnitGeometry) : null,
                 WaterYearMonthETAndPrecipData = waterYearMonthETAndPrecipData
             };
             
@@ -61,6 +65,7 @@ namespace Zybach.EFModels.Entities
         public static IQueryable<AgHubIrrigationUnit> GetAgHubIrrigationUnitImpl(ZybachDbContext dbContext)
         {
             return dbContext.AgHubIrrigationUnits
+                .Include(x => x.AgHubIrrigationUnitGeometries)
                 .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
                     .ThenInclude(x => x.WaterYearMonth)
                 .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
