@@ -5,7 +5,6 @@ GO
 CREATE TABLE [dbo].[AgHubIrrigationUnit](
 	[AgHubIrrigationUnitID] [int] IDENTITY(1,1) NOT NULL,
 	[WellTPID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[IrrigationUnitGeometry] [geometry] NULL,
 	[IrrigationUnitAreaInAcres] [float] NULL,
  CONSTRAINT [PK_AgHubIrrigationUnit_AgHubIrrigationUnitID] PRIMARY KEY CLUSTERED 
 (
@@ -15,4 +14,4 @@ CREATE TABLE [dbo].[AgHubIrrigationUnit](
 (
 	[WellTPID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]

@@ -140,4 +140,14 @@ export class UtilityFunctionsService {
     }
     return id1.LinkDisplay > id2.LinkDisplay ? 1 : -1;
   }
+
+  public multiLinkRendererComparator(id1: any, id2: any) {
+    const value1 = id1.links.map(x => x.LinkDisplay).join(',');
+    const value2 = id2.links.map(x => x.LinkDisplay).join(',');
+
+    if (value1 == value2) {
+      return 0;
+    }
+    return value1 > value2 ? 1 : -1;
+  }
 }
