@@ -20,6 +20,8 @@ export class SensorSimpleDto {
     LastUpdateDate?: string;
     IsActive?: boolean;
     RetirementDate?: string;
+    ContinuityMeterStatusID?: number;
+    ContinuityMeterStatusLastUpdated?: string;
     WellRegistrationID?: string;
     SensorTypeName?: string;
     MessageAge?: number;

@@ -40,6 +40,7 @@ namespace Zybach.EFModels.Entities
         public static readonly FieldDefinitionTypeIrrigationUnitAcres IrrigationUnitAcres = Zybach.EFModels.Entities.FieldDefinitionTypeIrrigationUnitAcres.Instance;
         public static readonly FieldDefinitionTypeSensorLastVoltageReadingDate SensorLastVoltageReadingDate = Zybach.EFModels.Entities.FieldDefinitionTypeSensorLastVoltageReadingDate.Instance;
         public static readonly FieldDefinitionTypeSensorRetirementDate SensorRetirementDate = Zybach.EFModels.Entities.FieldDefinitionTypeSensorRetirementDate.Instance;
+        public static readonly FieldDefinitionTypeContinuityMeterStatus ContinuityMeterStatus = Zybach.EFModels.Entities.FieldDefinitionTypeContinuityMeterStatus.Instance;
 
         public static readonly List<FieldDefinitionType> All;
         public static readonly List<FieldDefinitionTypeDto> AllAsDto;
@@ -51,8 +52,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static FieldDefinitionType()
         {
-            All = new List<FieldDefinitionType> { Name, HasWaterLevelInspections, HasWaterQualityInspections, LatestWaterLevelInspectionDate, LatestWaterQualityInspectionDate, WellRegistrationNumber, WellNickname, AgHubRegisteredUser, WellFieldName, IrrigationUnitID, WellIrrigatedAcres, WellChemigationInspectionParticipation, WellWaterLevelInspectionParticipation, WellWaterQualityInspectionParticipation, WellProgramParticipation, WellOwnerName, SensorLastMessageAgeHours, SensorLastVoltageReading, SensorFirstReadingDate, SensorLastReadingDate, SensorStatus, SensorType, IrrigationUnitAcres, SensorLastVoltageReadingDate, SensorRetirementDate };
-            AllAsDto = new List<FieldDefinitionTypeDto> { Name.AsDto(), HasWaterLevelInspections.AsDto(), HasWaterQualityInspections.AsDto(), LatestWaterLevelInspectionDate.AsDto(), LatestWaterQualityInspectionDate.AsDto(), WellRegistrationNumber.AsDto(), WellNickname.AsDto(), AgHubRegisteredUser.AsDto(), WellFieldName.AsDto(), IrrigationUnitID.AsDto(), WellIrrigatedAcres.AsDto(), WellChemigationInspectionParticipation.AsDto(), WellWaterLevelInspectionParticipation.AsDto(), WellWaterQualityInspectionParticipation.AsDto(), WellProgramParticipation.AsDto(), WellOwnerName.AsDto(), SensorLastMessageAgeHours.AsDto(), SensorLastVoltageReading.AsDto(), SensorFirstReadingDate.AsDto(), SensorLastReadingDate.AsDto(), SensorStatus.AsDto(), SensorType.AsDto(), IrrigationUnitAcres.AsDto(), SensorLastVoltageReadingDate.AsDto(), SensorRetirementDate.AsDto() };
+            All = new List<FieldDefinitionType> { Name, HasWaterLevelInspections, HasWaterQualityInspections, LatestWaterLevelInspectionDate, LatestWaterQualityInspectionDate, WellRegistrationNumber, WellNickname, AgHubRegisteredUser, WellFieldName, IrrigationUnitID, WellIrrigatedAcres, WellChemigationInspectionParticipation, WellWaterLevelInspectionParticipation, WellWaterQualityInspectionParticipation, WellProgramParticipation, WellOwnerName, SensorLastMessageAgeHours, SensorLastVoltageReading, SensorFirstReadingDate, SensorLastReadingDate, SensorStatus, SensorType, IrrigationUnitAcres, SensorLastVoltageReadingDate, SensorRetirementDate, ContinuityMeterStatus };
+            AllAsDto = new List<FieldDefinitionTypeDto> { Name.AsDto(), HasWaterLevelInspections.AsDto(), HasWaterQualityInspections.AsDto(), LatestWaterLevelInspectionDate.AsDto(), LatestWaterQualityInspectionDate.AsDto(), WellRegistrationNumber.AsDto(), WellNickname.AsDto(), AgHubRegisteredUser.AsDto(), WellFieldName.AsDto(), IrrigationUnitID.AsDto(), WellIrrigatedAcres.AsDto(), WellChemigationInspectionParticipation.AsDto(), WellWaterLevelInspectionParticipation.AsDto(), WellWaterQualityInspectionParticipation.AsDto(), WellProgramParticipation.AsDto(), WellOwnerName.AsDto(), SensorLastMessageAgeHours.AsDto(), SensorLastVoltageReading.AsDto(), SensorFirstReadingDate.AsDto(), SensorLastReadingDate.AsDto(), SensorStatus.AsDto(), SensorType.AsDto(), IrrigationUnitAcres.AsDto(), SensorLastVoltageReadingDate.AsDto(), SensorRetirementDate.AsDto(), ContinuityMeterStatus.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, FieldDefinitionType>(All.ToDictionary(x => x.FieldDefinitionTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, FieldDefinitionTypeDto>(AllAsDto.ToDictionary(x => x.FieldDefinitionTypeID));
         }
@@ -125,6 +126,8 @@ namespace Zybach.EFModels.Entities
             {
                 case FieldDefinitionTypeEnum.AgHubRegisteredUser:
                     return AgHubRegisteredUser;
+                case FieldDefinitionTypeEnum.ContinuityMeterStatus:
+                    return ContinuityMeterStatus;
                 case FieldDefinitionTypeEnum.HasWaterLevelInspections:
                     return HasWaterLevelInspections;
                 case FieldDefinitionTypeEnum.HasWaterQualityInspections:
@@ -205,7 +208,8 @@ namespace Zybach.EFModels.Entities
         SensorType = 22,
         IrrigationUnitAcres = 23,
         SensorLastVoltageReadingDate = 24,
-        SensorRetirementDate = 25
+        SensorRetirementDate = 25,
+        ContinuityMeterStatus = 26
     }
 
     public partial class FieldDefinitionTypeName : FieldDefinitionType
@@ -356,5 +360,11 @@ namespace Zybach.EFModels.Entities
     {
         private FieldDefinitionTypeSensorRetirementDate(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
         public static readonly FieldDefinitionTypeSensorRetirementDate Instance = new FieldDefinitionTypeSensorRetirementDate(25, @"SensorRetirementDate", @"Sensor Retirement Date");
+    }
+
+    public partial class FieldDefinitionTypeContinuityMeterStatus : FieldDefinitionType
+    {
+        private FieldDefinitionTypeContinuityMeterStatus(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
+        public static readonly FieldDefinitionTypeContinuityMeterStatus Instance = new FieldDefinitionTypeContinuityMeterStatus(26, @"ContinuityMeterStatus", @"Continuity Meter Always On/Off");
     }
 }

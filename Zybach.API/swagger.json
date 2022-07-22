@@ -8055,6 +8055,16 @@
             "format": "date-time",
             "nullable": true
           },
+          "ContinuityMeterStatusID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ContinuityMeterStatusLastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "WellRegistrationID": {
             "type": "string",
             "nullable": true

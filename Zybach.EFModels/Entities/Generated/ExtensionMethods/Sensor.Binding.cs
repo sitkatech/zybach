@@ -7,5 +7,6 @@ namespace Zybach.EFModels.Entities
     public partial class Sensor
     {
         public SensorType SensorType => SensorType.AllLookupDictionary[SensorTypeID];
+        public ContinuityMeterStatus ContinuityMeterStatus => ContinuityMeterStatusID.HasValue ? ContinuityMeterStatus.AllLookupDictionary[ContinuityMeterStatusID.Value] : null;
     }
 }
