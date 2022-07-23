@@ -10,6 +10,8 @@ import { WellWithSensorMessageAgeDto } from 'src/app/shared/generated/model/well
 import { WellMapComponent } from '../well-map/well-map.component';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
+import { ContinuityMeterStatusEnum } from 'src/app/shared/generated/enum/continuity-meter-status-enum';
+import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 
 @Component({
   selector: 'zybach-sensor-status',
@@ -75,12 +77,9 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Sensor', valueGetter: function (params: any) {
-          if(params.data.SensorName)
-          {
+          if(params.data.SensorName) {
             return { LinkValue: params.data.SensorID, LinkDisplay: params.data.SensorName };
-          }
-          else
-          {
+          } else {
             return { LinkValue: null, LinkDisplay: null };
           }
         }, 
@@ -127,6 +126,15 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         resizable: true, sortable: true
       },
       this.utilityFunctionsService.createDateColumnDef('Last Reading Date', 'LastReadingDate', 'M/d/yyyy', null, 140),
+      {
+        headerComponentFramework: FieldDefinitionGridHeaderComponent,
+        headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
+        valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
+           params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
+        sortable: true, filter: true, resizable: true,
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
+      }
     ];
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
@@ -150,8 +158,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             })
         }
         this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
-          sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))), [])
-          .filter(sensor => (sensor.MessageAge > 3600 * 8 || (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500)) && sensor.IsActive);
+          sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))
+        ), []).filter(sensor => (sensor.MessageAge > 3600 * 8 || (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500)) && sensor.IsActive);
       })
     });
   }

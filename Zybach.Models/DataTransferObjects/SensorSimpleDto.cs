@@ -17,6 +17,8 @@ namespace Zybach.Models.DataTransferObjects
         public string WellTownshipRangeSection { get; set; }
         public int? MostRecentSupportTicketID { get; set; }
         public string MostRecentSupportTicketTitle { get; set; }
-
+        public ContinuityMeterStatusDto ContinuityMeterStatus { get; set; }
+        public DateTime? LastOnReadingDate { get; set; }
+        public DateTime? LastOffReadingDate { get; set; }
     }
 }

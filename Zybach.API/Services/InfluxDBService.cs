@@ -120,6 +120,35 @@ namespace Zybach.API.Services
             return fluxTables.Where(x => !string.IsNullOrWhiteSpace(x.Sensor)).ToDictionary(x => x.Sensor.ToUpper(), registration => registration.EventAge);
         }
 
+        public async Task<Dictionary<string, int>> GetDailyContinuityMeterStatusData()
+        {
+            var getStatusFunction = "getContinuityMeterStatus = (x) => { " +
+                                    "}";
+            var fluxQuery =
+                "import \"date\"" +
+                "startOfWeek = date.sub(from: today(), d: 7d)" +
+
+                $"from(bucket: \"{_zybachConfiguration.INFLUX_BUCKET}\")" +
+                "|> range(start: -14d)" +
+                FilterByMeasurement(new List<string> { MeasurementType.ContinuityMeter.InfluxMeasurementName }) +
+                GroupBy(FieldNames.SensorName) +
+                "|> map(fn: (r) => ({ r with fromLastWeek: if r._time > startOfWeek then false else true}))" +
+                "|> reduce(fn: (r, accumulator) => ({" +
+                    "alwaysOff: if r._value == 1 then false else accumulator.alwaysOff," +
+                    "alwaysOnOrNoRecordsFromLastWeek: if r.fromLastWeek and r._value == 0 then false else accumulator.alwaysOnOrNoRecordsFromLastWeek," +
+                    "fromLastWeekCount: if r.fromLastWeek then accumulator.fromLastWeekCount + 1 else accumulator.fromLastWeekCount" +
+                "}), identity: { alwaysOnOrNoRecordsFromLastWeek: true, alwaysOff: true, fromLastWeekCount: 0})" +
+                "|> map(fn: (r) => ({ sn: r.sn, alwaysOff: r.alwaysOff, alwaysOn: if r.alwaysOnOrNoRecordsFromLastWeek and r.fromLastWeekCount > 0 then true else false}))" +
+                "|> group()";
+
+            _logger.LogInformation($"Influx DB Query: {fluxQuery}");
+            var fluxTables = await _influxDbClient.GetQueryApi().QueryAsync<ContinuityMeterStatusData>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
+            return fluxTables.Where(x => !string.IsNullOrWhiteSpace(x.Sensor))
+                .ToDictionary(x => x.Sensor.ToUpper(),
+                    y => !y.AlwaysOff && !y.AlwaysOn ? (int)ContinuityMeterStatusEnum.ReportingNormally :
+                        y.AlwaysOff ? (int)ContinuityMeterStatusEnum.AlwaysOff : (int)ContinuityMeterStatusEnum.AlwaysOn);
+        }
+
         private async Task<List<MeasurementReading>> RunInfluxQueryAsync(string flux)
         {
             var fluxQuery = $"from(bucket: \"{_zybachConfiguration.INFLUX_BUCKET}\") {flux}";
@@ -233,6 +262,15 @@ namespace Zybach.API.Services
             public double Value { get; set; }
             [Column("eventAge")]
             public int EventAge { get; set; }
+        }
+
+        private class ContinuityMeterStatusData
+        {
+            [Column("sn")]
+            public string Sensor { get; set; }
+            [Column("alwaysOn")]
+            public bool AlwaysOn { get; set; }
+            public bool AlwaysOff { get; set; }
         }
 
         private struct MeasurementNames
