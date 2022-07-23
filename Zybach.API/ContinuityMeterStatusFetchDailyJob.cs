@@ -22,7 +22,7 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
     }
 
     public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-        {RunEnvironment.Production};
+        {RunEnvironment.Production, RunEnvironment.Development};
 
     protected override void RunJobImplementation()
     {
