@@ -79,9 +79,25 @@
                                     </strong>
                                 </div>
                                 <div class="col-12 col-sm-6 text-left">
-                                    <span *ngIf="sensor?.RetirementDate; else noRetirementDate">{{sensor?.RetirementDate | date: "MM/dd/yyyy"}}</span>
+                                    <span *ngIf="sensor?.RetirementDate; else notApplicable">{{sensor?.RetirementDate | date: "MM/dd/yyyy"}}</span>
                                 </div>
-                                <ng-template #noRetirementDate>
+                                <div class="col-12 col-sm-6 label">
+                                    <strong><field-definition [fieldDefinitionType]="'ContinuityMeterStatus'" labelOverride="Always On/Off"></field-definition>:</strong>
+                                </div>
+                                <div class="col-6 col-sm-0 text-left">
+                                    <span *ngIf="isContinuityMeter(); else notApplicable">{{sensor?.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName}}</span>
+                                </div>
+                                <ng-container *ngIf="isContinuityMeter() && !isReportingNormally()">
+                                    <div class="col-12 col-sm-6 label">
+                                        <strong>Last {{isAlwaysOn() ? 'Off' : 'On'}} Reading Date:</strong>
+                                    </div>
+                                    <div class="col-6 col-sm-0 text-left">
+                                        <span *ngIf="isAlwaysOn()">{{ sensor?.LastOffReadingDate | date: 'short' }}</span>
+                                        <span *ngIf="!isAlwaysOn()">{{ sensor?.LastOnReadingDate | date: 'short' }}</span>
+                                    </div>
+                                </ng-container>
+
+                                <ng-template #notApplicable>
                                     <em class="text-muted">N/A</em>
                                 </ng-template>
                             </div>

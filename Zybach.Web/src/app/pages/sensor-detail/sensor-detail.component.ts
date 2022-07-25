@@ -21,6 +21,8 @@ import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-ada
 import { SensorAnomalyUpsertDto } from 'src/app/shared/generated/model/sensor-anomaly-upsert-dto';
 import { SensorChartDataDto } from 'src/app/shared/generated/model/sensor-chart-data-dto';
 import { SupportTicketSimpleDto } from 'src/app/shared/generated/model/support-ticket-simple-dto';
+import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
+import { ContinuityMeterStatusEnum } from 'src/app/shared/generated/enum/continuity-meter-status-enum';
 
 @Component({
   selector: 'zybach-sensor-detail',
@@ -79,6 +81,7 @@ export class SensorDetailComponent implements OnInit {
     })
     .subscribe(({sensor, sensorChartData, openSupportTickets}) => {
       this.sensor = sensor;
+      console.log(sensor)
       // convert to hours
       this.sensor.MessageAge = Math.floor(this.sensor.MessageAge / 3600);
 
@@ -128,6 +131,18 @@ export class SensorDetailComponent implements OnInit {
     });
 
     return installationPhotoDataUrls;
+  }
+
+  public isContinuityMeter(): boolean {
+    return this.sensor?.SensorTypeID == SensorTypeEnum.ContinuityMeter;
+  }
+
+  public isReportingNormally(): boolean {
+    return this.sensor?.ContinuityMeterStatusID == ContinuityMeterStatusEnum.ReportingNormally;
+  }
+
+  public isAlwaysOn(): boolean {
+    return this.sensor?.ContinuityMeterStatusID == ContinuityMeterStatusEnum.AlwaysOn;
   }
 
   public getInstallationDate(installation: InstallationRecordDto) {

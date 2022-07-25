@@ -13,7 +13,7 @@ namespace Zybach.EFModels.Entities
             sensorSimpleDto.WellPageNumber = sensor.Well?.PageNumber;
             sensorSimpleDto.WellOwnerName = sensor.Well?.OwnerName;
             sensorSimpleDto.WellTownshipRangeSection = sensor.Well?.TownshipRangeSection;
-
+            sensorSimpleDto.ContinuityMeterStatus = sensor.ContinuityMeterStatus?.AsDto();
 
             var mostRecentSupportTicket = new SupportTicket();
             if (sensor.SupportTickets != null)

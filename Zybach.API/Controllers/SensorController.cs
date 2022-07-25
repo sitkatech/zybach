@@ -94,6 +94,11 @@ namespace Zybach.API.Controllers
             sensorSimpleDto.LastVoltageReading = lastVoltageReading?.MeasurementValue;
             sensorSimpleDto.LastVoltageReadingDate = lastVoltageReading?.MeasurementDate;
 
+            if (sensor.SensorTypeID == (int)SensorTypeEnum.ContinuityMeter)
+            {
+                sensorSimpleDto.LastOnReadingDate = wellSensorMeasurements.Where(x => x.MeasurementValue > 0).Max(x => x.MeasurementDate);
+                sensorSimpleDto.LastOffReadingDate = wellSensorMeasurements.Where(x => x.MeasurementValue == 0).Max(x => x.MeasurementDate);
+            }
             return sensorSimpleDto;
         }
 

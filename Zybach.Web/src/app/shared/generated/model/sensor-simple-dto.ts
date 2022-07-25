@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ContinuityMeterStatusDto } from '././continuity-meter-status-dto';
 
 export class SensorSimpleDto { 
     SensorID?: number;
@@ -20,6 +21,8 @@ export class SensorSimpleDto {
     LastUpdateDate?: string;
     IsActive?: boolean;
     RetirementDate?: string;
+    ContinuityMeterStatusID?: number;
+    ContinuityMeterStatusLastUpdated?: string;
     WellRegistrationID?: string;
     SensorTypeName?: string;
     MessageAge?: number;
@@ -32,6 +35,9 @@ export class SensorSimpleDto {
     WellTownshipRangeSection?: string;
     MostRecentSupportTicketID?: number;
     MostRecentSupportTicketTitle?: string;
+    ContinuityMeterStatus?: ContinuityMeterStatusDto;
+    LastOnReadingDate?: string;
+    LastOffReadingDate?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

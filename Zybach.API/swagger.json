@@ -7150,6 +7150,24 @@
         },
         "additionalProperties": false
       },
+      "ContinuityMeterStatusDto": {
+        "type": "object",
+        "properties": {
+          "ContinuityMeterStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ContinuityMeterStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ContinuityMeterStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CountyDto": {
         "type": "object",
         "properties": {
@@ -8012,6 +8030,9 @@
           "MostRecentSupportTicketTitle": {
             "type": "string",
             "nullable": true
+          },
+          "ContinuityMeterStatus": {
+            "$ref": "#/components/schemas/ContinuityMeterStatusDto"
           }
         },
         "additionalProperties": false
@@ -8051,6 +8072,16 @@
             "type": "boolean"
           },
           "RetirementDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ContinuityMeterStatusID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "ContinuityMeterStatusLastUpdated": {
             "type": "string",
             "format": "date-time",
             "nullable": true
@@ -8108,6 +8139,19 @@
           },
           "MostRecentSupportTicketTitle": {
             "type": "string",
+            "nullable": true
+          },
+          "ContinuityMeterStatus": {
+            "$ref": "#/components/schemas/ContinuityMeterStatusDto"
+          },
+          "LastOnReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastOffReadingDate": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         },
