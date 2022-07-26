@@ -12,6 +12,7 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
+import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 
 @Component({
   selector: 'zybach-sensor-list',
@@ -116,6 +117,15 @@ export class SensorListComponent implements OnInit {
     this.createDateColumnDef(datePipe, 'Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
     this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
     this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
+    {
+      headerComponentFramework: FieldDefinitionGridHeaderComponent,
+      headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
+      valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
+         params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
+      sortable: true, filter: true, resizable: true,
+      filterFramework: CustomDropdownFilterComponent,
+      filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
+    },
     this.createDateColumnDef(datePipe, 'Retirement Date', 'RetirementDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorRetirementDate),
     {
       headerName: 'Well',
