@@ -81,7 +81,6 @@ export class SensorDetailComponent implements OnInit {
     })
     .subscribe(({sensor, sensorChartData, openSupportTickets}) => {
       this.sensor = sensor;
-      console.log(sensor)
       // convert to hours
       this.sensor.MessageAge = Math.floor(this.sensor.MessageAge / 3600);
 
@@ -93,12 +92,16 @@ export class SensorDetailComponent implements OnInit {
   }
 
   private getInstallationDetails() {
-    this.wellService.wellsWellIDInstallationGet(this.wellID).subscribe(installations => {
-      this.installations = installations.filter(x => x.SensorSerialNumber == this.sensor.SensorName);
-      for (const installation of installations) {
-        this.installationPhotos = this.getPhotoRecords(installation);
-      }
-    });
+    if (this.wellID) {
+      this.wellService.wellsWellIDInstallationGet(this.wellID).subscribe(installations => {
+        this.installations = installations.filter(x => x.SensorSerialNumber == this.sensor.SensorName);
+        for (const installation of installations) {
+          this.installationPhotos = this.getPhotoRecords(installation);
+        }
+      });
+    } else {
+      this.installations = [];
+    }
   }
 
   private getPhotoRecords(installation: InstallationRecordDto) : any[]{
