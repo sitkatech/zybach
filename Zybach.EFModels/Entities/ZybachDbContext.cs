@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rio.EFModels.Entities;
 
 namespace Zybach.EFModels.Entities;
 
