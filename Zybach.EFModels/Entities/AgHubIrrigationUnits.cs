@@ -12,6 +12,7 @@ namespace Zybach.EFModels.Entities
         public static IEnumerable<AgHubIrrigationUnitSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
             return dbContext.AgHubIrrigationUnits
+                .AsNoTracking()
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)
                     .ThenInclude(x => x.Sensors)
@@ -67,10 +68,10 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.AgHubIrrigationUnits
                 .Include(x => x.AgHubIrrigationUnitGeometry)
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
-                    .ThenInclude(x => x.WaterYearMonth)
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
-                    .ThenInclude(x => x.WaterYearMonth)
+                //.Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
+                //    .ThenInclude(x => x.WaterYearMonth)
+                //.Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
+                //    .ThenInclude(x => x.WaterYearMonth)
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)
                     .ThenInclude(x => x.Sensors)
@@ -79,10 +80,19 @@ namespace Zybach.EFModels.Entities
 
         public static List<RobustReviewDto> GetRobustReviewDtos(ZybachDbContext dbContext)
         {
-            var agHubIrrigationUnits = GetAgHubIrrigationUnitImpl(dbContext).ToList();
+            var agHubIrrigationUnits = dbContext.AgHubIrrigationUnits
+                .Include(x => x.AgHubWells)
+                    .ThenInclude(x => x.Well)
+                    .ThenInclude(x => x.Sensors)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
+                    .ThenInclude(x => x.WaterYearMonth)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
+                    .ThenInclude(x => x.WaterYearMonth)
+                .AsNoTracking()
+                .ToList();
             var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(dbContext);
             var robustReviewDtos = agHubIrrigationUnits.Select(x => AgHubIrrigationUnitAsRobustReviewDto(x, firstReadingDateTimes, dbContext)).ToList();
-            return robustReviewDtos.Where(x => x != null).ToList();
+            return robustReviewDtos;
         }
 
         public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, Dictionary<string, DateTime> firstReadingDateTimes, ZybachDbContext dbContext)
@@ -117,8 +127,8 @@ namespace Zybach.EFModels.Entities
             var associatedAgHubWellIDs = irrigationUnit.AgHubWells.Select(x => x.AgHubWellID).ToList();
 
             var irrigatedAcres = dbContext.AgHubWellIrrigatedAcres
-                .Where(x => associatedAgHubWellIDs.Contains(x.AgHubWellID))
-                .DistinctBy(x => x.IrrigationYear)
+                //.Where(x => associatedAgHubWellIDs.Contains(x.AgHubWellID))
+                //.DistinctBy(x => x.IrrigationYear)
                 .ToList()
                 .Select(x => x.AsIrrigatedAcresPerYearDto())
                 .ToList();
