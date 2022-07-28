@@ -96,7 +96,9 @@ namespace Zybach.API.Controllers
 
             if (sensor.SensorTypeID == (int)SensorTypeEnum.ContinuityMeter)
             {
-                sensorSimpleDto.LastOnReadingDate = wellSensorMeasurements.Where(x => x.MeasurementValue > 0).Max(x => x.MeasurementDate);
+                sensorSimpleDto.LastOnReadingDate = wellSensorMeasurements.Any(x => x.MeasurementValue > 0)
+                    ? wellSensorMeasurements.Where(x => x.MeasurementValue > 0).Max(x => x.MeasurementDate)
+                    : null;
                 sensorSimpleDto.LastOffReadingDate = wellSensorMeasurements.Any(x => x.MeasurementValue == 0) ? 
                     wellSensorMeasurements.Where(x => x.MeasurementValue == 0).Max(x => x.MeasurementDate) : null;
             }

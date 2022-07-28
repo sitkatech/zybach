@@ -16,7 +16,9 @@
 <div class="container navCaretMargin">
     <div class="row mt-2">
         <div class="col">
-            <p>The following grid shows all sensors that have not sent a message in 8 or more hours, or with a most recent voltage reading of less than 2500 millivolts.</p>
+            <p>
+                The following grid shows all sensors that have not sent a message in 8 or more hours, with a most recent voltage reading of less than 2500 millivolts, or Continuity Devices that are Always On/Off.
+            </p>
         </div>
         <div class="col-auto">
             <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="downloadCsv()" placement="top"
