@@ -7,7 +7,7 @@
     </ol>
 </nav>
 <div class="container" *ngIf="sensor">
-    <ngb-alert *ngIf="openSupportTickets.length > 0" [type]="'warning'" [dismissible]="false">
+    <ngb-alert *ngIf="openSupportTickets?.length > 0" [type]="'warning'" [dismissible]="false">
         <p *ngFor="let ticket of openSupportTickets">
             This sensor has an active trouble ticket <a routerLink="/support-tickets/{{ticket.SupportTicketID}}">#{{ticket.SupportTicketID}}: {{ticket.SupportTicketTitle}}</a> opened by {{ticket.CreatorUser.FullName}}<span *ngIf="ticket.AssigneeUser !== null"> and currently assigned to {{ticket.AssigneeUser.FullName}}</span>. Follow the <a routerLink="/support-tickets/{{ticket.SupportTicketID}}">link</a> to view more details.
         </p>
