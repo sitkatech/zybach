@@ -82,27 +82,29 @@ namespace Zybach.EFModels.Entities
         {
             var agHubIrrigationUnits = dbContext.AgHubIrrigationUnits
                 .AsNoTracking()
+                .Include(x => x.AgHubWells)
                 .ToList();
             var monthlyWaterVolumeSummaries = MonthlyWaterVolumeSummary.AggregateMonthlyWaterVolumesByIrrigationUnit(dbContext);
-            var robustReviewDtos = agHubIrrigationUnits.Select(x => AgHubIrrigationUnitAsRobustReviewDto(x, monthlyWaterVolumeSummaries, dbContext)).ToList();
+            var irrigatedAcres = dbContext.AgHubWellIrrigatedAcres
+                .ToList();
+            var robustReviewDtos = agHubIrrigationUnits.Select(x => AgHubIrrigationUnitAsRobustReviewDto(x, irrigatedAcres, monthlyWaterVolumeSummaries)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();
         }
 
-        public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, IEnumerable<MonthlyWaterVolumeSummary> monthlyWaterVolumeSummaries, ZybachDbContext dbContext)
+        public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, List<AgHubWellIrrigatedAcre> irrigatedAcres, IEnumerable<MonthlyWaterVolumeSummary> monthlyWaterVolumeSummaries)
         {
             var associatedAgHubWellIDs = irrigationUnit.AgHubWells.Select(x => x.AgHubWellID).ToList();
 
-            var irrigatedAcres = dbContext.AgHubWellIrrigatedAcres
+            var unitIrrigatedAcres = irrigatedAcres
                 .Where(x => associatedAgHubWellIDs.Contains(x.AgHubWellID))
                 .GroupBy(x => x.IrrigationYear).Select(x => x.First())
-                .ToList()
                 .Select(x => x.AsIrrigatedAcresPerYearDto())
                 .ToList();
 
             var robustReviewDto = new RobustReviewDto
             {
                 WellTPID = irrigationUnit.WellTPID,
-                IrrigatedAcres = irrigatedAcres,
+                IrrigatedAcres = unitIrrigatedAcres,
                 MonthlyData = monthlyWaterVolumeSummaries
                     .Where(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID)
                     .Select(x => new MonthlyWaterVolumeDto
