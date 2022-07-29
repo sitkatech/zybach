@@ -144,11 +144,12 @@ namespace Zybach.Models.DataTransferObjects
 
     public class MonthlyWaterVolumeDto
     {
+        // volumes in ac-ft
         public int Month { get; set; }
         public int Year { get; set; }
-        public double? VolumePumped{ get; set; }
-        public double? OpenET { get; set; }
-        public double? Precip { get; set; }
+        public double? VolumePumped { get; set; }
+        public decimal? OpenET { get; set; }
+        public decimal? Precip { get; set; }
     }
 
     public class AnnualPumpedVolume

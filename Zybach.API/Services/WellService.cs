@@ -51,48 +51,6 @@ namespace Zybach.API.Services
 
             return wells;
         }
-
-        //public List<RobustReviewDto> GetRobustReviewDtos()
-        //{
-        //    var wellWithSensorSimpleDtos = GetAghubAndGeoOptixWells();
-        //    var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(_dbContext);
-        //    var robustReviewDtos = wellWithSensorSimpleDtos.Select(x => CreateRobustReviewDto(x, firstReadingDateTimes)).ToList();
-        //    return robustReviewDtos.Where(x => x != null).ToList();
-        //}
-
-        //private RobustReviewDto CreateRobustReviewDto(WellWithSensorSimpleDto wellWithSensorSimpleDto, Dictionary<string, DateTime> firstReadingDateTimes)
-        //{
-        //    var wellRegistrationID = wellWithSensorSimpleDto.WellRegistrationID;
-        //    if (!firstReadingDateTimes.ContainsKey(wellRegistrationID))
-        //    {
-        //        return null;
-        //    }
-
-        //    var sensorTypeDisplayName = wellWithSensorSimpleDto.WellConnectedMeter
-        //        ? SensorType.ElectricalUsage.SensorTypeDisplayName
-        //        : SensorType.ContinuityMeter.SensorTypeDisplayName;
-        //    var sensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorSimples(_dbContext,
-        //        wellRegistrationID,
-        //        wellWithSensorSimpleDto.Sensors.Where(y => y.SensorTypeName == sensorTypeDisplayName));
-
-        //    var monthlyPumpedVolume = sensorMeasurementDtos.GroupBy(x => x.MeasurementDate.ToString("yyyyMM"))
-        //        .Select(x =>
-        //            new MonthlyWaterVolumeDto(x.First().MeasurementDate.Year, x.First().MeasurementDate.Month,
-        //                x.Sum(y => y.MeasurementValue ?? 0))).ToList();
-
-            
-        //    var robustReviewDto = new RobustReviewDto
-        //    {
-        //        WellRegistrationID = wellRegistrationID,
-        //        WellTPID = wellWithSensorSimpleDto.WellTPID,
-        //        Latitude = point.Coordinates.Latitude,
-        //        Longitude = point.Coordinates.Longitude,
-        //        DataSource = sensorTypeDisplayName,
-        //        MonthlyPumpedVolumeGallons = monthlyPumpedVolume
-        //    };
-
-        //    return robustReviewDto;
-        //}
-
+        
     }
 }

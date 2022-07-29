@@ -68,10 +68,10 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.AgHubIrrigationUnits
                 .Include(x => x.AgHubIrrigationUnitGeometry)
-                //.Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
-                //    .ThenInclude(x => x.WaterYearMonth)
-                //.Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
-                //    .ThenInclude(x => x.WaterYearMonth)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
+                    .ThenInclude(x => x.WaterYearMonth)
+                .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
+                    .ThenInclude(x => x.WaterYearMonth)
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)
                     .ThenInclude(x => x.Sensors)
@@ -81,54 +81,20 @@ namespace Zybach.EFModels.Entities
         public static List<RobustReviewDto> GetRobustReviewDtos(ZybachDbContext dbContext)
         {
             var agHubIrrigationUnits = dbContext.AgHubIrrigationUnits
-                .Include(x => x.AgHubWells)
-                    .ThenInclude(x => x.Well)
-                    .ThenInclude(x => x.Sensors)
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
-                    .ThenInclude(x => x.WaterYearMonth)
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
-                    .ThenInclude(x => x.WaterYearMonth)
                 .AsNoTracking()
                 .ToList();
-            var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(dbContext);
-            var robustReviewDtos = agHubIrrigationUnits.Select(x => AgHubIrrigationUnitAsRobustReviewDto(x, firstReadingDateTimes, dbContext)).ToList();
-            return robustReviewDtos;
+            var monthlyWaterVolumeSummaries = MonthlyWaterVolumeSummary.AggregateMonthlyWaterVolumesByIrrigationUnit(dbContext);
+            var robustReviewDtos = agHubIrrigationUnits.Select(x => AgHubIrrigationUnitAsRobustReviewDto(x, monthlyWaterVolumeSummaries, dbContext)).ToList();
+            return robustReviewDtos.Where(x => x != null).ToList();
         }
 
-        public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, Dictionary<string, DateTime> firstReadingDateTimes, ZybachDbContext dbContext)
+        public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, IEnumerable<MonthlyWaterVolumeSummary> monthlyWaterVolumeSummaries, ZybachDbContext dbContext)
         {
-            var associatedWells = irrigationUnit.AgHubWells.Select(x => x.Well).ToList();
-            foreach (var well in associatedWells)
-            {
-                if (!firstReadingDateTimes.ContainsKey(well.WellRegistrationID))
-                {
-                    return null;
-                }
-            }
-
-            var monthlyPumpedVolumes = CreateAggregatedMonthlyPumpedVolumeByWells(associatedWells, dbContext);
-
-            var waterYearMonthETAndPrecipData = irrigationUnit.AgHubIrrigationUnitWaterYearMonthPrecipitationData
-                .Join(irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData,
-                    pr => new { pr.WaterYearMonthID, pr.AgHubIrrigationUnitID },
-                    et => new { et.WaterYearMonthID, et.AgHubIrrigationUnitID },
-                    (pr, et) => new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
-                    {
-                        WaterYearMonth = et.WaterYearMonth.AsDto(),
-                        EvapotranspirationInches = et.EvapotranspirationInches,
-                        EvapotranspirationAcreInches = et.EvapotranspirationAcreInches,
-                        PrecipitationInches = pr.PrecipitationInches,
-                        PrecipitationAcreInches = pr.PrecipitationAcreInches
-                    })
-                .OrderByDescending(x => x.WaterYearMonth.Year)
-                .ThenByDescending(x => x.WaterYearMonth.Month)
-                .ToList();
-            //WIP
             var associatedAgHubWellIDs = irrigationUnit.AgHubWells.Select(x => x.AgHubWellID).ToList();
 
             var irrigatedAcres = dbContext.AgHubWellIrrigatedAcres
-                //.Where(x => associatedAgHubWellIDs.Contains(x.AgHubWellID))
-                //.DistinctBy(x => x.IrrigationYear)
+                .Where(x => associatedAgHubWellIDs.Contains(x.AgHubWellID))
+                .GroupBy(x => x.IrrigationYear).Select(x => x.First())
                 .ToList()
                 .Select(x => x.AsIrrigatedAcresPerYearDto())
                 .ToList();
@@ -137,31 +103,20 @@ namespace Zybach.EFModels.Entities
             {
                 WellTPID = irrigationUnit.WellTPID,
                 IrrigatedAcres = irrigatedAcres,
-                MonthlyData = null
+                MonthlyData = monthlyWaterVolumeSummaries
+                    .Where(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID)
+                    .Select(x => new MonthlyWaterVolumeDto
+                    {
+                        Month = x.Month,
+                        Year = x.Year,
+                        OpenET = x.EvapotranspirationAcreFeet,
+                        Precip = x.PrecipitationAcreFeet,
+                        VolumePumped = x.ElectricalUsagePumpedVolumeAcreFeet
+                    })
+                    .ToList()
             };
-            return null;
+            return robustReviewDto;
         }
 
-        private static List<MonthlyPumpedVolume> CreateAggregatedMonthlyPumpedVolumeByWells(List<Well> wells, ZybachDbContext dbContext)
-        {
-            var sensorMeasurementDtos = new List<SensorMeasurementDto>();
-
-            foreach (var well in wells)
-            {
-                var sensorType = well.AgHubWell.WellConnectedMeter
-                    ? (int)SensorTypeEnum.ElectricalUsage
-                    : (int)SensorTypeEnum.ContinuityMeter;
-                sensorMeasurementDtos.AddRange(WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensorSimples(dbContext,
-                    well.WellRegistrationID,
-                    well.Sensors.Where(y => y.SensorTypeID == sensorType).Select(x => x.AsSimpleDto())));
-            }
-            
-            var monthlyPumpedVolumes = sensorMeasurementDtos.GroupBy(x => x.MeasurementDate.ToString("yyyyMM"))
-                .Select(x =>
-                    new MonthlyPumpedVolume(x.First().MeasurementDate.Year, x.First().MeasurementDate.Month,
-                        x.Sum(y => y.MeasurementValue ?? 0))).ToList();
-
-            return monthlyPumpedVolumes;
-        }
     }
 }
