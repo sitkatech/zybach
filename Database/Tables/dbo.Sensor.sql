@@ -12,6 +12,8 @@ CREATE TABLE [dbo].[Sensor](
 	[LastUpdateDate] [datetime] NOT NULL,
 	[IsActive] [bit] NOT NULL,
 	[RetirementDate] [datetime] NULL,
+	[ContinuityMeterStatusID] [int] NULL,
+	[ContinuityMeterStatusLastUpdated] [datetime] NULL,
  CONSTRAINT [PK_Sensor_SensorID] PRIMARY KEY CLUSTERED 
 (
 	[SensorID] ASC
@@ -22,6 +24,11 @@ CREATE TABLE [dbo].[Sensor](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+ALTER TABLE [dbo].[Sensor]  WITH CHECK ADD  CONSTRAINT [FK_Sensor_ContinuityMeterStatus_ContinuityMeterStatusID] FOREIGN KEY([ContinuityMeterStatusID])
+REFERENCES [dbo].[ContinuityMeterStatus] ([ContinuityMeterStatusID])
+GO
+ALTER TABLE [dbo].[Sensor] CHECK CONSTRAINT [FK_Sensor_ContinuityMeterStatus_ContinuityMeterStatusID]
 GO
 ALTER TABLE [dbo].[Sensor]  WITH CHECK ADD  CONSTRAINT [FK_Sensor_SensorType_SensorTypeID] FOREIGN KEY([SensorTypeID])
 REFERENCES [dbo].[SensorType] ([SensorTypeID])

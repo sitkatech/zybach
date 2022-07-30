@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ContinuityMeterStatusDto } from '././continuity-meter-status-dto';
 
 export class SensorMessageAgeDto { 
     SensorID?: number;
@@ -22,6 +23,7 @@ export class SensorMessageAgeDto {
     IsActive?: boolean;
     MostRecentSupportTicketID?: number;
     MostRecentSupportTicketTitle?: string;
+    ContinuityMeterStatus?: ContinuityMeterStatusDto;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

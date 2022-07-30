@@ -114,6 +114,7 @@ namespace Zybach.Models.DataTransferObjects
         public bool IsActive { get; set; }
         public int? MostRecentSupportTicketID { get; set; }
         public string MostRecentSupportTicketTitle { get; set; }
+        public ContinuityMeterStatusDto ContinuityMeterStatus { get; set; }
     }
 
     public class IrrigatedAcresPerYearDto

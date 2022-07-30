@@ -71,7 +71,8 @@ namespace Zybach.API.Controllers
                             SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive,
                             MostRecentSupportTicketID = sensor.MostRecentSupportTicketID,
-                            MostRecentSupportTicketTitle = sensor.MostRecentSupportTicketTitle
+                            MostRecentSupportTicketTitle = sensor.MostRecentSupportTicketTitle,
+                            ContinuityMeterStatus = sensor.ContinuityMeterStatus
                         };
                     }
                     catch

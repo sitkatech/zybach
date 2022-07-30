@@ -21,6 +21,8 @@ import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-ada
 import { SensorAnomalyUpsertDto } from 'src/app/shared/generated/model/sensor-anomaly-upsert-dto';
 import { SensorChartDataDto } from 'src/app/shared/generated/model/sensor-chart-data-dto';
 import { SupportTicketSimpleDto } from 'src/app/shared/generated/model/support-ticket-simple-dto';
+import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
+import { ContinuityMeterStatusEnum } from 'src/app/shared/generated/enum/continuity-meter-status-enum';
 
 @Component({
   selector: 'zybach-sensor-detail',
@@ -90,12 +92,16 @@ export class SensorDetailComponent implements OnInit {
   }
 
   private getInstallationDetails() {
-    this.wellService.wellsWellIDInstallationGet(this.wellID).subscribe(installations => {
-      this.installations = installations.filter(x => x.SensorSerialNumber == this.sensor.SensorName);
-      for (const installation of installations) {
-        this.installationPhotos = this.getPhotoRecords(installation);
-      }
-    });
+    if (this.wellID) {
+      this.wellService.wellsWellIDInstallationGet(this.wellID).subscribe(installations => {
+        this.installations = installations.filter(x => x.SensorSerialNumber == this.sensor.SensorName);
+        for (const installation of installations) {
+          this.installationPhotos = this.getPhotoRecords(installation);
+        }
+      });
+    } else {
+      this.installations = [];
+    }
   }
 
   private getPhotoRecords(installation: InstallationRecordDto) : any[]{
@@ -128,6 +134,18 @@ export class SensorDetailComponent implements OnInit {
     });
 
     return installationPhotoDataUrls;
+  }
+
+  public isContinuityMeter(): boolean {
+    return this.sensor?.SensorTypeID == SensorTypeEnum.ContinuityMeter;
+  }
+
+  public isReportingNormally(): boolean {
+    return this.sensor?.ContinuityMeterStatusID == ContinuityMeterStatusEnum.ReportingNormally;
+  }
+
+  public isAlwaysOn(): boolean {
+    return this.sensor?.ContinuityMeterStatusID == ContinuityMeterStatusEnum.AlwaysOn;
   }
 
   public getInstallationDate(installation: InstallationRecordDto) {
