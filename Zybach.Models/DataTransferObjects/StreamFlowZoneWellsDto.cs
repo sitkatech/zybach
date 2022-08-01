@@ -121,6 +121,7 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int Year { get; set; }
         public double Acres { get; set; }
+        public string CropType { get; set; }
     }
 
     public class MonthlyPumpedVolume
@@ -139,6 +140,16 @@ namespace Zybach.Models.DataTransferObjects
         public int Month { get; set; }
         public int Year { get; set; }
         public double VolumePumpedGallons { get; set; }
+    }
+
+    public class MonthlyWaterVolumeDto
+    {
+        // volumes in ac-ft
+        public int Month { get; set; }
+        public int Year { get; set; }
+        public double? VolumePumped { get; set; }
+        public decimal? OpenET { get; set; }
+        public decimal? Precip { get; set; }
     }
 
     public class AnnualPumpedVolume

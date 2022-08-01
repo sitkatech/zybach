@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
 
-namespace Rio.EFModels.Entities
+namespace Zybach.EFModels.Entities
 {
     public partial class WellPumpingSummary
     {

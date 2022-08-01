@@ -7623,6 +7623,10 @@
           "Acres": {
             "type": "number",
             "format": "double"
+          },
+          "CropType": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
