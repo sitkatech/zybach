@@ -5,6 +5,6 @@
 export enum SupportTicketStatusEnum {
   Open = 1,
   InProgress = 2,
-  PendingAnomalyReview = 3,
-  Resolved = 4
+  Resolved = 3,
+  PendingAnomalyReview = 4
 }
