@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class MonthlyWaterVolumeSummary
+    public partial class AgHubIrrigationUnitMonthlyWaterVolumeSummary
     {
-        public MonthlyWaterVolumeSummary()
+        public AgHubIrrigationUnitMonthlyWaterVolumeSummary()
         {
         }
 
@@ -14,16 +14,14 @@ namespace Zybach.EFModels.Entities
         public int Year { get; set; }
         public int Month { get; set; }
 
-        public double? ContinuityMeterPumpedVolumeAcreFeet { get; set; }
-        public double? ElectricalUsagePumpedVolumeAcreFeet { get; set; }
-        public double? FlowMeterPumpedVolumeAcreFeet { get; set; }
+        public double? PumpedVolumeAcreFeet { get; set; }
         public decimal? EvapotranspirationAcreFeet { get; set; }
         public decimal? PrecipitationAcreFeet { get; set; }
         
-        public static IEnumerable<MonthlyWaterVolumeSummary> AggregateMonthlyWaterVolumesByIrrigationUnit(ZybachDbContext dbContext)
+        public static IEnumerable<AgHubIrrigationUnitMonthlyWaterVolumeSummary> List(ZybachDbContext dbContext)
         {
             return dbContext.MonthlyWaterVolumeSummaries
-                .FromSqlRaw($"EXECUTE dbo.pMonthlyWaterVolumeSummaries")
+                .FromSqlRaw($"EXECUTE dbo.pAgHubIrrigationUnitMonthlyWaterVolumeSummaries")
                 .ToList();
         }
     }

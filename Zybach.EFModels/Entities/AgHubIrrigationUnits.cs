@@ -85,14 +85,14 @@ namespace Zybach.EFModels.Entities
                 .OrderBy(x => x.WellTPID)
                 .Include(x => x.AgHubWells)
                 .ToList();
-            var monthlyWaterVolumeSummaries = MonthlyWaterVolumeSummary.AggregateMonthlyWaterVolumesByIrrigationUnit(dbContext);
+            var monthlyWaterVolumeSummaries = AgHubIrrigationUnitMonthlyWaterVolumeSummary.List(dbContext);
             var irrigatedAcres = dbContext.AgHubWellIrrigatedAcres
                 .ToList();
             var robustReviewDtos = agHubIrrigationUnits.Select(x => AgHubIrrigationUnitAsRobustReviewDto(x, irrigatedAcres, monthlyWaterVolumeSummaries)).ToList();
             return robustReviewDtos.Where(x => x != null).ToList();
         }
 
-        public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, List<AgHubWellIrrigatedAcre> irrigatedAcres, IEnumerable<MonthlyWaterVolumeSummary> monthlyWaterVolumeSummaries)
+        public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, List<AgHubWellIrrigatedAcre> irrigatedAcres, IEnumerable<AgHubIrrigationUnitMonthlyWaterVolumeSummary> monthlyWaterVolumeSummaries)
         {
             var associatedAgHubWellIDs = irrigationUnit.AgHubWells.Select(x => x.AgHubWellID).ToList();
 
@@ -117,7 +117,7 @@ namespace Zybach.EFModels.Entities
                         Year = x.Year,
                         OpenET = x.EvapotranspirationAcreFeet,
                         Precip = x.PrecipitationAcreFeet,
-                        VolumePumped = x.ElectricalUsagePumpedVolumeAcreFeet
+                        VolumePumped = x.PumpedVolumeAcreFeet
                     })
                     .ToList()
             };

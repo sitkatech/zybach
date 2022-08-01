@@ -7,8 +7,8 @@ public partial class ZybachDbContext
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<WellPumpingSummary>().HasNoKey();
-        modelBuilder.Entity<MonthlyWaterVolumeSummary>().HasNoKey();
+        modelBuilder.Entity<AgHubIrrigationUnitMonthlyWaterVolumeSummary>().HasNoKey();
     }
     public virtual DbSet<WellPumpingSummary> WellPumpingSummaries { get; set; }
-    public virtual DbSet<MonthlyWaterVolumeSummary> MonthlyWaterVolumeSummaries { get; set; }
+    public virtual DbSet<AgHubIrrigationUnitMonthlyWaterVolumeSummary> MonthlyWaterVolumeSummaries { get; set; }
 }
