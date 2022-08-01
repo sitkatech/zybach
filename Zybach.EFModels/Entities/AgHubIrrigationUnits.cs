@@ -82,6 +82,7 @@ namespace Zybach.EFModels.Entities
         {
             var agHubIrrigationUnits = dbContext.AgHubIrrigationUnits
                 .AsNoTracking()
+                .OrderBy(x => x.WellTPID)
                 .Include(x => x.AgHubWells)
                 .ToList();
             var monthlyWaterVolumeSummaries = MonthlyWaterVolumeSummary.AggregateMonthlyWaterVolumesByIrrigationUnit(dbContext);
@@ -99,6 +100,7 @@ namespace Zybach.EFModels.Entities
                 .Where(x => associatedAgHubWellIDs.Contains(x.AgHubWellID))
                 .GroupBy(x => x.IrrigationYear).Select(x => x.First())
                 .Select(x => x.AsIrrigatedAcresPerYearDto())
+                .OrderBy(x => x.Year)
                 .ToList();
 
             var robustReviewDto = new RobustReviewDto
@@ -107,6 +109,8 @@ namespace Zybach.EFModels.Entities
                 IrrigatedAcres = unitIrrigatedAcres,
                 MonthlyData = monthlyWaterVolumeSummaries
                     .Where(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID)
+                    .OrderBy(x => x.Year)
+                    .ThenBy(x => x.Month)
                     .Select(x => new MonthlyWaterVolumeDto
                     {
                         Month = x.Month,
