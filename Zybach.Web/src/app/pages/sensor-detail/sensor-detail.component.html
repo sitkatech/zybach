@@ -192,6 +192,8 @@
             <div class="card">
                 <div class="card-header">
                     Sensor Data Readings
+                    <a routerLink="/sensors/{{sensor.SensorID}}/new-support-ticket" class="btn btn-sm btn-zybach float-right">
+                        <span class="fas fa-plus"></span> New Support Ticket</a>  
                     <a *ngIf="!noTimeSeriesData" class="btn btn-sm btn-zybach float-right mr-2" (click)="displaySensorAnomalyPanel()">
                         <span class="fas fa-plus"></span> Add Sensor Anomaly</a>  
                 </div>
