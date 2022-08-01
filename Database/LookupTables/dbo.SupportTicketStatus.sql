@@ -2,7 +2,8 @@ MERGE INTO dbo.SupportTicketStatus AS Target
 USING (VALUES
 (1, 'Open', 'Open', 10),
 (2, 'InProgress', 'In Progress', 20),
-(3, 'Resolved', 'Resolved', 30)
+(3, 'PendingAnomalyReview', 'Pending Anomaly Review', 25),
+(4, 'Resolved', 'Resolved', 30)
 )
 AS Source (SupportTicketStatusID, SupportTicketStatusName, SupportTicketStatusDisplayName, SortOrder)
 ON Target.SupportTicketStatusID = Source.SupportTicketStatusID

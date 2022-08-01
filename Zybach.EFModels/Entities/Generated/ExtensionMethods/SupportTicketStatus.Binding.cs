@@ -17,6 +17,7 @@ namespace Zybach.EFModels.Entities
     {
         public static readonly SupportTicketStatusOpen Open = Zybach.EFModels.Entities.SupportTicketStatusOpen.Instance;
         public static readonly SupportTicketStatusInProgress InProgress = Zybach.EFModels.Entities.SupportTicketStatusInProgress.Instance;
+        public static readonly SupportTicketStatusPendingAnomalyReview PendingAnomalyReview = Zybach.EFModels.Entities.SupportTicketStatusPendingAnomalyReview.Instance;
         public static readonly SupportTicketStatusResolved Resolved = Zybach.EFModels.Entities.SupportTicketStatusResolved.Instance;
 
         public static readonly List<SupportTicketStatus> All;
@@ -29,8 +30,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static SupportTicketStatus()
         {
-            All = new List<SupportTicketStatus> { Open, InProgress, Resolved };
-            AllAsDto = new List<SupportTicketStatusDto> { Open.AsDto(), InProgress.AsDto(), Resolved.AsDto() };
+            All = new List<SupportTicketStatus> { Open, InProgress, PendingAnomalyReview, Resolved };
+            AllAsDto = new List<SupportTicketStatusDto> { Open.AsDto(), InProgress.AsDto(), PendingAnomalyReview.AsDto(), Resolved.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, SupportTicketStatus>(All.ToDictionary(x => x.SupportTicketStatusID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, SupportTicketStatusDto>(AllAsDto.ToDictionary(x => x.SupportTicketStatusID));
         }
@@ -107,6 +108,8 @@ namespace Zybach.EFModels.Entities
                     return InProgress;
                 case SupportTicketStatusEnum.Open:
                     return Open;
+                case SupportTicketStatusEnum.PendingAnomalyReview:
+                    return PendingAnomalyReview;
                 case SupportTicketStatusEnum.Resolved:
                     return Resolved;
                 default:
@@ -119,7 +122,8 @@ namespace Zybach.EFModels.Entities
     {
         Open = 1,
         InProgress = 2,
-        Resolved = 3
+        PendingAnomalyReview = 3,
+        Resolved = 4
     }
 
     public partial class SupportTicketStatusOpen : SupportTicketStatus
@@ -134,9 +138,15 @@ namespace Zybach.EFModels.Entities
         public static readonly SupportTicketStatusInProgress Instance = new SupportTicketStatusInProgress(2, @"InProgress", @"In Progress", 20);
     }
 
+    public partial class SupportTicketStatusPendingAnomalyReview : SupportTicketStatus
+    {
+        private SupportTicketStatusPendingAnomalyReview(int supportTicketStatusID, string supportTicketStatusName, string supportTicketStatusDisplayName, int sortOrder) : base(supportTicketStatusID, supportTicketStatusName, supportTicketStatusDisplayName, sortOrder) {}
+        public static readonly SupportTicketStatusPendingAnomalyReview Instance = new SupportTicketStatusPendingAnomalyReview(3, @"PendingAnomalyReview", @"Pending Anomaly Review", 25);
+    }
+
     public partial class SupportTicketStatusResolved : SupportTicketStatus
     {
         private SupportTicketStatusResolved(int supportTicketStatusID, string supportTicketStatusName, string supportTicketStatusDisplayName, int sortOrder) : base(supportTicketStatusID, supportTicketStatusName, supportTicketStatusDisplayName, sortOrder) {}
-        public static readonly SupportTicketStatusResolved Instance = new SupportTicketStatusResolved(3, @"Resolved", @"Resolved", 30);
+        public static readonly SupportTicketStatusResolved Instance = new SupportTicketStatusResolved(4, @"Resolved", @"Resolved", 30);
     }
 }
