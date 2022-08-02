@@ -37,7 +37,7 @@ namespace Zybach.EFModels.Entities
         public static List<SupportTicketSimpleDto> ListByAssigneeUserID(ZybachDbContext dbContext, int assigneeUserID)
         {
             var supportTicketSimpleDtos = GetSupportTicketsImpl(dbContext)
-                .Where(x => x.AssigneeUserID == assigneeUserID && (x.SupportTicketStatusID == (int)SupportTicketStatusEnum.Open || x.SupportTicketStatusID == (int)SupportTicketStatusEnum.InProgress))
+                .Where(x => x.AssigneeUserID == assigneeUserID && x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved)
                 .Select(x => x.AsSimpleDto()).ToList()
                 .OrderBy(x => x.Priority.SortOrder);
 
