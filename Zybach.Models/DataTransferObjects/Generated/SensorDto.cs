@@ -20,6 +20,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? RetirementDate { get; set; }
         public ContinuityMeterStatusDto ContinuityMeterStatus { get; set; }
         public DateTime? ContinuityMeterStatusLastUpdated { get; set; }
+        public DateTime? SnoozeStartDate { get; set; }
     }
 
     public partial class SensorSimpleDto
@@ -35,6 +36,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? RetirementDate { get; set; }
         public int? ContinuityMeterStatusID { get; set; }
         public DateTime? ContinuityMeterStatusLastUpdated { get; set; }
+        public DateTime? SnoozeStartDate { get; set; }
     }
 
 }

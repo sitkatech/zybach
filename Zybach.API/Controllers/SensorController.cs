@@ -135,6 +135,22 @@ namespace Zybach.API.Controllers
             return sensorChartDataDto;
         }
 
+        [HttpPut("/sensors/{sensorID}/snooze")]
+        [ZybachViewFeature]
+        public ActionResult UpdateSensorSnoozeByID([FromRoute] int sensorID, [FromBody] bool sensorSnoozed)
+        {
+            var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorID == sensorID);
+            if (ThrowNotFound(sensor, "Sensor", sensorID, out var actionResult))
+            {
+                return actionResult;
+            }
+            
+            sensor.SnoozeStartDate = sensorSnoozed ? DateTime.UtcNow : null;
+            _dbContext.SaveChanges();
+
+            return Ok();
+        }
+
 
         private bool GetSensorAndThrowIfNotFound(int sensorID, out Sensor sensor, out ActionResult actionResult)
         {

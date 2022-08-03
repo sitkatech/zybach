@@ -40,12 +40,19 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
     private void GetDailyContinuityMeterStatusData()
     {
         var continuityMeterStatuses = _influxDbService.GetDailyContinuityMeterStatusData().Result;
+        var currentDateMinusTenDays = DateTime.Today.AddDays(-10);
 
         var continuityMeters = _dbContext.Sensors.Where(x => x.SensorTypeID == (int)SensorTypeEnum.ContinuityMeter).ToList();
         continuityMeters.ForEach(x =>
         {
             x.ContinuityMeterStatusID = continuityMeterStatuses.ContainsKey(x.SensorName) ? continuityMeterStatuses[x.SensorName] : (int)ContinuityMeterStatusEnum.AlwaysOff;
             x.ContinuityMeterStatusLastUpdated = DateTime.UtcNow;
+
+            // undo snooze if sensor has been snoozed for 10 days
+            if (x.SnoozeStartDate.HasValue && x.SnoozeStartDate.Value.Date >= currentDateMinusTenDays)
+            {
+                x.SnoozeStartDate = null;
+            }
         }); 
         
         _dbContext.SaveChanges();
