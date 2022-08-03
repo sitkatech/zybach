@@ -137,7 +137,7 @@ namespace Zybach.API.Controllers
 
         [HttpPut("/sensors/{sensorID}/snooze")]
         [ZybachViewFeature]
-        public ActionResult UpdateSensorSnoozeByID([FromRoute] int sensorID, [FromBody] bool sensorSnoozed)
+        public ActionResult<DateTime> UpdateSensorSnoozeByID([FromRoute] int sensorID, [FromBody] bool sensorSnoozed)
         {
             var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorID == sensorID);
             if (ThrowNotFound(sensor, "Sensor", sensorID, out var actionResult))
@@ -148,7 +148,7 @@ namespace Zybach.API.Controllers
             sensor.SnoozeStartDate = sensorSnoozed ? DateTime.UtcNow : null;
             _dbContext.SaveChanges();
 
-            return Ok();
+            return Ok(sensor.SnoozeStartDate);
         }
 
 

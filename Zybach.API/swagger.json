@@ -2864,7 +2864,27 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
           }
         }
       }
@@ -8084,6 +8104,11 @@
           },
           "ContinuityMeterStatus": {
             "$ref": "#/components/schemas/ContinuityMeterStatusDto"
+          },
+          "SnoozeStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false

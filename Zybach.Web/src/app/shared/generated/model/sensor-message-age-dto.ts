@@ -24,6 +24,7 @@ export class SensorMessageAgeDto {
     MostRecentSupportTicketID?: number;
     MostRecentSupportTicketTitle?: string;
     ContinuityMeterStatus?: ContinuityMeterStatusDto;
+    SnoozeStartDate?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
