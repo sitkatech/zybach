@@ -115,6 +115,12 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <ng-container *ngIf="sensor?.SnoozeStartDate">
+                                            <div class="col-12 col-sm-6 mt-1 label"><strong>
+                                                Snoozed On:
+                                            </strong></div>
+                                            <div class="col-12 col-sm-6 mt-1 text-left">{{sensor?.SnoozeStartDate | date:'short'}}</div>
+                                        </ng-container>
                                     </ng-container>
                                 </ng-container>
 
