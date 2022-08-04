@@ -22,7 +22,7 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
     }
 
     public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-        {RunEnvironment.Production, RunEnvironment.Development};
+        {RunEnvironment.Production};
 
     protected override void RunJobImplementation()
     {
@@ -40,7 +40,10 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
     private void GetDailyContinuityMeterStatusData()
     {
         var continuityMeterStatuses = _influxDbService.GetDailyContinuityMeterStatusData().Result;
+        
         var currentDateMinusTenDays = DateTime.Today.AddDays(-10);
+        var monthsOctoberThroughApril = new [] { 10, 11, 12, 1, 2, 3, 4 };
+        var automaticallySnoozeAlwaysOffStatus = monthsOctoberThroughApril.Contains(DateTime.Today.Month);
 
         var continuityMeters = _dbContext.Sensors.Where(x => x.SensorTypeID == (int)SensorTypeEnum.ContinuityMeter).ToList();
         continuityMeters.ForEach(x =>
@@ -48,9 +51,13 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
             x.ContinuityMeterStatusID = continuityMeterStatuses.ContainsKey(x.SensorName) ? continuityMeterStatuses[x.SensorName] : (int)ContinuityMeterStatusEnum.AlwaysOff;
             x.ContinuityMeterStatusLastUpdated = DateTime.UtcNow;
 
-            // undo snooze if sensor has been snoozed for 10 days
-            if (x.SnoozeStartDate.HasValue && x.SnoozeStartDate.Value.Date >= currentDateMinusTenDays)
+            if (automaticallySnoozeAlwaysOffStatus && x.ContinuityMeterStatusID == (int)ContinuityMeterStatusEnum.AlwaysOff)
             {
+                x.SnoozeStartDate = currentDateMinusTenDays.AddDays(1);
+            }
+            else if (x.ContinuityMeterStatusID == (int)ContinuityMeterStatusEnum.ReportingNormally || 
+                     (x.SnoozeStartDate.HasValue && x.SnoozeStartDate.Value.Date <= currentDateMinusTenDays))
+            { 
                 x.SnoozeStartDate = null;
             }
         }); 
