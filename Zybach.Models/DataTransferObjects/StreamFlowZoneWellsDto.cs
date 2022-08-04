@@ -115,6 +115,7 @@ namespace Zybach.Models.DataTransferObjects
         public int? MostRecentSupportTicketID { get; set; }
         public string MostRecentSupportTicketTitle { get; set; }
         public ContinuityMeterStatusDto ContinuityMeterStatus { get; set; }
+        public DateTime? SnoozeStartDate { get; set; }
     }
 
     public class IrrigatedAcresPerYearDto

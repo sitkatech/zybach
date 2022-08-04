@@ -35,6 +35,8 @@ namespace Zybach.EFModels.Entities
         public int? ContinuityMeterStatusID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? ContinuityMeterStatusLastUpdated { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime? SnoozeStartDate { get; set; }
 
         [ForeignKey("WellID")]
         [InverseProperty("Sensors")]

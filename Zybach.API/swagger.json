@@ -2822,6 +2822,73 @@
         }
       }
     },
+    "/sensors/{sensorID}/snooze": {
+      "put": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "boolean"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sensorAnomalies": {
       "get": {
         "tags": [
@@ -8037,6 +8104,11 @@
           },
           "ContinuityMeterStatus": {
             "$ref": "#/components/schemas/ContinuityMeterStatusDto"
+          },
+          "SnoozeStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8086,6 +8158,11 @@
             "nullable": true
           },
           "ContinuityMeterStatusLastUpdated": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "SnoozeStartDate": {
             "type": "string",
             "format": "date-time",
             "nullable": true

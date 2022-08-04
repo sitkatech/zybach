@@ -23,7 +23,8 @@ namespace Zybach.EFModels.Entities
                 IsActive = sensor.IsActive,
                 RetirementDate = sensor.RetirementDate,
                 ContinuityMeterStatus = sensor.ContinuityMeterStatus?.AsDto(),
-                ContinuityMeterStatusLastUpdated = sensor.ContinuityMeterStatusLastUpdated
+                ContinuityMeterStatusLastUpdated = sensor.ContinuityMeterStatusLastUpdated,
+                SnoozeStartDate = sensor.SnoozeStartDate
             };
             DoCustomMappings(sensor, sensorDto);
             return sensorDto;
@@ -45,7 +46,8 @@ namespace Zybach.EFModels.Entities
                 IsActive = sensor.IsActive,
                 RetirementDate = sensor.RetirementDate,
                 ContinuityMeterStatusID = sensor.ContinuityMeterStatusID,
-                ContinuityMeterStatusLastUpdated = sensor.ContinuityMeterStatusLastUpdated
+                ContinuityMeterStatusLastUpdated = sensor.ContinuityMeterStatusLastUpdated,
+                SnoozeStartDate = sensor.SnoozeStartDate
             };
             DoCustomSimpleDtoMappings(sensor, sensorSimpleDto);
             return sensorSimpleDto;

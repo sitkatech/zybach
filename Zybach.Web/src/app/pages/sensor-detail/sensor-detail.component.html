@@ -29,41 +29,41 @@
                                     </field-definition>:
                                 </strong> </div>
                                 <div class="col-12 col-sm-6 text-left"><a routerLink="/wells/{{sensor.WellID}}">{{sensor.WellRegistrationID}}</a></div>
-                                <div class="col-12 col-sm-6 label"><strong>
+                                <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorType'">
                                     </field-definition>:
                                 </strong> </div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor.SensorTypeName}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>
+                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.SensorTypeName}}</div>
+                                <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastMessageAgeHours'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor.MessageAge}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>
+                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.MessageAge}}</div>
+                                <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastVoltageReading'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
-                                <div class="col-12 col-sm-6 label"><strong>
+                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
+                                <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastVoltageReadingDate'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor.LastVoltageReadingDate | date: "MM/dd/yyyy" }}</div>
-                                <div class="col-12 col-sm-6 label"><strong>
+                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.LastVoltageReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorFirstReadingDate'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
-                                <div class="col-12 col-sm-6 label"><strong>
+                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastReadingDate'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 text-left">{{sensor.LastReadingDate | date: "MM/dd/yyyy" }}</div>
-                                <div class="col-12 col-sm-6 label"><strong>
+                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.LastReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorStatus'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 text-left">
+                                <div class="col-12 col-sm-6 mt-1 text-left">
                                     <div class="btn-group btn-group-toggle float-left">
                                         <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
                                         <input type="radio" name="sensorIsActive" (click)="launchConfirmStatusModal()" [disabled]="sensor.IsActive"> Enabled
@@ -73,28 +73,55 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6 label">
+                                <div class="col-12 col-sm-6 mt-1 label">
                                     <strong>
                                         <field-definition [fieldDefinitionType]="'SensorRetirementDate'"></field-definition>:
                                     </strong>
                                 </div>
-                                <div class="col-12 col-sm-6 text-left">
+                                <div class="col-12 col-sm-6 mt-1 text-left">
                                     <span *ngIf="sensor?.RetirementDate; else notApplicable">{{sensor?.RetirementDate | date: "MM/dd/yyyy"}}</span>
                                 </div>
-                                <div class="col-12 col-sm-6 label">
-                                    <strong><field-definition [fieldDefinitionType]="'ContinuityMeterStatus'" labelOverride="Always On/Off"></field-definition>:</strong>
-                                </div>
-                                <div class="col-6 col-sm-0 text-left">
-                                    <span *ngIf="isContinuityMeter(); else notApplicable">{{sensor?.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName}}</span>
-                                </div>
-                                <ng-container *ngIf="isContinuityMeter() && !isReportingNormally()">
-                                    <div class="col-12 col-sm-6 label">
-                                        <strong>Last {{isAlwaysOn() ? 'Off' : 'On'}} Reading Date:</strong>
+
+                                <ng-container *ngIf="isContinuityMeter() && sensor.IsActive">
+                                    <div class="col-12"><hr></div>
+                                    <div class="col-12 col-sm-6 mt-1 label">
+                                        <strong><field-definition [fieldDefinitionType]="'ContinuityMeterStatus'" labelOverride="Always On/Off"></field-definition>:</strong>
                                     </div>
                                     <div class="col-6 col-sm-0 text-left">
-                                        <span *ngIf="isAlwaysOn()">{{ sensor?.LastOffReadingDate | date: 'short' }}</span>
-                                        <span *ngIf="!isAlwaysOn()">{{ sensor?.LastOnReadingDate | date: 'short' }}</span>
+                                        <span *ngIf="isContinuityMeter(); else notApplicable">{{sensor?.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName}}</span>
                                     </div>
+
+                                    <ng-container *ngIf="!isReportingNormally()">
+                                        <div class="col-12 col-sm-6 mt-1 label">
+                                            <strong>Last {{isAlwaysOn() ? 'Off' : 'On'}} Reading Date:</strong>
+                                        </div>
+                                        <div class="col-6 col-sm-0 text-left">
+                                            <span *ngIf="isAlwaysOn()">{{ sensor?.LastOffReadingDate | date: 'short' }}</span>
+                                            <span *ngIf="!isAlwaysOn()">{{ sensor?.LastOnReadingDate | date: 'short' }}</span>
+                                        </div>
+
+                                        <div class="col-12 col-sm-6 mt-1 label"><strong>
+                                            Always On/Off Status:
+                                        </strong></div>
+                                        <div class="col-12 col-sm-6 mt-1 text-left">
+                                            <div class="btn-group btn-group-toggle float-left">
+                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.SnoozeStartDate ? 'active' : ''">
+                                                    <input type="radio" name="reporting" (click)="updateSensorSnooze(false)" [disabled]="!sensor.SnoozeStartDate"> 
+                                                    Reporting
+                                                </label>
+                                                <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.SnoozeStartDate ? 'active' : ''">
+                                                    <input type="radio" name="snoozed" (click)="updateSensorSnooze(true)" [disabled]="sensor.SnoozeStartDate"> 
+                                                    Snoozed
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <ng-container *ngIf="sensor?.SnoozeStartDate">
+                                            <div class="col-12 col-sm-6 mt-1 label"><strong>
+                                                Snoozed On:
+                                            </strong></div>
+                                            <div class="col-12 col-sm-6 mt-1 text-left">{{sensor?.SnoozeStartDate | date:'short'}}</div>
+                                        </ng-container>
+                                    </ng-container>
                                 </ng-container>
 
                                 <ng-template #notApplicable>
@@ -133,19 +160,19 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="row">
-                                            <div class="col-12 col-sm-6 label"><strong>Installation Name: </strong> </div>
-                                            <div class="col-12 col-sm-6">{{installation.InstallationCanonicalName}}</div>
-                                            <div class="col-12 col-sm-6 label"><strong>Installation Status: </strong> </div>
-                                            <div class="col-12 col-sm-6">{{installation.Status}}</div>
-                                            <div class="col-12 col-sm-6 label"><strong>Installation Date: </strong></div>
-                                            <div class="col-12 col-sm-6">{{getInstallationDate(installation)}}</div>
-                                            <div class="col-12 col-sm-6 label"><strong>GPS Location: </strong></div>
-                                            <div class="col-12 col-sm-6">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
+                                            <div class="col-12 col-sm-6 mt-1 label"><strong>Installation Name: </strong> </div>
+                                            <div class="col-12 col-sm-6 mt-1">{{installation.InstallationCanonicalName}}</div>
+                                            <div class="col-12 col-sm-6 mt-1 label"><strong>Installation Status: </strong> </div>
+                                            <div class="col-12 col-sm-6 mt-1">{{installation.Status}}</div>
+                                            <div class="col-12 col-sm-6 mt-1 label"><strong>Installation Date: </strong></div>
+                                            <div class="col-12 col-sm-6 mt-1">{{getInstallationDate(installation)}}</div>
+                                            <div class="col-12 col-sm-6 mt-1 label"><strong>GPS Location: </strong></div>
+                                            <div class="col-12 col-sm-6 mt-1">lat: {{installation.Latitude | number: '1.0-3'}}, lng:
                                                 {{installation.Longitude | number: '1.0-3'}}</div>
                                             <div class="col-12  col-sm-6 label"><strong>Sensor Serial Number: </strong></div>
                                             <div class="col-12  col-sm-6">{{installation.SensorSerialNumber}}</div>
-                                            <div class="col-12 col-sm-6 label" *ngIf="installation.FlowmeterSerialNumber"><strong>Flowmeter Serial Number: </strong></div>
-                                            <div class="col-12 col-sm-6" *ngIf="installation.FlowmeterSerialNumber">{{installation.FlowmeterSerialNumber}}</div>
+                                            <div class="col-12 col-sm-6 mt-1 label" *ngIf="installation.FlowmeterSerialNumber"><strong>Flowmeter Serial Number: </strong></div>
+                                            <div class="col-12 col-sm-6 mt-1" *ngIf="installation.FlowmeterSerialNumber">{{installation.FlowmeterSerialNumber}}</div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6 text-center" *ngIf="installationPhotos">

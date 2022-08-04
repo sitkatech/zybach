@@ -111,7 +111,8 @@ namespace Zybach.API.Controllers
                             MessageAge = messageAge,
                             SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
-                            IsActive = sensor.IsActive
+                            IsActive = sensor.IsActive,
+                            SnoozeStartDate = sensor.SnoozeStartDate
                         };
                     }
                     catch
