@@ -163,14 +163,14 @@ export class IrrigationUnitListComponent implements OnInit {
   }
 
   public updateIrrigationUnits() {
-    this.irrigationUnitGrid.api.showLoadingOverlay();
+    this.irrigationUnitGrid?.api.showLoadingOverlay();
 
     this.irrigationUnitService.irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet(this.startDateMonth, this.startDateYear, this.endDateMonth, this.endDateYear)
       .subscribe(irrigationUnits => {
         this.irrigationUnits = irrigationUnits;
 
-        this.irrigationUnitGrid.api.setRowData(irrigationUnits);
-        this.irrigationUnitGrid.api.hideOverlay();
+        this.irrigationUnitGrid?.api.setRowData(irrigationUnits);
+        this.irrigationUnitGrid?.api.hideOverlay();
       });
   }
 
