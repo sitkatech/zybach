@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,6 +15,15 @@ namespace Zybach.API.Controllers
     {
         public IrrigationUnitController(ZybachDbContext dbContext, ILogger<IrrigationUnitController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
+        }
+
+        [HttpGet("irrigationUnits/summary/{startDateMonth}/{startDateYear}/{endDateMonth}/{endDateYear}")]
+        [ZybachViewFeature]
+        public ActionResult<List<AgHubIrrigationUnitSummaryDto>> GetIrrigationUnitSummariesForDateRange([FromRoute] int startDateMonth, [FromRoute] int startDateYear, 
+            int endDateMonth, int endDateYear)
+        {
+            var ahiuSummaryDtos = AgHubIrrigationUnitSummary.GetForDateRange(_dbContext, startDateYear, startDateMonth, endDateYear, endDateMonth);
+            return Ok(ahiuSummaryDtos);
         }
 
         [HttpGet("/irrigationUnits")]

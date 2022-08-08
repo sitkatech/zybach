@@ -22,6 +22,11 @@ namespace Zybach.EFModels.Entities
                 .ToList();
         }
 
+        public static List<int> ListWaterYears(ZybachDbContext dbContext)
+        {
+            return GetWaterYearMonthImpl(dbContext).Select(x => x.Year).Distinct().ToList();
+        }
+
         public static WaterYearMonthDto GetByWaterYearMonthID(ZybachDbContext dbContext, int waterYearMonthID)
         {
             return GetWaterYearMonthImpl(dbContext).SingleOrDefault(x => x.WaterYearMonthID == waterYearMonthID).AsDto();

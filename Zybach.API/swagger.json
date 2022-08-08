@@ -1762,6 +1762,82 @@
         }
       }
     },
+    "/irrigationUnits/summary/{startDateMonth}/{startDateYear}/{endDateMonth}/{endDateYear}": {
+      "get": {
+        "tags": [
+          "IrrigationUnit"
+        ],
+        "parameters": [
+          {
+            "name": "startDateMonth",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "startDateYear",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "endDateMonth",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "endDateYear",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitSummaryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitSummaryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitSummaryDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/irrigationUnits": {
       "get": {
         "tags": [
@@ -4606,6 +4682,47 @@
         }
       }
     },
+    "/water-year-months/years": {
+      "get": {
+        "tags": [
+          "WaterYearMonth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/water-year-months/current-date-or-earlier": {
       "get": {
         "tags": [
@@ -5896,6 +6013,82 @@
       "AgHubIrrigationUnitSimpleDto": {
         "type": "object",
         "properties": {
+          "AssociatedWells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellMinimalDto"
+            },
+            "nullable": true
+          },
+          "AgHubIrrigationUnitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "IrrigationUnitAreaInAcres": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AgHubIrrigationUnitSummaryDto": {
+        "type": "object",
+        "properties": {
+          "TotalEvapotranspirationInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "TotalPrecipitationInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "TotalEvapotranspirationGallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "TotalPrecipitationGallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterPumpedVolumeGallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "FlowMeterPumpedDepthInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ContinuityMeterPumpedVolumeGallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ContinuityMeterPumpedDepthInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ElectricalUsagePumpedVolumeGallons": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ElectricalUsagePumpedDepthInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
           "AssociatedWells": {
             "type": "array",
             "items": {
