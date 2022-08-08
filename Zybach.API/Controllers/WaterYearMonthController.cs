@@ -26,6 +26,14 @@ namespace Zybach.API.Controllers
             return Ok(waterYearMonths);
         }
 
+        [HttpGet("/water-year-months/years")]
+        [AdminFeature]
+        public ActionResult<List<int>> GetWaterYears()
+        {
+            var waterYears = WaterYearMonths.ListWaterYears(_dbContext);
+            return Ok(waterYears);
+        }
+
         [HttpGet("/water-year-months/current-date-or-earlier")]
         [AdminFeature]
         public ActionResult<List<WaterYearMonthDto>> GetWaterYearMonthsForCurrentDateOrEarlier()
