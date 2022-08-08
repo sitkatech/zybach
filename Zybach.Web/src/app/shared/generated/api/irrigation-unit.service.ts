@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 
 import { AgHubIrrigationUnitDetailDto } from '../model/ag-hub-irrigation-unit-detail-dto';
 import { AgHubIrrigationUnitSimpleDto } from '../model/ag-hub-irrigation-unit-simple-dto';
+import { AgHubIrrigationUnitSummaryDto } from '../model/ag-hub-irrigation-unit-summary-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -134,6 +135,64 @@ export class IrrigationUnitService {
         ];
 
         return this.httpClient.get<AgHubIrrigationUnitDetailDto>(`${this.basePath}/irrigationUnits/${encodeURIComponent(String(irrigationUnitID))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param startDateMonth 
+     * @param startDateYear 
+     * @param endDateMonth 
+     * @param endDateYear 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet(startDateMonth: number, startDateYear: number, endDateMonth: number, endDateYear: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AgHubIrrigationUnitSummaryDto>>;
+    public irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet(startDateMonth: number, startDateYear: number, endDateMonth: number, endDateYear: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AgHubIrrigationUnitSummaryDto>>>;
+    public irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet(startDateMonth: number, startDateYear: number, endDateMonth: number, endDateYear: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AgHubIrrigationUnitSummaryDto>>>;
+    public irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet(startDateMonth: number, startDateYear: number, endDateMonth: number, endDateYear: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (startDateMonth === null || startDateMonth === undefined) {
+            throw new Error('Required parameter startDateMonth was null or undefined when calling irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet.');
+        }
+
+        if (startDateYear === null || startDateYear === undefined) {
+            throw new Error('Required parameter startDateYear was null or undefined when calling irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet.');
+        }
+
+        if (endDateMonth === null || endDateMonth === undefined) {
+            throw new Error('Required parameter endDateMonth was null or undefined when calling irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet.');
+        }
+
+        if (endDateYear === null || endDateYear === undefined) {
+            throw new Error('Required parameter endDateYear was null or undefined when calling irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<AgHubIrrigationUnitSummaryDto>>(`${this.basePath}/irrigationUnits/summary/${encodeURIComponent(String(startDateMonth))}/${encodeURIComponent(String(startDateYear))}/${encodeURIComponent(String(endDateMonth))}/${encodeURIComponent(String(endDateYear))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
