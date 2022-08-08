@@ -18,6 +18,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("irrigationUnits/summary/{startDateMonth}/{startDateYear}/{endDateMonth}/{endDateYear}")]
+        [ZybachViewFeature]
         public ActionResult<List<AgHubIrrigationUnitSummaryDto>> GetIrrigationUnitSummariesForDateRange([FromRoute] int startDateMonth, [FromRoute] int startDateYear, 
             int endDateMonth, int endDateYear)
         {

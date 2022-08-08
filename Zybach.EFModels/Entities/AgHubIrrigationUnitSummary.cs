@@ -15,7 +15,6 @@ namespace Zybach.EFModels.Entities
         public const double AcreInchesToGallonsConversionRate = 27154;
 
         public int AgHubIrrigationUnitID { get; set; }
-        public double IrrigationUnitAreaInAcres { get; set; }
 
         public decimal? TotalEvapotranspirationInches { get; set; }
         public decimal? TotalPrecipitationInches { get; set; }
@@ -24,8 +23,7 @@ namespace Zybach.EFModels.Entities
         public double? ContinuityMeterPumpedVolumeGallonsTotal { get; set; }
         public double? ElectricalUsagePumpedVolumeGallonsTotal { get; set; }
 
-        public static IEnumerable<AgHubIrrigationUnitSummaryDto> GetForDateRange(ZybachDbContext dbContext,
-            int startDateYear, int startDateMonth, int endDateYear, int endDateMonth)
+        public static IEnumerable<AgHubIrrigationUnitSummaryDto> GetForDateRange(ZybachDbContext dbContext, int startDateYear, int startDateMonth, int endDateYear, int endDateMonth)
         {
             var ahiuSummaries = dbContext.AgHubIrrigationUnitSummaries
                 .FromSqlRaw(
@@ -37,35 +35,33 @@ namespace Zybach.EFModels.Entities
                     )
                 .ToList();
 
-            var ahiuSummaryDtos = ahiuSummaries.OrderBy(x => x.AgHubIrrigationUnitID).Select(x =>
-                new AgHubIrrigationUnitSummaryDto()
+            var irrigationUnitSimples = AgHubIrrigationUnits.ListAsSimpleDto(dbContext);
+
+            var ahiuSummaryDtos = ahiuSummaries.Join(irrigationUnitSimples,
+                x => x.AgHubIrrigationUnitID, y => y.AgHubIrrigationUnitID,
+                (x, y) => new AgHubIrrigationUnitSummaryDto()
                 {
                     AgHubIrrigationUnitID = x.AgHubIrrigationUnitID,
-                    IrrigationUnitAreaInAcres = x.IrrigationUnitAreaInAcres,
+                    WellTPID = y.WellTPID,
+                    IrrigationUnitAreaInAcres = y.IrrigationUnitAreaInAcres,
+                    AssociatedWells = y.AssociatedWells,
 
                     TotalEvapotranspirationInches = x.TotalEvapotranspirationInches,
-                    TotalPrecipitationInches = x.TotalPrecipitationInches,
+                    TotalEvapotranspirationGallons = x.TotalEvapotranspirationInches * (decimal?)y.IrrigationUnitAreaInAcres * (decimal?)AcreInchesToGallonsConversionRate,
 
-                    TotalEvapotranspirationGallons = x.TotalEvapotranspirationInches *
-                                                     (decimal?)x.IrrigationUnitAreaInAcres *
-                                                     (decimal?)AcreInchesToGallonsConversionRate,
-                    TotalPrecipitationGallons = x.TotalPrecipitationInches *
-                                                (decimal?)x.IrrigationUnitAreaInAcres *
-                                                (decimal?)AcreInchesToGallonsConversionRate,
+                    TotalPrecipitationInches = x.TotalPrecipitationInches,
+                    TotalPrecipitationGallons = x.TotalPrecipitationInches * (decimal?)y.IrrigationUnitAreaInAcres * (decimal?)AcreInchesToGallonsConversionRate,
 
                     FlowMeterPumpedVolumeGallons = x.FlowMeterPumpedVolumeGallonsTotal,
-                    FlowMeterPumpedDepthInches =
-                        (x.FlowMeterPumpedVolumeGallonsTotal / AcreInchesToGallonsConversionRate) /
-                        x.IrrigationUnitAreaInAcres,
+                    FlowMeterPumpedDepthInches = (x.FlowMeterPumpedVolumeGallonsTotal / AcreInchesToGallonsConversionRate) / y.IrrigationUnitAreaInAcres,
+
                     ContinuityMeterPumpedVolumeGallons = x.ContinuityMeterPumpedVolumeGallonsTotal,
-                    ContinuityMeterPumpedDepthInches =
-                        (x.ContinuityMeterPumpedVolumeGallonsTotal / AcreInchesToGallonsConversionRate) /
-                        x.IrrigationUnitAreaInAcres,
+                    ContinuityMeterPumpedDepthInches = (x.ContinuityMeterPumpedVolumeGallonsTotal / AcreInchesToGallonsConversionRate) / y.IrrigationUnitAreaInAcres,
+
                     ElectricalUsagePumpedVolumeGallons = x.ElectricalUsagePumpedVolumeGallonsTotal,
-                    ElectricalUsagePumpedDepthInches =
-                        (x.ElectricalUsagePumpedVolumeGallonsTotal / AcreInchesToGallonsConversionRate) /
-                        x.IrrigationUnitAreaInAcres,
-                });
+                    ElectricalUsagePumpedDepthInches = (x.ElectricalUsagePumpedVolumeGallonsTotal / AcreInchesToGallonsConversionRate) / y.IrrigationUnitAreaInAcres,
+                })
+                .OrderBy(x => x.WellTPID);
 
             return ahiuSummaryDtos;
         }

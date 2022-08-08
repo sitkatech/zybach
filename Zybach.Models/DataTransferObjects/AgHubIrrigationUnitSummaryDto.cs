@@ -1,10 +1,7 @@
 ﻿namespace Zybach.Models.DataTransferObjects
 {
-    public class AgHubIrrigationUnitSummaryDto
+    public class AgHubIrrigationUnitSummaryDto: AgHubIrrigationUnitSimpleDto
     {
-        public int AgHubIrrigationUnitID { get; set; }
-        public double IrrigationUnitAreaInAcres { get; set; }
-
         public decimal? TotalEvapotranspirationInches { get; set; }
         public decimal? TotalPrecipitationInches { get; set; }
         public decimal? TotalEvapotranspirationGallons { get; set; }

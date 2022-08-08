@@ -18,7 +18,6 @@ begin
 	set @endDate = EOMONTH(datefromparts(@endDateYear, @endDateMonth, 1), 0)
 
 	select ahiu.AgHubIrrigationUnitID,
-		   ahiu.IrrigationUnitAreaInAcres,
 		   ahiuwymed.TotalEvapotranspirationInches,
 		   ahiuwympd.TotalPrecipitationInches,
 		   ahiur.FlowMeterPumpedVolumeGallonsTotal, ahiur.ContinuityMeterPumpedVolumeGallonsTotal, ahiur.ElectricalUsagePumpedVolumeGallonsTotal
