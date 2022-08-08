@@ -61,17 +61,17 @@ export class IrrigationUnitListComponent implements OnInit {
       this.initializeGrid();
       this.irrigationUnitGrid?.api.showLoadingOverlay();
 
+      this.waterYearMonthService.waterYearMonthsYearsGet().subscribe(years => {
+        this.years = years;
+      });
+
       const currentDate = new Date();
       this.startDateMonth = 1;
       this.endDateMonth = currentDate.getMonth() + 1;
-      this.endDateYear = currentDate.getFullYear();
-
-      this.waterYearMonthService.waterYearMonthsYearsGet().subscribe(years => {
-        this.years = years;
-        this.startDateYear = years[0];
-
-        this.updateIrrigationUnits();
-      });
+      this.startDateYear = currentDate.getFullYear();
+      this.endDateYear = this.startDateYear;
+      
+      this.updateIrrigationUnits();
     });
   }
 
