@@ -102,16 +102,22 @@ namespace Zybach.API.Services
             var addedEmailAddresses = new List<string>();
 
             var distinctToAddresses = mailMessage.To.DistinctBy(x => x.Address).Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList();
-            sendGridMessage.AddTos(distinctToAddresses);
-            addedEmailAddresses.AddRange(distinctToAddresses.Select(x => x.Email));
+            if (distinctToAddresses.Any())
+            {
+                sendGridMessage.AddTos(distinctToAddresses);
+                addedEmailAddresses.AddRange(distinctToAddresses.Select(x => x.Email));
+            }
 
             if (mailMessage.CC.Any())
             {
                 var distinctCcAddresses = mailMessage.CC.DistinctBy(x => x.Address)
                     .Where(x => !addedEmailAddresses.Contains(x.Address))
                     .Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList();
-                sendGridMessage.AddCcs(distinctCcAddresses);
-                addedEmailAddresses.AddRange(distinctCcAddresses.Select(x => x.Email));
+                if (distinctCcAddresses.Any())
+                {
+                    sendGridMessage.AddCcs(distinctCcAddresses);
+                    addedEmailAddresses.AddRange(distinctCcAddresses.Select(x => x.Email));
+                }
             }
 
             if (mailMessage.Bcc.Any())
@@ -119,8 +125,12 @@ namespace Zybach.API.Services
                 var distinctBccAddresses = mailMessage.Bcc.DistinctBy(x => x.Address)
                     .Where(x => !addedEmailAddresses.Contains(x.Address))
                     .Select(x => new EmailAddress(x.Address, x.DisplayName)).ToList();
-                sendGridMessage.AddBccs(distinctBccAddresses);
-                addedEmailAddresses.AddRange(distinctBccAddresses.Select(x => x.Email));
+                if (distinctBccAddresses.Any())
+                {
+                    sendGridMessage.AddBccs(distinctBccAddresses);
+                    addedEmailAddresses.AddRange(distinctBccAddresses.Select(x => x.Email));
+                }
+
             }
 
             return sendGridMessage;
