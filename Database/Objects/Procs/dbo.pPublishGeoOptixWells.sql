@@ -14,11 +14,14 @@ begin
 	left join dbo.GeoOptixWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 	where aws.GeoOptixWellStagingID is null
 
-	insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate)
+	insert into dbo.Well(WellRegistrationID, WellGeometry, CreateDate, LastUpdateDate, IsReplacement, RequiresChemigation, RequiresWaterLevelInspection)
 	select	upper(aws.WellRegistrationID) as WellRegistrationID, 
 			aws.WellGeometry,
 			@fetchDate as CreateDate,
-			@fetchDate as LastUpdateDate
+			@fetchDate as LastUpdateDate,
+            0 as IsReplacement,
+            0 as RequiresChemigation,
+            0 as RequiresWaterLevelInspection
 	from dbo.GeoOptixWellStaging aws
 	left join dbo.Well aw on aws.WellRegistrationID = aw.WellRegistrationID
 	where aw.WellID is null
