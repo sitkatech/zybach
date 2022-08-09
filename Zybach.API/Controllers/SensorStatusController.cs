@@ -72,7 +72,8 @@ namespace Zybach.API.Controllers
                             IsActive = sensor.IsActive,
                             MostRecentSupportTicketID = sensor.MostRecentSupportTicketID,
                             MostRecentSupportTicketTitle = sensor.MostRecentSupportTicketTitle,
-                            ContinuityMeterStatus = sensor.ContinuityMeterStatus
+                            ContinuityMeterStatus = sensor.ContinuityMeterStatus,
+                            SnoozeStartDate = sensor.SnoozeStartDate
                         };
                     }
                     catch
@@ -111,7 +112,8 @@ namespace Zybach.API.Controllers
                             MessageAge = messageAge,
                             SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
-                            IsActive = sensor.IsActive
+                            IsActive = sensor.IsActive,
+                            SnoozeStartDate = sensor.SnoozeStartDate
                         };
                     }
                     catch

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Zybach.EFModels.Util;
@@ -11,6 +12,7 @@ namespace Zybach.EFModels.Entities
         public static IEnumerable<AgHubIrrigationUnitSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
             return dbContext.AgHubIrrigationUnits
+                .AsNoTracking()
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)
                     .ThenInclude(x => x.Sensors)
@@ -74,6 +76,52 @@ namespace Zybach.EFModels.Entities
                     .ThenInclude(x => x.Well)
                     .ThenInclude(x => x.Sensors)
                 .AsNoTracking();
+        }
+
+        public static List<RobustReviewDto> GetRobustReviewDtos(ZybachDbContext dbContext)
+        {
+            var agHubIrrigationUnits = dbContext.AgHubIrrigationUnits
+                .AsNoTracking()
+                .OrderBy(x => x.WellTPID)
+                .Include(x => x.AgHubWells)
+                .ToList();
+            var monthlyWaterVolumeSummaries = AgHubIrrigationUnitMonthlyWaterVolumeSummary.List(dbContext);
+            var irrigatedAcres = dbContext.AgHubWellIrrigatedAcres
+                .ToList();
+            var robustReviewDtos = agHubIrrigationUnits.Select(x => AgHubIrrigationUnitAsRobustReviewDto(x, irrigatedAcres, monthlyWaterVolumeSummaries)).ToList();
+            return robustReviewDtos.Where(x => x != null).ToList();
+        }
+
+        public static RobustReviewDto AgHubIrrigationUnitAsRobustReviewDto(AgHubIrrigationUnit irrigationUnit, List<AgHubWellIrrigatedAcre> irrigatedAcres, IEnumerable<AgHubIrrigationUnitMonthlyWaterVolumeSummary> monthlyWaterVolumeSummaries)
+        {
+            var associatedAgHubWellIDs = irrigationUnit.AgHubWells.Select(x => x.AgHubWellID).ToList();
+
+            var unitIrrigatedAcres = irrigatedAcres
+                .Where(x => associatedAgHubWellIDs.Contains(x.AgHubWellID))
+                .GroupBy(x => x.IrrigationYear).Select(x => x.First())
+                .Select(x => x.AsIrrigatedAcresPerYearDto())
+                .OrderByDescending(x => x.Year)
+                .ToList();
+
+            var robustReviewDto = new RobustReviewDto
+            {
+                WellTPID = irrigationUnit.WellTPID,
+                IrrigatedAcres = unitIrrigatedAcres,
+                MonthlyData = monthlyWaterVolumeSummaries
+                    .Where(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID)
+                    .OrderByDescending(x => x.Year)
+                    .ThenByDescending(x => x.Month)
+                    .Select(x => new MonthlyWaterVolumeDto
+                    {
+                        Month = x.Month,
+                        Year = x.Year,
+                        OpenET = x.EvapotranspirationAcreFeet,
+                        Precip = x.PrecipitationAcreFeet,
+                        VolumePumped = x.PumpedVolumeAcreFeet
+                    })
+                    .ToList()
+            };
+            return robustReviewDto;
         }
 
     }

@@ -130,7 +130,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         headerComponentFramework: FieldDefinitionGridHeaderComponent,
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
         valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
-           params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
+          params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
         sortable: true, filter: true, resizable: true,
         filterFramework: CustomDropdownFilterComponent,
         filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
@@ -159,11 +159,10 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }
         this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
           sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))
-        ), []).filter(sensor => (sensor.MessageAge > 3600 * 8 || 
-                                (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500) || 
-                                sensor.ContinuityMeterStatus?.ContinuityMeterStatusID == ContinuityMeterStatusEnum.AlwaysOn ||
-                                sensor.ContinuityMeterStatus?.ContinuityMeterStatusID == ContinuityMeterStatusEnum.AlwaysOff ) && sensor.IsActive);
-      })
+        ), []).filter(sensor => sensor.IsActive && (sensor.MessageAge > 3600 * 8 || 
+          (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500) || 
+          (!sensor.SnoozeStartDate && sensor.ContinuityMeterStatus?.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)));
+      });
     });
   }
   

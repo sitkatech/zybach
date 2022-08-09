@@ -121,7 +121,7 @@ export class SensorListComponent implements OnInit {
       headerComponentFramework: FieldDefinitionGridHeaderComponent,
       headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
       valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
-         params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
+         params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
       sortable: true, filter: true, resizable: true,
       filterFramework: CustomDropdownFilterComponent,
       filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }

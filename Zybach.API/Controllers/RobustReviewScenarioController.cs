@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Zybach.API.Models;
 using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -16,14 +15,12 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class RobustReviewScenarioController : SitkaController<RobustReviewScenarioController>
     {
-        private readonly WellService _wellService;
         private readonly GETService _GETService;
 
         public RobustReviewScenarioController(ZybachDbContext dbContext, ILogger<RobustReviewScenarioController> logger,
-            KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, WellService wellService,  GETService GETService) : base(dbContext, logger, keystoneService,
+            KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, GETService GETService) : base(dbContext, logger, keystoneService,
             zybachConfiguration)
         {
-            _wellService = wellService;
             _GETService = GETService;
         }
 
@@ -35,7 +32,7 @@ namespace Zybach.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FileStreamResult))]
         public List<RobustReviewDto> GetRobustReviewJsonFile()
         {
-            return _wellService.GetRobustReviewDtos();
+            return AgHubIrrigationUnits.GetRobustReviewDtos(_dbContext);
         }
 
         [HttpGet("/robustReviewScenario/checkGETAPIHealth")]

@@ -2,14 +2,60 @@
     <app-alert-display></app-alert-display>
     <div class="row">
         <div class="col-12">
-            <h2 class="d-inline-block">Irrigation Units</h2>
+            <h2 class="d-inline-block">Irrigation Unit Summary</h2>
             <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
         </div>
     </div>
+    <div class="row mb-3">
+        <div class="col-lg-5 col-12 mt-lg-0 mt-3">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-12 text-lg-right"><b>Start Date:</b></div>
+                <div class="col-sm-4 col-5">
+                    <ng-select [(ngModel)]="startDateMonth"
+                        [items]="months" placeholder="Start month" name="startMonth">
+                    </ng-select>
+                </div>
+                <div class="col-sm-5 col-6">
+                    <ng-select [(ngModel)]="startDateYear"
+                        [items]="years" placeholder="Start year" name="startYear">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 col-12 mt-lg-0 mt-3">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-12 text-lg-right"><b>End Date:</b></div>
+                <div class="col-sm-4 col-5">
+                    <ng-select [(ngModel)]="endDateMonth"
+                        [items]="months" placeholder="End month" name="endMonth">
+                    </ng-select>
+                </div>
+                <div class="col-sm-5 col-6">
+                    <ng-select [(ngModel)]="endDateYear"
+                        [items]="years" placeholder="End year" name="endYear">
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-2 ml-lg-auto mt-lg-0 mt-3">
+            <button class="btn btn-zybach btn-md" (click)="updateIrrigationUnits()">Update</button>
+        </div>
+    </div>
+
     <div class="row">
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
+                    <div class="btn-group btn-group-toggle">
+                        <label class="btn btn-toggle btn-sm btn-zybach" [class.active]="unitsShown == 'gal'">
+                          <input type="radio" name="units" id="gal" (click)="toggleUnitsShown('gal')"> Volume (gal)
+                        </label>
+                        <label class="btn btn-toggle btn-sm btn-zybach" [class.active]="unitsShown == 'in'" style="width:100px">
+                          <input type="radio" name="units" id="in" (click)="toggleUnitsShown('in')"> Depth (in)
+                        </label>
+                    </div>
+                </div>
+                <div class="col ml-auto">
                     <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
                     ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
                     <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="irrigationUnitGrid">

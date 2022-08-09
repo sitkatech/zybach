@@ -64,7 +64,7 @@ namespace Zybach.API.Services
                 return;
             }
 
-            var robustReviewDtos = _wellService.GetRobustReviewDtos();
+            var robustReviewDtos = AgHubIrrigationUnits.GetRobustReviewDtos(_dbContext);
             var robustReviewDtosAsBytes = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(robustReviewDtos);
             var byteArrayContent = new ByteArrayContent(robustReviewDtosAsBytes);
             byteArrayContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");

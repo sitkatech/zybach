@@ -14,6 +14,7 @@ CREATE TABLE [dbo].[Sensor](
 	[RetirementDate] [datetime] NULL,
 	[ContinuityMeterStatusID] [int] NULL,
 	[ContinuityMeterStatusLastUpdated] [datetime] NULL,
+	[SnoozeStartDate] [datetime] NULL,
  CONSTRAINT [PK_Sensor_SensorID] PRIMARY KEY CLUSTERED 
 (
 	[SensorID] ASC

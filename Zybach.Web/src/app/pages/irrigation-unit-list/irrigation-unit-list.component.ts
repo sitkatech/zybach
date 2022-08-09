@@ -12,6 +12,12 @@ import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-ric
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
+import { forkJoin } from 'rxjs';
+import { AgHubIrrigationUnitSummaryDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-summary-dto';
+import { WaterYearMonthService } from 'src/app/shared/generated/api/water-year-month.service';
+import { array } from 'vega';
+import { DateTime } from 'vega-lite/build/src/datetime';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'zybach-irrigation-unit-list',
@@ -25,17 +31,28 @@ export class IrrigationUnitListComponent implements OnInit {
 
   public richTextTypeID : number = CustomRichTextTypeEnum.IrrigationUnitIndex;
 
-  public columnDefs: any[];
+  public columnDefs: ColDef[];
   public defaultColDef: ColDef;
-  public irrigationUnits: Array<AgHubIrrigationUnitSimpleDto>;
+  public irrigationUnits: Array<AgHubIrrigationUnitSummaryDto>;
+
+  public years: number[];
+  public months = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ];
+
+  public startDateMonth: number;
+  public startDateYear: number;
+  public endDateMonth: number;
+  public endDateYear: number;
 
   public gridApi: any;
+  public unitsShown: string = "gal"; // gal or in
 
   constructor(
     private alertService: AlertService,
     private authenticationService: AuthenticationService,
     private irrigationUnitService: IrrigationUnitService,
-    private utilityFunctionsService: UtilityFunctionsService
+    private utilityFunctionsService: UtilityFunctionsService,
+    private waterYearMonthService: WaterYearMonthService,
+    private decimalPipe: DecimalPipe
   ) { }
 
   ngOnInit(): void {
@@ -44,14 +61,23 @@ export class IrrigationUnitListComponent implements OnInit {
       this.initializeGrid();
       this.irrigationUnitGrid?.api.showLoadingOverlay();
 
-      this.irrigationUnitService.irrigationUnitsGet().subscribe(irrigationUnits => {
-        this.irrigationUnits = irrigationUnits;
-        this.irrigationUnitGrid?.api.hideOverlay();
+      this.waterYearMonthService.waterYearMonthsYearsGet().subscribe(years => {
+        this.years = years;
       });
+
+      const currentDate = new Date();
+      this.startDateMonth = 1;
+      this.endDateMonth = currentDate.getMonth() + 1;
+      this.startDateYear = currentDate.getFullYear();
+      this.endDateYear = this.startDateYear;
+      
+      this.updateIrrigationUnits();
     });
   }
 
   private initializeGrid(): void {
+    const _decimalPipe = this.decimalPipe;
+
     this.columnDefs = [
       {
         headerName: 'Irrigation Unit ID',
@@ -68,6 +94,14 @@ export class IrrigationUnitListComponent implements OnInit {
         filter: true,
         resizable: true,
         sortable: true
+      },
+      this.utilityFunctionsService.createDecimalColumnDef('Area (ac)', 'IrrigationUnitAreaInAcres', 130, 2, null, FieldDefinitionTypeEnum.IrrigationUnitAcres),
+      {
+        headerName: "Associated Well Count",
+        valueGetter: function (params: any) {
+          return params.data.AssociatedWells.length;
+        },
+        sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
       {
         headerName: 'Associated Well(s)',
@@ -88,20 +122,63 @@ export class IrrigationUnitListComponent implements OnInit {
         cellRendererParams: { inRouterLink: "/wells/" },
         cellRendererFramework: MultiLinkRendererComponent
       },
-      {
-        headerName: "Associated Well Count",
-        valueGetter: function (params: any) {
-          return params.data.AssociatedWells.length;
-        },
-        sortable: true, filter: 'agNumberColumnFilter', resizable: true
+      { 
+        headerValueGetter: () => `Precipitation (${this.unitsShown})`,
+        valueGetter: params => this.unitsShown == 'in' ? params.data.TotalPrecipitationInches : params.data.TotalPrecipitationGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
       },
-      this.utilityFunctionsService.createDecimalColumnDef('Area (ac)', 'IrrigationUnitAreaInAcres', 130, 2, null, FieldDefinitionTypeEnum.IrrigationUnitAcres)
-    ]
+      {
+        headerValueGetter: () => `Evapotranspiration (${this.unitsShown})`,
+        valueGetter: params => this.unitsShown == 'in' ? params.data.TotalEvapotranspirationInches : params.data.TotalEvapotranspirationGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
+      },
+      {
+        headerValueGetter: () => 'Flow Meter Pumped' + (this.unitsShown == 'gal' ? 'Volume (gal)' : 'Depth (in)'),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.FlowMeterPumpedDepthInches : params.data.FlowMeterPumpedVolumeGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
+      },
+      {
+        headerValueGetter: () => 'Continuity Meter Pumped' + (this.unitsShown == 'gal' ? 'Volume (gal)' : 'Depth (in)'),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.ContinuityMeterPumpedDepthInches : params.data.ContinuityMeterPumpedVolumeGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
+      },
+      {
+        headerValueGetter: () => 'Electrical Usage Pumped' + (this.unitsShown == 'gal' ? 'Volume (gal)' : 'Depth (in)'),
+        valueGetter: params => this.unitsShown == 'in' ? params.data.ElectricalUsagePumpedDepthInches : params.data.ElectricalUsagePumpedVolumeGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
+      }
+    ];
+
+    this.defaultColDef = { sortable: true, filter: true, resizable: true };
   }
 
   public onFirstDataRendered(params): void {
     this.gridApi = params.api;
     this.gridApi.sizeColumnsToFit();
+  }
+
+  public updateIrrigationUnits() {
+    this.irrigationUnitGrid?.api.showLoadingOverlay();
+
+    this.irrigationUnitService.irrigationUnitsSummaryStartDateMonthStartDateYearEndDateMonthEndDateYearGet(this.startDateMonth, this.startDateYear, this.endDateMonth, this.endDateYear)
+      .subscribe(irrigationUnits => {
+        this.irrigationUnits = irrigationUnits;
+
+        this.irrigationUnitGrid?.api.setRowData(irrigationUnits);
+        this.irrigationUnitGrid?.api.hideOverlay();
+      });
+  }
+
+  public toggleUnitsShown(units : string): void {
+    this.unitsShown = units;
+
+    this.irrigationUnitGrid.api.setRowData(this.irrigationUnits);
+    this.irrigationUnitGrid.api.refreshHeader();
   }
 
   public exportToCsv() {

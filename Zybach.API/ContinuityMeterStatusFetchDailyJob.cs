@@ -13,6 +13,7 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
 {
     private readonly InfluxDBService _influxDbService;
     public const string JobName = "Continuity Meter Status Fetch Daily";
+    public static readonly int[] MonthsToAutomaticallySnooze = { 10, 11, 12, 1, 2, 3, 4 };
 
     public ContinuityMeterStatusFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<ContinuityMeterStatusFetchDailyJob> logger,
         ZybachDbContext zybachDbContext, InfluxDBService influxDbService) : base(
@@ -40,12 +41,25 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
     private void GetDailyContinuityMeterStatusData()
     {
         var continuityMeterStatuses = _influxDbService.GetDailyContinuityMeterStatusData().Result;
+        
+        var currentDateMinusTenDays = DateTime.Today.AddDays(-10);
+        var automaticallySnoozeAlwaysOffStatus = MonthsToAutomaticallySnooze.Contains(DateTime.Today.Month);
 
         var continuityMeters = _dbContext.Sensors.Where(x => x.SensorTypeID == (int)SensorTypeEnum.ContinuityMeter).ToList();
         continuityMeters.ForEach(x =>
         {
             x.ContinuityMeterStatusID = continuityMeterStatuses.ContainsKey(x.SensorName) ? continuityMeterStatuses[x.SensorName] : (int)ContinuityMeterStatusEnum.AlwaysOff;
             x.ContinuityMeterStatusLastUpdated = DateTime.UtcNow;
+
+            if (automaticallySnoozeAlwaysOffStatus && x.ContinuityMeterStatusID == (int)ContinuityMeterStatusEnum.AlwaysOff)
+            {
+                x.SnoozeStartDate = currentDateMinusTenDays.AddDays(1);
+            }
+            else if (x.ContinuityMeterStatusID == (int)ContinuityMeterStatusEnum.ReportingNormally || 
+                     (x.SnoozeStartDate.HasValue && x.SnoozeStartDate.Value.Date <= currentDateMinusTenDays))
+            { 
+                x.SnoozeStartDate = null;
+            }
         }); 
         
         _dbContext.SaveChanges();

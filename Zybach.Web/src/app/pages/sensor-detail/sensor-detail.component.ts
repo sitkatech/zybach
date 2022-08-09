@@ -191,6 +191,17 @@ export class SensorDetailComponent implements OnInit {
     });
   }
 
+  public updateSensorSnooze(sensorSnoozed: boolean) {
+    this.alertService.clearAlerts();
+    
+    this.sensorService.sensorsSensorIDSnoozePut(this.sensorID, sensorSnoozed).subscribe(snoozeStartDate => {
+      this.sensor.SnoozeStartDate = snoozeStartDate;
+      this.alertService.pushAlert(new Alert(`Sensor '${this.sensor.SensorName}' ${sensorSnoozed ? "" : "reporting"} Always On/Off status ${sensorSnoozed ? "snoozed" : ""}.`, AlertContext.Success));
+    }, error => {
+      this.cdr.detectChanges();
+    });
+  }
+
   public wellInGeoOptixUrl(): string {
     return `${environment.geoOptixWebUrl}/program/main/(inner:site)?projectCName=water-data-program&siteCName=${this.sensor.WellRegistrationID}`;
   }
