@@ -37,6 +37,13 @@ begin
 	join dbo.GeoOptixSensorStaging gs on s.SensorName = gs.SensorName
 	left join dbo.Well w on gs.WellRegistrationID = w.WellRegistrationID
 
+    -- reset the SensorType this sensor is mapped to
+	update s
+	set s.SensorTypeID = st.SensorTypeID
+	from dbo.Sensor s
+	join dbo.GeoOptixSensorStaging gs on s.SensorName = gs.SensorName
+	join dbo.SensorType st on case when gs.SensorType  = 'PumpMonitor' then 'ContinuityMeter' else gs.SensorType end = st.SensorTypeName
+
 end
 
 GO
