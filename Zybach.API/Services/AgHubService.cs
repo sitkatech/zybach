@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GeoJSON.Net.Geometry;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Zybach.API.Services
@@ -13,11 +13,15 @@ namespace Zybach.API.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<AgHubService> _logger;
+        private readonly ZybachConfiguration _zybachConfiguration;
+        private readonly string _apiBucket;
 
-        public AgHubService(HttpClient httpClient, ILogger<AgHubService> logger)
+        public AgHubService(HttpClient httpClient, ILogger<AgHubService> logger, IOptions<ZybachConfiguration> zybachConfiguration)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _zybachConfiguration = zybachConfiguration.Value;
+            _apiBucket = _zybachConfiguration.AGHUB_API_BUCKET;
         }
 
         private async Task<TV> GetJsonFromCatalogImpl<TV>(string uri)
@@ -44,7 +48,7 @@ namespace Zybach.API.Services
 
         public async Task<List<AgHubWellRaw>> GetWellCollection()
         {
-            var agHubWellResponse = await GetJsonFromCatalogImpl<AgHubWellResponse>($"prod/wells");
+            var agHubWellResponse = await GetJsonFromCatalogImpl<AgHubWellResponse>($"{_apiBucket}/wells");
             return agHubWellResponse.Data;
         }
 
@@ -54,7 +58,7 @@ namespace Zybach.API.Services
             {
                 var agHubWellResponse =
                     await GetJsonFromCatalogImpl<AgHubWellWithAcreYearsResponse>(
-                        $"prod/wells/{wellRegistrationID}/summary-statistics");
+                        $"{_apiBucket}/wells/{wellRegistrationID}/summary-statistics");
                 return agHubWellResponse.Code != 200 ? null : agHubWellResponse.Data;
             }
             catch
@@ -67,7 +71,7 @@ namespace Zybach.API.Services
         {
             try
             {
-                var agHubWellResponse = await GetJsonFromCatalogImpl<PumpedVolumeDailyForWellResponse>($"prod/wells/{wellRegistrationID}/pumped-volume/daily-summary?startDateISO={FormatToYYMMDD(startDate)}&endDateISO={FormatToYYMMDD(DateTime.Today)}");
+                var agHubWellResponse = await GetJsonFromCatalogImpl<PumpedVolumeDailyForWellResponse>($"{_apiBucket}/wells/{wellRegistrationID}/pumped-volume/daily-summary?startDateISO={FormatToYYMMDD(startDate)}&endDateISO={FormatToYYMMDD(DateTime.Today)}");
                 return agHubWellResponse.Code != 200 ? null : agHubWellResponse.Data;
             }
             catch
