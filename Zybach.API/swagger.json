@@ -9602,6 +9602,11 @@
           "InspectionNotes": {
             "type": "string",
             "nullable": true
+          },
+          "LabNitrates": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false

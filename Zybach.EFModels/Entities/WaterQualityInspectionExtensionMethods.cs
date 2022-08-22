@@ -22,7 +22,8 @@ namespace Zybach.EFModels.Entities
                 WaterQualityInspectionID = waterQualityInspection.WaterQualityInspectionID,
                 InspectionDate = waterQualityInspection.InspectionDate,
                 InspectionType = waterQualityInspection.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName,
-                InspectionNotes = waterQualityInspection.InspectionNotes
+                InspectionNotes = waterQualityInspection.InspectionNotes,
+                LabNitrates = waterQualityInspection.LabNitrates
             };
 
             return waterQualityInspectionSummaryDto;
