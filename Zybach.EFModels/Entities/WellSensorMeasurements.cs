@@ -151,8 +151,13 @@ namespace Zybach.EFModels.Entities
                 x => x.MeasurementDate.ToShortDateString());
             var startDate = wellSensorMeasurements.Min(x => x.MeasurementDateInPacificTime);
             var endDate = retirementDate ?? DateTime.Today;
-            var list = Enumerable.Range(0, (endDate - startDate).Days + 1)
-                .ToList();
+            
+            var list = new List<int>();
+            if (startDate < endDate)
+            {
+                list = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
+            }
+
             var anomalousDateAsShortDateStrings = new List<string>();
             foreach (var sensorAnomaly in sensorAnomalies)
             {
