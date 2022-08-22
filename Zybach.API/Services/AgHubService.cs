@@ -93,13 +93,13 @@ namespace Zybach.API.Services
         public class AgHubWellRaw
         {
             public string WellRegistrationID { get; set; }
-            public Point Location { get; set; }
-            public DateTime? TpnrdPumpRateUpdated { get; set; }
-            public int WellTpnrdPumpRate { get; set; }
+            public string Location { get; set; }
+            public DateTime? DistrictPumpRateUpdated { get; set; }
+            public int WellDistrictPumpRate { get; set; }
             public DateTime? AuditPumpRateUpdated { get; set; }
             public int? WellAuditPumpRate { get; set; }
             public bool? WellConnectedMeter { get; set; }
-            public string WellTPID { get; set; }
+            public string WellIrrigUnitID { get; set; }
 
         }
 
@@ -116,20 +116,19 @@ namespace Zybach.API.Services
         public class AgHubWellRawWithAcreYears
         {
             public string WellRegistrationID { get; set; }
-            public Point Location { get; set; }
-            public DateTime? TpnrdPumpRateUpdated { get; set; }
-            public int WellTpnrdPumpRate { get; set; }
+            public string Location { get; set; }
+            public DateTime? DistrictPumpRateUpdated { get; set; }
+            public int WellDistrictPumpRate { get; set; }
             public DateTime? AuditPumpRateUpdated { get; set; }
             public int? WellAuditPumpRate { get; set; }
             public bool? WellConnectedMeter { get; set; }
-            public string WellTPID { get; set; }
+            public string WellIrrigUnitID { get; set; }
             [JsonProperty("electric")]
-            public bool HasElectricalData { get; set; }
-            [JsonProperty("irrigation_unit_geometry")]
+            public int HasElectricalData { get; set; }
             public string IrrigationUnitGeometry { get; set; }
             public DateTime? RegisteredUpdated { get; set; }
             public int? RegisteredPumpRate { get; set; }
-            public List<IrrigatedAcresPerYear> AcresYear { get; set; }
+            public List<IrrigationUnitDetailsPerYear> IrrigUnitDetails { get; set; }
 
             public RegisteredUserDetails RegisteredUserDetails { get; set; }
         }
@@ -163,9 +162,17 @@ namespace Zybach.API.Services
             public double PumpedVolumeGallons { get; set; }
         }
 
-        public class IrrigatedAcresPerYear
+        public class IrrigationUnitDetailsPerYear
         {
             public int Year { get; set; }
+            public double? TotalAcres { get; set; }
+            public List<FarmPractice> FarmPractices { get; set; }
+        }
+
+        public class FarmPractice
+        {
+            public string Crop { get; set; }
+            public string Tillage { get; set; }
             public double? Acres { get; set; }
         }
     }
