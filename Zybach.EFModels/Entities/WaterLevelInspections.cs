@@ -65,9 +65,7 @@ namespace Zybach.EFModels.Entities
                 return new List<WaterLevelInspectionForVegaChartDto>();
             }
 
-            var mostRecentLevelMeasurement = inspections.First(x => x.Measurement != null).Measurement;
-
-            return inspections.Select(x => x.AsVegaChartDto(mostRecentLevelMeasurement.Value)).ToList();
+            return inspections.Select(x => x.AsVegaChartDto()).ToList();
         }
 
         public static WaterLevelInspectionSimpleDto Create(ZybachDbContext dbContext, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)

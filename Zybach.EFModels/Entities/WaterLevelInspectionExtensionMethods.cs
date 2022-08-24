@@ -26,14 +26,13 @@ namespace Zybach.EFModels.Entities
             return waterLevelInspectionSummaryDto;
         }
 
-        public static WaterLevelInspectionForVegaChartDto AsVegaChartDto(this WaterLevelInspection waterLevelInspection, decimal mostRecentLevelMeasurement)
+        public static WaterLevelInspectionForVegaChartDto AsVegaChartDto(this WaterLevelInspection waterLevelInspection)
         {
             var waterLevelInspectionForVegaChartDto = new WaterLevelInspectionForVegaChartDto()
             {
                 WellID = waterLevelInspection.WellID,
                 InspectionDate = waterLevelInspection.InspectionDate,
-                Measurement = waterLevelInspection.Measurement,
-                MostRecentMeasurement = mostRecentLevelMeasurement
+                Measurement = waterLevelInspection.Measurement
             };
 
             return waterLevelInspectionForVegaChartDto;

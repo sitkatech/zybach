@@ -44,9 +44,7 @@ namespace Zybach.EFModels.Entities
                 return new List<WaterQualityInspectionForVegaChartDto>();
             }
 
-            var mostRecentNitrateLevel = inspections.First(x => x.LabNitrates != null).LabNitrates;
-
-            return inspections.Select(x => x.AsVegaChartDto(mostRecentNitrateLevel.Value)).ToList();
+            return inspections.Select(x => x.AsVegaChartDto()).ToList();
         }
 
         public static WaterQualityInspectionSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int waterQualityInspectionID)
