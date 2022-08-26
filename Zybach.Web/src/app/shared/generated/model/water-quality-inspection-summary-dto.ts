@@ -15,6 +15,7 @@ export class WaterQualityInspectionSummaryDto {
     InspectionDate?: string;
     InspectionType?: string;
     InspectionNotes?: string;
+    LabNitrates?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

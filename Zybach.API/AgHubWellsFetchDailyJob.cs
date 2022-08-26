@@ -26,7 +26,7 @@ namespace Zybach.API
         }
 
         public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-            {RunEnvironment.Production}; 
+            {RunEnvironment.Production, RunEnvironment.Staging}; 
 
         protected override void RunJobImplementation()
         {
@@ -80,7 +80,7 @@ namespace Zybach.API
                 var startDate = lastReadingDates.ContainsKey(wellRegistrationID) ? lastReadingDates[wellRegistrationID] : DefaultStartDate;
                 var pumpedVolumeResult =
                     _agHubService.GetPumpedVolume(wellRegistrationID, startDate).Result;
-                if (pumpedVolumeResult != null)
+                if (pumpedVolumeResult is { PumpedVolumeTimeSeries: { } })
                 {
                     var pumpedVolumeTimePoints =
                         pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.PumpedVolumeGallons > 0).ToList();
@@ -90,9 +90,9 @@ namespace Zybach.API
                             pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
                             {
                                 SensorName = $"E-{wellRegistrationID.ToUpper()}",
-                                MeasurementTypeID = (int) MeasurementTypeEnum.ElectricalUsage,
-                                ReadingYear = pumpedVolumeTimeSeries.MeasurementDate.Year, 
-                                ReadingMonth = pumpedVolumeTimeSeries.MeasurementDate.Month, 
+                                MeasurementTypeID = (int)MeasurementTypeEnum.ElectricalUsage,
+                                ReadingYear = pumpedVolumeTimeSeries.MeasurementDate.Year,
+                                ReadingMonth = pumpedVolumeTimeSeries.MeasurementDate.Month,
                                 ReadingDay = pumpedVolumeTimeSeries.MeasurementDate.Day,
                                 MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
                                 WellRegistrationID = wellRegistrationID
@@ -107,26 +107,30 @@ namespace Zybach.API
         {
             var agHubWellRawWithAcreYears =
                 _agHubService.GetWellIrrigatedAcresPerYear(wellRegistrationID).Result;
-            var wktReader = new WKTReader();
 
             if (agHubWellRawWithAcreYears != null)
             {
                 wellStaging.RegisteredUpdated = agHubWellRawWithAcreYears.RegisteredUpdated;
                 wellStaging.RegisteredPumpRate = agHubWellRawWithAcreYears.RegisteredPumpRate;
-                wellStaging.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData;
+                wellStaging.HasElectricalData = agHubWellRawWithAcreYears.HasElectricalData > 0;
                 wellStaging.AgHubRegisteredUser = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
                 wellStaging.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
-                wellStaging.IrrigationUnitGeometry = !string.IsNullOrWhiteSpace(agHubWellRawWithAcreYears.IrrigationUnitGeometry) ? wktReader.Read(agHubWellRawWithAcreYears.IrrigationUnitGeometry) : null;
+                wellStaging.IrrigationUnitGeometry = WKTToGeometry(agHubWellRawWithAcreYears.IrrigationUnitGeometry);
 
-                var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.AcresYear
-                    .Where(x => x.Acres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
+                var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.IrrigUnitDetails
+                    .Where(x => x.TotalAcres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
                     {
-                        Acres = x.Acres.Value,
+                        Acres = x.TotalAcres.Value,
                         WellRegistrationID = wellRegistrationID,
                         IrrigationYear = x.Year
                     }).ToList();
                 _dbContext.AgHubWellIrrigatedAcreStagings.AddRange(wellIrrigatedAcreStagings);
             }
+        }
+
+        private static Geometry WKTToGeometry(string wktGeometry)
+        {
+            return !string.IsNullOrWhiteSpace(wktGeometry) ? new WKTReader().Read(wktGeometry) : null;
         }
 
         private static AgHubWellStaging CreateAgHubWellStaging(AgHubService.AgHubWellRaw agHubWellRaw)
@@ -136,11 +140,11 @@ namespace Zybach.API
                 WellRegistrationID = agHubWellRaw.WellRegistrationID,
                 AuditPumpRateUpdated = agHubWellRaw.AuditPumpRateUpdated,
                 WellAuditPumpRate = agHubWellRaw.WellAuditPumpRate,
-                TPNRDPumpRateUpdated = agHubWellRaw.TpnrdPumpRateUpdated,
-                WellTPNRDPumpRate = agHubWellRaw.WellTpnrdPumpRate,
+                TPNRDPumpRateUpdated = agHubWellRaw.DistrictPumpRateUpdated,
+                WellTPNRDPumpRate = agHubWellRaw.WellDistrictPumpRate,
                 WellConnectedMeter = agHubWellRaw.WellConnectedMeter ?? false,
-                WellGeometry = new Point(agHubWellRaw.Location.Coordinates.Longitude,agHubWellRaw.Location.Coordinates.Latitude),
-                WellTPID = agHubWellRaw.WellTPID,
+                WellGeometry = WKTToGeometry(agHubWellRaw.Location),
+                WellTPID = agHubWellRaw.WellIrrigUnitID,
                 HasElectricalData = false
             };
             return agHubWellStaging;

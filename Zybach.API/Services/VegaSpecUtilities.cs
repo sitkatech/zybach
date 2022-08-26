@@ -36,19 +36,19 @@ namespace Zybach.API.Services
             }},
             ""encoding"": {{
                 ""x"": {{
-                  ""field"": ""InspectionDate"",                    
-                  ""timeUnit"": ""yearmonthdate"",                    
+                  ""field"": ""InspectionDate"",                     
                   ""type"": ""temporal"",                    
                   ""axis"": {{
-                    ""title"": ""Inspection Date""
+                    ""title"": ""Inspection Date"",
+                    ""labelExpr"": ""timeFormat(datum.value, '%Y')""
                     {(!isForWeb ? ",\"labelAngle\":50" : "")}
                   }}
                 }},    
                 ""color"":{{
                   ""type"":""nominal"",
                   ""scale"":{{
-                    ""range"":[""blue"", ""red""], 
-                    ""domain"": [""Nitrate Level"", ""Current Nitrate Level""]
+                    ""range"":[""blue""], 
+                    ""domain"": [""Nitrate Level""]
                   }}
                 }}
             }},           
@@ -83,7 +83,7 @@ namespace Zybach.API.Services
                     ""mark"": ""point""
                 }}                
                 ]           
-            }},  
+            }},      
             {{
             ""encoding"": {{
                 ""y"": {{
@@ -131,11 +131,6 @@ namespace Zybach.API.Services
                     ""field"": ""LabNitrates"", 
                     ""type"": ""quantitative"", 
                     ""title"": ""Lab Nitrates""
-                    }},
-                    {{
-                    ""field"": ""MostRecentDateLabNitrates"", 
-                    ""type"": ""quantitative"", 
-                    ""title"": ""Current Nitrate Level""
                     }}              
                 ]}},                
                 ""selection"": 
@@ -186,19 +181,19 @@ namespace Zybach.API.Services
             }},
             ""encoding"": {{
                 ""x"": {{
-                  ""field"": ""InspectionDate"",                    
-                  ""timeUnit"": ""yearmonthdate"",                    
+                  ""field"": ""InspectionDate"",                      
                   ""type"": ""temporal"",                    
                   ""axis"": {{
-                    ""title"": ""Inspection Date""
+                    ""title"": ""Inspection Date"",
+                     ""labelExpr"": ""timeFormat(datum.value, '%Y')""
                     {(!isForWeb ? ",\"labelAngle\":50" : "")}
                   }}
                 }},    
                 ""color"":{{
                   ""type"":""nominal"",
                   ""scale"":{{
-                    ""range"":[""blue"", ""red""], 
-                    ""domain"": [""Depth"", ""Current Depth""]
+                    ""range"":[""blue""], 
+                    ""domain"": [""Depth""]
                   }}
                 }}
             }},           
@@ -236,34 +231,7 @@ namespace Zybach.API.Services
                     ""mark"": ""point""
                 }}                
                 ]           
-            }},  
-            {{
-            ""encoding"": {{
-                ""y"": {{
-                    ""field"": ""MostRecentMeasurement"",
-                    ""type"":""quantitative""
-                }}
-            }},
-                ""layer"": [
-                {{
-                ""mark"": ""line"",
-                    ""encoding"": {{
-                    ""color"": {{
-                        ""datum"":""Current Depth""
-                    }}
-                }}
-            }},           
-                {{
-                ""transform"": [
-                    {{
-                    ""filter"": 
-                        {{ ""selection"": ""hover"" }}
-                }}
-                    ], 
-                    ""mark"": ""point""
-                }}                
-                ]    
-            }},       
+            }},      
             {{
             ""mark"": ""rule"",                
                 ""encoding"": {{
@@ -284,12 +252,7 @@ namespace Zybach.API.Services
                     ""field"": ""Measurement"", 
                     ""type"": ""quantitative"", 
                     ""title"": ""Depth""
-                    }},
-                    {{
-                    ""field"": ""MostRecentMeasurement"", 
-                    ""type"": ""quantitative"", 
-                    ""title"": ""Current Depth""
-                    }}              
+                    }}           
                 ]}},                
                 ""selection"": 
                     {{

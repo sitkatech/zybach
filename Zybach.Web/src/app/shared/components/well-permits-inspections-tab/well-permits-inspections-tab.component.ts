@@ -89,15 +89,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
         resizable: true,
         sortable: true
       },
-      { 
-        headerName: 'Measurement', 
-        field: 'Measurement',
-        filter: 'agNumberColumnFilter',
-        type: 'rightAligned',
-        width: 120,
-        resizable: true,
-        sortable: true
-      },
+      this.utilityFunctionsService.createDecimalColumnDef('Measurement', 'Measurement', 120, 2),
       { 
         headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
         filterFramework: CustomDropdownFilterComponent,
@@ -148,6 +140,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
         resizable: true,
         sortable: true 
       },
+      this.utilityFunctionsService.createDecimalColumnDef('Lab Nitrates', 'LabNitrates', 90, 1, true),
       { 
         headerName: 'Notes', 
         field: 'InspectionNotes',
