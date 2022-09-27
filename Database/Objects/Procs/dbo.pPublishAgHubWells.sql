@@ -132,7 +132,7 @@ begin
 	join dbo.AgHubWellStaging aws on w.WellRegistrationID = aws.WellRegistrationID
 	left join dbo.AgHubIrrigationUnit ahiu on aws.WellTPID = ahiu.WellTPID
 	
-	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres)
+	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres, CropType, Tillage)
 	select	aw.AgHubWellID, 
 			awias.IrrigationYear,
 			avg(awias.Acres) as Acres,
