@@ -7,6 +7,8 @@ CREATE TABLE [dbo].[AgHubWellIrrigatedAcre](
 	[AgHubWellID] [int] NOT NULL,
 	[IrrigationYear] [int] NOT NULL,
 	[Acres] [float] NOT NULL,
+	[CropType] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Tillage] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
  CONSTRAINT [PK_AgHubWellIrrigatedAcre_AgHubWellIrrigatedAcreID] PRIMARY KEY CLUSTERED 
 (
 	[AgHubWellIrrigatedAcreID] ASC

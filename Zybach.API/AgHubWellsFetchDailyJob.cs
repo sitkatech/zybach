@@ -118,11 +118,22 @@ namespace Zybach.API
                 wellStaging.IrrigationUnitGeometry = WKTToGeometry(agHubWellRawWithAcreYears.IrrigationUnitGeometry);
 
                 var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.IrrigUnitDetails
-                    .Where(x => x.TotalAcres.HasValue).Select(x => new AgHubWellIrrigatedAcreStaging()
+                    .Where(x => x.TotalAcres.HasValue).Select(x =>
                     {
-                        Acres = x.TotalAcres.Value,
-                        WellRegistrationID = wellRegistrationID,
-                        IrrigationYear = x.Year
+                        var agHubWellIrrigatedAcreStaging = new AgHubWellIrrigatedAcreStaging()
+                        {
+                            Acres = x.TotalAcres.Value,
+                            WellRegistrationID = wellRegistrationID,
+                            IrrigationYear = x.Year
+                        };
+                        if (x.FarmPractices != null && x.FarmPractices.Any())
+                        {
+                            var farmPractice = x.FarmPractices.OrderByDescending(x => x.Acres).ThenBy(x => x.Crop)
+                                .ThenBy(x => x.Tillage).First();
+                            agHubWellIrrigatedAcreStaging.CropType = farmPractice.Crop;
+                            agHubWellIrrigatedAcreStaging.Tillage = farmPractice.Tillage;
+                        }
+                        return agHubWellIrrigatedAcreStaging;
                     }).ToList();
                 _dbContext.AgHubWellIrrigatedAcreStagings.AddRange(wellIrrigatedAcreStagings);
             }

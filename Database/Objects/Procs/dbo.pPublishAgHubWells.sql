@@ -135,11 +135,13 @@ begin
 	insert into dbo.AgHubWellIrrigatedAcre(AgHubWellID, IrrigationYear, Acres)
 	select	aw.AgHubWellID, 
 			awias.IrrigationYear,
-			avg(awias.Acres) as Acres
+			avg(awias.Acres) as Acres,
+            awias.CropType,
+            awias.Tillage
 	from dbo.AgHubWellIrrigatedAcreStaging awias
 	join dbo.Well w on awias.WellRegistrationID = w.WellRegistrationID
 	join dbo.AgHubWell aw on w.WellID = aw.WellID
-	group by aw.AgHubWellID, awias.IrrigationYear
+	group by aw.AgHubWellID, awias.IrrigationYear, awias.CropType, awias.Tillage
 
 	-- pulling latest acres straight from AgHubWellIrrigatedAcre to ahiu
 	update dbo.AgHubIrrigationUnit

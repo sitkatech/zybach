@@ -16,7 +16,9 @@ namespace Zybach.EFModels.Entities
                 AgHubWellIrrigatedAcreStagingID = agHubWellIrrigatedAcreStaging.AgHubWellIrrigatedAcreStagingID,
                 WellRegistrationID = agHubWellIrrigatedAcreStaging.WellRegistrationID,
                 IrrigationYear = agHubWellIrrigatedAcreStaging.IrrigationYear,
-                Acres = agHubWellIrrigatedAcreStaging.Acres
+                Acres = agHubWellIrrigatedAcreStaging.Acres,
+                CropType = agHubWellIrrigatedAcreStaging.CropType,
+                Tillage = agHubWellIrrigatedAcreStaging.Tillage
             };
             DoCustomMappings(agHubWellIrrigatedAcreStaging, agHubWellIrrigatedAcreStagingDto);
             return agHubWellIrrigatedAcreStagingDto;
@@ -31,7 +33,9 @@ namespace Zybach.EFModels.Entities
                 AgHubWellIrrigatedAcreStagingID = agHubWellIrrigatedAcreStaging.AgHubWellIrrigatedAcreStagingID,
                 WellRegistrationID = agHubWellIrrigatedAcreStaging.WellRegistrationID,
                 IrrigationYear = agHubWellIrrigatedAcreStaging.IrrigationYear,
-                Acres = agHubWellIrrigatedAcreStaging.Acres
+                Acres = agHubWellIrrigatedAcreStaging.Acres,
+                CropType = agHubWellIrrigatedAcreStaging.CropType,
+                Tillage = agHubWellIrrigatedAcreStaging.Tillage
             };
             DoCustomSimpleDtoMappings(agHubWellIrrigatedAcreStaging, agHubWellIrrigatedAcreStagingSimpleDto);
             return agHubWellIrrigatedAcreStagingSimpleDto;

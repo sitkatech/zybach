@@ -15,6 +15,12 @@ namespace Zybach.EFModels.Entities
         public int AgHubWellID { get; set; }
         public int IrrigationYear { get; set; }
         public double Acres { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string CropType { get; set; }
+        [StringLength(50)]
+        [Unicode(false)]
+        public string Tillage { get; set; }
 
         [ForeignKey("AgHubWellID")]
         [InverseProperty("AgHubWellIrrigatedAcres")]
