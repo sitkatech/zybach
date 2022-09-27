@@ -15,9 +15,9 @@ namespace Zybach.EFModels.Entities
             var irrigatedAcresPerYearDto = new IrrigatedAcresPerYearDto()
             {
                 Year = agHubWellIrrigatedAcre.IrrigationYear,
-                Acres = agHubWellIrrigatedAcre.Acres
-                // TODO: Populate CropType when Mark updates AgHub API
-                // CropType =
+                Acres = agHubWellIrrigatedAcre.Acres,
+                CropType = agHubWellIrrigatedAcre.CropType,
+                Tillage = agHubWellIrrigatedAcre.Tillage
             };
             
             return irrigatedAcresPerYearDto;
