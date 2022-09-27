@@ -123,6 +123,7 @@ namespace Zybach.Models.DataTransferObjects
         public int Year { get; set; }
         public double Acres { get; set; }
         public string CropType { get; set; }
+        public string Tillage { get; set; }
     }
 
     public class MonthlyPumpedVolume
