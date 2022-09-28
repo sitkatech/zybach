@@ -95,9 +95,10 @@ export class SensorDetailComponent implements OnInit {
     if (this.wellID) {
       this.wellService.wellsWellIDInstallationGet(this.wellID).subscribe(installations => {
         this.installations = installations.filter(x => x.SensorSerialNumber == this.sensor.SensorName);
-        for (const installation of installations) {
-          this.installationPhotos = this.getPhotoRecords(installation);
-        }
+        // RL - comment out for now per ZYB-279
+        // for (const installation of installations) {
+        //   this.installationPhotos = this.getPhotoRecords(installation);
+        // }
       });
     } else {
       this.installations = [];
