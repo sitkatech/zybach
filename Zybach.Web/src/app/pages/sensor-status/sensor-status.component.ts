@@ -172,10 +172,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   }
   
   public downloadCsv() {
-    const sensor = this.redSensors.find(x => x.SensorName == "PW010482");
-    console.log(sensor);
-
-    //this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
+    this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
   }
   
   public onGridReady(params) {
