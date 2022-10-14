@@ -110,7 +110,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       },
       { headerName: 'Last Message Age (Hours)',
         valueGetter: (params) => params.data.MessageAge ? Math.floor(params.data.MessageAge / 3600) : null,
-        valueFormatter: params => params.value ?? '-',
+        valueFormatter: params => params.value != null ? params.value : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
         sortable: true, resizable: true
@@ -162,18 +162,20 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
           sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))
         ), []).filter(sensor => sensor.IsActive && (sensor.MessageAge > 3600 * 8 || 
           (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500) || 
-          (!sensor.SnoozeStartDate && sensor.ContinuityMeterStatus?.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)));
+          (sensor.ContinuityMeterStatus && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatus.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)));
       });
     });
   }
   
   ngOnDestroy(): void {
-    
     this.wellsObservable.unsubscribe();
   }
   
-  public downloadCsv(){
-    this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
+  public downloadCsv() {
+    const sensor = this.redSensors.find(x => x.SensorName == "PW010482");
+    console.log(sensor);
+
+    //this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
   }
   
   public onGridReady(params) {
