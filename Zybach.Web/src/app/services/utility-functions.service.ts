@@ -19,14 +19,14 @@ export class UtilityFunctionsService {
   private decimalValueGetter(params: any, fieldName, allowNullData?: boolean): number {
     const fieldNames = fieldName.split('.');
     if (fieldNames.length == 1) {
-      return params.data[fieldName] ?? (allowNullData ? null : 0);
+      return params.data[fieldName] != null ? params.data[fieldName] : (allowNullData ? null : 0);
     }
 
     // checks that each part of a nested field is not null
     var fieldValue = params.data;
     fieldNames.forEach(x => {
       fieldValue = fieldValue[x];
-      if (!fieldValue) {
+      if (fieldValue == null) {
         fieldValue = allowNullData ? null : 0;
         return;
       }
@@ -43,7 +43,7 @@ export class UtilityFunctionsService {
     var decimalColDef: ColDef = {
       headerName: headerName, filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }, sortable: true, resizable: true,
       valueGetter: params => this.decimalValueGetter(params, fieldName, allowNullData),
-      valueFormatter: params => params.value ? _decimalPipe.transform(params.value, decimalFormatString) : '-',
+      valueFormatter: params => params.value != null ? _decimalPipe.transform(params.value, decimalFormatString) : '-',
     }
     if (width) {
       decimalColDef.width = width

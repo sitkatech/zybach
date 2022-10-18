@@ -200,7 +200,11 @@ namespace Zybach.API
                     UseRecommendedIsolationLevel = true,
                     DisableGlobalLocks = true
                 }));
-            //services.AddHangfireServer();
+
+            services.AddHangfireServer(x =>
+            {
+                x.WorkerCount = 1;
+            });
 
             services.AddControllers();
 
@@ -256,10 +260,7 @@ namespace Zybach.API
             {
                 Authorization = new[] { new HangfireAuthorizationFilter(Configuration) }
             });
-            app.UseHangfireServer(new BackgroundJobServerOptions()
-            {
-                WorkerCount = 1
-            });
+
             GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
 
             HangfireJobScheduler.ScheduleRecurringJobs();
