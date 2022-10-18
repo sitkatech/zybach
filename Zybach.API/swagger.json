@@ -7887,6 +7887,10 @@
           "CropType": {
             "type": "string",
             "nullable": true
+          },
+          "Tillage": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
