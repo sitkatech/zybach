@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
-using System.Reactive;
 using System.Threading.Tasks;
 using Zybach.EFModels.Entities;
-using Zybach.API.Services;
 
 namespace Zybach.API.Services.Notifications
 {

@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
+﻿using System.Net.Mail;
 using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using zybach.API.Services.Notifications;
 using Zybach.EFModels.Entities;
