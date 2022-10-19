@@ -11,7 +11,7 @@ begin
 	select cx.AgHubIrrigationUnitID, cx.[Year], cx.[Month],
 		   ahiuwymed.EvapotranspirationAcreInches / 12 as EvapotranspirationAcreFeet, 
 		   ahiuwympd.PrecipitationAcreInches / 12 as PrecipitationAcreFeet,
-		   wps.PumpedVolumeAcreFeet
+		   isnull(wps.PumpedVolumeAcreFeetElectricalUsage, wps.PumpedVolumeAcreFeetContinuity) / @gallonsToAcreFeetConversion as PumpedVolumeAcreFeet
 	from 
 	(
 		select ahiu.AgHubIrrigationUnitID, wym.[Year], wym.[Month], wym.WaterYearMonthID
@@ -28,12 +28,8 @@ begin
 	left join 
 	(
 		select wsm.WellRegistrationID, wsm.ReadingYear, wsm.ReadingMonth, ahiu.AgHubIrrigationUnitID, 
-			   PumpedVolumeAcreFeet = 
-				case ahw.WellConnectedMeter
-					when 1 then sum(case when wsm.MeasurementTypeID = 3 then wsm.MeasurementValue else null end) / @gallonsToAcreFeetConversion
-					when 0 then sum(case when wsm.MeasurementTypeID = 2 then wsm.MeasurementValue else null end) / @gallonsToAcreFeetConversion 
-					else null
-				end
+			   PumpedVolumeAcreFeetElectricalUsage = sum(case when wsm.MeasurementTypeID = 3 then wsm.MeasurementValue else null end),
+			   PumpedVolumeAcreFeetContinuity = sum(case when wsm.MeasurementTypeID = 2 then wsm.MeasurementValue else null end)
 		from
 		(
 			select wsm.WellRegistrationID, wsm.MeasurementTypeID, wsm.MeasurementValue, wsm.IsAnomalous, wsm.ReadingYear, wsm.ReadingMonth
