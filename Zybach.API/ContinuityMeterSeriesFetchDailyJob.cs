@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
@@ -15,8 +16,8 @@ namespace Zybach.API
         public const string JobName = "Continuity Meter Series Fetch Daily";
 
         public ContinuityMeterSeriesFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<ContinuityMeterSeriesFetchDailyJob> logger,
-            ZybachDbContext zybachDbContext, InfluxDBService influxDbService) : base(
-            JobName, logger, webHostEnvironment, zybachDbContext)
+            ZybachDbContext zybachDbContext, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, SitkaSmtpClientService sitkaSmtpClientService) : base(
+            JobName, logger, webHostEnvironment, zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
             _influxDbService = influxDbService;
         }
@@ -26,15 +27,7 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            try
-            {
-                GetDailyWellContinuityMeterData(DefaultStartDate);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                throw new Exception($"{JobName} encountered an error", e);
-            }
+            GetDailyWellContinuityMeterData(DefaultStartDate);
         }
 
         private void GetDailyWellContinuityMeterData(DateTime fromDate)

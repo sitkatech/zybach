@@ -15,6 +15,8 @@ services:
       - KEYSTONE_REDIRECT_URL=${KEYSTONE_REDIRECT_URL}
       - PlatformLongName=${PlatformLongName}
       - PlatformShortName=${PlatformShortName}
+      - DoNotReplyEmail=${DoNotReplyEmail}
+      - AppAlertsEmail=${AppAlertsEmail}
       - SupportEmail=${SupportEmail}
       - INFLUXDB_URL=${INFLUXDB_URL}
       - GEOOPTIX_HOSTNAME=${GEOOPTIX_HOSTNAME}

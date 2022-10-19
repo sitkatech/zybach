@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mail;
 using Hangfire;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
 namespace Zybach.API
@@ -19,6 +22,8 @@ namespace Zybach.API
         protected readonly ILogger<T> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
         protected readonly ZybachDbContext _dbContext;
+        protected readonly ZybachConfiguration _zybachConfiguration;
+        private readonly SitkaSmtpClientService _sitkaSmtpClient;
         protected static readonly DateTime DefaultStartDate = new DateTime(2018, 6, 1);
 
         /// <summary> 
@@ -26,12 +31,14 @@ namespace Zybach.API
         /// </summary>
         public abstract List<RunEnvironment> RunEnvironments { get; }
 
-        protected ScheduledBackgroundJobBase(string jobName, ILogger<T> logger, IWebHostEnvironment webHostEnvironment, ZybachDbContext dbContext)
+        protected ScheduledBackgroundJobBase(string jobName, ILogger<T> logger, IWebHostEnvironment webHostEnvironment, ZybachDbContext dbContext, IOptions<ZybachConfiguration> zybachConfiguration, SitkaSmtpClientService sitkaSmtpClient)
         {
             _jobName = jobName;
             _logger = logger;
             _webHostEnvironment = webHostEnvironment;
             _dbContext = dbContext;
+            _zybachConfiguration = zybachConfiguration.Value;
+            _sitkaSmtpClient = sitkaSmtpClient;
         }
 
         /// <summary>
@@ -67,6 +74,15 @@ namespace Zybach.API
                 {
                     // Wrap and rethrow with the information about which job encountered the problem
                     _logger.LogError(ex.Message);
+                    var mailMessage = new MailMessage
+                    {
+                        Subject = $"Zybach Hangfire Job Failed: Job {_jobName}",
+                        Body = $"Details: <br /><br />{ex.Message}",
+                        IsBodyHtml = true
+                    };
+
+                    mailMessage.To.Add(new MailAddress(_zybachConfiguration.AppAlertsEmail));
+                    _sitkaSmtpClient.Send(mailMessage);
                     throw new ScheduledBackgroundJobException(_jobName, ex);
                 }
             }
