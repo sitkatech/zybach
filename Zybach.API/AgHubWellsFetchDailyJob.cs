@@ -4,9 +4,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NetTopologySuite.Geometries;
 using NetTopologySuite.IO;
-using RestSharp.Extensions;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
@@ -19,8 +19,8 @@ namespace Zybach.API
 //        private static readonly List<string> ProblemWellRegistrationIDs = new List<string>{ "G-012886", "G-017908", "G-018992", "G-033855", "G-052662", "G-128363" };
 
         public AgHubWellsFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<AgHubWellsFetchDailyJob> logger,
-            ZybachDbContext zybachDbContext, AgHubService agHubService) : base(
-            JobName, logger, webHostEnvironment, zybachDbContext)
+            ZybachDbContext zybachDbContext, IOptions<ZybachConfiguration> zybachConfiguration, AgHubService agHubService, SitkaSmtpClientService sitkaSmtpClientService) : base(
+            JobName, logger, webHostEnvironment, zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
             _agHubService = agHubService;
         }
@@ -30,15 +30,7 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            try
-            {
-                GetDailyWellFlowMeterData();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                throw new Exception($"{JobName} encountered an error", e);
-            }
+            GetDailyWellFlowMeterData();
         }
 
         private void GetDailyWellFlowMeterData()

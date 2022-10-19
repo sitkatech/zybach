@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
@@ -14,8 +15,8 @@ namespace Zybach.API
         public const string JobName = "Flow Meter Series Fetch Daily";
 
         public FlowMeterSeriesFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<FlowMeterSeriesFetchDailyJob> logger,
-            ZybachDbContext zybachDbContext, InfluxDBService influxDbService) : base(
-            JobName, logger, webHostEnvironment, zybachDbContext)
+            ZybachDbContext zybachDbContext, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, SitkaSmtpClientService sitkaSmtpClientService) : base(
+            JobName, logger, webHostEnvironment, zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
             _influxDbService = influxDbService;
         }
@@ -25,15 +26,7 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            try
-            {
-                GetDailyWellFlowMeterData(DefaultStartDate);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                throw new Exception($"{JobName} encountered an error", e);
-            }
+            GetDailyWellFlowMeterData(DefaultStartDate);
         }
 
         private void GetDailyWellFlowMeterData(DateTime fromDate)

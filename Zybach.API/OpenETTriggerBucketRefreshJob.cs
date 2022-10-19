@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Zybach.EFModels.Entities;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 
@@ -14,16 +13,14 @@ namespace Zybach.API
     public class OpenETTriggerBucketRefreshJob : ScheduledBackgroundJobBase<OpenETTriggerBucketRefreshJob>,
         IOpenETTriggerBucketRefreshJob
     {
-        private readonly ZybachConfiguration _zybachConfiguration;
         private IBackgroundJobClient _backgroundJobClient;
         private readonly IOpenETService _openETService;
 
         public OpenETTriggerBucketRefreshJob(ILogger<OpenETTriggerBucketRefreshJob> logger,
             IWebHostEnvironment webHostEnvironment, ZybachDbContext zybachDbContext,
-            IOptions<ZybachConfiguration> zybachConfiguration, IBackgroundJobClient backgroundJobClient, IOpenETService openETService) : base(JobName, logger, webHostEnvironment,
-            zybachDbContext)
+            IOptions<ZybachConfiguration> zybachConfiguration, IBackgroundJobClient backgroundJobClient, IOpenETService openETService, SitkaSmtpClientService sitkaSmtpClientService) : base(JobName, logger, webHostEnvironment,
+            zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
-            _zybachConfiguration = zybachConfiguration.Value;
             _backgroundJobClient = backgroundJobClient;
             _openETService = openETService;
         }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 using Zybach.Models.GeoOptix;
@@ -17,8 +17,8 @@ namespace Zybach.API
         public const string JobName = "GeoOptix Well and Station Daily Sync";
 
         public GeoOptixSyncDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<GeoOptixSyncDailyJob> logger,
-            ZybachDbContext zybachDbContext, GeoOptixService geoOptixService) : base(
-            JobName, logger, webHostEnvironment, zybachDbContext)
+            ZybachDbContext zybachDbContext, IOptions<ZybachConfiguration> zybachConfiguration, GeoOptixService geoOptixService, SitkaSmtpClientService sitkaSmtpClientService) : base(
+            JobName, logger, webHostEnvironment, zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
             _geoOptixService = geoOptixService;
         }
@@ -27,15 +27,7 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            try
-            {
-                GetDailyWellFlowMeterData();
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                throw new Exception($"{JobName} encountered an error", e);
-            }
+            GetDailyWellFlowMeterData();
         }
 
         private void GetDailyWellFlowMeterData()

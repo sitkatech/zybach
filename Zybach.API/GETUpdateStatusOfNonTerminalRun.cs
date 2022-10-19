@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
@@ -14,8 +14,8 @@ namespace Zybach.API
         public const string JobName = "GET Update Status Of Non-Terminal Run Every 6 Hours";
 
         public GETUpdateStatusOfNonTerminalRunJob(IWebHostEnvironment webHostEnvironment, ILogger<GETUpdateStatusOfNonTerminalRunJob> logger,
-            ZybachDbContext zybachDbContext, GETService GETService) : base(
-            JobName, logger, webHostEnvironment, zybachDbContext)
+            ZybachDbContext zybachDbContext, IOptions<ZybachConfiguration> zybachConfiguration, GETService GETService, SitkaSmtpClientService sitkaSmtpClientService) : base(
+            JobName, logger, webHostEnvironment, zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
             _GETService = GETService;
         }
@@ -25,15 +25,7 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            try
-            {
-                Task.WaitAll(_GETService.UpdateCurrentlyRunningRunStatus());
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                throw new Exception($"{JobName} encountered an error", e);
-            }
+            Task.WaitAll(_GETService.UpdateCurrentlyRunningRunStatus());
         }
     }
 }

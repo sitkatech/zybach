@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 
@@ -16,26 +16,18 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
     public static readonly int[] MonthsToAutomaticallySnooze = { 10, 11, 12, 1, 2, 3, 4 };
 
     public ContinuityMeterStatusFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<ContinuityMeterStatusFetchDailyJob> logger,
-        ZybachDbContext zybachDbContext, InfluxDBService influxDbService) : base(
-        JobName, logger, webHostEnvironment, zybachDbContext)
+        ZybachDbContext zybachDbContext, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, SitkaSmtpClientService sitkaSmtpClientService) : base(
+        JobName, logger, webHostEnvironment, zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
     {
         _influxDbService = influxDbService;
     }
 
     public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
-        {RunEnvironment.Production, RunEnvironment.Development};
+        {RunEnvironment.Production};
 
     protected override void RunJobImplementation()
     {
-        try
-        {
-            GetDailyContinuityMeterStatusData();
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e.Message);
-            throw new Exception($"{JobName} encountered an error", e);
-        }
+        GetDailyContinuityMeterStatusData();
     }
 
     private void GetDailyContinuityMeterStatusData()

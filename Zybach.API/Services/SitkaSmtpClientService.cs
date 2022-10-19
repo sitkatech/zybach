@@ -225,7 +225,7 @@ You have received this email because you are assigned to receive support notific
 
         public MailAddress GetDefaultEmailFrom()
         {
-            return new MailAddress("donotreply@sitkatech.net", $"{_zybachConfiguration.PlatformLongName}");
+            return new MailAddress(_zybachConfiguration.DoNotReplyEmail, $"{_zybachConfiguration.PlatformLongName}");
         }
 
         public static void AddBccRecipientsToEmail(MailMessage mailMessage, IEnumerable<string> recipients)

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using System;
 using System.Net.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.API
 {
@@ -16,16 +15,14 @@ namespace Zybach.API
     public class OpenETRetrieveFromBucketJob : ScheduledBackgroundJobBase<OpenETRetrieveFromBucketJob>,
         IOpenETRetrieveFromBucketJob
     {
-        private readonly ZybachConfiguration _zybachConfiguration;
         private readonly IOpenETService _openETService;
         private readonly HttpClient _httpClient;
 
         public OpenETRetrieveFromBucketJob(ILogger<OpenETRetrieveFromBucketJob> logger,
             IWebHostEnvironment webHostEnvironment, ZybachDbContext zybachDbContext,
-            IOptions<ZybachConfiguration> zybachConfiguration, IOpenETService openETService, IHttpClientFactory httpClientFactory) : base(JobName, logger, webHostEnvironment,
-            zybachDbContext)
+            IOptions<ZybachConfiguration> zybachConfiguration, IOpenETService openETService, IHttpClientFactory httpClientFactory, SitkaSmtpClientService sitkaSmtpClientService) : base(JobName, logger, webHostEnvironment,
+            zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
-            _zybachConfiguration = zybachConfiguration.Value;
             _openETService = openETService;
             _httpClient = httpClientFactory.CreateClient("GenericClient");
         }
