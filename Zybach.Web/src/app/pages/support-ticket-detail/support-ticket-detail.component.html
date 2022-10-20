@@ -140,7 +140,7 @@
                                 <div class="col-2 text-center">
                                     <button class="btn btn-zybach btn-sm"
                                         (click)="launchDeleteModal(deleteCommentModal, ticketComment.SupportTicketCommentID)"
-                                        [hidden]="currentUserIsTicketOwner()">
+                                        [hidden]="!currentUserIsTicketOwner()">
                                     <span class="fa fa-trash"></span>
                                     </button>
                                 </div>
