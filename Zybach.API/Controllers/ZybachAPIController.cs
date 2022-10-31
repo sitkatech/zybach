@@ -64,6 +64,8 @@ namespace Zybach.API.Controllers
 
         private StructuredResultsDto GetPumpedVolumeImpl(List<string> wellRegistrationIDs, string startDateString, string endDateString)
         {
+            // sometimes there can be well registration IDs with different cases e.g: G-032254 vs g-032254
+            // lets start by adjusting everything to be uppercase for this string comparison.
             wellRegistrationIDs = wellRegistrationIDs.Select(x => x.ToUpper()).ToList();
 
             if (string.IsNullOrWhiteSpace(endDateString))
@@ -114,7 +116,7 @@ namespace Zybach.API.Controllers
 
                 var wells = _dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x =>
                         wellRegistrationIDs.Contains(x.Well.WellRegistrationID.ToUpper())).ToList()
-                    .ToDictionary(x => x.Well.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
+                    .ToDictionary(x => x.Well.WellRegistrationID.ToUpper(), x => x.PumpingRateGallonsPerMinute);
 
                 var apiResult = new StructuredResultsDto
                 {
@@ -139,7 +141,7 @@ namespace Zybach.API.Controllers
             var volumesByWell = new List<VolumeByWell>();
             foreach (var wellRegistrationID in wellRegistrationIDs)
             {
-                var currentWellResults = results.Where(x => x.WellRegistrationID == wellRegistrationID)
+                var currentWellResults = results.Where(x => x.WellRegistrationID.ToUpper() == wellRegistrationID)
                     .OrderBy(x => x.MeasurementDate).ToList();
                 var volumeByWell = new VolumeByWell
                 {
@@ -149,7 +151,7 @@ namespace Zybach.API.Controllers
                 volumeByWell.IntervalVolumes = CreateIntervalVolumesAndZeroFillMissingDays(wellRegistrationID,
                     currentWellResults, startDate, endDate,
                     pumpingRateGallonsPerMinute,
-                    firstReadingDates.Where(x => x.WellRegistrationID == wellRegistrationID).ToList());
+                    firstReadingDates.Where(x => x.WellRegistrationID.ToUpper() == wellRegistrationID).ToList());
                 volumesByWell.Add(volumeByWell);
             }
 
