@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Zybach.API.Models;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
@@ -64,6 +64,8 @@ namespace Zybach.API.Controllers
 
         private StructuredResultsDto GetPumpedVolumeImpl(List<string> wellRegistrationIDs, string startDateString, string endDateString)
         {
+            wellRegistrationIDs = wellRegistrationIDs.Select(x => x.ToUpper()).ToList();
+
             if (string.IsNullOrWhiteSpace(endDateString))
             {
                 endDateString = DateTime.Today.ToShortDateString();
@@ -102,7 +104,7 @@ namespace Zybach.API.Controllers
                 List<WellSensorMeasurementDto> wellSensorMeasurementDtos;
                 if (wellRegistrationIDs != null && wellRegistrationIDs.Any())
                 {
-                    var wellSensorMeasurements = query.Where(x => wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList();
+                    var wellSensorMeasurements = query.Where(x => wellRegistrationIDs.Contains(x.WellRegistrationID.ToUpper())).ToList();
                     wellSensorMeasurementDtos = wellSensorMeasurements.Select(x => x.AsDto()).ToList();
                 }
                 else
@@ -111,7 +113,7 @@ namespace Zybach.API.Controllers
                 }
 
                 var wells = _dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x =>
-                        wellRegistrationIDs.Contains(x.Well.WellRegistrationID)).ToList()
+                        wellRegistrationIDs.Contains(x.Well.WellRegistrationID.ToUpper())).ToList()
                     .ToDictionary(x => x.Well.WellRegistrationID, x => x.PumpingRateGallonsPerMinute);
 
                 var apiResult = new StructuredResultsDto
