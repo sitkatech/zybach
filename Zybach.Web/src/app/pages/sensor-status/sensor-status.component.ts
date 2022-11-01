@@ -64,7 +64,8 @@ export class SensorStatusComponent implements OnInit {
           sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))
         ), []).filter(sensor => sensor.IsActive && (sensor.MessageAge > 3600 * 8 || 
           (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500) || 
-          (sensor.ContinuityMeterStatus && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatus.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)));
+          (sensor.ContinuityMeterStatus && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatus.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)
+        )).sort((a, b) => a.LastReadingDate == b.LastReadingDate ? 0 : a.LastReadingDate > b.LastReadingDate ? 1 : -1);
       });
     });
   }
