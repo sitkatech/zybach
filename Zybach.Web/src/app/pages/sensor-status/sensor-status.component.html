@@ -27,8 +27,7 @@
             </fresca-clear-grid-filters-button>
         </div>
     </div>
-    <ag-grid-angular #wellsGrid style="width: 100%; height: 300px;" class="ag-theme-balham mt-2"
-        [rowData]="redSensors" [columnDefs]="columnDefs" [pagination]="true" [paginationPageSize]="100" [rowSelection]="'multiple'"
-        (gridReady)="onGridReady($event)" (selectionChanged)="onSelectionChanged($event)">
+    <ag-grid-angular #wellsGrid style="width: 100%; height: 400px;" class="ag-theme-balham mt-2" headerHeight="70"
+        [rowData]="redSensors" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [rowSelection]="'multiple'" (selectionChanged)="onSelectionChanged($event)">
     </ag-grid-angular>
 </div>

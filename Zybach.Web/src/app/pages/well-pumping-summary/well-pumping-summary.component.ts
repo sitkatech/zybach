@@ -96,7 +96,8 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName},
       },
       {
-        headerName: "Most Recent Support Ticket",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
         valueGetter: params => {
           return { 
             LinkValue: params.data.MostRecentSupportTicketID, 

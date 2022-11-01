@@ -12,6 +12,7 @@ import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/fi
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 import { ContinuityMeterStatusEnum } from 'src/app/shared/generated/enum/continuity-meter-status-enum';
 import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
+import { ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'zybach-sensor-status',
@@ -19,17 +20,16 @@ import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
   styleUrls: ['./sensor-status.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SensorStatusComponent implements OnInit, OnDestroy {
+export class SensorStatusComponent implements OnInit {
   @ViewChild("wellsGrid") wellsGrid: any;
   @ViewChild("wellMap") wellMap: WellMapComponent;
 
   public watchUserChangeSubscription: any;
   public currentUser: UserDto;
-  public wellsObservable: any;
   public wellsGeoJson: any;
   public redSensors: any[];
-  public columnDefs: any[];
-  public gridApi: any;
+  public columnDefs: ColDef[];
+  public defaultColDef: ColDef;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -38,109 +38,11 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit(): void {
-    this.columnDefs = [
-      {
-        headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
-        }, cellRendererFramework: LinkRendererComponent,
-        cellRendererParams: { inRouterLink: "/wells/" },
-        comparator: this.utilityFunctionsService.linkRendererComparator,
-        width: 100,
-        resizable: true
-      },
-      {
-        valueGetter: params => {
-          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
-        },
-        cellRendererFramework: LinkRendererComponent,
-        cellRendererParams: { inRouterLink: "/sensors" },
-        sortable: false, filter: false, width: 140
-      },
-      { 
-        headerName: 'Well Number', 
-        field: 'WellRegistrationID', 
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
-        width: 120, sortable: true, filter: true, resizable: true },
-      {
-        headerName: "AgHub Registered User",
-        field: "AgHubRegisteredUser",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser},
-        width: 170,
-        sortable: true, filter: true, resizable: true
-      },
-      {
-        headerName: "Field Name",
-        field: "fieldName",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
-        width: 115,
-        sortable: true, filter: true, resizable: true
-      },
-      {
-        headerName: 'Sensor', valueGetter: function (params: any) {
-          if(params.data.SensorName) {
-            return { LinkValue: params.data.SensorID, LinkDisplay: params.data.SensorName };
-          } else {
-            return { LinkValue: null, LinkDisplay: null };
-          }
-        }, 
-        cellRendererFramework: LinkRendererComponent,
-        cellRendererParams: { inRouterLink: "/sensors/" },
-        comparator: this.utilityFunctionsService.linkRendererComparator,
-        filterValueGetter: function (params: any) {
-          return params.data.SensorName;
-        },
-        filter: true,
-        resizable: true,
-        sortable: true,
-        width: 120
-      },
-      {
-        headerName: "Most Recent Support Ticket",
-        valueGetter: params => {
-          return { 
-            LinkValue: params.data.MostRecentSupportTicketID, 
-            LinkDisplay: params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
-          }
-        },
-        cellRendererFramework: LinkRendererComponent,
-        cellRendererParams: { inRouterLink: "/support-tickets/"},
-        comparator: this.utilityFunctionsService.linkRendererComparator,
-        filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : '',
-        filter: true, resizable: true, sortable: true
-      },
-      { headerName: 'Last Message Age (Hours)',
-        valueGetter: (params) => params.data.MessageAge ? Math.floor(params.data.MessageAge / 3600) : null,
-        valueFormatter: params => params.value != null ? params.value : '-',
-        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
-        sortable: true, resizable: true
-      },
-      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
-      this.utilityFunctionsService.createDateColumnDef('Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', null, 140, FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
-      { 
-        headerName: 'Sensor Type', field: 'SensorTypeName',
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'SensorTypeName'
-        },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
-        resizable: true, sortable: true
-      },
-      this.utilityFunctionsService.createDateColumnDef('Last Reading Date', 'LastReadingDate', 'M/d/yyyy', null, 140),
-      {
-        headerComponentFramework: FieldDefinitionGridHeaderComponent,
-        headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
-        valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
-          params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
-        sortable: true, filter: true, resizable: true,
-        filterFramework: CustomDropdownFilterComponent,
-        filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
-      }
-    ];
+    this.createColumnDefs();
 
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
-      this.wellsObservable = this.sensorStatusService.sensorStatusGet().subscribe(wells => {
+      this.sensorStatusService.sensorStatusGet().subscribe(wells => {
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
@@ -166,26 +68,116 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       });
     });
   }
-  
-  ngOnDestroy(): void {
-    this.wellsObservable.unsubscribe();
+
+  private createColumnDefs() {
+    this.defaultColDef = {
+      filter: true,
+      sortable: true,
+      resizable: true,
+      width: 125
+    };
+
+    this.columnDefs = [
+      {
+        headerName: '', valueGetter: function (params: any) {
+          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
+        }, cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/wells/" },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
+        sortable: false, filter: false, width: 100
+      },
+      {
+        valueGetter: params => {
+          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+        },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/sensors" },
+        sortable: false, filter: false, width: 130
+      },
+      { 
+        field: 'WellRegistrationID', 
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber, labelOverride: 'Well Number' },
+      },
+      {
+        field: "AgHubRegisteredUser",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser, labelOverride: 'AgHub User' },
+        
+      },
+      {
+        headerName: "Field Name",
+        field: "fieldName",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
+      },
+      {
+        headerName: 'Sensor', valueGetter: function (params: any) {
+          if(params.data.SensorName) {
+            return { LinkValue: params.data.SensorID, LinkDisplay: params.data.SensorName };
+          } else {
+            return { LinkValue: null, LinkDisplay: null };
+          }
+        }, 
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/sensors/" },
+        comparator: this.utilityFunctionsService.linkRendererComparator,
+        filterValueGetter: function (params: any) {
+          return params.data.SensorName;
+        },
+      },
+      {
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
+        valueGetter: params => {
+          return { 
+            LinkValue: params.data.MostRecentSupportTicketID, 
+            LinkDisplay: params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
+          }
+        },
+        cellRendererFramework: LinkRendererComponent,
+        cellRendererParams: { inRouterLink: "/support-tickets/"},
+        comparator: this.utilityFunctionsService.linkRendererComparator,
+        filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
+      },
+      { headerName: 'Last Message Age (Hours)',
+        valueGetter: (params) => params.data.MessageAge ? Math.floor(params.data.MessageAge / 3600) : null,
+        valueFormatter: params => params.value != null ? params.value : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
+      },
+      this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
+      this.utilityFunctionsService.createDateColumnDef('Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', null, 120, FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
+      { 
+        headerName: 'Sensor Type', field: 'SensorTypeName',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'SensorTypeName'
+        },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
+      },
+      this.utilityFunctionsService.createDateColumnDef('Last Reading Date', 'LastReadingDate', 'M/d/yyyy', null, 120),
+      {
+        headerComponentFramework: FieldDefinitionGridHeaderComponent,
+        headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
+        valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
+          params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
+      }
+    ];
   }
   
   public downloadCsv() {
     this.utilityFunctionsService.exportGridToCsv(this.wellsGrid, 'wells.csv', null);
   }
-  
-  public onGridReady(params) {
-    this.gridApi = params.api;
-  }
 
   public onSelectionChanged(event: Event) {
-    const selectedNode = this.gridApi.getSelectedNodes()[0];
+    const selectedNode = this.wellsGrid.api.getSelectedNodes()[0];
     if (!selectedNode) {
       // event was fired automatically when we updated the grid after a map click
       return;
     }
-    this.gridApi.forEachNode(node => {
+    this.wellsGrid.api.forEachNode(node => {
       if (node.data.WellRegistrationID === selectedNode.data.WellRegistrationID) {
         node.setSelected(true);
       }
@@ -194,13 +186,13 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   }
 
   public onMapSelection(wellRegistrationID: string) {
-    this.gridApi.deselectAll();
+    this.wellsGrid.api.deselectAll();
     let firstRecordMadeVisible = false;
-    this.gridApi.forEachNode(node => {
+    this.wellsGrid.api.forEachNode(node => {
       if (node.data.WellRegistrationID === wellRegistrationID) {
         node.setSelected(true);
         if (!firstRecordMadeVisible) {
-          this.gridApi.ensureIndexVisible(node.rowIndex, "top");
+          this.wellsGrid.ensureIndexVisible(node.rowIndex, "top");
           firstRecordMadeVisible = true;
         }
       }

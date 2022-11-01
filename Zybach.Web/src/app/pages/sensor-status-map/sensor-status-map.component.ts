@@ -80,7 +80,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   showZeroToThirty: boolean = true;
   showThirtyToSixty: boolean = true;
   showSixtyPlus: boolean = true;
-  showNoMessageData: boolean = false;
+  showNoMessageData: boolean = true;
 
   showLessThan2500: boolean = false;
   show2500To2700: boolean = false;
@@ -139,9 +139,8 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     this.compileService.configure(this.appRef);
 
-    // this.setLastMessageAgeFilterOptionsDropdownList();
     this.setLastMessageAgeFilterOptionsDropdownList();
-    this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS];
+    this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS, MapFilterOption.NO_MESSAGE_DATA];
   }
 
   public ngAfterViewInit(): void {
@@ -327,11 +326,12 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     if (this.filterMapByLastMessageAge) {
       this.setLastMessageAgeFilterOptionsDropdownList();
-      this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS];
+      this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS, MapFilterOption.NO_MESSAGE_DATA];
 
       this.showZeroToThirty = true;
       this.showThirtyToSixty = true;
       this.showSixtyPlus = true;
+      this.showNoMessageData = true;
 
       this.showLessThan2500 = false;
       this.show2500To2700 = false;
@@ -340,7 +340,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       this.showNoVoltageData = false;
     } else {
       this.setVoltageFilterOptionsDropdownList();
-      this.selectedFilterOptions = [MapFilterOption.LESS_THAN_2500, MapFilterOption.FROM_2500_TO_2700, MapFilterOption.FROM_2700_TO_4000, MapFilterOption.GREATER_THAN_4000];
+      this.selectedFilterOptions = [MapFilterOption.LESS_THAN_2500, MapFilterOption.FROM_2500_TO_2700, MapFilterOption.FROM_2700_TO_4000, MapFilterOption.GREATER_THAN_4000, MapFilterOption.NO_VOLTAGE_DATA];
   
       this.showZeroToThirty = false;
       this.showThirtyToSixty = false;
@@ -351,6 +351,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       this.show2500To2700 = true;
       this.show2700To4000 = true;
       this.showGreaterThan4000 = true;
+      this.showNoVoltageData = true;
     }
 
     this.clearLayer(this.wellsLayer);
@@ -472,8 +473,4 @@ enum MapFilterOption {
   FROM_2700_TO_4000 = 7,
   GREATER_THAN_4000 = 8,
   NO_VOLTAGE_DATA = 9
-}
-
-enum VoltageFilterOption {
-  
 }
