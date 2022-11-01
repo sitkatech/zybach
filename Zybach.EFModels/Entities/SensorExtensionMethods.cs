@@ -18,7 +18,9 @@ namespace Zybach.EFModels.Entities
             var mostRecentSupportTicket = new SupportTicket();
             if (sensor.SupportTickets != null)
             {
-                mostRecentSupportTicket = sensor.SupportTickets?.MaxBy(x => x.DateUpdated);
+                mostRecentSupportTicket = sensor.SupportTickets
+                    .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved)
+                    .MaxBy(x => x.DateUpdated);
             }
 
             sensorSimpleDto.MostRecentSupportTicketID = mostRecentSupportTicket?.SupportTicketID;
