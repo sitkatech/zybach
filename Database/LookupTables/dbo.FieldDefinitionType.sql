@@ -25,7 +25,8 @@ USING (VALUES
 (23, 'IrrigationUnitAcres', 'Irrigation Unit Area (ac)'),
 (24, 'SensorLastVoltageReadingDate', 'Last Voltage Reading Date'),
 (25, 'SensorRetirementDate', 'Sensor Retirement Date'),
-(26, 'ContinuityMeterStatus', 'Continuity Meter Always On/Off')
+(26, 'ContinuityMeterStatus', 'Continuity Meter Always On/Off'),
+(27, 'ActiveSupportTicket', 'Active Support Ticket')
 )
 AS Source (FieldDefinitionTypeID, FieldDefinitionTypeName, FieldDefinitionTypeDisplayName)
 ON Target.FieldDefinitionTypeID = Source.FieldDefinitionTypeID

@@ -20,6 +20,7 @@ begin
 	(
 		select WellID, SupportTicketID, SupportTicketTitle, DateUpdated, rank() over(partition by WellID order by DateUpdated desc) as Ranking 
 		from dbo.SupportTicket
+		where SupportTicketStatusID != 3
 	) mrst on w.WellID = mrst.WellID and mrst.Ranking = 1
 	left join (
 		select aw.WellID, aw.WellAuditPumpRate, aw.RegisteredPumpRate, aw.WellTPNRDPumpRate, awia.Acres 
