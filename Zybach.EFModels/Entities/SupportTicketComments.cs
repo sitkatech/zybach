@@ -18,18 +18,22 @@ namespace Zybach.EFModels.Entities
                 SupportTicketID = supportTicketCommentUpsertDto.SupportTicketID
             };
 
-            var supportTicket = SupportTickets.GetByID(dbContext, supportTicketCommentUpsertDto.SupportTicketID);
-            supportTicket.DateUpdated = DateTime.Now.Date;
+            var supportTicket = dbContext.SupportTickets.Single(x => x.SupportTicketID == supportTicketCommentUpsertDto.SupportTicketID);
+            supportTicket.DateUpdated = DateTime.UtcNow;
 
             dbContext.SupportTicketComments.Add(supportTicketComment);
             dbContext.SaveChanges();
-            dbContext.Entry(supportTicketComment).Reload();
 
+            
+            return GetByID(dbContext, supportTicketComment.SupportTicketCommentID)?.AsSimpleDto();
+        }
+
+        public static SupportTicketComment GetByID(ZybachDbContext dbContext, int supportTicketCommentID)
+        {
             return dbContext.SupportTicketComments
                 .AsNoTracking()
                 .Include(x => x.CreatorUser)
-                .SingleOrDefault(x => x.SupportTicketCommentID == supportTicketComment.SupportTicketCommentID)
-                .AsSimpleDto();
+                .SingleOrDefault(x => x.SupportTicketCommentID == supportTicketCommentID);
         }
 
         public static SupportTicketComment GetByIDWithTracking(ZybachDbContext dbContext, int supportTicketCommentID)

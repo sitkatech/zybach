@@ -48,7 +48,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<WellSensorReadingDateDto> GetFirstReadingDateTimesPerSensorForWells(ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum, List<string> wellRegistrationIDs)
         {
-            var firstReadingDateTimesPerSensorForWells = dbContext.WellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) measurementTypeEnum && wellRegistrationIDs.Contains(x.WellRegistrationID)).ToList()
+            var firstReadingDateTimesPerSensorForWells = dbContext.WellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) measurementTypeEnum && wellRegistrationIDs.Contains(x.WellRegistrationID.ToUpper())).ToList()
                 .GroupBy(x => new { x.WellRegistrationID, x.SensorName});
 
             var wellSensorReadingDates = firstReadingDateTimesPerSensorForWells.Select(x =>
