@@ -16,8 +16,8 @@ namespace Zybach.API
     {
         private readonly AgHubService _agHubService;
         public const string JobName = "AgHub Well Fetch Daily";
-//        private static readonly List<string> ProblemWellRegistrationIDs = new List<string>{ "G-012886", "G-017908", "G-018992", "G-033855", "G-052662", "G-128363" };
-
+        //        private static readonly List<string> ProblemWellRegistrationIDs = new List<string>{ "G-012886", "G-017908", "G-018992", "G-033855", "G-052662", "G-128363" };
+        protected static readonly DateTime AgHubWellPumpedVolumeStartDate = new DateTime(2016, 1, 1);
         public AgHubWellsFetchDailyJob(IWebHostEnvironment webHostEnvironment, ILogger<AgHubWellsFetchDailyJob> logger,
             ZybachDbContext zybachDbContext, IOptions<ZybachConfiguration> zybachConfiguration, AgHubService agHubService, SitkaSmtpClientService sitkaSmtpClientService) : base(
             JobName, logger, webHostEnvironment, zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
@@ -40,21 +40,16 @@ namespace Zybach.API
             _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.AgHubWellIrrigatedAcreStaging");
             _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
-
             var agHubWellRaws = _agHubService.GetWellCollection().Result;
             if (agHubWellRaws.Any())
             {
                 var wellStagings = agHubWellRaws.Select(CreateAgHubWellStaging).ToList();
-                // TODO: get last reading dates gets pumped volume dates too; original code is only looking at estimated pumped volume;
-                var lastReadingDates = _dbContext.WellSensorMeasurements
-                    .Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.ElectricalUsage).ToList()
-                    .GroupBy(x => x.WellRegistrationID).ToDictionary(x => x.Key, x => x.Max(y => y.MeasurementDate));
                 foreach (var wellStaging in wellStagings)
                 {
                     var wellRegistrationID = wellStaging.WellRegistrationID;
                     //if (!ProblemWellRegistrationIDs.Contains(wellRegistrationID))
                     PopulateIrrigatedAcresPerYearForWell(wellStaging, wellRegistrationID);
-                    PopulateWellSensorMeasurementsForWell(wellStaging, lastReadingDates, wellRegistrationID);
+                    PopulateWellSensorMeasurementsForWell(wellStaging, wellRegistrationID);
                     _dbContext.AgHubWellStagings.Add(wellStaging);
                     _dbContext.SaveChanges();
                 }
@@ -64,14 +59,12 @@ namespace Zybach.API
             }
         }
 
-        private void PopulateWellSensorMeasurementsForWell(AgHubWellStaging agHubWellStaging, Dictionary<string, DateTime> lastReadingDates,
-            string wellRegistrationID)
+        private void PopulateWellSensorMeasurementsForWell(AgHubWellStaging agHubWellStaging, string wellRegistrationID)
         {
             if (agHubWellStaging.HasElectricalData)
             {
-                var startDate = lastReadingDates.ContainsKey(wellRegistrationID) ? lastReadingDates[wellRegistrationID] : DefaultStartDate;
                 var pumpedVolumeResult =
-                    _agHubService.GetPumpedVolume(wellRegistrationID, startDate).Result;
+                    _agHubService.GetPumpedVolume(wellRegistrationID, AgHubWellPumpedVolumeStartDate).Result;
                 if (pumpedVolumeResult is { PumpedVolumeTimeSeries: { } })
                 {
                     var pumpedVolumeTimePoints =
