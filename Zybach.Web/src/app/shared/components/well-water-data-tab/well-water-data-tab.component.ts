@@ -32,7 +32,7 @@ export class WellWaterDataTabComponent implements OnInit {
     this.years = []
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
-    for (var year = currentYear; year >= 2019; year--){
+    for (var year = currentYear; year >= 2016; year--){
       this.years.push(year);
     }
 
