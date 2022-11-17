@@ -21,7 +21,7 @@ namespace Zybach.API
             AddRecurringJob<BatteryVoltageSeriesFetchDailyJob>(BatteryVoltageSeriesFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(11, 15), recurringJobIds);
             AddRecurringJob<ContinuityMeterSeriesFetchDailyJob>(ContinuityMeterSeriesFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(12, 15), recurringJobIds);
             AddRecurringJob<ContinuityMeterStatusFetchDailyJob>(ContinuityMeterStatusFetchDailyJob.JobName, x => x.RunJob(Null), Cron.Daily(12, 59), recurringJobIds);
-            AddRecurringJob<GETUpdateStatusOfNonTerminalRunJob>(GETUpdateStatusOfNonTerminalRunJob.JobName, x => x.RunJob(Null), "0 */6 * * *", recurringJobIds);
+            AddRecurringJob<GETUpdateStatusOfNonTerminalRunJob>(GETUpdateStatusOfNonTerminalRunJob.JobName, x => x.RunJob(Null), "0 */12 * * *", recurringJobIds);
 
             AddRecurringJob<OpenETTriggerBucketRefreshJob>(OpenETTriggerBucketRefreshJob.JobName, x => x.RunJob(Null), Cron.Monthly(8, 1, 00), recurringJobIds);
             AddRecurringJob<OpenETRetrieveFromBucketJob>(OpenETRetrieveFromBucketJob.JobName, x => x.RunJob(Null), "0 */12 * * *", recurringJobIds);
