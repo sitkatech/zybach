@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
+using System.Threading;
 
 namespace Zybach.API
 {
@@ -31,7 +32,7 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            if (!_zybachConfiguration.AllowOpenETSync || !_openETService.IsOpenETAPIKeyValid())
+            if (!_zybachConfiguration.AllowOpenETSync)
             {
                 return;
             }
@@ -47,8 +48,10 @@ namespace Zybach.API
             nonFinalizedWaterYearMonths.ToList().ForEach(x =>
                 {
                     openETDataTypes.ForEach(y =>
-                            _openETService.TriggerOpenETGoogleBucketRefresh(x.WaterYearMonthID, y)
-                    );
+                    {
+                        _openETService.TriggerOpenETGoogleBucketRefresh(x.WaterYearMonthID, y);
+                        Thread.Sleep(1000); // intentional sleep here to make sure we don't hit the maximum rate limit
+                    });
                 });
         }
     }

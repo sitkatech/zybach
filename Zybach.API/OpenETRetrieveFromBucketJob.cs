@@ -33,28 +33,15 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            if (!_zybachConfiguration.AllowOpenETSync || !_openETService.IsOpenETAPIKeyValid())
+            if (!_zybachConfiguration.AllowOpenETSync)
             {
                 return;
             }
 
-            var inProgressSyncs = _dbContext.OpenETSyncHistories
-                .Where(x => x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.InProgress).ToList();
-            if (inProgressSyncs.Any())
+            var inProgressSyncs = _dbContext.OpenETSyncHistories.Where(x => x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.InProgress).ToList();
+            foreach (var openEtSyncHistory in inProgressSyncs)
             {
-                var filesReadyForExport = _openETService.GetAllFilesReadyForExport();
-                inProgressSyncs.ForEach(x =>
-                {
-                    if (x.OpenETDataTypeID == (int)OpenETDataTypeEnum.Evapotranspiration)
-                    {
-                        _openETService.UpdateAgHubIrrigationUnitMonthlyEvapotranspirationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
-                    }
-                    if (x.OpenETDataTypeID == (int)OpenETDataTypeEnum.Precipitation)
-                    {
-                        _openETService.UpdateAgHubIrrigationUnitMonthlyPrecipitationWithETData(x.OpenETSyncHistoryID, filesReadyForExport, _httpClient);
-                    }
-                    
-                });
+                _openETService.ProcessOpenETData(openEtSyncHistory.OpenETSyncHistoryID, _httpClient, openEtSyncHistory.OpenETDataType.ToEnum);
             }
 
             //Fail any created syncs that have been in a created state for longer than 15 minutes
