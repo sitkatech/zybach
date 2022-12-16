@@ -15,6 +15,10 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
+using NetTopologySuite.Operation.Buffer;
+using NetTopologySuite.Utilities;
 using Newtonsoft.Json;
 using Zybach.API.Controllers;
 using Zybach.API.Services.Telemetry;
@@ -48,7 +52,20 @@ namespace Zybach.API.Services
             var bottom = _zybachConfiguration.DefaultBoundingBoxBottom;
             var left = _zybachConfiguration.DefaultBoundingBoxLeft;
             var right = _zybachConfiguration.DefaultBoundingBoxRight;
-            var geometryArray = new[] { left, top, right, top, right, bottom, left, bottom };
+            var polygon = new WKTReader().Read(@$"POLYGON (({left} {top},
+ {right} {top},
+ {right} {bottom},
+ {left} {bottom},
+ {left} {top}))");
+            var centerBufferedBy5000SurveyFeet = polygon.Centroid.ProjectTo26860().Buffer(16000, EndCapStyle.Square).ProjectTo4326();
+            var envelope = centerBufferedBy5000SurveyFeet.EnvelopeInternal;
+            var geometryArray = new[]
+            {
+                envelope.MinX.ToString(), envelope.MaxY.ToString(), 
+                envelope.MaxX.ToString(), envelope.MaxY.ToString(), 
+                envelope.MaxX.ToString(), envelope.MinY.ToString(), 
+                envelope.MinX.ToString(), envelope.MinY.ToString()
+            };
             var argumentsObject = new OpenETRasterMetadataPostRequestBody("ensemble", "et", year, month, "gridmet", true, geometryArray, "monthly");
 
             try
