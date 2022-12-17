@@ -45,6 +45,14 @@ PROJCS[""NAD83(HARN) / Nebraska (ftUS)"",
             return geom;
         }
 
+        public static Geometry ProjectTo26860(this Geometry geometry)
+        {
+            var targetCoordinateSystem = new CoordinateSystemFactory().CreateFromWkt(CoordinateSystemsWkTs[26860]);
+            var transformation = new CoordinateTransformationFactory().CreateFromCoordinateSystems(GeographicCoordinateSystem.WGS84, targetCoordinateSystem);
+            return Transform(geometry, transformation.MathTransform, 26860);
+        }
+
+
         public static Geometry ProjectTo4326(this Geometry geometry)
         {
             var sourceCoordinateSystem = new CoordinateSystemFactory().CreateFromWkt(CoordinateSystemsWkTs[geometry.SRID]);
