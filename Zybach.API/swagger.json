@@ -9360,6 +9360,10 @@
           "MeasuringEquipment": {
             "type": "string",
             "nullable": true
+          },
+          "InspectionNotes": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

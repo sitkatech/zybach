@@ -99,6 +99,12 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
         width: 170,
         resizable: true,
         sortable: true 
+      },
+      { 
+        headerName: 'Notes', field: 'InspectionNotes', 
+        width: 170,
+        resizable: true,
+        sortable: true 
       }
     ];
   }
@@ -181,6 +187,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       this.waterQualityInspections = waterQualityInspections;
 
       this.waterLevelInspectionsGrid ? this.waterLevelInspectionsGrid.api.setRowData(waterLevelInspections) : null;
+      console.log(waterLevelInspections)
       this.waterQualityInspectionsGrid ? this.waterQualityInspectionsGrid.api.setRowData(waterQualityInspections) : null;
 
       this.waterLevelInspectionsGrid.api.sizeColumnsToFit();
