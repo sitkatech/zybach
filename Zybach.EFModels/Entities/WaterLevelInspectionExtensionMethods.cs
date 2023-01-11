@@ -20,7 +20,8 @@ namespace Zybach.EFModels.Entities
                 WaterLevelInspectionID = waterLevelInspection.WaterLevelInspectionID,
                 InspectionDate = waterLevelInspection.InspectionDate,
                 Measurement = waterLevelInspection.Measurement,
-                MeasuringEquipment = waterLevelInspection.MeasuringEquipment
+                MeasuringEquipment = waterLevelInspection.MeasuringEquipment,
+                InspectionNotes = waterLevelInspection.InspectionNotes
             };
 
             return waterLevelInspectionSummaryDto;
