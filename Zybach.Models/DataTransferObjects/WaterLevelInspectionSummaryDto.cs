@@ -8,5 +8,6 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime InspectionDate { get; set; }
         public decimal? Measurement { get; set; }
         public string MeasuringEquipment { get; set; }
+        public string InspectionNotes { get; set; }
     }
 }
