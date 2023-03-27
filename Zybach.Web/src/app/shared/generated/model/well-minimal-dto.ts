@@ -14,7 +14,9 @@ import { SensorSimpleDto } from '././sensor-simple-dto';
 export class WellMinimalDto { 
     WellID?: number;
     WellRegistrationID?: string;
+    WellNickname?: string;
     Location?: any;
+    Notes?: string;
     Sensors?: Array<SensorSimpleDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);

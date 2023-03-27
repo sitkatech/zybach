@@ -10,11 +10,12 @@
  * Do not edit the class manually.
  */
 
-export class IrrigatedAcresPerYearDto { 
-    Year?: number;
-    Acres?: number;
-    CropType?: string;
-    Tillage?: string;
+export class WellGroupWellSimpleDto { 
+    WellGroupWellID?: number;
+    WellGroupID?: number;
+    WellID?: number;
+    IsPrimary?: boolean;
+    WellRegistrationID?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

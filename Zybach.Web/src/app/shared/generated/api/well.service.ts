@@ -26,13 +26,14 @@ import { WaterQualityInspectionSummaryDto } from '../model/water-quality-inspect
 import { WellContactInfoDto } from '../model/well-contact-info-dto';
 import { WellDetailDto } from '../model/well-detail-dto';
 import { WellInspectionSummaryDto } from '../model/well-inspection-summary-dto';
+import { WellMinimalDto } from '../model/well-minimal-dto';
 import { WellNewDto } from '../model/well-new-dto';
 import { WellParticipationDto } from '../model/well-participation-dto';
 import { WellParticipationInfoDto } from '../model/well-participation-info-dto';
 import { WellPumpingSummaryDto } from '../model/well-pumping-summary-dto';
 import { WellRegistrationIDDto } from '../model/well-registration-id-dto';
 import { WellSimpleDto } from '../model/well-simple-dto';
-import { WellUseDto } from '../model/well-use-dto';
+import { WellUseDto } from '..//model/well-use-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -40,9 +41,7 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from '../../services';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WellService {
 
     protected basePath = 'http://localhost';
@@ -142,6 +141,44 @@ export class WellService {
         ];
 
         return this.httpClient.get<Array<WellUseDto>>(`${this.basePath}/wellUses`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wellsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellMinimalDto>>;
+    public wellsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellMinimalDto>>>;
+    public wellsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellMinimalDto>>>;
+    public wellsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<WellMinimalDto>>(`${this.basePath}/wells`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

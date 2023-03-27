@@ -27,6 +27,14 @@ namespace Zybach.API.Controllers
             _geoOptixService = geoOptixService;
         }
 
+        [HttpGet("wells")]
+        [ZybachViewFeature]
+        public ActionResult<List<WellMinimalDto>> GetWells()
+        {
+            var wellMinimalDtos = Wells.ListAsMinimalDto(_dbContext);
+            return Ok(wellMinimalDtos);
+        }
+
         [HttpGet("/wellUses")]
         [ZybachViewFeature]
         public ActionResult<IEnumerable<WellUseDto>> GetWellUses()

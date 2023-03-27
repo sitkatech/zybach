@@ -26,6 +26,7 @@ api/user.service.ts
 api/water-level-inspection.service.ts
 api/water-quality-inspection.service.ts
 api/water-year-month.service.ts
+api/well-group.service.ts
 api/well.service.ts
 api/zybach-api.service.ts
 configuration.ts
@@ -137,6 +138,8 @@ model/water-year-month-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
+model/well-group-dto.ts
+model/well-group-well-simple-dto.ts
 model/well-inspection-summary-dto.ts
 model/well-minimal-dto.ts
 model/well-new-dto.ts

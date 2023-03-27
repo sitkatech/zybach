@@ -149,10 +149,19 @@
                     </a>
                 </div>
             </li>
-            <li class="nav-item mapItem" [ngClass]="{'currentPage': isMapCurrentPage()}" *ngIf="!isUnassigned()">
-                <a class="nav-link" routerLinkActive="active" routerLink="/well-map">
-                    <img src="/assets/main/nav/map.png" /> Well Map
+            <li class="nav-item dropdown mapItem" routerLinkActive="active" [ngClass]="{'currentPage': isMapCurrentPage()}" *ngIf="!isUnassigned()">
+                <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <img src="/assets/main/nav/map.png" />
+                    Well Inventory
                 </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" routerLinkActive="active" routerLink="/well-map">
+                        Well Map
+                   </a>
+                    <a class="dropdown-item" routerLinkActive="active" routerLink="/well-groups">
+                        Well Groups
+                   </a>
+                </div>
             </li>
             <li class="nav-item dropdown chemigationItem" routerLinkActive="active" [ngClass]="{'currentPage': isChemigationCurrentPage()}"
                 *ngIf="!isReadOnly() && !isUnassigned()">

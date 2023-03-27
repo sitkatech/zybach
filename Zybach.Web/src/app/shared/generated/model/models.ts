@@ -104,6 +104,8 @@ export * from '././water-year-month-dto';
 export * from '././well-contact-info-dto';
 export * from '././well-detail-dto';
 export * from '././well-dto';
+export * from '././well-group-dto';
+export * from '././well-group-well-simple-dto';
 export * from '././well-inspection-summary-dto';
 export * from '././well-minimal-dto';
 export * from '././well-new-dto';

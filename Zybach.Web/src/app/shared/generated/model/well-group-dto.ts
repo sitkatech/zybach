@@ -9,12 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { WellSimpleDto } from '././well-simple-dto';
+import { WellGroupWellSimpleDto } from '././well-group-well-simple-dto';
 
-export class IrrigatedAcresPerYearDto { 
-    Year?: number;
-    Acres?: number;
-    CropType?: string;
-    Tillage?: string;
+export class WellGroupDto { 
+    WellGroupID?: number;
+    WellGroupName?: string;
+    PrimaryWell?: WellSimpleDto;
+    WellGroupWells?: Array<WellGroupWellSimpleDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

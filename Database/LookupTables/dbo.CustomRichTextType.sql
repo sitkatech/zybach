@@ -24,7 +24,9 @@ USING (VALUES
 (22, 'IrrigationUnitIndex', 'Irrigation Unit Index'),
 (23, 'OpenETIntegration', 'OpenET Integration'),
 (24, 'SupportTicketIndex', 'Support Ticket Index'),
-(25, 'WellPumpingSummary', 'Well Pumping Summary')
+(25, 'WellPumpingSummary', 'Well Pumping Summary'),
+(26, 'WellGroupList', 'Well Group List'),
+(27, 'WellGroupEdit', 'Well Group Edit')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID
