@@ -6108,6 +6108,46 @@
         }
       }
     },
+    "/wellGroups/{wellGroupID}/summary": {
+      "get": {
+        "tags": [
+          "WellGroup"
+        ],
+        "parameters": [
+          {
+            "name": "wellGroupID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupSummaryDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupSummaryDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupSummaryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/pumpedVolume": {
       "get": {
         "tags": [
@@ -6408,6 +6448,28 @@
               "$ref": "#/components/schemas/StreamFlowZonePumpingDepthDto"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BoundingBoxDto": {
+        "type": "object",
+        "properties": {
+          "Left": {
+            "type": "number",
+            "format": "double"
+          },
+          "Bottom": {
+            "type": "number",
+            "format": "double"
+          },
+          "Right": {
+            "type": "number",
+            "format": "double"
+          },
+          "Top": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -8546,6 +8608,20 @@
         },
         "additionalProperties": false
       },
+      "SensorMinimalDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorSimpleDto": {
         "type": "object",
         "properties": {
@@ -9600,6 +9676,10 @@
           "InspectionNotes": {
             "type": "string",
             "nullable": true
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -10516,6 +10596,51 @@
         },
         "additionalProperties": false
       },
+      "WellGroupSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelChartVegaSpec": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterLevelInspections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WaterLevelInspectionSummaryDto"
+            },
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorMinimalDto"
+            },
+            "nullable": true
+          },
+          "BoundingBox": {
+            "$ref": "#/components/schemas/BoundingBoxDto"
+          },
+          "WellGroupID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrimaryWell": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "WellGroupWells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellGroupWellSimpleDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellGroupWellSimpleDto": {
         "type": "object",
         "properties": {
@@ -10537,6 +10662,14 @@
           "WellRegistrationID": {
             "type": "string",
             "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

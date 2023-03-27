@@ -56,7 +56,7 @@ export class UtilityFunctionsService {
     return decimalColDef;
   }
 
-  private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+  public dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
     const filterDate = Date.parse(filterLocalDateAtMidnight);
     const cellDate = Date.parse(cellValue);
 
@@ -66,7 +66,7 @@ export class UtilityFunctionsService {
     return (cellDate < filterDate) ? -1 : 1;
   }
 
-  private dateSortComparator (id1: any, id2: any) {
+  public dateSortComparator (id1: any, id2: any) {
     const date1 = id1 ? Date.parse(id1) : Date.parse("1/1/1900");
     const date2 = id2 ? Date.parse(id2) : Date.parse("1/1/1900");
     if (date1 < date2) {

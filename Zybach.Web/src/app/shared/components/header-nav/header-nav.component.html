@@ -158,7 +158,7 @@
                     <a class="dropdown-item" routerLinkActive="active" routerLink="/well-map">
                         Well Map
                    </a>
-                    <a class="dropdown-item" routerLinkActive="active" routerLink="/well-groups">
+                    <a class="dropdown-item" routerLinkActive="active" routerLink="/well-groups" *ngIf="isAdministrator()">
                         Well Groups
                    </a>
                 </div>

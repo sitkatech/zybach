@@ -139,6 +139,7 @@ model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
 model/well-group-dto.ts
+model/well-group-summary-dto.ts
 model/well-group-well-simple-dto.ts
 model/well-inspection-summary-dto.ts
 model/well-minimal-dto.ts

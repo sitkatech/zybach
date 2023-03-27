@@ -44,28 +44,28 @@ namespace Zybach.EFModels.Entities
 
         public static List<WaterLevelInspectionSummaryDto> ListByWellIDAsSummaryDto(ZybachDbContext dbContext, int wellID)
         {
-            return dbContext.WaterLevelInspections
-                .AsNoTracking()
+            return ListByWellIDsAsSummaryDto(dbContext, new List<int>() { wellID });
+        }
+
+        public static List<WaterLevelInspectionSummaryDto> ListByWellIDsAsSummaryDto(ZybachDbContext dbContext, List<int> wellIDs)
+        {
+            return dbContext.WaterLevelInspections.Include(x => x.Well).AsNoTracking()
                 .OrderByDescending(x => x.InspectionDate)
-                .Where(x => x.WellID == wellID)
-                .Select(x => x.AsSummaryDto())
-                .ToList();
+                .Where(x => wellIDs.Contains(x.WellID))
+                .Select(x => x.AsSummaryDto()).ToList();
         }
 
         public static List<WaterLevelInspectionForVegaChartDto> ListByWellIDAsVegaChartDto(ZybachDbContext dbContext, int wellID)
         {
-            var inspections = dbContext.WaterLevelInspections
-                .AsNoTracking()
+            return ListByWellIDsAsVegaChartDto(dbContext, new List<int>() { wellID });
+        }
+
+        public static List<WaterLevelInspectionForVegaChartDto> ListByWellIDsAsVegaChartDto(ZybachDbContext dbContext, List<int> wellIDs)
+        {
+            return dbContext.WaterLevelInspections.Include(x => x.Well).AsNoTracking()
                 .OrderByDescending(x => x.InspectionDate)
-                .Where(x => x.WellID == wellID)
-                .ToList();
-
-            if (!inspections.Any() || inspections.All(x => x.Measurement == null))
-            {
-                return new List<WaterLevelInspectionForVegaChartDto>();
-            }
-
-            return inspections.Select(x => x.AsVegaChartDto()).ToList();
+                .Where(x => wellIDs.Contains(x.WellID))
+                .Select(x => x.AsVegaChartDto()).ToList();
         }
 
         public static WaterLevelInspectionSimpleDto Create(ZybachDbContext dbContext, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)

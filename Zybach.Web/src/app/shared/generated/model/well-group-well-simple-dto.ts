@@ -16,6 +16,8 @@ export class WellGroupWellSimpleDto {
     WellID?: number;
     IsPrimary?: boolean;
     WellRegistrationID?: string;
+    Latitude?: number;
+    Longitude?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

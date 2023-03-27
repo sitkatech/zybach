@@ -191,10 +191,8 @@ namespace Zybach.API.Services
                 }},    
                 ""color"":{{
                   ""type"":""nominal"",
-                  ""scale"":{{
-                    ""range"":[""blue""], 
-                    ""domain"": [""Depth""]
-                  }}
+                  ""field"":""WellRegistrationID"",
+                  ""legend"": {{ ""title"": ""Well"" }}
                 }}
             }},           
             ""layer"": 
@@ -212,33 +210,27 @@ namespace Zybach.API.Services
                     }}
                 }}
                 }},               
-                ""layer"": [
-                {{ 
-                    ""mark"": ""line"",
-                    ""encoding"": {{
-                    ""color"": {{
-                        ""datum"":""Depth""
-                    }}
-                    }}
+                ""layer"": [          
+                {{
+                    ""mark"": ""line""
                 }},           
                 {{
-            ""transform"": [
-                    {{
-                ""filter"": 
-                        {{ ""selection"": ""hover"" }}
-            }}
+                    ""transform"": [
+                        {{
+                            ""filter"": {{ ""selection"": ""hover"" }}
+                        }}
                     ], 
                     ""mark"": ""point""
                 }}                
                 ]           
             }},      
             {{
-            ""mark"": ""rule"",                
+                ""mark"": ""rule"",                
                 ""encoding"": {{
                 ""opacity"": {{
                     ""condition"": {{
                         ""value"": 0.3, 
-                    ""selection"": ""hover""
+                        ""selection"": ""hover""
                     }},                    
                     ""value"": 0
                 }},                
@@ -252,20 +244,24 @@ namespace Zybach.API.Services
                     ""field"": ""Measurement"", 
                     ""type"": ""quantitative"", 
                     ""title"": ""Depth""
-                    }}           
-                ]}},                
-                ""selection"": 
+                    }},
                     {{
+                    ""field"": ""WellRegistrationID"", 
+                    ""type"": ""text"", 
+                    ""title"": ""Well Reg #""
+                    }} 
+                ]}},                
+                ""selection"": {{
                     ""hover"": {{
                         ""type"": ""single"",                        
-                            ""fields"": [""InspectionDate""],                        
-                            ""nearest"": true,                        
-                            ""on"": ""mouseover"",                        
-                            ""empty"": ""none"",                        
-                            ""clear"": ""mouseout""
-                        }}
+                        ""fields"": [""InspectionDate""],                        
+                        ""nearest"": true,                        
+                        ""on"": ""mouseover"",                        
+                        ""empty"": ""none"",                        
+                        ""clear"": ""mouseout""
                     }}
                 }}
+            }}
             ],
             ""title"": {{
                 ""text"":""Depth to Groundwater""

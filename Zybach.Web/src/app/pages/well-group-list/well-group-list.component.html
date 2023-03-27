@@ -10,10 +10,10 @@
 
     <div class="row mt-2">
         <div class="col-auto ml-auto">
-            <a class="btn btn-primary btn-md mr-3" routerLink="new">New Well Group</a>
+            <a class="btn btn-primary btn-md mr-3" routerLink="new">New Well Group <span class="fas fa-plus"></span></a>
 
             <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-            ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
             
             <fresca-clear-grid-filters-button [grid]="wellGroupsGrid"></fresca-clear-grid-filters-button>
         </div>
