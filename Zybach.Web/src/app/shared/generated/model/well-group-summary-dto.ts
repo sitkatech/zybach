@@ -9,19 +9,21 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { BoundingBoxDto } from '././bounding-box-dto';
 import { WellSimpleDto } from '././well-simple-dto';
 import { WaterLevelInspectionSummaryDto } from '././water-level-inspection-summary-dto';
+import { SensorMinimalDto } from '././sensor-minimal-dto';
 import { WellGroupWellSimpleDto } from '././well-group-well-simple-dto';
-import { BoundingBoxDto } from '../../models/bounding-box-dto';
 
 export class WellGroupSummaryDto { 
     WaterLevelChartVegaSpec?: string;
     WaterLevelInspections?: Array<WaterLevelInspectionSummaryDto>;
+    Sensors?: Array<SensorMinimalDto>;
+    BoundingBox?: BoundingBoxDto;
     WellGroupID?: number;
     WellGroupName?: string;
     PrimaryWell?: WellSimpleDto;
     WellGroupWells?: Array<WellGroupWellSimpleDto>;
-    BoundingBox?: BoundingBoxDto;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

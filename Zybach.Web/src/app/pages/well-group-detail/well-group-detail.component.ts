@@ -4,9 +4,9 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { WellGroupService } from 'src/app/shared/generated/api/well-group.service';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellGroupSummaryDto } from 'src/app/shared/generated/model/well-group-summary-dto';
-import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import * as L from 'leaflet';
 import GestureHandling from 'leaflet-gesture-handling';
+import { BoundingBoxDto } from 'src/app/shared/generated/model/bounding-box-dto';
 
 @Component({
   selector: 'zybach-well-group-detail',

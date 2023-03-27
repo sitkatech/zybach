@@ -37,6 +37,7 @@ model/ag-hub-irrigation-unit-summary-dto.ts
 model/ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto.ts
 model/annual-pumped-volume.ts
 model/annual-stream-flow-zone-pumping-depth-dto.ts
+model/bounding-box-dto.ts
 model/bulk-chemigation-permit-annual-record-creation-result.ts
 model/chemical-formulation-dto.ts
 model/chemical-formulation-yearly-total-dto.ts
@@ -103,6 +104,7 @@ model/sensor-anomaly-upsert-dto.ts
 model/sensor-chart-data-dto.ts
 model/sensor-measurement-dto.ts
 model/sensor-message-age-dto.ts
+model/sensor-minimal-dto.ts
 model/sensor-simple-dto.ts
 model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
