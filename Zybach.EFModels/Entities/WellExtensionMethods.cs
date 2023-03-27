@@ -82,14 +82,14 @@ namespace Zybach.EFModels.Entities
 
         public static WellMinimalDto AsMinimalDto(this Well well)
         {
-            var sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList();
-
             return new WellMinimalDto
             {
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
+                WellNickname = well.WellNickname,
                 Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
-                Sensors = sensors
+                Notes = well.Notes,
+                Sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList()
             };
         }
     }

@@ -26,7 +26,9 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int WellID { get; set; }
         public string WellRegistrationID { get; set; }
+        public string WellNickname { get; set; }
         public object Location { get; set; }
+        public string Notes { get; set; }
         public List<SensorSimpleDto> Sensors { get; set; }
     }
 

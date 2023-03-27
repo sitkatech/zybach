@@ -40,6 +40,8 @@ namespace Zybach.EFModels.Entities
         public static readonly CustomRichTextTypeOpenETIntegration OpenETIntegration = Zybach.EFModels.Entities.CustomRichTextTypeOpenETIntegration.Instance;
         public static readonly CustomRichTextTypeSupportTicketIndex SupportTicketIndex = Zybach.EFModels.Entities.CustomRichTextTypeSupportTicketIndex.Instance;
         public static readonly CustomRichTextTypeWellPumpingSummary WellPumpingSummary = Zybach.EFModels.Entities.CustomRichTextTypeWellPumpingSummary.Instance;
+        public static readonly CustomRichTextTypeWellGroupList WellGroupList = Zybach.EFModels.Entities.CustomRichTextTypeWellGroupList.Instance;
+        public static readonly CustomRichTextTypeWellGroupEdit WellGroupEdit = Zybach.EFModels.Entities.CustomRichTextTypeWellGroupEdit.Instance;
 
         public static readonly List<CustomRichTextType> All;
         public static readonly List<CustomRichTextTypeDto> AllAsDto;
@@ -51,8 +53,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static CustomRichTextType()
         {
-            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, Training, RobustReviewScenario, ReportsList, Chemigation, NDEEChemicalsReport, ChemigationPermitReport, ChemigationInspections, WaterQualityInspections, WaterLevelInspections, WellRegistrationIDChangeHelpText, ClearinghouseReport, SensorList, WellInspectionReports, AnomalyReportList, WaterLevelExplorerMap, WaterLevelExplorerMapDisclaimer, IrrigationUnitIndex, OpenETIntegration, SupportTicketIndex, WellPumpingSummary };
-            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), Training.AsDto(), RobustReviewScenario.AsDto(), ReportsList.AsDto(), Chemigation.AsDto(), NDEEChemicalsReport.AsDto(), ChemigationPermitReport.AsDto(), ChemigationInspections.AsDto(), WaterQualityInspections.AsDto(), WaterLevelInspections.AsDto(), WellRegistrationIDChangeHelpText.AsDto(), ClearinghouseReport.AsDto(), SensorList.AsDto(), WellInspectionReports.AsDto(), AnomalyReportList.AsDto(), WaterLevelExplorerMap.AsDto(), WaterLevelExplorerMapDisclaimer.AsDto(), IrrigationUnitIndex.AsDto(), OpenETIntegration.AsDto(), SupportTicketIndex.AsDto(), WellPumpingSummary.AsDto() };
+            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, Training, RobustReviewScenario, ReportsList, Chemigation, NDEEChemicalsReport, ChemigationPermitReport, ChemigationInspections, WaterQualityInspections, WaterLevelInspections, WellRegistrationIDChangeHelpText, ClearinghouseReport, SensorList, WellInspectionReports, AnomalyReportList, WaterLevelExplorerMap, WaterLevelExplorerMapDisclaimer, IrrigationUnitIndex, OpenETIntegration, SupportTicketIndex, WellPumpingSummary, WellGroupList, WellGroupEdit };
+            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), Training.AsDto(), RobustReviewScenario.AsDto(), ReportsList.AsDto(), Chemigation.AsDto(), NDEEChemicalsReport.AsDto(), ChemigationPermitReport.AsDto(), ChemigationInspections.AsDto(), WaterQualityInspections.AsDto(), WaterLevelInspections.AsDto(), WellRegistrationIDChangeHelpText.AsDto(), ClearinghouseReport.AsDto(), SensorList.AsDto(), WellInspectionReports.AsDto(), AnomalyReportList.AsDto(), WaterLevelExplorerMap.AsDto(), WaterLevelExplorerMapDisclaimer.AsDto(), IrrigationUnitIndex.AsDto(), OpenETIntegration.AsDto(), SupportTicketIndex.AsDto(), WellPumpingSummary.AsDto(), WellGroupList.AsDto(), WellGroupEdit.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextType>(All.ToDictionary(x => x.CustomRichTextTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextTypeDto>(AllAsDto.ToDictionary(x => x.CustomRichTextTypeID));
         }
@@ -167,6 +169,10 @@ namespace Zybach.EFModels.Entities
                     return WaterLevelInspections;
                 case CustomRichTextTypeEnum.WaterQualityInspections:
                     return WaterQualityInspections;
+                case CustomRichTextTypeEnum.WellGroupEdit:
+                    return WellGroupEdit;
+                case CustomRichTextTypeEnum.WellGroupList:
+                    return WellGroupList;
                 case CustomRichTextTypeEnum.WellInspectionReports:
                     return WellInspectionReports;
                 case CustomRichTextTypeEnum.WellPumpingSummary:
@@ -205,7 +211,9 @@ namespace Zybach.EFModels.Entities
         IrrigationUnitIndex = 22,
         OpenETIntegration = 23,
         SupportTicketIndex = 24,
-        WellPumpingSummary = 25
+        WellPumpingSummary = 25,
+        WellGroupList = 26,
+        WellGroupEdit = 27
     }
 
     public partial class CustomRichTextTypePlatformOverview : CustomRichTextType
@@ -356,5 +364,17 @@ namespace Zybach.EFModels.Entities
     {
         private CustomRichTextTypeWellPumpingSummary(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
         public static readonly CustomRichTextTypeWellPumpingSummary Instance = new CustomRichTextTypeWellPumpingSummary(25, @"WellPumpingSummary", @"Well Pumping Summary");
+    }
+
+    public partial class CustomRichTextTypeWellGroupList : CustomRichTextType
+    {
+        private CustomRichTextTypeWellGroupList(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeWellGroupList Instance = new CustomRichTextTypeWellGroupList(26, @"WellGroupList", @"Well Group List");
+    }
+
+    public partial class CustomRichTextTypeWellGroupEdit : CustomRichTextType
+    {
+        private CustomRichTextTypeWellGroupEdit(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeWellGroupEdit Instance = new CustomRichTextTypeWellGroupEdit(27, @"WellGroupEdit", @"Well Group Edit");
     }
 }
