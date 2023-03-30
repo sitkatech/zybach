@@ -17,7 +17,7 @@ namespace Zybach.EFModels.Entities
     {
         public static readonly ReportTemplateModelChemigationPermit ChemigationPermit = Zybach.EFModels.Entities.ReportTemplateModelChemigationPermit.Instance;
         public static readonly ReportTemplateModelWellWaterQualityInspection WellWaterQualityInspection = Zybach.EFModels.Entities.ReportTemplateModelWellWaterQualityInspection.Instance;
-        public static readonly ReportTemplateModelWellWaterLevelInspection WellWaterLevelInspection = Zybach.EFModels.Entities.ReportTemplateModelWellWaterLevelInspection.Instance;
+        public static readonly ReportTemplateModelWellGroupWaterLevelInspection WellGroupWaterLevelInspection = Zybach.EFModels.Entities.ReportTemplateModelWellGroupWaterLevelInspection.Instance;
 
         public static readonly List<ReportTemplateModel> All;
         public static readonly List<ReportTemplateModelDto> AllAsDto;
@@ -29,8 +29,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static ReportTemplateModel()
         {
-            All = new List<ReportTemplateModel> { ChemigationPermit, WellWaterQualityInspection, WellWaterLevelInspection };
-            AllAsDto = new List<ReportTemplateModelDto> { ChemigationPermit.AsDto(), WellWaterQualityInspection.AsDto(), WellWaterLevelInspection.AsDto() };
+            All = new List<ReportTemplateModel> { ChemigationPermit, WellWaterQualityInspection, WellGroupWaterLevelInspection };
+            AllAsDto = new List<ReportTemplateModelDto> { ChemigationPermit.AsDto(), WellWaterQualityInspection.AsDto(), WellGroupWaterLevelInspection.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, ReportTemplateModel>(All.ToDictionary(x => x.ReportTemplateModelID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, ReportTemplateModelDto>(AllAsDto.ToDictionary(x => x.ReportTemplateModelID));
         }
@@ -105,8 +105,8 @@ namespace Zybach.EFModels.Entities
             {
                 case ReportTemplateModelEnum.ChemigationPermit:
                     return ChemigationPermit;
-                case ReportTemplateModelEnum.WellWaterLevelInspection:
-                    return WellWaterLevelInspection;
+                case ReportTemplateModelEnum.WellGroupWaterLevelInspection:
+                    return WellGroupWaterLevelInspection;
                 case ReportTemplateModelEnum.WellWaterQualityInspection:
                     return WellWaterQualityInspection;
                 default:
@@ -119,7 +119,7 @@ namespace Zybach.EFModels.Entities
     {
         ChemigationPermit = 1,
         WellWaterQualityInspection = 2,
-        WellWaterLevelInspection = 3
+        WellGroupWaterLevelInspection = 3
     }
 
     public partial class ReportTemplateModelChemigationPermit : ReportTemplateModel
@@ -134,9 +134,9 @@ namespace Zybach.EFModels.Entities
         public static readonly ReportTemplateModelWellWaterQualityInspection Instance = new ReportTemplateModelWellWaterQualityInspection(2, @"WellWaterQualityInspection", @"Well Water Quality Inspection", @"Templates will be with the ""Well"" model.");
     }
 
-    public partial class ReportTemplateModelWellWaterLevelInspection : ReportTemplateModel
+    public partial class ReportTemplateModelWellGroupWaterLevelInspection : ReportTemplateModel
     {
-        private ReportTemplateModelWellWaterLevelInspection(int reportTemplateModelID, string reportTemplateModelName, string reportTemplateModelDisplayName, string reportTemplateModelDescription) : base(reportTemplateModelID, reportTemplateModelName, reportTemplateModelDisplayName, reportTemplateModelDescription) {}
-        public static readonly ReportTemplateModelWellWaterLevelInspection Instance = new ReportTemplateModelWellWaterLevelInspection(3, @"WellWaterLevelInspection", @"Well Water Level Inspection", @"Templates will be with the ""Well"" model.");
+        private ReportTemplateModelWellGroupWaterLevelInspection(int reportTemplateModelID, string reportTemplateModelName, string reportTemplateModelDisplayName, string reportTemplateModelDescription) : base(reportTemplateModelID, reportTemplateModelName, reportTemplateModelDisplayName, reportTemplateModelDescription) {}
+        public static readonly ReportTemplateModelWellGroupWaterLevelInspection Instance = new ReportTemplateModelWellGroupWaterLevelInspection(3, @"WellGroupWaterLevelInspection", @"Well Water Level Inspection", @"Templates will be with the ""WellGroup"" model.");
     }
 }

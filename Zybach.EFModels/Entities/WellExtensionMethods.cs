@@ -21,33 +21,14 @@ namespace Zybach.EFModels.Entities
             wellSimpleDto.WellParticipationName = well.WellParticipation?.WellParticipationDisplayName;
         }
 
-        public static WellInspectionSummaryDto AsWellInspectionSummaryDto(this Well well,
-            WaterLevelInspectionSimpleDto waterLevelInspectionSimpleDto, WaterQualityInspectionSimpleDto waterQualityInspectionSimpleDto)
+        public static WellWaterQualityInspectionSummaryDto AsWellWaterQualityInspectionSummaryDto(this Well well)
         {
-            var wellInspectionSummaryDto = new WellInspectionSummaryDto()
+            return new WellWaterQualityInspectionSummaryDto()
             {
                 Well = well.AsSimpleDto(),
-
-                HasWaterLevelInspections = waterLevelInspectionSimpleDto != null,
-                LatestWaterLevelInspectionDate = waterLevelInspectionSimpleDto?.InspectionDate,
-                HasWaterQualityInspections = waterQualityInspectionSimpleDto != null,
-                LatestWaterQualityInspectionDate = waterQualityInspectionSimpleDto?.InspectionDate
+                HasWaterQualityInspections = well.WaterLevelInspections.Any(),
+                LatestWaterQualityInspectionDate = well.WaterLevelInspections.MaxBy(x => x.InspectionDate)?.InspectionDate
             };
-
-            return wellInspectionSummaryDto;
-        }
-
-        public static WellWaterLevelInspectionDetailedDto AsWellWaterLevelInspectionDetailedDto(this Well well,
-            List<WaterLevelInspectionSimpleDto> waterLevelInspectionSimpleDtos)
-        {
-            var wellWaterLevelInspectionDetailedDto = new WellWaterLevelInspectionDetailedDto()
-            {
-                Well = well.AsSimpleDto(),
-
-                WaterLevelInspections = waterLevelInspectionSimpleDtos
-            };
-
-            return wellWaterLevelInspectionDetailedDto;
         }
 
         public static WellWaterQualityInspectionDetailedDto AsWellWaterQualityInspectionDetailedDto(this Well well,

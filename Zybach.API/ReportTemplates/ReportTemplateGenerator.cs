@@ -87,7 +87,7 @@ namespace Zybach.API.ReportTemplates
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterQualityInspectionBaseViewModel);
                     break;
-                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                case ReportTemplateModelEnum.WellGroupWaterLevelInspection:
                     var wellWaterLevelInspectionBaseViewModel = new ReportTemplateWellWaterLevelInspectionBaseViewModel()
                     {
                         ReportModel = GetListOfWellWaterLevelInspectionModels(dbContext)
@@ -172,7 +172,7 @@ namespace Zybach.API.ReportTemplates
                         File.WriteAllBytes($"{imagePath}.png", imageByteArray);
                     }
                     break;
-                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                case ReportTemplateModelEnum.WellGroupWaterLevelInspection:
                     var wellGroups = dbContext.WellGroups.Include(x => x.WellGroupWells)
                         .Where(x => SelectedModelIDs.Contains(x.WellGroupID)).ToList();
                     foreach (var wellGroup in wellGroups)
@@ -314,7 +314,7 @@ namespace Zybach.API.ReportTemplates
                 case ReportTemplateModelEnum.WellWaterQualityInspection:
                     selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
                     break;
-                case ReportTemplateModelEnum.WellWaterLevelInspection:
+                case ReportTemplateModelEnum.WellGroupWaterLevelInspection:
                     selectedModelIDs = dbContext.Wells.AsNoTracking().Where(x => x.WaterQualityInspections.Count > 0).Select(x => x.WellID).Take(10).ToList();
                     break;
                 default:

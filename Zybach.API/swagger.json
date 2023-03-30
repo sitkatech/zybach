@@ -4983,7 +4983,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterQualityInspectionSummaryDto"
                   }
                 }
               },
@@ -4991,7 +4991,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterQualityInspectionSummaryDto"
                   }
                 }
               },
@@ -4999,7 +4999,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterQualityInspectionSummaryDto"
                   }
                 }
               }
@@ -10592,6 +10592,13 @@
               "$ref": "#/components/schemas/WellGroupWellSimpleDto"
             },
             "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterLevelInspectionDate": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -10637,6 +10644,13 @@
               "$ref": "#/components/schemas/WellGroupWellSimpleDto"
             },
             "nullable": true
+          },
+          "HasWaterLevelInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterLevelInspectionDate": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -10670,31 +10684,6 @@
           "Longitude": {
             "type": "number",
             "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "WellInspectionSummaryDto": {
-        "type": "object",
-        "properties": {
-          "Well": {
-            "$ref": "#/components/schemas/WellSimpleDto"
-          },
-          "HasWaterLevelInspections": {
-            "type": "boolean"
-          },
-          "LatestWaterLevelInspectionDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "HasWaterQualityInspections": {
-            "type": "boolean"
-          },
-          "LatestWaterQualityInspectionDate": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11172,6 +11161,23 @@
             "items": {
               "$ref": "#/components/schemas/SensorSimpleDto"
             },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWaterQualityInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterQualityInspectionDate": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           }
         },
