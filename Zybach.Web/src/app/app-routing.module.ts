@@ -51,7 +51,7 @@ import { SensorDetailComponent } from './pages/sensor-detail/sensor-detail.compo
 import { WaterLevelInspectionDetailComponent } from './pages/water-level-inspection-detail/water-level-inspection-detail.component';
 import { WaterLevelInspectionNewComponent } from './pages/water-level-inspection-new/water-level-inspection-new.component';
 import { WaterLevelInspectionEditComponent } from './pages/water-level-inspection-edit/water-level-inspection-edit.component';
-import { WellInspectionReportsComponent } from './pages/well-inspection-reports/well-inspection-reports.component';
+import { WaterQualityReportsComponent } from './pages/water-quality-reports/water-quality-reports.component';
 import { ReadOnlyGuard } from "./shared/guards/unauthenticated-access/read-only-guard";
 import { NormalPlusGuard } from './shared/guards/unauthenticated-access/normal-plus-guard';
 import { SensorAnomalyListComponent } from './pages/sensor-anomaly-list/sensor-anomaly-list.component';
@@ -69,6 +69,7 @@ import { WellPumpingSummaryComponent } from './pages/well-pumping-summary/well-p
 import { WellGroupListComponent } from './pages/well-group-list/well-group-list.component';
 import { WellGroupEditComponent } from './pages/well-group-edit/well-group-edit.component';
 import { WellGroupDetailComponent } from './pages/well-group-detail/well-group-detail.component';
+import { WaterLevelReportsComponent } from './pages/water-level-reports/water-level-reports.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -102,7 +103,8 @@ const routes: Routes = [
   { path: "reports/chemigation-permit-reports",  component: ChemigationPermitReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/clearinghouse-report",  component: ClearinghouseWqiReportComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/ndee-report",  component: NdeeChemicalsReportComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
-  { path: "reports/well-inspections-report",  component: WellInspectionReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/well-inspections-report",  component: WaterQualityReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/water-levels-report",  component: WaterLevelReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/new",  component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "reports/:id/edit", component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },

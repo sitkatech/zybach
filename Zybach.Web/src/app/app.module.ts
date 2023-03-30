@@ -86,7 +86,7 @@ import { WaterLevelInspectionDetailComponent } from './pages/water-level-inspect
 import { WaterLevelInspectionNewComponent } from './pages/water-level-inspection-new/water-level-inspection-new.component';
 import { WaterLevelInspectionUpsertComponent } from './shared/components/water-level-inspection-upsert/water-level-inspection-upsert.component';
 import { WaterLevelInspectionEditComponent } from './pages/water-level-inspection-edit/water-level-inspection-edit.component';
-import { WellInspectionReportsComponent } from './pages/well-inspection-reports/well-inspection-reports.component';
+import { WaterQualityReportsComponent } from './pages/water-quality-reports/water-quality-reports.component';
 import { WellOverviewTabComponent } from './shared/components/well-overview-tab/well-overview-tab.component';
 import { WellWaterDataTabComponent } from './shared/components/well-water-data-tab/well-water-data-tab.component';
 import { WellPermitsInspectionsTabComponent } from './shared/components/well-permits-inspections-tab/well-permits-inspections-tab.component';
@@ -111,6 +111,7 @@ import { WellGroupListComponent } from './pages/well-group-list/well-group-list.
 import { WellGroupEditComponent } from './pages/well-group-edit/well-group-edit.component';
 import { WellGroupDetailComponent } from './pages/well-group-detail/well-group-detail.component';
 import { WellGroupWaterLevelsTabComponent } from './pages/well-group-water-levels-tab/well-group-water-levels-tab.component';
+import { WaterLevelReportsComponent } from './pages/water-level-reports/water-level-reports.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -173,9 +174,9 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
     WellOverviewTabComponent,
     WellWaterDataTabComponent,
     WellPermitsInspectionsTabComponent,
-    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WellInspectionReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent, WaterLevelExplorerComponent, WellWaterLevelMapComponent, IrrigationUnitListComponent, IrrigationUnitDetailComponent, IrrigationUnitMapComponent, OpenetSyncWaterYearMonthStatusListComponent, SupportTicketListComponent, SupportTicketDetailComponent, SupportTicketEditComponent, SupportTicketNewComponent, SupportTicketUpsertComponent, SupportTicketCommentNewComponent, WellPumpingSummaryComponent, 
+    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WaterQualityReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent, WaterLevelExplorerComponent, WellWaterLevelMapComponent, IrrigationUnitListComponent, IrrigationUnitDetailComponent, IrrigationUnitMapComponent, OpenetSyncWaterYearMonthStatusListComponent, SupportTicketListComponent, SupportTicketDetailComponent, SupportTicketEditComponent, SupportTicketNewComponent, SupportTicketUpsertComponent, SupportTicketCommentNewComponent, WellPumpingSummaryComponent, 
     WellGroupListComponent, 
-    WellGroupEditComponent, WellGroupDetailComponent, WellGroupWaterLevelsTabComponent
+    WellGroupEditComponent, WellGroupDetailComponent, WellGroupWaterLevelsTabComponent, WaterLevelReportsComponent
   ],
   imports: [
     AppRoutingModule,

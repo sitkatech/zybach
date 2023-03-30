@@ -49,6 +49,13 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col mt-4">Selected Wells ({{ model.WellGroupWells.length }}):</div>
+            <div *ngFor="let wellGroupWell of model.WellGroupWells">
+                {{ wellGroupWell?.WellRegistrationID }}
+            </div>
+        </div>
+
         <div class="row mt-4">
             <div class="col-auto"><i class="fas fa-bolt"></i> Required field</div>
             <div class="col-auto ml-auto">
@@ -69,7 +76,7 @@
     <div class="modal-body">
         
         <div class="control-label">
-            <label><strong>Select Primary Well:</strong></label>
+            <label><strong>Select Primary Well for Water Level Reporting:</strong></label>
         </div>
         <div>
             <select name="primaryWell" class="form-control" [(ngModel)]="primaryWellID">

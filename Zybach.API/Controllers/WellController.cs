@@ -54,9 +54,9 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/wells/inspectionSummaries")]
         [ZybachViewFeature]
-        public ActionResult<IEnumerable<WellInspectionSummaryDto>> GetWellInspectionSummaries()
+        public ActionResult<IEnumerable<WellWaterQualityInspectionSummaryDto>> GetWellWaterQualityInspectionSummaries()
         {
-            var wellInspectionSummaryDtos = Wells.ListAsWellInspectionSummaryDtos(_dbContext);
+            var wellInspectionSummaryDtos = Wells.ListAsWellWaterQualityInspectionDtos(_dbContext);
             return Ok(wellInspectionSummaryDtos);
         }
 

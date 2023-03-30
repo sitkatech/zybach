@@ -20,7 +20,7 @@ export enum CustomRichTextTypeEnum {
   WellRegistrationIDChangeHelpText = 15,
   ClearinghouseReport = 16,
   SensorList = 17,
-  WellInspectionReports = 18,
+  WaterQualityReport = 18,
   AnomalyReportList = 19,
   WaterLevelExplorerMap = 20,
   WaterLevelExplorerMapDisclaimer = 21,
@@ -29,5 +29,6 @@ export enum CustomRichTextTypeEnum {
   SupportTicketIndex = 24,
   WellPumpingSummary = 25,
   WellGroupList = 26,
-  WellGroupEdit = 27
+  WellGroupEdit = 27,
+  WaterLevelsReport = 28
 }

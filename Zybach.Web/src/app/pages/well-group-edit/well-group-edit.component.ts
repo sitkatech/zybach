@@ -16,7 +16,6 @@ import { WellMinimalDto } from 'src/app/shared/generated/model/well-minimal-dto'
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { transpileModule } from 'typescript';
 
 @Component({
   selector: 'zybach-well-group-edit',
@@ -115,7 +114,7 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
         if (this.model.WellGroupWells.find(x => x.WellID == node.data.WellID)) {
           node.setSelected(true);
         }
-      })
+      });
     }
   }
 

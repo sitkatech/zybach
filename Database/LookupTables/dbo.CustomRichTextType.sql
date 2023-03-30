@@ -17,7 +17,7 @@ USING (VALUES
 (15, 'WellRegistrationIDChangeHelpText', 'Well Registration ID Change Help Text'),
 (16, 'ClearinghouseReport', 'Clearinghouse Report'),
 (17, 'SensorList', 'Sensor List'),
-(18, 'WellInspectionReports', 'Well Inspection Reports'),
+(18, 'WaterQualityReport', 'Water Quality Report'),
 (19, 'AnomalyReportList', 'Anomaly Report List'),
 (20, 'WaterLevelExplorerMap', 'Water Level Explorer Map'),
 (21, 'WaterLevelExplorerMapDisclaimer', 'Water Level Explorer Map Disclaimer'),
@@ -26,7 +26,8 @@ USING (VALUES
 (24, 'SupportTicketIndex', 'Support Ticket Index'),
 (25, 'WellPumpingSummary', 'Well Pumping Summary'),
 (26, 'WellGroupList', 'Well Group List'),
-(27, 'WellGroupEdit', 'Well Group Edit')
+(27, 'WellGroupEdit', 'Well Group Edit'),
+(28, 'WaterLevelsReport', 'Water Levels Report')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID

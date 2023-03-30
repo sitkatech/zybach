@@ -16,6 +16,10 @@ export class UtilityFunctionsService {
     private decimalPipe: DecimalPipe
   ) { }
 
+  public booleanValueGetter(value: boolean): string {
+    return value == true ? 'Yes' : value == false ? 'No' : null;
+  }
+
   private decimalValueGetter(params: any, fieldName, allowNullData?: boolean): number {
     const fieldNames = fieldName.split('.');
     if (fieldNames.length == 1) {

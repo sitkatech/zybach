@@ -4,6 +4,6 @@ namespace Zybach.API.ReportTemplates.Models
 {
     public class ReportTemplateWellWaterLevelInspectionBaseViewModel
     {
-        public List<ReportTemplateWellWaterLevelInspectionModel> ReportModel { get; set; }
+        public List<ReportTemplateWellGroupWaterLevelInspectionModel> ReportModel { get; set; }
     }
 }

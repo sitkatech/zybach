@@ -85,7 +85,7 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
         filterValueGetter: params => params.data.WellGroupID
       },
       {
-        headerName: 'Associated Wells', width: 300,
+        headerName: 'Wells', width: 300,
         valueGetter: function (params) {
           let names = params.data.WellGroupWells.map(x => {
             return { LinkValue: x.WellID, LinkDisplay: x.WellRegistrationID }
@@ -99,7 +99,6 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
         cellRendererParams: { inRouterLink: "/wells/" },
         cellRendererFramework: MultiLinkRendererComponent
       },
-      
       { 
         headerName: "Primary Well", 
         valueGetter: params => {

@@ -314,7 +314,7 @@ export class WellGroupService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<WellGroupSummaryDto>>(`${this.basePath}/wellGroups/${encodeURIComponent(String(wellGroupID))}/summary`,
+        return this.httpClient.get<WellGroupSummaryDto>(`${this.basePath}/wellGroups/${encodeURIComponent(String(wellGroupID))}/summary`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
