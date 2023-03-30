@@ -24,6 +24,8 @@ export class WellGroupSummaryDto {
     WellGroupName?: string;
     PrimaryWell?: WellSimpleDto;
     WellGroupWells?: Array<WellGroupWellSimpleDto>;
+    HasWaterLevelInspections?: boolean;
+    LatestWaterLevelInspectionDate?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

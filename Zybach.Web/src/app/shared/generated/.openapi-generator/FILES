@@ -143,7 +143,6 @@ model/well-dto.ts
 model/well-group-dto.ts
 model/well-group-summary-dto.ts
 model/well-group-well-simple-dto.ts
-model/well-inspection-summary-dto.ts
 model/well-minimal-dto.ts
 model/well-new-dto.ts
 model/well-participation-dto.ts
@@ -153,6 +152,7 @@ model/well-registration-id-dto.ts
 model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-water-level-map-summary-dto.ts
+model/well-water-quality-inspection-summary-dto.ts
 model/well-with-sensor-message-age-dto.ts
 model/well-with-sensor-simple-dto.ts
 variables.ts

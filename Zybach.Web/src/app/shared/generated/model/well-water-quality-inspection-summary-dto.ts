@@ -11,10 +11,8 @@
  */
 import { WellSimpleDto } from '././well-simple-dto';
 
-export class WellInspectionSummaryDto { 
+export class WellWaterQualityInspectionSummaryDto { 
     Well?: WellSimpleDto;
-    HasWaterLevelInspections?: boolean;
-    LatestWaterLevelInspectionDate?: string;
     HasWaterQualityInspections?: boolean;
     LatestWaterQualityInspectionDate?: string;
     constructor(obj?: any) {

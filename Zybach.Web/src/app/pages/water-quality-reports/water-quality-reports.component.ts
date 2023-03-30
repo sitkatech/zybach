@@ -12,12 +12,12 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ReportService } from 'src/app/shared/generated/api/report.service';
 import { Alert } from 'src/app/shared/models/alert';
 import { ReportTemplateModelEnum } from 'src/app/shared/generated/enum/report-template-model-enum';
-import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
-import { WellInspectionSummaryDto } from 'src/app/shared/generated/model/well-inspection-summary-dto';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { DatePipe } from '@angular/common';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
+import { WellWaterQualityInspectionSummaryDto } from 'src/app/shared/generated/model/well-water-quality-inspection-summary-dto';
+import { GenerateReportsDto } from 'src/app/shared/generated/model/generate-reports-dto';
 
 @Component({
   selector: 'zybach-water-quality-reports',
@@ -31,7 +31,7 @@ export class WaterQualityReportsComponent implements OnInit, OnDestroy {
   private currentUser: UserDto;
 
   
-  public wells: Array<WellInspectionSummaryDto>;
+  public wells: WellWaterQualityInspectionSummaryDto[];
   public columnDefs: (ColDef | ColGroupDef)[];
   public defaultColDef: ColDef;
   public selectedWellsCount: number;
