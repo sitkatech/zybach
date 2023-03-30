@@ -1,4 +1,4 @@
-<div class="container" *ngIf="!wells else wellsList">
+<div class="container mt-5" *ngIf="!wells else wellsList">
     <div class="row">
         <div class="col text-center">
             <span class="fas fa-spinner loading-spinner"></span>
@@ -7,37 +7,42 @@
     </div>
 </div>
 
-
 <ng-template #wellsList>
     <div class="container navCaretMargin">
-        <div class="col-12">
-            <h2 class="d-inline-block">Water Level Explorer</h2>
-            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        <div clsas="row">
+            <div class="col">
+                <h2 class="d-inline-block">Water Level Explorer</h2>
+                <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+            </div>
         </div>
         
-        <div class="row col-12 mt-4">
-
-            <div class="col-6">
+        <div class="row mt-4">
+            <div class="col-lg-6 mb-2">
                 <div class="card">
+
                     <div class="card-header">Water Level Summary</div>
+
                     <div class="card-body">
                         <div *ngIf="selectedWell; else noWellSelected">
-                            <div class="col-12">
-                                <div class="row">
-                                    <div class="col-6 label"><strong>
-                                        <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
-                                        </field-definition>:
-                                    </strong> </div>
-                                    <div class="col-6"><a routerLink="/wells/{{selectedWell?.WellID}}">{{selectedWell?.WellRegistrationID}}</a></div>
-                                    <div class="col-6 label"><strong>Legal Description: </strong></div>
-                                    <div class="col-6">{{ selectedWell?.TownshipRangeSection }}</div>
-                                    <div class="col-6 label"><strong>
-                                        <field-definition [fieldDefinitionType]="'SensorLastReadingDate'">
-                                        </field-definition>:
-                                    </strong></div>
-                                    <div class="col-6">{{ selectedWell?.LastReadingDate | date:'shortDate' }}</div>
+
+                            <div class="row mb-2">
+                                <div class="col-sm-6 label">
+                                    <strong><field-definition [fieldDefinitionType]="'WellRegistrationNumber'"></field-definition>: </strong>
                                 </div>
+                                <div class="col-sm-6">
+                                    <a *ngIf="isAuthenticated()" routerLink="/wells/{{selectedWell?.WellID}}">{{selectedWell?.WellRegistrationID}}</a>
+                                    <span *ngIf="!isAuthenticated()">{{ selectedWell?.WellRegistrationID }}</span>
+                                </div>
+
+                                <div class="col-sm-6 label"><strong>Legal Description: </strong></div>
+                                <div class="col-sm-6">{{ selectedWell?.TownshipRangeSection }}</div>
+
+                                <div class="col-sm-6 label">
+                                    <strong><field-definition [fieldDefinitionType]="'SensorLastReadingDate'"></field-definition>: </strong>
+                                </div>
+                                <div class="col-sm-6">{{ selectedWell?.LastReadingDate | date:'shortDate' }}</div>
                             </div>
+
                             <div>
                                 <zybach-sensor-chart [(sensorChartData)]="sensorChartData"></zybach-sensor-chart>
                                 <div class="mt-2">
@@ -55,7 +60,7 @@
                 </div>
             </div>
             
-            <div class="col-6">
+            <div class="col-lg-6">
                 <zybach-well-water-level-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)">
                 </zybach-well-water-level-map>
             </div>

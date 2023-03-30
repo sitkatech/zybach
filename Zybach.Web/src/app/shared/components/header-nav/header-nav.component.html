@@ -107,107 +107,108 @@
     </div>
 </nav>
 <nav class="navbar navbar-expand-xl  navbar-zybach logoPadding">
-    <a routerLink="/" routerLinkActive="active" class="navbar-brand navbar-brand-primary nav-link"
-        *ngIf="!isAuthenticated()">
+    <a routerLink="/" routerLinkActive="active" class="navbar-brand navbar-brand-primary nav-link" *ngIf="!isAuthenticated()">
         {{platformShortName()}}
     </a>
 
-    <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2" *ngIf="isAuthenticated()">
+    <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2">
         <ul class="navbar-nav">
-            <li class="nav-item mapItem" [ngClass]="{'currentPage': isWaterLevelExplorerCurrentPage()}">
+            <li class="nav-item mapItem" [ngClass]="{'currentPage': isWaterLevelExplorerCurrentPage(), 'float-right': !isAuthenticated()}">
                 <a class="nav-link" routerLinkActive="active" routerLink="/water-level-explorer">
                     <img src="/assets/main/nav/water-level-explorer.png" /> Water Level Explorer
                 </a>
             </li>
-            <li class="nav-item dropdown dashboardItem" routerLinkActive="active" [ngClass]="{'currentPage': isDataProgramCurrentPage()}"
-                *ngIf="!isUnassigned()">
-                <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    <img src="/assets/main/nav/dashboard.png" />
-                    Water Data Program
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLink="/dashboard">
-                        Manager Dashboard
+            <ng-container *ngIf="isAuthenticated()">
+                <li class="nav-item dropdown dashboardItem" routerLinkActive="active" [ngClass]="{'currentPage': isDataProgramCurrentPage()}"
+                    *ngIf="!isUnassigned()">
+                    <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="/assets/main/nav/dashboard.png" />
+                        Water Data Program
                     </a>
-                    <a class="dropdown-item" routerLink="/well-pumping-summary">
-                        Well Pumping Summary
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" routerLink="/dashboard">
+                            Manager Dashboard
+                        </a>
+                        <a class="dropdown-item" routerLink="/well-pumping-summary">
+                            Well Pumping Summary
+                        </a>
+                        <a class="dropdown-item" routerLink="/irrigation-units">
+                            Irrigation Unit Summary
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" routerLink="/sensors">
+                            Sensor List
+                        </a>
+                        <a class="dropdown-item" routerLink="/sensor-status">
+                            Sensor Status Map
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" routerLink="/sensor-anomalies" *ngIf="!isReadOnly()">
+                            Sensor Anomaly Reports
+                        </a>
+                        <a class="dropdown-item" routerLink="/support-tickets">
+                            Support Ticket Management
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown mapItem" routerLinkActive="active" [ngClass]="{'currentPage': isMapCurrentPage()}" *ngIf="!isUnassigned()">
+                    <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="/assets/main/nav/map.png" />
+                        Well Inventory
                     </a>
-                    <a class="dropdown-item" routerLink="/irrigation-units">
-                        Irrigation Unit Summary
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" routerLinkActive="active" routerLink="/well-map">
+                            Well Map
                     </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" routerLink="/sensors">
-                        Sensor List
+                        <a class="dropdown-item" routerLinkActive="active" routerLink="/well-groups" *ngIf="isAdministrator()">
+                            Well Groups
                     </a>
-                    <a class="dropdown-item" routerLink="/sensor-status">
-                        Sensor Status Map
+                    </div>
+                </li>
+                <li class="nav-item dropdown chemigationItem" routerLinkActive="active" [ngClass]="{'currentPage': isChemigationCurrentPage()}"
+                    *ngIf="!isReadOnly() && !isUnassigned()">
+                    <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false">
+                        <img src="/assets/main/nav/chemigation.png" />
+                        Permits and Inspections
                     </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" routerLink="/sensor-anomalies" *ngIf="!isReadOnly()">
-                        Sensor Anomaly Reports
-                    </a>
-                    <a class="dropdown-item" routerLink="/support-tickets">
-                        Support Ticket Management
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item dropdown mapItem" routerLinkActive="active" [ngClass]="{'currentPage': isMapCurrentPage()}" *ngIf="!isUnassigned()">
-                <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="/assets/main/nav/map.png" />
-                    Well Inventory
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" routerLinkActive="active" routerLink="/well-map">
-                        Well Map
-                   </a>
-                    <a class="dropdown-item" routerLinkActive="active" routerLink="/well-groups" *ngIf="isAdministrator()">
-                        Well Groups
-                   </a>
-                </div>
-            </li>
-            <li class="nav-item dropdown chemigationItem" routerLinkActive="active" [ngClass]="{'currentPage': isChemigationCurrentPage()}"
-                *ngIf="!isReadOnly() && !isUnassigned()">
-                <a href="#" class="dropdown-toggle nav-link" role="button" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    <img src="/assets/main/nav/chemigation.png" />
-                    Permits and Inspections
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a routerLink="/chemigation-permits" class="dropdown-item">
-                        Chemigation Permits
-                    </a>
-                    <a routerLink="/chemigation-inspections" class="dropdown-item">
-                        Chemigation Inspections
-                    </a>
-                    <a routerLink="/water-quality-inspections" class="dropdown-item">
-                        Water Quality Inspections
-                    </a>
-                    <a routerLink="/water-level-inspections" class="dropdown-item">
-                        Water Level Inspections
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item searchItem" *ngIf="!isUnassigned()">
-                <img src="/assets/main/nav/search.png">
-                <p-autoComplete #geoOptixSearch field="Name" placeholder="Search..." emptyMessage="No Results"
-                    [(ngModel)]="text" [suggestions]="searchSuggestions" (completeMethod)="search($event)"
-                    (onFocus)="reFocus(geoOptixSearch)" (onSelect)="select($event)" type="search"
-                    minLength="3"
-                    >
-                    <ng-template let-result pTemplate="item">
-                        <div style="border-bottom:1px solid #D5D5D5">
-                            <div class="objectType">
-                                {{ result.ObjectType }}
-                            </div>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a routerLink="/chemigation-permits" class="dropdown-item">
+                            Chemigation Permits
+                        </a>
+                        <a routerLink="/chemigation-inspections" class="dropdown-item">
+                            Chemigation Inspections
+                        </a>
+                        <a routerLink="/water-quality-inspections" class="dropdown-item">
+                            Water Quality Inspections
+                        </a>
+                        <a routerLink="/water-level-inspections" class="dropdown-item">
+                            Water Level Inspections
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item searchItem" *ngIf="!isUnassigned()">
+                    <img src="/assets/main/nav/search.png">
+                    <p-autoComplete #geoOptixSearch field="Name" placeholder="Search..." emptyMessage="No Results"
+                        [(ngModel)]="text" [suggestions]="searchSuggestions" (completeMethod)="search($event)"
+                        (onFocus)="reFocus(geoOptixSearch)" (onSelect)="select($event)" type="search"
+                        minLength="3"
+                        >
+                        <ng-template let-result pTemplate="item">
+                            <div style="border-bottom:1px solid #D5D5D5">
+                                <div class="objectType">
+                                    {{ result.ObjectType }}
+                                </div>
 
-                            <a routerLink="/wells/{{result.WellID}}">
-                                {{ result.ObjectName }}
-                            </a>
-                        </div>
-                    </ng-template>
-                </p-autoComplete>
-            </li>
+                                <a routerLink="/wells/{{result.WellID}}">
+                                    {{ result.ObjectName }}
+                                </a>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
+                </li>
+            </ng-container>
         </ul>
     </div>
 </nav>

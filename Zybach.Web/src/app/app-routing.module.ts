@@ -73,7 +73,7 @@ import { WaterLevelReportsComponent } from './pages/water-level-reports/water-le
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
-  { path: "water-level-explorer", component: WaterLevelExplorerComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
+  { path: "water-level-explorer", component: WaterLevelExplorerComponent },
   { path: "dashboard", component: DashboardComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "openet-integration", component: OpenetSyncWaterYearMonthStatusListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensors", component: SensorListComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
