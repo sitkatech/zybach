@@ -173,13 +173,15 @@ namespace Zybach.API.ReportTemplates
                     }
                     break;
                 case ReportTemplateModelEnum.WellWaterLevelInspection:
-                    var wells = dbContext.Wells.Where(x => SelectedModelIDs.Contains(x.WellID)).ToList();
-                    foreach (var well in wells)
+                    var wellGroups = dbContext.WellGroups.Include(x => x.WellGroupWells)
+                        .Where(x => SelectedModelIDs.Contains(x.WellGroupID)).ToList();
+                    foreach (var wellGroup in wellGroups)
                     {
-                        var waterLevelInspectionsAsVegaChartDtos = WaterLevelInspections.ListByWellIDAsVegaChartDto(dbContext, well.WellID);
+                        var wellIDs = wellGroup.WellGroupWells.Select(x => x.WellID).ToList();
+                        var waterLevelInspectionsAsVegaChartDtos = WaterLevelInspections.ListByWellIDsAsVegaChartDto(dbContext, wellIDs);
                         var spec = VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionsAsVegaChartDtos, false);
                         var imageByteArray = await vegaRenderService.PrintPNG(spec);
-                        var imagePath = $"{FullTemplateTempImageDirectory}/{well.WellID}-waterLevelsChart";
+                        var imagePath = $"{FullTemplateTempImageDirectory}/{wellGroup.WellGroupID}-waterLevelsChart";
                         File.WriteAllBytes($"{imagePath}.png", imageByteArray);
                     }
                     break;
@@ -289,11 +291,12 @@ namespace Zybach.API.ReportTemplates
             return listOfModels;
         }
 
-        private List<ReportTemplateWellWaterLevelInspectionModel> GetListOfWellWaterLevelInspectionModels(ZybachDbContext dbContext)
+        private List<ReportTemplateWellGroupWaterLevelInspectionModel> GetListOfWellWaterLevelInspectionModels(ZybachDbContext dbContext)
         {
-            var listOfModels = Wells.ListByWellIDsAsWellWaterLevelInspectionDetailedDto(dbContext, SelectedModelIDs)
-                .OrderBy(x => SelectedModelIDs.IndexOf(x.Well.WellID))
-                .Select(x => new ReportTemplateWellWaterLevelInspectionModel(x)).ToList();
+            var listOfModels = WellGroups.ListByIDsAsWellGroupWaterLevelInspectionDto(dbContext, SelectedModelIDs)
+                .OrderBy(x => SelectedModelIDs.IndexOf(x.WellGroup.WellGroupID))
+                .Select(x => new ReportTemplateWellGroupWaterLevelInspectionModel(x)).ToList();
+            
             return listOfModels;
         }
 

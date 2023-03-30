@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
@@ -29,7 +30,9 @@ namespace Zybach.EFModels.Entities
 
         public static List<WaterLevelInspectionSimpleDto> ListAsSimpleDto(ZybachDbContext dbContext)
         {
-            return ListImpl(dbContext).OrderByDescending(x => x.InspectionDate).ThenBy(x => x.Well.WellRegistrationID).Select(x => x.AsSimpleDto()).ToList();
+            return ListImpl(dbContext)
+                .OrderByDescending(x => x.InspectionDate).ThenBy(x => x.Well.WellRegistrationID)
+                .Select(x => x.AsSimpleDto()).ToList();
         }
 
         public static WaterLevelInspectionSimpleDto GetByIDAsSimpleDto(ZybachDbContext dbContext, int waterLevelInspectionID)
@@ -42,6 +45,13 @@ namespace Zybach.EFModels.Entities
             return dbContext.WaterLevelInspections.SingleOrDefault(x => x.WaterLevelInspectionID == waterLevelInspectionID);
         }
 
+        public static IEnumerable<WaterLevelInspection> ListByWellIDs(ZybachDbContext dbContext, List<int> wellIDs)
+        {
+            return dbContext.WaterLevelInspections.Include(x => x.Well).AsNoTracking()
+                .Where(x => wellIDs.Contains(x.WellID))
+                .OrderByDescending(x => x.InspectionDate);
+        }
+
         public static List<WaterLevelInspectionSummaryDto> ListByWellIDAsSummaryDto(ZybachDbContext dbContext, int wellID)
         {
             return ListByWellIDsAsSummaryDto(dbContext, new List<int>() { wellID });
@@ -49,10 +59,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<WaterLevelInspectionSummaryDto> ListByWellIDsAsSummaryDto(ZybachDbContext dbContext, List<int> wellIDs)
         {
-            return dbContext.WaterLevelInspections.Include(x => x.Well).AsNoTracking()
-                .OrderByDescending(x => x.InspectionDate)
-                .Where(x => wellIDs.Contains(x.WellID))
-                .Select(x => x.AsSummaryDto()).ToList();
+            return ListByWellIDs(dbContext, wellIDs).Select(x => x.AsSummaryDto()).ToList();
         }
 
         public static List<WaterLevelInspectionForVegaChartDto> ListByWellIDAsVegaChartDto(ZybachDbContext dbContext, int wellID)
@@ -62,10 +69,7 @@ namespace Zybach.EFModels.Entities
 
         public static List<WaterLevelInspectionForVegaChartDto> ListByWellIDsAsVegaChartDto(ZybachDbContext dbContext, List<int> wellIDs)
         {
-            return dbContext.WaterLevelInspections.Include(x => x.Well).AsNoTracking()
-                .OrderByDescending(x => x.InspectionDate)
-                .Where(x => wellIDs.Contains(x.WellID))
-                .Select(x => x.AsVegaChartDto()).ToList();
+            return ListByWellIDs(dbContext, wellIDs).Select(x => x.AsVegaChartDto()).ToList();
         }
 
         public static WaterLevelInspectionSimpleDto Create(ZybachDbContext dbContext, WaterLevelInspectionUpsertDto waterLevelInspectionUpsertDto, int wellID)

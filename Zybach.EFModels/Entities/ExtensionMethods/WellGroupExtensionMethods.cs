@@ -26,4 +26,14 @@ public static partial class WellGroupExtensionMethods
             BoundingBox = new BoundingBoxDto(wellGroup.WellGroupWells.Select(x => x.Well.WellGeometry))
         };
     }
+
+    public static WellGroupWaterLevelInspectionDto AsWellGroupWaterLevelInspectionDto(this WellGroup wellGroup)
+    {
+        return new WellGroupWaterLevelInspectionDto()
+        {
+            WellGroup = wellGroup.AsDto(),
+            WaterLevelInspections = wellGroup.WellGroupWells.SelectMany(x => x.Well.WaterLevelInspections)
+                .Select(x => x.AsSimpleDto()).ToList()
+        };
+    }
 }

@@ -12,13 +12,18 @@ public class WellGroups
     private static IQueryable<WellGroup> GetImpl(ZybachDbContext dbContext)
     {
         return dbContext.WellGroups
-            .Include(x => x.WellGroupWells)
-                .ThenInclude(x => x.Well)
-                    .ThenInclude(x => x.Sensors);
+            .Include(x => x.WellGroupWells).ThenInclude(x => x.Well).ThenInclude(x => x.Sensors)
+            .Include(x => x.WellGroupWells).ThenInclude(x => x.Well).ThenInclude(x => x.WaterLevelInspections);
     }
     public static List<WellGroupDto> ListAsDto(ZybachDbContext dbContext)
     {
         return GetImpl(dbContext).AsNoTracking().Select(x => x.AsDto()).ToList();
+    }
+
+    public static List<WellGroupWaterLevelInspectionDto> ListByIDsAsWellGroupWaterLevelInspectionDto(ZybachDbContext dbContext, List<int> wellGroupIDs)
+    {
+        return GetImpl(dbContext).Where(x => wellGroupIDs.Contains(x.WellGroupID))
+            .Select(x => x.AsWellGroupWaterLevelInspectionDto()).ToList();
     }
 
     public static WellGroup GetByID(ZybachDbContext dbContext, int wellGroupID)

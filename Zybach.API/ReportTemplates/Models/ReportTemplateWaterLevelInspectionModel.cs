@@ -8,6 +8,7 @@ namespace Zybach.API.ReportTemplates.Models
         public int WaterLevelInspectionID { get; set; }
         public DateTime InspectionDate { get; set; }
         public int InspectorUserID { get; set; }
+        public string WellRegistrationID { get; set; }
 
         public string WaterLevelInspectionStatus { get; set; }
         public string MeasuringEquipment { get; set; }
@@ -43,6 +44,7 @@ namespace Zybach.API.ReportTemplates.Models
             WaterLevelInspectionID = waterLevelInspection.WaterLevelInspectionID;
             InspectionDate = waterLevelInspection.InspectionDate;
             InspectorUserID = waterLevelInspection.InspectorUserID;
+            WellRegistrationID = waterLevelInspection.Well.WellRegistrationID;
 
             WaterLevelInspectionStatus = waterLevelInspection.WaterLevelInspectionStatus;
             MeasuringEquipment = waterLevelInspection.MeasuringEquipment;
