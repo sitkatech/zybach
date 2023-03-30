@@ -437,7 +437,6 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/wells/{wellID}/waterLevelSensors")]
-        [UserViewFeature]
         public ActionResult<SensorChartDataDto> GetWaterLevelSensorsByWellID([FromRoute] int wellID)
         {
             if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
