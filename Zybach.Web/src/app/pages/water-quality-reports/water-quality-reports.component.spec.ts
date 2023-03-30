@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WaterQualityReoprtsComponent } from './water-quality-reports.component';
+import { WaterQualityReportsComponent } from './water-quality-reports.component';
 
 describe('WaterQualityReportsComponent', () => {
-  let component: WaterQualityReoprtsComponent;
-  let fixture: ComponentFixture<WaterQualityReoprtsComponent>;
+  let component: WaterQualityReportsComponent;
+  let fixture: ComponentFixture<WaterQualityReportsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WaterQualityReoprtsComponent ]
+      declarations: [ WaterQualityReportsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WaterQualityReoprtsComponent);
+    fixture = TestBed.createComponent(WaterQualityReportsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

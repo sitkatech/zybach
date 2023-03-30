@@ -25,7 +25,7 @@ import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-def
   styleUrls: ['./water-quality-reports.component.scss']
 })
 
-export class WaterQualityReoprtsComponent implements OnInit, OnDestroy {
+export class WaterQualityReportsComponent implements OnInit, OnDestroy {
   @ViewChild('wellsGrid') wellsGrid: AgGridAngular;
 
   private currentUser: UserDto;

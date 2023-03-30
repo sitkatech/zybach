@@ -51,7 +51,7 @@ import { SensorDetailComponent } from './pages/sensor-detail/sensor-detail.compo
 import { WaterLevelInspectionDetailComponent } from './pages/water-level-inspection-detail/water-level-inspection-detail.component';
 import { WaterLevelInspectionNewComponent } from './pages/water-level-inspection-new/water-level-inspection-new.component';
 import { WaterLevelInspectionEditComponent } from './pages/water-level-inspection-edit/water-level-inspection-edit.component';
-import { WaterQualityReoprtsComponent } from './pages/water-quality-reports/water-quality-reports.component';
+import { WaterQualityReportsComponent } from './pages/water-quality-reports/water-quality-reports.component';
 import { ReadOnlyGuard } from "./shared/guards/unauthenticated-access/read-only-guard";
 import { NormalPlusGuard } from './shared/guards/unauthenticated-access/normal-plus-guard';
 import { SensorAnomalyListComponent } from './pages/sensor-anomaly-list/sensor-anomaly-list.component';
@@ -103,7 +103,7 @@ const routes: Routes = [
   { path: "reports/chemigation-permit-reports",  component: ChemigationPermitReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/clearinghouse-report",  component: ClearinghouseWqiReportComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/ndee-report",  component: NdeeChemicalsReportComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
-  { path: "reports/well-inspections-report",  component: WaterQualityReoprtsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
+  { path: "reports/well-inspections-report",  component: WaterQualityReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/water-levels-report",  component: WaterLevelReportsComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/new",  component: ReportTemplateEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "reports/:id", component: ReportTemplateDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
