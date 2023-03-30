@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
+import { MultiLinkRendererComponent } from 'src/app/shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { ReportService } from 'src/app/shared/generated/api/report.service';
 import { WellGroupService } from 'src/app/shared/generated/api/well-group.service';
@@ -23,17 +24,17 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./water-level-reports.component.scss']
 })
 export class WaterLevelReportsComponent implements OnInit, OnDestroy {
-  @ViewChild('waterLevelReportsGrid') waterLevelReportsGrid: AgGridAngular;
+  @ViewChild('wellGroupsGrid') wellGroupsGrid: AgGridAngular;
 
   private currentUser: UserDto;
   private currentUserSubscription: Subscription;
 
   public wellGroups: WellGroupDto[];
-  public selectedWellGroupIDs = new Array<number>();
-
   public columnDefs: (ColDef | ColGroupDef)[];
   public defaultColDef: ColDef;
+  public selectedWellGroupsCount = 0;
   public rowsDisplayedCount: number;
+  public reportTemplateID: number;
 
   public richTextTypeID = CustomRichTextTypeEnum.WellInspectionReports; // update
   public isLoadingSubmit = false;
@@ -49,6 +50,11 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentUserSubscription = this.authenticationService.getCurrentUser().subscribe(currentUser => {
+      this.reportService.reportTemplatesGet().subscribe(reportTemplates => {
+        this.reportTemplateID = reportTemplates.find(x => x.ReportTemplateModel.ReportTemplateModelID == 
+          ReportTemplateModelEnum.WellWaterLevelInspection)?.ReportTemplateID;
+      });
+
       this.wellGroupService.wellGroupsGet().subscribe(wellGroups => {
         this.wellGroups = wellGroups;
         this.rowsDisplayedCount = wellGroups.length;
@@ -64,28 +70,34 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
   }
 
   public onSelectionChanged() {
-    this.waterLevelReportsGrid.api.forEachNodeAfterFilterAndSort(node => {
-      if (node.isSelected()) {
-        this.selectedWellGroupIDs.push(node.data.WellGroupID);
-      }
-    })
+    var selectedWellGroupsCount = 0;
+    this.wellGroupsGrid.api.forEachNodeAfterFilterAndSort(node => {
+      if (node.isSelected()) selectedWellGroupsCount++;
+    });
+
+    this.selectedWellGroupsCount = selectedWellGroupsCount;
   }
 
   public onFilterChanged() {
-    this.rowsDisplayedCount = this.waterLevelReportsGrid.api.getDisplayedRowCount();
+    this.rowsDisplayedCount = this.wellGroupsGrid.api.getDisplayedRowCount();
   }
 
   public exportToCsv() {
-    this.utilityFunctionsService.exportGridToCsv(this.waterLevelReportsGrid, 'water-inspection-summary.csv', null); // rename file
+    this.utilityFunctionsService.exportGridToCsv(this.wellGroupsGrid, 'water-levels-summary.csv', null);
   }
 
   public generateReport(): void {
     this.alertService.clearAlerts();
 
-    let selectedWellGroupIDs = this.waterLevelReportsGrid.api.getSelectedRows().map(x => x.WellGroupID);
+    let selectedWellGroupIDs = [];
+    this.wellGroupsGrid.api.forEachNodeAfterFilterAndSort(node => {
+      if (node.isSelected()) {
+        selectedWellGroupIDs.push(node.data.WellGroupID);
+      }
+    });
 
     if (selectedWellGroupIDs.length == 0){
-      this.alertService.pushAlert(new Alert("Please select at least one Well Group to generate a Water Level Report.", AlertContext.Danger));
+      this.alertService.pushAlert(new Alert("No Well Groups selected", AlertContext.Danger));
       return;
     } 
 
@@ -100,7 +112,7 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
 
       var a = document.createElement("a");
       a.href = URL.createObjectURL(response);
-      a.download = "Well Inspection Reports";
+      a.download = "Water Level Report";
       a.click();
 
       this.alertService.pushAlert(new Alert("Water Level Report generated for selected Well Groups", AlertContext.Success));
@@ -115,7 +127,7 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       { headerCheckboxSelection: true, checkboxSelection: true, headerCheckboxSelectionFilteredOnly: true, sortable: false, filter: false, width: 40 },
       {
-        headerName: 'Well Group',
+        headerName: 'Well Group Name',
         valueGetter: function (params: any) {
           return { LinkValue: params.data.WellGroupID, LinkDisplay: params.data.WellGroupName };
         },
@@ -124,25 +136,29 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: params => params.data.WellGroupName
       },
+      {
+        headerName: 'Wells', valueGetter: params => params.data.WellGroupWells.map(x => x.WellRegistrationID).join(", ")
+      },
+      { headerName: "Primary Well", field: "PrimaryWell.WellRegistrationID" },
       this.utilityFunctionsService.createDateColumnDef('Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
       {  
         headerName: 'Well Group Owner (from Primary Well)',
         children: [
-          { headerName: 'Name', field: "PrimaryWell.OwnerName", filter: true, resizable: true, sortable: true },
-          { headerName: 'Address', field: "PrimaryWell.OwnerAddress", filter: true, resizable: true, sortable: true },
-          { headerName: 'City', field: "PrimaryWell.OwnerCity", filter: true, resizable: true, sortable: true },
-          { headerName: 'State', field: "PrimaryWell.OwnerState", filter: true, resizable: true, sortable: true },
-          { headerName: 'Zip', field: "PrimaryWell.OwnerZipCode", filter: true, resizable: true, sortable: true }      
+          { headerName: 'Name', field: "PrimaryWell.OwnerName" },
+          { headerName: 'Address', field: "PrimaryWell.OwnerAddress" },
+          { headerName: 'City', field: "PrimaryWell.OwnerCity" },
+          { headerName: 'State', field: "PrimaryWell.OwnerState" },
+          { headerName: 'Zip', field: "PrimaryWell.OwnerZipCode" }      
         ]
       },
       {  
         headerName: 'Additional Contact (from Primary Well)',
         children: [
-          { headerName: 'Name', field: "PrimaryWell.AdditionalContactName", filter: true, resizable: true, sortable: true },
-          { headerName: 'Address', field: "PrimaryWell.AdditionalContactAddress", filter: true, resizable: true, sortable: true },
-          { headerName: 'City', field: "PrimaryWell.AdditionalContactCity", filter: true, resizable: true, sortable: true },
-          { headerName: 'State', field: "PrimaryWell.AdditionalContactState", filter: true, resizable: true, sortable: true },
-          { headerName: 'Zip', field: "PrimaryWell.AdditionalContactZipCode", filter: true, resizable: true, sortable: true }       
+          { headerName: 'Name', field: "PrimaryWell.AdditionalContactName" },
+          { headerName: 'Address', field: "PrimaryWell.AdditionalContactAddress" },
+          { headerName: 'City', field: "PrimaryWell.AdditionalContactCity" },
+          { headerName: 'State', field: "PrimaryWell.AdditionalContactState" },
+          { headerName: 'Zip', field: "PrimaryWell.AdditionalContactZipCode" }       
         ]
       }
     ];
