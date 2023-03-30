@@ -30,6 +30,7 @@ import { WaterLevelInspectionService } from './api/water-level-inspection.servic
 import { WaterQualityInspectionService } from './api/water-quality-inspection.service';
 import { WaterYearMonthService } from './api/water-year-month.service';
 import { WellService } from './api/well.service';
+import { WellGroupService } from './api/well-group.service';
 import { ZybachAPIService } from './api/zybach-api.service';
 
 @NgModule({
@@ -64,6 +65,7 @@ import { ZybachAPIService } from './api/zybach-api.service';
     WaterQualityInspectionService,
     WaterYearMonthService,
     WellService,
+    WellGroupService,
     ZybachAPIService,
      ]
 })

@@ -21,7 +21,8 @@ namespace Zybach.EFModels.Entities
                 InspectionDate = waterLevelInspection.InspectionDate,
                 Measurement = waterLevelInspection.Measurement,
                 MeasuringEquipment = waterLevelInspection.MeasuringEquipment,
-                InspectionNotes = waterLevelInspection.InspectionNotes
+                InspectionNotes = waterLevelInspection.InspectionNotes,
+                WellRegistrationID = waterLevelInspection.Well.WellRegistrationID
             };
 
             return waterLevelInspectionSummaryDto;
@@ -32,6 +33,7 @@ namespace Zybach.EFModels.Entities
             var waterLevelInspectionForVegaChartDto = new WaterLevelInspectionForVegaChartDto()
             {
                 WellID = waterLevelInspection.WellID,
+                WellRegistrationID = waterLevelInspection.Well.WellRegistrationID,
                 InspectionDate = waterLevelInspection.InspectionDate,
                 Measurement = waterLevelInspection.Measurement
             };

@@ -16,6 +16,7 @@ export class WaterLevelInspectionSummaryDto {
     Measurement?: number;
     MeasuringEquipment?: string;
     InspectionNotes?: string;
+    WellRegistrationID?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

@@ -66,6 +66,9 @@ import { SupportTicketNewComponent } from './pages/support-ticket-new/support-ti
 import { SupportTicketEditComponent } from './pages/support-ticket-edit/support-ticket-edit.component';
 import { SupportTicketCommentNewComponent } from './pages/support-ticket-comment-new/support-ticket-comment-new.component';
 import { WellPumpingSummaryComponent } from './pages/well-pumping-summary/well-pumping-summary.component';
+import { WellGroupListComponent } from './pages/well-group-list/well-group-list.component';
+import { WellGroupEditComponent } from './pages/well-group-edit/well-group-edit.component';
+import { WellGroupDetailComponent } from './pages/well-group-detail/well-group-detail.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -127,6 +130,10 @@ const routes: Routes = [
   { path: "water-level-inspections/new",  component: WaterLevelInspectionNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "water-level-inspections/:id",  component: WaterLevelInspectionDetailComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
   { path: "water-level-inspections/:id/edit",  component: WaterLevelInspectionEditComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard]},
+  { path: "well-groups", component: WellGroupListComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "well-groups/new", component: WellGroupEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "well-groups/:id/edit", component: WellGroupEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
+  { path: "well-groups/:id", component: WellGroupDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "", component: HomeIndexComponent},
   { path: "disclaimer", component: DisclaimerComponent },
   { path: "disclaimer/:forced", component: DisclaimerComponent },

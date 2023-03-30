@@ -14,6 +14,7 @@ export class IrrigatedAcresPerYearDto {
     Year?: number;
     Acres?: number;
     CropType?: string;
+    Tillage?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

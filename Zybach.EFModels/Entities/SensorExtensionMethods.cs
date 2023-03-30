@@ -26,5 +26,14 @@ namespace Zybach.EFModels.Entities
             sensorSimpleDto.MostRecentSupportTicketID = mostRecentSupportTicket?.SupportTicketID;
             sensorSimpleDto.MostRecentSupportTicketTitle = mostRecentSupportTicket?.SupportTicketTitle;
         }
+
+        public static SensorMinimalDto AsMinimalDto(this Sensor sensor)
+        {
+            return new SensorMinimalDto()
+            {
+                SensorID = sensor.SensorID,
+                SensorName = sensor.SensorName
+            };
+        }
     }
 }

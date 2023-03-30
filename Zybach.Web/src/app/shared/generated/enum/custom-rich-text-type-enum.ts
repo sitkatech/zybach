@@ -27,5 +27,7 @@ export enum CustomRichTextTypeEnum {
   IrrigationUnitIndex = 22,
   OpenETIntegration = 23,
   SupportTicketIndex = 24,
-  WellPumpingSummary = 25
+  WellPumpingSummary = 25,
+  WellGroupList = 26,
+  WellGroupEdit = 27
 }
