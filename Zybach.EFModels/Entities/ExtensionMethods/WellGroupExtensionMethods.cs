@@ -16,7 +16,8 @@ public static partial class WellGroupExtensionMethods
         if (!waterLevelInspections.Any()) return;
 
         wellGroupDto.HasWaterLevelInspections = true;
-        wellGroupDto.LatestWaterLevelInspectionDate = waterLevelInspections.MaxBy(x => x.InspectionDate).InspectionDate;
+        wellGroupDto.LatestWaterLevelInspectionDate = waterLevelInspections.Any() ? 
+            waterLevelInspections.MaxBy(x => x.InspectionDate)?.InspectionDate : null;
     }
 
     public static WellGroupSummaryDto AsSummaryDto(this WellGroup wellGroup, string waterLevelChartVegaSpec, List<WaterLevelInspectionSummaryDto> waterLevelInspectionSummaryDtos)

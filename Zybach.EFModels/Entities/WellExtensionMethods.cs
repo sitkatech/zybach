@@ -26,8 +26,8 @@ namespace Zybach.EFModels.Entities
             return new WellWaterQualityInspectionSummaryDto()
             {
                 Well = well.AsSimpleDto(),
-                HasWaterQualityInspections = well.WaterLevelInspections.Any(),
-                LatestWaterQualityInspectionDate = well.WaterLevelInspections.MaxBy(x => x.InspectionDate)?.InspectionDate
+                HasWaterQualityInspections = well.WaterQualityInspections.Any(),
+                LatestWaterQualityInspectionDate = well.WaterQualityInspections.MaxBy(x => x.InspectionDate)?.InspectionDate
             };
         }
 

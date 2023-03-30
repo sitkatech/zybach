@@ -39,7 +39,7 @@ export class WaterQualityReportsComponent implements OnInit, OnDestroy {
   public reportTemplateID: number;
 
   public isLoadingSubmit: boolean;
-  public richTextTypeID : number = CustomRichTextTypeEnum.WellInspectionReports;
+  public richTextTypeID : number = CustomRichTextTypeEnum.WaterQualityReport;
 
   constructor(
     private alertService: AlertService,
@@ -61,6 +61,7 @@ export class WaterQualityReportsComponent implements OnInit, OnDestroy {
 
       this.wellService.wellsInspectionSummariesGet().subscribe(wells => {
         this.wells = wells;
+        console.log(wells)
         this.rowsDisplayedCount = wells.length;
       });
 

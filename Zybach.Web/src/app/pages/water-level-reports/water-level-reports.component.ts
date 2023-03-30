@@ -6,6 +6,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { MultiLinkRendererComponent } from 'src/app/shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { ReportService } from 'src/app/shared/generated/api/report.service';
 import { WellGroupService } from 'src/app/shared/generated/api/well-group.service';
@@ -36,7 +37,7 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
   public rowsDisplayedCount: number;
   public reportTemplateID: number;
 
-  public richTextTypeID = CustomRichTextTypeEnum.WellInspectionReports; // update
+  public richTextTypeID = CustomRichTextTypeEnum.WaterLevelsReport;
   public isLoadingSubmit = false;
 
   constructor(
@@ -52,11 +53,12 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
     this.currentUserSubscription = this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.reportService.reportTemplatesGet().subscribe(reportTemplates => {
         this.reportTemplateID = reportTemplates.find(x => x.ReportTemplateModel.ReportTemplateModelID == 
-          ReportTemplateModelEnum.WellWaterLevelInspection)?.ReportTemplateID;
+          ReportTemplateModelEnum.WellGroupWaterLevelInspection)?.ReportTemplateID;
       });
 
       this.wellGroupService.wellGroupsGet().subscribe(wellGroups => {
         this.wellGroups = wellGroups;
+        console.log(wellGroups)
         this.rowsDisplayedCount = wellGroups.length;
       });
 
@@ -104,7 +106,7 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
     this.isLoadingSubmit = true;
 
     var generateChemigationPermitReportsDto = new GenerateReportsDto();
-    generateChemigationPermitReportsDto.ReportTemplateID = ReportTemplateModelEnum.WellWaterLevelInspection;
+    generateChemigationPermitReportsDto.ReportTemplateID = this.reportTemplateID;
     generateChemigationPermitReportsDto.ModelIDList = selectedWellGroupIDs;
 
     this.reportService.reportTemplatesGenerateReportsPost(generateChemigationPermitReportsDto).subscribe(response => {
@@ -140,6 +142,11 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
         headerName: 'Wells', valueGetter: params => params.data.WellGroupWells.map(x => x.WellRegistrationID).join(", ")
       },
       { headerName: "Primary Well", field: "PrimaryWell.WellRegistrationID" },
+      { 
+        headerName: "Has Water Level Inspections?", 
+        valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterLevelInspections),
+        filterFramework: CustomDropdownFilterComponent, filterParams: {} 
+      },
       this.utilityFunctionsService.createDateColumnDef('Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
       {  
         headerName: 'Well Group Owner (from Primary Well)',
