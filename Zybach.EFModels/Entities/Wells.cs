@@ -12,12 +12,6 @@ namespace Zybach.EFModels.Entities
 {
     public class Wells
     {
-        public static List<WellMinimalDto> ListAsMinimalDto(ZybachDbContext dbContext)
-        {
-            return dbContext.Wells.Include(x => x.Sensors).AsNoTracking()
-                .Select(x => x.AsMinimalDto()).ToList();
-        }
-
         public static WellDto GetByIDAsDto(ZybachDbContext dbContext, int wellID)
         {
             var well = GetWellsImpl(dbContext).SingleOrDefault(x => x.WellID == wellID);
@@ -98,6 +92,8 @@ namespace Zybach.EFModels.Entities
                     .ThenInclude(x => x.SupportTickets)
                 .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
+                .Include(x => x.WellGroupWells)
+                    .ThenInclude(x => x.WellGroup)
                 .AsNoTracking();
         }
 

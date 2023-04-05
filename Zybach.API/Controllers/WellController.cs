@@ -29,10 +29,10 @@ namespace Zybach.API.Controllers
 
         [HttpGet("wells")]
         [ZybachViewFeature]
-        public ActionResult<List<WellMinimalDto>> GetWells()
+        public ActionResult<List<WellWithSensorSimpleDto>> GetWells()
         {
-            var wellMinimalDtos = Wells.ListAsMinimalDto(_dbContext);
-            return Ok(wellMinimalDtos);
+            var wellWithSensorSimpleDtos = Wells.ListAsWellWithSensorSimpleDto(_dbContext);
+            return Ok(wellWithSensorSimpleDtos);
         }
 
         [HttpGet("/wellUses")]
@@ -157,6 +157,7 @@ namespace Zybach.API.Controllers
                 WaterQualityInspectionTypes = string.Join(", ",
                     well.WellWaterQualityInspectionTypes.Select(x =>
                         x.WaterQualityInspectionType.WaterQualityInspectionTypeDisplayName)),
+                WellGroups = well.WellGroupWells.Select(x => new WellGroupSimpleDto() { WellGroupID = x.WellGroupID, WellGroupName = x.WellGroup.WellGroupName }).ToList()
             };
 
             var agHubWell = well.AgHubWell;
@@ -440,22 +441,14 @@ namespace Zybach.API.Controllers
         public ActionResult<SensorChartDataDto> GetWaterLevelSensorsByWellID([FromRoute] int wellID)
         {
             if (GetWellAndThrowIfNotFound(wellID, out var well, out var actionResult)) return actionResult;
-            var sensorTypes = new List<int>
-            {
-                SensorType.WellPressure.SensorTypeID
-            };
-            var sensors = well.Sensors.Where(x => sensorTypes.Contains(x.SensorTypeID)).ToList();
-            var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensors, SensorType.WellPressure);
 
-            var wellRegistrationID = well.WellRegistrationID;
-            var sensorMeasurements = GetSensorMeasurementsForWellAndSensorType(wellRegistrationID, sensors, SensorType.WellPressure);
-            var sensorChartDataDto = new SensorChartDataDto
-            {
-                FirstReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Min(x => x.MeasurementDate) : null,
-                LastReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Max(x => x.MeasurementDate) : null,
-                SensorMeasurements = sensorMeasurements,
-                ChartSpec = vegaLiteChartSpec
-            };
+            var wellPressureSensorTypeID = SensorType.WellPressure.SensorTypeID;
+            var sensors = well.Sensors.Where(x => x.SensorTypeID == wellPressureSensorTypeID).ToList();
+
+            var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensors, SensorType.WellPressure);
+            var sensorMeasurements = GetSensorMeasurementsForWellAndSensorType(well.WellRegistrationID, sensors, SensorType.WellPressure);
+            var sensorChartDataDto = new SensorChartDataDto(sensorMeasurements, vegaLiteChartSpec);
+
             return sensorChartDataDto;
         }
 
@@ -481,13 +474,7 @@ namespace Zybach.API.Controllers
             sensorMeasurements.AddRange(GetSensorMeasurementsForWellAndSensorType(wellRegistrationID, sensors, SensorType.ContinuityMeter));
             sensorMeasurements.AddRange(GetSensorMeasurementsForWellAndSensorType(wellRegistrationID, sensors, SensorType.ElectricalUsage));
 
-            var sensorChartDataDto = new SensorChartDataDto
-            {
-                FirstReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Min(x => x.MeasurementDate) : null,
-                LastReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Max(x => x.MeasurementDate) : null,
-                SensorMeasurements = sensorMeasurements,
-                ChartSpec = vegaLiteChartSpec
-            };
+            var sensorChartDataDto = new SensorChartDataDto(sensorMeasurements, vegaLiteChartSpec);
             return sensorChartDataDto;
         }
 

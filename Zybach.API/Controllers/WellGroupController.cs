@@ -55,7 +55,24 @@ public class WellGroupController : SitkaController<WellGroupController>
             waterLevelChartVegaSpec = VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionForVegaChartDtos, true);
         }
 
-        var wellGroupSummaryDto = wellGroup.AsSummaryDto(waterLevelChartVegaSpec, waterLevelInspectionSummaryDtos);
+        var wellGroupPressureSensors = new List<Sensor>();
+        var wellGroupPressureSensorMeasurements = new List<SensorMeasurementDto>();
+
+        foreach (var wellGroupWell in wellGroup.WellGroupWells)
+        {
+            var wellPressureSensors = wellGroupWell.Well.Sensors.Where(x => x.SensorTypeID == (int)SensorTypeEnum.WellPressure).ToList();
+            wellGroupPressureSensors.AddRange(wellPressureSensors);
+
+            var wellSensorMeasurements = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensors(_dbContext, 
+                wellGroupWell.Well.WellRegistrationID, wellPressureSensors);
+            wellGroupPressureSensorMeasurements.AddRange(wellSensorMeasurements);
+        }
+
+        var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(wellGroupPressureSensors, SensorType.WellPressure);
+        var sensorMeasurements = wellGroupPressureSensorMeasurements;
+        var sensorChartDataDto = new SensorChartDataDto(sensorMeasurements, vegaLiteChartSpec);
+
+        var wellGroupSummaryDto = wellGroup.AsSummaryDto(waterLevelChartVegaSpec, waterLevelInspectionSummaryDtos, sensorChartDataDto);
         return Ok(wellGroupSummaryDto);
     }
 
@@ -125,9 +142,9 @@ public class WellGroupController : SitkaController<WellGroupController>
             ModelState.AddModelError("Wells", "Please select at least one well to create a well group.");
             isValid = false;
         }
-        else if (wellGroupDto.WellGroupWells.Count(x => x.IsPrimary) != 1)
+        else if (wellGroupDto.WellGroupWells.Count(x => x.IsPrimary) > 1)
         {
-            ModelState.AddModelError("Primary Well", "Well group must have one primary well.");
+            ModelState.AddModelError("Primary Well", "Well group cannot have more than one primary well.");
             isValid = false;
         }
 

@@ -4869,7 +4869,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellMinimalDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               },
@@ -4877,7 +4877,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellMinimalDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               },
@@ -4885,7 +4885,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellMinimalDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               }
@@ -10341,6 +10341,13 @@
             "type": "string",
             "nullable": true
           },
+          "WellGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellGroupSimpleDto"
+            },
+            "nullable": true
+          },
           "Sensors": {
             "type": "array",
             "items": {
@@ -10604,6 +10611,20 @@
         },
         "additionalProperties": false
       },
+      "WellGroupSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellGroupID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellGroupName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellGroupSummaryDto": {
         "type": "object",
         "properties": {
@@ -10624,6 +10645,9 @@
               "$ref": "#/components/schemas/SensorMinimalDto"
             },
             "nullable": true
+          },
+          "WellPressureSensorChartData": {
+            "$ref": "#/components/schemas/SensorChartDataDto"
           },
           "BoundingBox": {
             "$ref": "#/components/schemas/BoundingBoxDto"

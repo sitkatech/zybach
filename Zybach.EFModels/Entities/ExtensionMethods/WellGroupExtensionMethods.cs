@@ -20,7 +20,8 @@ public static partial class WellGroupExtensionMethods
             waterLevelInspections.MaxBy(x => x.InspectionDate)?.InspectionDate : null;
     }
 
-    public static WellGroupSummaryDto AsSummaryDto(this WellGroup wellGroup, string waterLevelChartVegaSpec, List<WaterLevelInspectionSummaryDto> waterLevelInspectionSummaryDtos)
+    public static WellGroupSummaryDto AsSummaryDto(this WellGroup wellGroup, string waterLevelChartVegaSpec, 
+        List<WaterLevelInspectionSummaryDto> waterLevelInspectionSummaryDtos, SensorChartDataDto wellPressureSensorChartDataDto)
     {
         return new WellGroupSummaryDto()
         {
@@ -31,6 +32,7 @@ public static partial class WellGroupExtensionMethods
             WaterLevelChartVegaSpec = waterLevelChartVegaSpec,
             WaterLevelInspections = waterLevelInspectionSummaryDtos,
             Sensors = wellGroup.WellGroupWells.SelectMany(x => x.Well.Sensors?.Select(x => x.AsMinimalDto())).ToList(),
+            WellPressureSensorChartData = wellPressureSensorChartDataDto,
             BoundingBox = new BoundingBoxDto(wellGroup.WellGroupWells.Select(x => x.Well.WellGeometry))
         };
     }

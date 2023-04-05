@@ -100,6 +100,7 @@ namespace Zybach.Models.DataTransferObjects
         public List<SupportTicketSimpleDto> OpenSupportTickets { get; set; }
         public decimal PumpingRateGallonsPerMinute { get; set; }
         public string PumpingRateSource { get; set; }
+        public List<WellGroupSimpleDto> WellGroups { get; set; }
     }
 
 

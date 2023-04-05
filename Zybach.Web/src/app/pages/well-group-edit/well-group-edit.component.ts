@@ -6,9 +6,12 @@ import { ColDef } from 'ag-grid-community';
 import { forkJoin, Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { WellGroupService } from 'src/app/shared/generated/api/well-group.service';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
+import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { WellGroupDto } from 'src/app/shared/generated/model/well-group-dto';
 import { WellGroupWellSimpleDto } from 'src/app/shared/generated/model/well-group-well-simple-dto';
@@ -32,6 +35,7 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
   public wells: WellMinimalDto[];
   public model: WellGroupDto;
   public primaryWellID: number;
+  public hasPrimaryWell = false;
 
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
@@ -59,7 +63,6 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
 
       const wellGroupID = parseInt(this.route.snapshot.paramMap.get("id"));
       if (wellGroupID) {
-
         this.isCreating = false;
 
         forkJoin({
@@ -67,16 +70,18 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
           wells: this.wellService.wellsGet()
         }).subscribe(({wellGroup, wells}) => {
           this.model = wellGroup;
-          this.primaryWellID = this.model.WellGroupWells.find(x => x.IsPrimary).WellID;
+
+          this.primaryWellID = this.model.WellGroupWells.find(x => x.IsPrimary)?.WellID;
+          this.hasPrimaryWell = this.primaryWellID ? true : false;
+
           this.wells = wells;
           this.cdr.detectChanges();
         });
 
       } else {
-
+        this.isCreating = true;
         this.model = new WellGroupDto();
         this.model.WellGroupWells = new Array<WellGroupWellSimpleDto>();
-        this.isCreating = true;
 
         this.wellService.wellsGet().subscribe(wells => {
           this.wells = wells;
@@ -99,6 +104,31 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
       { headerName: "Well Registration #", field: "WellRegistrationID" },
       { headerName: "Well Nickname", field: "WellNickname" },
       { headerName: "Sensors", valueGetter: params => params.data.Sensors.map(x => x.SensorName).join(", ") },
+      {
+        headerName: "Owner Name", field: "OwnerName",
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName },
+      },
+      { headerName: "Legal", field: "TownshipRangeSection" },
+      {
+        headerName: "Water Quality?",
+        valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterQualityInspections),
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: { field: 'HasWaterQualityInspections' },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponentParams: { 
+          fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation, 
+          labelOverride: 'Has Water Quality Inspections?' 
+        },
+      },
+      {
+        headerName: "Water Level?",
+        valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterLevelInspections),
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: { field: 'HasWaterLevelInspections' },
+        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterLevelInspectionParticipation },
+      },
       { headerName: "Notes", field: "Notes", width: 300 }
     ];
 
@@ -109,7 +139,6 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
     this.selectWellsGrid.api.sizeColumnsToFit();
 
     if (!this.isCreating) {
-
       this.selectWellsGrid.api.forEachNode(node => {
         if (this.model.WellGroupWells.find(x => x.WellID == node.data.WellID)) {
           node.setSelected(true);
@@ -122,11 +151,34 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
     this.utilityFunctionsService.exportGridToCsv(this.selectWellsGrid, 'well-groups.csv', null);
   }
 
-  public onSubmit(): void {
+  public onSelectionChanged(): void {
     this.model.WellGroupWells = this.selectWellsGrid.api.getSelectedRows().map(x => new WellGroupWellSimpleDto({ 
       WellID: x.WellID, 
       WellRegistrationID: x.WellRegistrationID
     }));
+  }
+
+  private validateWellGroup() {
+    var isValid = true;
+    if (!this.model.WellGroupName) {
+      this.alertService.pushAlert(new Alert("The Well Group Name field is required.", AlertContext.Danger));
+      isValid = false;
+    }
+    if (this.model.WellGroupWells.length > 1) {
+      this.alertService.pushAlert(new Alert("Please select at least one well to create a well group.", AlertContext.Danger));
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  public onSubmit(): void {
+    if (!this.validateWellGroup()) return;
+
+    if (!this.hasPrimaryWell) {
+      this.saveWellGroup();
+      return;
+    }
 
     this.modalRef = this.modalService.open(this.primaryWellModal, { ariaLabelledBy: 'primaryWellModalTitle', backdrop: 'static', keyboard: false });
   }
@@ -135,15 +187,14 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
     this.alertService.clearAlerts();
     this.isLoadingSubmit = true;
 
-    this.model.WellGroupWells.find(x => x.WellID == this.primaryWellID).IsPrimary = true;
+    if (this.hasPrimaryWell) {
+      this.model.WellGroupWells.find(x => x.WellID == this.primaryWellID).IsPrimary = true;
+    }
 
     if (this.isCreating) {
-
       this.wellGroupService.wellGroupsPost(this.model).subscribe(
         wellGroupID => this.onRequestSuccess(`well-groups/${wellGroupID}`), error => this.onRequestError());
-
     } else {
-
       this.wellGroupService.wellGroupsWellGroupIDPut(this.model.WellGroupID, this.model).subscribe(
         () => this.onRequestSuccess(`well-groups/${this.model.WellGroupID}`), error => this.onRequestError());
     }
