@@ -110,6 +110,7 @@ namespace Zybach.EFModels.Entities
                 WellNickname = well.WellNickname,
                 OwnerName = well.OwnerName,
                 PageNumber = well.PageNumber,
+                Notes = well.Notes,
                 TownshipRangeSection = well.TownshipRangeSection,
                 HasWaterLevelInspections = hasWaterLevelInspections,
                 HasWaterQualityInspections = hasWaterQualityInspections

@@ -10305,10 +10305,6 @@
           "IsReplacement": {
             "type": "boolean"
           },
-          "Notes": {
-            "type": "string",
-            "nullable": true
-          },
           "WaterQualityInspectionTypes": {
             "type": "string",
             "nullable": true
@@ -10439,6 +10435,10 @@
           },
           "HasWaterLevelInspections": {
             "type": "boolean",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -11301,6 +11301,10 @@
           "HasWaterLevelInspections": {
             "type": "boolean",
             "nullable": true
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11399,6 +11403,10 @@
           },
           "HasWaterLevelInspections": {
             "type": "boolean",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           }
         },

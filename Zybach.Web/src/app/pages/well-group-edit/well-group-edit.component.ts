@@ -136,8 +136,6 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
   }
 
   public onGridReady() {
-    this.selectWellsGrid.api.sizeColumnsToFit();
-
     if (!this.isCreating) {
       this.selectWellsGrid.api.forEachNode(node => {
         if (this.model.WellGroupWells.find(x => x.WellID == node.data.WellID)) {
