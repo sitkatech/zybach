@@ -100,7 +100,7 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
         cellRendererFramework: MultiLinkRendererComponent
       },
       { 
-        headerName: "Primary Well", 
+        headerName: "Water Level Reporting Primary Well", 
         valueGetter: params => {
           return { LinkValue: params.data.PrimaryWell.WellID, LinkDisplay: params.data.PrimaryWell.WellRegistrationID }
         },

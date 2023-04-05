@@ -13,12 +13,14 @@ import { BoundingBoxDto } from '././bounding-box-dto';
 import { WellSimpleDto } from '././well-simple-dto';
 import { WaterLevelInspectionSummaryDto } from '././water-level-inspection-summary-dto';
 import { SensorMinimalDto } from '././sensor-minimal-dto';
+import { SensorChartDataDto } from '././sensor-chart-data-dto';
 import { WellGroupWellSimpleDto } from '././well-group-well-simple-dto';
 
 export class WellGroupSummaryDto { 
     WaterLevelChartVegaSpec?: string;
     WaterLevelInspections?: Array<WaterLevelInspectionSummaryDto>;
     Sensors?: Array<SensorMinimalDto>;
+    WellPressureSensorChartData?: SensorChartDataDto;
     BoundingBox?: BoundingBoxDto;
     WellGroupID?: number;
     WellGroupName?: string;

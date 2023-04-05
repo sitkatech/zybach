@@ -94,9 +94,7 @@ export class WellGroupDetailComponent implements OnInit {
       if (!x.Latitude || !x.Longitude) return;
 
       L.marker([x.Latitude, x.Longitude], { icon: this.wellMarkerIcon })
-      .bindPopup(
-        `<b>${x.WellRegistrationID}</b> ${x.IsPrimary ? "(Primary)" : ""}`
-      )
+      .bindPopup(`<b>${x.WellRegistrationID}</b> ${x.IsPrimary ? "(Primary)" : ""}`)
       .addTo(this.wellLayer);
     });
 

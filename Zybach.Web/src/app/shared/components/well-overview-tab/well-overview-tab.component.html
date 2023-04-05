@@ -82,6 +82,15 @@
                                     <strong>Pump Rate Source:</strong>
                                 </div>
                                 <div class="col-12 col-sm-6">{{well.PumpingRateSource ?? 'None'}}</div>
+                                <div class="col-12 col-sm-6 label">
+                                    <strong>Well Groups:</strong>
+                                </div>
+                                <div class="col-12 col-sm-6">
+                                    <div *ngFor="let wellGroup of well.WellGroups">
+                                        <a routerLink="/well-groups/{{wellGroup.WellGroupID}}">{{ wellGroup.WellGroupName }}</a>
+                                    </div>
+                                    <div *ngIf="well.WellGroups?.length == 0">None</div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -54,6 +54,7 @@ namespace Zybach.Models.DataTransferObjects
         public string TownshipRangeSection { get; set; }
         public bool? HasWaterQualityInspections { get; set; }
         public bool? HasWaterLevelInspections { get; set; }
+        public string Notes { get; set; }
     }
 
     public class WellWithSensorSimpleDto : WellSummaryDto
@@ -92,7 +93,6 @@ namespace Zybach.Models.DataTransferObjects
         public string AdditionalContactState { get; set; }
         public string AdditionalContactZipCode { get; set; }
         public bool IsReplacement { get; set; }
-        public string Notes { get; set; }
         public string WaterQualityInspectionTypes { get; set; }
         public string ScreenInterval { get; set; }
         public decimal? ScreenDepth { get; set; }
@@ -100,6 +100,7 @@ namespace Zybach.Models.DataTransferObjects
         public List<SupportTicketSimpleDto> OpenSupportTickets { get; set; }
         public decimal PumpingRateGallonsPerMinute { get; set; }
         public string PumpingRateSource { get; set; }
+        public List<WellGroupSimpleDto> WellGroups { get; set; }
     }
 
 

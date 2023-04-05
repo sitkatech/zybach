@@ -4869,7 +4869,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellMinimalDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               },
@@ -4877,7 +4877,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellMinimalDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               },
@@ -4885,7 +4885,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellMinimalDto"
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
                   }
                 }
               }
@@ -10305,10 +10305,6 @@
           "IsReplacement": {
             "type": "boolean"
           },
-          "Notes": {
-            "type": "string",
-            "nullable": true
-          },
           "WaterQualityInspectionTypes": {
             "type": "string",
             "nullable": true
@@ -10339,6 +10335,13 @@
           },
           "PumpingRateSource": {
             "type": "string",
+            "nullable": true
+          },
+          "WellGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellGroupSimpleDto"
+            },
             "nullable": true
           },
           "Sensors": {
@@ -10432,6 +10435,10 @@
           },
           "HasWaterLevelInspections": {
             "type": "boolean",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -10604,6 +10611,20 @@
         },
         "additionalProperties": false
       },
+      "WellGroupSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellGroupID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellGroupName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellGroupSummaryDto": {
         "type": "object",
         "properties": {
@@ -10624,6 +10645,9 @@
               "$ref": "#/components/schemas/SensorMinimalDto"
             },
             "nullable": true
+          },
+          "WellPressureSensorChartData": {
+            "$ref": "#/components/schemas/SensorChartDataDto"
           },
           "BoundingBox": {
             "$ref": "#/components/schemas/BoundingBoxDto"
@@ -11277,6 +11301,10 @@
           "HasWaterLevelInspections": {
             "type": "boolean",
             "nullable": true
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11375,6 +11403,10 @@
           },
           "HasWaterLevelInspections": {
             "type": "boolean",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           }
         },

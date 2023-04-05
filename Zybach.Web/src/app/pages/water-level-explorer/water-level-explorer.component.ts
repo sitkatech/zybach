@@ -59,7 +59,6 @@ export class WaterLevelExplorerComponent implements OnInit {
       sensorChartData: this.wellService.wellsWellIDWaterLevelSensorsGet(wellID),
     }).subscribe(({sensorChartData}) => {
       this.sensorChartData = sensorChartData;
-      console.log(sensorChartData)
       this.cdr.detectChanges();
     });
   }

@@ -53,7 +53,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-2">
+                                <div class="row mt-2" *ngIf="wellGroup.PrimaryWell">
                                     <div class="col-sm-6 label font-weight-bold">Primary Well for Water Level Reporting:</div>
                                     <div class="col-sm-6">
                                         <a routerLink="/wells/{{wellGroup.PrimaryWell.WellID}}">{{ wellGroup.PrimaryWell.WellRegistrationID }}</a>

@@ -125,13 +125,7 @@ namespace Zybach.API.Controllers
             if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
             var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensor);
             var sensorMeasurements = WellSensorMeasurements.ListBySensorAsSensorMeasurementDto(_dbContext, sensor.SensorName, sensor.SensorID, sensor.RetirementDate, sensor.GetChartDataSourceName(), sensor.GetChartAnomaliesDataSourceName());
-            var sensorChartDataDto = new SensorChartDataDto
-            {
-                FirstReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Min(x => x.MeasurementDate) : null,
-                LastReadingDate = sensorMeasurements.Any() ? sensorMeasurements.Max(x => x.MeasurementDate) : null,
-                SensorMeasurements = sensorMeasurements,
-                ChartSpec = vegaLiteChartSpec
-            };
+            var sensorChartDataDto = new SensorChartDataDto(sensorMeasurements, vegaLiteChartSpec);
             return sensorChartDataDto;
         }
 
