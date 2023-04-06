@@ -112,7 +112,7 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
       { headerName: "Legal", field: "TownshipRangeSection" },
       {
         headerName: "Water Quality?",
-        valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterQualityInspections),
+        valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterQualityInspections, false),
         filterFramework: CustomDropdownFilterComponent,
         filterParams: { field: 'HasWaterQualityInspections' },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, 
@@ -123,7 +123,7 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
       },
       {
         headerName: "Water Level?",
-        valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterLevelInspections),
+        valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterLevelInspections, false),
         filterFramework: CustomDropdownFilterComponent,
         filterParams: { field: 'HasWaterLevelInspections' },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, 

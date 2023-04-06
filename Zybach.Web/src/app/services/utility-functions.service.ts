@@ -5,6 +5,7 @@ import { ColDef } from 'ag-grid-community';
 import { CsvExportParams } from 'ag-grid-community';
 import { FieldDefinitionGridHeaderComponent } from '../shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from '../shared/generated/enum/field-definition-type-enum';
+import { truncate } from 'fs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class UtilityFunctionsService {
     private decimalPipe: DecimalPipe
   ) { }
 
-  public booleanValueGetter(value: boolean): string {
-    return value == true ? 'Yes' : value == false ? 'No' : null;
+  public booleanValueGetter(value: boolean, allowNullValues = true): string {
+    return value == true ? 'Yes' : (value == false || !allowNullValues) ? 'No' : null;
   }
 
   private decimalValueGetter(params: any, fieldName, allowNullData?: boolean): number {
