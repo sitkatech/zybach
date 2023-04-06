@@ -31,7 +31,7 @@
 
                 <div class="row">
                     <div class="col">
-                        <a class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{wellGroup.PrimaryWell.WellID}}/new-water-level-inspection"
+                        <a *ngIf="wellGroup.PrimaryWell" class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{wellGroup.PrimaryWell.WellID}}/new-water-level-inspection"
                             ngbTooltip="New Water Level Inspection"><span class="fas fa-plus"></span></a>
 
                         <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"

@@ -200,7 +200,7 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
 
   private onRequestSuccess(redirectUrl: string) {
     this.isLoadingSubmit = false;
-    this.modalRef.close();
+    this.modalRef?.close();
 
     this.router.navigateByUrl(redirectUrl).then(() => {
       this.alertService.pushAlert(new Alert(`Well group successfully ${this.isCreating ? 'created' : 'updated'}`, AlertContext.Success));
@@ -209,7 +209,7 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
 
   private onRequestError() {
     this.isLoadingSubmit = false;
-    this.modalRef.close();
+    this.modalRef?.close();
     this.cdr.detectChanges();
   }
 }

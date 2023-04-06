@@ -102,12 +102,12 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
       { 
         headerName: "Water Level Reporting Primary Well", 
         valueGetter: params => {
-          return { LinkValue: params.data.PrimaryWell.WellID, LinkDisplay: params.data.PrimaryWell.WellRegistrationID }
+          return { LinkValue: params.data.PrimaryWell?.WellID, LinkDisplay: params.data.PrimaryWell?.WellRegistrationID }
         },
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
-        filterValueGetter: params => params.data.PrimaryWell.WellRegistrationID
+        filterValueGetter: params => params.data.PrimaryWell?.WellRegistrationID
       }
     ];
 

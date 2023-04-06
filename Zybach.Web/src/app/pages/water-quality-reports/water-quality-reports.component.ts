@@ -61,7 +61,6 @@ export class WaterQualityReportsComponent implements OnInit, OnDestroy {
 
       this.wellService.wellsInspectionSummariesGet().subscribe(wells => {
         this.wells = wells;
-        console.log(wells)
         this.rowsDisplayedCount = wells.length;
       });
 

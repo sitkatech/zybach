@@ -58,7 +58,6 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
 
       this.wellGroupService.wellGroupsGet().subscribe(wellGroups => {
         this.wellGroups = wellGroups;
-        console.log(wellGroups)
         this.rowsDisplayedCount = wellGroups.length;
       });
 

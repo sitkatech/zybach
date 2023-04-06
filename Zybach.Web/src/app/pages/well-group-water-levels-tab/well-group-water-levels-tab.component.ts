@@ -53,8 +53,6 @@ export class WellGroupWaterLevelsTabComponent implements OnInit {
     vegaEmbed(`#${this.waterLevelChartID}`, waterLevelChartVegaSpec, {
       actions: false, tooltip: true, renderer: "svg"
     }).then(function (res) {
-      console.log(res)
-
       self.waterLevelVegaView = res.view;
       setTimeout(() => {
         self.waterLevelVegaView.runAsync();
