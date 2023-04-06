@@ -1,4 +1,4 @@
-<nav aria-label="breadcrumb" *ngIf="model">
+<nav aria-label="breadcrumb" *ngIf="model; else loading">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a routerLink="/well-groups">Well Groups</a>
@@ -11,6 +11,14 @@
         </li>
     </ol>
 </nav>
+
+<ng-template #loading>
+    <div class="row mt-5">
+        <div class="col-auto m-auto">
+            <i class="fa fa-spinner loading-spinner"></i> Loading
+        </div>
+    </div>
+</ng-template>
 
 <div class="container" *ngIf="model">
     <app-alert-display></app-alert-display>
