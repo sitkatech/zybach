@@ -46,16 +46,17 @@ namespace Zybach.API.ReportTemplates.Models
 
             WellRegistrationIDs = string.Join(", ", wellGroupWithWaterLevelInspections.WellGroup.WellGroupWells.Select(x => x.WellRegistrationID));
             
-            TownshipRangeSection = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.TownshipRangeSection;
-            OwnerAddress = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.OwnerAddress;
-            OwnerCity = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.OwnerCity;
-            OwnerState = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.OwnerState;
-            OwnerZipCode = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.OwnerZipCode;
-            AdditionalContactName = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.AdditionalContactName;
-            AdditionalContactAddress = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.AdditionalContactAddress;
-            AdditionalContactCity = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.AdditionalContactCity;
-            AdditionalContactState = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.AdditionalContactState;
-            AdditionalContactZipCode = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell.AdditionalContactZipCode;
+            TownshipRangeSection = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.TownshipRangeSection;
+            OwnerName = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerName;
+            OwnerAddress = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerAddress;
+            OwnerCity = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerCity;
+            OwnerState = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerState;
+            OwnerZipCode = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerZipCode;
+            AdditionalContactName = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactName;
+            AdditionalContactAddress = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactAddress;
+            AdditionalContactCity = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactCity;
+            AdditionalContactState = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactState;
+            AdditionalContactZipCode = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactZipCode;
 
             WaterLevelInspections = wellGroupWithWaterLevelInspections.WaterLevelInspections.ToList();
 

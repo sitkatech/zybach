@@ -104,11 +104,6 @@
             </select>
         </div>
 
-        <div class="mt-4">Selected Wells ({{ model.WellGroupWells.length }}):</div>
-        <div *ngFor="let wellGroupWell of model.WellGroupWells">
-            {{ wellGroupWell?.WellRegistrationID }}
-        </div>
-
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" (click)="saveWellGroup()" [disabled]="isLoadingSubmit || !primaryWellID">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>

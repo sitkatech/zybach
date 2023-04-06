@@ -90,7 +90,7 @@ namespace Zybach.API.ReportTemplates
                 case ReportTemplateModelEnum.WellGroupWaterLevelInspection:
                     var wellWaterLevelInspectionBaseViewModel = new ReportTemplateWellWaterLevelInspectionBaseViewModel()
                     {
-                        ReportModel = GetListOfWellWaterLevelInspectionModels(dbContext)
+                        ReportModel = GetListOfWellGroupWaterLevelInspectionModels(dbContext)
                     };
                     document = DocumentFactory.Create<DocxDocument>(templatePath, wellWaterLevelInspectionBaseViewModel);
                     break;
@@ -291,7 +291,7 @@ namespace Zybach.API.ReportTemplates
             return listOfModels;
         }
 
-        private List<ReportTemplateWellGroupWaterLevelInspectionModel> GetListOfWellWaterLevelInspectionModels(ZybachDbContext dbContext)
+        private List<ReportTemplateWellGroupWaterLevelInspectionModel> GetListOfWellGroupWaterLevelInspectionModels(ZybachDbContext dbContext)
         {
             var listOfModels = WellGroups.ListByIDsAsWellGroupWaterLevelInspectionDto(dbContext, SelectedModelIDs)
                 .OrderBy(x => SelectedModelIDs.IndexOf(x.WellGroup.WellGroupID))
