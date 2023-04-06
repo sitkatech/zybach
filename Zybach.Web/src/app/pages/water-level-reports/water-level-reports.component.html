@@ -1,0 +1,37 @@
+<div class="container navCaretMargin">
+    <app-alert-display></app-alert-display>
+    <div class="row">
+        <div class="col-12 mb-2">
+            <h2 class="d-inline-block">Water Levels Report</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="container col-12">
+            <div class="row ml-2 mb-2">
+                <div class="col">
+                    <button (click)="generateReport()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-md float-right">
+                        <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                        Generate Water Levels Report
+                    </button>
+
+                    <a class="btn btn-secondary btn-md float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    ngbTooltip="Download Report as CSV"><i class="fas fa-download"></i></a>
+
+                    <fresca-clear-grid-filters-button class="float-right mr-2" [grid]="wellGroupsGrid"></fresca-clear-grid-filters-button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <ag-grid-angular #wellGroupsGrid style="width: 100%; height: 800px;" class="ag-theme-balham" 
+                    [rowData]="wellGroups" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" rowSelection="multiple"
+                    [pagination]="true" [paginationPageSize]="100" [suppressMenuHide]="true" 
+                    (selectionChanged)="onSelectionChanged()" (filterChanged)="onFilterChanged()">
+                </ag-grid-angular>
+
+                <div><span>{{ selectedWellGroupsCount }} of {{ rowsDisplayedCount }} Selected</span></div>
+            </div>
+        </div>
+    </div>
+</div>

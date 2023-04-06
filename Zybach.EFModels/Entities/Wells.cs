@@ -92,6 +92,8 @@ namespace Zybach.EFModels.Entities
                     .ThenInclude(x => x.SupportTickets)
                 .Include(x => x.WellWaterQualityInspectionTypes)
                 .Include(x => x.WellParticipation)
+                .Include(x => x.WellGroupWells)
+                    .ThenInclude(x => x.WellGroup)
                 .AsNoTracking();
         }
 
@@ -108,6 +110,7 @@ namespace Zybach.EFModels.Entities
                 WellNickname = well.WellNickname,
                 OwnerName = well.OwnerName,
                 PageNumber = well.PageNumber,
+                Notes = well.Notes,
                 TownshipRangeSection = well.TownshipRangeSection,
                 HasWaterLevelInspections = hasWaterLevelInspections,
                 HasWaterQualityInspections = hasWaterQualityInspections
@@ -235,51 +238,11 @@ namespace Zybach.EFModels.Entities
             well.SiteNumber = wellParticipationInfoDto.SiteNumber;
         }
 
-        public static List<WellInspectionSummaryDto> ListAsWellInspectionSummaryDtos(ZybachDbContext dbContext)
+        public static List<WellWaterQualityInspectionSummaryDto> ListAsWellWaterQualityInspectionDtos(ZybachDbContext dbContext)
         {
-            var latestWellWaterLevelInspection = dbContext.WaterLevelInspections
-                .Include(x => x.Well)
-                .AsNoTracking().ToList()
-                .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
-                    x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
-            var latestWellWaterQualityInspection = dbContext.WaterQualityInspections
-                .Include(x => x.Well)
-                .AsNoTracking().ToList()
-                .GroupBy(x => x.WellID).ToDictionary(x => x.Key, x =>
-                    x.OrderByDescending(y => y.InspectionDate).FirstOrDefault()?.AsSimpleDto());
-            var listWithLatestInspectionsAsDto = dbContext.Wells
-                .Include(x => x.WellWaterQualityInspectionTypes)
-                .Include(x => x.WellParticipation)
-                .AsNoTracking()
-                .ToList()
-                .Select(x =>
-                    x.AsWellInspectionSummaryDto(
-                        latestWellWaterLevelInspection.ContainsKey(x.WellID) ? latestWellWaterLevelInspection[x.WellID] : null,
-                        latestWellWaterQualityInspection.ContainsKey(x.WellID) ? latestWellWaterQualityInspection[x.WellID] : null))
-                .Where(x => x.HasWaterLevelInspections || x.HasWaterQualityInspections)
-                .ToList();
-            return listWithLatestInspectionsAsDto;
-        }
-
-        public static IEnumerable<WellWaterLevelInspectionDetailedDto> ListByWellIDsAsWellWaterLevelInspectionDetailedDto(ZybachDbContext dbContext, List<int> wellIDs)
-        {
-            var wells = dbContext.Wells
-                .Include(x => x.WellWaterQualityInspectionTypes)
-                .Include(x => x.WellParticipation)
-                .AsNoTracking()
-                .Where(x => wellIDs.Contains(x.WellID))
-                .ToList();
-            var waterLevelInspections = dbContext.WaterLevelInspections
-                .Include(x => x.Well)
-                .AsNoTracking().ToList()
-                .GroupBy(x => x.WellID)
-                .ToDictionary(x => x.Key, x =>
-                    x.OrderByDescending(y => y.InspectionDate).Select(x => x.AsSimpleDto()).ToList());
-
-            var wellWaterLevelInspectionDetailedDtos = wells
-                .Select(x => x.AsWellWaterLevelInspectionDetailedDto(waterLevelInspections.ContainsKey(x.WellID) ? waterLevelInspections[x.WellID] : null))
-                .ToList();
-            return wellWaterLevelInspectionDetailedDtos;
+            return dbContext.Wells.Include(x => x.WaterQualityInspections).AsNoTracking()
+                .Where(x => x.WaterQualityInspections.Any())
+                .Select(x => x.AsWellWaterQualityInspectionSummaryDto()).ToList();
         }
 
         public static IEnumerable<WellWaterQualityInspectionDetailedDto> ListByWellIDsAsWellWaterQualityInspectionDetailedDto(ZybachDbContext dbContext, List<int> wellIDs)

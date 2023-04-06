@@ -5,6 +5,7 @@ import { ColDef } from 'ag-grid-community';
 import { CsvExportParams } from 'ag-grid-community';
 import { FieldDefinitionGridHeaderComponent } from '../shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from '../shared/generated/enum/field-definition-type-enum';
+import { truncate } from 'fs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class UtilityFunctionsService {
     private datePipe: DatePipe,
     private decimalPipe: DecimalPipe
   ) { }
+
+  public booleanValueGetter(value: boolean, allowNullValues = true): string {
+    return value == true ? 'Yes' : (value == false || !allowNullValues) ? 'No' : null;
+  }
 
   private decimalValueGetter(params: any, fieldName, allowNullData?: boolean): number {
     const fieldNames = fieldName.split('.');
@@ -56,7 +61,7 @@ export class UtilityFunctionsService {
     return decimalColDef;
   }
 
-  private dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
+  public dateFilterComparator(filterLocalDateAtMidnight, cellValue) {
     const filterDate = Date.parse(filterLocalDateAtMidnight);
     const cellDate = Date.parse(cellValue);
 
@@ -66,7 +71,7 @@ export class UtilityFunctionsService {
     return (cellDate < filterDate) ? -1 : 1;
   }
 
-  private dateSortComparator (id1: any, id2: any) {
+  public dateSortComparator (id1: any, id2: any) {
     const date1 = id1 ? Date.parse(id1) : Date.parse("1/1/1900");
     const date2 = id2 ? Date.parse(id2) : Date.parse("1/1/1900");
     if (date1 < date2) {

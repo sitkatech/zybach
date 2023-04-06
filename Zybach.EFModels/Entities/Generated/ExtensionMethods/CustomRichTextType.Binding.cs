@@ -32,7 +32,7 @@ namespace Zybach.EFModels.Entities
         public static readonly CustomRichTextTypeWellRegistrationIDChangeHelpText WellRegistrationIDChangeHelpText = Zybach.EFModels.Entities.CustomRichTextTypeWellRegistrationIDChangeHelpText.Instance;
         public static readonly CustomRichTextTypeClearinghouseReport ClearinghouseReport = Zybach.EFModels.Entities.CustomRichTextTypeClearinghouseReport.Instance;
         public static readonly CustomRichTextTypeSensorList SensorList = Zybach.EFModels.Entities.CustomRichTextTypeSensorList.Instance;
-        public static readonly CustomRichTextTypeWellInspectionReports WellInspectionReports = Zybach.EFModels.Entities.CustomRichTextTypeWellInspectionReports.Instance;
+        public static readonly CustomRichTextTypeWaterQualityReport WaterQualityReport = Zybach.EFModels.Entities.CustomRichTextTypeWaterQualityReport.Instance;
         public static readonly CustomRichTextTypeAnomalyReportList AnomalyReportList = Zybach.EFModels.Entities.CustomRichTextTypeAnomalyReportList.Instance;
         public static readonly CustomRichTextTypeWaterLevelExplorerMap WaterLevelExplorerMap = Zybach.EFModels.Entities.CustomRichTextTypeWaterLevelExplorerMap.Instance;
         public static readonly CustomRichTextTypeWaterLevelExplorerMapDisclaimer WaterLevelExplorerMapDisclaimer = Zybach.EFModels.Entities.CustomRichTextTypeWaterLevelExplorerMapDisclaimer.Instance;
@@ -40,6 +40,9 @@ namespace Zybach.EFModels.Entities
         public static readonly CustomRichTextTypeOpenETIntegration OpenETIntegration = Zybach.EFModels.Entities.CustomRichTextTypeOpenETIntegration.Instance;
         public static readonly CustomRichTextTypeSupportTicketIndex SupportTicketIndex = Zybach.EFModels.Entities.CustomRichTextTypeSupportTicketIndex.Instance;
         public static readonly CustomRichTextTypeWellPumpingSummary WellPumpingSummary = Zybach.EFModels.Entities.CustomRichTextTypeWellPumpingSummary.Instance;
+        public static readonly CustomRichTextTypeWellGroupList WellGroupList = Zybach.EFModels.Entities.CustomRichTextTypeWellGroupList.Instance;
+        public static readonly CustomRichTextTypeWellGroupEdit WellGroupEdit = Zybach.EFModels.Entities.CustomRichTextTypeWellGroupEdit.Instance;
+        public static readonly CustomRichTextTypeWaterLevelsReport WaterLevelsReport = Zybach.EFModels.Entities.CustomRichTextTypeWaterLevelsReport.Instance;
 
         public static readonly List<CustomRichTextType> All;
         public static readonly List<CustomRichTextTypeDto> AllAsDto;
@@ -51,8 +54,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static CustomRichTextType()
         {
-            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, Training, RobustReviewScenario, ReportsList, Chemigation, NDEEChemicalsReport, ChemigationPermitReport, ChemigationInspections, WaterQualityInspections, WaterLevelInspections, WellRegistrationIDChangeHelpText, ClearinghouseReport, SensorList, WellInspectionReports, AnomalyReportList, WaterLevelExplorerMap, WaterLevelExplorerMapDisclaimer, IrrigationUnitIndex, OpenETIntegration, SupportTicketIndex, WellPumpingSummary };
-            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), Training.AsDto(), RobustReviewScenario.AsDto(), ReportsList.AsDto(), Chemigation.AsDto(), NDEEChemicalsReport.AsDto(), ChemigationPermitReport.AsDto(), ChemigationInspections.AsDto(), WaterQualityInspections.AsDto(), WaterLevelInspections.AsDto(), WellRegistrationIDChangeHelpText.AsDto(), ClearinghouseReport.AsDto(), SensorList.AsDto(), WellInspectionReports.AsDto(), AnomalyReportList.AsDto(), WaterLevelExplorerMap.AsDto(), WaterLevelExplorerMapDisclaimer.AsDto(), IrrigationUnitIndex.AsDto(), OpenETIntegration.AsDto(), SupportTicketIndex.AsDto(), WellPumpingSummary.AsDto() };
+            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, Training, RobustReviewScenario, ReportsList, Chemigation, NDEEChemicalsReport, ChemigationPermitReport, ChemigationInspections, WaterQualityInspections, WaterLevelInspections, WellRegistrationIDChangeHelpText, ClearinghouseReport, SensorList, WaterQualityReport, AnomalyReportList, WaterLevelExplorerMap, WaterLevelExplorerMapDisclaimer, IrrigationUnitIndex, OpenETIntegration, SupportTicketIndex, WellPumpingSummary, WellGroupList, WellGroupEdit, WaterLevelsReport };
+            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), Training.AsDto(), RobustReviewScenario.AsDto(), ReportsList.AsDto(), Chemigation.AsDto(), NDEEChemicalsReport.AsDto(), ChemigationPermitReport.AsDto(), ChemigationInspections.AsDto(), WaterQualityInspections.AsDto(), WaterLevelInspections.AsDto(), WellRegistrationIDChangeHelpText.AsDto(), ClearinghouseReport.AsDto(), SensorList.AsDto(), WaterQualityReport.AsDto(), AnomalyReportList.AsDto(), WaterLevelExplorerMap.AsDto(), WaterLevelExplorerMapDisclaimer.AsDto(), IrrigationUnitIndex.AsDto(), OpenETIntegration.AsDto(), SupportTicketIndex.AsDto(), WellPumpingSummary.AsDto(), WellGroupList.AsDto(), WellGroupEdit.AsDto(), WaterLevelsReport.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextType>(All.ToDictionary(x => x.CustomRichTextTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextTypeDto>(AllAsDto.ToDictionary(x => x.CustomRichTextTypeID));
         }
@@ -165,10 +168,16 @@ namespace Zybach.EFModels.Entities
                     return WaterLevelExplorerMapDisclaimer;
                 case CustomRichTextTypeEnum.WaterLevelInspections:
                     return WaterLevelInspections;
+                case CustomRichTextTypeEnum.WaterLevelsReport:
+                    return WaterLevelsReport;
                 case CustomRichTextTypeEnum.WaterQualityInspections:
                     return WaterQualityInspections;
-                case CustomRichTextTypeEnum.WellInspectionReports:
-                    return WellInspectionReports;
+                case CustomRichTextTypeEnum.WaterQualityReport:
+                    return WaterQualityReport;
+                case CustomRichTextTypeEnum.WellGroupEdit:
+                    return WellGroupEdit;
+                case CustomRichTextTypeEnum.WellGroupList:
+                    return WellGroupList;
                 case CustomRichTextTypeEnum.WellPumpingSummary:
                     return WellPumpingSummary;
                 case CustomRichTextTypeEnum.WellRegistrationIDChangeHelpText:
@@ -198,14 +207,17 @@ namespace Zybach.EFModels.Entities
         WellRegistrationIDChangeHelpText = 15,
         ClearinghouseReport = 16,
         SensorList = 17,
-        WellInspectionReports = 18,
+        WaterQualityReport = 18,
         AnomalyReportList = 19,
         WaterLevelExplorerMap = 20,
         WaterLevelExplorerMapDisclaimer = 21,
         IrrigationUnitIndex = 22,
         OpenETIntegration = 23,
         SupportTicketIndex = 24,
-        WellPumpingSummary = 25
+        WellPumpingSummary = 25,
+        WellGroupList = 26,
+        WellGroupEdit = 27,
+        WaterLevelsReport = 28
     }
 
     public partial class CustomRichTextTypePlatformOverview : CustomRichTextType
@@ -310,10 +322,10 @@ namespace Zybach.EFModels.Entities
         public static readonly CustomRichTextTypeSensorList Instance = new CustomRichTextTypeSensorList(17, @"SensorList", @"Sensor List");
     }
 
-    public partial class CustomRichTextTypeWellInspectionReports : CustomRichTextType
+    public partial class CustomRichTextTypeWaterQualityReport : CustomRichTextType
     {
-        private CustomRichTextTypeWellInspectionReports(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
-        public static readonly CustomRichTextTypeWellInspectionReports Instance = new CustomRichTextTypeWellInspectionReports(18, @"WellInspectionReports", @"Well Inspection Reports");
+        private CustomRichTextTypeWaterQualityReport(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeWaterQualityReport Instance = new CustomRichTextTypeWaterQualityReport(18, @"WaterQualityReport", @"Water Quality Report");
     }
 
     public partial class CustomRichTextTypeAnomalyReportList : CustomRichTextType
@@ -356,5 +368,23 @@ namespace Zybach.EFModels.Entities
     {
         private CustomRichTextTypeWellPumpingSummary(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
         public static readonly CustomRichTextTypeWellPumpingSummary Instance = new CustomRichTextTypeWellPumpingSummary(25, @"WellPumpingSummary", @"Well Pumping Summary");
+    }
+
+    public partial class CustomRichTextTypeWellGroupList : CustomRichTextType
+    {
+        private CustomRichTextTypeWellGroupList(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeWellGroupList Instance = new CustomRichTextTypeWellGroupList(26, @"WellGroupList", @"Well Group List");
+    }
+
+    public partial class CustomRichTextTypeWellGroupEdit : CustomRichTextType
+    {
+        private CustomRichTextTypeWellGroupEdit(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeWellGroupEdit Instance = new CustomRichTextTypeWellGroupEdit(27, @"WellGroupEdit", @"Well Group Edit");
+    }
+
+    public partial class CustomRichTextTypeWaterLevelsReport : CustomRichTextType
+    {
+        private CustomRichTextTypeWaterLevelsReport(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeWaterLevelsReport Instance = new CustomRichTextTypeWaterLevelsReport(28, @"WaterLevelsReport", @"Water Levels Report");
     }
 }

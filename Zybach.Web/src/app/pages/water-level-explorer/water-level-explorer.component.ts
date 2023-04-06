@@ -17,7 +17,6 @@ import { SensorChartDataDto } from 'src/app/shared/generated/model/sensor-chart-
 export class WaterLevelExplorerComponent implements OnInit {
   @ViewChild("wellMap") wellMap: WellWaterLevelMapComponent;
 
-  public currentUser: UserDto;
   public wells: WellWaterLevelMapSummaryDto[];
   public selectedWell: WellWaterLevelMapSummaryDto;
   public selectedSensors: SensorSimpleDto[];
@@ -35,25 +34,22 @@ export class WaterLevelExplorerComponent implements OnInit {
     private wellService: WellService  ) { }
 
   ngOnInit(): void {
-    this.authenticationService.getCurrentUser().subscribe(currentUser => {
-      this.currentUser = currentUser;
-      this.mapDataService.mapDataWellsWithWellPressureSensorGet().subscribe(wells => {
-        this.wells = wells;
-        this.wellsGeoJson =
-        {
-          type: "FeatureCollection",
-          features:
-            wells.filter(x => x.Location != null && x.Location != undefined).map(x => {
-              const geoJsonPoint = x.Location;
-              geoJsonPoint.properties = {
-                wellID: x.WellID,
-                wellRegistrationID: x.WellRegistrationID,
-                sensors: x.Sensors || []
-              };
-              return geoJsonPoint;
-            })
-        }
-      });
+    this.mapDataService.mapDataWellsWithWellPressureSensorGet().subscribe(wells => {
+      this.wells = wells;
+      this.wellsGeoJson =
+      {
+        type: "FeatureCollection",
+        features:
+          wells.filter(x => x.Location != null && x.Location != undefined).map(x => {
+            const geoJsonPoint = x.Location;
+            geoJsonPoint.properties = {
+              wellID: x.WellID,
+              wellRegistrationID: x.WellRegistrationID,
+              sensors: x.Sensors || []
+            };
+            return geoJsonPoint;
+          })
+      }
     });
   }
 
@@ -61,10 +57,13 @@ export class WaterLevelExplorerComponent implements OnInit {
     this.selectedWell = this.wells.find(x => x.WellID === wellID);
     forkJoin({
       sensorChartData: this.wellService.wellsWellIDWaterLevelSensorsGet(wellID),
-    })
-    .subscribe(({sensorChartData}) => {
+    }).subscribe(({sensorChartData}) => {
       this.sensorChartData = sensorChartData;
       this.cdr.detectChanges();
     });
   }
+
+  public isAuthenticated(): boolean {
+    return this.authenticationService.isAuthenticated();
+}
 }

@@ -25,7 +25,6 @@ import { WaterLevelInspectionSummaryDto } from '../model/water-level-inspection-
 import { WaterQualityInspectionSummaryDto } from '../model/water-quality-inspection-summary-dto';
 import { WellContactInfoDto } from '../model/well-contact-info-dto';
 import { WellDetailDto } from '../model/well-detail-dto';
-import { WellInspectionSummaryDto } from '../model/well-inspection-summary-dto';
 import { WellNewDto } from '../model/well-new-dto';
 import { WellParticipationDto } from '../model/well-participation-dto';
 import { WellParticipationInfoDto } from '../model/well-participation-info-dto';
@@ -33,6 +32,8 @@ import { WellPumpingSummaryDto } from '../model/well-pumping-summary-dto';
 import { WellRegistrationIDDto } from '../model/well-registration-id-dto';
 import { WellSimpleDto } from '../model/well-simple-dto';
 import { WellUseDto } from '../model/well-use-dto';
+import { WellWaterQualityInspectionSummaryDto } from '../model/well-water-quality-inspection-summary-dto';
+import { WellWithSensorSimpleDto } from '../model/well-with-sensor-simple-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -40,9 +41,7 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from '../../services';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WellService {
 
     protected basePath = 'http://localhost';
@@ -157,9 +156,47 @@ export class WellService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public wellsInspectionSummariesGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellInspectionSummaryDto>>;
-    public wellsInspectionSummariesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellInspectionSummaryDto>>>;
-    public wellsInspectionSummariesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellInspectionSummaryDto>>>;
+    public wellsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellWithSensorSimpleDto>>;
+    public wellsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellWithSensorSimpleDto>>>;
+    public wellsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellWithSensorSimpleDto>>>;
+    public wellsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<WellWithSensorSimpleDto>>(`${this.basePath}/wells`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wellsInspectionSummariesGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellWaterQualityInspectionSummaryDto>>;
+    public wellsInspectionSummariesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellWaterQualityInspectionSummaryDto>>>;
+    public wellsInspectionSummariesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellWaterQualityInspectionSummaryDto>>>;
     public wellsInspectionSummariesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -179,7 +216,7 @@ export class WellService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<WellInspectionSummaryDto>>(`${this.basePath}/wells/inspectionSummaries`,
+        return this.httpClient.get<Array<WellWaterQualityInspectionSummaryDto>>(`${this.basePath}/wells/inspectionSummaries`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Zybach.Models\Zybach.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\ExtensionMethods\" />
+  </ItemGroup>
+
 </Project>

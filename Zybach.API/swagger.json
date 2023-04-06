@@ -4856,6 +4856,44 @@
         }
       }
     },
+    "/wells": {
+      "get": {
+        "tags": [
+          "Well"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/wellUses": {
       "get": {
         "tags": [
@@ -4945,7 +4983,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterQualityInspectionSummaryDto"
                   }
                 }
               },
@@ -4953,7 +4991,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterQualityInspectionSummaryDto"
                   }
                 }
               },
@@ -4961,7 +4999,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellInspectionSummaryDto"
+                    "$ref": "#/components/schemas/WellWaterQualityInspectionSummaryDto"
                   }
                 }
               }
@@ -5872,6 +5910,244 @@
         }
       }
     },
+    "/wellGroups": {
+      "get": {
+        "tags": [
+          "WellGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellGroupDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellGroupDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellGroupDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "WellGroup"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wellGroups/{wellGroupID}": {
+      "get": {
+        "tags": [
+          "WellGroup"
+        ],
+        "parameters": [
+          {
+            "name": "wellGroupID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "WellGroup"
+        ],
+        "parameters": [
+          {
+            "name": "wellGroupID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/WellGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "WellGroup"
+        ],
+        "parameters": [
+          {
+            "name": "wellGroupID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/wellGroups/{wellGroupID}/summary": {
+      "get": {
+        "tags": [
+          "WellGroup"
+        ],
+        "parameters": [
+          {
+            "name": "wellGroupID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupSummaryDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupSummaryDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WellGroupSummaryDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/pumpedVolume": {
       "get": {
         "tags": [
@@ -6172,6 +6448,28 @@
               "$ref": "#/components/schemas/StreamFlowZonePumpingDepthDto"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BoundingBoxDto": {
+        "type": "object",
+        "properties": {
+          "Left": {
+            "type": "number",
+            "format": "double"
+          },
+          "Bottom": {
+            "type": "number",
+            "format": "double"
+          },
+          "Right": {
+            "type": "number",
+            "format": "double"
+          },
+          "Top": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -8310,6 +8608,20 @@
         },
         "additionalProperties": false
       },
+      "SensorMinimalDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SensorSimpleDto": {
         "type": "object",
         "properties": {
@@ -9364,6 +9676,10 @@
           "InspectionNotes": {
             "type": "string",
             "nullable": true
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9989,10 +10305,6 @@
           "IsReplacement": {
             "type": "boolean"
           },
-          "Notes": {
-            "type": "string",
-            "nullable": true
-          },
           "WaterQualityInspectionTypes": {
             "type": "string",
             "nullable": true
@@ -10023,6 +10335,13 @@
           },
           "PumpingRateSource": {
             "type": "string",
+            "nullable": true
+          },
+          "WellGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellGroupSimpleDto"
+            },
             "nullable": true
           },
           "Sensors": {
@@ -10116,6 +10435,10 @@
           },
           "HasWaterLevelInspections": {
             "type": "boolean",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -10256,11 +10579,26 @@
         },
         "additionalProperties": false
       },
-      "WellInspectionSummaryDto": {
+      "WellGroupDto": {
         "type": "object",
         "properties": {
-          "Well": {
+          "WellGroupID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrimaryWell": {
             "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "WellGroupWells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellGroupWellSimpleDto"
+            },
+            "nullable": true
           },
           "HasWaterLevelInspections": {
             "type": "boolean"
@@ -10269,14 +10607,109 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellGroupSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellGroupID": {
+            "type": "integer",
+            "format": "int32"
           },
-          "HasWaterQualityInspections": {
+          "WellGroupName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellGroupSummaryDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelChartVegaSpec": {
+            "type": "string",
+            "nullable": true
+          },
+          "WaterLevelInspections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WaterLevelInspectionSummaryDto"
+            },
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorMinimalDto"
+            },
+            "nullable": true
+          },
+          "WellPressureSensorChartData": {
+            "$ref": "#/components/schemas/SensorChartDataDto"
+          },
+          "BoundingBox": {
+            "$ref": "#/components/schemas/BoundingBoxDto"
+          },
+          "WellGroupID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrimaryWell": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "WellGroupWells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellGroupWellSimpleDto"
+            },
+            "nullable": true
+          },
+          "HasWaterLevelInspections": {
             "type": "boolean"
           },
-          "LatestWaterQualityInspectionDate": {
+          "LatestWaterLevelInspectionDate": {
             "type": "string",
             "format": "date-time",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellGroupWellSimpleDto": {
+        "type": "object",
+        "properties": {
+          "WellGroupWellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellGroupID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IsPrimary": {
+            "type": "boolean"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
@@ -10292,7 +10725,15 @@
             "type": "string",
             "nullable": true
           },
+          "WellNickname": {
+            "type": "string",
+            "nullable": true
+          },
           "Location": {
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           },
           "Sensors": {
@@ -10751,6 +11192,23 @@
         },
         "additionalProperties": false
       },
+      "WellWaterQualityInspectionSummaryDto": {
+        "type": "object",
+        "properties": {
+          "Well": {
+            "$ref": "#/components/schemas/WellSimpleDto"
+          },
+          "HasWaterQualityInspections": {
+            "type": "boolean"
+          },
+          "LatestWaterQualityInspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WellWithSensorMessageAgeDto": {
         "type": "object",
         "properties": {
@@ -10842,6 +11300,10 @@
           },
           "HasWaterLevelInspections": {
             "type": "boolean",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -10941,6 +11403,10 @@
           },
           "HasWaterLevelInspections": {
             "type": "boolean",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
             "nullable": true
           }
         },

@@ -1,0 +1,124 @@
+<nav aria-label="breadcrumb" *ngIf="model; else loading">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a routerLink="/well-groups">Well Groups</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page" *ngIf="!isCreating">
+            <a routerLink="/well-groups/{{model.WellGroupID}}">{{ model.WellGroupName }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {{ isCreating ? "New" : "Edit" }} Well Group
+        </li>
+    </ol>
+</nav>
+
+<ng-template #loading>
+    <div class="row mt-5">
+        <div class="col-auto m-auto">
+            <i class="fa fa-spinner loading-spinner"></i> Loading
+        </div>
+    </div>
+</ng-template>
+
+<div class="container" *ngIf="model">
+    <app-alert-display></app-alert-display>
+    <div class="row mt-2">
+        <div class="col">
+            <h2 class="d-inline-block">{{ isCreating ? "New" : "Edit" }} Well Group</h2>
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #editWellGroupForm="ngForm">
+
+        <div class="row mt-2">
+            <div class="col-12 control-label mb-2">
+                <label class="required"><strong>Well Group Name</strong></label>
+            </div>
+            <div class="col-md-8">
+                <input type="text" class="form-control" name="wellGroupName" [(ngModel)]="model.WellGroupName" />
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <label class="required"><strong>Does Well Group participate in Water Level Program?</strong></label>
+            </div>
+            <div class="col-md-8">
+                <label class="ml-2">
+                    <input type="radio" name="hasPrimaryWell" [(ngModel)]="hasPrimaryWell" [value]="true"> Yes
+                </label>
+                  <label class="ml-2">
+                    <input type="radio" name="hasPrimaryWell" [(ngModel)]="hasPrimaryWell" [value]="false"> No
+                </label>
+            </div>
+        </div>
+
+        <div class="row mt-4 align-items-center">
+            <div class="col-auto control-label">
+                <label class="required"><strong>Select Associated Wells</strong></label>
+            </div>
+            <div class="col-auto ml-auto">
+                <fresca-clear-grid-filters-button [grid]="selectWellsGrid"></fresca-clear-grid-filters-button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col">
+                <ag-grid-angular #selectWellsGrid style="width: 100%; height: 400px;" class="ag-theme-balham"
+                    [rowData]="wells" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" rowSelection="multiple" 
+                    [rowMultiSelectWithClick]="true" (gridReady)="onGridReady()" (selectionChanged)="onSelectionChanged()" 
+                    [suppressMenuHide]="true" [pagination]="true" [paginationPageSize]="100">
+                </ag-grid-angular>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col mt-4">
+                <strong>Selected Wells ({{ model.WellGroupWells.length }}):</strong>
+
+            <span *ngFor="let wellGroupWell of model.WellGroupWells; last as last">
+                {{ wellGroupWell?.WellRegistrationID }}{{ last ? '' : ','}}
+            </span>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-auto"><i class="fas fa-bolt"></i> Required field</div>
+            <div class="col-auto ml-auto">
+                <button class="btn btn-zybach mr-1" click="launchPrimaryWellModal()">Save</button>
+                <a class="btn btn-secondary ml-1" routerLink="..">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-template #primaryWellModal let-modal>
+    <div class="modal-header bg-secondary">
+        <h5 class="modal-title" id="primaryWellModalTitle">Review and Select Primary Well</h5>
+        <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        
+        <div class="control-label">
+            <label><strong>Select Primary Well for Water Level Reporting:</strong></label>
+        </div>
+        <div>
+            <select name="primaryWell" class="form-control" [(ngModel)]="primaryWellID">
+                <option *ngFor="let wellGroupWell of model.WellGroupWells" [value]="wellGroupWell.WellID">
+                    {{ wellGroupWell.WellRegistrationID }}
+                </option>
+            </select>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="saveWellGroup()" [disabled]="isLoadingSubmit || !primaryWellID">
+                <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                Save
+            </button>
+
+            <button type="button" class="btn btn-secondary" (click)="modal.close('Cancel click')">Cancel</button>
+        </div>
+    </div>
+</ng-template>

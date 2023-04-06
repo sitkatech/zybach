@@ -11,6 +11,7 @@
  */
 import { AnnualPumpedVolume } from '././annual-pumped-volume';
 import { SupportTicketSimpleDto } from '././support-ticket-simple-dto';
+import { WellGroupSimpleDto } from '././well-group-simple-dto';
 import { IrrigatedAcresPerYearDto } from '././irrigated-acres-per-year-dto';
 import { SensorSimpleDto } from '././sensor-simple-dto';
 
@@ -46,6 +47,7 @@ export class WellDetailDto {
     OpenSupportTickets?: Array<SupportTicketSimpleDto>;
     PumpingRateGallonsPerMinute?: number;
     PumpingRateSource?: string;
+    WellGroups?: Array<WellGroupSimpleDto>;
     Sensors?: Array<SensorSimpleDto>;
     WellConnectedMeter?: boolean;
     WellID?: number;

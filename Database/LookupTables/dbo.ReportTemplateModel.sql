@@ -2,7 +2,7 @@ MERGE INTO dbo.ReportTemplateModel AS Target
 USING (VALUES
 (1, 'ChemigationPermit', 'Chemigation Permit', 'Templates will be with the "ChemigationPermit" model.'),
 (2, 'WellWaterQualityInspection', 'Well Water Quality Inspection', 'Templates will be with the "Well" model.'),
-(3, 'WellWaterLevelInspection', 'Well Water Level Inspection', 'Templates will be with the "Well" model.')
+(3, 'WellGroupWaterLevelInspection', 'Well Water Level Inspection', 'Templates will be with the "WellGroup" model.')
 )
 AS Source (ReportTemplateModelID, ReportTemplateModelName, ReportTemplateModelDisplayName, ReportTemplateModelDescription)
 ON Target.ReportTemplateModelID = Source.ReportTemplateModelID

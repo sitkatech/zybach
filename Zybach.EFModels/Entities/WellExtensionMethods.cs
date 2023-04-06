@@ -21,33 +21,14 @@ namespace Zybach.EFModels.Entities
             wellSimpleDto.WellParticipationName = well.WellParticipation?.WellParticipationDisplayName;
         }
 
-        public static WellInspectionSummaryDto AsWellInspectionSummaryDto(this Well well,
-            WaterLevelInspectionSimpleDto waterLevelInspectionSimpleDto, WaterQualityInspectionSimpleDto waterQualityInspectionSimpleDto)
+        public static WellWaterQualityInspectionSummaryDto AsWellWaterQualityInspectionSummaryDto(this Well well)
         {
-            var wellInspectionSummaryDto = new WellInspectionSummaryDto()
+            return new WellWaterQualityInspectionSummaryDto()
             {
                 Well = well.AsSimpleDto(),
-
-                HasWaterLevelInspections = waterLevelInspectionSimpleDto != null,
-                LatestWaterLevelInspectionDate = waterLevelInspectionSimpleDto?.InspectionDate,
-                HasWaterQualityInspections = waterQualityInspectionSimpleDto != null,
-                LatestWaterQualityInspectionDate = waterQualityInspectionSimpleDto?.InspectionDate
+                HasWaterQualityInspections = well.WaterQualityInspections.Any(),
+                LatestWaterQualityInspectionDate = well.WaterQualityInspections.MaxBy(x => x.InspectionDate)?.InspectionDate
             };
-
-            return wellInspectionSummaryDto;
-        }
-
-        public static WellWaterLevelInspectionDetailedDto AsWellWaterLevelInspectionDetailedDto(this Well well,
-            List<WaterLevelInspectionSimpleDto> waterLevelInspectionSimpleDtos)
-        {
-            var wellWaterLevelInspectionDetailedDto = new WellWaterLevelInspectionDetailedDto()
-            {
-                Well = well.AsSimpleDto(),
-
-                WaterLevelInspections = waterLevelInspectionSimpleDtos
-            };
-
-            return wellWaterLevelInspectionDetailedDto;
         }
 
         public static WellWaterQualityInspectionDetailedDto AsWellWaterQualityInspectionDetailedDto(this Well well,
@@ -82,14 +63,14 @@ namespace Zybach.EFModels.Entities
 
         public static WellMinimalDto AsMinimalDto(this Well well)
         {
-            var sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList();
-
             return new WellMinimalDto
             {
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
+                WellNickname = well.WellNickname,
                 Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
-                Sensors = sensors
+                Notes = well.Notes,
+                Sensors = well.Sensors.Select(x => x.AsSimpleDto()).ToList()
             };
         }
     }

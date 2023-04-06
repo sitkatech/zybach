@@ -26,6 +26,7 @@ api/user.service.ts
 api/water-level-inspection.service.ts
 api/water-quality-inspection.service.ts
 api/water-year-month.service.ts
+api/well-group.service.ts
 api/well.service.ts
 api/zybach-api.service.ts
 configuration.ts
@@ -36,6 +37,7 @@ model/ag-hub-irrigation-unit-summary-dto.ts
 model/ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto.ts
 model/annual-pumped-volume.ts
 model/annual-stream-flow-zone-pumping-depth-dto.ts
+model/bounding-box-dto.ts
 model/bulk-chemigation-permit-annual-record-creation-result.ts
 model/chemical-formulation-dto.ts
 model/chemical-formulation-yearly-total-dto.ts
@@ -102,6 +104,7 @@ model/sensor-anomaly-upsert-dto.ts
 model/sensor-chart-data-dto.ts
 model/sensor-measurement-dto.ts
 model/sensor-message-age-dto.ts
+model/sensor-minimal-dto.ts
 model/sensor-simple-dto.ts
 model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
@@ -137,7 +140,9 @@ model/water-year-month-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
-model/well-inspection-summary-dto.ts
+model/well-group-dto.ts
+model/well-group-summary-dto.ts
+model/well-group-well-simple-dto.ts
 model/well-minimal-dto.ts
 model/well-new-dto.ts
 model/well-participation-dto.ts
@@ -147,6 +152,7 @@ model/well-registration-id-dto.ts
 model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-water-level-map-summary-dto.ts
+model/well-water-quality-inspection-summary-dto.ts
 model/well-with-sensor-message-age-dto.ts
 model/well-with-sensor-simple-dto.ts
 variables.ts

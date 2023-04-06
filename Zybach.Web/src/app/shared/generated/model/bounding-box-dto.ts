@@ -9,14 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { WellSimpleDto } from '././well-simple-dto';
 
-export class WellInspectionSummaryDto { 
-    Well?: WellSimpleDto;
-    HasWaterLevelInspections?: boolean;
-    LatestWaterLevelInspectionDate?: string;
-    HasWaterQualityInspections?: boolean;
-    LatestWaterQualityInspectionDate?: string;
+export class BoundingBoxDto { 
+    Left?: number;
+    Bottom?: number;
+    Right?: number;
+    Top?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

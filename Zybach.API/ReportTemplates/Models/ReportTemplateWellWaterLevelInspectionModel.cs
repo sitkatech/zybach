@@ -5,20 +5,13 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.ReportTemplates.Models
 {
-    public class ReportTemplateWellWaterLevelInspectionModel : ReportTemplateBaseModel
-
+    public class ReportTemplateWellGroupWaterLevelInspectionModel : ReportTemplateBaseModel
     {
-        public int WellID { get; set; }
-        public string WellRegistrationID { get; set; }
-        public string WellNickname { get; set; }
-        public string WellParticipationName { get; set; }
+        public int WellGroupID { get; set; }
+        public string WellGroupName { get; set; }
+        public string WellRegistrationIDs { get; set; }
+
         public string TownshipRangeSection { get; set; }
-        public decimal? WellDepth { get; set; }
-        public string Clearinghouse { get; set; }
-        public string SiteName { get; set; }
-        public string SiteNumber { get; set; }
-        public string ScreenInterval { get; set; }
-        public decimal? ScreenDepth { get; set; }
         public string OwnerName { get; set; }
         public string OwnerAddress { get; set; }
         public string OwnerCity { get; set; }
@@ -34,79 +27,63 @@ namespace Zybach.API.ReportTemplates.Models
 
         public string WaterLevelFirstDate { get; set; }
         public string WaterLevelLastDate { get; set; }
-        public decimal WaterLevelLast { get; set; }
+        public decimal? WaterLevelLast { get; set; }
 
-        public decimal WaterLevelHighestDepth { get; set; }
+        public decimal? WaterLevelHighestDepth { get; set; }
         public string WaterLevelHighestDepthDate { get; set; }
 
-        public decimal WaterLevelLowestDepth { get; set; }
+        public decimal? WaterLevelLowestDepth { get; set; }
         public string WaterLevelLowestDepthDate { get; set; }
 
-        public decimal WaterLevelAverage { get; set; }
+        public decimal? WaterLevelAverage { get; set; }
         public string WaterLevelsChartImagePath { get; set; }
 
 
-        public ReportTemplateWellWaterLevelInspectionModel(
-            WellWaterLevelInspectionDetailedDto wellWithWaterLevelInspections)
+        public ReportTemplateWellGroupWaterLevelInspectionModel(WellGroupWaterLevelInspectionDto wellGroupWithWaterLevelInspections)
         {
-            WellID = wellWithWaterLevelInspections.Well.WellID;
-            WellRegistrationID = wellWithWaterLevelInspections.Well.WellRegistrationID;
-            WellNickname = wellWithWaterLevelInspections.Well.WellNickname;
-            WellParticipationName = wellWithWaterLevelInspections.Well.WellParticipationName;
-            TownshipRangeSection = wellWithWaterLevelInspections.Well.TownshipRangeSection;
-            WellDepth = wellWithWaterLevelInspections.Well.WellDepth;
-            Clearinghouse = wellWithWaterLevelInspections.Well.Clearinghouse;
-            SiteName = wellWithWaterLevelInspections.Well.SiteName;
-            SiteNumber = wellWithWaterLevelInspections.Well.SiteNumber;
-            ScreenInterval = wellWithWaterLevelInspections.Well.ScreenInterval;
-            ScreenDepth = wellWithWaterLevelInspections.Well.ScreenDepth;
-            OwnerName = wellWithWaterLevelInspections.Well.OwnerName;
-            OwnerAddress = wellWithWaterLevelInspections.Well.OwnerAddress;
-            OwnerCity = wellWithWaterLevelInspections.Well.OwnerCity;
-            OwnerState = wellWithWaterLevelInspections.Well.OwnerState;
-            OwnerZipCode = wellWithWaterLevelInspections.Well.OwnerZipCode;
-            AdditionalContactName = wellWithWaterLevelInspections.Well.AdditionalContactName;
-            AdditionalContactAddress = wellWithWaterLevelInspections.Well.AdditionalContactAddress;
-            AdditionalContactCity = wellWithWaterLevelInspections.Well.AdditionalContactCity;
-            AdditionalContactState = wellWithWaterLevelInspections.Well.AdditionalContactState;
-            AdditionalContactZipCode = wellWithWaterLevelInspections.Well.AdditionalContactZipCode;
+            WellGroupID = wellGroupWithWaterLevelInspections.WellGroup.WellGroupID;
+            WellGroupName = wellGroupWithWaterLevelInspections.WellGroup.WellGroupName;
 
-            WaterLevelInspections = wellWithWaterLevelInspections.WaterLevelInspections;
+            WellRegistrationIDs = string.Join(", ", wellGroupWithWaterLevelInspections.WellGroup.WellGroupWells.Select(x => x.WellRegistrationID));
+            
+            TownshipRangeSection = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.TownshipRangeSection;
+            OwnerName = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerName;
+            OwnerAddress = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerAddress;
+            OwnerCity = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerCity;
+            OwnerState = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerState;
+            OwnerZipCode = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.OwnerZipCode;
+            AdditionalContactName = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactName;
+            AdditionalContactAddress = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactAddress;
+            AdditionalContactCity = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactCity;
+            AdditionalContactState = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactState;
+            AdditionalContactZipCode = wellGroupWithWaterLevelInspections.WellGroup.PrimaryWell?.AdditionalContactZipCode;
 
-            if (WaterLevelInspections is { Count: > 0 })
+            WaterLevelInspections = wellGroupWithWaterLevelInspections.WaterLevelInspections.ToList();
+
+            var inspectionsWithDepthMeasurements = WaterLevelInspections
+                .Where(x => x.Measurement.HasValue).ToList();
+            if (inspectionsWithDepthMeasurements.Any())
             {
-                var inspectionsWithDepthMeasurements = WaterLevelInspections.Where(x => x.Measurement != null);
+                var firstDepthMeasurement = inspectionsWithDepthMeasurements.MinBy(x => x.InspectionDate);
+                var lastDepthMeasurement = inspectionsWithDepthMeasurements.MaxBy(x => x.InspectionDate);
 
-                var firstDepthMeasurement = inspectionsWithDepthMeasurements
-                    .OrderBy(x => x.InspectionDate).First();
+                var lowestDepthMeasurement = inspectionsWithDepthMeasurements.MinBy(x => x.Measurement);
+                var highestDepthMeasurement = inspectionsWithDepthMeasurements.MaxBy(x => x.Measurement);
 
-                var lastDepthMeasurement = inspectionsWithDepthMeasurements
-                    .OrderByDescending(x => x.InspectionDate).First();
-
-                var highestDepthMeasurement = inspectionsWithDepthMeasurements
-                    .OrderByDescending(x => x.Measurement).First();
-
-                var lowestDepthMeasurement = inspectionsWithDepthMeasurements
-                    .OrderBy(x => x.Measurement).First();
-
-                WaterLevelFirstDate = firstDepthMeasurement.InspectionDate.ToShortDateString();
-                WaterLevelLastDate = lastDepthMeasurement.InspectionDate.ToShortDateString();
-                WaterLevelLast = Math.Round(lastDepthMeasurement.Measurement.Value, 2);
+                WaterLevelFirstDate = firstDepthMeasurement?.InspectionDate.ToShortDateString();
+                WaterLevelLastDate = lastDepthMeasurement?.InspectionDate.ToShortDateString();
+                WaterLevelLast = lastDepthMeasurement != null ? Math.Round(lastDepthMeasurement.Measurement.Value, 2) : null;
                 
-                WaterLevelHighestDepthDate = highestDepthMeasurement.InspectionDate.ToShortDateString();
-                WaterLevelHighestDepth = Math.Round(highestDepthMeasurement.Measurement.Value, 2);
+                WaterLevelHighestDepthDate = highestDepthMeasurement?.InspectionDate.ToShortDateString();
+                WaterLevelHighestDepth = highestDepthMeasurement != null ? Math.Round(highestDepthMeasurement.Measurement.Value, 2) : null;
                 
-                WaterLevelLowestDepthDate = lowestDepthMeasurement.InspectionDate.ToShortDateString();
-                WaterLevelLowestDepth = Math.Round(lowestDepthMeasurement.Measurement.Value, 2);
+                WaterLevelLowestDepthDate = lowestDepthMeasurement?.InspectionDate.ToShortDateString();
+                WaterLevelLowestDepth = lowestDepthMeasurement != null ? Math.Round(lowestDepthMeasurement.Measurement.Value, 2) : null;
                 
-                WaterLevelAverage = Math.Round(WaterLevelInspections.Where(x => x.Measurement != null).Average(x => x.Measurement.Value), 2);
-            }
-            else
-            {
-                WaterLevelInspections = new List<WaterLevelInspectionSimpleDto>();
+                WaterLevelAverage = Math.Round(inspectionsWithDepthMeasurements.Average(x => x.Measurement.Value), 2);
             }
 
-            WaterLevelsChartImagePath = $"{wellWithWaterLevelInspections.Well.WellID}-waterLevelsChart.png";
+            WaterLevelsChartImagePath = $"{wellGroupWithWaterLevelInspections.WellGroup.WellGroupID}-waterLevelsChart.png";
         }
 
         /// <summary>
