@@ -162,7 +162,7 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
       this.alertService.pushAlert(new Alert("The Well Group Name field is required.", AlertContext.Danger));
       isValid = false;
     }
-    if (this.model.WellGroupWells.length > 1) {
+    if (this.model.WellGroupWells.length == 0) {
       this.alertService.pushAlert(new Alert("Please select at least one well to create a well group.", AlertContext.Danger));
       isValid = false;
     }
