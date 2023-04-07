@@ -21,7 +21,7 @@ services:
 
   vegarenderservice:
     container_name: zybach_vegarenderservice
-    image: sitkacontainers.azurecr.io/vegarenderservice:latest
+    image: vegarenderservice:latest
     environment:
       - PORT=8090
     ports:

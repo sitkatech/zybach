@@ -4,6 +4,6 @@ services:
   zybach.web:
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1    
-    image: sitkacontainers.azurecr.io/zybach/web
+    image: zybach/web
     labels:
       - "com.microsoft.visualstudio.targetoperatingsystem=linux"
