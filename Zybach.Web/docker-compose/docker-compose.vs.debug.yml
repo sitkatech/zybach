@@ -5,7 +5,7 @@ services:
     build:
       args:
         source: ${DOCKER_BUILD_SOURCE}
-    image: sitkacontainers.azurecr.io/zybach/web
+    image: zybach/web
     ports:
       - "8713:80"
       - "8714:443"
