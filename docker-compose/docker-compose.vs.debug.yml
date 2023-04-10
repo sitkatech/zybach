@@ -21,7 +21,7 @@ services:
 
   vegarenderservice:
     container_name: zybach_vegarenderservice
-    image: vegarenderservice:latest
+    image: esacontainers.azurecr.io/vegarenderservice:latest
     environment:
       - PORT=8090
     ports:
