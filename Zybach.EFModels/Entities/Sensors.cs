@@ -33,6 +33,11 @@ namespace Zybach.EFModels.Entities
                 .SingleOrDefault(x => x.SensorID == sensorID);
         }
 
+        public static Sensor GetBySensorName(ZybachDbContext dbContext, string sensorName)
+        {
+            return GetSensorsImpl(dbContext).SingleOrDefault(x => x.SensorName == sensorName);
+        }
+
         public static List<Sensor> ListActiveByWellID(ZybachDbContext dbContext, int wellID)
         {
             return GetSensorsImpl(dbContext)
