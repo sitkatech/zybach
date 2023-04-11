@@ -32,6 +32,7 @@ using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConve
 using Zybach.API.Services.Authorization;
 using Zybach.API.Services.Notifications;
 using ILogger = Serilog.ILogger;
+using System.Collections.Generic;
 
 namespace Zybach.API
 {
@@ -217,6 +218,31 @@ namespace Zybach.API
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                {
+                    Description = "ApiKey must appear in header",
+                    Type = SecuritySchemeType.ApiKey,
+                    Name = ApiKeyAttribute.APIKEYNAME,
+                    In = ParameterLocation.Header,
+                    Scheme = "ApiKeyScheme"
+                });
+
+                var key = new OpenApiSecurityScheme()
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "ApiKey"
+                    },
+                    In = ParameterLocation.Header
+                };
+                var requirement = new OpenApiSecurityRequirement
+                {
+                    { key, new List<string>() }
+                };
+
+                c.AddSecurityRequirement(requirement);
             });
             services.AddSwaggerGenNewtonsoftSupport();
         }

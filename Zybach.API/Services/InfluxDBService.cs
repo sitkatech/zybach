@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using InfluxDB.Client;
+using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core;
+using InfluxDB.Client.Writes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.EFModels.Entities;
@@ -155,6 +157,43 @@ namespace Zybach.API.Services
             return await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReading>(fluxQuery, _zybachConfiguration.INFLUXDB_ORG);
         }
 
+        public async Task<List<MeasurementReadingRaw>> GetWellPressureReadingsByRegistrationIDAndSensorName(string registrationID, string sensorName, DateTime startDate, DateTime endDate, string bucket)
+        {
+            var wellPressureMeasurementType = MeasurementType.WellPressure;
+
+            var flux =
+                $"from(bucket: \"{bucket}\")" +
+                FilterByDateRange(startDate, endDate) +
+                FilterByMeasurement(new List<string> { wellPressureMeasurementType.InfluxMeasurementName }) +
+                FilterByRegistrationID(registrationID) +
+                FilterBySensorName(new List<string> { sensorName });
+
+            _logger.LogInformation($"Influx DB Query: {flux}");
+            return await _influxDbClient.GetQueryApi().QueryAsync<MeasurementReadingRaw>(flux, _zybachConfiguration.INFLUXDB_ORG);
+        }
+
+        public async Task WriteMeasurementReadingsToInfluxDb(List<MeasurementReadingRaw> measurementReadings, string bucket)
+        {
+            var points = measurementReadings.Select(x => PointData
+                    .Measurement(x.Measurement)
+                    .Timestamp(x.Time, WritePrecision.Ms)
+                    .Tag("eui", x.Eui)
+                    .Tag("registration-id", x.RegistrationID)
+                    .Tag("sn", x.Sensor)
+                    .Field(x.Field, x.Value))
+                .ToList();
+
+            var writeApiAsync = _influxDbClient.GetWriteApiAsync();
+            await writeApiAsync.WritePointsAsync(points, bucket, _zybachConfiguration.INFLUXDB_ORG);
+        }
+
+        public async Task DeletePressureSensorReadingsByRegistrationIDAndSensorName(string registrationID, string sensorName, DateTime startDate, DateTime endDate, string bucket)
+        {
+            var predicate = $"_measurement=\"depth\" AND \"registration-id\"=\"{registrationID}\" AND sn=\"{sensorName}\"";
+
+            await _influxDbClient.GetDeleteApi().Delete(startDate, endDate, predicate, bucket, _zybachConfiguration.INFLUXDB_ORG);
+        }
+
         private static string AggregrateDailyBy(AggregationType aggregationType, bool createEmpty)
         {
             return
@@ -261,6 +300,24 @@ namespace Zybach.API.Services
             public double Value { get; set; }
             [Column("eventAge")]
             public int EventAge { get; set; }
+        }
+
+        public class MeasurementReadingRaw
+        {
+            [Column(IsTimestamp = true)]
+            public DateTime Time { get; set; }
+            [Column(IsMeasurement = true)]
+            public string Measurement { get; set; }
+            [Column("value")]
+            public double Value { get; set; }
+            [Column("field")]
+            public string Field { get; set; }
+            [Column("eui", IsTag = true)]
+            public string Eui { get; set; }
+            [Column("registration-id", IsTag = true)]
+            public string RegistrationID { get; set; }
+            [Column("sn", IsTag = true)]
+            public string Sensor { get; set; }
         }
 
         private class ContinuityMeterStatusData
