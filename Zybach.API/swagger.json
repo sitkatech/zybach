@@ -6252,7 +6252,7 @@
           "ZybachAPI"
         ],
         "summary": "Migrates Influx records associated with the specified Well Pressure sensor from the first specified well to the second.",
-        "description": "Sample request:\r\n\r\n    GET /api/sensors/PW010834/migrateWaterLevelReadings/G-043540/G-193253",
+        "description": "Sample requests:\r\n\r\n    GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training\r\n\r\n    GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training&startDate=2020-12-31&endDate=2023-06-01",
         "parameters": [
           {
             "name": "sensorName",
@@ -6282,6 +6282,15 @@
             }
           },
           {
+            "name": "bucket",
+            "in": "query",
+            "description": "The bucket to be used for the Influx operations.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "startDate",
             "in": "query",
             "description": "The start date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-06-23). If no date is provided, 2018-01-01 will be used by default.",
@@ -6293,14 +6302,6 @@
             "name": "endDate",
             "in": "query",
             "description": "The end date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-07-01). If no date is provided, the current date will be used by default.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "bucket",
-            "in": "query",
-            "description": "The bucket to be used for the Influx operations. If no bucket is provided, the main bucket will be used by default.",
             "schema": {
               "type": "string"
             }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Zybach.API.Models;
 using Zybach.API.Services;
@@ -217,22 +218,24 @@ namespace Zybach.API.Controllers
         /// Migrates Influx records associated with the specified Well Pressure sensor from the first specified well to the second.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Sample requests:
         /// 
-        ///     GET /api/sensors/PW010834/migrateWaterLevelReadings/G-043540/G-193253
+        ///     GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training
+        /// 
+        ///     GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training&amp;startDate=2020-12-31&amp;endDate=2023-06-01
         /// </remarks>
         /// <param name="sensorName">The device number for the sensor readings to be migrated.</param>
         /// <param name="fromWellRegistrationID">The registration ID for the well which the specified sensor readings should be migrated from.</param>
         /// <param name="toWellRegistrationID">The registration ID for the well which the specified sensor readings should be migrated to.</param>
+        /// <param name="bucket">The bucket to be used for the Influx operations.</param>
         /// <param name="startDate">The start date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-06-23). If no date is provided, 2018-01-01 will be used by default.</param>
         /// <param name="endDate">The end date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-07-01). If no date is provided, the current date will be used by default.</param>
-        /// <param name="bucket">The bucket to be used for the Influx operations. If no bucket is provided, the main bucket will be used by default.</param>
         /// 
         /// <returns>A count of the successfully migrated Influx records.</returns>
         /// 
         [HttpPut("/api/sensors/{sensorName}/migrateWaterLevelReadings/{fromWellRegistrationID}/{toWellRegistrationID}")]
         public async Task<ActionResult<int>> MigrateSensorReadings([FromRoute] string sensorName, [FromRoute] string fromWellRegistrationID, 
-            [FromRoute] string toWellRegistrationID, [FromQuery] string startDate, [FromQuery] string endDate, [FromQuery] string bucket)
+            [FromRoute] string toWellRegistrationID, [FromQuery, BindRequired] string bucket, [FromQuery] string startDate, [FromQuery] string endDate)
         {
             var sensor = Sensors.GetBySensorName(_dbContext, sensorName);
             if (sensor == null)
@@ -255,6 +258,11 @@ namespace Zybach.API.Controllers
             if (!ModelState.IsValid)
             {
                 return NotFound(ModelState);
+            }
+
+            if (string.IsNullOrEmpty(bucket))
+            {
+                ModelState.AddModelError("bucket", $"The bucket field is required.");
             }
 
             if (sensor.SensorTypeID != (int)SensorTypeEnum.WellPressure)
@@ -296,8 +304,6 @@ namespace Zybach.API.Controllers
 
             try
             {
-                bucket ??= _zybachConfiguration.INFLUX_BUCKET;
-
                 var wellPressureReadings = await _influxDbService.GetWellPressureReadingsByRegistrationIDAndSensorName(fromWellRegistrationID, sensorName, queryStartDate, queryEndDate, bucket);
                 wellPressureReadings.ForEach(x => x.RegistrationID = toWellRegistrationID);
 
