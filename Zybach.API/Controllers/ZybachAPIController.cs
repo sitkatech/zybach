@@ -313,5 +313,12 @@ namespace Zybach.API.Controllers
 
             return Ok($"{insertedRecordsCount} Influx records found & migrated to new well");
         }
+        
+        [HttpPost("api/sensors/{sensorName}/pulse")]
+        public ActionResult CreatePaigeWirelessPulse([FromRoute] string sensorName, [FromBody] string eventMessage)
+        {
+            PaigeWirelessPulses.Create(_dbContext, sensorName, eventMessage);
+            return Ok();
+        }
     }
 }

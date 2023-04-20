@@ -44,6 +44,7 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<OpenETGoogleBucketResponseEvapotranspirationDatum> OpenETGoogleBucketResponseEvapotranspirationData { get; set; }
         public virtual DbSet<OpenETGoogleBucketResponsePrecipitationDatum> OpenETGoogleBucketResponsePrecipitationData { get; set; }
         public virtual DbSet<OpenETSyncHistory> OpenETSyncHistories { get; set; }
+        public virtual DbSet<PaigeWirelessPulse> PaigeWirelessPulses { get; set; }
         public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
         public virtual DbSet<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
         public virtual DbSet<Sensor> Sensors { get; set; }
