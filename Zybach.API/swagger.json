@@ -6245,6 +6245,130 @@
           }
         }
       }
+    },
+    "/api/sensors/{sensorName}/migrateWaterLevelReadings/{fromWellRegistrationID}/{toWellRegistrationID}": {
+      "put": {
+        "tags": [
+          "ZybachAPI"
+        ],
+        "summary": "Migrates Influx records associated with the specified Well Pressure sensor from the first specified well to the second.",
+        "description": "Sample requests:\r\n\r\n    GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training\r\n\r\n    GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training&startDate=2020-12-31&endDate=2023-06-01",
+        "parameters": [
+          {
+            "name": "sensorName",
+            "in": "path",
+            "description": "The device number for the sensor readings to be migrated.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fromWellRegistrationID",
+            "in": "path",
+            "description": "The registration ID for the well which the specified sensor readings should be migrated from.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toWellRegistrationID",
+            "in": "path",
+            "description": "The registration ID for the well which the specified sensor readings should be migrated to.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bucket",
+            "in": "query",
+            "description": "The bucket to be used for the Influx operations.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "The start date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-06-23). If no date is provided, 2018-01-01 will be used by default.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "The end date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-07-01). If no date is provided, the current date will be used by default.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sensors/pulse": {
+      "post": {
+        "tags": [
+          "ZybachAPI"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorPulseDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorPulseDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorPulseDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensorPulseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8618,6 +8742,24 @@
           "SensorName": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorPulseDto": {
+        "type": "object",
+        "properties": {
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "EventMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "ReceivedDate": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -11412,6 +11554,19 @@
         },
         "additionalProperties": false
       }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "type": "apiKey",
+        "description": "ApiKey must appear in header",
+        "name": "x-api-key",
+        "in": "header"
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "ApiKey": [ ]
+    }
+  ]
 }

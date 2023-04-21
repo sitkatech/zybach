@@ -4,7 +4,11 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 using Zybach.API.Models;
+using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
@@ -15,8 +19,13 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class ZybachAPIController : SitkaApiController<ZybachAPIController>
     {
-        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger) : base(dbContext, logger)
+        private readonly InfluxDBService _influxDbService;
+        private readonly ZybachConfiguration _zybachConfiguration;
+
+        public ZybachAPIController(ZybachDbContext dbContext, ILogger<ZybachAPIController> logger, InfluxDBService influxDbService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger)
         {
+            _influxDbService = influxDbService;
+            _zybachConfiguration = zybachConfiguration.Value;
         }
 
         /// <summary>
@@ -203,6 +212,119 @@ namespace Zybach.API.Controllers
                 }
 
             return intervalVolumeDtos;
+        }
+
+        /// <summary>
+        /// Migrates Influx records associated with the specified Well Pressure sensor from the first specified well to the second.
+        /// </summary>
+        /// <remarks>
+        /// Sample requests:
+        /// 
+        ///     GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training
+        /// 
+        ///     GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training&amp;startDate=2020-12-31&amp;endDate=2023-06-01
+        /// </remarks>
+        /// <param name="sensorName">The device number for the sensor readings to be migrated.</param>
+        /// <param name="fromWellRegistrationID">The registration ID for the well which the specified sensor readings should be migrated from.</param>
+        /// <param name="toWellRegistrationID">The registration ID for the well which the specified sensor readings should be migrated to.</param>
+        /// <param name="bucket">The bucket to be used for the Influx operations.</param>
+        /// <param name="startDate">The start date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-06-23). If no date is provided, 2018-01-01 will be used by default.</param>
+        /// <param name="endDate">The end date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-07-01). If no date is provided, the current date will be used by default.</param>
+        /// 
+        /// <returns>A count of the successfully migrated Influx records.</returns>
+        /// 
+        [HttpPut("/api/sensors/{sensorName}/migrateWaterLevelReadings/{fromWellRegistrationID}/{toWellRegistrationID}")]
+        public async Task<ActionResult<int>> MigrateSensorReadings([FromRoute] string sensorName, [FromRoute] string fromWellRegistrationID, 
+            [FromRoute] string toWellRegistrationID, [FromQuery, BindRequired] string bucket, [FromQuery] string startDate, [FromQuery] string endDate)
+        {
+            var sensor = Sensors.GetBySensorName(_dbContext, sensorName);
+            if (sensor == null)
+            {
+                ModelState.AddModelError("sensorName", $"No sensor matching the sensor name {sensorName} was found in the Groundwater Managers Platform database.");
+            }
+
+            var fromWell = Wells.GetByWellRegistrationID(_dbContext, fromWellRegistrationID);
+            if (fromWell == null)
+            {
+                ModelState.AddModelError("fromWellRegistrationID", $"No well matching the well registration ID {fromWellRegistrationID} was found in the Groundwater Managers Platform database.");
+            }
+
+            var toWell = Wells.GetByWellRegistrationID(_dbContext, toWellRegistrationID);
+            if (toWell == null)
+            {
+                ModelState.AddModelError("toWellRegistrationID", $"No well matching the well registration ID {toWellRegistrationID} was found in the Groundwater Managers Platform database.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return NotFound(ModelState);
+            }
+
+            if (string.IsNullOrEmpty(bucket))
+            {
+                ModelState.AddModelError("bucket", $"The bucket field is required.");
+            }
+
+            if (sensor.SensorTypeID != (int)SensorTypeEnum.WellPressure)
+            {
+                ModelState.AddModelError("sensorName", $"The specified sensor is a(n) {sensor.SensorType.SensorTypeDisplayName} sensor. A Well Pressure sensor is expected.");
+            }
+
+            DateTime queryStartDate;
+            if (string.IsNullOrWhiteSpace(startDate))
+            {
+                queryStartDate = new DateTime(2018, 01, 01);
+            }
+            else if (!DateTime.TryParse(startDate, out queryStartDate))
+            {
+                ModelState.AddModelError("startDate", "Start date is not a valid Date string in ISO 8601 format. Please enter a valid date string ");
+            }
+
+            DateTime queryEndDate;
+            if (string.IsNullOrWhiteSpace(endDate))
+            {
+                queryEndDate = DateTime.Today;
+            }
+            else if (!DateTime.TryParse(endDate, out queryEndDate))
+            {
+                ModelState.AddModelError("endDate", "End date is not a valid Date string in ISO 8601 format. Please enter a valid date string ");
+            }
+
+            if (queryStartDate > queryEndDate)
+            {
+                ModelState.AddModelError("startDate", "Start Date occurs after End Date. Please ensure that Start Date occurs before End Date.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            int insertedRecordsCount;
+
+            try
+            {
+                var wellPressureReadings = await _influxDbService.GetWellPressureReadingsByRegistrationIDAndSensorName(fromWellRegistrationID, sensorName, queryStartDate, queryEndDate, bucket);
+                wellPressureReadings.ForEach(x => x.RegistrationID = toWellRegistrationID);
+
+                await _influxDbService.WriteMeasurementReadingsToInfluxDb(wellPressureReadings, bucket);
+                await _influxDbService.DeletePressureSensorReadingsByRegistrationIDAndSensorName(fromWellRegistrationID, sensorName, queryStartDate, queryEndDate, bucket);
+
+                insertedRecordsCount = wellPressureReadings.Count;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return Ok($"{insertedRecordsCount} Influx records found & migrated to new well");
+        }
+        
+        [HttpPost("api/sensors/pulse")]
+        public ActionResult CreatePaigeWirelessPulse([FromBody] SensorPulseDto sensorPulseDto)
+        {
+            PaigeWirelessPulses.Create(_dbContext, sensorPulseDto);
+            return Ok();
         }
     }
 }
