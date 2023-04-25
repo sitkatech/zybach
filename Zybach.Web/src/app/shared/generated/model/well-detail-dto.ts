@@ -39,7 +39,6 @@ export class WellDetailDto {
     AdditionalContactState?: string;
     AdditionalContactZipCode?: string;
     IsReplacement?: boolean;
-    Notes?: string;
     WaterQualityInspectionTypes?: string;
     ScreenInterval?: string;
     ScreenDepth?: number;
@@ -70,6 +69,7 @@ export class WellDetailDto {
     TownshipRangeSection?: string;
     HasWaterQualityInspections?: boolean;
     HasWaterLevelInspections?: boolean;
+    Notes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

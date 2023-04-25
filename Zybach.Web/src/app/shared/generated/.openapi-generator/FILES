@@ -93,6 +93,7 @@ model/models.ts
 model/open-et-data-type-dto.ts
 model/open-et-sync-history-dto.ts
 model/open-et-sync-result-type-dto.ts
+model/paige-wireless-pulse-dto.ts
 model/report-template-dto.ts
 model/report-template-model-dto.ts
 model/report-template-model-type-dto.ts
@@ -105,6 +106,7 @@ model/sensor-chart-data-dto.ts
 model/sensor-measurement-dto.ts
 model/sensor-message-age-dto.ts
 model/sensor-minimal-dto.ts
+model/sensor-pulse-dto.ts
 model/sensor-simple-dto.ts
 model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
@@ -141,6 +143,7 @@ model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
 model/well-group-dto.ts
+model/well-group-simple-dto.ts
 model/well-group-summary-dto.ts
 model/well-group-well-simple-dto.ts
 model/well-minimal-dto.ts

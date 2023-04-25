@@ -34,6 +34,7 @@ export class WellWithSensorMessageAgeDto {
     TownshipRangeSection?: string;
     HasWaterQualityInspections?: boolean;
     HasWaterLevelInspections?: boolean;
+    Notes?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
