@@ -27,7 +27,8 @@ USING (VALUES
 (25, 'WellPumpingSummary', 'Well Pumping Summary'),
 (26, 'WellGroupList', 'Well Group List'),
 (27, 'WellGroupEdit', 'Well Group Edit'),
-(28, 'WaterLevelsReport', 'Water Levels Report')
+(28, 'WaterLevelsReport', 'Water Levels Report'),
+(29, 'SensorHealthCheck', 'Sensor Health Check')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID
