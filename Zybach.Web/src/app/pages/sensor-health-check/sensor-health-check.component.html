@@ -1,0 +1,77 @@
+<div class="container">
+    <app-alert-display></app-alert-display>
+
+    <div class="row mt-2">
+        <div class="col">
+            <h2>Sensor Health Check</h2>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <custom-rich-text [customRichTextTypeID]="customRichTextTypeID"></custom-rich-text>
+        </div>
+    </div>
+
+    <div class="row mt-2 align-items-center">
+        <div class="col-md-4 control-label text-md-right font-weight-bold mt-2">Enter Sensor Serial #:</div>
+
+        <div class="col-md-4 col-sm-7 mt-2">
+            <input type="text" class="form-control" [(ngModel)]="sensorNameInput">
+        </div>
+
+        <div class="col-auto mt-2">
+            <button class="btn btn-md btn-primary" (click)="getSensorPulse()">Check Sensor Status</button>
+        </div>
+    </div>
+
+    <ng-container *ngIf="sensorName">
+        <div class="row">
+            <div class="col-md-8 m-auto">
+                <div class="card mt-3">
+                    <div class="card-body text-center">
+                        <ng-container *ngIf="paigeWirelessPulse$ | async; else noDataFound">
+                            <div>
+                                {{ receivedDate >= recentPulseCutoff ? 'R' : 'No r' }}ecent data found for sensor <b>{{ sensorName }}</b>.
+                            </div>
+                            <div class="mt-2">
+                                <i [ngClass]="receivedDate >= recentPulseCutoff ? 'fa fa-check-circle text-success fa-2xl' : 'fa fa-times-circle text-danger'" style="font-size: 24px;"></i>
+                            </div>
+                            <div class="mt-1">
+                                Most recent sensor message was received {{ receivedDate | timeago }}.
+                            </div>
+                        </ng-container>
+    
+                        <ng-template #noDataFound>
+                            <div>No data found for sensor <b>{{ sensorName }}</b>.</div>
+                            <div><span class="fa fa-spinner loading-spinner"></span></div>
+                            <div>Checking again in 30 seconds...</div>
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="text-right"><i>Last refreshed at {{ lastUpdated | date:"mediumTime"}}</i></div>
+            </div>
+        </div>
+    
+        <div class="row mt-3" *ngIf="eventMessage">
+            <div class="col-md-8 m-auto">
+                <h3>Most Recent Message Details</h3>
+                <p>Message was received on {{ receivedDate | date:"shortDate" }} at {{ receivedDate | date:"shortTime" }}</p>
+            </div>
+            
+            <div class="col-md-8 m-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <code>
+                            <pre>{{ eventMessage | json }}</pre>
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>
+
+
+
+

@@ -60,12 +60,20 @@ namespace Zybach.API.Controllers
             return sensorSimpleDtos;
         }
 
-        [HttpGet("/sensors/search/{sensorName}")]
+        [HttpGet("/sensors/{sensorName}/search")]
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchBySensorName([FromRoute] string sensorName)
         {
             var sensors = Sensors.SearchBySensorName(_dbContext, sensorName);
             return Ok(sensors.Select(x => x.SensorName).OrderBy(x => x));
+        }
+
+        [HttpGet("sensors/{sensorName}/pulse")]
+        [ZybachViewFeature]
+        public ActionResult<PaigeWirelessPulseDto> GetLatestSensorPulse([FromRoute] string sensorName)
+        {
+            var paigeWirelessPulseDto = PaigeWirelessPulses.GetLatestBySensorName(_dbContext, sensorName);
+            return Ok(paigeWirelessPulseDto);
         }
 
         [HttpGet("/sensors/{sensorID}")]
