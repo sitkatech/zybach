@@ -113,6 +113,7 @@ import { WellGroupDetailComponent } from './pages/well-group-detail/well-group-d
 import { WellGroupWaterLevelsTabComponent } from './pages/well-group-water-levels-tab/well-group-water-levels-tab.component';
 import { WaterLevelReportsComponent } from './pages/water-level-reports/water-level-reports.component';
 import { SensorHealthCheckComponent } from './pages/sensor-health-check/sensor-health-check.component';
+import { TimeagoModule } from 'ngx-timeago';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -203,6 +204,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
       });
     }),
     NgxMaskModule.forRoot(),
+    TimeagoModule.forRoot()
   ],  
   providers: [
     CookieService,

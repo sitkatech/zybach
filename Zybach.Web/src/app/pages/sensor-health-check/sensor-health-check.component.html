@@ -38,7 +38,7 @@
                                 <i [ngClass]="receivedDate >= recentPulseCutoff ? 'fa fa-check-circle text-success fa-2xl' : 'fa fa-times-circle text-danger'" style="font-size: 24px;"></i>
                             </div>
                             <div class="mt-1">
-                                Most recent sensor message was received on {{ receivedDate | date:"shortDate" }} at {{ receivedDate | date:"shortTime" }}.
+                                Most recent sensor message was received {{ receivedDate | timeago }}.
                             </div>
                         </ng-container>
     
@@ -56,7 +56,7 @@
         <div class="row mt-3" *ngIf="eventMessage">
             <div class="col-md-8 m-auto">
                 <h3>Most Recent Message Details</h3>
-                <p>Received {{ receivedDate | date:"short" }}</p>
+                <p>Message was received on {{ receivedDate | date:"shortDate" }} at {{ receivedDate | date:"shortTime" }}</p>
             </div>
             
             <div class="col-md-8 m-auto">
