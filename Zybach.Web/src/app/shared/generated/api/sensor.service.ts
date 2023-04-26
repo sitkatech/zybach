@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { PaigeWirelessPulseDto } from '../model/paige-wireless-pulse-dto';
 import { SensorChartDataDto } from '../model/sensor-chart-data-dto';
 import { SensorSimpleDto } from '../model/sensor-simple-dto';
 import { SupportTicketSimpleDto } from '../model/support-ticket-simple-dto';
@@ -76,6 +77,11 @@ export class SensorService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -92,49 +98,6 @@ export class SensorService {
         ];
 
         return this.httpClient.get<Array<SensorSimpleDto>>(`${this.basePath}/sensors`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param sensorName 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public sensorsSearchSensorNameGet(sensorName: string, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
-    public sensorsSearchSensorNameGet(sensorName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
-    public sensorsSearchSensorNameGet(sensorName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
-    public sensorsSearchSensorNameGet(sensorName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (sensorName === null || sensorName === undefined) {
-            throw new Error('Required parameter sensorName was null or undefined when calling sensorsSearchSensorNameGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<string>>(`${this.basePath}/sensors/search/${encodeURIComponent(String(sensorName))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -318,6 +281,102 @@ export class SensorService {
 
         return this.httpClient.put<string>(`${this.basePath}/sensors/${encodeURIComponent(String(sensorID))}/snooze`,
             body,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param sensorName 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sensorsSensorNamePulseGet(sensorName: string, observe?: 'body', reportProgress?: boolean): Observable<PaigeWirelessPulseDto>;
+    public sensorsSensorNamePulseGet(sensorName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PaigeWirelessPulseDto>>;
+    public sensorsSensorNamePulseGet(sensorName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PaigeWirelessPulseDto>>;
+    public sensorsSensorNamePulseGet(sensorName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (sensorName === null || sensorName === undefined) {
+            throw new Error('Required parameter sensorName was null or undefined when calling sensorsSensorNamePulseGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<PaigeWirelessPulseDto>(`${this.basePath}/sensors/${encodeURIComponent(String(sensorName))}/pulse`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param sensorName 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sensorsSensorNameSearchGet(sensorName: string, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public sensorsSensorNameSearchGet(sensorName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public sensorsSensorNameSearchGet(sensorName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public sensorsSensorNameSearchGet(sensorName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (sensorName === null || sensorName === undefined) {
+            throw new Error('Required parameter sensorName was null or undefined when calling sensorsSensorNameSearchGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<string>>(`${this.basePath}/sensors/${encodeURIComponent(String(sensorName))}/search`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

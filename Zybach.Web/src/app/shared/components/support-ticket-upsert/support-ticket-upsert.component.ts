@@ -11,7 +11,6 @@ import { SupportTicketPriorityDto } from '../../generated/model/support-ticket-p
 import { SupportTicketStatusDto } from '../../generated/model/support-ticket-status-dto';
 import { SupportTicketUpsertDto } from '../../generated/model/support-ticket-upsert-dto';
 import { UserDto } from '../../generated/model/user-dto';
-import { RoleEnum } from '../../generated/enum/role-enum';
 import { UserSimpleDto } from '../../generated/model/user-simple-dto';
 
 @Component({
@@ -78,7 +77,7 @@ export class SupportTicketUpsertComponent implements OnInit {
         debounceTime(200), 
         distinctUntilChanged(),
         tap(() => this.sensorSearchFailed = false),
-        switchMap(searchText => searchText.length > 2 ? this.sensorService.sensorsSearchSensorNameGet(searchText) : ([])), 
+        switchMap(searchText => searchText.length > 2 ? this.sensorService.sensorsSensorNameSearchGet(searchText) : ([])), 
         catchError(() => {
           this.sensorSearchFailed = true;
           return of([]);

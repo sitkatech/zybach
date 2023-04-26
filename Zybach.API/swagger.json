@@ -2721,7 +2721,7 @@
         }
       }
     },
-    "/sensors/search/{sensorName}": {
+    "/sensors/{sensorName}/search": {
       "get": {
         "tags": [
           "Sensor"
@@ -2762,6 +2762,45 @@
                   "items": {
                     "type": "string"
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sensors/{sensorName}/pulse": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "parameters": [
+          {
+            "name": "sensorName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaigeWirelessPulseDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaigeWirelessPulseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaigeWirelessPulseDto"
                 }
               }
             }
@@ -8386,6 +8425,28 @@
             "nullable": true
           },
           "OpenETSyncResultTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PaigeWirelessPulseDto": {
+        "type": "object",
+        "properties": {
+          "PaigeWirelessPulseID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ReceivedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "EventMessage": {
             "type": "string",
             "nullable": true
           }

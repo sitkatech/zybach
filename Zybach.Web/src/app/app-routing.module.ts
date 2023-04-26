@@ -70,6 +70,7 @@ import { WellGroupListComponent } from './pages/well-group-list/well-group-list.
 import { WellGroupEditComponent } from './pages/well-group-edit/well-group-edit.component';
 import { WellGroupDetailComponent } from './pages/well-group-detail/well-group-detail.component';
 import { WaterLevelReportsComponent } from './pages/water-level-reports/water-level-reports.component';
+import { SensorHealthCheckComponent } from './pages/sensor-health-check/sensor-health-check.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -87,6 +88,7 @@ const routes: Routes = [
   { path: "sensor-status", component: SensorStatusComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-anomalies", component: SensorAnomalyListComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
   { path: "sensor-anomalies/edit/:id", component: SensorAnomalyEditComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },
+  { path: "sensor-health-check", component: SensorHealthCheckComponent },
   { path: "irrigation-units",  component: IrrigationUnitListComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "irrigation-units/:id",  component: IrrigationUnitDetailComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard]},
   { path: "new-well", component: WellNewComponent, canActivate: [UnauthenticatedAccessGuard, NormalPlusGuard, AcknowledgedDisclaimerGuard] },

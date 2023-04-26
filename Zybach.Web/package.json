@@ -68,6 +68,7 @@
     "ngx-mask": "^11.1.5",
     "ngx-pagination": "^5.1.1",
     "ngx-progressbar": "^6.1.1",
+    "ngx-timeago": "^2.0.0",
     "ngx-toastr": "^13.2.0",
     "popper.js": "^1.16.1-lts",
     "primeng": "^12.2.2",
