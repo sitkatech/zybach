@@ -23,7 +23,7 @@ export class SensorHealthCheckComponent implements OnInit {
 
   private countdownSubject$ = new Subject();
   private countdown$ = timer(0, 1000).pipe(
-    scan(x => --x, 31),
+    scan(x => --x, 31), 
     take(31)
   );
 
@@ -49,8 +49,8 @@ export class SensorHealthCheckComponent implements OnInit {
 
     this.paigeWirelessPulse$ = timer(0, 30000).pipe(
       switchMap(() => this.sensorService.sensorsSensorNamePulseGet(this.sensorName)),
-      tap(() => this.countdownSubject$.next()),
       tap((dto) => {
+        this.countdownSubject$.next()
         this.lastUpdated = new Date;
         this.receivedDate = new Date(dto?.ReceivedDate);
         try {
