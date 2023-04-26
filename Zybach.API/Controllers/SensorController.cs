@@ -69,7 +69,6 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("sensors/{sensorName}/pulse")]
-        [ZybachViewFeature]
         public ActionResult<PaigeWirelessPulseDto> GetLatestSensorPulse([FromRoute] string sensorName)
         {
             var paigeWirelessPulseDto = PaigeWirelessPulses.GetLatestBySensorName(_dbContext, sensorName);
