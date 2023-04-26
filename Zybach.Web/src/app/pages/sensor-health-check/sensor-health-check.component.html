@@ -44,8 +44,10 @@
     
                         <ng-template #noDataFound>
                             <div>No data found for sensor <b>{{ sensorName }}</b>.</div>
-                            <div><span class="fa fa-spinner loading-spinner"></span></div>
-                            <div>Checking again in 30 seconds...</div>
+                            <div class="my-2"><span class="fa fa-spinner loading-spinner"></span></div>
+                            <div>
+                                Checking again in {{ countdownTimer$ | async }} seconds...
+                            </div>
                         </ng-template>
                     </div>
                 </div>

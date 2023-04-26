@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { Observable, Subject, Subscriber, timer } from 'rxjs';
+import { switchMap, tap, scan, take } from 'rxjs/operators';
 import { SensorService } from 'src/app/shared/generated/api/sensor.service';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { PaigeWirelessPulseDto } from 'src/app/shared/generated/model/paige-wireless-pulse-dto';
@@ -21,6 +21,16 @@ export class SensorHealthCheckComponent implements OnInit {
   public lastUpdated: Date;
   public recentPulseCutoff: Date; 
 
+  private countdownSubject$ = new Subject();
+  private countdown$ = timer(0, 1000).pipe(
+    scan(x => --x, 31), 
+    take(31)
+  );
+
+  public countdownTimer$: Observable<number> = this.countdownSubject$.pipe(
+    switchMap(() => this.countdown$)
+  );
+
   public customRichTextTypeID = CustomRichTextTypeEnum.SensorHealthCheck;
 
   constructor(
@@ -30,6 +40,8 @@ export class SensorHealthCheckComponent implements OnInit {
   ngOnInit(): void {
     this.recentPulseCutoff = new Date();
     this.recentPulseCutoff.setHours(this.recentPulseCutoff.getHours() - 6); 
+
+    this.countdownSubject$.next();
   }
 
   public getSensorPulse() {
@@ -38,6 +50,7 @@ export class SensorHealthCheckComponent implements OnInit {
     this.paigeWirelessPulse$ = timer(0, 30000).pipe(
       switchMap(() => this.sensorService.sensorsSensorNamePulseGet(this.sensorName)),
       tap((dto) => {
+        this.countdownSubject$.next()
         this.lastUpdated = new Date;
         this.receivedDate = new Date(dto?.ReceivedDate);
         try {
