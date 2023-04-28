@@ -490,9 +490,6 @@ namespace Zybach.API.Services
         ""color"": {{
           ""field"": ""DataSourceName"",
           ""type"": ""nominal"",
-          ""axis"": {{
-            ""title"": ""Data Source""
-          }},
           ""legend"": {{ ""title"": ""Data Source"", ""orient"": ""bottom"" }},
           ""scale"": {{
             ""domain"": [{string.Join(", ", domains)}],
@@ -502,7 +499,7 @@ namespace Zybach.API.Services
       }},
       ""layer"": [
         {{ ""mark"": ""line"" }},
-        {{ ""transform"": [{{ ""filter"": {{ ""selection"": ""hover"" }} }}], ""mark"": ""point"" }}
+        {{ ""transform"": [{{ ""filter"": {{ ""param"": ""hover"", ""empty"": false }} }}], ""mark"": ""point"" }}
       ]
     }},
     {{
@@ -514,10 +511,10 @@ namespace Zybach.API.Services
             ""op"": ""max""
         }}
       ],
-      ""mark"": ""rule"",
+      ""mark"": {{""type"":""rule"",""opacity"":0}},
       ""encoding"": {{
         ""opacity"": {{
-          ""condition"": {{ ""value"": 0.3, ""selection"": ""hover"" }},
+          ""condition"": {{ ""value"": 0.3, ""param"": ""hover"",""empty"":false }},
           ""value"": 0
         }},
         ""tooltip"": [
@@ -525,16 +522,12 @@ namespace Zybach.API.Services
           {string.Join(", ", tooltipFields)}
         ]
       }},
-      ""selection"": {{
-        ""hover"": {{
-          ""type"": ""single"",
-          ""fields"": [""MeasurementDate"", ""MeasurementValueString""],
-          ""nearest"": true,
-          ""on"": ""mouseover"",
-          ""empty"": ""none"",
-          ""clear"": ""mouseout""
-        }}
-      }}
+      ""params"": [
+            {{
+                ""name"": ""hover"",
+                ""select"": {{""type"": ""point"", ""on"": ""mouseover"", ""nearest"": true, ""clear"":""mouseout"", ""fields"":[""MeasurementDate""]}}
+            }}
+        ]
     }}
   ]
 }}";
