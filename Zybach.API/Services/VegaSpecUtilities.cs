@@ -484,7 +484,9 @@ namespace Zybach.API.Services
             ""title"": ""{yAxisTitle}""
           }},
           ""scale"": {{
-            ""reverse"": {yAxisScaleReverse}
+            ""reverse"": {yAxisScaleReverse},
+            ""zero"":false,
+            ""padding"":10
           }}
         }},
         ""color"": {{

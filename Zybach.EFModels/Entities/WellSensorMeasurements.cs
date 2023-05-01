@@ -126,11 +126,11 @@ namespace Zybach.EFModels.Entities
             wellSensorMeasurements = wellSensorMeasurements
                 .Where(x => x.MeasurementType.MeasurementTypeID != MeasurementType.BatteryVoltage.MeasurementTypeID).ToList();
 
-            return ZeroFillMissingDaysAsSensorMeasurementDto(wellSensorMeasurements, sensorAnomalies, retirementDate, dataSourceName,
+            return ChartDisplayAsSensorMeasurementDto(wellSensorMeasurements, sensorAnomalies, retirementDate, dataSourceName,
                 anomalousDataSourceName);
         }
 
-        public static List<SensorMeasurementDto> ZeroFillMissingDaysAsSensorMeasurementDto(List<WellSensorMeasurement> wellSensorMeasurements, List<SensorAnomaly> sensorAnomalies,
+        public static List<SensorMeasurementDto> ChartDisplayAsSensorMeasurementDto(List<WellSensorMeasurement> wellSensorMeasurements, List<SensorAnomaly> sensorAnomalies,
             DateTime? retirementDate, string dataSourceName, string anomalousDataSourceName)
         {
             var allSensorMeasurementDtos = new List<SensorMeasurementDto>();
@@ -140,7 +140,6 @@ namespace Zybach.EFModels.Entities
                 return allSensorMeasurementDtos;
             }
 
-            // first we need to zero fill missing dates, since the sensor data we get from Influx is sparse on purpose
             // to create the chart to display the non-anomalous and anomalous data together
             // we need to create two sets of data here: one for the non-anomalous and one for the anomalous
             // both series will have the same date/value data points
@@ -170,11 +169,11 @@ namespace Zybach.EFModels.Entities
             var bookendDatesOfAnomalies =
             sensorAnomalies.Select(x => x.StartDate.AddDays(-1).ToShortDateString())
                 .Union(sensorAnomalies.Select(x => x.EndDate.AddDays(1).ToShortDateString()));
-
+            
             var nonAnomalousSensorMeasurementDtos = list.Select(a =>
             {
                 var measurementDate = startDate.AddDays(a);
-                var measurementValue = measurementValues.Contains(measurementDate.ToShortDateString()) ? measurementValues[measurementDate.ToShortDateString()].Sum(x => x.MeasurementValue) : 0;
+                double? measurementValue = measurementValues.Contains(measurementDate.ToShortDateString()) ? measurementValues[measurementDate.ToShortDateString()].Sum(x => x.MeasurementValue) : null;
                 return new SensorMeasurementDto(dataSourceName, measurementDate, measurementValue, $"{measurementValue:N1} {units}", false);
             }).ToList();
 
