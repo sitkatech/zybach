@@ -117,7 +117,7 @@ export class SensorListComponent implements OnInit {
     this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
     this.createDateColumnDef(datePipe, 'Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
     this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
-    this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
+    this.createDateColumnDef(datePipe, 'Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
     {
       headerComponentFramework: FieldDefinitionGridHeaderComponent,
       headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },

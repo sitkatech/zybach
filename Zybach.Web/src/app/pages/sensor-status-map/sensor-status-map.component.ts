@@ -77,9 +77,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
   public filterMapByLastMessageAge: boolean = true;
 
-  showZeroToThirty: boolean = true;
-  showThirtyToSixty: boolean = true;
-  showSixtyPlus: boolean = true;
+  showZeroToTwo: boolean = true;
+  showTwoToEight: boolean = true;
+  showEightPlus: boolean = true;
   showNoMessageData: boolean = true;
 
   showLessThan2500: boolean = false;
@@ -120,7 +120,6 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     private nominatimService: NominatimService,
     private toastr: ToastrService
   ) { }
-
 
   public ngOnInit(): void {
     this.boundingBox = DefaultBoundingBox;
@@ -198,11 +197,11 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         var maxMessageAge = Math.max(...sensorMessageAges);
 
         let icon;
-        if (!sensorMessageAges.some(x => x !== null)) {
+        if (!sensorMessageAges.some(x => x != null)) {
           icon = SensorStatusMapComponent.greyMarkerIcon;
-        } else if (maxMessageAge <= 3600 * 2) {
+        } else if (maxMessageAge <= 60 * 2) {
           icon = SensorStatusMapComponent.blueMarkerIcon;
-        } else if (maxMessageAge <= 3600 * 8) {
+        } else if (maxMessageAge <= 60 * 8) {
           icon = SensorStatusMapComponent.yellowMarkerIcon;
         } else {
           icon = SensorStatusMapComponent.redMarkerIcon;
@@ -215,9 +214,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
 
         return (this.showNoMessageData && maxMessageAge === null) ||
-          (this.showZeroToThirty && maxMessageAge <= 3600 * 2 && maxMessageAge != null) ||
-          (this.showThirtyToSixty && 3600 * 2 < maxMessageAge && maxMessageAge <= 3600 * 8) ||
-          (this.showSixtyPlus && maxMessageAge > 3600 * 8 )
+          (this.showZeroToTwo && maxMessageAge <= 60 * 2 && maxMessageAge != null) ||
+          (this.showTwoToEight && 60 * 2 < maxMessageAge && maxMessageAge <= 60 * 8) ||
+          (this.showEightPlus && maxMessageAge > 60 * 8 )
       }
     });
   }
@@ -328,9 +327,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       this.setLastMessageAgeFilterOptionsDropdownList();
       this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS, MapFilterOption.NO_MESSAGE_DATA];
 
-      this.showZeroToThirty = true;
-      this.showThirtyToSixty = true;
-      this.showSixtyPlus = true;
+      this.showZeroToTwo = true;
+      this.showTwoToEight = true;
+      this.showEightPlus = true;
       this.showNoMessageData = true;
 
       this.showLessThan2500 = false;
@@ -342,9 +341,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       this.setVoltageFilterOptionsDropdownList();
       this.selectedFilterOptions = [MapFilterOption.LESS_THAN_2500, MapFilterOption.FROM_2500_TO_2700, MapFilterOption.FROM_2700_TO_4000, MapFilterOption.GREATER_THAN_4000, MapFilterOption.NO_VOLTAGE_DATA];
   
-      this.showZeroToThirty = false;
-      this.showThirtyToSixty = false;
-      this.showSixtyPlus = false;
+      this.showZeroToTwo = false;
+      this.showTwoToEight = false;
+      this.showEightPlus = false;
       this.showNoMessageData = false;
   
       this.showLessThan2500 = true;
@@ -379,9 +378,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   }
 
   private updateLastMessageAgeMapFilter() {
-    this.showZeroToThirty = this.selectedFilterOptions.includes(MapFilterOption.TWO_HOURS)
-    this.showThirtyToSixty = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_HOURS)
-    this.showSixtyPlus = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_PLUS_HOURS)
+    this.showZeroToTwo = this.selectedFilterOptions.includes(MapFilterOption.TWO_HOURS)
+    this.showTwoToEight = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_HOURS)
+    this.showEightPlus = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_PLUS_HOURS)
     this.showNoMessageData = this.selectedFilterOptions.includes(MapFilterOption.NO_MESSAGE_DATA)
   }
 
