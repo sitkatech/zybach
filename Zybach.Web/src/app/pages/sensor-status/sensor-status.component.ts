@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.service';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
@@ -20,27 +21,31 @@ import { ColDef } from 'ag-grid-community';
   styleUrls: ['./sensor-status.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class SensorStatusComponent implements OnInit {
+export class SensorStatusComponent implements OnInit, OnDestroy {
   @ViewChild("wellsGrid") wellsGrid: any;
   @ViewChild("wellMap") wellMap: WellMapComponent;
 
-  public watchUserChangeSubscription: any;
+  public watchUserChangeSubscription: Subscription;
   public currentUser: UserDto;
-  public wellsGeoJson: any;
-  public redSensors: any[];
+
+  public wellsGeoJson: object;
+  public redSensors: SensorMessageAgeDto[];
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
+
+  private static messageAgeMax = 480; // 8 hours in minutes
+  private static voltageReadingMin = 2500;
 
   constructor(
     private authenticationService: AuthenticationService,
     private sensorStatusService: SensorStatusService,
     private utilityFunctionsService: UtilityFunctionsService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.createColumnDefs();
 
-    this.authenticationService.getCurrentUser().subscribe(currentUser => {
+    this.watchUserChangeSubscription = this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.sensorStatusService.sensorStatusGet().subscribe(wells => {
         this.wellsGeoJson =
@@ -60,23 +65,32 @@ export class SensorStatusComponent implements OnInit {
               return geoJsonPoint;
             })
         }
-        this.redSensors = wells.reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
-          sensors.concat(well.Sensors.map(sensor => ({ ...sensor, WellID: well.WellID, WellRegistrationID: well.WellRegistrationID, AgHubRegisteredUser: well.AgHubRegisteredUser, fieldName: well.FieldName}))
-        ), []).filter(sensor => sensor.IsActive && (sensor.MessageAge > 3600 * 8 || 
-          (sensor.LastVoltageReading != null && sensor.LastVoltageReading < 2500) || 
+
+        this.redSensors = wells
+        .reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
+          sensors.concat(well.Sensors.map(sensor => ({
+            ...sensor, 
+            WellID: well.WellID, 
+            WellRegistrationID: well.WellRegistrationID, 
+            AgHubRegisteredUser: well.AgHubRegisteredUser, 
+            fieldName: well.FieldName
+          }))
+        ), [])
+        .filter(sensor => sensor.IsActive && (sensor.MessageAge > SensorStatusComponent.messageAgeMax || 
+          (sensor.LastVoltageReading != null && sensor.LastVoltageReading < SensorStatusComponent.voltageReadingMin) || 
           (sensor.ContinuityMeterStatus && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatus.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)
-        )).sort((a, b) => a.LastReadingDate == b.LastReadingDate ? 0 : a.LastReadingDate > b.LastReadingDate ? 1 : -1);
+        ))
+        .sort((a, b) => a.LastReadingDate == b.LastReadingDate ? 0 : a.LastReadingDate > b.LastReadingDate ? 1 : -1);
       });
     });
   }
 
+  ngOnDestroy(): void {
+    this.watchUserChangeSubscription.unsubscribe();
+  }
+
   private createColumnDefs() {
-    this.defaultColDef = {
-      filter: true,
-      sortable: true,
-      resizable: true,
-      width: 125
-    };
+    this.defaultColDef = { filter: true, sortable: true, resizable: true, width: 125 };
 
     this.columnDefs = [
       {
@@ -141,7 +155,7 @@ export class SensorStatusComponent implements OnInit {
         filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
       },
       { headerName: 'Last Message Age (Hours)',
-        valueGetter: (params) => params.data.MessageAge ? Math.floor(params.data.MessageAge / 3600) : null,
+        valueGetter: (params) => params.data.MessageAge ? Math.floor(params.data.MessageAge / 60) : null,
         valueFormatter: params => params.value != null ? params.value : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
@@ -156,7 +170,7 @@ export class SensorStatusComponent implements OnInit {
         },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       },
-      this.utilityFunctionsService.createDateColumnDef('Last Reading Date', 'LastReadingDate', 'M/d/yyyy', null, 120),
+      this.utilityFunctionsService.createDateColumnDef('Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', null, 120),
       {
         headerComponentFramework: FieldDefinitionGridHeaderComponent,
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
@@ -188,14 +202,11 @@ export class SensorStatusComponent implements OnInit {
 
   public onMapSelection(wellRegistrationID: string) {
     this.wellsGrid.api.deselectAll();
-    let firstRecordMadeVisible = false;
+
     this.wellsGrid.api.forEachNode(node => {
       if (node.data.WellRegistrationID === wellRegistrationID) {
         node.setSelected(true);
-        if (!firstRecordMadeVisible) {
-          this.wellsGrid.ensureIndexVisible(node.rowIndex, "top");
-          firstRecordMadeVisible = true;
-        }
+        this.wellsGrid.api.ensureIndexVisible(node.rowIndex, "top");
       }
     })
   }
