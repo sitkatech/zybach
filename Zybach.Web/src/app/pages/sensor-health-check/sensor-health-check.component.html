@@ -31,19 +31,20 @@
                 <div class="card mt-3">
                     <div class="card-body text-center">
                         <ng-container *ngIf="paigeWirelessPulse$ | async; else noDataFound">
-                            <div>
-                                {{ receivedDate >= recentPulseCutoff ? 'R' : 'No r' }}ecent data found for sensor <b>{{ sensorName }}</b>.
-                            </div>
+                            {{ receivedDate >= recentPulseCutoffDate ? 'One or more' : 'No'}} 
+                            messages received from sensor <b>{{ sensorName }}</b> within the last {{ getRecentPulseCutoffHours() }} hours.
+                            
                             <div class="mt-2">
-                                <i [ngClass]="receivedDate >= recentPulseCutoff ? 'fa fa-check-circle text-success fa-2xl' : 'fa fa-times-circle text-danger'" style="font-size: 24px;"></i>
+                                <i [ngClass]="receivedDate >= recentPulseCutoffDate ? 'fa fa-check-circle text-success fa-2xl' : 'fa fa-times-circle text-secondary'" style="font-size: 24px;"></i>
                             </div>
+
                             <div class="mt-1">
-                                Most recent sensor message was received {{ receivedDate | timeago }}.
+                                The most recent message was received {{ receivedDate | timeago }}.
                             </div>
                         </ng-container>
     
                         <ng-template #noDataFound>
-                            <div>No data found for sensor <b>{{ sensorName }}</b>.</div>
+                            <div>No messages found for sensor <b>{{ sensorName }}</b>.</div>
                             <div class="my-2"><span class="fa fa-spinner loading-spinner"></span></div>
                             <div>
                                 Checking again in {{ countdownTimer$ | async }} seconds...
@@ -58,7 +59,7 @@
         <div class="row mt-3" *ngIf="eventMessage">
             <div class="col-md-8 m-auto">
                 <h3>Most Recent Message Details</h3>
-                <p>Message was received on {{ receivedDate | date:"shortDate" }} at {{ receivedDate | date:"shortTime" }}</p>
+                <p>Message received on {{ receivedDate | date:"shortDate" }} at {{ receivedDate | date:"shortTime" }}</p>
             </div>
             
             <div class="col-md-8 m-auto">
