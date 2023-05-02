@@ -9,8 +9,8 @@ public class PaigeWirelessPulses
 {
     public static PaigeWirelessPulseDto GetLatestBySensorName(ZybachDbContext dbContext, string sensorName)
     {
-        return dbContext.PaigeWirelessPulses.Where(x => x.SensorName == sensorName)
-            .OrderByDescending(x => x.EventMessage).FirstOrDefault()?.AsDto();
+        return dbContext.PaigeWirelessPulses.Where(x => x.SensorName == sensorName).AsEnumerable()
+            .MaxBy(x => x.ReceivedDate)?.AsDto();
     }
 
     public static IDictionary<string, int> GetLastMessageAgesBySensorName(ZybachDbContext dbContext)
