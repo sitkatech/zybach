@@ -38,7 +38,11 @@
                                     <field-definition [fieldDefinitionType]="'SensorLastMessageAgeHours'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.MessageAge}}</div>
+                                <div class="col-12 col-sm-6 mt-1 text-left">
+                                    <span *ngIf="sensor.MessageAge != null; else notApplicable">
+                                        {{ math.floor(sensor.MessageAge / 60) }} hours {{ sensor.MessageAge % 60}} mins
+                                    </span>
+                                </div>
                                 <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastVoltageReading'">
                                     </field-definition>:

@@ -243,7 +243,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
 
       for (var sensor of this.sensorsWithStatus){
-        sensor.MessageAge = Math.floor(sensor.MessageAge / 3600)
+        sensor.MessageAge = Math.floor(sensor.MessageAge / 60)
       }
     });
   }

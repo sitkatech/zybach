@@ -89,7 +89,6 @@ namespace Zybach.API.Controllers
         public async Task<WellWithSensorMessageAgeDto> GetSensorMessageAgesForWell([FromRoute] int wellID)
         {
             var well = Wells.GetByIDAsWellWithSensorSimpleDto(_dbContext, wellID);
-            var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
             return new WellWithSensorMessageAgeDto
             {
@@ -102,9 +101,8 @@ namespace Zybach.API.Controllers
                 {
                     try
                     {
-                        var messageAge = sensorMessageAges.ContainsKey(sensor.SensorName)
-                            ? sensorMessageAges[sensor.SensorName]
-                            : (int?)null;
+                        var messageAge = PaigeWirelessPulses.GetLastMessageAgeBySensorName(_dbContext, sensor.SensorName);
+
                         return new SensorMessageAgeDto
                         {
                             SensorName = sensor.SensorName,
