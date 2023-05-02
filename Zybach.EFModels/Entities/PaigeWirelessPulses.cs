@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Zybach.Models.DataTransferObjects;
 
@@ -11,6 +11,19 @@ public class PaigeWirelessPulses
     {
         return dbContext.PaigeWirelessPulses.Where(x => x.SensorName == sensorName)
             .OrderByDescending(x => x.EventMessage).FirstOrDefault()?.AsDto();
+    }
+
+    public static IDictionary<string, int> GetLastMessageAgesBySensorName(ZybachDbContext dbContext)
+    {
+        var currentDate = DateTime.UtcNow;
+        return dbContext.PaigeWirelessPulses.AsEnumerable()
+            .GroupBy(x => x.SensorName)
+            .ToDictionary(x => x.Key, y =>
+            {
+                var lastReceivedDate = y.MaxBy(z => z.ReceivedDate)!.ReceivedDate;
+                var messageAge = currentDate - lastReceivedDate;
+                return (int) messageAge.TotalMinutes;
+            });
     }
 
     public static void Create(ZybachDbContext dbContext, SensorPulseDto sensorPulseDto)
