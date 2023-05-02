@@ -26,6 +26,19 @@ public class PaigeWirelessPulses
             });
     }
 
+    public static int? GetLastMessageAgeBySensorName(ZybachDbContext dbContext, string sensorName)
+    {
+        var currentDate = DateTime.UtcNow;
+
+        var lastReceivedDate = dbContext.PaigeWirelessPulses.Where(x => x.SensorName == sensorName).AsEnumerable()
+            .MaxBy(x => x.ReceivedDate)?.ReceivedDate;
+
+        if (lastReceivedDate == null) return null;
+
+        var messageAge = currentDate - (DateTime) lastReceivedDate;
+        return (int) messageAge.TotalMinutes;
+    }
+
     public static void Create(ZybachDbContext dbContext, SensorPulseDto sensorPulseDto)
     {
         var paigeWirelessPulse = new PaigeWirelessPulse()

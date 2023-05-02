@@ -29,32 +29,28 @@ namespace Zybach.API.Controllers
         public async Task<List<SensorSimpleDto>> List()
         {
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
-            var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
+            var sensorMessageAges = PaigeWirelessPulses.GetLastMessageAgesBySensorName(_dbContext);
 
             var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
 
             foreach (var sensorSimpleDto in sensorSimpleDtos)
             {
-                var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
-                        ? sensorMessageAges[sensorSimpleDto.SensorName]
-                        : (int?)null;
+                sensorSimpleDto.MessageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName) ? sensorMessageAges[sensorSimpleDto.SensorName] : (int?)null; ;
 
-                sensorSimpleDto.MessageAge = messageAge;
+                if (!wellSensorMeasurementsBySensor.Contains(sensorSimpleDto.SensorName)) continue;
 
-                if (wellSensorMeasurementsBySensor.Contains(sensorSimpleDto.SensorName))
-                {
-                    var wellSensorMeasurementsExcludingBatteryVoltage = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
-                            .Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
+                var wellSensorMeasurementsExcludingBatteryVoltage = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
+                    .Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
 
-                    sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.MeasurementDate);
-                    sensorSimpleDto.LastReadingDate = wellSensorMeasurementsExcludingBatteryVoltage.Any() ? wellSensorMeasurementsExcludingBatteryVoltage.Max(x => x.MeasurementDate) : null;
+                sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.MeasurementDate);
+                sensorSimpleDto.LastReadingDate = wellSensorMeasurementsExcludingBatteryVoltage.Any() ? wellSensorMeasurementsExcludingBatteryVoltage.Max(x => x.MeasurementDate) : null;
                     
-                    var lastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
-                        .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID)
-                        .MaxBy(x => x.MeasurementDate);
-                    sensorSimpleDto.LastVoltageReading = lastVoltageReading?.MeasurementValue;
-                    sensorSimpleDto.LastVoltageReadingDate = lastVoltageReading?.MeasurementDate;
-                }
+                var lastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
+                    .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID)
+                    .MaxBy(x => x.MeasurementDate);
+
+                sensorSimpleDto.LastVoltageReading = lastVoltageReading?.MeasurementValue;
+                sensorSimpleDto.LastVoltageReadingDate = lastVoltageReading?.MeasurementDate;
             }
 
             return sensorSimpleDtos;
@@ -82,11 +78,7 @@ namespace Zybach.API.Controllers
             if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
 
             var sensorSimpleDto = sensor.AsSimpleDto();
-            var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
-            var messageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName)
-                ? sensorMessageAges[sensorSimpleDto.SensorName]
-                : (int?)null;
-            sensorSimpleDto.MessageAge = messageAge;
+            sensorSimpleDto.MessageAge = PaigeWirelessPulses.GetLastMessageAgeBySensorName(_dbContext, sensor.SensorName);
 
             var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking()
                 .Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
