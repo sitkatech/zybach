@@ -327,13 +327,13 @@ namespace Zybach.EFModels.Entities
     public partial class FieldDefinitionTypeSensorFirstReadingDate : FieldDefinitionType
     {
         private FieldDefinitionTypeSensorFirstReadingDate(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
-        public static readonly FieldDefinitionTypeSensorFirstReadingDate Instance = new FieldDefinitionTypeSensorFirstReadingDate(19, @"SensorFirstReadingDate", @"First Reading Date");
+        public static readonly FieldDefinitionTypeSensorFirstReadingDate Instance = new FieldDefinitionTypeSensorFirstReadingDate(19, @"SensorFirstReadingDate", @"First Measurement Date");
     }
 
     public partial class FieldDefinitionTypeSensorLastReadingDate : FieldDefinitionType
     {
         private FieldDefinitionTypeSensorLastReadingDate(int fieldDefinitionTypeID, string fieldDefinitionTypeName, string fieldDefinitionTypeDisplayName) : base(fieldDefinitionTypeID, fieldDefinitionTypeName, fieldDefinitionTypeDisplayName) {}
-        public static readonly FieldDefinitionTypeSensorLastReadingDate Instance = new FieldDefinitionTypeSensorLastReadingDate(20, @"SensorLastReadingDate", @"Last Reading Date");
+        public static readonly FieldDefinitionTypeSensorLastReadingDate Instance = new FieldDefinitionTypeSensorLastReadingDate(20, @"SensorLastReadingDate", @"Last Measurement Date");
     }
 
     public partial class FieldDefinitionTypeSensorStatus : FieldDefinitionType

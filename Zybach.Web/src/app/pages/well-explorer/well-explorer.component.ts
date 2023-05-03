@@ -163,7 +163,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterLevelInspectionParticipation},
         sortable: true, resizable: true
       },
-      this.createDateColumnDef(datePipe, 'Last Reading Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
+      this.createDateColumnDef(datePipe, 'Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
       this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
       {
         headerName: "Has Flow Meter?",

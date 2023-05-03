@@ -33,7 +33,7 @@ namespace Zybach.API.Controllers
         {
             var wellSummariesWithSensors = _wellService.GetAghubAndGeoOptixWells()
                 .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)).ToList();
-            var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
+            var sensorMessageAgesBySensorName = PaigeWirelessPulses.GetLastMessageAgesBySensorName(_dbContext);
 
             var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking().ToList();
             var wellSensorMeasurementsBySensorExcludingBatteryVoltage = wellSensorMeasurements.Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToLookup(x => x.SensorName);
@@ -50,11 +50,11 @@ namespace Zybach.API.Controllers
                 {
                     try
                     {
-                        var messageAge = sensorMessageAges.ContainsKey(sensor.SensorName)
-                            ? sensorMessageAges[sensor.SensorName]
-                            : (int?) null;
+                        var messageAge = sensorMessageAgesBySensorName.ContainsKey(sensor.SensorName)
+                            ? sensorMessageAgesBySensorName[sensor.SensorName] : (int?) null;
+
                         var lastReadingDate = wellSensorMeasurementsBySensorExcludingBatteryVoltage.Contains(sensor.SensorName)
-                                ? wellSensorMeasurementsBySensorExcludingBatteryVoltage[sensor.SensorName].Max(x => x.MeasurementDate) : (DateTime?)null;
+                            ? wellSensorMeasurementsBySensorExcludingBatteryVoltage[sensor.SensorName].Max(x => x.MeasurementDate) : (DateTime?)null;
                         var lastVoltageReading = batteryVoltagesBySensor.Contains(sensor.SensorName) 
                             ? batteryVoltagesBySensor[sensor.SensorName].MaxBy(x => x.MeasurementDate) : null;
                         
@@ -89,7 +89,6 @@ namespace Zybach.API.Controllers
         public async Task<WellWithSensorMessageAgeDto> GetSensorMessageAgesForWell([FromRoute] int wellID)
         {
             var well = Wells.GetByIDAsWellWithSensorSimpleDto(_dbContext, wellID);
-            var sensorMessageAges = await _influxDbService.GetLastMessageAgeBySensor();
 
             return new WellWithSensorMessageAgeDto
             {
@@ -102,9 +101,8 @@ namespace Zybach.API.Controllers
                 {
                     try
                     {
-                        var messageAge = sensorMessageAges.ContainsKey(sensor.SensorName)
-                            ? sensorMessageAges[sensor.SensorName]
-                            : (int?)null;
+                        var messageAge = PaigeWirelessPulses.GetLastMessageAgeBySensorName(_dbContext, sensor.SensorName);
+
                         return new SensorMessageAgeDto
                         {
                             SensorName = sensor.SensorName,

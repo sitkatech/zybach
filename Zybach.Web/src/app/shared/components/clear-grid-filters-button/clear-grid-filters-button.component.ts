@@ -15,8 +15,8 @@ export class ClearGridFiltersButtonComponent {
   }  
 
   public isFilterActive() {
-    if (this.grid && this.grid.api) {
-      return this.grid.api.isAnyFilterPresent();
-    }
+    if (!this.grid || !this.grid.api) return false;
+    
+    return this.grid.api.isAnyFilterPresent();
   }
 }

@@ -20,6 +20,7 @@ export class WellWaterDataTabComponent implements OnInit {
   public sensorChartData: SensorChartDataDto;
 
   public isLoadingSubmit: boolean = false;
+  public math = Math;
 
   constructor(
     private wellService: WellService,
@@ -48,9 +49,9 @@ export class WellWaterDataTabComponent implements OnInit {
     this.sensorService.sensorStatusWellIDGet(this.well.WellID).subscribe(wellWithSensorMessageAge => {
       this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
 
-      for (var sensor of this.sensorsWithStatus){
-        sensor.MessageAge = Math.floor(sensor.MessageAge / 3600)
-      }
+      // for (var sensor of this.sensorsWithStatus){
+      //   sensor.MessageAge = Math.floor(sensor.MessageAge / 60)
+      // }
     });
   }
 

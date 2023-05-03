@@ -19,7 +19,7 @@ export class SensorHealthCheckComponent implements OnInit {
   public eventMessage: JSON | string;
   public receivedDate: Date;
   public lastUpdated: Date;
-  public recentPulseCutoff: Date; 
+  public recentPulseCutoffDate: Date; 
 
   private countdownSubject$ = new Subject();
   private countdown$ = timer(0, 1000).pipe(
@@ -32,14 +32,15 @@ export class SensorHealthCheckComponent implements OnInit {
   );
 
   public customRichTextTypeID = CustomRichTextTypeEnum.SensorHealthCheck;
+  private static recentPulseCutoffHours = 8;
 
   constructor(
     private sensorService: SensorService
   ) {}
 
   ngOnInit(): void {
-    this.recentPulseCutoff = new Date();
-    this.recentPulseCutoff.setHours(this.recentPulseCutoff.getHours() - 6); 
+    this.recentPulseCutoffDate = new Date();
+    this.recentPulseCutoffDate.setHours(this.recentPulseCutoffDate.getHours() - SensorHealthCheckComponent.recentPulseCutoffHours); 
 
     this.countdownSubject$.next();
   }
@@ -60,5 +61,9 @@ export class SensorHealthCheckComponent implements OnInit {
         }
       })
     );
+  }
+
+  public getRecentPulseCutoffHours(): number {
+    return SensorHealthCheckComponent.recentPulseCutoffHours;
   }
 }

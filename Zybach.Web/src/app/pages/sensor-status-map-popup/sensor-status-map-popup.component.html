@@ -6,7 +6,13 @@
 
 <div *ngFor="let sensor of sensors">
     <hr class="mt-0">
-    <label class="rowHeader">{{getSensorDisplay(sensor)}}</label><br />
-    <label class="rowHeader">Last Message Received:</label> {{getLastMessageReceived(sensor)}}<br />
-    <label class="rowHeader">Last Voltage Reading:</label> {{getLastVoltageReading(sensor)}}
+    <label class="rowHeader">{{ sensor.SensorTypeName }} {{ sensor.SensorName ? '(' + sensor.SensorName + ')' : '' }}</label><br />
+    
+    <label class="rowHeader">Last Message Age:</label>
+    <span *ngIf="sensor.MessageAge != null; else notAvailable">{{ math.floor(sensor.MessageAge / 60) }} hours {{ sensor.MessageAge % 60 }} mins</span><br />
+    
+    <label class="rowHeader">Last Voltage Reading:</label> 
+    <span *ngIf="sensor.LastVoltageReading != null; else notAvailable">{{ sensor.LastVoltageReading | number:"1.0-0" }} mV</span>
 </div>
+
+<ng-template #notAvailable>N/A</ng-template>
