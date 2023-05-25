@@ -82,7 +82,7 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
         cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/well-groups/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
-        filterValueGetter: params => params.data.WellGroupID
+        filterValueGetter: params => params.data.WellGroupName
       },
       {
         headerName: 'Wells', width: 300,
