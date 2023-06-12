@@ -61,29 +61,26 @@ namespace Zybach.API
 
         private void PopulateWellSensorMeasurementsForWell(AgHubWellStaging agHubWellStaging, string wellRegistrationID)
         {
-            if (agHubWellStaging.HasElectricalData)
+            var pumpedVolumeResult =
+                _agHubService.GetPumpedVolume(wellRegistrationID, AgHubWellPumpedVolumeStartDate).Result;
+            if (pumpedVolumeResult is { PumpedVolumeTimeSeries: { } })
             {
-                var pumpedVolumeResult =
-                    _agHubService.GetPumpedVolume(wellRegistrationID, AgHubWellPumpedVolumeStartDate).Result;
-                if (pumpedVolumeResult is { PumpedVolumeTimeSeries: { } })
+                var pumpedVolumeTimePoints =
+                    pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.PumpedVolumeGallons > 0).ToList();
+                if (pumpedVolumeTimePoints.Any())
                 {
-                    var pumpedVolumeTimePoints =
-                        pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.PumpedVolumeGallons > 0).ToList();
-                    if (pumpedVolumeTimePoints.Any())
-                    {
-                        var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
-                            pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
-                            {
-                                SensorName = $"E-{wellRegistrationID.ToUpper()}",
-                                MeasurementTypeID = (int)MeasurementTypeEnum.ElectricalUsage,
-                                ReadingYear = pumpedVolumeTimeSeries.MeasurementDate.Year,
-                                ReadingMonth = pumpedVolumeTimeSeries.MeasurementDate.Month,
-                                ReadingDay = pumpedVolumeTimeSeries.MeasurementDate.Day,
-                                MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
-                                WellRegistrationID = wellRegistrationID
-                            }).ToList();
-                        _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
-                    }
+                    var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
+                        pumpedVolumeTimeSeries => new WellSensorMeasurementStaging
+                        {
+                            SensorName = $"E-{wellRegistrationID.ToUpper()}",
+                            MeasurementTypeID = (int)MeasurementTypeEnum.ElectricalUsage,
+                            ReadingYear = pumpedVolumeTimeSeries.MeasurementDate.Year,
+                            ReadingMonth = pumpedVolumeTimeSeries.MeasurementDate.Month,
+                            ReadingDay = pumpedVolumeTimeSeries.MeasurementDate.Day,
+                            MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
+                            WellRegistrationID = wellRegistrationID
+                        }).ToList();
+                    _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
                 }
             }
         }

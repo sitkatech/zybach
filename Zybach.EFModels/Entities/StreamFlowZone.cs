@@ -16,21 +16,46 @@ namespace Zybach.EFModels.Entities
         {
             var streamFlowZones = dbContext.StreamFlowZones.AsNoTracking().ToList();
             var agHubWells = GetAghubWellsWithElectricalData(dbContext);
-            var streamFlowZoneWellsDtos = streamFlowZones.Select(streamFlowZone => new StreamFlowZoneWellsDto
+            var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsByMeasurementType(dbContext,
+                MeasurementTypeEnum.ElectricalUsage);
+            var streamFlowZoneWellsDtos = streamFlowZones.Select(streamFlowZone =>
                 {
-                    StreamFlowZone = streamFlowZone.AsDto(),
-                    Wells = agHubWells.Where(x => x.Well.StreamflowZoneID == streamFlowZone.StreamFlowZoneID)
-                        .Select(x =>
+                    var streamFlowZoneWellsDto = new StreamFlowZoneWellsDto
+                    {
+                        StreamFlowZone = streamFlowZone.AsDto()
+                    };
+                    var wellWithIrrigatedAcresDtos = new List<WellWithIrrigatedAcresDto>();
+                    // to be included in the list of wells, there are WellSesnsorMeasurement values for this well for MeasurementTypeID = 3 (Electrical Usage)
+                    foreach (var agHubWell in agHubWells.Where(x => x.Well.StreamflowZoneID == streamFlowZone.StreamFlowZoneID))
+                    {
+                        var wellSensorMeasurementsForThisWell = wellSensorMeasurementDtos.Where(y => y.WellRegistrationID == agHubWell.Well.WellRegistrationID).ToList();
+                        if (wellSensorMeasurementsForThisWell.Any())
                         {
                             var wellWithIrrigatedAcresDto = new WellWithIrrigatedAcresDto
                             {
-                                WellRegistrationID = x.Well.WellRegistrationID,
-                                IrrigatedAcresPerYear = x.AgHubWellIrrigatedAcres.Select(y =>
-                                    new IrrigatedAcresPerYearDto {Year = y.IrrigationYear, Acres = y.Acres}).ToList()
+                                WellRegistrationID = agHubWell.Well.WellRegistrationID
                             };
-                            return wellWithIrrigatedAcresDto;
-                        })
-                        .ToList()
+                            var irrigatedAcresPerYears = new List<IrrigatedAcresPerYearDto>();
+
+                            foreach (var agHubWellIrrigatedAcre in agHubWell.AgHubWellIrrigatedAcres)
+                            {
+                                if (wellSensorMeasurementsForThisWell.Where(y => y.ReadingYear == agHubWellIrrigatedAcre.IrrigationYear).Sum(x => x.MeasurementValue) > 0)
+                                {
+
+                                    irrigatedAcresPerYears.Add(new IrrigatedAcresPerYearDto
+                                    {
+                                        Acres = agHubWellIrrigatedAcre.Acres,
+                                        Year = agHubWellIrrigatedAcre.IrrigationYear
+                                    });
+                                }
+                            }
+
+                            wellWithIrrigatedAcresDto.IrrigatedAcresPerYear = irrigatedAcresPerYears;
+                            wellWithIrrigatedAcresDtos.Add(wellWithIrrigatedAcresDto);
+                        }
+                    }
+                    streamFlowZoneWellsDto.Wells = wellWithIrrigatedAcresDtos;
+                    return streamFlowZoneWellsDto;
                 })
                 .ToList();
             return streamFlowZoneWellsDtos;
@@ -38,8 +63,7 @@ namespace Zybach.EFModels.Entities
 
         private static List<AgHubWell> GetAghubWellsWithElectricalData(ZybachDbContext dbContext)
         {
-            return dbContext.AgHubWells.Include(x => x.Well).Include(x => x.AgHubWellIrrigatedAcres).AsNoTracking()
-                .Where(x => x.HasElectricalData).ToList();
+            return dbContext.AgHubWells.Include(x => x.Well).Include(x => x.AgHubWellIrrigatedAcres).AsNoTracking().ToList();
         }
     }
 }

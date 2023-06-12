@@ -8,6 +8,15 @@ namespace Zybach.EFModels.Entities
 {
     public static class WellSensorMeasurements
     {
+        public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementType(
+            ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum)
+        {
+            return GetWellSensorMeasurementsImpl(dbContext)
+                .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum
+                ).Select(x => x.AsDto())
+                .ToList();
+        }
+
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementTypeAndYear(
             ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum, int year)
         {
