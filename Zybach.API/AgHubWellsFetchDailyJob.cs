@@ -65,8 +65,7 @@ namespace Zybach.API
                 _agHubService.GetPumpedVolume(wellRegistrationID, AgHubWellPumpedVolumeStartDate).Result;
             if (pumpedVolumeResult is { PumpedVolumeTimeSeries: { } })
             {
-                var pumpedVolumeTimePoints =
-                    pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.PumpedVolumeGallons > 0).ToList();
+                var pumpedVolumeTimePoints = pumpedVolumeResult.PumpedVolumeTimeSeries.ToList();
                 if (pumpedVolumeTimePoints.Any())
                 {
                     var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
