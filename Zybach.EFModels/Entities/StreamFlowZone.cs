@@ -39,7 +39,7 @@ namespace Zybach.EFModels.Entities
 
                             foreach (var agHubWellIrrigatedAcre in agHubWell.AgHubWellIrrigatedAcres)
                             {
-                                if (wellSensorMeasurementsForThisWell.Where(y => y.ReadingYear == agHubWellIrrigatedAcre.IrrigationYear).Sum(x => x.MeasurementValue) > 0)
+                                if (wellSensorMeasurementsForThisWell.Any(y => y.ReadingYear == agHubWellIrrigatedAcre.IrrigationYear && (y.IsElectricSource ?? false)))
                                 {
 
                                     irrigatedAcresPerYears.Add(new IrrigatedAcresPerYearDto

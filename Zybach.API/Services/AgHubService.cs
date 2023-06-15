@@ -164,6 +164,7 @@ namespace Zybach.API.Services
             [JsonProperty("intervalDate")]
             public DateTime MeasurementDate { get; set; }
             public double PumpedVolumeGallons { get; set; }
+            public bool IsElectricSource { get; set; }
         }
 
         public class IrrigationUnitDetailsPerYear

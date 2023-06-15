@@ -65,7 +65,7 @@ namespace Zybach.API
                 _agHubService.GetPumpedVolume(wellRegistrationID, AgHubWellPumpedVolumeStartDate).Result;
             if (pumpedVolumeResult is { PumpedVolumeTimeSeries: { } })
             {
-                var pumpedVolumeTimePoints = pumpedVolumeResult.PumpedVolumeTimeSeries.ToList();
+                var pumpedVolumeTimePoints = pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.IsElectricSource).ToList();
                 if (pumpedVolumeTimePoints.Any())
                 {
                     var wellSensorMeasurementStagings = pumpedVolumeTimePoints.Select(
@@ -77,7 +77,9 @@ namespace Zybach.API
                             ReadingMonth = pumpedVolumeTimeSeries.MeasurementDate.Month,
                             ReadingDay = pumpedVolumeTimeSeries.MeasurementDate.Day,
                             MeasurementValue = pumpedVolumeTimeSeries.PumpedVolumeGallons,
-                            WellRegistrationID = wellRegistrationID
+                            WellRegistrationID = wellRegistrationID,
+                            IsElectricSource = pumpedVolumeTimeSeries.IsElectricSource
+
                         }).ToList();
                     _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
                 }
