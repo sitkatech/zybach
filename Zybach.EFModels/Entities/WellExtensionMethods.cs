@@ -19,6 +19,7 @@ namespace Zybach.EFModels.Entities
         static partial void DoCustomSimpleDtoMappings(Well well, WellSimpleDto wellSimpleDto)
         {
             wellSimpleDto.WellParticipationName = well.WellParticipation?.WellParticipationDisplayName;
+            wellSimpleDto.Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X)));
         }
 
         public static WellWaterQualityInspectionSummaryDto AsWellWaterQualityInspectionSummaryDto(this Well well)
