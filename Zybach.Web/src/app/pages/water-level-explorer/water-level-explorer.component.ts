@@ -1,16 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
-import { WellWaterLevelMapSummaryDto } from 'src/app/shared/generated/model/well-water-level-map-summary-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { WellWaterLevelMapComponent } from '../well-water-level-map/well-water-level-map.component';
 import { forkJoin } from 'rxjs';
-import { MapDataService } from 'src/app/shared/generated/api/map-data.service';
-import { WellService } from 'src/app/shared/generated/api/well.service';
 import { SensorChartDataDto } from 'src/app/shared/generated/model/sensor-chart-data-dto';
 import { default as vegaEmbed } from 'vega-embed';
 import { WellGroupService } from 'src/app/shared/generated/api/well-group.service';
-import { WellGroupSimpleDto } from 'src/app/shared/generated/model/well-group-simple-dto';
 import { WellGroupDto } from 'src/app/shared/generated/model/well-group-dto';
 import { WaterLevelInspectionsChartDataDto } from 'src/app/shared/generated/model/water-level-inspections-chart-data-dto';
 import { AsyncParser } from 'json2csv';
@@ -41,8 +36,6 @@ export class WaterLevelExplorerComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private cdr: ChangeDetectorRef,
-    private mapDataService: MapDataService,
-    private wellService: WellService,
     private wellGroupService: WellGroupService
   ) { }
 
@@ -164,69 +157,4 @@ export class WaterLevelExplorerComponent implements OnInit {
 
     return dataForDownload;
   }
-
-  // async exportChartData(){
-  //   const pivoted = new Map();
-  //   for (const point of this.timeSeries){
-  //     let pivotRow = pivoted.get(point.MeasurementDate);
-  //     if (pivotRow){
-  //       pivotRow[point.DataSourceName] = point.MeasurementValue;
-  //     } else{
-  //       pivotRow = {"Date": point.MeasurementDate};
-  //       pivotRow[point.DataSourceName] = point.MeasurementValue;
-  //       pivoted.set(point.MeasurementDate, pivotRow);
-  //     }
-  //   }
-
-  //   const dataSources = [...new Set(this.timeSeries.map(item => item.DataSourceName))];
-  //   const fields = ['Date', ...dataSources];
-
-  //   const pivotedAndSorted = Array.from(pivoted.values())
-  //     .map(x => {
-  //       let csvRow = {
-  //         "Date": moment(x.Date).format('M/D/yyyy')
-  //       };
-  //       dataSources.forEach(element => {
-  //         csvRow[element] = x[element]
-  //       });
-  //       return csvRow;
-  //     })
-  //     .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
-
-
-  //   const opts = { fields };
-
-  //   const asyncParser = new AsyncParser(opts);
-
-  //   let csv: string = await new Promise((resolve,reject)=>{
-  //     let csv = '';
-  //     asyncParser.processor
-  //       .on('data', chunk => (csv += chunk.toString()))
-  //       .on('end', () => {
-  //         resolve(csv);
-  //       })
-  //       .on('error', err => {
-  //         console.error(err);
-  //         reject(err);
-  //       });
-      
-  //     asyncParser.input.push(JSON.stringify(pivotedAndSorted));
-  //     asyncParser.input.push(null);
-  //   });
-
-  //   var exportedFilename = `sensorChartData.csv`;
-
-  //   var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  //   var link = document.createElement("a");
-
-  //   var url = URL.createObjectURL(blob);
-  //   link.setAttribute("href", url);
-  //   link.setAttribute("download", exportedFilename);
-  //   link.style.visibility = 'hidden';
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-
-  //   return pivotedAndSorted;
-  // }
 }

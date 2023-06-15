@@ -20,7 +20,6 @@ public class WellGroupController : SitkaController<WellGroupController>
     {}
 
     [HttpGet("wellGroups")]
-    [ZybachViewFeature]
     public ActionResult<IEnumerable<WellGroupDto>> GetWellGroups()
     {
         var wellGroupDtos = WellGroups.ListAsDto(_dbContext);
@@ -152,7 +151,6 @@ public class WellGroupController : SitkaController<WellGroupController>
     }
 
     [HttpGet("wellGroups/{wellGroupID}/waterLevelInspectionChartSpec")]
-    [ZybachViewFeature]
     public ActionResult<WaterLevelInspectionsChartDataDto> GetWellGroupWaterLevelInspectionChartSpec([FromRoute] int wellGroupID)
     {
         var wellGroup = WellGroups.GetByID(_dbContext, wellGroupID);
@@ -176,7 +174,6 @@ public class WellGroupController : SitkaController<WellGroupController>
     }
 
     [HttpGet("wellGroups/{wellGroupID}/waterLevelSensorsChartSpec")]
-    [ZybachViewFeature]
     public ActionResult<SensorChartDataDto> GetWellGroupWaterLevelSensorsChartSpec([FromRoute] int wellGroupID)
     {
         var wellGroup = WellGroups.GetByID(_dbContext, wellGroupID);
