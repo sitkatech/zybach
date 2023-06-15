@@ -28,7 +28,7 @@
         </ng-container>
         <ng-container ngbNavItem *ngIf="!isUserReadOnly()">
             <a ngbNavLink><h5>Permits and Inspections</h5></a>
-            <ng-template ngbNavContent>
+            <ng-template ngbNavContent> 
                 <zybach-well-permits-inspections-tab [well]="well" *ngIf="well"></zybach-well-permits-inspections-tab>
             </ng-template>
         </ng-container>

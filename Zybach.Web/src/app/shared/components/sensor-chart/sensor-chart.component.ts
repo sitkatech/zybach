@@ -179,7 +179,6 @@ export class SensorChartComponent {
       })
       .sort((a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime());
 
-
     const opts = { fields };
 
     const asyncParser = new AsyncParser(opts);
@@ -215,5 +214,4 @@ export class SensorChartComponent {
 
     return pivotedAndSorted;
   }
-
 }
