@@ -153,7 +153,7 @@ namespace Zybach.API.Services
         }}";
         }
 
-        public static string GetWaterLevelChartVegaSpec(List<WaterLevelInspectionForVegaChartDto> chartDtos, bool isForWeb)
+        public static string GetWaterLevelChartVegaSpec(List<WaterLevelInspectionForVegaChartDto> chartDtos, bool isForWeb, bool useSingleColor = false)
         {
             var reportDocumentOnlyConfig = @"
                 ""config"": {
@@ -169,6 +169,13 @@ namespace Zybach.API.Services
                         ""symbolSize"":500,
                         ""labelLimit"":300
                     }
+                }";
+
+            var color = @",
+                ""color"":{
+                  ""type"":""nominal"",
+                  ""field"":""WellRegistrationID"",
+                  ""legend"": { ""title"": ""Well"" }
                 }";
 
             return $@"{{
@@ -188,12 +195,8 @@ namespace Zybach.API.Services
                      ""labelExpr"": ""timeFormat(datum.value, '%Y')""
                     {(!isForWeb ? ",\"labelAngle\":50" : "")}
                   }}
-                }},    
-                ""color"":{{
-                  ""type"":""nominal"",
-                  ""field"":""WellRegistrationID"",
-                  ""legend"": {{ ""title"": ""Well"" }}
                 }}
+            " + (useSingleColor ? "" : color) +$@"
             }},           
             ""layer"": 
             [

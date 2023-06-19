@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { Feature } from '././feature';
 
 export class WellSimpleDto { 
     WellID?: number;
@@ -43,6 +44,7 @@ export class WellSimpleDto {
     IsReplacement?: boolean;
     Notes?: string;
     WellParticipationName?: string;
+    Location?: Feature;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

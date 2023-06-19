@@ -6187,6 +6187,86 @@
         }
       }
     },
+    "/wellGroups/{wellGroupID}/waterLevelInspectionChartSpec": {
+      "get": {
+        "tags": [
+          "WellGroup"
+        ],
+        "parameters": [
+          {
+            "name": "wellGroupID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionsChartDataDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionsChartDataDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WaterLevelInspectionsChartDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wellGroups/{wellGroupID}/waterLevelSensorsChartSpec": {
+      "get": {
+        "tags": [
+          "WellGroup"
+        ],
+        "parameters": [
+          {
+            "name": "wellGroupID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorChartDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/wells/pumpedVolume": {
       "get": {
         "tags": [
@@ -9941,6 +10021,28 @@
         },
         "additionalProperties": false
       },
+      "WaterLevelInspectionsChartDataDto": {
+        "type": "object",
+        "properties": {
+          "WaterLevelInspections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WaterLevelInspectionSummaryDto"
+            },
+            "nullable": true
+          },
+          "LastInspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "ChartSpec": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "WaterLevelMeasuringEquipmentDto": {
         "type": "object",
         "properties": {
@@ -11336,6 +11438,9 @@
           "WellParticipationName": {
             "type": "string",
             "nullable": true
+          },
+          "Location": {
+            "$ref": "#/components/schemas/Feature"
           }
         },
         "additionalProperties": false
