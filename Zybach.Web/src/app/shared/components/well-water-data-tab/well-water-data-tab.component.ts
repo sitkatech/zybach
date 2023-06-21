@@ -5,6 +5,11 @@ import { WellDetailDto } from '../../generated/model/well-detail-dto';
 import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.service';
 import { SensorMessageAgeDto } from '../../generated/model/sensor-message-age-dto';
 import { SensorChartDataDto } from '../../generated/model/sensor-chart-data-dto';
+import { ConfirmService } from 'src/app/services/confirm.service';
+import { AlertService } from '../../services/alert.service';
+import { Alert } from '../../models/alert';
+import { AlertContext } from '../../models/enums/alert-context.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'zybach-well-water-data-tab',
@@ -27,6 +32,9 @@ export class WellWaterDataTabComponent implements OnInit {
     private sensorService: SensorStatusService,
     private cdr: ChangeDetectorRef,
     private decimalPipe: DecimalPipe,
+    private confirmService: ConfirmService,
+    private alertService: AlertService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -91,5 +99,24 @@ export class WellWaterDataTabComponent implements OnInit {
 
   public toggleUnitsShown(units : string): void {
     this.unitsShown = units;
+  }
+
+  syncWithAgHub()
+  {
+    this.confirmService.confirm({ modalSize: "md", buttonClassYes: "btn-zybach", buttonTextYes: "Yes", buttonTextNo: "No", title: "Sync Pumped Volume from AgHub", message: "Are you sure you want to sync all pumped volume data for this well?" }).then(confirmed => {
+      if (confirmed) {
+        this.isLoadingSubmit = true;
+        this.wellService.wellsWellIDSyncPumpedVolumeFromAgHubPost(this.well.WellID).subscribe(() => {
+          this.isLoadingSubmit = false;
+          this.router.navigateByUrl("/wells/" + this.well.WellID).then(() => {
+            this.alertService.pushAlert(new Alert(`Pumped volume synced.`, AlertContext.Success));
+          });          
+        }, error => {
+            this.isLoadingSubmit = false;
+            this.cdr.detectChanges();
+          }
+        );
+      }
+    });
   }
 }

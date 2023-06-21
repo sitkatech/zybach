@@ -8,13 +8,12 @@ namespace Zybach.EFModels.Entities
 {
     public static class WellSensorMeasurements
     {
-        public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementType(
+        public static List<WellSensorMeasurement> GetByMeasurementType(
             ZybachDbContext dbContext, MeasurementTypeEnum measurementTypeEnum)
         {
             return GetWellSensorMeasurementsImpl(dbContext)
                 .Where(x => x.MeasurementTypeID == (int)measurementTypeEnum
-                ).Select(x => x.AsDto())
-                .ToList();
+                ).ToList();
         }
 
         public static List<WellSensorMeasurementDto> GetWellSensorMeasurementsByMeasurementTypeAndYear(
@@ -76,23 +75,6 @@ namespace Zybach.EFModels.Entities
             foreach (var sensor in sensors)
             {
                 sensorMeasurementDtos.AddRange(ListByWellAndSensorAsSensorMeasurementDto(dbContext, wellRegistrationID, sensor.SensorName, sensor.SensorID, sensor.RetirementDate, sensor.GetChartDataSourceName(), sensor.GetChartAnomaliesDataSourceName()));
-            }
-
-            return sensorMeasurementDtos;
-        }
-
-        /// <summary>
-        /// If you have sensor simples and don't care about charts use this
-        /// </summary>
-        public static List<SensorMeasurementDto> GetWellSensorMeasurementsForWellAndSensorSimples(
-            ZybachDbContext dbContext, string wellRegistrationID,
-            IEnumerable<SensorSimpleDto> sensors)
-        {
-            // we need to filter by sensor names when looking at it from the well level because sensors can be moved from a well and reused.
-            var sensorMeasurementDtos = new List<SensorMeasurementDto>();
-            foreach (var sensor in sensors)
-            {
-                sensorMeasurementDtos.AddRange(ListByWellAndSensorAsSensorMeasurementDto(dbContext, wellRegistrationID, sensor.SensorName, sensor.SensorID, sensor.RetirementDate, null, null));
             }
 
             return sensorMeasurementDtos;
