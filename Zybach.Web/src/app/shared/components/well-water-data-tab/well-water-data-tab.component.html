@@ -11,6 +11,9 @@
                       <input type="radio" name="units" id="in" (click)="toggleUnitsShown('in')" [disabled]="!displayIrrigatedAcres()"> Depth&nbsp;(in)
                     </label>
                 </div>
+                <div class="float-right mr-2" *ngIf="well.InAgHub">
+                    <button class="btn btn-sm btn-zybach" (click)="syncWithAgHub()">Sync with AgHub</button>
+                </div>
             </div>
             <div class="card-body text-center">
                 <table class="table table-striped">

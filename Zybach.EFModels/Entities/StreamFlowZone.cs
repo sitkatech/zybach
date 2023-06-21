@@ -16,7 +16,7 @@ namespace Zybach.EFModels.Entities
         {
             var streamFlowZones = dbContext.StreamFlowZones.AsNoTracking().ToList();
             var agHubWells = GetAghubWellsWithElectricalData(dbContext);
-            var wellSensorMeasurementDtos = WellSensorMeasurements.GetWellSensorMeasurementsByMeasurementType(dbContext,
+            var wellSensorMeasurements = WellSensorMeasurements.GetByMeasurementType(dbContext,
                 MeasurementTypeEnum.ElectricalUsage);
             var streamFlowZoneWellsDtos = streamFlowZones.Select(streamFlowZone =>
                 {
@@ -28,7 +28,7 @@ namespace Zybach.EFModels.Entities
                     // to be included in the list of wells, there are WellSesnsorMeasurement values for this well for MeasurementTypeID = 3 (Electrical Usage)
                     foreach (var agHubWell in agHubWells.Where(x => x.Well.StreamflowZoneID == streamFlowZone.StreamFlowZoneID))
                     {
-                        var wellSensorMeasurementsForThisWell = wellSensorMeasurementDtos.Where(y => y.WellRegistrationID == agHubWell.Well.WellRegistrationID).ToList();
+                        var wellSensorMeasurementsForThisWell = wellSensorMeasurements.Where(y => y.WellRegistrationID == agHubWell.Well.WellRegistrationID).ToList();
                         if (wellSensorMeasurementsForThisWell.Any())
                         {
                             var wellWithIrrigatedAcresDto = new WellWithIrrigatedAcresDto

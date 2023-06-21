@@ -5949,6 +5949,29 @@
         }
       }
     },
+    "/wells/{wellID}/syncPumpedVolumeFromAgHub": {
+      "post": {
+        "tags": [
+          "Well"
+        ],
+        "parameters": [
+          {
+            "name": "wellID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/wellGroups": {
       "get": {
         "tags": [

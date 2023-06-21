@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GeoJSON.Net.Feature;
@@ -19,12 +20,14 @@ namespace Zybach.API.Controllers
     public class WellController : SitkaController<WellController>
     {
         private readonly GeoOptixService _geoOptixService;
+        private readonly AgHubService _agHubService;
 
         public WellController(ZybachDbContext dbContext, ILogger<WellController> logger,
             KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration,
-            GeoOptixService geoOptixService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+            GeoOptixService geoOptixService, AgHubService agHubService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
             _geoOptixService = geoOptixService;
+            _agHubService = agHubService;
         }
 
         [HttpGet("wells")]
@@ -496,6 +499,16 @@ namespace Zybach.API.Controllers
         {
             var wellPumpingSummaryDtos = WellPumpingSummary.GetForDateRange(_dbContext, startDate, endDate);
             return Ok(wellPumpingSummaryDtos);
+        }
+
+        [HttpPost("/wells/{wellID}/syncPumpedVolumeFromAgHub")]
+        [ZybachEditFeature]
+        public async Task<IActionResult> SyncWellFromAgHub([FromRoute] int wellID)
+        {
+            var well = Wells.GetByID(_dbContext, wellID);
+            var agHubWellPumpedVolumeStartDate = new DateTime(2016, 1, 1);
+            await AgHubWellsTask.SyncPumpedVolumeDataForWell(_dbContext, _agHubService, agHubWellPumpedVolumeStartDate, well.WellRegistrationID);
+            return Ok();
         }
     }
 }
