@@ -20,7 +20,6 @@ public class WellGroupController : SitkaController<WellGroupController>
     {}
 
     [HttpGet("wellGroups")]
-    [ZybachViewFeature]
     public ActionResult<IEnumerable<WellGroupDto>> GetWellGroups()
     {
         var wellGroupDtos = WellGroups.ListAsDto(_dbContext);
@@ -149,5 +148,57 @@ public class WellGroupController : SitkaController<WellGroupController>
         }
 
         return isValid;
+    }
+
+    [HttpGet("wellGroups/{wellGroupID}/waterLevelInspectionChartSpec")]
+    public ActionResult<WaterLevelInspectionsChartDataDto> GetWellGroupWaterLevelInspectionChartSpec([FromRoute] int wellGroupID)
+    {
+        var wellGroup = WellGroups.GetByID(_dbContext, wellGroupID);
+        if (wellGroup == null)
+        {
+            return NotFound();
+        }
+
+        var wellIDs = wellGroup.WellGroupWells.Select(x => x.WellID).ToList();
+        var waterLevelInspectionSummaryDtos = WaterLevelInspections.ListByWellIDsAsSummaryDto(_dbContext, wellIDs);
+
+        var waterLevelChartVegaSpec = string.Empty;
+        if (waterLevelInspectionSummaryDtos.Any())
+        {
+            var waterLevelInspectionForVegaChartDtos = WaterLevelInspections.ListByWellIDsAsVegaChartDto(_dbContext, wellIDs);
+            waterLevelChartVegaSpec = VegaSpecUtilities.GetWaterLevelChartVegaSpec(waterLevelInspectionForVegaChartDtos, true, true);
+        }
+
+        var waterLevelInspectionsChartDataDto = new WaterLevelInspectionsChartDataDto(waterLevelInspectionSummaryDtos, waterLevelChartVegaSpec);
+        return Ok(waterLevelInspectionsChartDataDto);
+    }
+
+    [HttpGet("wellGroups/{wellGroupID}/waterLevelSensorsChartSpec")]
+    public ActionResult<SensorChartDataDto> GetWellGroupWaterLevelSensorsChartSpec([FromRoute] int wellGroupID)
+    {
+        var wellGroup = WellGroups.GetByID(_dbContext, wellGroupID);
+        if (wellGroup == null)
+        {
+            return NotFound();
+        }
+
+        var wellGroupPressureSensors = new List<Sensor>();
+        var wellGroupPressureSensorMeasurements = new List<SensorMeasurementDto>();
+
+        foreach (var wellGroupWell in wellGroup.WellGroupWells)
+        {
+            var wellPressureSensors = wellGroupWell.Well.Sensors.Where(x => x.SensorTypeID == (int)SensorTypeEnum.WellPressure).ToList();
+            wellGroupPressureSensors.AddRange(wellPressureSensors);
+
+            var wellSensorMeasurements = WellSensorMeasurements.GetWellSensorMeasurementsForWellAndSensors(_dbContext,
+                wellGroupWell.Well.WellRegistrationID, wellPressureSensors);
+            wellGroupPressureSensorMeasurements.AddRange(wellSensorMeasurements);
+        }
+
+        var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(wellGroupPressureSensors, SensorType.WellPressure);
+        var sensorMeasurements = wellGroupPressureSensorMeasurements;
+        var sensorChartDataDto = new SensorChartDataDto(sensorMeasurements, vegaLiteChartSpec);
+        
+        return Ok(sensorChartDataDto);
     }
 }

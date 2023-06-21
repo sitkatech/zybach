@@ -26,5 +26,6 @@ namespace Zybach.EFModels.Entities
         public string SensorName { get; set; }
         public double MeasurementValue { get; set; }
         public bool? IsAnomalous { get; set; }
+        public bool? IsElectricSource { get; set; }
     }
 }

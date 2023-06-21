@@ -18,6 +18,7 @@ namespace Zybach.Models.DataTransferObjects
         public string SensorName { get; set; }
         public double MeasurementValue { get; set; }
         public bool? IsAnomalous { get; set; }
+        public bool? IsElectricSource { get; set; }
     }
 
     public partial class WellSensorMeasurementSimpleDto
@@ -31,6 +32,7 @@ namespace Zybach.Models.DataTransferObjects
         public string SensorName { get; set; }
         public double MeasurementValue { get; set; }
         public bool? IsAnomalous { get; set; }
+        public bool? IsElectricSource { get; set; }
     }
 
 }

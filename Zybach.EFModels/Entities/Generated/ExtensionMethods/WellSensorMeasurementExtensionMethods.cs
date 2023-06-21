@@ -21,7 +21,8 @@ namespace Zybach.EFModels.Entities
                 ReadingDay = wellSensorMeasurement.ReadingDay,
                 SensorName = wellSensorMeasurement.SensorName,
                 MeasurementValue = wellSensorMeasurement.MeasurementValue,
-                IsAnomalous = wellSensorMeasurement.IsAnomalous
+                IsAnomalous = wellSensorMeasurement.IsAnomalous,
+                IsElectricSource = wellSensorMeasurement.IsElectricSource
             };
             DoCustomMappings(wellSensorMeasurement, wellSensorMeasurementDto);
             return wellSensorMeasurementDto;
@@ -41,7 +42,8 @@ namespace Zybach.EFModels.Entities
                 ReadingDay = wellSensorMeasurement.ReadingDay,
                 SensorName = wellSensorMeasurement.SensorName,
                 MeasurementValue = wellSensorMeasurement.MeasurementValue,
-                IsAnomalous = wellSensorMeasurement.IsAnomalous
+                IsAnomalous = wellSensorMeasurement.IsAnomalous,
+                IsElectricSource = wellSensorMeasurement.IsElectricSource
             };
             DoCustomSimpleDtoMappings(wellSensorMeasurement, wellSensorMeasurementSimpleDto);
             return wellSensorMeasurementSimpleDto;
