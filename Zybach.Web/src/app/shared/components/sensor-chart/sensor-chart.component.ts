@@ -58,7 +58,7 @@ export class SensorChartComponent {
   buildChart() {
     var self = this;
     vegaEmbed(`#${this.chartID}`, this.chartSpec, {
-      actions: false, tooltip: true, renderer: "svg"
+      actions: { export: true, source: false, compiled: false, editor: false }, tooltip: true, renderer: "svg"
     }).then(function (res) {
       self.vegaView = res.view;
       self.filterChart(new Date(self.startDate), new Date(self.endDate));
