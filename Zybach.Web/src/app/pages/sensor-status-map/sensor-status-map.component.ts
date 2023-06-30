@@ -21,9 +21,7 @@ import { GestureHandling } from 'leaflet-gesture-handling'
 import { BoundingBoxDto } from 'src/app/shared/models/bounding-box-dto';
 import { CustomCompileService } from 'src/app/shared/services/custom-compile.service';
 import { TwinPlatteBoundaryGeoJson } from '../../shared/models/tpnrd-boundary';
-
 import { NominatimService } from 'src/app/services/nominatim.service';
-
 import { point, polygon } from '@turf/helpers';
 import booleanWithin from '@turf/boolean-within';
 import { ToastrService } from 'ngx-toastr';
@@ -31,7 +29,6 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { SensorStatusMapPopupComponent } from '../sensor-status-map-popup/sensor-status-map-popup.component';
 import { DefaultBoundingBox } from 'src/app/shared/models/default-bounding-box';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'zybach-sensor-status-map',
