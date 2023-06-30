@@ -31,19 +31,20 @@ namespace Zybach.API.Controllers
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = PaigeWirelessPulses.GetLastMessageAgesBySensorName(_dbContext);
 
-            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList().ToLookup(x => x.SensorName);
+            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList()
+                .ToLookup(x => x.SensorName);
 
             foreach (var sensorSimpleDto in sensorSimpleDtos)
             {
-                sensorSimpleDto.MessageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName) ? sensorMessageAges[sensorSimpleDto.SensorName] : (int?)null; ;
+                sensorSimpleDto.MessageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName) ? sensorMessageAges[sensorSimpleDto.SensorName] : null; ;
 
                 if (!wellSensorMeasurementsBySensor.Contains(sensorSimpleDto.SensorName)) continue;
-
-                var wellSensorMeasurementsExcludingBatteryVoltage = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
-                    .Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
-
+                
                 sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.MeasurementDate);
-                sensorSimpleDto.LastReadingDate = wellSensorMeasurementsExcludingBatteryVoltage.Any() ? wellSensorMeasurementsExcludingBatteryVoltage.Max(x => x.MeasurementDate) : null;
+                sensorSimpleDto.LastReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
+                    .Where(x => x.MeasurementTypeID != MeasurementType.BatteryVoltage.MeasurementTypeID)
+                    .Max(x => (DateTime?) x.MeasurementDate)
+                    .GetValueOrDefault();
                     
                 var lastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
                     .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID)
