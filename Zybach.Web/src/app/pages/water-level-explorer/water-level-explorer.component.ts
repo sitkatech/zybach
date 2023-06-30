@@ -5,16 +5,22 @@ import { WellWaterLevelMapComponent } from '../well-water-level-map/well-water-l
 import { forkJoin } from 'rxjs';
 import { SensorChartDataDto } from 'src/app/shared/generated/model/sensor-chart-data-dto';
 import { default as vegaEmbed } from 'vega-embed';
+import * as vega from 'vega';
 import { WellGroupService } from 'src/app/shared/generated/api/well-group.service';
 import { WellGroupDto } from 'src/app/shared/generated/model/well-group-dto';
 import { WaterLevelInspectionsChartDataDto } from 'src/app/shared/generated/model/water-level-inspections-chart-data-dto';
 import { AsyncParser } from 'json2csv';
 import moment from 'moment';
+import { SensorMeasurementDto } from 'src/app/shared/generated/model/sensor-measurement-dto';
+import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapterFromString } from 'src/app/shared/components/ngb-date-adapter-from-string';
+import { WaterLevelInspectionSummaryDto } from 'src/app/shared/generated/model/water-level-inspection-summary-dto';
 
 @Component({
   selector: 'zybach-water-level-explorer',
   templateUrl: './water-level-explorer.component.html',
-  styleUrls: ['./water-level-explorer.component.scss']
+  styleUrls: ['./water-level-explorer.component.scss'],
+  providers: [{ provide: NgbDateAdapter, useClass: NgbDateAdapterFromString }]
 })
 export class WaterLevelExplorerComponent implements OnInit {
   @ViewChild("wellMap") wellMap: WellWaterLevelMapComponent;
@@ -29,9 +35,14 @@ export class WaterLevelExplorerComponent implements OnInit {
 
   public sensorChartData: SensorChartDataDto;
   public waterLevelInspectionChartData: WaterLevelInspectionsChartDataDto;
+  public timeSeries: WaterLevelInspectionSummaryDto[] = new Array<WaterLevelInspectionSummaryDto>();
   public hasWaterLevelInspectionChartData: boolean;
   public waterLevelInspectionChartID = "waterLevelInspectionChart";
   public isDisplayingWaterLevelInspectionChart = false;
+
+  public vegaView: any;
+  public startDate: string;
+  public endDate: string;
   
   constructor(
     private authenticationService: AuthenticationService,
@@ -40,7 +51,6 @@ export class WaterLevelExplorerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
     this.wellGroupService.wellGroupsGet().subscribe(wellGroups => {
       this.wellGroups = wellGroups;
 
@@ -70,7 +80,12 @@ export class WaterLevelExplorerComponent implements OnInit {
       waterLevelInspectionChartData: this.wellGroupService.wellGroupsWellGroupIDWaterLevelInspectionChartSpecGet(this.selectedWellGroup.WellGroupID)
     }).subscribe(({sensorChartData, waterLevelInspectionChartData}) => {
       this.sensorChartData = sensorChartData;
+
       this.waterLevelInspectionChartData = waterLevelInspectionChartData;
+      this.timeSeries = waterLevelInspectionChartData.WaterLevelInspections;
+      this.startDate = new Date(waterLevelInspectionChartData.FirstInspectionDate).toISOString();
+      this.endDate = new Date().toISOString();
+
       this.buildWaterLevelChart();
 
       this.cdr.detectChanges();
@@ -89,8 +104,10 @@ export class WaterLevelExplorerComponent implements OnInit {
 
     const waterLevelInspectionChartVegaSpec = JSON.parse(this.waterLevelInspectionChartData.ChartSpec);
     vegaEmbed(`#${this.waterLevelInspectionChartID}`, waterLevelInspectionChartVegaSpec, {
-      actions: false, tooltip: true, renderer: "svg"
-    }).catch(console.error);
+      actions: { export: true, source: false, compiled: false, editor: false }, tooltip: true, renderer: "svg"
+    })
+    .then(res => this.vegaView = res.view)
+    .catch(console.error);
   }
 
   public isAuthenticated(): boolean {
@@ -111,6 +128,43 @@ export class WaterLevelExplorerComponent implements OnInit {
       this.sensorChartData = null;
       this.sensorChartData = tempSensorChartData;
     }
+  }
+
+  onStartDateChanged(event) {
+    const startDate = new Date(event);
+    const endDate = new Date(this.endDate);
+    this.filterChart(startDate, endDate);
+  }
+
+  onEndDateChanged(event) {
+    const startDate = new Date(this.startDate);
+    const endDate = new Date(event);
+    this.filterChart(startDate, endDate);
+  }
+
+  setFullRange() {
+    const startDate = new Date(this.waterLevelInspectionChartData.FirstInspectionDate);
+    const endDate = new Date();
+    this.filterChart(startDate, endDate);
+
+    this.startDate = startDate.toISOString();
+    this.endDate = endDate.toISOString();
+ }
+
+  filterChart(startDate: Date, endDate: Date) {
+    const filteredTimeSeries = this.timeSeries.filter(x => {
+      const inspectionDate = new Date(x.InspectionDate);
+      return inspectionDate >= startDate && inspectionDate <= endDate;
+    });
+
+    var changeSet = vega.changeset().remove(() => true).insert(filteredTimeSeries);
+    this.vegaView.change('TimeSeries', changeSet).run();
+    this.resizeWindow();
+  }
+
+  public resizeWindow() {
+    this.cdr.detectChanges();
+    window.dispatchEvent(new Event('resize'));
   }
 
   async exportWaterLevelInspectionChartData() {

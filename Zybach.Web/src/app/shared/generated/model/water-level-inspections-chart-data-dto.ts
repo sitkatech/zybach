@@ -13,6 +13,7 @@ import { WaterLevelInspectionSummaryDto } from '././water-level-inspection-summa
 
 export class WaterLevelInspectionsChartDataDto { 
     WaterLevelInspections?: Array<WaterLevelInspectionSummaryDto>;
+    FirstInspectionDate?: string;
     LastInspectionDate?: string;
     ChartSpec?: string;
     constructor(obj?: any) {

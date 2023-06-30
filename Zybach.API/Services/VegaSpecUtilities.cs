@@ -184,16 +184,18 @@ namespace Zybach.API.Services
             ""width"": {(isForWeb ? "\"container\"" : 1351)},
             ""height"": {(isForWeb ? "\"container\"" : 500)},
             ""data"": {{ 
+                ""name"": ""TimeSeries"",
                 ""values"": {JsonConvert.SerializeObject(chartDtos)}
             }},
             ""encoding"": {{
                 ""x"": {{
                   ""field"": ""InspectionDate"",                      
-                  ""type"": ""temporal"",                    
+                  ""type"": ""temporal"",
                   ""axis"": {{
                     ""title"": ""Inspection Date"",
-                     ""labelExpr"": ""timeFormat(datum.value, '%Y')""
-                    {(!isForWeb ? ",\"labelAngle\":50" : "")}
+                    ""tickCount"": ""year"",
+                    ""tickExtra"": true,
+                    ""labelAngle"": -45
                   }}
                 }}
             " + (useSingleColor ? "" : color) +$@"
@@ -215,7 +217,7 @@ namespace Zybach.API.Services
                 }},               
                 ""layer"": [          
                 {{
-                    ""mark"": ""line""
+                    ""mark"": {{ ""type"": ""line"", ""point"": {{ ""size"": 20 }} }}
                 }},           
                 {{
                     ""transform"": [
@@ -488,7 +490,6 @@ namespace Zybach.API.Services
           }},
           ""scale"": {{
             ""reverse"": {yAxisScaleReverse},
-            ""zero"":false,
             ""padding"":10
           }}
         }},
