@@ -14,6 +14,7 @@ import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-def
 import { ContinuityMeterStatusEnum } from 'src/app/shared/generated/enum/continuity-meter-status-enum';
 import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 import { ColDef } from 'ag-grid-community';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'zybach-sensor-status',
@@ -39,7 +40,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   constructor(
     private authenticationService: AuthenticationService,
     private sensorStatusService: SensorStatusService,
-    private utilityFunctionsService: UtilityFunctionsService
+    private utilityFunctionsService: UtilityFunctionsService,
+    private decimalPipe: DecimalPipe
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +92,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   }
 
   private createColumnDefs() {
+    const _decimalPipe = this.decimalPipe;
     this.defaultColDef = { filter: true, sortable: true, resizable: true, width: 125 };
 
     this.columnDefs = [
@@ -155,11 +158,12 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
       },
       { headerName: 'Last Message Age (Hours)',
-        valueGetter: (params) => params.data.MessageAge ? Math.floor(params.data.MessageAge / 60) : null,
+        valueGetter: (params) => params.data.MessageAge ? _decimalPipe.transform(params.data.MessageAge / 60, '1.0-0') : null,
         valueFormatter: params => params.value != null ? params.value : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
       },
+      this.utilityFunctionsService.createDateColumnDef('Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', null, 120),
       this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
       this.utilityFunctionsService.createDateColumnDef('Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', null, 120, FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
       { 
@@ -170,7 +174,6 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       },
-      this.utilityFunctionsService.createDateColumnDef('Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', null, 120),
       {
         headerComponentFramework: FieldDefinitionGridHeaderComponent,
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },

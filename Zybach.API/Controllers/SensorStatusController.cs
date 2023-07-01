@@ -50,14 +50,19 @@ namespace Zybach.API.Controllers
                 {
                     try
                     {
-                        var messageAge = sensorMessageAgesBySensorName.ContainsKey(sensor.SensorName)
-                            ? sensorMessageAgesBySensorName[sensor.SensorName] : (int?) null;
-
                         var lastReadingDate = wellSensorMeasurementsBySensorExcludingBatteryVoltage.Contains(sensor.SensorName)
                             ? wellSensorMeasurementsBySensorExcludingBatteryVoltage[sensor.SensorName].Max(x => x.MeasurementDate) : (DateTime?)null;
                         var lastVoltageReading = batteryVoltagesBySensor.Contains(sensor.SensorName) 
                             ? batteryVoltagesBySensor[sensor.SensorName].MaxBy(x => x.MeasurementDate) : null;
-                        
+
+                        var messageAge = sensorMessageAgesBySensorName.ContainsKey(sensor.SensorName)
+                            ? sensorMessageAgesBySensorName[sensor.SensorName] : (int?)null;
+
+                        if (messageAge == null && lastReadingDate != null)
+                        {
+                            var lastReadingDateAge = DateTime.UtcNow - (DateTime)lastReadingDate;
+                            messageAge = (int)lastReadingDateAge.TotalMinutes;
+                        }
 
                         return new SensorMessageAgeDto
                         {

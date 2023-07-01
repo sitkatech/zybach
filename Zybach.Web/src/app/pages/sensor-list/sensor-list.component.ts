@@ -47,8 +47,7 @@ export class SensorListComponent implements OnInit {
       this.sensorService.sensorsGet().subscribe(sensors => {
         this.sensors = sensors;
 
-        this.sensorsGrid ? this.sensorsGrid.api.setRowData(sensors) : null;
-  
+        this.sensorsGrid?.api.setRowData(sensors);
         this.sensorsGrid.columnApi.autoSizeAllColumns();
       });
     });
@@ -114,10 +113,10 @@ export class SensorListComponent implements OnInit {
       headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
       sortable: true, resizable: true
     },
+    this.createDateColumnDef(datePipe, 'Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
     this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
     this.createDateColumnDef(datePipe, 'Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
     this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
-    this.createDateColumnDef(datePipe, 'Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
     {
       headerComponentFramework: FieldDefinitionGridHeaderComponent,
       headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },

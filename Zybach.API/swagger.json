@@ -10054,6 +10054,11 @@
             },
             "nullable": true
           },
+          "FirstInspectionDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "LastInspectionDate": {
             "type": "string",
             "format": "date-time",
