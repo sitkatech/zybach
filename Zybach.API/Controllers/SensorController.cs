@@ -31,27 +31,26 @@ namespace Zybach.API.Controllers
             var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
             var sensorMessageAges = PaigeWirelessPulses.GetLastMessageAgesBySensorName(_dbContext);
 
-            var wellSensorMeasurementsBySensor = _dbContext.WellSensorMeasurements.AsNoTracking().ToList()
+            var wellSensorMeasurementsBySensor = _dbContext.vWellSensorMeasurementFirstAndLatestForSensors.AsNoTracking().ToList()
                 .ToLookup(x => x.SensorName);
 
             foreach (var sensorSimpleDto in sensorSimpleDtos)
             {
-                sensorSimpleDto.MessageAge = sensorMessageAges.ContainsKey(sensorSimpleDto.SensorName) ? sensorMessageAges[sensorSimpleDto.SensorName] : null; ;
+                sensorSimpleDto.MessageAge = sensorMessageAges.TryGetValue(sensorSimpleDto.SensorName, out var age) ? age : null; ;
 
                 if (!wellSensorMeasurementsBySensor.Contains(sensorSimpleDto.SensorName)) continue;
                 
-                sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.MeasurementDate);
+                sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.FirstReadingDate);
                 sensorSimpleDto.LastReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
                     .Where(x => x.MeasurementTypeID != MeasurementType.BatteryVoltage.MeasurementTypeID)
-                    .Max(x => (DateTime?) x.MeasurementDate)
+                    .Max(x => x.LastReadingDate)
                     .GetValueOrDefault();
                     
                 var lastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
-                    .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID)
-                    .MaxBy(x => x.MeasurementDate);
+                    .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID).MaxBy(x => x.LastReadingDate);
 
-                sensorSimpleDto.LastVoltageReading = lastVoltageReading?.MeasurementValue;
-                sensorSimpleDto.LastVoltageReadingDate = lastVoltageReading?.MeasurementDate;
+                sensorSimpleDto.LastVoltageReading = lastVoltageReading?.LatestMeasurementValue;
+                sensorSimpleDto.LastVoltageReadingDate = lastVoltageReading?.LastReadingDate;
             }
 
             return sensorSimpleDtos;
