@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
@@ -21,16 +21,15 @@ namespace Zybach.API.Services
         public List<WellWithSensorSimpleDto> GetAghubAndGeoOptixWells()
         {
             var wells = Wells.ListAsWellWithSensorSimpleDto(_dbContext);
-            var lastReadingDateTimes = WellSensorMeasurements.GetLastReadingDateTimes(_dbContext);
-            var firstReadingDateTimes = WellSensorMeasurements.GetFirstReadingDateTimes(_dbContext);
-            wells.ForEach(x =>
+            var lastReadingDateTimes = _dbContext.vWellSensorMeasurementFirstAndLatestForSensors.AsNoTracking().ToList().ToLookup(x => x.SensorName);
+            wells.AsParallel().ForAll(x =>
             {
-                x.LastReadingDate = lastReadingDateTimes.ContainsKey(x.WellRegistrationID)
-                    ? lastReadingDateTimes[x.WellRegistrationID]
-                    : (DateTime?)null;
-                x.FirstReadingDate = firstReadingDateTimes.ContainsKey(x.WellRegistrationID)
-                    ? firstReadingDateTimes[x.WellRegistrationID]
-                    : (DateTime?)null;
+                x.LastReadingDate = lastReadingDateTimes.Contains(x.WellRegistrationID)
+                    ? lastReadingDateTimes[x.WellRegistrationID].Max(y => y.LastReadingDate)
+                    : null;
+                x.FirstReadingDate = lastReadingDateTimes.Contains(x.WellRegistrationID)
+                    ? lastReadingDateTimes[x.WellRegistrationID].Min(y => y.FirstReadingDate)
+                    : null;
             });
 
             return wells;
@@ -41,12 +40,12 @@ namespace Zybach.API.Services
             var wells = Wells.ListAsWaterLevelMapSummaryDtos(_dbContext)
                 .Where(x => x.Sensors.Any(y => y.SensorTypeID == (int)SensorTypeEnum.WellPressure))
                 .ToList();
-            var lastReadingDateTimes = WellSensorMeasurements.GetLastReadingDateTimes(_dbContext);
-            wells.ForEach(x =>
+            var lastReadingDateTimes = _dbContext.vWellSensorMeasurementFirstAndLatestForSensors.AsNoTracking().ToList().ToLookup(x => x.SensorName);
+            wells.AsParallel().ForAll(x =>
             {
-                x.LastReadingDate = lastReadingDateTimes.ContainsKey(x.WellRegistrationID)
-                    ? lastReadingDateTimes[x.WellRegistrationID]
-                    : (DateTime?)null;
+                x.LastReadingDate = lastReadingDateTimes.Contains(x.WellRegistrationID)
+                    ? lastReadingDateTimes[x.WellRegistrationID].Max(y => y.LastReadingDate)
+                    : null;
             });
 
             return wells;

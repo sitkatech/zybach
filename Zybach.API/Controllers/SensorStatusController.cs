@@ -31,11 +31,11 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
         {
-            var wellSummariesWithSensors = _wellService.GetAghubAndGeoOptixWells()
+            var wellSummariesWithSensors = Wells.ListAsWellWithSensorSimpleDto(_dbContext)
                 .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)).ToList();
             var sensorMessageAgesBySensorName = PaigeWirelessPulses.GetLastMessageAgesBySensorName(_dbContext);
 
-            var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking().ToList();
+            var wellSensorMeasurements = _dbContext.vWellSensorMeasurementFirstAndLatestForSensors.AsNoTracking().ToList();
             var wellSensorMeasurementsBySensorExcludingBatteryVoltage = wellSensorMeasurements.Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToLookup(x => x.SensorName);
             var batteryVoltagesBySensor = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int)MeasurementTypeEnum.BatteryVoltage).ToLookup(x => x.SensorName);
 
@@ -51,12 +51,12 @@ namespace Zybach.API.Controllers
                     try
                     {
                         var lastReadingDate = wellSensorMeasurementsBySensorExcludingBatteryVoltage.Contains(sensor.SensorName)
-                            ? wellSensorMeasurementsBySensorExcludingBatteryVoltage[sensor.SensorName].Max(x => x.MeasurementDate) : (DateTime?)null;
-                        var lastVoltageReading = batteryVoltagesBySensor.Contains(sensor.SensorName) 
-                            ? batteryVoltagesBySensor[sensor.SensorName].MaxBy(x => x.MeasurementDate) : null;
+                            ? wellSensorMeasurementsBySensorExcludingBatteryVoltage[sensor.SensorName].Max(x => x.LastReadingDate) : null;
+                        var lastVoltageReading = batteryVoltagesBySensor.Contains(sensor.SensorName)
+                            ? batteryVoltagesBySensor[sensor.SensorName].MaxBy(x => x.LastReadingDate) : null;
 
-                        var messageAge = sensorMessageAgesBySensorName.ContainsKey(sensor.SensorName)
-                            ? sensorMessageAgesBySensorName[sensor.SensorName] : (int?)null;
+                        var messageAge = sensorMessageAgesBySensorName.TryGetValue(sensor.SensorName, out var value1)
+                            ? value1 : (int?)null;
 
                         if (messageAge == null && lastReadingDate != null)
                         {
@@ -70,8 +70,8 @@ namespace Zybach.API.Controllers
                             SensorID = sensor.SensorID,
                             MessageAge = messageAge,
                             LastReadingDate = lastReadingDate,
-                            LastVoltageReading = lastVoltageReading?.MeasurementValue,
-                            LastVoltageReadingDate = lastVoltageReading?.MeasurementDate,
+                            LastVoltageReading = lastVoltageReading?.LatestMeasurementValue,
+                            LastVoltageReadingDate = lastVoltageReading?.LastReadingDate,
                             SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive,
