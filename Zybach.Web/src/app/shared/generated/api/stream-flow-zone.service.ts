@@ -74,6 +74,11 @@ export class StreamFlowZoneService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',

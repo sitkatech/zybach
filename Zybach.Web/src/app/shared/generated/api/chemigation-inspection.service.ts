@@ -89,6 +89,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -128,6 +133,11 @@ export class ChemigationInspectionService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -174,6 +184,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -218,6 +233,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -255,6 +275,11 @@ export class ChemigationInspectionService {
     public chemigationInspectionsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -294,6 +319,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -331,6 +361,11 @@ export class ChemigationInspectionService {
     public chemigationInspectionsInspectionStatusesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -370,6 +405,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -407,6 +447,11 @@ export class ChemigationInspectionService {
     public chemigationInspectionsInterlockTypesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -446,6 +491,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -483,6 +533,11 @@ export class ChemigationInspectionService {
     public chemigationInspectionsMainlineCheckValvesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -528,6 +583,11 @@ export class ChemigationInspectionService {
 
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -581,6 +641,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -619,6 +684,11 @@ export class ChemigationInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -656,6 +726,11 @@ export class ChemigationInspectionService {
     public tillageTypesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [

@@ -77,6 +77,11 @@ export class WaterQualityInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -115,6 +120,11 @@ export class WaterQualityInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -152,6 +162,11 @@ export class WaterQualityInspectionService {
     public waterQualityInspectionsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -192,6 +207,11 @@ export class WaterQualityInspectionService {
 
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -245,6 +265,11 @@ export class WaterQualityInspectionService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -284,6 +309,11 @@ export class WaterQualityInspectionService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -329,6 +359,11 @@ export class WaterQualityInspectionService {
 
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
