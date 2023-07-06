@@ -26,7 +26,7 @@ export class SensorSimpleDto {
     SnoozeStartDate?: string;
     WellRegistrationID?: string;
     SensorTypeName?: string;
-    MessageAge?: number;
+    LastMessageAgeInHours?: number;
     LastVoltageReading?: number;
     LastVoltageReadingDate?: string;
     FirstReadingDate?: string;

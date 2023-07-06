@@ -190,15 +190,15 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   private getWellLayerGeoJSONFilteredByLastMessageAge(): GeoJSON {
     return new GeoJSON(this.wellsGeoJson, {
       pointToLayer: (feature, latlng) => {
-        const sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
+        const sensorMessageAges = feature.properties.sensors.map(x => x.LastMessageAgeInHours);
         var maxMessageAge = Math.max(...sensorMessageAges);
 
         let icon;
         if (!sensorMessageAges.some(x => x != null)) {
           icon = SensorStatusMapComponent.greyMarkerIcon;
-        } else if (maxMessageAge <= 60 * 2) {
+        } else if (maxMessageAge <= 2) {
           icon = SensorStatusMapComponent.blueMarkerIcon;
-        } else if (maxMessageAge <= 60 * 8) {
+        } else if (maxMessageAge <= 8) {
           icon = SensorStatusMapComponent.yellowMarkerIcon;
         } else {
           icon = SensorStatusMapComponent.redMarkerIcon;
@@ -207,13 +207,13 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         return marker(latlng, { icon: icon })
       },
       filter: (feature) => {
-        var sensorMessageAges = feature.properties.sensors.map(x => x.MessageAge);
+        var sensorMessageAges = feature.properties.sensors.map(x => x.LastMessageAgeInHours);
         var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
 
         return (this.showNoMessageData && maxMessageAge === null) ||
-          (this.showZeroToTwo && maxMessageAge <= 60 * 2 && maxMessageAge != null) ||
-          (this.showTwoToEight && 60 * 2 < maxMessageAge && maxMessageAge <= 60 * 8) ||
-          (this.showEightPlus && maxMessageAge > 60 * 8 )
+          (this.showZeroToTwo && maxMessageAge <= 2 && maxMessageAge != null) ||
+          (this.showTwoToEight && 2 < maxMessageAge && maxMessageAge <= 8) ||
+          (this.showEightPlus && maxMessageAge > 8 )
       }
     });
   }

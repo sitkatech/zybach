@@ -29,6 +29,6 @@
     </div>
     <ag-grid-angular #wellsGrid style="width: 100%; height: 400px;" class="ag-theme-balham mt-2" headerHeight="70"
         [rowData]="redSensors" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" 
-        [rowSelection]="'multiple'" (selectionChanged)="onSelectionChanged($event)">
+        [rowSelection]="'multiple'" (selectionChanged)="onSelectionChanged($event)" [pagination]="true" [paginationPageSize]="100">
     </ag-grid-angular>
 </div>

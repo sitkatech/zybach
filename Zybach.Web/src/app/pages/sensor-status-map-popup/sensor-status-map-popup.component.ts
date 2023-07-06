@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
+import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 
 @Component({
   selector: 'zybach-sensor-status-map-popup',
@@ -9,7 +9,7 @@ import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-messa
 export class SensorStatusMapPopupComponent {
   @Input() wellID: number;
   @Input() wellRegistrationID: string;
-  @Input() sensors: SensorMessageAgeDto[];
+  @Input() sensors: SensorSimpleDto[];
   @Input() AgHubRegisteredUser: string;
   @Input() fieldName: string;
 

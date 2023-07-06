@@ -29,7 +29,7 @@ public static class AgHubWellsTask
         var agHubWellRaws = agHubService.GetWellCollection().Result;
         if (agHubWellRaws.Any())
         {
-            var wellStagings = agHubWellRaws.Select(CreateAgHubWellStaging).ToList<AgHubWellStaging>();
+            var wellStagings = agHubWellRaws.Select(CreateAgHubWellStaging).ToList();
             foreach (var wellStaging in wellStagings)
             {
                 var wellRegistrationID = wellStaging.WellRegistrationID;
@@ -48,7 +48,7 @@ public static class AgHubWellsTask
     private static void PopulateWellSensorMeasurementsForWell(ZybachDbContext dbContext, AgHubService agHubService, string wellRegistrationID, DateTime startDate)
     {
         var pumpedVolumeResult = agHubService.GetPumpedVolume(wellRegistrationID, startDate).Result;
-        if (pumpedVolumeResult is { PumpedVolumeTimeSeries: { } })
+        if (pumpedVolumeResult is { PumpedVolumeTimeSeries: not null })
         {
             var pumpedVolumeTimePoints = pumpedVolumeResult.PumpedVolumeTimeSeries.Where(x => x.IsElectricSource).ToList();
             if (pumpedVolumeTimePoints.Any())

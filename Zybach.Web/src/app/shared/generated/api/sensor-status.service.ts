@@ -19,7 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 import { SensorSimpleDto } from '../model/sensor-simple-dto';
-import { WellWithSensorMessageAgeDto } from '../model/well-with-sensor-message-age-dto';
+import { WellWithSensorSimpleDto } from '../model/well-with-sensor-simple-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -114,9 +114,9 @@ export class SensorStatusService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sensorStatusGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellWithSensorMessageAgeDto>>;
-    public sensorStatusGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellWithSensorMessageAgeDto>>>;
-    public sensorStatusGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellWithSensorMessageAgeDto>>>;
+    public sensorStatusGet(observe?: 'body', reportProgress?: boolean): Observable<Array<WellWithSensorSimpleDto>>;
+    public sensorStatusGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WellWithSensorSimpleDto>>>;
+    public sensorStatusGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WellWithSensorSimpleDto>>>;
     public sensorStatusGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -136,7 +136,7 @@ export class SensorStatusService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<WellWithSensorMessageAgeDto>>(`${this.basePath}/sensorStatus`,
+        return this.httpClient.get<Array<WellWithSensorSimpleDto>>(`${this.basePath}/sensorStatus`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -153,9 +153,9 @@ export class SensorStatusService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sensorStatusWellIDGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<WellWithSensorMessageAgeDto>;
-    public sensorStatusWellIDGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<WellWithSensorMessageAgeDto>>;
-    public sensorStatusWellIDGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<WellWithSensorMessageAgeDto>>;
+    public sensorStatusWellIDGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<WellWithSensorSimpleDto>;
+    public sensorStatusWellIDGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<WellWithSensorSimpleDto>>;
+    public sensorStatusWellIDGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<WellWithSensorSimpleDto>>;
     public sensorStatusWellIDGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (wellID === null || wellID === undefined) {
@@ -179,7 +179,7 @@ export class SensorStatusService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<WellWithSensorMessageAgeDto>(`${this.basePath}/sensorStatus/${encodeURIComponent(String(wellID))}`,
+        return this.httpClient.get<WellWithSensorSimpleDto>(`${this.basePath}/sensorStatus/${encodeURIComponent(String(wellID))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

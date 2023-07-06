@@ -40,7 +40,7 @@
     <div class="col-6 mt-2">
         <div class="card">
             <div class="card-header">
-                Sensors
+                Current Sensors
             </div>
             <div class="card-body text-center">
                 <table class="table table-striped">
@@ -48,7 +48,7 @@
                         <tr>
                             <th>Sensor Name</th>
                             <th>Sensor Type</th>
-                            <th>Last Message Age</th>
+                            <th>Last Message Age (hours)</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -56,8 +56,8 @@
                         <tr *ngFor="let sensor of sensorsWithStatus">
                             <td><a routerLink="/sensors/{{sensor.SensorID}}">{{sensor.SensorName}}</a></td>
                             <td>{{sensor.SensorTypeName}}</td>
-                            <td *ngIf="sensor.MessageAge != null">{{ math.floor(sensor.MessageAge / 60) }} hours {{ sensor.MessageAge % 60 }} mins</td>
-                            <td *ngIf="sensor.MessageAge == null">N/A</td>
+                            <td *ngIf="sensor.LastMessageAgeInHours != null">{{ sensor.LastMessageAgeInHours }} hours</td>
+                            <td *ngIf="sensor.LastMessageAgeInHours == null">N/A</td>
                             <td>{{sensor.IsActive ? 'Enabled' : 'Disabled'}}</td>
                         </tr>
                     </tbody>

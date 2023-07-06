@@ -16,30 +16,19 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class SensorStatusController : SitkaController<SensorStatusController>
     {
-        private readonly InfluxDBService _influxDbService;
-        private readonly WellService _wellService;
-
-
-        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService, WellService wellService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public SensorStatusController(ZybachDbContext dbContext, ILogger<SensorStatusController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _influxDbService = influxDbService;
-            _wellService = wellService;
         }
 
 
         [HttpGet("/sensorStatus")]
         [ZybachViewFeature]
-        public async Task<List<WellWithSensorMessageAgeDto>> GetSensorMessageAges()
+        public async Task<List<WellWithSensorSimpleDto>> GetSensorMessageAges()
         {
             var wellSummariesWithSensors = Wells.ListAsWellWithSensorSimpleDto(_dbContext)
                 .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)).ToList();
-            var sensorMessageAgesBySensorName = PaigeWirelessPulses.GetLastMessageAgesBySensorName(_dbContext);
-
-            var wellSensorMeasurements = _dbContext.vWellSensorMeasurementFirstAndLatestForSensors.AsNoTracking().ToList();
-            var wellSensorMeasurementsBySensorExcludingBatteryVoltage = wellSensorMeasurements.Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToLookup(x => x.SensorName);
-            var batteryVoltagesBySensor = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int)MeasurementTypeEnum.BatteryVoltage).ToLookup(x => x.SensorName);
-
-            return wellSummariesWithSensors.Select(well => new WellWithSensorMessageAgeDto
+            var vSensors = _dbContext.vSensors.AsNoTracking().ToDictionary(x => x.SensorName);
+            return wellSummariesWithSensors.Select(well => new WellWithSensorSimpleDto
             {
                 AgHubRegisteredUser = well.AgHubRegisteredUser,
                 FieldName = well.FieldName,
@@ -50,28 +39,15 @@ namespace Zybach.API.Controllers
                 {
                     try
                     {
-                        var lastReadingDate = wellSensorMeasurementsBySensorExcludingBatteryVoltage.Contains(sensor.SensorName)
-                            ? wellSensorMeasurementsBySensorExcludingBatteryVoltage[sensor.SensorName].Max(x => x.LastReadingDate) : null;
-                        var lastVoltageReading = batteryVoltagesBySensor.Contains(sensor.SensorName)
-                            ? batteryVoltagesBySensor[sensor.SensorName].MaxBy(x => x.LastReadingDate) : null;
-
-                        var messageAge = sensorMessageAgesBySensorName.TryGetValue(sensor.SensorName, out var value1)
-                            ? value1 : (int?)null;
-
-                        if (messageAge == null && lastReadingDate != null)
-                        {
-                            var lastReadingDateAge = DateTime.UtcNow - (DateTime)lastReadingDate;
-                            messageAge = (int)lastReadingDateAge.TotalMinutes;
-                        }
-
-                        return new SensorMessageAgeDto
+                        var vSensor = vSensors.ContainsKey(sensor.SensorName) ? vSensors[sensor.SensorName] : null;
+                        return new SensorSimpleDto
                         {
                             SensorName = sensor.SensorName,
                             SensorID = sensor.SensorID,
-                            MessageAge = messageAge,
-                            LastReadingDate = lastReadingDate,
-                            LastVoltageReading = lastVoltageReading?.LatestMeasurementValue,
-                            LastVoltageReadingDate = lastVoltageReading?.LastReadingDate,
+                            LastMessageAgeInHours = vSensor?.LastMessageAgeInHours,
+                            LastReadingDate = vSensor?.LastReadingDate,
+                            LastVoltageReading = vSensor?.LastVoltageReading,
+                            LastVoltageReadingDate = vSensor?.LastVoltageReadingDate,
                             SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive,
@@ -91,11 +67,11 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/sensorStatus/{wellID}")]
         [ZybachViewFeature]
-        public async Task<WellWithSensorMessageAgeDto> GetSensorMessageAgesForWell([FromRoute] int wellID)
+        public async Task<WellWithSensorSimpleDto> GetSensorMessageAgesForWell([FromRoute] int wellID)
         {
             var well = Wells.GetByIDAsWellWithSensorSimpleDto(_dbContext, wellID);
-
-            return new WellWithSensorMessageAgeDto
+            var vSensors = _dbContext.vSensors.AsNoTracking().Where(x => x.WellID == wellID).ToDictionary(x => x.SensorName);
+            return new WellWithSensorSimpleDto
             {
                 AgHubRegisteredUser = well.AgHubRegisteredUser,
                 FieldName = well.FieldName,
@@ -106,13 +82,12 @@ namespace Zybach.API.Controllers
                 {
                     try
                     {
-                        var messageAge = PaigeWirelessPulses.GetLastMessageAgeBySensorName(_dbContext, sensor.SensorName);
-
-                        return new SensorMessageAgeDto
+                        var vSensor = vSensors.ContainsKey(sensor.SensorName) ? vSensors[sensor.SensorName] : null;
+                        return new SensorSimpleDto
                         {
                             SensorName = sensor.SensorName,
                             SensorID = sensor.SensorID,
-                            MessageAge = messageAge,
+                            LastMessageAgeInHours = vSensor?.LastMessageAgeInHours,
                             SensorTypeID = sensor.SensorTypeID,
                             SensorTypeName = sensor.SensorTypeName,
                             IsActive = sensor.IsActive,

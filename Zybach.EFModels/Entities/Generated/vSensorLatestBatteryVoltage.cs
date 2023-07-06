@@ -7,17 +7,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Zybach.EFModels.Entities
 {
     [Keyless]
-    public partial class vWellSensorMeasurementFirstAndLatestForSensor
+    public partial class vSensorLatestBatteryVoltage
     {
         [Required]
         [StringLength(100)]
         [Unicode(false)]
         public string SensorName { get; set; }
-        public int MeasurementTypeID { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime? FirstReadingDate { get; set; }
-        [Column(TypeName = "datetime")]
-        public DateTime? LastReadingDate { get; set; }
-        public double LatestMeasurementValue { get; set; }
+        public DateTime? LastVoltageReadingDate { get; set; }
+        public double LastVoltageReading { get; set; }
     }
 }

@@ -104,7 +104,6 @@ model/sensor-anomaly-simple-dto.ts
 model/sensor-anomaly-upsert-dto.ts
 model/sensor-chart-data-dto.ts
 model/sensor-measurement-dto.ts
-model/sensor-message-age-dto.ts
 model/sensor-minimal-dto.ts
 model/sensor-pulse-dto.ts
 model/sensor-simple-dto.ts
@@ -157,6 +156,5 @@ model/well-simple-dto.ts
 model/well-use-dto.ts
 model/well-water-level-map-summary-dto.ts
 model/well-water-quality-inspection-summary-dto.ts
-model/well-with-sensor-message-age-dto.ts
 model/well-with-sensor-simple-dto.ts
 variables.ts

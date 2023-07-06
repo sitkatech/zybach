@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { WellDetailDto } from '../../generated/model/well-detail-dto';
 import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.service';
-import { SensorMessageAgeDto } from '../../generated/model/sensor-message-age-dto';
+import { SensorSimpleDto } from '../../generated/model/sensor-simple-dto';
 import { SensorChartDataDto } from '../../generated/model/sensor-chart-data-dto';
 import { ConfirmService } from 'src/app/services/confirm.service';
 import { AlertService } from '../../services/alert.service';
@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 export class WellWaterDataTabComponent implements OnInit {
   @Input() well: WellDetailDto;
 
-  sensorsWithStatus: SensorMessageAgeDto[];
+  sensorsWithStatus: SensorSimpleDto[];
   public years: number[];
   public unitsShown: string = "gal";
   public sensorChartData: SensorChartDataDto;
@@ -56,10 +56,6 @@ export class WellWaterDataTabComponent implements OnInit {
   getSensorsWithAgeMessages(){
     this.sensorService.sensorStatusWellIDGet(this.well.WellID).subscribe(wellWithSensorMessageAge => {
       this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
-
-      // for (var sensor of this.sensorsWithStatus){
-      //   sensor.MessageAge = Math.floor(sensor.MessageAge / 60)
-      // }
     });
   }
 
