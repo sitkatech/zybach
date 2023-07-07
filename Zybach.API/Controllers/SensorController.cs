@@ -22,10 +22,10 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/sensors")]
         [ZybachViewFeature]
-        public List<SensorSimpleDto> List()
+        public ActionResult<List<SensorSimpleDto>> List()
         {
             var sensorSimpleDtos = _dbContext.vSensors.AsNoTracking().Select(x => x.AsSimpleDto()).ToList();
-            return sensorSimpleDtos;
+            return Ok(sensorSimpleDtos);
         }
 
         [HttpGet("/sensors/{sensorName}/search")]
@@ -51,6 +51,7 @@ namespace Zybach.API.Controllers
             var sensorSimpleDto = _dbContext.vSensors.AsNoTracking().Single(x => x.SensorID == sensorID).AsSimpleDto();
             var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking()
                 .Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
+
             if (sensor.SensorTypeID == (int)SensorTypeEnum.ContinuityMeter)
             {
                 sensorSimpleDto.LastOnReadingDate = wellSensorMeasurements.Any(x => x.MeasurementValue > 0)
@@ -59,7 +60,8 @@ namespace Zybach.API.Controllers
                 sensorSimpleDto.LastOffReadingDate = wellSensorMeasurements.Any(x => x.MeasurementValue == 0) ? 
                     wellSensorMeasurements.Where(x => x.MeasurementValue == 0).Max(x => x.MeasurementDate) : null;
             }
-            return sensorSimpleDto;
+
+            return Ok(sensorSimpleDto);
         }
 
 
@@ -69,9 +71,11 @@ namespace Zybach.API.Controllers
         {
             if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
 
-            return SupportTickets.GetSupportTicketsImpl(_dbContext)
+            var openSupportTickets = SupportTickets.GetSupportTicketsImpl(_dbContext)
                 .Where(x => x.SupportTicketStatusID != (int)SupportTicketStatusEnum.Resolved && x.SensorID == sensor.SensorID)
                 .Select(x => x.AsSimpleDto()).ToList();
+
+            return Ok(openSupportTickets);
         }
 
 
@@ -80,10 +84,12 @@ namespace Zybach.API.Controllers
         public ActionResult<SensorChartDataDto> GetChartSpecForSensorByID([FromRoute] int sensorID)
         {
             if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
+
             var vegaLiteChartSpec = VegaSpecUtilities.GetSensorTypeChartSpec(sensor);
             var sensorMeasurements = WellSensorMeasurements.ListBySensorAsSensorMeasurementDto(_dbContext, sensor.SensorName, sensor.SensorID, sensor.RetirementDate, sensor.GetChartDataSourceName(), sensor.GetChartAnomaliesDataSourceName());
             var sensorChartDataDto = new SensorChartDataDto(sensorMeasurements, vegaLiteChartSpec);
-            return sensorChartDataDto;
+
+            return Ok(sensorChartDataDto);
         }
 
         [HttpPut("/sensors/{sensorID}/snooze")]
@@ -93,13 +99,14 @@ namespace Zybach.API.Controllers
             if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
             sensor.SnoozeStartDate = sensorSnoozed ? DateTime.UtcNow : null;
             _dbContext.SaveChanges();
+
             return Ok(sensor.SnoozeStartDate);
         }
 
 
         private bool GetSensorAndThrowIfNotFound(int sensorID, out Sensor sensor, out ActionResult actionResult)
         {
-            sensor = Sensors.GetByID(_dbContext, sensorID);
+            sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorID == sensorID);
             return ThrowNotFound(sensor, "Sensor", sensorID, out actionResult);
         }
     }
