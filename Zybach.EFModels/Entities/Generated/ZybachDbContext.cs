@@ -67,6 +67,8 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WellSensorMeasurementStaging> WellSensorMeasurementStagings { get; set; }
         public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
         public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
+        public virtual DbSet<vSensor> vSensors { get; set; }
+        public virtual DbSet<vSensorLatestBatteryVoltage> vSensorLatestBatteryVoltages { get; set; }
         public virtual DbSet<vWellSensorMeasurementFirstAndLatestForSensor> vWellSensorMeasurementFirstAndLatestForSensors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -359,6 +361,16 @@ namespace Zybach.EFModels.Entities
             modelBuilder.Entity<vOpenETMostRecentSyncHistoryForYearAndMonth>(entity =>
             {
                 entity.ToView("vOpenETMostRecentSyncHistoryForYearAndMonth");
+            });
+
+            modelBuilder.Entity<vSensor>(entity =>
+            {
+                entity.ToView("vSensor");
+            });
+
+            modelBuilder.Entity<vSensorLatestBatteryVoltage>(entity =>
+            {
+                entity.ToView("vSensorLatestBatteryVoltage");
             });
 
             modelBuilder.Entity<vWellSensorMeasurementFirstAndLatestForSensor>(entity =>

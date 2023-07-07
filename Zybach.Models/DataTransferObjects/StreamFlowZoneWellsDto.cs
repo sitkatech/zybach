@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using NetTopologySuite.Geometries;
 
 namespace Zybach.Models.DataTransferObjects
 {
@@ -63,11 +62,6 @@ namespace Zybach.Models.DataTransferObjects
         public bool WellConnectedMeter { get; set; }
     }
 
-    public class WellWithSensorMessageAgeDto : WellSummaryDto
-    {
-        public List<SensorMessageAgeDto> Sensors { get; set; }
-    }
-
     public class WellDetailDto : WellWithSensorSimpleDto
     {
         public int? AgHubIrrigationUnitID { get; set; }
@@ -103,23 +97,6 @@ namespace Zybach.Models.DataTransferObjects
         public List<WellGroupSimpleDto> WellGroups { get; set; }
     }
 
-
-    public class SensorMessageAgeDto
-    {
-        public int SensorID { get; set; }
-        public string SensorName { get; set; }
-        public int? MessageAge { get; set; }
-        public DateTime? LastReadingDate { get; set; }
-        public double? LastVoltageReading { get; set; }
-        public DateTime? LastVoltageReadingDate { get; set; }
-        public int SensorTypeID { get; set; }
-        public string SensorTypeName { get; set; }
-        public bool IsActive { get; set; }
-        public int? MostRecentSupportTicketID { get; set; }
-        public string MostRecentSupportTicketTitle { get; set; }
-        public ContinuityMeterStatusDto ContinuityMeterStatus { get; set; }
-        public DateTime? SnoozeStartDate { get; set; }
-    }
 
     public class IrrigatedAcresPerYearDto
     {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -17,42 +16,15 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class SensorController : SitkaController<SensorController>
     {
-        private readonly InfluxDBService _influxDbService;
-
-        public SensorController(ZybachDbContext dbContext, ILogger<SensorController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, InfluxDBService influxDbService) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        public SensorController(ZybachDbContext dbContext, ILogger<SensorController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
-            _influxDbService = influxDbService;
         }
 
         [HttpGet("/sensors")]
         [ZybachViewFeature]
-        public async Task<List<SensorSimpleDto>> List()
+        public List<SensorSimpleDto> List()
         {
-            var sensorSimpleDtos = Sensors.ListAsSimpleDto(_dbContext);
-            var sensorMessageAges = PaigeWirelessPulses.GetLastMessageAgesBySensorName(_dbContext);
-
-            var wellSensorMeasurementsBySensor = _dbContext.vWellSensorMeasurementFirstAndLatestForSensors.AsNoTracking().ToList()
-                .ToLookup(x => x.SensorName);
-
-            foreach (var sensorSimpleDto in sensorSimpleDtos)
-            {
-                sensorSimpleDto.MessageAge = sensorMessageAges.TryGetValue(sensorSimpleDto.SensorName, out var age) ? age : null; ;
-
-                if (!wellSensorMeasurementsBySensor.Contains(sensorSimpleDto.SensorName)) continue;
-                
-                sensorSimpleDto.FirstReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName].Min(x => x.FirstReadingDate);
-                sensorSimpleDto.LastReadingDate = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
-                    .Where(x => x.MeasurementTypeID != MeasurementType.BatteryVoltage.MeasurementTypeID)
-                    .Max(x => x.LastReadingDate)
-                    .GetValueOrDefault();
-                    
-                var lastVoltageReading = wellSensorMeasurementsBySensor[sensorSimpleDto.SensorName]
-                    .Where(x => x.MeasurementTypeID == MeasurementType.BatteryVoltage.MeasurementTypeID).MaxBy(x => x.LastReadingDate);
-
-                sensorSimpleDto.LastVoltageReading = lastVoltageReading?.LatestMeasurementValue;
-                sensorSimpleDto.LastVoltageReadingDate = lastVoltageReading?.LastReadingDate;
-            }
-
+            var sensorSimpleDtos = _dbContext.vSensors.AsNoTracking().Select(x => x.AsSimpleDto()).ToList();
             return sensorSimpleDtos;
         }
 
@@ -73,26 +45,12 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/sensors/{sensorID}")]
         [ZybachViewFeature]
-        public async Task<ActionResult<SensorSimpleDto>> GetByID([FromRoute] int sensorID)
+        public ActionResult<SensorSimpleDto> GetByID([FromRoute] int sensorID)
         {
             if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
-
-            var sensorSimpleDto = sensor.AsSimpleDto();
-            sensorSimpleDto.MessageAge = PaigeWirelessPulses.GetLastMessageAgeBySensorName(_dbContext, sensor.SensorName);
-
+            var sensorSimpleDto = _dbContext.vSensors.AsNoTracking().Single(x => x.SensorID == sensorID).AsSimpleDto();
             var wellSensorMeasurements = _dbContext.WellSensorMeasurements.AsNoTracking()
                 .Where(x => x.SensorName == sensorSimpleDto.SensorName).ToList();
-            var wellSensorMeasurementsExcludingBatteryVoltage = wellSensorMeasurements
-                .Where(x => x.MeasurementTypeID != (int)MeasurementTypeEnum.BatteryVoltage).ToList();
-            
-            sensorSimpleDto.FirstReadingDate = wellSensorMeasurements.Any() ? wellSensorMeasurements.Min(x => x.MeasurementDate) : null;
-            sensorSimpleDto.LastReadingDate = wellSensorMeasurementsExcludingBatteryVoltage.Any() ? wellSensorMeasurementsExcludingBatteryVoltage.Max(x => x.MeasurementDate) : null;
-
-            var batteryVoltages = wellSensorMeasurements.Where(x => x.MeasurementTypeID == (int) MeasurementTypeEnum.BatteryVoltage).OrderByDescending(x => x.MeasurementDate).ToList();
-            var lastVoltageReading = batteryVoltages.Any() ? batteryVoltages.FirstOrDefault() : null;
-            sensorSimpleDto.LastVoltageReading = lastVoltageReading?.MeasurementValue;
-            sensorSimpleDto.LastVoltageReadingDate = lastVoltageReading?.MeasurementDate;
-
             if (sensor.SensorTypeID == (int)SensorTypeEnum.ContinuityMeter)
             {
                 sensorSimpleDto.LastOnReadingDate = wellSensorMeasurements.Any(x => x.MeasurementValue > 0)
@@ -132,15 +90,9 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<DateTime> UpdateSensorSnoozeByID([FromRoute] int sensorID, [FromBody] bool sensorSnoozed)
         {
-            var sensor = _dbContext.Sensors.SingleOrDefault(x => x.SensorID == sensorID);
-            if (ThrowNotFound(sensor, "Sensor", sensorID, out var actionResult))
-            {
-                return actionResult;
-            }
-            
+            if (GetSensorAndThrowIfNotFound(sensorID, out var sensor, out var actionResult)) return actionResult;
             sensor.SnoozeStartDate = sensorSnoozed ? DateTime.UtcNow : null;
             _dbContext.SaveChanges();
-
             return Ok(sensor.SnoozeStartDate);
         }
 

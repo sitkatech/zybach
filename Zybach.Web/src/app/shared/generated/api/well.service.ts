@@ -41,7 +41,9 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from '../../services';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WellService {
 
     protected basePath = 'http://localhost';
@@ -87,6 +89,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -124,6 +131,11 @@ export class WellService {
     public wellUsesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -163,6 +175,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -200,6 +217,11 @@ export class WellService {
     public wellsInspectionSummariesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -240,6 +262,11 @@ export class WellService {
 
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -290,6 +317,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -332,6 +364,11 @@ export class WellService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -376,6 +413,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -419,6 +461,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -461,6 +508,11 @@ export class WellService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -506,6 +558,11 @@ export class WellService {
 
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -558,6 +615,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -607,6 +669,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -650,6 +717,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -692,6 +764,11 @@ export class WellService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -746,6 +823,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'image/jpeg',
@@ -788,6 +870,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
         ];
@@ -827,6 +914,11 @@ export class WellService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -872,6 +964,11 @@ export class WellService {
 
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -922,6 +1019,11 @@ export class WellService {
 
         let headers = this.defaultHeaders;
 
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
             'text/plain',
@@ -938,132 +1040,6 @@ export class WellService {
         ];
 
         return this.httpClient.get<WellSimpleDto>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/simpleDto`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param wellID 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (wellID === null || wellID === undefined) {
-            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDWaterLevelChartSpecGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<any>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelChartSpec`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param wellID 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<WaterLevelInspectionSummaryDto>>;
-    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WaterLevelInspectionSummaryDto>>>;
-    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WaterLevelInspectionSummaryDto>>>;
-    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (wellID === null || wellID === undefined) {
-            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDWaterLevelInspectionsGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<Array<WaterLevelInspectionSummaryDto>>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelInspections`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
-    }
-
-    /**
-     * 
-     * 
-     * @param wellID 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<SensorChartDataDto>;
-    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SensorChartDataDto>>;
-    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SensorChartDataDto>>;
-    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (wellID === null || wellID === undefined) {
-            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDWaterLevelSensorsGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json',
-            'text/json',
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<SensorChartDataDto>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelSensors`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -1119,6 +1095,146 @@ export class WellService {
         ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
     }
 
+    /**
+     * 
+     * 
+     * @param wellID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public wellsWellIDWaterLevelChartSpecGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (wellID === null || wellID === undefined) {
+            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDWaterLevelChartSpecGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<any>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelChartSpec`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param wellID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<WaterLevelInspectionSummaryDto>>;
+    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<WaterLevelInspectionSummaryDto>>>;
+    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<WaterLevelInspectionSummaryDto>>>;
+    public wellsWellIDWaterLevelInspectionsGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (wellID === null || wellID === undefined) {
+            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDWaterLevelInspectionsGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<WaterLevelInspectionSummaryDto>>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelInspections`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param wellID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'body', reportProgress?: boolean): Observable<SensorChartDataDto>;
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SensorChartDataDto>>;
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SensorChartDataDto>>;
+    public wellsWellIDWaterLevelSensorsGet(wellID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (wellID === null || wellID === undefined) {
+            throw new Error('Required parameter wellID was null or undefined when calling wellsWellIDWaterLevelSensorsGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<SensorChartDataDto>(`${this.basePath}/wells/${encodeURIComponent(String(wellID))}/waterLevelSensors`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
 
     /**
      * 
@@ -1137,6 +1253,11 @@ export class WellService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
@@ -1185,6 +1306,11 @@ export class WellService {
         }
 
         let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [

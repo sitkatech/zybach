@@ -28,8 +28,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public DistrictStatisticsDto GetDistrictStatistics()
         {
-            var allWells = _wellService.GetAghubAndGeoOptixWells();
-
+            var allWells = Wells.ListAsWellWithSensorSimpleDto(_dbContext);
             return new DistrictStatisticsDto
             { 
                 NumberOfWellsTracked = allWells.Count,

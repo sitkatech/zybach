@@ -5,9 +5,9 @@ import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
-import { SensorMessageAgeDto } from 'src/app/shared/generated/model/sensor-message-age-dto';
+import { SensorSimpleDto } from 'src/app/shared/generated/model/sensor-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
-import { WellWithSensorMessageAgeDto } from 'src/app/shared/generated/model/well-with-sensor-message-age-dto';
+import { WellWithSensorSimpleDto } from 'src/app/shared/generated/model/well-with-sensor-simple-dto';
 import { WellMapComponent } from '../well-map/well-map.component';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
@@ -30,7 +30,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   public currentUser: UserDto;
 
   public wellsGeoJson: object;
-  public redSensors: SensorMessageAgeDto[];
+  public redSensors: SensorSimpleDto[];
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
 
@@ -69,7 +69,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         }
 
         this.redSensors = wells
-        .reduce((sensors: SensorMessageAgeDto[], well: WellWithSensorMessageAgeDto) => 
+        .reduce((sensors: SensorSimpleDto[], well: WellWithSensorSimpleDto) => 
           sensors.concat(well.Sensors.map(sensor => ({
             ...sensor, 
             WellID: well.WellID, 
@@ -78,7 +78,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             fieldName: well.FieldName
           }))
         ), [])
-        .filter(sensor => sensor.IsActive && (sensor.MessageAge > SensorStatusComponent.messageAgeMax || 
+        .filter(sensor => sensor.IsActive && (sensor.LastMessageAgeInHours > SensorStatusComponent.messageAgeMax || 
           (sensor.LastVoltageReading != null && sensor.LastVoltageReading < SensorStatusComponent.voltageReadingMin) || 
           (sensor.ContinuityMeterStatus && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatus.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)
         ))
@@ -158,8 +158,8 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
       },
       { headerName: 'Last Message Age (Hours)',
-        valueGetter: (params) => params.data.MessageAge ? _decimalPipe.transform(params.data.MessageAge / 60, '1.0-0') : null,
-        valueFormatter: params => params.value != null ? params.value : '-',
+        valueGetter: (params) => params.data.LastMessageAgeInHours ? params.data.LastMessageAgeInHours : null,
+        valueFormatter: params => params.value != null ? _decimalPipe.transform(params.value, '1.0-0') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
         headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
       },

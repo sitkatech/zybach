@@ -7,7 +7,7 @@ import { SensorStatusService } from 'src/app/shared/generated/api/sensor-status.
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { WellService } from 'src/app/shared/generated/api/well.service';
 import { ChemigationPermitDetailedDto } from '../../generated/model/chemigation-permit-detailed-dto';
-import { SensorMessageAgeDto } from '../../generated/model/sensor-message-age-dto';
+import { SensorSimpleDto } from '../../generated/model/sensor-simple-dto';
 import { WaterLevelInspectionSummaryDto } from '../../generated/model/water-level-inspection-summary-dto';
 import { WaterQualityInspectionSummaryDto } from '../../generated/model/water-quality-inspection-summary-dto';
 import { WellDetailDto } from '../../generated/model/well-detail-dto';
@@ -38,7 +38,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
   public hasNitrateChartData: boolean = true;
   public hasWaterLevelChartData: boolean = true;
   
-  public sensorsWithStatus: SensorMessageAgeDto[];
+  public sensorsWithStatus: SensorSimpleDto[];
   public chemigationPermits: Array<ChemigationPermitDetailedDto>;
 
   public waterLevelInspections: Array<WaterLevelInspectionSummaryDto>;
@@ -57,7 +57,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
     this.initializeWaterLevelInspectionsGrid();
     this.initializeWaterQualityInspectionsGrid();
     this.getChemigationPermits();
-    this.getSensorsWithAgeMessages();
+    this.getSensors();
     this.getInspections();
   }
 
@@ -238,13 +238,9 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
     });
   }
 
-  getSensorsWithAgeMessages(){
-    this.sensorService.sensorStatusWellIDGet(this.well.WellID).subscribe(wellWithSensorMessageAge => {
-      this.sensorsWithStatus = wellWithSensorMessageAge.Sensors;
-
-      for (var sensor of this.sensorsWithStatus){
-        sensor.MessageAge = Math.floor(sensor.MessageAge / 60)
-      }
+  getSensors(){
+    this.sensorService.sensorStatusWellIDGet(this.well.WellID).subscribe(wellWithSensorSimple => {
+      this.sensorsWithStatus = wellWithSensorSimple.Sensors;
     });
   }
 

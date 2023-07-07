@@ -1,4 +1,4 @@
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
@@ -37,7 +37,9 @@ export class SensorListComponent implements OnInit {
     private datePipe: DatePipe,
     private sensorService: SensorService,
     private cdr: ChangeDetectorRef,
-    private utilityFunctionsService: UtilityFunctionsService  ) { }
+    private utilityFunctionsService: UtilityFunctionsService,
+    private decimalPipe: DecimalPipe
+    ) { }
 
   ngOnInit(): void {
     this.initializeSensorsGrid();
@@ -62,6 +64,7 @@ export class SensorListComponent implements OnInit {
   }
 
   private initializeSensorsGrid(): void {
+    const _decimalPipe = this.decimalPipe;
     let datePipe = this.datePipe;
     this.sensorColumnDefs = [
     {
@@ -107,8 +110,8 @@ export class SensorListComponent implements OnInit {
     },
     { 
       headerName: 'Last Message Age (Hours)', 
-      valueGetter: (params) => params.data.MessageAge ? Math.floor(params.data.MessageAge / 60) : null,
-      valueFormatter: params => params.value != null ? params.value : '-',
+      valueGetter: (params) => params.data.LastMessageAgeInHours ? params.data.LastMessageAgeInHours : null,
+      valueFormatter: params => params.value != null ? _decimalPipe.transform(params.value, '1.0-0') : '-',
       filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
       headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
       sortable: true, resizable: true
