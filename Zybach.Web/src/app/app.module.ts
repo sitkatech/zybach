@@ -17,21 +17,15 @@ import { UserDetailComponent } from './pages/user-detail/user-detail.component';
 import { UserEditComponent } from './pages/user-edit/user-edit.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { DecimalPipe, CurrencyPipe, DatePipe } from '@angular/common';
-import { LinkRendererComponent } from './shared/components/ag-grid/link-renderer/link-renderer.component';
-
-
 import { FormsModule } from '@angular/forms';
-import { FontAwesomeIconLinkRendererComponent } from './shared/components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { LoginCallbackComponent } from './pages/login-callback/login-callback.component';
 import { HelpComponent } from './pages/help/help.component';
-import { MultiLinkRendererComponent } from './shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CreateUserCallbackComponent } from './pages/create-user-callback/create-user-callback.component';
 import { AboutComponent } from './pages/about/about.component';
 import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
 import { AppInitService } from './app.init';
 import { FieldDefinitionListComponent } from './pages/field-definition-list/field-definition-list.component';
 import { FieldDefinitionEditComponent } from './pages/field-definition-edit/field-definition-edit.component';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { TrainingComponent } from './pages/training/training.component';
 import { environment } from 'src/environments/environment';
 import { AppInsightsService } from './shared/services/app-insights.service';
@@ -124,105 +118,103 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeIndexComponent,
-    UserListComponent,
-    UserInviteComponent,
-    UserDetailComponent,
-    UserEditComponent,
-    LoginCallbackComponent,
-    HelpComponent,
-    CreateUserCallbackComponent,
-    AboutComponent,
-    DisclaimerComponent,
-    FieldDefinitionListComponent,
-    FieldDefinitionEditComponent,
-    TrainingComponent,
-    WellMapComponent,
-    WellExplorerComponent,
-    WellDetailComponent,
-    DashboardComponent,
-    WellMapPopupComponent,
-    RobustReviewScenarioComponent,
-    SensorStatusComponent,
-    SensorStatusMapComponent,
-    SensorStatusMapPopupComponent,
-    WellNewComponent,
-    ReportsListComponent,
-    ReportTemplateDetailComponent,
-    ReportTemplateEditComponent,
-    ChemigationNewPermitComponent,
-    ChemigationPermitListComponent,
-    ChemigationPermitDetailComponent,
-    ChemigationPermitEditComponent,
-    ChemigationPermitAddRecordComponent,
-    ChemigationPermitEditRecordComponent,
-    ChemigationPermitAnnualRecordUpsertComponent,
-    ChemigationPermitChemicalFormulationsEditorComponent,
-    ChemigationPermitApplicatorsEditorComponent,
-    NdeeChemicalsReportComponent,
-    ChemigationPermitReportsComponent,
-    ChemigationInspectionsListComponent,
-    ChemigationInspectionUpsertComponent,
-    ChemigationInspectionNewComponent,
-    ChemigationInspectionEditComponent,
-    WaterQualityInspectionListComponent,
-    WaterQualityInspectionDetailComponent,
-    WaterQualityInspectionUpsertComponent, 
-    WaterQualityInspectionNewComponent, 
-    WaterQualityInspectionEditComponent, 
-    WaterLevelInspectionUpsertComponent,
-    WellOverviewTabComponent,
-    WellWaterDataTabComponent,
-    WellPermitsInspectionsTabComponent,
-    WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WaterQualityReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent, WaterLevelExplorerComponent, WellWaterLevelMapComponent, IrrigationUnitListComponent, IrrigationUnitDetailComponent, IrrigationUnitMapComponent, OpenetSyncWaterYearMonthStatusListComponent, SupportTicketListComponent, SupportTicketDetailComponent, SupportTicketEditComponent, SupportTicketNewComponent, SupportTicketUpsertComponent, SupportTicketCommentNewComponent, WellPumpingSummaryComponent, 
-    WellGroupListComponent, 
-    WellGroupEditComponent, WellGroupDetailComponent, WellGroupWaterLevelsTabComponent, WaterLevelReportsComponent, SensorHealthCheckComponent
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    NgbModule,
-    RouterModule,
-    OAuthModule.forRoot(),
-    SharedModule.forRoot(),
-    FormsModule,
-    BrowserAnimationsModule,
-    AgGridModule.withComponents([]),
-    CKEditorModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot({
-      positionClass: "toast-top-right"
-    }),
-    AngularMyDatePickerModule,
-    NgSelectModule,
-    ApiModule.forRoot(() => {
-      return new Configuration({
-        basePath: `${environment.mainAppApiUrl}`,
-      });
-    }),
-    NgxMaskModule.forRoot(),
-    TimeagoModule.forRoot()
-  ],  
-  providers: [
-    CookieService,
-    AppInitService,
-    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandlerService
-    },
-    DecimalPipe, CurrencyPipe, DatePipe,
-    {
-      provide: OAuthStorage,
-      useClass: CookieStorageService
-    }
-  ],
-  entryComponents: [LinkRendererComponent, FontAwesomeIconLinkRendererComponent, MultiLinkRendererComponent, WellMapPopupComponent],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeIndexComponent,
+        UserListComponent,
+        UserInviteComponent,
+        UserDetailComponent,
+        UserEditComponent,
+        LoginCallbackComponent,
+        HelpComponent,
+        CreateUserCallbackComponent,
+        AboutComponent,
+        DisclaimerComponent,
+        FieldDefinitionListComponent,
+        FieldDefinitionEditComponent,
+        TrainingComponent,
+        WellMapComponent,
+        WellExplorerComponent,
+        WellDetailComponent,
+        DashboardComponent,
+        WellMapPopupComponent,
+        RobustReviewScenarioComponent,
+        SensorStatusComponent,
+        SensorStatusMapComponent,
+        SensorStatusMapPopupComponent,
+        WellNewComponent,
+        ReportsListComponent,
+        ReportTemplateDetailComponent,
+        ReportTemplateEditComponent,
+        ChemigationNewPermitComponent,
+        ChemigationPermitListComponent,
+        ChemigationPermitDetailComponent,
+        ChemigationPermitEditComponent,
+        ChemigationPermitAddRecordComponent,
+        ChemigationPermitEditRecordComponent,
+        ChemigationPermitAnnualRecordUpsertComponent,
+        ChemigationPermitChemicalFormulationsEditorComponent,
+        ChemigationPermitApplicatorsEditorComponent,
+        NdeeChemicalsReportComponent,
+        ChemigationPermitReportsComponent,
+        ChemigationInspectionsListComponent,
+        ChemigationInspectionUpsertComponent,
+        ChemigationInspectionNewComponent,
+        ChemigationInspectionEditComponent,
+        WaterQualityInspectionListComponent,
+        WaterQualityInspectionDetailComponent,
+        WaterQualityInspectionUpsertComponent,
+        WaterQualityInspectionNewComponent,
+        WaterQualityInspectionEditComponent,
+        WaterLevelInspectionUpsertComponent,
+        WellOverviewTabComponent,
+        WellWaterDataTabComponent,
+        WellPermitsInspectionsTabComponent,
+        WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WaterQualityReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent, WaterLevelExplorerComponent, WellWaterLevelMapComponent, IrrigationUnitListComponent, IrrigationUnitDetailComponent, IrrigationUnitMapComponent, OpenetSyncWaterYearMonthStatusListComponent, SupportTicketListComponent, SupportTicketDetailComponent, SupportTicketEditComponent, SupportTicketNewComponent, SupportTicketUpsertComponent, SupportTicketCommentNewComponent, WellPumpingSummaryComponent,
+        WellGroupListComponent,
+        WellGroupEditComponent, WellGroupDetailComponent, WellGroupWaterLevelsTabComponent, WaterLevelReportsComponent, SensorHealthCheckComponent
+    ],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        NgbModule,
+        RouterModule,
+        OAuthModule.forRoot(),
+        SharedModule.forRoot(),
+        FormsModule,
+        BrowserAnimationsModule,
+        AgGridModule.withComponents([]),
+        BrowserAnimationsModule,
+        ToastrModule.forRoot({
+            positionClass: "toast-top-right"
+        }),
+        AngularMyDatePickerModule,
+        NgSelectModule,
+        ApiModule.forRoot(() => {
+            return new Configuration({
+                basePath: `${environment.mainAppApiUrl}`,
+            });
+        }),
+        NgxMaskModule.forRoot(),
+        TimeagoModule.forRoot()
+    ],
+    providers: [
+        CookieService,
+        AppInitService,
+        { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandlerService
+        },
+        DecimalPipe, CurrencyPipe, DatePipe,
+        {
+            provide: OAuthStorage,
+            useClass: CookieStorageService
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { 
   //https://github.com/Asymmetrik/ngx-leaflet/issues/178 for explanation

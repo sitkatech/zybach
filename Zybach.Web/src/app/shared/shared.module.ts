@@ -12,7 +12,6 @@ import { LinkRendererComponent } from './components/ag-grid/link-renderer/link-r
 import { FontAwesomeIconLinkRendererComponent } from './components/ag-grid/fontawesome-icon-link-renderer/fontawesome-icon-link-renderer.component';
 import { MultiLinkRendererComponent } from './components/ag-grid/multi-link-renderer/multi-link-renderer.component';
 import { CustomRichTextComponent } from './components/custom-rich-text/custom-rich-text.component'
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FieldDefinitionComponent } from './components/field-definition/field-definition.component';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { AlertDisplayComponent } from './components/alert-display/alert-display.component';
@@ -26,6 +25,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SensorChartComponent } from './components/sensor-chart/sensor-chart.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from "@tinymce/tinymce-angular";
 
 @NgModule({
     declarations: [
@@ -53,11 +53,11 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
         HttpClientModule,
         NgProgressModule,
         RouterModule,
-        CKEditorModule,
         NgbModule,
         AutoCompleteModule,
         NgSelectModule,
         NgxMaskModule.forChild(),
+        EditorModule
     ],
     exports: [
         AlertDisplayComponent,
@@ -70,7 +70,11 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
         FieldDefinitionGridHeaderComponent,
         WaterYearSelectComponent,
         SensorChartComponent,
-        ClearGridFiltersButtonComponent
+        ClearGridFiltersButtonComponent,
+        EditorModule
+    ],
+    providers:[
+        { provide: TINYMCE_SCRIPT_SRC, useValue: 'assets/tinymce/tinymce.min.js' }
     ]
 })
 export class SharedModule {

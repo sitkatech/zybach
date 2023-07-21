@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
-import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Alert } from 'src/app/shared/models/alert';
@@ -19,7 +18,6 @@ export class FieldDefinitionEditComponent implements OnInit {
   private currentUser: UserDto;
 
   public fieldDefinition: FieldDefinitionDto;
-  public Editor = ClassicEditor;
   public editor;
 
   isLoadingSubmit: boolean;
@@ -31,8 +29,7 @@ export class FieldDefinitionEditComponent implements OnInit {
       private fieldDefinitionService: FieldDefinitionService,
       private authenticationService: AuthenticationService,
       private cdr: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {

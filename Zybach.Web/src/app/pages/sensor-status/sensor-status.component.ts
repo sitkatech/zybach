@@ -50,12 +50,12 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.watchUserChangeSubscription = this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
       this.sensorStatusService.sensorStatusGet().subscribe(wells => {
+        const wellsWithActiveSensors = wells.filter(x => x.Sensors.filter(y => y.IsActive).length > 0);
         this.wellsGeoJson =
         {
           type: "FeatureCollection",
           features:
-
-            wells.map(x => {
+            wellsWithActiveSensors.map(x => {
               const geoJsonPoint = x.Location;
               geoJsonPoint.properties = {
                 wellID: x.WellID,

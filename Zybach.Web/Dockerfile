@@ -5,8 +5,8 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-ENV NODE_VERSION 16.15.1
-ENV NODE_DOWNLOAD_SHA f78a49c0c9c2f546c3a44eb434c49a852125441422a1bcfc433dedc58d6a241c
+ENV NODE_VERSION 14.17.6
+ENV NODE_DOWNLOAD_SHA 19e376214450e93e58687198070b4ab46e42357032ec65f23a7e35b0e86ad6e2
 
 RUN curl -SL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz" --output nodejs.tar.gz \
     && echo "$NODE_DOWNLOAD_SHA nodejs.tar.gz" | sha256sum -c - \
@@ -24,7 +24,7 @@ WORKDIR /src/Zybach.Web/
 
 RUN npm cache clean --force
 RUN npm uninstall   -g angular-cli
-RUN npm install     -g @angular/cli@12.2.13
+RUN npm install     -g @angular/cli@13.3.11
 RUN npm install
 
 ARG env
