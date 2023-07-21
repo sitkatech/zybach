@@ -24,7 +24,7 @@ WORKDIR /src/Zybach.Web/
 
 RUN npm cache clean --force
 RUN npm uninstall   -g angular-cli
-RUN npm install     -g @angular/cli@12.2.13
+RUN npm install     -g @angular/cli@13.3.11
 RUN npm install
 
 ARG env
