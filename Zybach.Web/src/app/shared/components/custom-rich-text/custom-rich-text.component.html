@@ -18,11 +18,10 @@
         </div>
         <div *ngIf="!showEditButton()" [innerHtml]="customRichTextContent"></div>
     </ng-container>
+
     <div *ngIf="isEditing">
-        <ckeditor [editor]="Editor" [(ngModel)]="editedContent"></ckeditor>
-        <div style="float:right;">
-            <button type="button" class="btn btn-zybach mt-1 mr-1" (click)="saveEdit()">Save</button>
-            <button type="button" class="btn btn-secondary mt-1" (click)="cancelEdit()">Cancel</button>
-        </div>
-    </div>
+        <editor #tinyMceEditor [init]="tinyMceConfig" [(ngModel)]="editedContent"></editor>
+        
+        <button type="button" class="btn btn-primary mt-1 mr-1" (click)="saveEdit()">Save</button>
+        <button type="button" class="btn btn-secondary mt-1" (click)="cancelEdit()">Cancel</button>
 </div>

@@ -1,15 +1,15 @@
-import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { Alert } from '../../models/alert';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { FieldDefinitionService } from 'src/app/shared/generated/api/field-definition.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { AlertService } from '../../services/alert.service';
-import * as ClassicEditor from 'src/assets/main/ckeditor/ckeditor.js';
 import { AlertContext } from '../../models/enums/alert-context.enum';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { FieldDefinitionTypeEnum } from '../../generated/enum/field-definition-type-enum';
 import { FieldDefinitionDto } from '../../generated/model/field-definition-dto';
-
+import { EditorComponent } from '@tinymce/tinymce-angular';
+import TinyMCEHelpers from '../../helpers/tiny-mce-helpers';
 
 declare var $ : any
 
@@ -18,7 +18,10 @@ declare var $ : any
   templateUrl: './field-definition.component.html',
   styleUrls: ['./field-definition.component.scss']
 })
-export class FieldDefinitionComponent implements OnInit {
+export class FieldDefinitionComponent implements OnInit, AfterViewChecked {
+  @ViewChild('tinyMceEditor') tinyMceEditor: EditorComponent;
+  public tinyMceConfig: object;
+
   @Input() fieldDefinitionType: string;
   @Input() fieldDefinitionTypeID: number;
   @Input() labelOverride: string;
@@ -29,18 +32,19 @@ export class FieldDefinitionComponent implements OnInit {
   public isEditing: boolean = false;
   public emptyContent: boolean = false;
   public watchUserChangeSubscription: any;
-  public Editor = ClassicEditor;
   public editedContent: string;
   public labelTextWithoutLastWord: string;
   public labelTextLastWord: string;
 
   currentUser: UserDto;
 
-  constructor(private fieldDefinitionService: FieldDefinitionService,
+  constructor (
+    private fieldDefinitionService: FieldDefinitionService,
     private authenticationService: AuthenticationService,
     private cdr: ChangeDetectorRef,
     private alertService: AlertService,
-    private elem: ElementRef) { }
+    private elem: ElementRef
+  ) { }
 
   ngOnInit() {
     if (this.fieldDefinitionType != null) {
@@ -55,8 +59,20 @@ export class FieldDefinitionComponent implements OnInit {
     }
   }
 
+  ngAfterViewChecked() {
+    // viewChild is updated after the view has been checked
+    this.initalizeEditor();
+  }
+
+  initalizeEditor() {
+    if (!this.isLoading && this.isEditing) {
+      this.tinyMceConfig = TinyMCEHelpers.DefaultInitConfig(
+        this.tinyMceEditor
+      );
+    }
+  }
+
   ngOnDestroy() {
-    
     this.cdr.detach();
   }
 
