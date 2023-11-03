@@ -20,7 +20,8 @@ namespace Zybach.EFModels.Entities
                 UpdateDate = openETSyncHistory.UpdateDate,
                 GoogleBucketFileRetrievalURL = openETSyncHistory.GoogleBucketFileRetrievalURL,
                 ErrorMessage = openETSyncHistory.ErrorMessage,
-                OpenETDataType = openETSyncHistory.OpenETDataType?.AsDto()
+                OpenETDataType = openETSyncHistory.OpenETDataType?.AsDto(),
+                OpenETSync = openETSyncHistory.OpenETSync?.AsDto()
             };
             DoCustomMappings(openETSyncHistory, openETSyncHistoryDto);
             return openETSyncHistoryDto;
@@ -39,7 +40,8 @@ namespace Zybach.EFModels.Entities
                 UpdateDate = openETSyncHistory.UpdateDate,
                 GoogleBucketFileRetrievalURL = openETSyncHistory.GoogleBucketFileRetrievalURL,
                 ErrorMessage = openETSyncHistory.ErrorMessage,
-                OpenETDataTypeID = openETSyncHistory.OpenETDataTypeID
+                OpenETDataTypeID = openETSyncHistory.OpenETDataTypeID,
+                OpenETSyncID = openETSyncHistory.OpenETSyncID
             };
             DoCustomSimpleDtoMappings(openETSyncHistory, openETSyncHistorySimpleDto);
             return openETSyncHistorySimpleDto;

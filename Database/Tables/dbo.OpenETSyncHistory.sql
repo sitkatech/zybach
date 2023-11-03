@@ -4,7 +4,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[OpenETSyncHistory](
 	[OpenETSyncHistoryID] [int] IDENTITY(1,1) NOT NULL,
-	[WaterYearMonthID] [int] NOT NULL,
+	[OpenETSyncID] [int] NOT NULL,
 	[OpenETSyncResultTypeID] [int] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
 	[UpdateDate] [datetime] NOT NULL,
@@ -28,7 +28,7 @@ REFERENCES [dbo].[OpenETSyncResultType] ([OpenETSyncResultTypeID])
 GO
 ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_OpenETSyncResultType_OpenETSyncResultTypeID]
 GO
-ALTER TABLE [dbo].[OpenETSyncHistory]  WITH CHECK ADD  CONSTRAINT [FK_OpenETSyncHistory_WaterYearMonth_WaterYearMonthID] FOREIGN KEY([WaterYearMonthID])
-REFERENCES [dbo].[WaterYearMonth] ([WaterYearMonthID])
+ALTER TABLE [dbo].[OpenETSyncHistory]  WITH CHECK ADD  CONSTRAINT [FK_OpenETSyncHistory_OpenETSync_OpenETSyncID] FOREIGN KEY([OpenETSyncID])
+REFERENCES [dbo].[OpenETSync] ([OpenETSyncID])
 GO
 ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_WaterYearMonth_WaterYearMonthID]

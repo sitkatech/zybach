@@ -23,7 +23,11 @@ namespace Zybach.EFModels.Entities
         [Unicode(false)]
         public string ErrorMessage { get; set; }
         public int? OpenETDataTypeID { get; set; }
+        public int? OpenETSyncID { get; set; }
 
+        [ForeignKey("OpenETSyncID")]
+        [InverseProperty("OpenETSyncHistories")]
+        public virtual OpenETSync OpenETSync { get; set; }
         [ForeignKey("WaterYearMonthID")]
         [InverseProperty("OpenETSyncHistories")]
         public virtual WaterYearMonth WaterYearMonth { get; set; }
