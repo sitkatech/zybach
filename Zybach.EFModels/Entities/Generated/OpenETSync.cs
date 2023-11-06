@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Zybach.EFModels.Entities
 {
     [Table("OpenETSync")]
-    [Index("Year", "Month", Name = "AK_OpenETSync_Year_Month", IsUnique = true)]
+    [Index("Year", "Month", "OpenETDataTypeID", Name = "AK_OpenETSync_Year_Month_OpenETDataTypeID", IsUnique = true)]
     public partial class OpenETSync
     {
         public OpenETSync()

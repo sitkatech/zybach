@@ -10,7 +10,6 @@ namespace Zybach.Models.DataTransferObjects
     public partial class OpenETSyncHistoryDto
     {
         public int OpenETSyncHistoryID { get; set; }
-        public WaterYearMonthDto WaterYearMonth { get; set; }
         public OpenETSyncResultTypeDto OpenETSyncResultType { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
@@ -23,7 +22,6 @@ namespace Zybach.Models.DataTransferObjects
     public partial class OpenETSyncHistorySimpleDto
     {
         public int OpenETSyncHistoryID { get; set; }
-        public int WaterYearMonthID { get; set; }
         public int OpenETSyncResultTypeID { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }

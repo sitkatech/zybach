@@ -14,7 +14,6 @@ namespace Zybach.EFModels.Entities
             var openETSyncHistoryDto = new OpenETSyncHistoryDto()
             {
                 OpenETSyncHistoryID = openETSyncHistory.OpenETSyncHistoryID,
-                WaterYearMonth = openETSyncHistory.WaterYearMonth.AsDto(),
                 OpenETSyncResultType = openETSyncHistory.OpenETSyncResultType.AsDto(),
                 CreateDate = openETSyncHistory.CreateDate,
                 UpdateDate = openETSyncHistory.UpdateDate,
@@ -34,7 +33,6 @@ namespace Zybach.EFModels.Entities
             var openETSyncHistorySimpleDto = new OpenETSyncHistorySimpleDto()
             {
                 OpenETSyncHistoryID = openETSyncHistory.OpenETSyncHistoryID,
-                WaterYearMonthID = openETSyncHistory.WaterYearMonthID,
                 OpenETSyncResultTypeID = openETSyncHistory.OpenETSyncResultTypeID,
                 CreateDate = openETSyncHistory.CreateDate,
                 UpdateDate = openETSyncHistory.UpdateDate,

@@ -11,7 +11,6 @@ namespace Zybach.EFModels.Entities
     {
         [Key]
         public int OpenETSyncHistoryID { get; set; }
-        public int WaterYearMonthID { get; set; }
         public int OpenETSyncResultTypeID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime CreateDate { get; set; }
@@ -28,8 +27,5 @@ namespace Zybach.EFModels.Entities
         [ForeignKey("OpenETSyncID")]
         [InverseProperty("OpenETSyncHistories")]
         public virtual OpenETSync OpenETSync { get; set; }
-        [ForeignKey("WaterYearMonthID")]
-        [InverseProperty("OpenETSyncHistories")]
-        public virtual WaterYearMonth WaterYearMonth { get; set; }
     }
 }

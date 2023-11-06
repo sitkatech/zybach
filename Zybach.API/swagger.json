@@ -2088,6 +2088,47 @@
         }
       }
     },
+    "/openet-sync/years": {
+      "get": {
+        "tags": [
+          "OpenET"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int32"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/openet-sync-history/trigger-openet-google-bucket-refresh": {
       "post": {
         "tags": [
@@ -4702,218 +4743,6 @@
         }
       }
     },
-    "/water-year-months": {
-      "get": {
-        "tags": [
-          "WaterYearMonth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WaterYearMonthDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WaterYearMonthDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WaterYearMonthDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/water-year-months/years": {
-      "get": {
-        "tags": [
-          "WaterYearMonth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/water-year-months/current-date-or-earlier": {
-      "get": {
-        "tags": [
-          "WaterYearMonth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WaterYearMonthDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WaterYearMonthDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WaterYearMonthDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/water-year-months/most-recent-sync-history": {
-      "get": {
-        "tags": [
-          "WaterYearMonth"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/water-year-month/finalize": {
-      "put": {
-        "tags": [
-          "WaterYearMonth"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "type": "integer",
-                "format": "int32"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "type": "integer",
-                "format": "int32"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "integer",
-                "format": "int32"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "integer",
-                "format": "int32"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/WaterYearMonthDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WaterYearMonthDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WaterYearMonthDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/wells": {
       "get": {
         "tags": [
@@ -6676,8 +6505,9 @@
       "AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto": {
         "type": "object",
         "properties": {
-          "WaterYearMonth": {
-            "$ref": "#/components/schemas/WaterYearMonthDto"
+          "ReportedDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "PrecipitationAcreInches": {
             "type": "number",
@@ -8561,62 +8391,6 @@
         },
         "additionalProperties": false
       },
-      "OpenETSyncHistoryDto": {
-        "type": "object",
-        "properties": {
-          "OpenETSyncHistoryID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "WaterYearMonth": {
-            "$ref": "#/components/schemas/WaterYearMonthDto"
-          },
-          "OpenETSyncResultType": {
-            "$ref": "#/components/schemas/OpenETSyncResultTypeDto"
-          },
-          "CreateDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "UpdateDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "GoogleBucketFileRetrievalURL": {
-            "type": "string",
-            "nullable": true
-          },
-          "ErrorMessage": {
-            "type": "string",
-            "nullable": true
-          },
-          "OpenETDataType": {
-            "$ref": "#/components/schemas/OpenETDataTypeDto"
-          },
-          "OpenETSync": {
-            "$ref": "#/components/schemas/OpenETSyncDto"
-          }
-        },
-        "additionalProperties": false
-      },
-      "OpenETSyncResultTypeDto": {
-        "type": "object",
-        "properties": {
-          "OpenETSyncResultTypeID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "OpenETSyncResultTypeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "OpenETSyncResultTypeDisplayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "PaigeWirelessPulseDto": {
         "type": "object",
         "properties": {
@@ -10437,29 +10211,6 @@
           },
           "InspectionNickname": {
             "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "WaterYearMonthDto": {
-        "type": "object",
-        "properties": {
-          "WaterYearMonthID": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Month": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "FinalizeDate": {
-            "type": "string",
-            "format": "date-time",
             "nullable": true
           }
         },

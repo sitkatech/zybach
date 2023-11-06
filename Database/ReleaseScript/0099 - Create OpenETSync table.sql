@@ -21,4 +21,5 @@ alter table dbo.OpenETSyncHistory
 GO 
 
 drop table dbo.WaterYearMonth
+delete from dbo.OpenETSyncHistory
 

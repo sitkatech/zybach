@@ -243,4 +243,47 @@ export class OpenETService {
         ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
     }
 
+    /**
+     * 
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public openetSyncYearsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<number>>;
+    public openetSyncYearsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<number>>>;
+    public openetSyncYearsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<number>>>;
+    public openetSyncYearsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<number>>(`${this.basePath}/openet-sync/years`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
 }

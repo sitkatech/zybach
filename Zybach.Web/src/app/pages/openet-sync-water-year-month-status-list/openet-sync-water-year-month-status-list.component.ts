@@ -45,6 +45,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.loadingPage = true;
       this.currentUser = currentUser;
+      
       this.openETService.openetIsApiKeyValidGet().subscribe(isValid => {
         this.isOpenETAPIKeyValid = isValid;
         this.refreshOpenETSyncsAndOpenETSyncData();

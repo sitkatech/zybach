@@ -35,6 +35,14 @@ namespace Zybach.API.Controllers
             public DateTime ExpirationDate { get; set; }
         }
 
+        [HttpGet("/openet-sync/years")]
+        [AdminFeature]
+        public ActionResult<List<int>> ListYears()
+        {
+            var waterYears = OpenETSyncs.ListYears(_dbContext);
+            return Ok(waterYears);
+        }
+
 
         [HttpPost("/openet-sync-history/trigger-openet-google-bucket-refresh/")]
         [AdminFeature]

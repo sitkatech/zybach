@@ -19,8 +19,6 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<AgHubIrrigationUnit> AgHubIrrigationUnits { get; set; }
         public virtual DbSet<AgHubIrrigationUnitGeometry> AgHubIrrigationUnitGeometries { get; set; }
         public virtual DbSet<AgHubIrrigationUnitOpenETDatum> AgHubIrrigationUnitOpenETData { get; set; }
-        public virtual DbSet<AgHubIrrigationUnitWaterYearMonthETDatum> AgHubIrrigationUnitWaterYearMonthETData { get; set; }
-        public virtual DbSet<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum> AgHubIrrigationUnitWaterYearMonthPrecipitationData { get; set; }
         public virtual DbSet<AgHubWell> AgHubWells { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcre> AgHubWellIrrigatedAcres { get; set; }
         public virtual DbSet<AgHubWellIrrigatedAcreStaging> AgHubWellIrrigatedAcreStagings { get; set; }
@@ -42,8 +40,6 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<GeoOptixSensorStaging> GeoOptixSensorStagings { get; set; }
         public virtual DbSet<GeoOptixWell> GeoOptixWells { get; set; }
         public virtual DbSet<GeoOptixWellStaging> GeoOptixWellStagings { get; set; }
-        public virtual DbSet<OpenETGoogleBucketResponseEvapotranspirationDatum> OpenETGoogleBucketResponseEvapotranspirationData { get; set; }
-        public virtual DbSet<OpenETGoogleBucketResponsePrecipitationDatum> OpenETGoogleBucketResponsePrecipitationData { get; set; }
         public virtual DbSet<OpenETSync> OpenETSyncs { get; set; }
         public virtual DbSet<OpenETSyncHistory> OpenETSyncHistories { get; set; }
         public virtual DbSet<OpenETWaterMeasurement> OpenETWaterMeasurements { get; set; }
@@ -61,7 +57,6 @@ namespace Zybach.EFModels.Entities
         public virtual DbSet<WaterLevelInspection> WaterLevelInspections { get; set; }
         public virtual DbSet<WaterLevelMeasuringEquipment> WaterLevelMeasuringEquipments { get; set; }
         public virtual DbSet<WaterQualityInspection> WaterQualityInspections { get; set; }
-        public virtual DbSet<WaterYearMonth> WaterYearMonths { get; set; }
         public virtual DbSet<Well> Wells { get; set; }
         public virtual DbSet<WellGroup> WellGroups { get; set; }
         public virtual DbSet<WellGroupWell> WellGroupWells { get; set; }
@@ -89,32 +84,6 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.AgHubIrrigationUnit)
                     .WithMany(p => p.AgHubIrrigationUnitOpenETData)
                     .HasForeignKey(d => d.AgHubIrrigationUnitID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthETDatum>(entity =>
-            {
-                entity.HasOne(d => d.AgHubIrrigationUnit)
-                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETData)
-                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.WaterYearMonth)
-                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthETData)
-                    .HasForeignKey(d => d.WaterYearMonthID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<AgHubIrrigationUnitWaterYearMonthPrecipitationDatum>(entity =>
-            {
-                entity.HasOne(d => d.AgHubIrrigationUnit)
-                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
-                    .HasForeignKey(d => d.AgHubIrrigationUnitID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-                entity.HasOne(d => d.WaterYearMonth)
-                    .WithMany(p => p.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
-                    .HasForeignKey(d => d.WaterYearMonthID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
@@ -220,14 +189,6 @@ namespace Zybach.EFModels.Entities
                 entity.HasOne(d => d.Well)
                     .WithOne(p => p.GeoOptixWell)
                     .HasForeignKey<GeoOptixWell>(d => d.WellID)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            modelBuilder.Entity<OpenETSyncHistory>(entity =>
-            {
-                entity.HasOne(d => d.WaterYearMonth)
-                    .WithMany(p => p.OpenETSyncHistories)
-                    .HasForeignKey(d => d.WaterYearMonthID)
                     .OnDelete(DeleteBehavior.ClientSetNull);
             });
 

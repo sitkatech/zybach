@@ -4,8 +4,8 @@ namespace Zybach.EFModels.Entities
 {
     public partial class vOpenETMostRecentSyncHistoryForYearAndMonth
     {
-        [ForeignKey(nameof(WaterYearMonthID))]
-        public virtual WaterYearMonth WaterYearMonth { get; set; }
+        [ForeignKey(nameof(OpenETSyncID))]
+        public virtual OpenETSync OpenETSync { get; set; }
 
         public OpenETSyncResultType OpenETSyncResultType => OpenETSyncResultType.AllLookupDictionary[OpenETSyncResultTypeID];
     }

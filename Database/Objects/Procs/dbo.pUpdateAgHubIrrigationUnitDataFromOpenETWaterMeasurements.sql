@@ -5,6 +5,7 @@ go
 create procedure dbo.pUpdateAgHubIrrigationUnitDataWithOpenETWaterMeasurements
 (
 	@reportedDate datetime,
+	@effectiveDate datetime,
 	@openETDataTypeID int
 )
 as
@@ -35,5 +36,5 @@ begin
 				   Target.ReportedValueAcreInches = Source.ReportedValueAcreInches
     WHEN NOT MATCHED by Target THEN
 		insert (AgHubIrrigationUnitID, OpenETDataTypeID, ReportedDate, TransactionDate, ReportedValueInches, ReportedValueAcreInches)
-		values (Source.AgHubIrrigationUnitID, @openETDataTypeID, @reportedDate, GetDate(), Source.ReportedValueInches, Source.ReportedValueAcreInches);
+		values (Source.AgHubIrrigationUnitID, @openETDataTypeID, @reportedDate, @effectiveDate, Source.ReportedValueInches, Source.ReportedValueAcreInches);
 end

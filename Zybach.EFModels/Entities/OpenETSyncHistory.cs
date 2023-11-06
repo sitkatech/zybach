@@ -25,6 +25,7 @@ namespace Zybach.EFModels.Entities
                 OpenETSync = openETSync,
                 CreateDate = DateTime.UtcNow,
                 UpdateDate = DateTime.UtcNow,
+                OpenETDataTypeID = openETDataTypeID
             };
 
             dbContext.OpenETSyncHistories.Add(openETSyncHistoryToAdd);

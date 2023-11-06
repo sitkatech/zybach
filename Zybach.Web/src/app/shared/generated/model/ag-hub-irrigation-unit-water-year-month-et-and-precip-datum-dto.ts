@@ -9,10 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { WaterYearMonthDto } from '././water-year-month-dto';
 
 export class AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto { 
-    WaterYearMonth?: WaterYearMonthDto;
+    ReportedDate?: string;
     PrecipitationAcreInches?: number;
     PrecipitationInches?: number;
     EvapotranspirationAcreInches?: number;

@@ -63,16 +63,12 @@ export class IrrigationUnitDetailComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: "Month",
-        valueGetter: function (params: any) {
-          return params.data.WaterYearMonth.Month;
-        },
+        valueGetter: params => params.data.ReportedDate.Month,
         sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
       {
         headerName: "Year",
-        valueGetter: function (params: any) {
-          return params.data.WaterYearMonth.Year;
-        },
+        valueGetter: params => params.data.ReportedDate.Year,
         sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
       this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration (ac-in)', 'EvapotranspirationAcreInches'),

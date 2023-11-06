@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -305,8 +305,8 @@ public class OpenETService
                 await SaveToOpenETWaterMeasurement(records, reportedDate, transactionDate, openETDataTypeID);
                 await OpenETSyncHistory.UpdateOpenETSyncEntityByID(_zybachDbContext, openETSyncHistory.OpenETSyncHistoryID, OpenETSyncResultTypeEnum.Succeeded);
 
-                await _zybachDbContext.Database.ExecuteSqlRawAsync($"EXECUTE dbo.pUpdateAgHubIrrigationUnitDataWithOpenETWaterMeasurements @reportedDate, @openETDataTypeID",
-                    new SqlParameter("reportedDate", reportedDate), new SqlParameter("openETDataTypeID", openETDataTypeID));
+                await _zybachDbContext.Database.ExecuteSqlRawAsync($"EXECUTE dbo.pUpdateAgHubIrrigationUnitDataWithOpenETWaterMeasurements @reportedDate, @transactionDate, @openETDataTypeID",
+                    new SqlParameter("reportedDate", reportedDate), new SqlParameter("transactionDate", transactionDate), new SqlParameter("openETDataTypeID", openETDataTypeID));
             }
         }
         catch (Exception ex)
@@ -326,6 +326,7 @@ public class OpenETService
             WellTPID = x.WellTPID,
             OpenETDataTypeID = openETDataTypeID,
             ReportedDate = reportedDate,
+            TransactionDate = transactionDate,
             ReportedValueInches = x.ReportedValueInches,
             ReportedValueAcreFeet = x.ReportedValueAcreFeet,
             IrrigationUnitArea = x.IrrigationUnitArea
@@ -337,7 +338,7 @@ public class OpenETService
 
     public bool IsOpenETAPIKeyValid()
     {
-        var openETRequestURL = "home/key_expiration";
+        var openETRequestURL = "account/status";
         try
         {
             var response = _httpClient.GetAsync(openETRequestURL).Result;
@@ -351,9 +352,9 @@ public class OpenETService
 
             var responseObject = JsonConvert.DeserializeObject<OpenETController.OpenETTokenExpirationDate>(body);
 
-            if (responseObject == null || responseObject.ExpirationDate < DateTime.UtcNow)
+            if (responseObject == null)
             {
-                throw new OpenETException($"Deserializing OpenET API Key validation response failed, or the key is expired. Expiration Date: {(responseObject?.ExpirationDate != null ? responseObject.ExpirationDate.ToString(CultureInfo.InvariantCulture) : "Not provided")}");
+                throw new OpenETException("Deserializing OpenET API Key validation response failed, or the key is expired.");
             }
 
             return true;

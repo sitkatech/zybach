@@ -33,4 +33,9 @@ public class OpenETSyncs
         openETSync.FinalizeDate = DateTime.UtcNow;
         dbContext.SaveChanges();
     }
+
+    public static List<int> ListYears(ZybachDbContext dbContext)
+    {
+        return dbContext.OpenETSyncs.Select(x => x.Year).Distinct().ToList();
+    }
 }
