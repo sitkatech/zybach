@@ -3,6 +3,7 @@ CREATE TABLE [dbo].[OpenETWaterMeasurement](
 	[WellTPID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[OpenETDataTypeID] [int] NOT NULL CONSTRAINT [FK_OpenETWaterMeasurement_OpenETDataType_OpenETDataTypeID] FOREIGN KEY REFERENCES [dbo].[OpenETDataType]([OpenETDataTypeID]),
 	[ReportedDate] [datetime] NOT NULL,
+	[TransactionDate] [datetime] NOT NULL,
 	[ReportedValueInches] [decimal](20, 4) NOT NULL,
 	[ReportedValueAcreFeet] [decimal](20, 4) NOT NULL,
 	[IrrigationUnitArea] [decimal](20, 4) NOT NULL

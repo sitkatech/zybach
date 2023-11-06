@@ -4,7 +4,7 @@ CREATE TABLE [dbo].[OpenETSync] (
 	[Year] [int] NOT NULL,
 	[Month] [int] NOT NULL,
 	[FinalizeDate] [datetime] NULL
-	CONSTRAINT [AK_OpenETSync_Year_Month] UNIQUE ([Year],[Month])
+	CONSTRAINT [AK_OpenETSync_Year_Month_OpenETDataTypeID] UNIQUE ([Year],[Month],[OpenETDataTypeID])
 )
 
 GO
