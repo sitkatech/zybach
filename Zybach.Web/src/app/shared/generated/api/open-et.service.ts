@@ -18,7 +18,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { OpenETSyncHistoryDto } from '../model/open-et-sync-history-dto';
+import { OpenETRunDto } from '../model/open-et-run-dto';
+import { OpenETSyncDto } from '../model/open-et-sync-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -26,9 +27,7 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from '../../services';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class OpenETService {
 
     protected basePath = 'http://localhost';
@@ -110,10 +109,10 @@ export class OpenETService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public openetSyncHistoryGet(observe?: 'body', reportProgress?: boolean): Observable<Array<OpenETSyncHistoryDto>>;
-    public openetSyncHistoryGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<OpenETSyncHistoryDto>>>;
-    public openetSyncHistoryGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<OpenETSyncHistoryDto>>>;
-    public openetSyncHistoryGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public openetSyncGet(observe?: 'body', reportProgress?: boolean): Observable<Array<OpenETSyncDto>>;
+    public openetSyncGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<OpenETSyncDto>>>;
+    public openetSyncGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<OpenETSyncDto>>>;
+    public openetSyncGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -137,7 +136,7 @@ export class OpenETService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<OpenETSyncHistoryDto>>(`${this.basePath}/openet-sync-history`,
+        return this.httpClient.get<Array<OpenETSyncDto>>(`${this.basePath}/openet-sync`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -150,14 +149,14 @@ export class OpenETService {
     /**
      * 
      * 
-     * @param body 
+     * @param openETRunDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(body?: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(body?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(body?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(body?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(openETRunDto?: OpenETRunDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(openETRunDto?: OpenETRunDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(openETRunDto?: OpenETRunDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(openETRunDto?: OpenETRunDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
 
         let headers = this.defaultHeaders;
@@ -188,7 +187,53 @@ export class OpenETService {
         }
 
         return this.httpClient.post<any>(`${this.basePath}/openet-sync-history/trigger-openet-google-bucket-refresh`,
-            body,
+            openETRunDto,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param openETSyncID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public openetSyncOpenETSyncIDFinalizePut(openETSyncID: number, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public openetSyncOpenETSyncIDFinalizePut(openETSyncID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public openetSyncOpenETSyncIDFinalizePut(openETSyncID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public openetSyncOpenETSyncIDFinalizePut(openETSyncID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (openETSyncID === null || openETSyncID === undefined) {
+            throw new Error('Required parameter openETSyncID was null or undefined when calling openetSyncOpenETSyncIDFinalizePut.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.put<any>(`${this.basePath}/openet-sync/${encodeURIComponent(String(openETSyncID))}/finalize`,
+            null,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

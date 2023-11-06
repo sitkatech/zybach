@@ -9,11 +9,16 @@ CREATE TABLE [dbo].[OpenETSync] (
 
 GO
 
---alter table dbo.OpenETSyncHistory 
---	drop constraint [FK_OpenETSyncHistory_WaterYearMonth_WaterYearMonthID]
+alter table dbo.OpenETSyncHistory 
+	drop constraint [FK_OpenETSyncHistory_WaterYearMonth_WaterYearMonthID]
 
---alter table dbo.OpenETSyncHistory 
---	drop column [WaterYearMonthID]
+alter table dbo.OpenETSyncHistory 
+	drop column [WaterYearMonthID]
 
 alter table dbo.OpenETSyncHistory
 	add [OpenETSyncID] [int] NULL CONSTRAINT [FK_OpenETSyncHistory_OpenETSync_OpenETSyncID] FOREIGN KEY REFERENCES [dbo].[OpenETSync]([OpenETSyncID])
+
+GO 
+
+drop table dbo.WaterYearMonth
+

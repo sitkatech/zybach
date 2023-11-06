@@ -57,6 +57,8 @@ export * from '././installation-record-dto';
 export * from '././interval-volume-dto';
 export * from '././irrigated-acres-per-year-dto';
 export * from '././open-et-data-type-dto';
+export * from '././open-et-run-dto';
+export * from '././open-et-sync-dto';
 export * from '././open-et-sync-history-dto';
 export * from '././open-et-sync-result-type-dto';
 export * from '././paige-wireless-pulse-dto';

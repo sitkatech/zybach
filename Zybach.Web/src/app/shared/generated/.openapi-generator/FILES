@@ -91,6 +91,8 @@ model/interval-volume-dto.ts
 model/irrigated-acres-per-year-dto.ts
 model/models.ts
 model/open-et-data-type-dto.ts
+model/open-et-run-dto.ts
+model/open-et-sync-dto.ts
 model/open-et-sync-history-dto.ts
 model/open-et-sync-result-type-dto.ts
 model/paige-wireless-pulse-dto.ts

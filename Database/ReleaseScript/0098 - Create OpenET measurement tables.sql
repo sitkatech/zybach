@@ -20,3 +20,10 @@ CREATE TABLE [dbo].[AgHubIrrigationUnitOpenETDatum](
 	[ReportedValueInches] [decimal](20, 4) NULL,
 	[ReportedValueAcreInches] [decimal](20, 4) NULL
 )
+
+GO
+
+drop table dbo.OpenETGoogleBucketResponseEvapotranspirationDatum
+drop table dbo.OpenETGoogleBucketResponsePrecipitationDatum
+drop table dbo.AgHubIrrigationUnitWaterYearMonthETDatum
+drop table dbo.AgHubIrrigationUnitWaterYearMonthPrecipitationDatum

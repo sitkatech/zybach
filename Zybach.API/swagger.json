@@ -2124,7 +2124,7 @@
         }
       }
     },
-    "/openet-sync-history": {
+    "/openet-sync": {
       "get": {
         "tags": [
           "OpenET"
@@ -2137,7 +2137,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
+                    "$ref": "#/components/schemas/OpenETSyncDto"
                   }
                 }
               },
@@ -2145,7 +2145,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
+                    "$ref": "#/components/schemas/OpenETSyncDto"
                   }
                 }
               },
@@ -2153,11 +2153,34 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/OpenETSyncHistoryDto"
+                    "$ref": "#/components/schemas/OpenETSyncDto"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/openet-sync/{openETSyncID}/finalize": {
+      "put": {
+        "tags": [
+          "OpenET"
+        ],
+        "parameters": [
+          {
+            "name": "openETSyncID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
           }
         }
       }
@@ -8517,6 +8540,23 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "LastSuccessfulSyncDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastSyncDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastSyncMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "HasInProgressSync": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

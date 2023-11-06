@@ -51,12 +51,20 @@ namespace Zybach.API.Controllers
             return Ok();
         }
 
-        [HttpGet("/openet-sync-history")]
+        [HttpGet("/openet-sync")]
         [AdminFeature]
-        public ActionResult<List<OpenETSyncHistoryDto>> List()
+        public ActionResult<List<OpenETSyncDto>> List()
         {
-            var inProgressDtos = OpenETSyncHistory.List(_dbContext);
-            return Ok(inProgressDtos);
+            var openETSyncDtos = OpenETSyncs.List(_dbContext);
+            return Ok(openETSyncDtos);
+        }
+
+        [HttpPut("openet-sync/{openETSyncID}/finalize")]
+        [AdminFeature]
+        public ActionResult FinalizeOpenETSync([FromRoute] int openETSyncID)
+        {
+            OpenETSyncs.FinalizeSyncByID(_dbContext, openETSyncID);
+            return Ok();
         }
     }
 }
