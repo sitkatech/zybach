@@ -13,6 +13,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellTPID { get; set; }
         public OpenETDataTypeDto OpenETDataType { get; set; }
         public DateTime ReportedDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         public decimal ReportedValueInches { get; set; }
         public decimal ReportedValueAcreFeet { get; set; }
         public decimal IrrigationUnitArea { get; set; }
@@ -24,6 +25,7 @@ namespace Zybach.Models.DataTransferObjects
         public string WellTPID { get; set; }
         public int OpenETDataTypeID { get; set; }
         public DateTime ReportedDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         public decimal ReportedValueInches { get; set; }
         public decimal ReportedValueAcreFeet { get; set; }
         public decimal IrrigationUnitArea { get; set; }

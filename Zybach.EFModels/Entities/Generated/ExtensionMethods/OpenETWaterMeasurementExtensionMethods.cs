@@ -17,6 +17,7 @@ namespace Zybach.EFModels.Entities
                 WellTPID = openETWaterMeasurement.WellTPID,
                 OpenETDataType = openETWaterMeasurement.OpenETDataType.AsDto(),
                 ReportedDate = openETWaterMeasurement.ReportedDate,
+                TransactionDate = openETWaterMeasurement.TransactionDate,
                 ReportedValueInches = openETWaterMeasurement.ReportedValueInches,
                 ReportedValueAcreFeet = openETWaterMeasurement.ReportedValueAcreFeet,
                 IrrigationUnitArea = openETWaterMeasurement.IrrigationUnitArea
@@ -35,6 +36,7 @@ namespace Zybach.EFModels.Entities
                 WellTPID = openETWaterMeasurement.WellTPID,
                 OpenETDataTypeID = openETWaterMeasurement.OpenETDataTypeID,
                 ReportedDate = openETWaterMeasurement.ReportedDate,
+                TransactionDate = openETWaterMeasurement.TransactionDate,
                 ReportedValueInches = openETWaterMeasurement.ReportedValueInches,
                 ReportedValueAcreFeet = openETWaterMeasurement.ReportedValueAcreFeet,
                 IrrigationUnitArea = openETWaterMeasurement.IrrigationUnitArea

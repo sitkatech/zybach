@@ -2097,26 +2097,22 @@
           "content": {
             "application/json-patch+json": {
               "schema": {
-                "type": "integer",
-                "format": "int32"
+                "$ref": "#/components/schemas/OpenETRunDto"
               }
             },
             "application/json": {
               "schema": {
-                "type": "integer",
-                "format": "int32"
+                "$ref": "#/components/schemas/OpenETRunDto"
               }
             },
             "text/json": {
               "schema": {
-                "type": "integer",
-                "format": "int32"
+                "$ref": "#/components/schemas/OpenETRunDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "integer",
-                "format": "int32"
+                "$ref": "#/components/schemas/OpenETRunDto"
               }
             }
           }
@@ -8481,6 +8477,50 @@
         },
         "additionalProperties": false
       },
+      "OpenETRunDto": {
+        "type": "object",
+        "properties": {
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "OpenETDataTypeID": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OpenETSyncDto": {
+        "type": "object",
+        "properties": {
+          "OpenETSyncID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "OpenETDataType": {
+            "$ref": "#/components/schemas/OpenETDataTypeDto"
+          },
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FinalizeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "OpenETSyncHistoryDto": {
         "type": "object",
         "properties": {
@@ -8512,6 +8552,9 @@
           },
           "OpenETDataType": {
             "$ref": "#/components/schemas/OpenETDataTypeDto"
+          },
+          "OpenETSync": {
+            "$ref": "#/components/schemas/OpenETSyncDto"
           }
         },
         "additionalProperties": false

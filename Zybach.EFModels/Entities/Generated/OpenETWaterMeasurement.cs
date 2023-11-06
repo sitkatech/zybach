@@ -18,6 +18,8 @@ namespace Zybach.EFModels.Entities
         public int OpenETDataTypeID { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime ReportedDate { get; set; }
+        [Column(TypeName = "datetime")]
+        public DateTime TransactionDate { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
         public decimal ReportedValueInches { get; set; }
         [Column(TypeName = "decimal(20, 4)")]

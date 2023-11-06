@@ -13,6 +13,7 @@ namespace Zybach.Models.DataTransferObjects
         public AgHubIrrigationUnitDto AgHubIrrigationUnit { get; set; }
         public OpenETDataTypeDto OpenETDataType { get; set; }
         public DateTime ReportedDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         public decimal? ReportedValueInches { get; set; }
         public decimal? ReportedValueAcreInches { get; set; }
     }
@@ -23,6 +24,7 @@ namespace Zybach.Models.DataTransferObjects
         public int AgHubIrrigationUnitID { get; set; }
         public int OpenETDataTypeID { get; set; }
         public DateTime ReportedDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         public decimal? ReportedValueInches { get; set; }
         public decimal? ReportedValueAcreInches { get; set; }
     }

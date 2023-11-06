@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,16 +26,16 @@ namespace Zybach.API
 
         public override List<RunEnvironment> RunEnvironments => new() {RunEnvironment.Development, RunEnvironment.Staging, RunEnvironment.Production};
 
-        protected override void RunJobImplementation()
+        protected override async void RunJobImplementation()
         {
-            GetDailyWellFlowMeterData();
+            await GetDailyWellFlowMeterData();
         }
 
-        private void GetDailyWellFlowMeterData()
+        private async Task GetDailyWellFlowMeterData()
         {
             // first delete all from the tables
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.GeoOptixWellStaging");
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.GeoOptixSensorStaging");
+            await _dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.GeoOptixWellStaging");
+            await _dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.GeoOptixSensorStaging");
 
 
             var geoOptixSites = _geoOptixService.GetGeoOptixSites().Result;
@@ -42,8 +43,8 @@ namespace Zybach.API
             {
                 var geoOptixWellStagings = geoOptixSites.Select(CreateGeoOptixWellStaging).ToList();
                 _dbContext.GeoOptixWellStagings.AddRange(geoOptixWellStagings);
-                _dbContext.SaveChanges();
-                _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishGeoOptixWells");
+                await _dbContext.SaveChangesAsync();
+                await _dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishGeoOptixWells");
             }
 
             var geoOptixStations = _geoOptixService.GetGeoOptixStations().Result;
@@ -51,8 +52,8 @@ namespace Zybach.API
             {
                 var geoOptixSensorStagings = geoOptixStations.Select(CreateGeoOptixSensorStaging).ToList();
                 _dbContext.GeoOptixSensorStagings.AddRange(geoOptixSensorStagings);
-                _dbContext.SaveChanges();
-                _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishGeoOptixSensors");
+                await _dbContext.SaveChangesAsync();
+                await _dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishGeoOptixSensors");
             }
         }
 

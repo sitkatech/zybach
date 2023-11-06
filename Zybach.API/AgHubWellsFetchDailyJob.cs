@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -23,9 +24,9 @@ namespace Zybach.API
 
         public override List<RunEnvironment> RunEnvironments => new() {RunEnvironment.Production, RunEnvironment.Staging}; 
 
-        protected override void RunJobImplementation()
+        protected override async void RunJobImplementation()
         {
-            AgHubWellsTask.SyncForAllWells(_dbContext, _agHubService, DateTime.Today.AddDays(-30));
+            await AgHubWellsTask.SyncForAllWells(_dbContext, _agHubService, DateTime.Today.AddDays(-30));
         }
     }
 }

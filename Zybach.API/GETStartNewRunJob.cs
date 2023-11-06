@@ -24,7 +24,7 @@ namespace Zybach.API
             {RunEnvironment.Development, RunEnvironment.Staging, RunEnvironment.Production};
 
         protected override void RunJobImplementation()
-        {
+        { 
             Task.WaitAll(_GETService.StartNewRobustReviewScenarioRun());
         }
     }

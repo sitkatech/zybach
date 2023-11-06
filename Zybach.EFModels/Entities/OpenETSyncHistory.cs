@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Zybach.Models.DataTransferObjects;
 
@@ -8,17 +9,22 @@ namespace Zybach.EFModels.Entities
 {
     public partial class OpenETSyncHistory
     {
-        public static OpenETSyncHistoryDto CreateNew(ZybachDbContext dbContext, int waterYearMonthID, int openETDataTypeID)
+        public static OpenETSyncHistory CreateNew(ZybachDbContext dbContext, int year, int month, int openETDataTypeID)
         {
-            var waterYearMonth = dbContext.WaterYearMonths.Single(x => x.WaterYearMonthID == waterYearMonthID);
-            
+            var openETSync = dbContext.OpenETSyncs
+                .SingleOrDefault(x => x.Year == year && x.Month == month && x.OpenETDataTypeID == openETDataTypeID) ?? new OpenETSync()
+            {
+                OpenETDataTypeID = openETDataTypeID,
+                Year = year,
+                Month = month
+            };
+
             var openETSyncHistoryToAdd = new OpenETSyncHistory()
             {
                 OpenETSyncResultTypeID = (int)OpenETSyncResultTypeEnum.Created,
-                WaterYearMonthID = waterYearMonthID,
+                OpenETSync = openETSync,
                 CreateDate = DateTime.UtcNow,
                 UpdateDate = DateTime.UtcNow,
-                OpenETDataTypeID = openETDataTypeID
             };
 
             dbContext.OpenETSyncHistories.Add(openETSyncHistoryToAdd);
@@ -28,23 +34,24 @@ namespace Zybach.EFModels.Entities
             return GetByOpenETSyncHistoryID(dbContext, openETSyncHistoryToAdd.OpenETSyncHistoryID);
         }
 
-        public static OpenETSyncHistoryDto GetByOpenETSyncHistoryID(ZybachDbContext dbContext, int openETSyncHistoryID)
+        public static OpenETSyncHistory GetByOpenETSyncHistoryID(ZybachDbContext dbContext, int openETSyncHistoryID)
         {
             return dbContext.OpenETSyncHistories
-                .Include(x => x.WaterYearMonth)
-                .SingleOrDefault(x => x.OpenETSyncHistoryID == openETSyncHistoryID).AsDto();
-        }
-        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType)
-        {
-            return UpdateOpenETSyncEntityByID(zybachDbContext, openETSyncHistoryID, resultType, null);
+                .Include(x => x.OpenETSync)
+                .SingleOrDefault(x => x.OpenETSyncHistoryID == openETSyncHistoryID);
         }
 
-        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType, string errorMessage)
+        public static async Task<OpenETSyncHistory> UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType)
         {
-            return UpdateOpenETSyncEntityByID(zybachDbContext, openETSyncHistoryID, resultType, errorMessage, null);
+            return await UpdateOpenETSyncEntityByID(zybachDbContext, openETSyncHistoryID, resultType, null);
         }
 
-        public static OpenETSyncHistoryDto UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType, string errorMessage, string googleBucketFileRetrievalURL)
+        public static async Task<OpenETSyncHistory> UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType, string errorMessage)
+        {
+            return await UpdateOpenETSyncEntityByID(zybachDbContext, openETSyncHistoryID, resultType, errorMessage, null);
+        }
+
+        public static async Task<OpenETSyncHistory> UpdateOpenETSyncEntityByID(ZybachDbContext zybachDbContext, int openETSyncHistoryID, OpenETSyncResultTypeEnum resultType, string errorMessage, string googleBucketFileRetrievalURL)
         {
             var openETSyncHistory =
                 zybachDbContext.OpenETSyncHistories.Single(x => x.OpenETSyncHistoryID == openETSyncHistoryID);
@@ -57,13 +64,13 @@ namespace Zybach.EFModels.Entities
             }
 
             //Once this is set it should never change
-            if (String.IsNullOrWhiteSpace(openETSyncHistory.GoogleBucketFileRetrievalURL))
+            if (string.IsNullOrWhiteSpace(openETSyncHistory.GoogleBucketFileRetrievalURL))
             {
                 openETSyncHistory.GoogleBucketFileRetrievalURL = googleBucketFileRetrievalURL;
             }
             
-            zybachDbContext.SaveChanges();
-            zybachDbContext.Entry(openETSyncHistory).Reload();
+            await zybachDbContext.SaveChangesAsync();
+            await zybachDbContext.Entry(openETSyncHistory).ReloadAsync();
 
             return GetByOpenETSyncHistoryID(zybachDbContext, openETSyncHistory.OpenETSyncHistoryID);
         }
@@ -71,7 +78,7 @@ namespace Zybach.EFModels.Entities
         public static List<OpenETSyncHistoryDto> List(ZybachDbContext dbContext)
         {
             return dbContext.OpenETSyncHistories
-                .Include(x => x.WaterYearMonth)
+                .Include(x => x.OpenETSync)
                 .OrderByDescending(x => x.CreateDate).Select(x => x.AsDto()).ToList();
         }
     }

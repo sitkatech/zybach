@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Zybach.API
 {
@@ -15,12 +16,12 @@ namespace Zybach.API
     public class OpenETRetrieveFromBucketJob : ScheduledBackgroundJobBase<OpenETRetrieveFromBucketJob>,
         IOpenETRetrieveFromBucketJob
     {
-        private readonly IOpenETService _openETService;
+        private readonly OpenETService _openETService;
         private readonly HttpClient _httpClient;
 
         public OpenETRetrieveFromBucketJob(ILogger<OpenETRetrieveFromBucketJob> logger,
             IWebHostEnvironment webHostEnvironment, ZybachDbContext zybachDbContext,
-            IOptions<ZybachConfiguration> zybachConfiguration, IOpenETService openETService, IHttpClientFactory httpClientFactory, SitkaSmtpClientService sitkaSmtpClientService) : base(JobName, logger, webHostEnvironment,
+            IOptions<ZybachConfiguration> zybachConfiguration, OpenETService openETService, IHttpClientFactory httpClientFactory, SitkaSmtpClientService sitkaSmtpClientService) : base(JobName, logger, webHostEnvironment,
             zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
             _openETService = openETService;
@@ -31,7 +32,7 @@ namespace Zybach.API
 
         public const string JobName = "OpenET Retrieve from Google Bucket and Update Usage Data";
 
-        protected override void RunJobImplementation()
+        protected override async void RunJobImplementation()
         {
             if (!_zybachConfiguration.AllowOpenETSync)
             {
@@ -41,7 +42,7 @@ namespace Zybach.API
             var inProgressSyncs = _dbContext.OpenETSyncHistories.Where(x => x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.InProgress).ToList();
             foreach (var openEtSyncHistory in inProgressSyncs)
             {
-                _openETService.ProcessOpenETData(openEtSyncHistory.OpenETSyncHistoryID, _httpClient, openEtSyncHistory.OpenETDataType.ToEnum);
+                await _openETService.ProcessOpenETData(_httpClient, openEtSyncHistory, openEtSyncHistory.OpenETDataTypeID.Value);
             }
 
             //Fail any created syncs that have been in a created state for longer than 15 minutes
@@ -49,11 +50,11 @@ namespace Zybach.API
                 .Where(x => x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.Created).ToList();
             if (createdSyncs.Any())
             {
-                createdSyncs.ForEach(x =>
+                createdSyncs.ForEach(async x =>
                 {
                     if (DateTime.UtcNow.Subtract(x.CreateDate).Minutes > 15)
                     {
-                        OpenETSyncHistory.UpdateOpenETSyncEntityByID(_dbContext, x.OpenETSyncHistoryID,
+                        await OpenETSyncHistory.UpdateOpenETSyncEntityByID(_dbContext, x.OpenETSyncHistoryID,
                             OpenETSyncResultTypeEnum.Failed,
                             "Request never exited the Created state. Please try again.");
                     }
