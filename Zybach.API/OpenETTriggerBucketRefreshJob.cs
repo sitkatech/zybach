@@ -15,11 +15,11 @@ namespace Zybach.API
         IOpenETTriggerBucketRefreshJob
     {
         private IBackgroundJobClient _backgroundJobClient;
-        private readonly IOpenETService _openETService;
+        private readonly OpenETService _openETService;
 
         public OpenETTriggerBucketRefreshJob(ILogger<OpenETTriggerBucketRefreshJob> logger,
             IWebHostEnvironment webHostEnvironment, ZybachDbContext zybachDbContext,
-            IOptions<ZybachConfiguration> zybachConfiguration, IBackgroundJobClient backgroundJobClient, IOpenETService openETService, SitkaSmtpClientService sitkaSmtpClientService) : base(JobName, logger, webHostEnvironment,
+            IOptions<ZybachConfiguration> zybachConfiguration, IBackgroundJobClient backgroundJobClient, OpenETService openETService, SitkaSmtpClientService sitkaSmtpClientService) : base(JobName, logger, webHostEnvironment,
             zybachDbContext, zybachConfiguration, sitkaSmtpClientService)
         {
             _backgroundJobClient = backgroundJobClient;
@@ -37,19 +37,19 @@ namespace Zybach.API
                 return;
             }
 
-            var nonFinalizedWaterYearMonths = _dbContext.WaterYearMonths.Where(x => !x.FinalizeDate.HasValue);
-            if (!nonFinalizedWaterYearMonths.Any())
+            var nonFinalizedOpenETSyncs = _dbContext.OpenETSyncs.Where(x => !x.FinalizeDate.HasValue);
+            if (!nonFinalizedOpenETSyncs.Any())
             {
                 return;
             }
 
             var openETDataTypes = OpenETDataType.All;
 
-            nonFinalizedWaterYearMonths.ToList().ForEach(x =>
+            nonFinalizedOpenETSyncs.ToList().ForEach(x =>
                 {
-                    openETDataTypes.ForEach(y =>
+                    openETDataTypes.ForEach(async y =>
                     {
-                        _openETService.TriggerOpenETGoogleBucketRefresh(x.WaterYearMonthID, y);
+                        await _openETService.TriggerOpenETGoogleBucketRefresh(x.Year, x.Month, y.OpenETDataTypeID);
                         Thread.Sleep(1000); // intentional sleep here to make sure we don't hit the maximum rate limit
                     });
                 });

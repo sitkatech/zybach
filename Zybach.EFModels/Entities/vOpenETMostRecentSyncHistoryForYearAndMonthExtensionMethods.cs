@@ -12,7 +12,7 @@ namespace Zybach.EFModels.Entities
             {
                 OpenETSyncHistoryID = vOpenETMostRecentSyncHistoryForYearAndMonth.OpenETSyncHistoryID,
                 OpenETSyncResultType = vOpenETMostRecentSyncHistoryForYearAndMonth.OpenETSyncResultType.AsDto(),
-                WaterYearMonth = vOpenETMostRecentSyncHistoryForYearAndMonth.WaterYearMonth.AsDto(),
+                OpenETSync = vOpenETMostRecentSyncHistoryForYearAndMonth.OpenETSync.AsDto(),
                 CreateDate = vOpenETMostRecentSyncHistoryForYearAndMonth.CreateDate,
                 UpdateDate = vOpenETMostRecentSyncHistoryForYearAndMonth.UpdateDate,
                 GoogleBucketFileRetrievalURL = vOpenETMostRecentSyncHistoryForYearAndMonth.GoogleBucketFileRetrievalURL,

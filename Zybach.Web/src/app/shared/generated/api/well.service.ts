@@ -41,9 +41,7 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from '../../services';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class WellService {
 
     protected basePath = 'http://localhost';

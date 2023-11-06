@@ -10,10 +10,10 @@
  * Do not edit the class manually.
  */
 
-export class OpenETSyncResultTypeDto { 
-    OpenETSyncResultTypeID?: number;
-    OpenETSyncResultTypeName?: string;
-    OpenETSyncResultTypeDisplayName?: string;
+export class OpenETRunDto { 
+    Year?: number;
+    Month?: number;
+    OpenETDataTypeID?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

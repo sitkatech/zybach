@@ -6,18 +6,14 @@ import { IrrigationUnitService } from 'src/app/shared/generated/api/irrigation-u
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
 import { MultiLinkRendererComponent } from 'src/app/shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
-import { AgHubIrrigationUnitSimpleDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-simple-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
-import { forkJoin } from 'rxjs';
 import { AgHubIrrigationUnitSummaryDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-summary-dto';
-import { WaterYearMonthService } from 'src/app/shared/generated/api/water-year-month.service';
-import { array } from 'vega';
-import { DateTime } from 'vega-lite/build/src/datetime';
 import { DecimalPipe } from '@angular/common';
+import { OpenETService } from 'src/app/shared/generated/api/open-et.service';
 
 @Component({
   selector: 'zybach-irrigation-unit-list',
@@ -51,8 +47,8 @@ export class IrrigationUnitListComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private irrigationUnitService: IrrigationUnitService,
     private utilityFunctionsService: UtilityFunctionsService,
-    private waterYearMonthService: WaterYearMonthService,
-    private decimalPipe: DecimalPipe
+    private decimalPipe: DecimalPipe,
+    private openETService: OpenETService
   ) { }
 
   ngOnInit(): void {
@@ -61,7 +57,7 @@ export class IrrigationUnitListComponent implements OnInit {
       this.initializeGrid();
       this.irrigationUnitGrid?.api.showLoadingOverlay();
 
-      this.waterYearMonthService.waterYearMonthsYearsGet().subscribe(years => {
+      this.openETService.openetSyncYearsGet().subscribe(years => {
         this.years = years;
       });
 
