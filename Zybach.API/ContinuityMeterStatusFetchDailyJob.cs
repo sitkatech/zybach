@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,12 +25,12 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
     public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
         {RunEnvironment.Production};
 
-    protected override async void RunJobImplementation()
+    protected override void RunJobImplementation()
     {
-        await GetDailyContinuityMeterStatusData();
+        GetDailyContinuityMeterStatusData();
     }
 
-    private async Task GetDailyContinuityMeterStatusData()
+    private void GetDailyContinuityMeterStatusData()
     {
         var continuityMeterStatuses = _influxDbService.GetDailyContinuityMeterStatusData().Result;
         
@@ -55,6 +54,6 @@ public class ContinuityMeterStatusFetchDailyJob : ScheduledBackgroundJobBase<Con
             }
         }); 
         
-        await _dbContext.SaveChangesAsync();
+        _dbContext.SaveChanges();
     }
 }

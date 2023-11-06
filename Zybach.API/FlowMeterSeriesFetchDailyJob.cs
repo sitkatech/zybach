@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -25,20 +24,20 @@ namespace Zybach.API
         public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
             {RunEnvironment.Production};
 
-        protected override async void RunJobImplementation()
+        protected override void RunJobImplementation()
         {
-            await GetDailyWellFlowMeterData(DefaultStartDate);
+            GetDailyWellFlowMeterData(DefaultStartDate);
         }
 
-        private async Task GetDailyWellFlowMeterData(DateTime fromDate)
+        private void GetDailyWellFlowMeterData(DateTime fromDate)
         {
-            await _dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
             var wellSensorMeasurements = _influxDbService.GetFlowMeterSeries(fromDate).Result;
             _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurements);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
 
-            await _dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
+            _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
         }
     }
 }

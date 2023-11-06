@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -26,14 +25,14 @@ namespace Zybach.API
         public override List<RunEnvironment> RunEnvironments => new List<RunEnvironment>
             {RunEnvironment.Production, RunEnvironment.Staging};
 
-        protected override async void RunJobImplementation()
+        protected override void RunJobImplementation()
         {
-            await GetDailyWellContinuityMeterData(DefaultStartDate);
+            GetDailyWellContinuityMeterData(DefaultStartDate);
         }
 
-        private async Task GetDailyWellContinuityMeterData(DateTime fromDate)
+        private void GetDailyWellContinuityMeterData(DateTime fromDate)
         {
-            await _dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
             var wellSensorMeasurementStagings = _influxDbService.GetContinuityMeterSeries(fromDate).Result;
             var pumpingRates = _dbContext.AgHubWells.Include(x => x.Well).ToList().ToDictionary(x => x.Well.WellRegistrationID, x =>
@@ -45,9 +44,9 @@ namespace Zybach.API
                 x.MeasurementValue *= Convert.ToDouble(pumpingRate);
             });
             _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurementStagings);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.SaveChanges();
 
-            await _dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
+            _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
         }
     }
 }

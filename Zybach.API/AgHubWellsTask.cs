@@ -19,14 +19,14 @@ public static class AgHubWellsTask
         await dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
     }
 
-    public static async Task SyncForAllWells(ZybachDbContext dbContext, AgHubService agHubService, DateTime startDate)
+    public static void SyncForAllWells(ZybachDbContext dbContext, AgHubService agHubService, DateTime startDate)
     {
         // first delete all from the tables
-        await dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.AgHubWellStaging");
-        await dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.AgHubWellIrrigatedAcreStaging");
-        await dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+        dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.AgHubWellStaging");
+        dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.AgHubWellIrrigatedAcreStaging");
+        dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
-        var agHubWellRaws = await agHubService.GetWellCollection();
+        var agHubWellRaws = agHubService.GetWellCollection().Result;
         if (agHubWellRaws.Any())
         {
             var wellStagings = agHubWellRaws.Select(CreateAgHubWellStaging).ToList();
@@ -37,11 +37,11 @@ public static class AgHubWellsTask
                 PopulateIrrigatedAcresPerYearForWell(dbContext, agHubService, wellStaging, wellRegistrationID);
                 PopulateWellSensorMeasurementsForWell(dbContext, agHubService, wellRegistrationID, startDate);
                 dbContext.AgHubWellStagings.Add(wellStaging);
-                await dbContext.SaveChangesAsync();
+                dbContext.SaveChanges();
             }
                 
             // only publish if we actually got any AgHubWells from Zappa
-            await dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishAgHubWells");
+            dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishAgHubWells");
         }
     }
 

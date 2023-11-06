@@ -7,8 +7,6 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using System.Threading;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Bibliography;
 
 namespace Zybach.API
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -24,19 +23,19 @@ public class BatteryVoltageSeriesFetchDailyJob : ScheduledBackgroundJobBase<Batt
 
     public override List<RunEnvironment> RunEnvironments => new() {RunEnvironment.Production};
 
-    protected override async void RunJobImplementation()
+    protected override void RunJobImplementation()
     {
-        await GetDailyWellWaterLevelData(DefaultStartDate);
+        GetDailyWellWaterLevelData(DefaultStartDate);
     }
 
-    private async Task GetDailyWellWaterLevelData(DateTime fromDate)
+    private void GetDailyWellWaterLevelData(DateTime fromDate)
     {
-        await _dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+        _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
 
         var wellSensorMeasurements = _influxDbService.GetBatteryVoltageSeries(fromDate).Result;
         _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurements);
-        await _dbContext.SaveChangesAsync();
+        _dbContext.SaveChanges();
 
-        await _dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
+        _dbContext.Database.ExecuteSqlRaw("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
     }
 }

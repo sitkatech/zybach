@@ -8,7 +8,6 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using System;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace Zybach.API
 {
@@ -32,7 +31,7 @@ namespace Zybach.API
 
         public const string JobName = "OpenET Retrieve from Google Bucket and Update Usage Data";
 
-        protected override async void RunJobImplementation()
+        protected override void RunJobImplementation()
         {
             if (!_zybachConfiguration.AllowOpenETSync)
             {
@@ -42,7 +41,7 @@ namespace Zybach.API
             var inProgressSyncs = _dbContext.OpenETSyncHistories.Where(x => x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.InProgress).ToList();
             foreach (var openEtSyncHistory in inProgressSyncs)
             {
-                await _openETService.ProcessOpenETData(_httpClient, openEtSyncHistory, openEtSyncHistory.OpenETDataTypeID.Value);
+                _openETService.ProcessOpenETData(_httpClient, openEtSyncHistory, openEtSyncHistory.OpenETDataTypeID.Value);
             }
 
             //Fail any created syncs that have been in a created state for longer than 15 minutes
