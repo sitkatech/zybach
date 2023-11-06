@@ -15,7 +15,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime ReportedDate { get; set; }
         public DateTime TransactionDate { get; set; }
         public decimal? ReportedValueInches { get; set; }
-        public decimal? ReportedValueAcreInches { get; set; }
+        public decimal? AgHubIrrigationUnitAreaInAcres { get; set; }
     }
 
     public partial class AgHubIrrigationUnitOpenETDatumSimpleDto
@@ -26,7 +26,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime ReportedDate { get; set; }
         public DateTime TransactionDate { get; set; }
         public decimal? ReportedValueInches { get; set; }
-        public decimal? ReportedValueAcreInches { get; set; }
+        public decimal? AgHubIrrigationUnitAreaInAcres { get; set; }
     }
 
 }

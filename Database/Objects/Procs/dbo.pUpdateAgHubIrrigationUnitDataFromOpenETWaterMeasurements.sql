@@ -15,8 +15,7 @@ begin
 	AS Target
 	USING
 	(
-		select ahiu.AgHubIrrigationUnitID, oewm.WellTPID, oewm.ReportedValueInches,
-			oewm.ReportedValueInches * ahiu.IrrigationUnitAreaInAcres as ReportedValueAcreInches
+		select ahiu.AgHubIrrigationUnitID, oewm.WellTPID, oewm.ReportedValueInches, ahiu.IrrigationUnitAreaInAcres as AgHubIrrigationUnitAreaInAcres
 		from (
 			select WellTPID,
 				case when count(*) = 1 
@@ -33,8 +32,8 @@ begin
 		and Target.OpenETDataTypeID = @openETDataTypeID
 	WHEN MATCHED THEN
 		update set Target.ReportedValueInches = Source.ReportedValueInches,
-				   Target.ReportedValueAcreInches = Source.ReportedValueAcreInches
+				   Target.AgHubIrrigationUnitAreaInAcres = Source.AgHubIrrigationUnitAreaInAcres
     WHEN NOT MATCHED by Target THEN
-		insert (AgHubIrrigationUnitID, OpenETDataTypeID, ReportedDate, TransactionDate, ReportedValueInches, ReportedValueAcreInches)
-		values (Source.AgHubIrrigationUnitID, @openETDataTypeID, @reportedDate, @effectiveDate, Source.ReportedValueInches, Source.ReportedValueAcreInches);
+		insert (AgHubIrrigationUnitID, OpenETDataTypeID, ReportedDate, TransactionDate, ReportedValueInches, AgHubIrrigationUnitAreaInAcres)
+		values (Source.AgHubIrrigationUnitID, @openETDataTypeID, @reportedDate, @effectiveDate, Source.ReportedValueInches, Source.AgHubIrrigationUnitAreaInAcres);
 end

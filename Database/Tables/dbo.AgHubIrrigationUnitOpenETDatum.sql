@@ -4,6 +4,6 @@ CREATE TABLE [dbo].[AgHubIrrigationUnitOpenETDatum](
 	[OpenETDataTypeID] [int] NOT NULL CONSTRAINT [FK_AgHubIrrigationUnitOpenETDatum_OpenETDataType_OpenETDataTypeID] FOREIGN KEY REFERENCES [dbo].[OpenETDataType]([OpenETDataTypeID]),
 	[ReportedDate] [datetime] NOT NULL,
 	[TransactionDate] [datetime] NOT NULL,
-	[ReportedValueInches] [decimal](20, 4) NULL,
-	[ReportedValueAcreInches] [decimal](20, 4) NULL
+	[ReportedValueInches] [decimal](20, 4) NOT NULL,
+	[AgHubIrrigationUnitAreaInAcres] [decimal](20, 4) NOT NULL
 )

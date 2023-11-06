@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[AgHubIrrigationUnitOpenETDatum](
 	[ReportedDate] [datetime] NOT NULL,
 	[TransactionDate] [datetime] NOT NULL, 
 	[ReportedValueInches] [decimal](20, 4) NULL,
-	[ReportedValueAcreInches] [decimal](20, 4) NULL
+	[AgHubIrrigationUnitAreaInAcres] [decimal](20, 4) NULL
 )
 
 GO

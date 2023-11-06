@@ -19,7 +19,7 @@ namespace Zybach.EFModels.Entities
                 ReportedDate = agHubIrrigationUnitOpenETDatum.ReportedDate,
                 TransactionDate = agHubIrrigationUnitOpenETDatum.TransactionDate,
                 ReportedValueInches = agHubIrrigationUnitOpenETDatum.ReportedValueInches,
-                ReportedValueAcreInches = agHubIrrigationUnitOpenETDatum.ReportedValueAcreInches
+                AgHubIrrigationUnitAreaInAcres = agHubIrrigationUnitOpenETDatum.AgHubIrrigationUnitAreaInAcres
             };
             DoCustomMappings(agHubIrrigationUnitOpenETDatum, agHubIrrigationUnitOpenETDatumDto);
             return agHubIrrigationUnitOpenETDatumDto;
@@ -37,7 +37,7 @@ namespace Zybach.EFModels.Entities
                 ReportedDate = agHubIrrigationUnitOpenETDatum.ReportedDate,
                 TransactionDate = agHubIrrigationUnitOpenETDatum.TransactionDate,
                 ReportedValueInches = agHubIrrigationUnitOpenETDatum.ReportedValueInches,
-                ReportedValueAcreInches = agHubIrrigationUnitOpenETDatum.ReportedValueAcreInches
+                AgHubIrrigationUnitAreaInAcres = agHubIrrigationUnitOpenETDatum.AgHubIrrigationUnitAreaInAcres
             };
             DoCustomSimpleDtoMappings(agHubIrrigationUnitOpenETDatum, agHubIrrigationUnitOpenETDatumSimpleDto);
             return agHubIrrigationUnitOpenETDatumSimpleDto;

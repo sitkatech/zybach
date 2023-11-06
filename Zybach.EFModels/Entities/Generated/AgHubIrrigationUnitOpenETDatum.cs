@@ -20,7 +20,7 @@ namespace Zybach.EFModels.Entities
         [Column(TypeName = "decimal(20, 4)")]
         public decimal? ReportedValueInches { get; set; }
         [Column(TypeName = "decimal(20, 4)")]
-        public decimal? ReportedValueAcreInches { get; set; }
+        public decimal? AgHubIrrigationUnitAreaInAcres { get; set; }
 
         [ForeignKey("AgHubIrrigationUnitID")]
         [InverseProperty("AgHubIrrigationUnitOpenETData")]
