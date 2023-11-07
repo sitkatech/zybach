@@ -9,22 +9,24 @@ begin
 	declare @gallonsToAcreFeetConversion decimal = 325851.0
 
 	select cx.AgHubIrrigationUnitID, cx.[Year], cx.[Month],
-		   ahiuwymed.EvapotranspirationAcreInches / 12 as EvapotranspirationAcreFeet, 
-		   ahiuwympd.PrecipitationAcreInches / 12 as PrecipitationAcreFeet,
+		   ahiuoed.EvapotranspirationAcreFeet, ahiuoed.PrecipitationAcreFeet,
 		   isnull(wps.PumpedVolumeAcreFeetElectricalUsage, wps.PumpedVolumeAcreFeetContinuity) / @gallonsToAcreFeetConversion as PumpedVolumeAcreFeet
 	from 
 	(
-		select ahiu.AgHubIrrigationUnitID, wym.[Year], wym.[Month], wym.WaterYearMonthID
-		from dbo.WaterYearMonth wym
+		select ahiu.AgHubIrrigationUnitID, oes.[Year], oes.[Month], oes.OpenETSyncID
+		from dbo.OpenETSync oes
 		cross join dbo.AgHubIrrigationUnit ahiu
 	) cx
 
-	left join dbo.AgHubIrrigationUnitWaterYearMonthETDatum ahiuwymed 
-		on cx.AgHubIrrigationUnitID = ahiuwymed.AgHubIrrigationUnitID and 
-		   cx.WaterYearMonthID = ahiuwymed.WaterYearMonthID
-	left join dbo.AgHubIrrigationUnitWaterYearMonthPrecipitationDatum ahiuwympd
-		on cx.AgHubIrrigationUnitID = ahiuwympd.AgHubIrrigationUnitID and 
-		   cx.WaterYearMonthID = ahiuwympd.WaterYearMonthID
+	left join (
+		select AgHubIrrigationUnitID, Year(ReportedDate) as [Year], Month(ReportedDate) as [Month],
+		sum(case when OpenETDataTypeID = 1 then ReportedValueInches else 0 end) / 12 as EvapotranspirationAcreFeet,
+		sum(case when OpenETDataTypeID = 2 then ReportedValueInches else 0 end) / 12 as PrecipitationAcreFeet
+		from dbo.AgHubIrrigationUnitOpenETDatum  
+		group by AgHubIrrigationUnitID, ReportedDate
+	) ahiuoed on cx.AgHubIrrigationUnitID = ahiuoed.AgHubIrrigationUnitID and 
+		   cx.[Year] = ahiuoed.[Year] and cx.[Month] = ahiuoed.[Month]
+
 	left join 
 	(
 		select wsm.WellRegistrationID, wsm.ReadingYear, wsm.ReadingMonth, ahiu.AgHubIrrigationUnitID, 
