@@ -18,50 +18,22 @@ begin
 	set @endDate = EOMONTH(datefromparts(@endDateYear, @endDateMonth, 1), 0)
 
 	select ahiu.AgHubIrrigationUnitID,
-		   ahiuwymed.TotalEvapotranspirationInches,
-		   ahiuwympd.TotalPrecipitationInches,
+		   ahiuoet.TotalEvapotranspirationInches,
+		   ahiuoet.TotalPrecipitationInches,
 		   ahiur.FlowMeterPumpedVolumeGallonsTotal, ahiur.ContinuityMeterPumpedVolumeGallonsTotal, ahiur.ElectricalUsagePumpedVolumeGallonsTotal
 	from dbo.AgHubIrrigationUnit ahiu
 
 	left join 
 	(
-		select wymed.AgHubIrrigationUnitID,
-			sum(wymed.EvapotranspirationInches) as TotalEvapotranspirationInches
-		from
-		(
-			select AgHubIrrigationUnitID, EvapotranspirationInches 
-			from dbo.AgHubIrrigationUnitWaterYearMonthETDatum
-			where WaterYearMonthID in 
-			(
-				select WaterYearMonthID 
-				from dbo.WaterYearMonth wym
-				where (wym.[Year] = @startDateYear and wym.[Month] >= @startDateMonth) or
-					  (wym.[Year] = @endDateYear and wym.[Month] <= @endDateMonth) or
-				      (wym.[Year] > @startDateYear and wym.[Year] < @endDateYear)
-			)
-		) wymed 
-		group by wymed.AgHubIrrigationUnitID
-	) ahiuwymed on ahiuwymed.AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
-
-	left join 
-	(
-		select wympd.AgHubIrrigationUnitID,
-			sum(wympd.PrecipitationInches) as TotalPrecipitationInches
-		from
-		(
-			select AgHubIrrigationUnitID, PrecipitationInches 
-			from dbo.AgHubIrrigationUnitWaterYearMonthPrecipitationDatum
-			where WaterYearMonthID in 
-			(
-				select WaterYearMonthID 
-				from dbo.WaterYearMonth wym
-				where (wym.[Year] = @startDateYear and wym.[Month] >= @startDateMonth) or
-						(wym.[Year] = @endDateYear and wym.[Month] <= @endDateMonth) or
-						(wym.[Year] > @startDateYear and wym.[Year] < @endDateYear)
-			)
-		) wympd 
-		group by wympd.AgHubIrrigationUnitID
-	) ahiuwympd on ahiuwympd.AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
+		select AgHubIrrigationUnitID,
+			sum(case when OpenETDataTypeID = 1 then ReportedValueInches else 0 end) as TotalEvapotranspirationInches,
+			sum(case when OpenETDataTypeID = 2 then ReportedValueInches else 0 end) as TotalPrecipitationInches
+		from dbo.AgHubIrrigationUnitOpenETDatum 
+		where (Year(ReportedDate) > @startDateYear and Month(ReportedDate) < @endDateYear) or
+			(Year(ReportedDate) = @startDateYear and Month(ReportedDate) >= @startDateMonth) or
+			(Year(ReportedDate) = @endDateYear and Month(ReportedDate) <= @endDateMonth)
+		group by AgHubIrrigationUnitID
+	) ahiuoet on ahiuoet.AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
 
 	left join 
 	(
