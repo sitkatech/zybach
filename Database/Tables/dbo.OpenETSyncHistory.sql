@@ -31,4 +31,4 @@ GO
 ALTER TABLE [dbo].[OpenETSyncHistory]  WITH CHECK ADD  CONSTRAINT [FK_OpenETSyncHistory_OpenETSync_OpenETSyncID] FOREIGN KEY([OpenETSyncID])
 REFERENCES [dbo].[OpenETSync] ([OpenETSyncID])
 GO
-ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_WaterYearMonth_WaterYearMonthID]
+ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_OpenETSync_OpenETSyncID]
