@@ -196,7 +196,6 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
   }
 
   public openETSyncEnabled() {
-    return true;
     return environment.allowOpenETSync;
   }
 }
