@@ -9,6 +9,7 @@ import { AgHubIrrigationUnitDetailDto } from 'src/app/shared/generated/model/ag-
 import { AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto } from 'src/app/shared/generated/model/ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { IrrigationUnitMapComponent } from '../irrigation-unit-map/irrigation-unit-map.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'zybach-irrigation-unit-detail',
@@ -34,9 +35,9 @@ export class IrrigationUnitDetailComponent implements OnInit {
     private irrigationUnitService: IrrigationUnitService,
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
-    private router: Router,
     private cdr: ChangeDetectorRef,
-    private utilityFunctionsService: UtilityFunctionsService
+    private utilityFunctionsService: UtilityFunctionsService,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
@@ -60,15 +61,17 @@ export class IrrigationUnitDetailComponent implements OnInit {
   }
 
   private initializeGrid(): void {
+    const _datePipe = this.datePipe;
+
     this.columnDefs = [
       {
         headerName: "Month",
-        valueGetter: params => params.data.ReportedDate.Month,
-        sortable: true, filter: 'agNumberColumnFilter', resizable: true
+        valueGetter: params => _datePipe.transform(params.data.ReportedDate, 'MMMM'),
+        sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Year",
-        valueGetter: params => params.data.ReportedDate.Year,
+        valueGetter: params => parseInt(_datePipe.transform(params.data.ReportedDate, 'yyyy')),
         sortable: true, filter: 'agNumberColumnFilter', resizable: true
       },
       this.utilityFunctionsService.createDecimalColumnDef('Evapotranspiration (ac-in)', 'EvapotranspirationAcreInches'),

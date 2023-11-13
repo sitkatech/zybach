@@ -26,6 +26,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SensorChartComponent } from './components/sensor-chart/sensor-chart.component';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from "@tinymce/tinymce-angular";
+import { ContextMenuRendererComponent } from './components/ag-grid/context-menu/context-menu-renderer.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from "@tinymce/tinymce-angular";
         CustomDropdownFilterComponent,
         ClearGridFiltersButtonComponent,
         CustomPinnedRowRendererComponent,
-        ConfirmModalComponent
+        ConfirmModalComponent,
+        ContextMenuRendererComponent
     ],
     imports: [
         CommonModule,
