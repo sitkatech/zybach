@@ -71,7 +71,6 @@ namespace Zybach.EFModels.Entities
             return dbContext.AgHubIrrigationUnits
                 .Include(x => x.AgHubIrrigationUnitGeometry)
                 .Include(x => x.AgHubIrrigationUnitOpenETData)
-                    .ThenInclude(x => x.OpenETDataType)
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)
                     .ThenInclude(x => x.Sensors)

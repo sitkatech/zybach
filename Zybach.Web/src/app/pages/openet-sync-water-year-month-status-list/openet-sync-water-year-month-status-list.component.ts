@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { OpenETService } from 'src/app/shared/generated/api/open-et.service';
@@ -11,6 +11,12 @@ import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-ric
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { OpenETSyncDto } from 'src/app/shared/generated/model/open-et-sync-dto';
 import { OpenETRunDto } from 'src/app/shared/generated/model/open-et-run-dto';
+import { ColDef } from 'ag-grid-community';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
+import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
+import { ConfirmService } from 'src/app/services/confirm.service';
+import { ContextMenuRendererComponent } from 'src/app/shared/components/ag-grid/context-menu/context-menu-renderer.component';
+import { AgGridAngular } from 'ag-grid-angular';
 
 @Component({
   selector: 'zybach-openet-sync-water-year-month-status-list',
@@ -18,6 +24,7 @@ import { OpenETRunDto } from 'src/app/shared/generated/model/open-et-run-dto';
   styleUrls: ['./openet-sync-water-year-month-status-list.component.scss']
 })
 export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
+  @ViewChild('openETGrid') openETGrid: AgGridAngular;
   
   public currentUser: UserDto;
   public richTextTypeID: number = CustomRichTextTypeEnum.OpenETIntegration;
@@ -34,11 +41,16 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
   public isOpenETAPIKeyValid: boolean;
   public loadingPage: boolean = true;
 
+  public columnDefs: ColDef[];
+  public defaultColDef: ColDef;
+
   constructor(
     private authenticationService: AuthenticationService,
     private openETService: OpenETService,
     private modalService: NgbModal,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private utilityFunctionsService: UtilityFunctionsService,
+    private confirmService: ConfirmService
   ) { }
 
   ngOnInit() {
@@ -48,6 +60,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
       
       this.openETService.openetIsApiKeyValidGet().subscribe(isValid => {
         this.isOpenETAPIKeyValid = isValid;
+        this.initializeGrid();
         this.refreshOpenETSyncsAndOpenETSyncData();
         this.loadingPage = false;
       })
@@ -64,110 +77,125 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
       });
   }
 
+  initializeGrid() {
+    this.columnDefs = [];
+
+    if (this.openETSyncEnabled()) {
+      this.columnDefs.push(
+        this.createActionColumn()
+      )
+    }
+
+    this.columnDefs.push(
+      {
+        headerName: 'Year', 
+        field: 'Year',
+        filter: 'agNumberColumnFilter',
+        width: 100
+      },
+      {
+        headerName: 'Month',
+        valueGetter: (params) => this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month),
+        width: 100
+      },
+      {
+        headerName: 'Variable',
+        field: 'OpenETDataType.OpenETDataTypeDisplayName',
+        width: 150,
+        filterFramework: CustomDropdownFilterComponent,
+        filterParams: {
+          field: 'OpenETDataType.OpenETDataTypeDisplayName',
+        },
+      },
+      this.utilityFunctionsService.createDateColumnDef('Last Synced', 'LastSuccessfulSyncDate', 'M/d/yyyy', 'Last Imported', 150),
+      this.utilityFunctionsService.createDateColumnDef('Date Finalized', 'FinalizeDate', 'M/d/yyyy', 'Date Finalized', 150),
+      {
+        headerName: 'Last Message',
+        field: 'LastSyncMessage',
+        flex: 1,
+      },
+      this.utilityFunctionsService.createDateColumnDef('Last Checked', 'LastSyncDate', 'M/d/yyyy', 'Last Checked', 150),
+    );
+
+    this.defaultColDef = { filter: true, sortable: true, resizable: true }
+  }
+
+  public createActionColumn(): ColDef {
+    var actionColDef: ColDef = {
+      headerName: "Actions",
+      valueGetter: (params: any) => {
+        if (params.data.FinalizeDate == null){
+          return [
+            { ActionName: "Sync",  ActionHandler: () => {
+              this.confirmService.confirm({
+                title: 'Sync Now',
+                message: `Are you sure you want to query OpenET for data updates for ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${params.data.Year}? Note: This may take some time to return data.`,
+                buttonTextYes: 'Sync',
+                buttonClassYes: 'btn-primary',
+                buttonTextNo: 'Cancel',
+                modalSize: 'small'
+              }).then(confirmed => {
+                if (confirmed) {
+                  this.isPerformingAction = true;
+
+                  let openETRunDto = new OpenETRunDto();
+                  openETRunDto.Year = params.data.Year;
+                  openETRunDto.Month = params.data.Month;
+                  openETRunDto.OpenETDataTypeID = params.data.OpenETDataType.OpenETDataTypeID;
+              
+                  this.openETService.openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(openETRunDto).subscribe(() => {
+                    this.isPerformingAction = false;
+                    this.alertService.pushAlert(new Alert(`Sync successful for ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${params.data.Year} ${params.data.OpenETDataType.OpenETDataTypeDisplayName}`, AlertContext.Success, true));
+                    this.refreshOpenETSyncsAndOpenETSyncData();
+                  }, error => {
+                    this.isPerformingAction = false;
+                  });
+                }
+              });
+            }},
+            { ActionName: "Finalize", ActionHandler: () => {
+              this.confirmService.confirm({
+                title: 'Finalize',
+                message: `Are you sure you would like to finalize ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${params.data.Year}?  The system will no longer query OpenET for updates once marked as final.`,
+                buttonTextYes: 'Finalize',
+                buttonClassYes: 'btn-primary',
+                buttonTextNo: 'Cancel',
+                modalSize: 'small'
+              }).then(confirmed => {
+                if (confirmed) {
+                  this.isPerformingAction = true;
+
+                  this.openETService.openetSyncOpenETSyncIDFinalizePut(params.data.OpenETSyncID).subscribe(() => {
+                    this.isPerformingAction = false;
+                    this.alertService.pushAlert(new Alert(`OpenET data successfully finalized`, AlertContext.Success, true));
+                    this.refreshOpenETSyncsAndOpenETSyncData();
+                  }, error => {
+                    this.isPerformingAction = false;
+                  });
+                }
+              });
+            }}
+          ];
+        }
+        return null;
+      },
+      cellRendererFramework: ContextMenuRendererComponent,
+      cellClass: "context-menu-container",
+      sortable: false, filter: false,width: 100
+    }
+
+    return actionColDef;
+  }
+
+  public exportToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.openETGrid, 'openet-syncs.csv', null);
+  }
+
   public isCurrentUserAdministrator(): boolean {
     return this.authenticationService.isCurrentUserAnAdministrator();
   }
 
-  public showActionButtonsForOpenETSync(openETSync: OpenETSyncDto): boolean {
-    var currentDate = new Date();
-    return (new Date(openETSync.Year, openETSync.Month - 1) <= new Date(currentDate.getFullYear(), currentDate.getMonth())) && openETSync.FinalizeDate == null;
-  }
-
-  public setSelectedOpenETSyncAndLaunchModal(modalContent: any, openETSync: OpenETSyncDto) {
-    this.selectedOpenETSync = openETSync;
-    this.selectedOpenETSyncName = this.monthNameFormatter.format(new Date(openETSync.Year, openETSync.Month - 1));
-    this.launchModal(modalContent);
-  }
-
-  public launchModal(modalContent: any) {
-    this.modalReference = this.modalService.open(modalContent, { windowClass: 'modal-size', backdrop: 'static', keyboard: false });
-  }
-
-  public resetOpenETSyncToFinalizeAndCloseModal(modal: any) {
-    this.selectedOpenETSync = null;
-    this.selectedOpenETSyncName = null;
-    this.closeModal(modal, "Cancel click")
-  }
-
-  public closeModal(modal: any, reason: string) {
-    modal.close(reason);
-  }
-
-  public syncOpenETSync() {
-    if (this.modalReference) {
-      this.modalReference.close();
-      this.modalReference = null;
-    }
-
-    this.isPerformingAction = true;
-
-    const openETRunDto = new OpenETRunDto({
-      Year: this.selectedOpenETSync.Year,
-      Month: this.selectedOpenETSync.Month,
-      OpenETDataTypeID: this.selectedOpenETSync.OpenETDataType.OpenETDataTypeID
-    });
-
-    this.openETService.openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(openETRunDto).pipe(
-      finalize(() => {
-        this.isPerformingAction = false;
-        this.selectedOpenETSync = null;
-        this.selectedOpenETSyncName = null;
-        this.refreshOpenETSyncsAndOpenETSyncData();
-      }),
-    ).subscribe(response => {
-      this.alertService.pushAlert(new Alert(`The request to sync data for ${this.selectedOpenETSyncName} ${this.selectedOpenETSync.Year} was successfully submitted. The update may take a while, but will continue in the background.`, AlertContext.Success));
-    });
-  }
-
   public openETSyncEnabled() {
-    return true;
     return environment.allowOpenETSync;
-  }
-
-  public finalizeOpenETSync() {
-    if (this.modalReference) {
-      this.modalReference.close();
-      this.modalReference = null;
-    }
-    this.isPerformingAction = true;
-    this.openETService.openetSyncOpenETSyncIDFinalizePut(this.selectedOpenETSync.OpenETSyncID).pipe(
-      finalize(() => {
-        this.isPerformingAction = false;
-        this.selectedOpenETSync = null;
-        this.selectedOpenETSyncName = null;
-        this.refreshOpenETSyncsAndOpenETSyncData();
-      }),
-    ).subscribe(response => {
-      this.alertService.pushAlert(new Alert(`The Evapotranspiration Data for ${this.selectedOpenETSyncName} ${this.selectedOpenETSync.Year} was successfully finalized`, AlertContext.Success));
-    })
-  }
-
-  public syncInProgressForOpenETSync(openETSyncID : number): boolean {
-    return this.syncsInProgress.length > 0 && this.syncsInProgress.some(x => x.OpenETSyncID == openETSyncID);
-  }
-
-  public getInProgressDates(): string {
-    if (this.syncsInProgress.length == 0) {
-      return "";
-    }
-
-    var allYearsInProgressUniqueInString = this.syncsInProgress.sort((x, y) => {
-      //this should technically be an error case, we should never have two updates for the same month running at the same time
-      if (x.Year == y.Year && x.Month == y.Month) {
-        return 0;
-      }
-
-      if (x.Year > y.Year ||
-        (x.Year == y.Year && x.Month > y.Month)) {
-        return 1;
-      }
-
-      return -1;
-    }).map(x => {
-      let monthName = this.monthNameFormatter.format(new Date(x.Year, x.Month - 1));
-      return `${monthName} ${x.Year}`
-    }).join(", ");
-
-    return allYearsInProgressUniqueInString;
   }
 }

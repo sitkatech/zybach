@@ -1,0 +1,15 @@
+<div ngbDropdown container="body" class="menu-container" *ngIf="params && !params.hidden">
+    <button class="context-menu-btn btn btn-sm py-0 btn-primary" id="menu-dropdown" ngbDropdownToggle>{{params.title}}</button>
+    <div ngbDropdownMenu aria-labelledby="menu-dropdown">
+        <ng-container *ngFor="let action of params.value">
+            <button *ngIf="action.ActionHandler" (click)="action.ActionHandler()" ngbDropdownItem>
+                <span *ngIf="action.ActionIcon" [class]="action.ActionIcon"></span>
+                {{action.ActionName}}
+            </button>
+            <a *ngIf="!action.ActionHandler" ngbDropdownItem [routerLink]="[action.ActionLink]">
+                <span *ngIf="action.ActionIcon" [class]="action.ActionIcon"></span>
+                {{action.ActionName}}
+            </a>
+        </ng-container>
+    </div>
+</div>

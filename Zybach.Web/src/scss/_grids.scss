@@ -24,4 +24,8 @@ $grid-header-background: #0076C0;
   .ag-header-cell-menu-button {
     opacity: 1 !important;
   }
+
+  .ag-cell-value.context-menu-container {
+    overflow: visible;
+  } 
 }
