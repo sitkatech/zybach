@@ -3992,6 +3992,44 @@
         }
       }
     },
+    "/users/perform-chemigation-inspections": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users/{userID}": {
       "get": {
         "tags": [
@@ -9442,6 +9480,9 @@
             "format": "date-time",
             "nullable": true
           },
+          "PerformsChemigationInspections": {
+            "type": "boolean"
+          },
           "FullName": {
             "type": "string",
             "nullable": true
@@ -9543,6 +9584,9 @@
             "format": "date-time",
             "nullable": true
           },
+          "PerformsChemigationInspections": {
+            "type": "boolean"
+          },
           "FullName": {
             "type": "string",
             "nullable": true
@@ -9556,6 +9600,7 @@
       },
       "UserUpsertDto": {
         "required": [
+          "PerformsChemigationInspections",
           "ReceiveSupportEmails",
           "RoleID"
         ],
@@ -9586,6 +9631,9 @@
             "format": "int32"
           },
           "ReceiveSupportEmails": {
+            "type": "boolean"
+          },
+          "PerformsChemigationInspections": {
             "type": "boolean"
           }
         },

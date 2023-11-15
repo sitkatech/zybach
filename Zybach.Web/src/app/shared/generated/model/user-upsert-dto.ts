@@ -18,6 +18,7 @@ export class UserUpsertDto {
     PhoneNumber?: string;
     RoleID: number;
     ReceiveSupportEmails: boolean;
+    PerformsChemigationInspections: boolean;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

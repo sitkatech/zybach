@@ -149,6 +149,14 @@ namespace Zybach.API.Controllers
             return Ok(report);
         }
 
+        [HttpGet("users/perform-chemigation-inspections")]
+        [ZybachViewFeature]
+        public ActionResult<List<UserSimpleDto>> GetUsersWhoPerformChemigationInspections()
+        {
+            var userSimpleDtos = EFModels.Entities.User.ListUsersWhoPerformChemigationInspections(_dbContext);
+            return Ok(userSimpleDtos);
+        }
+
         [HttpGet("/users/{userID}")]
         [UserViewFeature]
         public ActionResult<UserDto> GetByUserID([FromRoute] int userID)

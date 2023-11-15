@@ -22,7 +22,8 @@ namespace Zybach.EFModels.Entities
                 Email = userCreateDto.Email,
                 PhoneNumber = userCreateDto.PhoneNumber,
                 RoleID = (int)RoleEnum.Unassigned,  // don't allow non-admin user to set their role to something other than Unassigned
-                ReceiveSupportEmails = false  // don't allow non-admin users to hijack support emails
+                ReceiveSupportEmails = false,  // don't allow non-admin users to hijack support emails
+                PerformsChemigationInspections = false
             };
             return CreateNewUser(dbContext, userUpsertDto, userCreateDto.LoginName, userCreateDto.UserGuid);
         }
@@ -103,6 +104,15 @@ namespace Zybach.EFModels.Entities
             return users;
         }
 
+        public static List<UserSimpleDto> ListUsersWhoPerformChemigationInspections(ZybachDbContext dbContext)
+        {
+            return GetUserImpl(dbContext)
+                .Where(x => x.IsActive && x.RoleID == (int)RoleEnum.Admin && x.PerformsChemigationInspections)
+                .OrderBy(x => x.FirstName).ThenBy(x => x.LastName)
+                .Select(x => x.AsSimpleDto())
+                .ToList();
+        }
+
         public static IEnumerable<string> GetEmailAddressesForAdminsThatReceiveSupportEmails(ZybachDbContext dbContext)
         {
             var users = GetUserImpl(dbContext)
@@ -145,22 +155,22 @@ namespace Zybach.EFModels.Entities
             return user?.AsDto();
         }
 
-        public static UserDto UpdateUserEntity(ZybachDbContext dbContext, int userID, UserUpsertDto userEditDto)
+        public static UserDto UpdateUserEntity(ZybachDbContext dbContext, int userID, UserUpsertDto userUpsertDto)
         {
-            if (!userEditDto.RoleID.HasValue)
+            if (!userUpsertDto.RoleID.HasValue)
             {
                 return null;
             }
 
-            var user = dbContext.Users
-                .Single(x => x.UserID == userID);
+            var user = dbContext.Users.Single(x => x.UserID == userID);
+            var isAdmin = userUpsertDto.RoleID == (int)RoleEnum.Admin;
 
-            user.RoleID = userEditDto.RoleID.Value;
-            user.ReceiveSupportEmails = userEditDto.RoleID.Value == 1 && userEditDto.ReceiveSupportEmails;
+            user.RoleID = userUpsertDto.RoleID.Value;
+            user.ReceiveSupportEmails = isAdmin && userUpsertDto.ReceiveSupportEmails;
+            user.PerformsChemigationInspections = isAdmin && userUpsertDto.PerformsChemigationInspections;
             user.UpdateDate = DateTime.UtcNow;
 
             dbContext.SaveChanges();
-            dbContext.Entry(user).Reload();
             return GetByUserID(dbContext, userID);
         }
 

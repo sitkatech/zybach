@@ -57,6 +57,7 @@ namespace Zybach.EFModels.Entities
         public string Company { get; set; }
         [Column(TypeName = "datetime")]
         public DateTime? DisclaimerAcknowledgedDate { get; set; }
+        public bool PerformsChemigationInspections { get; set; }
 
         [InverseProperty("InspectorUser")]
         public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; }
