@@ -46,8 +46,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        
-               this.cdr.detach();
+        this.cdr.detach();
     }
 
     public currentUserIsAdmin(): boolean {
@@ -56,5 +55,9 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
     public userIsAdministrator(): boolean{
         return this.authenticationService.isUserAnAdministrator(this.user);
+    }
+
+    public booleanValueGetter(value: boolean): string {
+        return value == null ? '' : value ? 'Yes' : 'No';
     }
 }

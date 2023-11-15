@@ -24,6 +24,7 @@ namespace Zybach.Models.DataTransferObjects
         public string LoginName { get; set; }
         public string Company { get; set; }
         public DateTime? DisclaimerAcknowledgedDate { get; set; }
+        public bool PerformsChemigationInspections { get; set; }
     }
 
     public partial class UserSimpleDto
@@ -43,6 +44,7 @@ namespace Zybach.Models.DataTransferObjects
         public string LoginName { get; set; }
         public string Company { get; set; }
         public DateTime? DisclaimerAcknowledgedDate { get; set; }
+        public bool PerformsChemigationInspections { get; set; }
     }
 
 }

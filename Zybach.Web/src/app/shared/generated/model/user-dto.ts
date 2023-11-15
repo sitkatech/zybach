@@ -27,6 +27,7 @@ export class UserDto {
     LoginName?: string;
     Company?: string;
     DisclaimerAcknowledgedDate?: string;
+    PerformsChemigationInspections?: boolean;
     FullName?: string;
     FullNameLastFirst?: string;
     constructor(obj?: any) {

@@ -13,5 +13,7 @@ namespace Zybach.Models.DataTransferObjects.User
         public int? RoleID { get; set; }
         [Required]
         public bool ReceiveSupportEmails { get; set; }
+        [Required]
+        public bool PerformsChemigationInspections { get; set; }
     }
 }
