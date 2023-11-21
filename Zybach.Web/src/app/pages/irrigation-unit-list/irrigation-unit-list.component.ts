@@ -118,34 +118,34 @@ export class IrrigationUnitListComponent implements OnInit {
         cellRendererParams: { inRouterLink: "/wells/" },
         cellRendererFramework: MultiLinkRendererComponent
       },
-      { 
-        headerValueGetter: () => `Precipitation (${this.unitsShown})`,
-        valueGetter: params => this.unitsShown == 'in' ? params.data.TotalPrecipitationInches : params.data.TotalPrecipitationGallons,
-        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
-        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
-      },
       {
         headerValueGetter: () => `Evapotranspiration (${this.unitsShown})`,
         valueGetter: params => this.unitsShown == 'in' ? params.data.TotalEvapotranspirationInches : params.data.TotalEvapotranspirationGallons,
-        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.2-2') : '-',
+        filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
+      },
+      { 
+        headerValueGetter: () => `Precipitation (${this.unitsShown})`,
+        valueGetter: params => this.unitsShown == 'in' ? params.data.TotalPrecipitationInches : params.data.TotalPrecipitationGallons,
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.2-2') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
       },
       {
         headerValueGetter: () => 'Flow Meter Pumped' + (this.unitsShown == 'gal' ? 'Volume (gal)' : 'Depth (in)'),
         valueGetter: params => this.unitsShown == 'in' ? params.data.FlowMeterPumpedDepthInches : params.data.FlowMeterPumpedVolumeGallons,
-        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.2-2') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
       },
       {
         headerValueGetter: () => 'Continuity Meter Pumped' + (this.unitsShown == 'gal' ? 'Volume (gal)' : 'Depth (in)'),
         valueGetter: params => this.unitsShown == 'in' ? params.data.ContinuityMeterPumpedDepthInches : params.data.ContinuityMeterPumpedVolumeGallons,
-        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.2-2') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
       },
       {
         headerValueGetter: () => 'Electrical Usage Pumped' + (this.unitsShown == 'gal' ? 'Volume (gal)' : 'Depth (in)'),
         valueGetter: params => this.unitsShown == 'in' ? params.data.ElectricalUsagePumpedDepthInches : params.data.ElectricalUsagePumpedVolumeGallons,
-        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.1-1') : '-',
+        valueFormatter: params => params.value ? _decimalPipe.transform(params.value,'1.2-2') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' }
       }
     ];

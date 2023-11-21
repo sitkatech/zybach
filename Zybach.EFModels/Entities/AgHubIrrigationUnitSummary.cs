@@ -12,7 +12,7 @@ namespace Zybach.EFModels.Entities
         {
         }
 
-        public const double AcreInchesToGallonsConversionRate = 27154;
+        public const double AcreInchesToGallonsConversionRate = 27154.2857;
 
         public int AgHubIrrigationUnitID { get; set; }
 
