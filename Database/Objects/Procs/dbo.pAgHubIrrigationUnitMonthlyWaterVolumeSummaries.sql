@@ -16,12 +16,13 @@ begin
 		select ahiu.AgHubIrrigationUnitID, oes.[Year], oes.[Month], oes.OpenETSyncID
 		from dbo.OpenETSync oes
 		cross join dbo.AgHubIrrigationUnit ahiu
+		where oes.OpenETDataTypeID = 1 -- avoid doubling month/year records
 	) cx
 
 	left join (
 		select AgHubIrrigationUnitID, Year(ReportedDate) as [Year], Month(ReportedDate) as [Month],
-		sum(case when OpenETDataTypeID = 1 then ReportedValueInches else 0 end) / 12 as EvapotranspirationAcreFeet,
-		sum(case when OpenETDataTypeID = 2 then ReportedValueInches else 0 end) / 12 as PrecipitationAcreFeet
+		sum(case when OpenETDataTypeID = 1 then ReportedValueInches * AgHubIrrigationUnitAreaInAcres else 0 end) / 12 as EvapotranspirationAcreFeet,
+		sum(case when OpenETDataTypeID = 2 then ReportedValueInches * AgHubIrrigationUnitAreaInAcres else 0 end) / 12 as PrecipitationAcreFeet
 		from dbo.AgHubIrrigationUnitOpenETDatum  
 		group by AgHubIrrigationUnitID, ReportedDate
 	) ahiuoed on cx.AgHubIrrigationUnitID = ahiuoed.AgHubIrrigationUnitID and 
