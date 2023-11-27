@@ -29,9 +29,7 @@ begin
 			sum(case when OpenETDataTypeID = 1 then ReportedValueInches else 0 end) as TotalEvapotranspirationInches,
 			sum(case when OpenETDataTypeID = 2 then ReportedValueInches else 0 end) as TotalPrecipitationInches
 		from dbo.AgHubIrrigationUnitOpenETDatum 
-		where (Year(ReportedDate) > @startDateYear and Month(ReportedDate) < @endDateYear) or
-			(Year(ReportedDate) = @startDateYear and Month(ReportedDate) >= @startDateMonth) or
-			(Year(ReportedDate) = @endDateYear and Month(ReportedDate) <= @endDateMonth)
+		where ReportedDate >= @startDate and ReportedDate <= @endDate
 		group by AgHubIrrigationUnitID
 	) ahiuoet on ahiuoet.AgHubIrrigationUnitID = ahiu.AgHubIrrigationUnitID
 
@@ -63,6 +61,7 @@ begin
 		) wps
 		group by wps.AgHubIrrigationUnitID
 	) ahiur on ahiu.AgHubIrrigationUnitID = ahiur.AgHubIrrigationUnitID
+	order by AgHubIrrigationUnitID
 
 end
 
