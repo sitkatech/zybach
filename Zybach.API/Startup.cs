@@ -189,7 +189,6 @@ namespace Zybach.API
 
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<ZybachDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
-            services.AddScoped<IOpenETRetrieveFromBucketJob, OpenETRetrieveFromBucketJob>();
             services.AddScoped<IOpenETTriggerBucketRefreshJob, OpenETTriggerBucketRefreshJob>();
 
 
