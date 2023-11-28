@@ -115,6 +115,12 @@ namespace Zybach.API
                 //Allows us to follow a URL and get more information on why a request failed
                 c.DefaultRequestHeaders.Add("Ocp-Apim-Trace", "true");
             });
+            services.AddHttpClient<OpenETService>(c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.OpenETAPIBaseUrl);
+                c.Timeout = TimeSpan.FromMinutes(30);
+                c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(zybachConfiguration.OPENET_API_KEY);
+            });
 
             services.AddScoped<InfluxDBService>();
             services.AddScoped<WellService>();
@@ -183,7 +189,6 @@ namespace Zybach.API
 
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddScoped(s => UserContext.GetUserFromHttpContext(s.GetService<ZybachDbContext>(), s.GetService<IHttpContextAccessor>().HttpContext));
-            services.AddScoped<IOpenETService, OpenETService>();
             services.AddScoped<IOpenETRetrieveFromBucketJob, OpenETRetrieveFromBucketJob>();
             services.AddScoped<IOpenETTriggerBucketRefreshJob, OpenETTriggerBucketRefreshJob>();
 

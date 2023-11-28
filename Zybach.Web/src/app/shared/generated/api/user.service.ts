@@ -23,6 +23,7 @@ import { UnassignedUserReportDto } from '../model/unassigned-user-report-dto';
 import { UserCreateDto } from '../model/user-create-dto';
 import { UserDto } from '../model/user-dto';
 import { UserInviteDto } from '../model/user-invite-dto';
+import { UserSimpleDto } from '../model/user-simple-dto';
 import { UserUpsertDto } from '../model/user-upsert-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -194,6 +195,49 @@ export class UserService {
         ];
 
         return this.httpClient.get<Array<UserDto>>(`${this.basePath}/users/notUnassignedOrDisabled`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public usersPerformChemigationInspectionsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<UserSimpleDto>>;
+    public usersPerformChemigationInspectionsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserSimpleDto>>>;
+    public usersPerformChemigationInspectionsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserSimpleDto>>>;
+    public usersPerformChemigationInspectionsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // authentication (ApiKey) required
+        if (this.configuration.apiKeys && this.configuration.apiKeys["x-api-key"]) {
+            headers = headers.set('x-api-key', this.configuration.apiKeys["x-api-key"]);
+        }
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<UserSimpleDto>(`${this.basePath}/users/perform-chemigation-inspections`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

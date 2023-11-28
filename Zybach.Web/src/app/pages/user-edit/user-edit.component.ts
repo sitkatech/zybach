@@ -10,7 +10,7 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { RoleDto } from 'src/app/shared/generated/model/role-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { UserUpsertDto } from 'src/app/shared/generated/model/user-upsert-dto';
-
+import { RoleEnum } from 'src/app/shared/generated/enum/role-enum';
 
 @Component({
   selector: 'zybach-user-edit',
@@ -50,33 +50,30 @@ export class UserEditComponent implements OnInit, OnDestroy {
 
       this.userID = parseInt(this.route.snapshot.paramMap.get("id"));
 
-      forkJoin(
+      forkJoin([
         this.userService.usersUserIDGet(this.userID),
         this.roleService.rolesGet()
-      ).subscribe(([user, roles]) => {
+      ]).subscribe(([user, roles]) => {
         this.user = user instanceof Array
           ? null
           : user as UserDto;
+          console.log(user)
 
-        this.roles = roles.sort((a: RoleDto, b: RoleDto) => {
-          if (a.RoleDisplayName > b.RoleDisplayName)
-            return 1;
-          if (a.RoleDisplayName < b.RoleDisplayName)
-            return -1;
-          return 0;
+        this.roles = roles.sort((a, b) => {
+          return a.RoleDisplayName > b.RoleDisplayName ? 1 : a.RoleDisplayName < b.RoleDisplayName ? -1 : 0;
         });
 
         this.model = new UserUpsertDto();
         this.model.RoleID = user.Role.RoleID;
         this.model.ReceiveSupportEmails = user.ReceiveSupportEmails;
+        this.model.PerformsChemigationInspections = user.PerformsChemigationInspections;
         this.cdr.detectChanges();
       });
     });
   }
 
   ngOnDestroy() {
-    
-       this.cdr.detach();
+    this.cdr.detach();
   }
 
   onSubmit(editUserForm: HTMLFormElement): void {
@@ -95,6 +92,10 @@ export class UserEditComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges();
         }
       );
+  }
+
+  selectedRoleIsAdmin(): boolean {
+    return this.model.RoleID == RoleEnum.Admin;
   }
 
   checkReceiveSupportEmails(): void {

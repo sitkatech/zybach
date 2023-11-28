@@ -58,7 +58,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
           return { LinkValue: params.data.ChemigationInspectionID, LinkDisplay: "Edit", CssClasses: "btn-sm btn-zybach" };
         }, cellRendererFramework: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-inspections/" },
-        width: 100,
+        width: 120,
         resizable: true
       },
       {

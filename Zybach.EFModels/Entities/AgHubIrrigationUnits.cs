@@ -34,21 +34,23 @@ namespace Zybach.EFModels.Entities
         {
             var associatedWells = irrigationUnit.AgHubWells.Select(x => x.Well.AsMinimalDto()).ToList();
 
-            var waterYearMonthETAndPrecipData = irrigationUnit.AgHubIrrigationUnitWaterYearMonthPrecipitationData
-                .Join(irrigationUnit.AgHubIrrigationUnitWaterYearMonthETData,
-                    pr => new { pr.WaterYearMonthID, pr.AgHubIrrigationUnitID },
-                    et => new { et.WaterYearMonthID, et.AgHubIrrigationUnitID },
-                    (pr, et) => new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
+            var waterYearMonthETAndPrecipData = irrigationUnit.AgHubIrrigationUnitOpenETData
+                .GroupBy(x => x.ReportedDate)
+                .OrderByDescending(x => x.Key)
+                .Select(x =>
+                {
+                    var et = x.SingleOrDefault(x => x.OpenETDataTypeID == (int)OpenETDataTypeEnum.Evapotranspiration);
+                    var pr = x.SingleOrDefault(x => x.OpenETDataTypeID == (int)OpenETDataTypeEnum.Precipitation);
+
+                    return new AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
                     {
-                        WaterYearMonth = et.WaterYearMonth.AsDto(),
-                        EvapotranspirationInches = et.EvapotranspirationInches,
-                        EvapotranspirationAcreInches = et.EvapotranspirationAcreInches,
-                        PrecipitationInches = pr.PrecipitationInches,
-                        PrecipitationAcreInches = pr.PrecipitationAcreInches
-                    })
-                .OrderByDescending(x => x.WaterYearMonth.Year)
-                .ThenByDescending(x => x.WaterYearMonth.Month)
-                .ToList();
+                        ReportedDate = x.Key,
+                        EvapotranspirationInches = et?.ReportedValueInches,
+                        EvapotranspirationAcreInches = et?.ReportedValueAcreInches,
+                        PrecipitationInches = pr?.ReportedValueInches,
+                        PrecipitationAcreInches = pr?.ReportedValueAcreInches
+                    };
+                }).ToList();
             
             var agHubIrrigationUnitDetailDto = new AgHubIrrigationUnitDetailDto
             {
@@ -68,10 +70,7 @@ namespace Zybach.EFModels.Entities
         {
             return dbContext.AgHubIrrigationUnits
                 .Include(x => x.AgHubIrrigationUnitGeometry)
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthETData)
-                    .ThenInclude(x => x.WaterYearMonth)
-                .Include(x => x.AgHubIrrigationUnitWaterYearMonthPrecipitationData)
-                    .ThenInclude(x => x.WaterYearMonth)
+                .Include(x => x.AgHubIrrigationUnitOpenETData)
                 .Include(x => x.AgHubWells)
                     .ThenInclude(x => x.Well)
                     .ThenInclude(x => x.Sensors)

@@ -28,7 +28,6 @@ import { SupportTicketService } from './api/support-ticket.service';
 import { UserService } from './api/user.service';
 import { WaterLevelInspectionService } from './api/water-level-inspection.service';
 import { WaterQualityInspectionService } from './api/water-quality-inspection.service';
-import { WaterYearMonthService } from './api/water-year-month.service';
 import { WellService } from './api/well.service';
 import { WellGroupService } from './api/well-group.service';
 import { ZybachAPIService } from './api/zybach-api.service';
@@ -63,7 +62,6 @@ import { ZybachAPIService } from './api/zybach-api.service';
     UserService,
     WaterLevelInspectionService,
     WaterQualityInspectionService,
-    WaterYearMonthService,
     WellService,
     WellGroupService,
     ZybachAPIService,

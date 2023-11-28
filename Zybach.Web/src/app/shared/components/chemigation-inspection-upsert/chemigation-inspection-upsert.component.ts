@@ -4,7 +4,6 @@ import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 import { ChemigationInspectionService } from 'src/app/shared/generated/api/chemigation-inspection.service';
 import { UserService } from 'src/app/shared/generated/api/user.service';
-import { RoleEnum } from '../../generated/enum/role-enum';
 import { ChemigationInjectionValveDto } from '../../generated/model/chemigation-injection-valve-dto';
 import { ChemigationInspectionFailureReasonDto } from '../../generated/model/chemigation-inspection-failure-reason-dto';
 import { ChemigationInspectionStatusDto } from '../../generated/model/chemigation-inspection-status-dto';
@@ -15,8 +14,8 @@ import { ChemigationLowPressureValveDto } from '../../generated/model/chemigatio
 import { ChemigationMainlineCheckValveDto } from '../../generated/model/chemigation-mainline-check-valve-dto';
 import { CropTypeDto } from '../../generated/model/crop-type-dto';
 import { TillageDto } from '../../generated/model/tillage-dto';
-import { UserDto } from '../../generated/model/user-dto';
 import { NgbDateAdapterFromString } from '../ngb-date-adapter-from-string';
+import { UserSimpleDto } from '../../generated/model/user-simple-dto';
 
 @Component({
   selector: 'zybach-chemigation-inspection-upsert',
@@ -35,7 +34,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
   public chemigationInspectionFailureReasons: ChemigationInspectionFailureReasonDto[];
   public tillages: TillageDto[];
   public cropTypes: CropTypeDto[];
-  public users: UserDto[];
+  public users: UserSimpleDto[];
   public chemigationMainlineCheckValves: ChemigationMainlineCheckValveDto[];
   public chemigationLowPressureValves: ChemigationLowPressureValveDto[];
   public chemigationInjectionValves: ChemigationInjectionValveDto[];
@@ -54,7 +53,7 @@ export class ChemigationInspectionUpsertComponent implements OnInit {
       chemigationInspectionFailureReasons: this.chemigationInspectionService.chemigationInspectionsFailureReasonsGet(),
       tillages: this.chemigationInspectionService.tillageTypesGet(),
       cropTypes: this.chemigationInspectionService.cropTypesGet(),
-      users: this.userService.usersNotUnassignedOrDisabledGet(),
+      users: this.userService.usersPerformChemigationInspectionsGet(),
       chemigationMainlineCheckValves: this.chemigationInspectionService.chemigationInspectionsMainlineCheckValvesGet(),
       chemigationLowPressureValves: this.chemigationInspectionService.chemigationInspectionsLowPressureValvesGet(),
       chemigationInjectionValves: this.chemigationInspectionService.chemigationInspectionsInjectionValvesGet(),

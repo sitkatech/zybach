@@ -5,13 +5,13 @@ go
 Create View dbo.vOpenETMostRecentSyncHistoryForYearAndMonth
 as
 
-select openetsh.OpenETSyncHistoryID, openetsh.WaterYearMonthID, openetsh.OpenETSyncResultTypeID, openetsh.CreateDate, openetsh.UpdateDate, openetsh.GoogleBucketFileRetrievalURL, openetsh.ErrorMessage
+select openetsh.OpenETSyncHistoryID, openetsh.OpenETSyncID, openetsh.OpenETSyncResultTypeID, openetsh.CreateDate, openetsh.UpdateDate, openetsh.GoogleBucketFileRetrievalURL, openetsh.ErrorMessage
 from dbo.OpenETSyncHistory openetsh
 join 
 (
-	select WaterYearMonthID, max(CreateDate) CreateDate
+	select OpenETSyncID, max(CreateDate) CreateDate
 	from dbo.OpenETSyncHistory
-	group by WaterYearMonthID
-) mostRecent on openetsh.WaterYearMonthID = mostRecent.WaterYearMonthID and openetsh.CreateDate = mostRecent.CreateDate
+	group by OpenETSyncID
+) mostRecent on openetsh.OpenETSyncID = mostRecent.OpenETSyncID and openetsh.CreateDate = mostRecent.CreateDate
 
 go

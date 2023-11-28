@@ -240,7 +240,9 @@ namespace Zybach.EFModels.Entities
 
         public static List<WellWaterQualityInspectionSummaryDto> ListAsWellWaterQualityInspectionDtos(ZybachDbContext dbContext)
         {
-            return dbContext.Wells.Include(x => x.WaterQualityInspections).AsNoTracking()
+            return dbContext.Wells.AsNoTracking()
+                .Include(x => x.WaterQualityInspections)
+                .Include(x => x.WellParticipation)
                 .Where(x => x.WaterQualityInspections.Any())
                 .Select(x => x.AsWellWaterQualityInspectionSummaryDto()).ToList();
         }

@@ -27,7 +27,8 @@ namespace Zybach.EFModels.Entities
                 ReceiveSupportEmails = user.ReceiveSupportEmails,
                 LoginName = user.LoginName,
                 Company = user.Company,
-                DisclaimerAcknowledgedDate = user.DisclaimerAcknowledgedDate
+                DisclaimerAcknowledgedDate = user.DisclaimerAcknowledgedDate,
+                PerformsChemigationInspections = user.PerformsChemigationInspections
             };
             DoCustomMappings(user, userDto);
             return userDto;
@@ -53,7 +54,8 @@ namespace Zybach.EFModels.Entities
                 ReceiveSupportEmails = user.ReceiveSupportEmails,
                 LoginName = user.LoginName,
                 Company = user.Company,
-                DisclaimerAcknowledgedDate = user.DisclaimerAcknowledgedDate
+                DisclaimerAcknowledgedDate = user.DisclaimerAcknowledgedDate,
+                PerformsChemigationInspections = user.PerformsChemigationInspections
             };
             DoCustomSimpleDtoMappings(user, userSimpleDto);
             return userSimpleDto;

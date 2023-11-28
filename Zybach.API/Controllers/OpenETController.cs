@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -14,9 +15,9 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class OpenETController : SitkaController<OpenETController>
     {
-        private readonly IOpenETService _openETService;
+        private readonly OpenETService _openETService;
 
-        public OpenETController(ZybachDbContext dbContext, ILogger<OpenETController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> rioConfiguration, IOpenETService openETService) : base(dbContext, logger, keystoneService, rioConfiguration)
+        public OpenETController(ZybachDbContext dbContext, ILogger<OpenETController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> rioConfiguration, OpenETService openETService) : base(dbContext, logger, keystoneService, rioConfiguration)
         {
             _openETService = openETService;
         }
@@ -34,31 +35,44 @@ namespace Zybach.API.Controllers
             public DateTime ExpirationDate { get; set; }
         }
 
-
-        [HttpPost("/openet-sync-history/trigger-openet-google-bucket-refresh")]
+        [HttpGet("/openet-sync/years")]
         [AdminFeature]
-        public ActionResult TriggerOpenETRefreshAndRetrieveJob([FromBody] int waterYearMonthID)
+        public ActionResult<List<int>> ListYears()
         {
-            var openETDataTypes = OpenETDataType.All;
-            foreach (var openETDataType in openETDataTypes) { 
-                var triggerResponse = _openETService.TriggerOpenETGoogleBucketRefresh(waterYearMonthID, openETDataType);
-                if (!triggerResponse.IsSuccessStatusCode)
-                {
-                    var ores = StatusCode((int)triggerResponse.StatusCode,
-                        triggerResponse.Content.ReadAsStringAsync().Result);
-                    return ores;
-                }
+            var waterYears = OpenETSyncs.ListYears(_dbContext);
+            return Ok(waterYears);
+        }
+
+
+        [HttpPost("/openet-sync-history/trigger-openet-google-bucket-refresh/")]
+        [AdminFeature]
+        public async Task<ActionResult> TriggerOpenETRefreshAndRetrieveJob([FromBody] OpenETRunDto openETRunDto)
+        {
+            var triggerResponse = await _openETService.TriggerOpenETGoogleBucketRefresh(openETRunDto.Year, openETRunDto.Month, openETRunDto.OpenETDataTypeID);
+            if (!triggerResponse.IsSuccessStatusCode)
+            {
+                var ores = StatusCode((int)triggerResponse.StatusCode,
+                    triggerResponse.Content.ReadAsStringAsync().Result);
+                return ores;
             }
 
             return Ok();
         }
 
-        [HttpGet("/openet-sync-history")]
+        [HttpGet("/openet-sync")]
         [AdminFeature]
-        public ActionResult<List<OpenETSyncHistoryDto>> List()
+        public ActionResult<List<OpenETSyncDto>> List()
         {
-            var inProgressDtos = OpenETSyncHistory.List(_dbContext);
-            return Ok(inProgressDtos);
+            var openETSyncDtos = OpenETSyncs.List(_dbContext);
+            return Ok(openETSyncDtos);
+        }
+
+        [HttpPut("openet-sync/{openETSyncID}/finalize")]
+        [AdminFeature]
+        public ActionResult FinalizeOpenETSync([FromRoute] int openETSyncID)
+        {
+            OpenETSyncs.FinalizeSyncByID(_dbContext, openETSyncID);
+            return Ok();
         }
     }
 }

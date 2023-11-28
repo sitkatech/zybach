@@ -9,19 +9,18 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { OpenETSyncResultTypeDto } from '././open-et-sync-result-type-dto';
-import { WaterYearMonthDto } from '././water-year-month-dto';
 import { OpenETDataTypeDto } from '././open-et-data-type-dto';
 
-export class OpenETSyncHistoryDto { 
-    OpenETSyncHistoryID?: number;
-    WaterYearMonth?: WaterYearMonthDto;
-    OpenETSyncResultType?: OpenETSyncResultTypeDto;
-    CreateDate?: string;
-    UpdateDate?: string;
-    GoogleBucketFileRetrievalURL?: string;
-    ErrorMessage?: string;
+export class OpenETSyncDto { 
+    OpenETSyncID?: number;
     OpenETDataType?: OpenETDataTypeDto;
+    Year?: number;
+    Month?: number;
+    FinalizeDate?: string;
+    LastSuccessfulSyncDate?: string;
+    LastSyncDate?: string;
+    LastSyncMessage?: string;
+    HasInProgressSync?: boolean;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

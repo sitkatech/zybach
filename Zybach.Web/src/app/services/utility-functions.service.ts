@@ -155,4 +155,11 @@ export class UtilityFunctionsService {
     }
     return value1 > value2 ? 1 : -1;
   }
+
+  public getMonthNameByMonthNumber(monthNumber: number) {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
+  
+    return date.toLocaleString('en-US', { month: 'long' });
+  }
 }

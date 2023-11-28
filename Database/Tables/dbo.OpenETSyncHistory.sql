@@ -4,13 +4,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[OpenETSyncHistory](
 	[OpenETSyncHistoryID] [int] IDENTITY(1,1) NOT NULL,
-	[WaterYearMonthID] [int] NOT NULL,
 	[OpenETSyncResultTypeID] [int] NOT NULL,
 	[CreateDate] [datetime] NOT NULL,
 	[UpdateDate] [datetime] NOT NULL,
 	[GoogleBucketFileRetrievalURL] [varchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[ErrorMessage] [varchar](max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[OpenETDataTypeID] [int] NULL,
+	[OpenETSyncID] [int] NULL,
  CONSTRAINT [PK_OpenETSyncHistory_OpenETSyncHistoryID] PRIMARY KEY CLUSTERED 
 (
 	[OpenETSyncHistoryID] ASC
@@ -23,12 +23,12 @@ REFERENCES [dbo].[OpenETDataType] ([OpenETDataTypeID])
 GO
 ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_OpenETDataType_OpenETDataTypeID]
 GO
+ALTER TABLE [dbo].[OpenETSyncHistory]  WITH CHECK ADD  CONSTRAINT [FK_OpenETSyncHistory_OpenETSync_OpenETSyncID] FOREIGN KEY([OpenETSyncID])
+REFERENCES [dbo].[OpenETSync] ([OpenETSyncID])
+GO
+ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_OpenETSync_OpenETSyncID]
+GO
 ALTER TABLE [dbo].[OpenETSyncHistory]  WITH CHECK ADD  CONSTRAINT [FK_OpenETSyncHistory_OpenETSyncResultType_OpenETSyncResultTypeID] FOREIGN KEY([OpenETSyncResultTypeID])
 REFERENCES [dbo].[OpenETSyncResultType] ([OpenETSyncResultTypeID])
 GO
 ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_OpenETSyncResultType_OpenETSyncResultTypeID]
-GO
-ALTER TABLE [dbo].[OpenETSyncHistory]  WITH CHECK ADD  CONSTRAINT [FK_OpenETSyncHistory_WaterYearMonth_WaterYearMonthID] FOREIGN KEY([WaterYearMonthID])
-REFERENCES [dbo].[WaterYearMonth] ([WaterYearMonthID])
-GO
-ALTER TABLE [dbo].[OpenETSyncHistory] CHECK CONSTRAINT [FK_OpenETSyncHistory_WaterYearMonth_WaterYearMonthID]

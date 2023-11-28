@@ -25,7 +25,6 @@ api/support-ticket.service.ts
 api/user.service.ts
 api/water-level-inspection.service.ts
 api/water-quality-inspection.service.ts
-api/water-year-month.service.ts
 api/well-group.service.ts
 api/well.service.ts
 api/zybach-api.service.ts
@@ -91,8 +90,8 @@ model/interval-volume-dto.ts
 model/irrigated-acres-per-year-dto.ts
 model/models.ts
 model/open-et-data-type-dto.ts
-model/open-et-sync-history-dto.ts
-model/open-et-sync-result-type-dto.ts
+model/open-et-run-dto.ts
+model/open-et-sync-dto.ts
 model/paige-wireless-pulse-dto.ts
 model/report-template-dto.ts
 model/report-template-model-dto.ts
@@ -138,7 +137,6 @@ model/water-quality-inspection-simple-dto.ts
 model/water-quality-inspection-summary-dto.ts
 model/water-quality-inspection-type-dto.ts
 model/water-quality-inspection-upsert-dto.ts
-model/water-year-month-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts

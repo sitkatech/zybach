@@ -1,8 +1,10 @@
-﻿namespace Zybach.Models.DataTransferObjects
+﻿using System;
+
+namespace Zybach.Models.DataTransferObjects
 {
     public class AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto
     {
-        public WaterYearMonthDto WaterYearMonth { get; set; }
+        public DateTime ReportedDate { get; set; }
         public decimal? PrecipitationAcreInches { get; set; }
         public decimal? PrecipitationInches { get; set; }
         public decimal? EvapotranspirationAcreInches { get; set; }
