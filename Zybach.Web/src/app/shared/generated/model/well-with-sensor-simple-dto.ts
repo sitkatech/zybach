@@ -20,6 +20,8 @@ export class WellWithSensorSimpleDto {
     WellTPID?: string;
     Description?: string;
     Location?: any;
+    Latitude?: number;
+    Longitude?: number;
     LastReadingDate?: string;
     FirstReadingDate?: string;
     InAgHub?: boolean;
