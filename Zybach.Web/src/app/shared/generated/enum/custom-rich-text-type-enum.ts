@@ -31,5 +31,6 @@ export enum CustomRichTextTypeEnum {
   WellGroupList = 26,
   WellGroupEdit = 27,
   WaterLevelsReport = 28,
-  SensorHealthCheck = 29
+  SensorHealthCheck = 29,
+  SensorStatusMap = 30
 }

@@ -10507,6 +10507,14 @@
           "WellConnectedMeter": {
             "type": "boolean"
           },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
+          },
           "WellID": {
             "type": "integer",
             "format": "int32"
@@ -11377,6 +11385,14 @@
           },
           "WellConnectedMeter": {
             "type": "boolean"
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
           },
           "WellID": {
             "type": "integer",

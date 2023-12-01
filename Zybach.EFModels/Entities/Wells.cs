@@ -24,6 +24,13 @@ namespace Zybach.EFModels.Entities
             return well?.AsSimpleDto();
         }
 
+        public static List<Well> List(ZybachDbContext dbContext)
+        {
+            return GetWellsImpl(dbContext)
+                .OrderBy(x => x.WellRegistrationID)
+                .ToList();
+        }
+
         public static List<WellWithSensorSimpleDto> ListAsWellWithSensorSimpleDto(ZybachDbContext dbContext)
         {
             var wellsWithWaterLevelInspections = dbContext.WaterLevelInspections
@@ -31,11 +38,13 @@ namespace Zybach.EFModels.Entities
                 .AsNoTracking().ToList()
                 .GroupBy(x => x.WellID)
                 .ToDictionary(x => x.Key, y => y.Any());
+            
             var wellsWithWaterQualityInspections = dbContext.WaterQualityInspections
                 .Include(x => x.Well)
                 .AsNoTracking().ToList()
                 .GroupBy(x => x.WellID)
                 .ToDictionary(x => x.Key, y => y.Any());
+            
             return GetWellsImpl(dbContext)
                 .OrderBy(x => x.WellRegistrationID)
                 .Select(x => WellWithSensorSimpleDtoFromWell(x,
