@@ -15,6 +15,7 @@ import { ContinuityMeterStatusEnum } from 'src/app/shared/generated/enum/continu
 import { SensorTypeEnum } from 'src/app/shared/generated/enum/sensor-type-enum';
 import { ColDef } from 'ag-grid-community';
 import { DecimalPipe } from '@angular/common';
+import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 
 @Component({
   selector: 'zybach-sensor-status',
@@ -34,7 +35,9 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
 
-  private static messageAgeMax = 480; // 8 hours in minutes
+  public richTextTypeID = CustomRichTextTypeEnum.SensorStatusMap;
+
+  private static messageAgeMax = 1440; // 24 hours in minutes
   private static voltageReadingMin = 2500;
 
   constructor(
@@ -49,6 +52,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
 
     this.watchUserChangeSubscription = this.authenticationService.getCurrentUser().subscribe(currentUser => {
       this.currentUser = currentUser;
+
       this.sensorStatusService.sensorStatusGet().subscribe(wells => {
         const wellsWithActiveSensors = wells.filter(x => x.Sensors.filter(y => y.IsActive).length > 0);
         this.wellsGeoJson =
@@ -75,10 +79,13 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             WellID: well.WellID, 
             WellRegistrationID: well.WellRegistrationID, 
             AgHubRegisteredUser: well.AgHubRegisteredUser, 
-            fieldName: well.FieldName
+            fieldName: well.FieldName,
+            Latitude: well.Latitude,
+            Longitude: well.Longitude
           }))
         ), [])
-        .filter(sensor => sensor.IsActive && (sensor.LastMessageAgeInHours > SensorStatusComponent.messageAgeMax || 
+        .filter(sensor => sensor.IsActive && (sensor.MostRecentSupportTicketID != null ||
+          sensor.LastMessageAgeInHours > SensorStatusComponent.messageAgeMax || 
           (sensor.LastVoltageReading != null && sensor.LastVoltageReading < SensorStatusComponent.voltageReadingMin) || 
           (sensor.ContinuityMeterStatus && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatus.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)
         ))
@@ -181,7 +188,9 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
           params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
         filterFramework: CustomDropdownFilterComponent,
         filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
-      }
+      },
+      { headerName: 'Latitude', field: 'Latitude' },
+      { headerName: 'Longitude', field: 'Longitude' }
     ];
   }
   

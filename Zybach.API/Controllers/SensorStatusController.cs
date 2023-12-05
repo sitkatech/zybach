@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GeoJSON.Net.Feature;
+using GeoJSON.Net.Geometry;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -23,19 +25,23 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/sensorStatus")]
         [ZybachViewFeature]
-        public async Task<List<WellWithSensorSimpleDto>> GetSensorMessageAges()
+        public ActionResult<List<WellWithSensorSimpleDto>> GetSensorMessageAges()
         {
-            var wellSummariesWithSensors = Wells.ListAsWellWithSensorSimpleDto(_dbContext)
+            var wellSummariesWithSensors = Wells.List(_dbContext)
                 .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)).ToList();
+
             var vSensors = _dbContext.vSensors.AsNoTracking().ToDictionary(x => x.SensorName);
-            return wellSummariesWithSensors.Select(well => new WellWithSensorSimpleDto
+            
+            var wellWithSensorSimpleDtos = wellSummariesWithSensors.Select(well => new WellWithSensorSimpleDto
             {
-                AgHubRegisteredUser = well.AgHubRegisteredUser,
-                FieldName = well.FieldName,
+                AgHubRegisteredUser = well.AgHubWell?.AgHubRegisteredUser,
+                FieldName = well.AgHubWell?.FieldName,
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
-                Location = well.Location,
-                Sensors = well.Sensors.Where(x=> x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).Select(sensor =>
+                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
+                Latitude = well.Latitude,
+                Longitude = well.Longitude,
+                Sensors = well.Sensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).Select(sensor =>
                 {
                     try
                     {
@@ -49,11 +55,11 @@ namespace Zybach.API.Controllers
                             LastVoltageReading = vSensor?.LastVoltageReading,
                             LastVoltageReadingDate = vSensor?.LastVoltageReadingDate,
                             SensorTypeID = sensor.SensorTypeID,
-                            SensorTypeName = sensor.SensorTypeName,
+                            SensorTypeName = sensor.SensorType.SensorTypeName,
                             IsActive = sensor.IsActive,
-                            MostRecentSupportTicketID = sensor.MostRecentSupportTicketID,
-                            MostRecentSupportTicketTitle = sensor.MostRecentSupportTicketTitle,
-                            ContinuityMeterStatus = sensor.ContinuityMeterStatus,
+                            MostRecentSupportTicketID = vSensor?.MostRecentSupportTicketID,
+                            MostRecentSupportTicketTitle = vSensor?.MostRecentSupportTicketTitle,
+                            ContinuityMeterStatus = sensor.ContinuityMeterStatus?.AsDto(),
                             SnoozeStartDate = sensor.SnoozeStartDate
                         };
                     }
@@ -63,6 +69,8 @@ namespace Zybach.API.Controllers
                     }
                 }).ToList()
             }).ToList();
+
+            return Ok(wellWithSensorSimpleDtos);
         }
 
         [HttpGet("/sensorStatus/{wellID}")]

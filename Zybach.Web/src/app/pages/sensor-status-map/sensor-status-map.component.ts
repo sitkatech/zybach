@@ -74,9 +74,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
   public filterMapByLastMessageAge: boolean = true;
 
-  showZeroToTwo: boolean = true;
-  showTwoToEight: boolean = true;
-  showEightPlus: boolean = true;
+  showLessThan24Hours: boolean = true;
+  showLessThan24HoursWithSupportTicket: boolean = true;
+  showGreaterThan24Hours: boolean = true;
   showNoMessageData: boolean = true;
 
   showLessThan2500: boolean = false;
@@ -104,6 +104,11 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     prefix: "fas",
     glyph: "tint",
     iconUrl: "/assets/main/c2523c.png"
+  });
+  static greenMarkerIcon = icon.glyph({
+    prefix: "fas",
+    glyph: "tint",
+    iconUrl: "/assets/main/continuityMeterMarker.png"
   });
   static greyMarkerIcon = icon.glyph({
     prefix: "fas",
@@ -136,7 +141,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     this.compileService.configure(this.appRef);
 
     this.setLastMessageAgeFilterOptionsDropdownList();
-    this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS, MapFilterOption.NO_MESSAGE_DATA];
+    this.selectedFilterOptions = [MapFilterOption.LESS_THAN_24_HOURS, MapFilterOption.LESS_THAN_24_HOURS_WITH_SUPPORT_TICKET, MapFilterOption.GREATER_THAN_24_HOURS, MapFilterOption.NO_MESSAGE_DATA];
   }
 
   public ngAfterViewInit(): void {
@@ -196,12 +201,12 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         let icon;
         if (!sensorMessageAges.some(x => x != null)) {
           icon = SensorStatusMapComponent.greyMarkerIcon;
-        } else if (maxMessageAge <= 2) {
-          icon = SensorStatusMapComponent.blueMarkerIcon;
-        } else if (maxMessageAge <= 8) {
-          icon = SensorStatusMapComponent.yellowMarkerIcon;
-        } else {
+        } else if (maxMessageAge > 24) {
           icon = SensorStatusMapComponent.redMarkerIcon;
+        } else if (feature.properties.sensors.find(x => x.MostRecentSupportTicketID) == null) {
+          icon = SensorStatusMapComponent.blueMarkerIcon;
+        } else {
+          icon = SensorStatusMapComponent.greenMarkerIcon;
         }
 
         return marker(latlng, { icon: icon })
@@ -211,9 +216,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
         var maxMessageAge = !sensorMessageAges.some(x => x !== null) ? null : Math.max(...sensorMessageAges);
 
         return (this.showNoMessageData && maxMessageAge === null) ||
-          (this.showZeroToTwo && maxMessageAge <= 2 && maxMessageAge != null) ||
-          (this.showTwoToEight && 2 < maxMessageAge && maxMessageAge <= 8) ||
-          (this.showEightPlus && maxMessageAge > 8 )
+          (this.showLessThan24Hours && maxMessageAge != null && maxMessageAge <= 24 && feature.properties.sensors.find(x => x.MostRecentSupportTicketID) == null) ||
+          (this.showLessThan24HoursWithSupportTicket && maxMessageAge != null && maxMessageAge <= 24 && feature.properties.sensors.find(x => x.MostRecentSupportTicketID) != null) ||
+          (this.showGreaterThan24Hours && maxMessageAge > 24 )
       }
     });
   }
@@ -272,10 +277,10 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
           legendElement.style.padding = "6px";
   
           if (displayLastMessageAgeLegend) {
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 0-2 Hours<br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/fcf003.png'/> 2-8 Hours<br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> >8 Hours<br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 0-24 Hours<br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> >24 Hours<br/>"
             legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>"
+            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/continuityMeterMarker.png'/> Has Active Support Ticket<br/>"
           } else {
             legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/flowMeterMarker.png'/> >4000 mV <br/>"
             legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 2700-4000 mV <br/>"
@@ -297,10 +302,10 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
   private setLastMessageAgeFilterOptionsDropdownList() {
     this.filterOptionsDropdownList = [
-      { group_name: "Select All", item_id: MapFilterOption.TWO_HOURS, item_text: "0-2 Hours" },
-      { group_name: "Select All", item_id: MapFilterOption.EIGHT_HOURS, item_text: "2-8 Hours" },
-      { group_name: "Select All", item_id: MapFilterOption.EIGHT_PLUS_HOURS, item_text: ">8 Hours" },
-      { group_name: "Select All", item_id: MapFilterOption.NO_MESSAGE_DATA, item_text: "No Data" }
+      { group_name: "Select All", item_id: MapFilterOption.LESS_THAN_24_HOURS, item_text: "0-24 Hours" },
+      { group_name: "Select All", item_id: MapFilterOption.GREATER_THAN_24_HOURS, item_text: ">24 Hours" },
+      { group_name: "Select All", item_id: MapFilterOption.NO_MESSAGE_DATA, item_text: "No Data" },
+      { group_name: "Select All", item_id: MapFilterOption.LESS_THAN_24_HOURS_WITH_SUPPORT_TICKET, item_text: "Has Active Support Ticket" }
     ];
   }
 
@@ -322,11 +327,11 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
     if (this.filterMapByLastMessageAge) {
       this.setLastMessageAgeFilterOptionsDropdownList();
-      this.selectedFilterOptions = [MapFilterOption.TWO_HOURS, MapFilterOption.EIGHT_HOURS, MapFilterOption.EIGHT_PLUS_HOURS, MapFilterOption.NO_MESSAGE_DATA];
+      this.selectedFilterOptions = [MapFilterOption.LESS_THAN_24_HOURS, MapFilterOption.GREATER_THAN_24_HOURS, MapFilterOption.NO_MESSAGE_DATA, MapFilterOption.LESS_THAN_24_HOURS_WITH_SUPPORT_TICKET];
 
-      this.showZeroToTwo = true;
-      this.showTwoToEight = true;
-      this.showEightPlus = true;
+      this.showLessThan24Hours = true;
+      this.showLessThan24HoursWithSupportTicket = true;
+      this.showGreaterThan24Hours = true;
       this.showNoMessageData = true;
 
       this.showLessThan2500 = false;
@@ -338,9 +343,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
       this.setVoltageFilterOptionsDropdownList();
       this.selectedFilterOptions = [MapFilterOption.LESS_THAN_2500, MapFilterOption.FROM_2500_TO_2700, MapFilterOption.FROM_2700_TO_4000, MapFilterOption.GREATER_THAN_4000, MapFilterOption.NO_VOLTAGE_DATA];
   
-      this.showZeroToTwo = false;
-      this.showTwoToEight = false;
-      this.showEightPlus = false;
+      this.showLessThan24Hours = false;
+      this.showLessThan24HoursWithSupportTicket = false;
+      this.showGreaterThan24Hours = false;
       this.showNoMessageData = false;
   
       this.showLessThan2500 = true;
@@ -375,9 +380,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   }
 
   private updateLastMessageAgeMapFilter() {
-    this.showZeroToTwo = this.selectedFilterOptions.includes(MapFilterOption.TWO_HOURS)
-    this.showTwoToEight = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_HOURS)
-    this.showEightPlus = this.selectedFilterOptions.includes(MapFilterOption.EIGHT_PLUS_HOURS)
+    this.showLessThan24Hours = this.selectedFilterOptions.includes(MapFilterOption.LESS_THAN_24_HOURS)
+    this.showLessThan24HoursWithSupportTicket = this.selectedFilterOptions.includes(MapFilterOption.LESS_THAN_24_HOURS_WITH_SUPPORT_TICKET)
+    this.showGreaterThan24Hours = this.selectedFilterOptions.includes(MapFilterOption.GREATER_THAN_24_HOURS)
     this.showNoMessageData = this.selectedFilterOptions.includes(MapFilterOption.NO_MESSAGE_DATA)
   }
 
@@ -459,9 +464,9 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 }
 
 enum MapFilterOption {
-  TWO_HOURS = 1,
-  EIGHT_HOURS = 2,
-  EIGHT_PLUS_HOURS = 3,
+  LESS_THAN_24_HOURS = 1,
+  LESS_THAN_24_HOURS_WITH_SUPPORT_TICKET = 2,
+  GREATER_THAN_24_HOURS = 3,
   NO_MESSAGE_DATA = 4,
 
   LESS_THAN_2500 = 5,

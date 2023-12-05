@@ -60,6 +60,8 @@ namespace Zybach.Models.DataTransferObjects
     {
         public List<SensorSimpleDto> Sensors { get; set; }
         public bool WellConnectedMeter { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 
     public class WellDetailDto : WellWithSensorSimpleDto

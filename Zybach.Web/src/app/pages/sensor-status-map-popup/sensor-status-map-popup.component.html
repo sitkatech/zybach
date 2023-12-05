@@ -12,7 +12,14 @@
     <span *ngIf="sensor.LastMessageAgeInHours != null; else notAvailable">{{ sensor.LastMessageAgeInHours }} hours</span><br />
     
     <label class="rowHeader">Last Voltage Reading:</label> 
-    <span *ngIf="sensor.LastVoltageReading != null; else notAvailable">{{ sensor.LastVoltageReading | number:"1.0-0" }} mV</span>
+    <span *ngIf="sensor.LastVoltageReading != null; else notAvailable">{{ sensor.LastVoltageReading | number:"1.0-0" }} mV</span><br />
+    
+    <ng-container *ngIf="sensor.MostRecentSupportTicketID && sensor.MostRecentSupportTicketTitle">
+        <label class="rowHeader">Active Support Ticket:</label> 
+        <span *ngIf="sensor.LastVoltageReading != null; else notAvailable">
+            <a routerLink="/support-tickets/{{sensor.MostRecentSupportTicketID}}">{{ sensor.MostRecentSupportTicketTitle }}</a>
+        </span>
+    </ng-container>
 </div>
 
 <ng-template #notAvailable>N/A</ng-template>
