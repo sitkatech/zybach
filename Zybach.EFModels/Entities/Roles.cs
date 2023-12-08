@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Zybach.Models.DataTransferObjects;
-using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class Role
+    public class Roles
     {
         public static IEnumerable<RoleDto> List(ZybachDbContext dbContext)
         {

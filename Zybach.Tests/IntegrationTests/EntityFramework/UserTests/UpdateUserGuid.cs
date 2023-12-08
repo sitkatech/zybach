@@ -13,7 +13,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         public void CanUpdateUserGuid()
         {
             var updatedUserGuid = Guid.NewGuid();
-            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, Guid, UserDto>(User.UpdateUserGuid), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID, updatedUserGuid);
+            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, Guid, UserDto>(Users.UpdateUserGuid), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID, updatedUserGuid);
             Assert.AreEqual(updatedUserGuid, updatedUser.UserGuid);
             Assert.IsNotNull(updatedUser.UpdateDate);
         }

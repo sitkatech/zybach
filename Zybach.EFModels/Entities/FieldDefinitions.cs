@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using Zybach.Models.DataTransferObjects;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class FieldDefinition
+    public class FieldDefinitions
     {
         public static List<FieldDefinitionDto> List(ZybachDbContext dbContext)
         {

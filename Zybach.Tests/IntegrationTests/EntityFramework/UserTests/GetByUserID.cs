@@ -14,7 +14,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanGetUserByID()
         {
-            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserDto>(User.GetByUserID), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID);
+            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserDto>(Users.GetByUserID), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID);
             UserTestHelper.AssertUserDtosAreEqualAndNotNull(NewUser, user);
         }
 
@@ -37,7 +37,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanNotGetUserByIDWithBogusID()
         {
-            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserDto>(User.GetByUserID), Lap, TestResults, true, AssemblySteps.DbContext, -100);
+            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserDto>(Users.GetByUserID), Lap, TestResults, true, AssemblySteps.DbContext, -100);
             Assert.IsNull(user);
         }
 
@@ -49,7 +49,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
                 NewUser.UserID
             };
 
-            var users = MethodHelper.ProfileMethod<List<UserDto>>(new Func<ZybachDbContext, List<int>, List<UserDto>>(User.GetByUserID), Lap, TestResults, true, AssemblySteps.DbContext, userIDs);
+            var users = MethodHelper.ProfileMethod<List<UserDto>>(new Func<ZybachDbContext, List<int>, List<UserDto>>(Users.GetByUserID), Lap, TestResults, true, AssemblySteps.DbContext, userIDs);
             Assert.AreEqual(userIDs.Count, users.Count);
             UserTestHelper.AssertUserDtosAreEqualAndNotNull(NewUser, users.First());
         }

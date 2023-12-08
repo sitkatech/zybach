@@ -18,7 +18,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.CustomRichTextTests
                 CustomRichTextContent = "<p>updated</p>"
             };
 
-            var customRichText = MethodHelper.ProfileMethod<CustomRichTextDto>(new Func<ZybachDbContext, int, CustomRichTextDto, CustomRichTextDto>(CustomRichText.UpdateCustomRichText), Lap, TestResults, true, AssemblySteps.DbContext, customRichTextTypeID, updatedCustomRichText);
+            var customRichText = MethodHelper.ProfileMethod<CustomRichTextDto>(new Func<ZybachDbContext, int, CustomRichTextDto, CustomRichTextDto>(CustomRichTexts.UpdateCustomRichText), Lap, TestResults, true, AssemblySteps.DbContext, customRichTextTypeID, updatedCustomRichText);
 
             Assert.IsNotNull(customRichText);
             Assert.AreEqual(customRichText.CustomRichTextContent, updatedCustomRichText.CustomRichTextContent);

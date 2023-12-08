@@ -12,7 +12,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanSetDisclaimerAcknowledgedDate()
         {
-            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserDto>(User.SetDisclaimerAcknowledgedDate), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID);
+            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserDto>(Users.SetDisclaimerAcknowledgedDate), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID);
             Assert.IsNotNull(updatedUser.UpdateDate);
         }
 

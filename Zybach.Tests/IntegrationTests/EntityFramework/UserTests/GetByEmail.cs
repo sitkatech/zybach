@@ -12,7 +12,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanGetUserByEmail()
         {
-            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, string, UserDto>(User.GetByEmail), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.Email);
+            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, string, UserDto>(Users.GetByEmail), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.Email);
             UserTestHelper.AssertUserDtosAreEqualAndNotNull(NewUser, user);
         }
 
@@ -35,7 +35,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanNotGetUserByEmailWithBogusEmail()
         {
-            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, string, UserDto>(User.GetByEmail), Lap, TestResults, true, AssemblySteps.DbContext, Guid.NewGuid().ToString());
+            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, string, UserDto>(Users.GetByEmail), Lap, TestResults, true, AssemblySteps.DbContext, Guid.NewGuid().ToString());
             Assert.IsNull(user);
         }
     }

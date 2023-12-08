@@ -48,7 +48,7 @@ namespace Zybach.API.Controllers
             var years = Enumerable.Range(2019, currentYear - 2019 + 1);
 
             // Step 1. Get a mapping from SFZs to Wells
-            var streamFlowZoneWellMap = StreamFlowZone.ListStreamFlowZonesAndWellsWithinZone(_dbContext);
+            var streamFlowZoneWellMap = StreamFlowZones.ListStreamFlowZonesAndWellsWithinZone(_dbContext);
             var annualStreamFlowZonePumpingDepths = new List<AnnualStreamFlowZonePumpingDepthDto>();
             foreach (var year in years)
             {

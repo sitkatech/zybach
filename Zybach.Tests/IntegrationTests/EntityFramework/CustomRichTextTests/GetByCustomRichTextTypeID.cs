@@ -16,7 +16,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.CustomRichTextTests
         public void CanGetByCustomRichTextTypeID()
         {
             var customRichTextTypeID = 1; //(int)CustomRichTextType.CustomRichTextTypeEnum.Homepage; //MK 1/4/2022 - Not sure why the enum doesn't exist here but does in Longbeach... Magic number to move on, 1 should be inserted via lookup scripts.
-            var customRichText = MethodHelper.ProfileMethod<CustomRichTextDto>(new Func<ZybachDbContext, int, CustomRichTextDto>((dbContext, customRichTextTypeID1) => CustomRichText.GetByCustomRichTextTypeID(dbContext, customRichTextTypeID1)), Lap, TestResults, true, AssemblySteps.DbContext, customRichTextTypeID);
+            var customRichText = MethodHelper.ProfileMethod<CustomRichTextDto>(new Func<ZybachDbContext, int, CustomRichTextDto>((dbContext, customRichTextTypeID1) => CustomRichTexts.GetByCustomRichTextTypeID(dbContext, customRichTextTypeID1)), Lap, TestResults, true, AssemblySteps.DbContext, customRichTextTypeID);
 
             Assert.IsNotNull(customRichText);
         }
@@ -40,7 +40,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.CustomRichTextTests
         [TestMethod]
         public void CanNotGetByCustomRichTextTypeIDWithBogusID()
         {
-            var customRichText = MethodHelper.ProfileMethod<CustomRichTextDto>(new Func<ZybachDbContext, int, CustomRichTextDto>((dbContext, customRichTextTypeID) => CustomRichText.GetByCustomRichTextTypeID(dbContext, customRichTextTypeID)), Lap, TestResults, true, AssemblySteps.DbContext, -100);
+            var customRichText = MethodHelper.ProfileMethod<CustomRichTextDto>(new Func<ZybachDbContext, int, CustomRichTextDto>((dbContext, customRichTextTypeID) => CustomRichTexts.GetByCustomRichTextTypeID(dbContext, customRichTextTypeID)), Lap, TestResults, true, AssemblySteps.DbContext, -100);
             Assert.IsNull(customRichText);
         }
     }

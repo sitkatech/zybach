@@ -17,7 +17,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
             var upsertDto = UserTestHelper.GetTestUserUpsertDto();
             var guid = Guid.NewGuid();
             var loginName = "Test User";
-            var newUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, UserUpsertDto, string, Guid, UserDto>(User.CreateNewUser), Lap, TestResults, true, AssemblySteps.DbContext, upsertDto, loginName, guid);
+            var newUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, UserUpsertDto, string, Guid, UserDto>(Users.CreateNewUser), Lap, TestResults, true, AssemblySteps.DbContext, upsertDto, loginName, guid);
             UserTestHelper.AssertUserDtosAreEqualAndNotNull(upsertDto, newUser);
             UsersToCleanUp.Add(newUser);
         }
@@ -44,7 +44,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
             var upsertDto = UserTestHelper.GetTestUserUpsertDto(null);
             var guid = Guid.NewGuid();
             var loginName = "Test User";
-            var newUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, UserUpsertDto, string, Guid, UserDto>(User.CreateNewUser), Lap, TestResults, true, AssemblySteps.DbContext, upsertDto, loginName, guid);
+            var newUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, UserUpsertDto, string, Guid, UserDto>(Users.CreateNewUser), Lap, TestResults, true, AssemblySteps.DbContext, upsertDto, loginName, guid);
             Assert.IsNull(newUser);
         }
     }

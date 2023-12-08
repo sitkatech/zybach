@@ -22,7 +22,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanGetEmailAddressesForAdminsThatReceiveSupportEmails()
         {
-            var emails = MethodHelper.ProfileMethod<IEnumerable<string>>(new Func<ZybachDbContext, IEnumerable<string>>(User.GetEmailAddressesForAdminsThatReceiveSupportEmails), Lap, TestResults, true, AssemblySteps.DbContext);
+            var emails = MethodHelper.ProfileMethod<IEnumerable<string>>(new Func<ZybachDbContext, IEnumerable<string>>(Users.GetEmailAddressesForAdminsThatReceiveSupportEmails), Lap, TestResults, true, AssemblySteps.DbContext);
             Assert.IsNotNull(emails);
             Assert.AreEqual(_emailCount, emails.Count());
         }

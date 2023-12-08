@@ -2,11 +2,11 @@
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class FileResourceMimeType
+    public class FileResourceMimeTypes
     {
         public static FileResourceMimeType GetFileResourceMimeTypeByContentTypeName(ZybachDbContext dbContext, string contentTypeName)
         {
-            return All.Single(x => x.FileResourceMimeTypeContentTypeName == contentTypeName);
+            return FileResourceMimeType.All.Single(x => x.FileResourceMimeTypeContentTypeName == contentTypeName);
         }
     }
 }

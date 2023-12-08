@@ -5,7 +5,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class StreamFlowZone
+    public class StreamFlowZones
     {
         public static List<StreamFlowZoneDto> List(ZybachDbContext dbContext)
         {

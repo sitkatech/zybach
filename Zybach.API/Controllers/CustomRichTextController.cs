@@ -18,7 +18,7 @@ namespace Zybach.API.Controllers
         [HttpGet("/customRichText/{customRichTextTypeID}")]
         public ActionResult<CustomRichTextDto> GetCustomRichText([FromRoute] int customRichTextTypeID)
         {
-            var customRichTextDto = CustomRichText.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);
+            var customRichTextDto = CustomRichTexts.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);
             return RequireNotNullThrowNotFound(customRichTextDto, "CustomRichText", customRichTextTypeID);
         }
 
@@ -26,7 +26,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<CustomRichTextDto> UpdateCustomRichText([FromRoute] int customRichTextTypeID, [FromBody] CustomRichTextDto customRichTextUpdateDto)
         {
-            var customRichTextDto = CustomRichText.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);
+            var customRichTextDto = CustomRichTexts.GetByCustomRichTextTypeID(_dbContext, customRichTextTypeID);
             if (ThrowNotFound(customRichTextDto, "CustomRichText", customRichTextTypeID, out var actionResult))
             {
                 return actionResult;
@@ -38,7 +38,7 @@ namespace Zybach.API.Controllers
             }
 
             var updatedCustomRichTextDto =
-                CustomRichText.UpdateCustomRichText(_dbContext, customRichTextTypeID, customRichTextUpdateDto);
+                CustomRichTexts.UpdateCustomRichText(_dbContext, customRichTextTypeID, customRichTextUpdateDto);
             return Ok(updatedCustomRichTextDto);
         }
     }

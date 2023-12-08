@@ -23,7 +23,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanGetList()
         {
-            var users = MethodHelper.ProfileMethod<IEnumerable<UserDto>>(new Func<ZybachDbContext, IEnumerable<UserDto>>(User.List), Lap, TestResults, true, AssemblySteps.DbContext).ToList();
+            var users = MethodHelper.ProfileMethod<IEnumerable<UserDto>>(new Func<ZybachDbContext, IEnumerable<UserDto>>(Users.List), Lap, TestResults, true, AssemblySteps.DbContext).ToList();
             Assert.IsNotNull(users);
             Assert.AreEqual(_userCount, users.Count);
         }

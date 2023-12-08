@@ -32,7 +32,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
             var newUserDto = UserTestHelper.GetTestUserUpsertDto();
             var testUserGuid = Guid.NewGuid();
             var testUserLoginName = "Test User";
-            _newUser = User.CreateNewUser(AssemblySteps.DbContext, newUserDto, testUserLoginName, testUserGuid);
+            _newUser = Users.CreateNewUser(AssemblySteps.DbContext, newUserDto, testUserLoginName, testUserGuid);
             UserTestHelper.AssertUserDtosAreEqualAndNotNull(newUserDto, _newUser);
             UsersToCleanUp.Add(_newUser);
         }

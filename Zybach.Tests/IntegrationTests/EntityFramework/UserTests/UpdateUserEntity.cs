@@ -19,7 +19,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
                 ReceiveSupportEmails = false
             };
 
-            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserUpsertDto, UserDto>(User.UpdateUserEntity), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID, userUpdateDto);
+            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserUpsertDto, UserDto>(Users.UpdateUserEntity), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID, userUpdateDto);
             Assert.AreEqual(userUpdateDto.RoleID, updatedUser.Role.RoleID);
             Assert.AreEqual(userUpdateDto.ReceiveSupportEmails, updatedUser.ReceiveSupportEmails);
             Assert.IsNotNull(updatedUser.UpdateDate);
@@ -49,7 +49,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
                 ReceiveSupportEmails = false
             };
 
-            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserUpsertDto, UserDto>(User.UpdateUserEntity), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID, userUpdateDto);
+            var updatedUser = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, int, UserUpsertDto, UserDto>(Users.UpdateUserEntity), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserID, userUpdateDto);
             Assert.IsNull(updatedUser);
         }
     }

@@ -12,7 +12,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanGetUserByUserGuid()
         {
-            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, Guid, UserDto>(User.GetByUserGuid), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserGuid.GetValueOrDefault());
+            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, Guid, UserDto>(Users.GetByUserGuid), Lap, TestResults, true, AssemblySteps.DbContext, NewUser.UserGuid.GetValueOrDefault());
             UserTestHelper.AssertUserDtosAreEqualAndNotNull(NewUser, user);
         }
 
@@ -35,7 +35,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
         [TestMethod]
         public void CanNotGetUserByUserGuidWithUserGuid()
         {
-            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, Guid, UserDto>(User.GetByUserGuid), Lap, TestResults, true, AssemblySteps.DbContext, Guid.NewGuid());
+            var user = MethodHelper.ProfileMethod<UserDto>(new Func<ZybachDbContext, Guid, UserDto>(Users.GetByUserGuid), Lap, TestResults, true, AssemblySteps.DbContext, Guid.NewGuid());
             Assert.IsNull(user);
         }
     }

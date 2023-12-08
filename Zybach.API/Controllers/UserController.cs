@@ -29,7 +29,7 @@ namespace Zybach.API.Controllers
         {
             if (inviteDto.RoleID.HasValue)
             {
-                var role = Role.GetByRoleID(_dbContext, inviteDto.RoleID.Value);
+                var role = Roles.GetByRoleID(_dbContext, inviteDto.RoleID.Value);
                 if (role == null)
                 {
                     return BadRequest($"Could not find a Role with the ID {inviteDto.RoleID}");
@@ -74,10 +74,10 @@ namespace Zybach.API.Controllers
             }
 
             var keystoneUser = response.Payload.Claims;
-            var existingUser = EFModels.Entities.User.GetByEmail(_dbContext, inviteDto.Email);
+            var existingUser = Users.GetByEmail(_dbContext, inviteDto.Email);
             if (existingUser != null)
             {
-                existingUser = EFModels.Entities.User.UpdateUserGuid(_dbContext, existingUser.UserID, keystoneUser.UserGuid);
+                existingUser = Users.UpdateUserGuid(_dbContext, existingUser.UserID, keystoneUser.UserGuid);
                 return Ok(existingUser);
             }
 
@@ -91,7 +91,7 @@ namespace Zybach.API.Controllers
                 RoleID = inviteDto.RoleID.Value
             };
 
-            var user = EFModels.Entities.User.CreateNewUser(_dbContext, newUser, keystoneUser.LoginName,
+            var user = Users.CreateNewUser(_dbContext, newUser, keystoneUser.LoginName,
                 keystoneUser.UserGuid);
             return Ok(user);
         }
@@ -106,19 +106,19 @@ namespace Zybach.API.Controllers
                 return BadRequest();
             }
 
-            var validationMessages = EFModels.Entities.User.ValidateCreateUnassignedUser(_dbContext, userCreateDto);
+            var validationMessages = Users.ValidateCreateUnassignedUser(_dbContext, userCreateDto);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var user = EFModels.Entities.User.CreateUnassignedUser(_dbContext, userCreateDto);
+            var user = Users.CreateUnassignedUser(_dbContext, userCreateDto);
 
             var smtpClient = HttpContext.RequestServices.GetRequiredService<SitkaSmtpClientService>();
             var mailMessage = GenerateUserCreatedEmail(_zybachConfiguration.WEB_URL, user, _dbContext, smtpClient);
             SitkaSmtpClientService.AddCcRecipientsToEmail(mailMessage,
-                        EFModels.Entities.User.GetEmailAddressesForAdminsThatReceiveSupportEmails(_dbContext));
+                        Users.GetEmailAddressesForAdminsThatReceiveSupportEmails(_dbContext));
             await SendEmailMessage(smtpClient, mailMessage);
 
             return Ok(user);
@@ -128,7 +128,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<UserDto>> List()
         {
-            var userDtos = EFModels.Entities.User.List(_dbContext);
+            var userDtos = Users.List(_dbContext);
             return Ok(userDtos);
         }
 
@@ -136,7 +136,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<IEnumerable<UserDto>> ListActiveUsers()
         {
-            var userDtos = EFModels.Entities.User.ListWithoutUnassignedAndDisabled(_dbContext);
+            var userDtos = Users.ListWithoutUnassignedAndDisabled(_dbContext);
             return Ok(userDtos);
         }
 
@@ -153,7 +153,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<UserSimpleDto>> GetUsersWhoPerformChemigationInspections()
         {
-            var userSimpleDtos = EFModels.Entities.User.ListUsersWhoPerformChemigationInspections(_dbContext);
+            var userSimpleDtos = Users.ListUsersWhoPerformChemigationInspections(_dbContext);
             return Ok(userSimpleDtos);
         }
 
@@ -161,7 +161,7 @@ namespace Zybach.API.Controllers
         [UserViewFeature]
         public ActionResult<UserDto> GetByUserID([FromRoute] int userID)
         {
-            var userDto = EFModels.Entities.User.GetByUserID(_dbContext, userID);
+            var userDto = Users.GetByUserID(_dbContext, userID);
             return RequireNotNullThrowNotFound(userDto, "User", userID);
         }
 
@@ -174,7 +174,7 @@ namespace Zybach.API.Controllers
                 return BadRequest();
             }
 
-            var userDto = EFModels.Entities.User.GetByUserGuid(_dbContext, globalIDAsGuid);
+            var userDto = Users.GetByUserGuid(_dbContext, globalIDAsGuid);
             if (userDto == null)
             {
                 var notFoundMessage = $"User with GUID {globalIDAsGuid} does not exist!";
@@ -189,14 +189,13 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<UserDto> UpdateUser([FromRoute] int userID, [FromBody] UserUpsertDto userUpsertDto)
         {
-            var userDto = EFModels.Entities.User.GetByUserID(_dbContext, userID);
+            var userDto = Users.GetByUserID(_dbContext, userID);
             if (ThrowNotFound(userDto, "User", userID, out var actionResult))
             {
                 return actionResult;
             }
 
-            var validationMessages =
-                Zybach.EFModels.Entities.User.ValidateUpdate(_dbContext, userUpsertDto, userDto.UserID);
+            var validationMessages = Users.ValidateUpdate(_dbContext, userUpsertDto, userDto.UserID);
             validationMessages.ForEach(vm => { ModelState.AddModelError(vm.Type, vm.Message); });
 
             if (!ModelState.IsValid)
@@ -204,26 +203,26 @@ namespace Zybach.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var role = Role.GetByRoleID(_dbContext, userUpsertDto.RoleID.GetValueOrDefault());
+            var role = Roles.GetByRoleID(_dbContext, userUpsertDto.RoleID.GetValueOrDefault());
             if (role == null)
             {
                 return BadRequest($"Could not find a System Role with the ID {userUpsertDto.RoleID}");
             }
 
-            var updatedUserDto = Zybach.EFModels.Entities.User.UpdateUserEntity(_dbContext, userID, userUpsertDto);
+            var updatedUserDto = Users.UpdateUserEntity(_dbContext, userID, userUpsertDto);
             return Ok(updatedUserDto);
         }
 
         [HttpPut("/users/set-disclaimer-acknowledged-date")]
         public ActionResult<UserDto> SetDisclaimerAcknowledgedDate([FromBody] int userID)
         {
-            var userDto = EFModels.Entities.User.GetByUserID(_dbContext, userID);
+            var userDto = Users.GetByUserID(_dbContext, userID);
             if (ThrowNotFound(userDto, "User", userID, out var actionResult))
             {
                 return actionResult;
             }
 
-            var updatedUserDto = Zybach.EFModels.Entities.User.SetDisclaimerAcknowledgedDate(_dbContext, userID);
+            var updatedUserDto = Users.SetDisclaimerAcknowledgedDate(_dbContext, userID);
             return Ok(updatedUserDto);
         }
 

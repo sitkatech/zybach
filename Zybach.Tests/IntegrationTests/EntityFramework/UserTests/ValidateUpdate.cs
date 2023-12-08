@@ -21,7 +21,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
                 ReceiveSupportEmails = false
             };
 
-            var validation = MethodHelper.ProfileMethod<List<ErrorMessage>>(new Func<ZybachDbContext, UserUpsertDto, int, List<ErrorMessage>>(User.ValidateUpdate), Lap, TestResults, true, AssemblySteps.DbContext, userUpdateDto, NewUser.UserID);
+            var validation = MethodHelper.ProfileMethod<List<ErrorMessage>>(new Func<ZybachDbContext, UserUpsertDto, int, List<ErrorMessage>>(Users.ValidateUpdate), Lap, TestResults, true, AssemblySteps.DbContext, userUpdateDto, NewUser.UserID);
             Assert.AreEqual(0, validation.Count);
         }
 
@@ -49,7 +49,7 @@ namespace Zybach.Tests.IntegrationTests.EntityFramework.UserTests
                 ReceiveSupportEmails = false
             };
 
-            var validation = MethodHelper.ProfileMethod<List<ErrorMessage>>(new Func<ZybachDbContext, UserUpsertDto, int, List<ErrorMessage>>(User.ValidateUpdate), Lap, TestResults, true, AssemblySteps.DbContext, userUpdateDto, NewUser.UserID);
+            var validation = MethodHelper.ProfileMethod<List<ErrorMessage>>(new Func<ZybachDbContext, UserUpsertDto, int, List<ErrorMessage>>(Users.ValidateUpdate), Lap, TestResults, true, AssemblySteps.DbContext, userUpdateDto, NewUser.UserID);
             var errorTypes = validation.Select(x => x.Type);
             Assert.IsTrue(errorTypes.Contains("Role ID"));
         }

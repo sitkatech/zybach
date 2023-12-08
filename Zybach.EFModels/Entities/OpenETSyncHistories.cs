@@ -7,7 +7,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class OpenETSyncHistory
+    public class OpenETSyncHistories
     {
         public static OpenETSyncHistory CreateNew(ZybachDbContext dbContext, int year, int month, int openETDataTypeID)
         {
