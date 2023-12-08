@@ -20,9 +20,9 @@ namespace Zybach.Models.DataTransferObjects
     public partial class ChemigationPermitAnnualRecordChemicalFormulationSimpleDto
     {
         public int ChemigationPermitAnnualRecordChemicalFormulationID { get; set; }
-        public int ChemigationPermitAnnualRecordID { get; set; }
-        public int ChemicalFormulationID { get; set; }
-        public int ChemicalUnitID { get; set; }
+        public System.Int32 ChemigationPermitAnnualRecordID { get; set; }
+        public System.Int32 ChemicalFormulationID { get; set; }
+        public System.Int32 ChemicalUnitID { get; set; }
         public decimal? TotalApplied { get; set; }
         public decimal AcresTreated { get; set; }
     }

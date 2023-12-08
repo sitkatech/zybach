@@ -35,7 +35,7 @@ namespace Zybach.Models.DataTransferObjects
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public int RoleID { get; set; }
+        public System.Int32 RoleID { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
         public DateTime? LastActivityDate { get; set; }

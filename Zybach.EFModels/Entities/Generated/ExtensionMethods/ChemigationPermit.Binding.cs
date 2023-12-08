@@ -6,7 +6,13 @@ namespace Zybach.EFModels.Entities
 {
     public partial class ChemigationPermit
     {
+        public int PrimaryKey => ChemigationPermitID;
         public ChemigationPermitStatus ChemigationPermitStatus => ChemigationPermitStatus.AllLookupDictionary[ChemigationPermitStatusID];
         public County County => County.AllLookupDictionary[CountyID];
+
+        public static class FieldLengths
+        {
+
+        }
     }
 }

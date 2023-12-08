@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class WellUse
+    public abstract partial class WellUse : IHavePrimaryKey
     {
         public static readonly WellUseIrrigation Irrigation = Zybach.EFModels.Entities.WellUseIrrigation.Instance;
         public static readonly WellUsePublicSupply PublicSupply = Zybach.EFModels.Entities.WellUsePublicSupply.Instance;

@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class SupportTicketStatus
+    public abstract partial class SupportTicketStatus : IHavePrimaryKey
     {
         public static readonly SupportTicketStatusOpen Open = Zybach.EFModels.Entities.SupportTicketStatusOpen.Instance;
         public static readonly SupportTicketStatusInProgress InProgress = Zybach.EFModels.Entities.SupportTicketStatusInProgress.Instance;

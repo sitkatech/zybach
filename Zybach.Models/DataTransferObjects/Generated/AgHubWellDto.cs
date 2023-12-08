@@ -27,7 +27,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class AgHubWellSimpleDto
     {
         public int AgHubWellID { get; set; }
-        public int WellID { get; set; }
+        public System.Int32 WellID { get; set; }
         public int? WellTPNRDPumpRate { get; set; }
         public DateTime? TPNRDPumpRateUpdated { get; set; }
         public bool WellConnectedMeter { get; set; }
@@ -38,7 +38,7 @@ namespace Zybach.Models.DataTransferObjects
         public DateTime? RegisteredUpdated { get; set; }
         public string AgHubRegisteredUser { get; set; }
         public string FieldName { get; set; }
-        public int? AgHubIrrigationUnitID { get; set; }
+        public System.Int32? AgHubIrrigationUnitID { get; set; }
     }
 
 }

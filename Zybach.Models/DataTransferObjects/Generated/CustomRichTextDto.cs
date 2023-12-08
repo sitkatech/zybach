@@ -17,7 +17,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class CustomRichTextSimpleDto
     {
         public int CustomRichTextID { get; set; }
-        public int CustomRichTextTypeID { get; set; }
+        public System.Int32 CustomRichTextTypeID { get; set; }
         public string CustomRichTextContent { get; set; }
     }
 

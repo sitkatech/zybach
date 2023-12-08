@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class SensorType
+    public abstract partial class SensorType : IHavePrimaryKey
     {
         public static readonly SensorTypeFlowMeter FlowMeter = Zybach.EFModels.Entities.SensorTypeFlowMeter.Instance;
         public static readonly SensorTypeContinuityMeter ContinuityMeter = Zybach.EFModels.Entities.SensorTypeContinuityMeter.Instance;

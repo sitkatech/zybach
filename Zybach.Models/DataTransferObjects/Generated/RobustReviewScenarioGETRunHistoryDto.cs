@@ -23,7 +23,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class RobustReviewScenarioGETRunHistorySimpleDto
     {
         public int RobustReviewScenarioGETRunHistoryID { get; set; }
-        public int CreateByUserID { get; set; }
+        public System.Int32 CreateByUserID { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
         public int? GETRunID { get; set; }

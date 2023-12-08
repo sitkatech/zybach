@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ChemigationPermitStatus
+    public abstract partial class ChemigationPermitStatus : IHavePrimaryKey
     {
         public static readonly ChemigationPermitStatusActive Active = Zybach.EFModels.Entities.ChemigationPermitStatusActive.Instance;
         public static readonly ChemigationPermitStatusInactive Inactive = Zybach.EFModels.Entities.ChemigationPermitStatusInactive.Instance;

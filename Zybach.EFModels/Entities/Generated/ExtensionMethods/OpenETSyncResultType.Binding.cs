@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class OpenETSyncResultType
+    public abstract partial class OpenETSyncResultType : IHavePrimaryKey
     {
         public static readonly OpenETSyncResultTypeInProgress InProgress = Zybach.EFModels.Entities.OpenETSyncResultTypeInProgress.Instance;
         public static readonly OpenETSyncResultTypeSucceeded Succeeded = Zybach.EFModels.Entities.OpenETSyncResultTypeSucceeded.Instance;

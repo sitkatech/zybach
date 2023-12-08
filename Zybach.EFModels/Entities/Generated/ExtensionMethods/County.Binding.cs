@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class County
+    public abstract partial class County : IHavePrimaryKey
     {
         public static readonly CountyArthur Arthur = Zybach.EFModels.Entities.CountyArthur.Instance;
         public static readonly CountyKeith Keith = Zybach.EFModels.Entities.CountyKeith.Instance;

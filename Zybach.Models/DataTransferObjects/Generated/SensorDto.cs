@@ -27,14 +27,14 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int SensorID { get; set; }
         public string SensorName { get; set; }
-        public int SensorTypeID { get; set; }
-        public int? WellID { get; set; }
+        public System.Int32 SensorTypeID { get; set; }
+        public System.Int32? WellID { get; set; }
         public bool InGeoOptix { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public bool IsActive { get; set; }
         public DateTime? RetirementDate { get; set; }
-        public int? ContinuityMeterStatusID { get; set; }
+        public System.Int32? ContinuityMeterStatusID { get; set; }
         public DateTime? ContinuityMeterStatusLastUpdated { get; set; }
         public DateTime? SnoozeStartDate { get; set; }
     }

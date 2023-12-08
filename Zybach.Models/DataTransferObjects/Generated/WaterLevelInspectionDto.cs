@@ -42,9 +42,9 @@ namespace Zybach.Models.DataTransferObjects
     public partial class WaterLevelInspectionSimpleDto
     {
         public int WaterLevelInspectionID { get; set; }
-        public int WellID { get; set; }
+        public System.Int32 WellID { get; set; }
         public DateTime InspectionDate { get; set; }
-        public int InspectorUserID { get; set; }
+        public System.Int32 InspectorUserID { get; set; }
         public string WaterLevelInspectionStatus { get; set; }
         public string MeasuringEquipment { get; set; }
         public string Crop { get; set; }
@@ -66,7 +66,7 @@ namespace Zybach.Models.DataTransferObjects
         public decimal? Measurement { get; set; }
         public bool? IsPrimary { get; set; }
         public decimal? WaterLevel { get; set; }
-        public int? CropTypeID { get; set; }
+        public System.Int32? CropTypeID { get; set; }
         public string InspectionNotes { get; set; }
         public string InspectionNickname { get; set; }
     }

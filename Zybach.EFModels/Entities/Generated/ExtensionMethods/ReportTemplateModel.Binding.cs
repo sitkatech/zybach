@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ReportTemplateModel
+    public abstract partial class ReportTemplateModel : IHavePrimaryKey
     {
         public static readonly ReportTemplateModelChemigationPermit ChemigationPermit = Zybach.EFModels.Entities.ReportTemplateModelChemigationPermit.Instance;
         public static readonly ReportTemplateModelWellWaterQualityInspection WellWaterQualityInspection = Zybach.EFModels.Entities.ReportTemplateModelWellWaterQualityInspection.Instance;

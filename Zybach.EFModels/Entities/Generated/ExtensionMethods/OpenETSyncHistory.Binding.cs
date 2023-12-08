@@ -6,7 +6,13 @@ namespace Zybach.EFModels.Entities
 {
     public partial class OpenETSyncHistory
     {
+        public int PrimaryKey => OpenETSyncHistoryID;
         public OpenETSyncResultType OpenETSyncResultType => OpenETSyncResultType.AllLookupDictionary[OpenETSyncResultTypeID];
         public OpenETDataType OpenETDataType => OpenETDataTypeID.HasValue ? OpenETDataType.AllLookupDictionary[OpenETDataTypeID.Value] : null;
+
+        public static class FieldLengths
+        {
+            public const int GoogleBucketFileRetrievalURL = 200;
+        }
     }
 }

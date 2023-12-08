@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class WaterQualityInspectionType
+    public abstract partial class WaterQualityInspectionType : IHavePrimaryKey
     {
         public static readonly WaterQualityInspectionTypeFullPanel FullPanel = Zybach.EFModels.Entities.WaterQualityInspectionTypeFullPanel.Instance;
         public static readonly WaterQualityInspectionTypeNitratesOnly NitratesOnly = Zybach.EFModels.Entities.WaterQualityInspectionTypeNitratesOnly.Instance;

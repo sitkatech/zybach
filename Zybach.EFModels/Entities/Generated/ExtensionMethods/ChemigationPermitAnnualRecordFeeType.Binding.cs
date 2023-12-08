@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ChemigationPermitAnnualRecordFeeType
+    public abstract partial class ChemigationPermitAnnualRecordFeeType : IHavePrimaryKey
     {
         public static readonly ChemigationPermitAnnualRecordFeeTypeNew New = Zybach.EFModels.Entities.ChemigationPermitAnnualRecordFeeTypeNew.Instance;
         public static readonly ChemigationPermitAnnualRecordFeeTypeRenewal Renewal = Zybach.EFModels.Entities.ChemigationPermitAnnualRecordFeeTypeRenewal.Instance;
