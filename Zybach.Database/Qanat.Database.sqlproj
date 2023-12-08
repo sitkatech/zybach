@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Zybach.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{8851eb6a-bcea-42b4-83dd-125a1bcfaa52}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Zybach.Database</RootNamespace>
+    <AssemblyName>Zybach.Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\LookupTables" />
+    <Folder Include="Scripts\PreReleaseScripts" />
+    <Folder Include="Scripts\ReleaseScripts" />
+    <Folder Include="Scripts\Utility" />
+    <Folder Include="dbo\Procs" />
+    <Folder Include="dbo\Functions" />
+    <Folder Include="HangFire" />
+    <Folder Include="HangFire\Tables" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\dbo.CustomPage.sql" />
+    <Build Include="dbo\Tables\dbo.CustomPageRole.sql" />
+    <Build Include="dbo\Tables\dbo.CustomRichText.sql" />
+    <Build Include="dbo\Tables\dbo.CustomRichTextType.sql" />
+    <Build Include="dbo\Tables\dbo.DatabaseMigration.sql" />
+    <Build Include="dbo\Tables\dbo.FileResource.sql" />
+    <Build Include="dbo\Tables\dbo.MenuItem.sql" />
+    <Build Include="dbo\Tables\dbo.Role.sql" />
+    <Build Include="dbo\Tables\dbo.User.sql" />
+    <Build Include="dbo\User Defined Types\html.sql" />
+    <None Include="Scripts\LookupTables\Script.PostDeployment.LookupTables.sql" />
+    <None Include="Scripts\LookupTables\dbo.CustomRichTextType.sql" />
+    <None Include="Scripts\LookupTables\dbo.MenuItem.sql" />
+    <None Include="Scripts\LookupTables\dbo.Role.sql" />
+    <None Include="Scripts\PreReleaseScripts\Script.PreDeployment.ReleaseScripts.sql" />
+    <None Include="Scripts\ReleaseScripts\Script.PostDeployment.ReleaseScripts.sql" />
+    <None Include="Scripts\Utility\Script.PostDeployment.Utility.sql" />
+    <None Include="Scripts\ReleaseScripts\0001 - Initial data script.sql" />
+    <Build Include="dbo\Tables\dbo.Permission.sql" />
+    <Build Include="dbo\Tables\dbo.Flag.sql" />
+    <None Include="Scripts\LookupTables\dbo.Flag.sql" />
+    <None Include="Scripts\LookupTables\dbo.Permission.sql" />
+    <Build Include="dbo\Tables\dbo.Parcel.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelStatus.sql" />
+    <Build Include="dbo\Views\dbo.vGeoServerAllParcels.sql" />
+    <Build Include="dbo\Tables\dbo.Well.sql" />
+    <Build Include="dbo\Tables\dbo.WellStatus.sql" />
+    <Build Include="dbo\Tables\dbo.WellFileResource.sql" />
+    <Build Include="dbo\Tables\dbo.WellContact.sql" />
+    <Build Include="dbo\Tables\dbo.WellContactType.sql" />
+    <Build Include="dbo\Tables\dbo.State.sql" />
+    <None Include="Scripts\LookupTables\dbo.State.sql" />
+    <None Include="Scripts\LookupTables\dbo.WellContactType.sql" />
+    <Build Include="dbo\Tables\dbo.WaterAccount.sql" />
+    <Build Include="dbo\Tables\dbo.WaterAccountParcel.sql" />
+    <Build Include="dbo\Tables\dbo.WaterAccountReconciliation.sql" />
+    <Build Include="dbo\Tables\dbo.WaterAccountUser.sql" />
+    <Build Include="dbo\Tables\dbo.OpenETSyncHistory.sql" />
+    <Build Include="dbo\Tables\dbo.OpenETSyncResultType.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelLayerGDBCommonMappingToParcelStagingColumn.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelLedger.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelLedgerEntrySourceType.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelStaging.sql" />
+    <Build Include="dbo\Tables\dbo.TransactionType.sql" />
+    <Build Include="dbo\Tables\dbo.WaterType.sql" />
+    <Build Include="dbo\Tables\dbo.Geography.sql" />
+    <None Include="Scripts\LookupTables\dbo.OpenETSyncResultType.sql" />
+    <None Include="Scripts\LookupTables\dbo.ParcelLedgerEntrySourceType.sql" />
+    <None Include="Scripts\LookupTables\dbo.TransactionType.sql" />
+    <None Include="Scripts\ReleaseScripts\0002 - Create geographies.sql" />
+    <None Include="Scripts\ReleaseScripts\0005 - Add water accounts RTE.sql" />
+    <None Include="Scripts\ReleaseScripts\0006 - Import WaterType data.sql" />
+    <None Include="Scripts\ReleaseScripts\0007 - Add water transaction RTEs.sql" />
+    <Build Include="dbo\Tables\dbo.ContentType.sql" />
+    <None Include="Scripts\ReleaseScripts\0008 - Add platform field definitions.sql" />
+    <Build Include="dbo\Tables\dbo.UploadedGdb.sql" />
+    <None Include="Scripts\ReleaseScripts\0009 - Add update parcels field definitions.sql" />
+    <None Include="Scripts\ReleaseScripts\0011 - Add RTE for footers.sql" />
+    <Build Include="dbo\Procs\dbo.pParcelStagingMakeGeometryValid.sql" />
+    <Build Include="dbo\Procs\dbo.pParcelStagingTruncate.sql" />
+    <None Include="Scripts\ReleaseScripts\0012 - Add RTE for edit accounts and edit users.sql" />
+    <None Include="Scripts\ReleaseScripts\0013 - Update Accounts to include verification key codes and owner address.sql" />
+    <None Include="Scripts\ReleaseScripts\0014 - Drop VerificationKeys, UserVerificationKeys and UserParcels.sql" />
+    <Build Include="dbo\Tables\dbo.WaterAccountUserStaging.sql" />
+    <Build Include="dbo\Tables\dbo.GETAction.sql" />
+    <Build Include="dbo\Tables\dbo.GETActionStatus.sql" />
+    <None Include="Scripts\LookupTables\dbo.GETActionStatus.sql" />
+    <Build Include="dbo\Tables\dbo.ReportingPeriod.sql" />
+    <None Include="Scripts\ReleaseScripts\0015 - Add RTE for Water dashboard.sql" />
+    <None Include="Scripts\ReleaseScripts\0016 - Update row to ParcelLayerGDBCommonMappingToParcelStagingColumn.sql" />
+    <Build Include="dbo\Tables\dbo.GeographyRole.sql" />
+    <None Include="Scripts\LookupTables\dbo.GeographyRole.sql" />
+    <Build Include="dbo\Tables\dbo.GeographyUser.sql" />
+    <None Include="Scripts\ReleaseScripts\0017 - update geography regex patterns.sql" />
+    <None Include="Scripts\ReleaseScripts\0018 - update geography regex pattern for pajaro.sql" />
+    <Build Include="dbo\Procs\dbo.pParcelLedgerTotalWaterTypes.sql" />
+    <None Include="Scripts\ReleaseScripts\0019 - Add RTE for change parcel owner.sql" />
+    <Build Include="dbo\Tables\dbo.WaterAccountRole.sql" />
+    <None Include="Scripts\LookupTables\dbo.WaterAccountRole.sql" />
+    <None Include="Scripts\ReleaseScripts\0020 - example users.sql" />
+    <Build Include="dbo\Tables\dbo.OpenETDataType.sql" />
+    <None Include="Scripts\LookupTables\dbo.OpenETDataType.sql" />
+    <Build Include="dbo\Tables\dbo.OpenETSync.sql" />
+    <None Include="Scripts\ReleaseScripts\0021 - adding MIUGSA OpenET shape file.sql" />
+    <Build Include="dbo\Tables\dbo.WaterMeasurement.sql" />
+    <Build Include="dbo\Tables\dbo.UploadedWellGDB.sql" />
+    <Build Include="dbo\Tables\dbo.WellUploadGDBColumn.sql" />
+    <None Include="Scripts\ReleaseScripts\0022 - Add row to WellUploadGDBColumn.sql" />
+    <None Include="Scripts\ReleaseScripts\0023 - Add RTE for well bulk upload.sql" />
+    <None Include="Scripts\ReleaseScripts\0024 - update coordinate system for geography.sql" />
+    <Build Include="HangFire\Tables\HangFire.AggregatedCounter.sql" />
+    <Build Include="HangFire\Tables\HangFire.Counter.sql" />
+    <Build Include="HangFire\Tables\HangFire.Hash.sql" />
+    <Build Include="HangFire\Tables\HangFire.Job.sql" />
+    <Build Include="HangFire\Tables\HangFire.JobParameter.sql" />
+    <Build Include="HangFire\Tables\HangFire.JobQueue.sql" />
+    <Build Include="HangFire\Tables\HangFire.List.sql" />
+    <Build Include="HangFire\Tables\HangFire.Schema.sql" />
+    <Build Include="HangFire\Tables\HangFire.Server.sql" />
+    <Build Include="HangFire\Tables\HangFire.Set.sql" />
+    <Build Include="HangFire\Tables\HangFire.State.sql" />
+    <Build Include="HangFire\HangFire.sql" />
+    <None Include="Scripts\ReleaseScripts\0025 - Add RTE for wells grid.sql" />
+    <Build Include="dbo\Tables\dbo.Model.sql" />
+    <Build Include="dbo\Tables\dbo.Scenario.sql" />
+    <Build Include="dbo\Tables\dbo.ModelScenario.sql" />
+    <None Include="Scripts\LookupTables\dbo.Model.sql" />
+    <None Include="Scripts\LookupTables\dbo.Scenario.sql" />
+    <None Include="Scripts\ReleaseScripts\0026 - Add scenarios to models.sql" />
+    <Build Include="dbo\Tables\dbo.UnitType.sql" />
+    <None Include="Scripts\ReleaseScripts\0029 - Add RTE for wells index.sql" />
+    <Build Include="dbo\Tables\dbo.ExternalMapLayer.sql" />
+    <Build Include="dbo\Tables\dbo.ExternalMapLayerType.sql" />
+    <None Include="Scripts\LookupTables\dbo.ExternalMapLayerType.sql" />
+    <None Include="Scripts\ReleaseScripts\0031 - Add RTE for external map layer.sql" />
+    <None Include="Scripts\ReleaseScripts\0032 - Add MSGSA as new Geography.sql" />
+    <None Include="Scripts\ReleaseScripts\0033 - Add RTE for our geographies.sql" />
+    <None Include="Scripts\ReleaseScripts\0035 - Add RTE for OpenET.sql" />
+    <None Include="Scripts\ReleaseScripts\0034 - Add RTE for pop-up field.sql" />
+    <Build Include="dbo\Tables\dbo.WaterMeasurementType.sql" />
+    <None Include="Scripts\ReleaseScripts\0036 - Add RTE for Usage Estimates page.sql" />
+    <None Include="Scripts\ReleaseScripts\0037 - Add RTE for OpenET grid.sql" />
+    <None Include="Scripts\ReleaseScripts\0038 - Remove OpenET shapefile from MSGSA.sql" />
+    <None Include="Scripts\ReleaseScripts\0039 - Add RTE for Etimate Date.sql" />
+    <None Include="Scripts\ReleaseScripts\0040 - Change EDF to Demo.sql" />
+    <None Include="Scripts\ReleaseScripts\0041 - Concat Owner address together.sql" />
+    <None Include="Scripts\ReleaseScripts\0042 - adding an OpenET water use type.sql" />
+    <Build Include="dbo\Tables\dbo.Zone.sql" />
+    <Build Include="dbo\Tables\dbo.ZoneGroup.sql" />
+    <None Include="Scripts\ReleaseScripts\0043 - Add RTE for Zone Group Edit.sql" />
+    <None Include="Scripts\ReleaseScripts\0044 - Add RTE for Zone Group Configuration.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelZone.sql" />
+    <None Include="Scripts\ReleaseScripts\0045 - Add RTE for Zone Group CSV Uploader.sql" />
+    <None Include="Scripts\ReleaseScripts\0046 - Add RTE for Zone Group Index Page.sql" />
+    <Build Include="dbo\Views\dbo.vGeoServerZoneGroups.sql" />
+    <None Include="Scripts\ReleaseScripts\0047 - Adjust Zone Group Slug.sql" />
+    <None Include="Scripts\PreReleaseScripts\0002 - copy out zone groups.sql" />
+    <None Include="Scripts\PreReleaseScripts\0001 - store WaterAccount address in temp table.sql" />
+    <None Include="Scripts\ReleaseScripts\0048 - Add RTEs for home page.sql" />
+    <None Include="Scripts\ReleaseScripts\0049 - Add RTEs for Water Account Budget Report.sql" />
+    <None Include="Scripts\ReleaseScripts\0050 - Remove quarterly reporting period option.sql" />
+    <Build Include="dbo\Procs\dbo.pGeographyMonthlyUsageSummary.sql" />
+    <None Include="Scripts\ReleaseScripts\0055 - Set demo geography.sql" />
+    <None Include="Scripts\ReleaseScripts\0056 - Adjust EndDate for WaterAccountParcel.sql" />
+    <None Include="Scripts\ReleaseScripts\0057 - migrate contact information for water accounts.sql" />
+    <None Include="Scripts\ReleaseScripts\0058 - RTEs for Modals.sql" />
+    <None Include="Scripts\ReleaseScripts\0059 - demo water manager keycode.sql" />
+    <None Include="Scripts\ReleaseScripts\0060 - RTEs field definitions.sql" />
+    <None Include="Scripts\ReleaseScripts\0061 - Populate OwnerAddress in Parcels.sql" />
+    <Build Include="dbo\Tables\dbo.MonitoringWell.sql" />
+    <Build Include="dbo\Tables\dbo.MonitoringWellSourceType.sql" />
+    <None Include="Scripts\LookupTables\dbo.MonitoringWellSourceType.sql" />
+    <Build Include="dbo\Tables\dbo.MonitoringWellMeasurement.sql" />
+    <None Include="Scripts\ReleaseScripts\0064 - RTE for Monitoring Wells Grid.sql" />
+    <None Include="Scripts\ReleaseScripts\0065 - RTEs for Water Account Dashboard.sql" />
+    <Build Include="dbo\Procs\dbo.pMakeValidGeographyBoundaries.sql" />
+    <None Include="Scripts\ReleaseScripts\0066 - add colors to Geographies.sql" />
+    <Build Include="dbo\Views\dbo.vGeoServerCNRAMonitoringWells.sql" />
+    <None Include="Scripts\ReleaseScripts\0067 - update RTEs that are geography specific.sql" />
+    <None Include="Scripts\PreReleaseScripts\0003 - copy out tables related to allocation slugs.sql" />
+    <None Include="Scripts\ReleaseScripts\0068 - water type slugs.sql" />
+    <Build Include="dbo\Tables\dbo.AllocationPlanPeriod.sql" />
+    <Build Include="dbo\Tables\dbo.ModelBoundary.sql" />
+    <None Include="Scripts\ReleaseScripts\0072 - Add RTE for Allocation Plan Edit.sql" />
+    <None Include="Scripts\ReleaseScripts\0078 - update OpenET WaterMeasurementType records.sql" />
+    <None Include="Scripts\ReleaseScripts\0079 - manually create OpenETSync precip records.sql" />
+    <Build Include="dbo\Tables\dbo.GETActionFileResource.sql" />
+    <None Include="Scripts\ReleaseScripts\0075 - Populate kern ModelBoundary.sql" />
+    <Build Include="dbo\Tables\dbo.GETActionOutputFileType.sql" />
+    <None Include="Scripts\LookupTables\dbo.GETActionOutputFileType.sql" />
+    <Build Include="dbo\Tables\dbo.GETActionOutputFile.sql" />
+    <None Include="Scripts\ReleaseScripts\0076 - remove old model runs.sql" />
+    <None Include="Scripts\ReleaseScripts\0080 - add model scenarios for recharge.sql" />
+    <None Include="Scripts\ReleaseScripts\0083 - Add RTE for Landowner Parcel Index.sql" />
+    <None Include="Scripts\ReleaseScripts\0084 - fix modelscenarios to match GET scenarios.sql" />
+    <Build Include="dbo\Views\dbo.vParcelLedgerTransactionHistory.sql" />
+    <None Include="Scripts\PreReleaseScripts\0005 - remove baseline scenario.sql" />
+    <Build Include="dbo\Tables\dbo.GeographyBoundary.sql" />
+    <Build Include="dbo\Procs\dbo.pWaterAccountBudgetReportByUserAndYear.sql" />
+    <None Include="Scripts\ReleaseScripts\0085 - Add RTE for scenario planner.sql" />
+    <Build Include="dbo\Functions\dbo.fReportingPeriod.sql" />
+    <Build Include="dbo\Functions\dbo.fWaterAccountParcelByGeography.sql" />
+    <Build Include="dbo\Functions\dbo.fWaterAccountParcelByUser.sql" />
+    <Build Include="dbo\Functions\dbo.fWaterAccountUser.sql" />
+    <Build Include="dbo\Procs\dbo.pParcelWaterSupplyAndUsageByGeography.sql" />
+    <Build Include="dbo\Procs\dbo.pParcelWaterSupplyAndUsageByUser.sql" />
+    <Build Include="dbo\Procs\dbo.pZoneGroupMonthlyUsage.sql" />
+    <None Include="Scripts\ReleaseScripts\0086 - Add RTE for scenario planner runs.sql" />
+    <None Include="Scripts\ReleaseScripts\0087 - update to model scenario to match get environments.sql" />
+    <Build Include="dbo\Views\dbo.vGeoServerYoloWRIDMonitoringWells.sql" />
+    <Build Include="dbo\Tables\dbo.WellIrrigatedParcel.sql" />
+    <Build Include="dbo\Tables\dbo.WellMetadatum.sql" />
+    <Build Include="dbo\Tables\dbo.WellWaterUse.sql" />
+    <Build Include="dbo\Tables\dbo.WellWaterUseType.sql" />
+    <Build Include="dbo\Tables\dbo.FuelType.sql" />
+    <None Include="Scripts\ReleaseScripts\0076 - Add new kern ModelScenario.sql" />
+    <None Include="Scripts\LookupTables\dbo.FuelType.sql" />
+    <None Include="Scripts\LookupTables\dbo.WellWaterUseType.sql" />
+    <Build Include="dbo\Functions\dbo.fWaterAccountParcelByGeographyAndYear.sql" />
+    <Build Include="dbo\Procs\dbo.pWaterAccountMonthlyUsageSummary.sql" />
+    <Build Include="dbo\Procs\dbo.pWaterAccountMostRecentEffectiveDate.sql" />
+    <Build Include="dbo\Functions\dbo.fWaterAccountParcelByWaterAccountAndYear.sql" />
+    <Build Include="dbo\Procs\dbo.pWaterAccountTotalWaterSupplyAndUsage.sql" />
+    <Build Include="dbo\Procs\dbo.pWaterAccountTotalWaterTypeSupply.sql" />
+    <Build Include="dbo\Procs\dbo.pWaterAccountBudgetReportByGeographyAndYear.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelGeometry.sql" />
+    <Build Include="dbo\Tables\dbo.ParcelOwnershipHistory.sql" />
+    <Build Include="dbo\Procs\dbo.pParcelUpdateFromStaging.sql" />
+    <Build Include="dbo\Functions\dbo.fParcelStagingChanges.sql" />
+    <None Include="Scripts\ReleaseScripts\0088 - deleting existing Parcel data.sql" />
+    <Build Include="dbo\Procs\dbo.pWaterAccountSuggestion.sql" />
+    <None Include="Scripts\ReleaseScripts\0090 - Add new Geography Water Level RTEs.sql" />
+    <None Include="Scripts\ReleaseScripts\0091 - Add new Geography Water Level RTEs.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Zybach.Database.publish.xml" />
+    <None Include="Scripts\PreReleaseScripts\README.md" />
+    <None Include="Scripts\ReleaseScripts\README.md" />
+    <None Include="Scripts\LookupTables\dbo.ParcelStatus.sql" />
+    <None Include="Scripts\LookupTables\dbo.WellStatus.sql" />
+    <None Include="Scripts\ReleaseScripts\0004 - Adding parcel tagging RTEs.sql" />
+    <None Include="Scripts\LookupTables\dbo.ContentType.sql" />
+    <None Include="Scripts\ReleaseScripts\0027 - Add RTE and Field Defs for water usage CSV upload.sql" />
+    <None Include="Scripts\LookupTables\dbo.UnitType.sql" />
+    <None Include="Scripts\ReleaseScripts\0028 - Populate ReportedValueInAcreFeet on ParcelUsage table.sql" />
+    <None Include="Scripts\ReleaseScripts\0030 - Populate UnitType on ParcelUsage table.sql" />
+    <None Include="Scripts\ReleaseScripts\0051 - Add RTE for Custom Page Edit Properties.sql" />
+    <None Include="Scripts\ReleaseScripts\0052 - Remove View MenuItem.sql" />
+    <None Include="Scripts\ReleaseScripts\0053 - Add RTE for Zone Group Usage Chart.sql" />
+    <None Include="Scripts\ReleaseScripts\0054 - Remove duplicate Water Account.sql" />
+    <None Include="Scripts\ReleaseScripts\0062 - RTEs for Geography Dashboard.sql" />
+    <None Include="Scripts\ReleaseScripts\0063 - Populate GSACanonicalID column on Geography table.sql" />
+    <Build Include="dbo\Views\dbo.vGeoserverGeographyGSABoundaries.sql" />
+    <Build Include="dbo\Tables\dbo.GeographyAllocationPlan.sql" />
+    <Build Include="dbo\Tables\dbo.AllocationPlan.sql" />
+    <None Include="Scripts\ReleaseScripts\0070 - Add new Merced ModelScenario.sql" />
+    <None Include="Scripts\ReleaseScripts\0069 - Populate Merced ModelBoundary.sql" />
+    <None Include="Scripts\ReleaseScripts\0071 - Add a Well Scenario RTE.sql" />
+    <None Include="Scripts\ReleaseScripts\0073 - Add RTEs for Configure Allocaiton and Copy Allocation Plan.sql" />
+    <None Include="Scripts\ReleaseScripts\0074 - Add RTE for Account Allocation Plans.sql" />
+    <None Include="Scripts\PreReleaseScripts\0004 - copy out ParcelUsage and WaterUseType records.sql" />
+    <None Include="Scripts\ReleaseScripts\0077 - populate WaterMeasurement and WaterMeasurementType records.sql" />
+    <None Include="Scripts\ReleaseScripts\0081 - populate Geography SourceOfRecordWaterMeasurementTypeID.sql" />
+    <None Include="Scripts\ReleaseScripts\0082 - Add PostToLedger RTE and OpenETSyncVariable field def.sql" />
+    <None Include="Scripts\PreReleaseScripts\0006 - Remove duplicate ReportingPeriods for each Geography.sql" />
+    <None Include="Scripts\ReleaseScripts\0089 - Add new RTEs  for Activity Center and Water Account Suggestions.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <UsingTask TaskName="ScriptDeploymentGenerator" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <releaseScriptFolder ParameterType="System.String" Required="true" />
+      <releaseScriptFileName ParameterType="System.String" Required="true" />
+      <projectName ParameterType="System.String" Required="true" />
+      <title ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+
+        var files = Directory.GetFiles(releaseScriptFolder, "*.sql");
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendLine("/*");
+        sb.AppendLine(title + " Script");
+        sb.AppendLine("--------------------------------------------------------------------------------------");
+        sb.AppendLine("This file is generated on every build, DO NOT modify.");
+        sb.AppendLine("--------------------------------------------------------------------------------------");
+        sb.AppendLine("*/");
+        sb.AppendLine("");
+        sb.AppendLine("PRINT N'" + projectName + " - " + releaseScriptFileName +"';");
+        sb.AppendLine("GO");
+        sb.AppendLine("");
+
+        foreach (var file in files.OrderBy(f => f))
+        {
+            if (file.Contains(releaseScriptFileName))
+            {
+              continue;
+            }
+
+            var fileName = file.Replace(releaseScriptFolder, "");
+
+            sb.AppendLine(":r \"." + fileName + "\"");
+            sb.AppendLine("GO");
+                    
+        }
+        using (System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(releaseScriptFolder, releaseScriptFileName)))
+        {
+          file.WriteLine(sb.ToString()); 
+        }
+
+]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="CustomBuildStep" BeforeTargets="BeforeBuild">
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Post-Deployment" releaseScriptFolder="Scripts\\ReleaseScripts" releaseScriptFileName="Script.PostDeployment.ReleaseScripts.sql" />
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Pre-Deployment" releaseScriptFolder="Scripts\\PreReleaseScripts" releaseScriptFileName="Script.PreDeployment.ReleaseScripts.sql" />
+    <ScriptDeploymentGenerator projectName="$(MSBuildProjectName)" title="Lookup-Table" releaseScriptFolder="Scripts\\LookupTables" releaseScriptFileName="Script.PostDeployment.LookupTables.sql" />
+  </Target>
+</Project>
