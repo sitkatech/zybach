@@ -9,6 +9,7 @@ Zybach.Web/wwwroot/
 Zybach.Web/.vscode/
 Zybach.Web/package-lock.json
 Zybach.Web/openapitools.json
+Qanat.Tests/environment.json
 
 .vs
 bin
@@ -18,5 +19,5 @@ obj
 *.env
 *.user
 *.pem
-/Build/build.ini
+Build/secrets.ini
 .gitmodules
