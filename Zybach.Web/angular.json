@@ -96,7 +96,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Zybach.Web:build"
+            "browserTarget": "Zybach.Web:build",
+            "host" : "zybach.localhost.sitkatech.com",
+            "port" : 8713
           },
           "configurations": {
             "production": {
