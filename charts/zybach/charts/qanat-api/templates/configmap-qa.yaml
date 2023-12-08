@@ -1,0 +1,34 @@
+{{ if eq .Values.global.env.name "qa" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "api.fullname" . }}-qa-configmap
+data:
+  SECRET_PATH: "/app/secrets/zybachApiSecrets"
+  DOCKER_BUILD_SOURCE: "."
+  ASPNETCORE_ENVIRONMENT: "Staging"
+  SITKA_EMAIL_REDIRECT: "notifications-qa@sitkatech.com"
+  WEB_URL: "https://{{ .Values.global.domains.web }}"
+  KEYSTONE_HOST: ""
+  KEYSTONE_REDIRECT_URL: ""
+  VEGA_RENDER_URL: ""
+  AllowOpenETSync: true
+  AppAlertsEmail: "notifications-qa@sitkatech.com"  
+  SupportEmail: support@sitkatech.com
+  INFLUXDB_URL: "https://us-west-2-1.aws.cloud2.influxdata.com"
+  GEOOPTIX_HOSTNAME: "https://tpnrd.api.geooptix.com"
+  GEOOPTIX_SEARCH_HOSTNAME: "https://tpnrd.search.geooptix.com"
+  AGHUB_API_BASE_URL: "https://64x7c7fw24.execute-api.us-east-2.amazonaws.com"
+  AGHUB_API_BUCKET: "stage"
+  GET_API_BASE_URL: "https://get-api-qa.azure-api.net/GETAzureFunctionApiQA/"
+  GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID: 4
+  GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID: 160
+  GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID: 73
+  GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID: 19
+  OpenETAPIBaseUrl: "https://openet-api.org"
+  OpenETRasterTimeSeriesMultipolygonRoute: "raster/timeseries/multipolygon"
+  OpenETRasterMetadataRoute: "raster/metadata"
+  OpenETAllFilesReadyForExportRoute: "raster/export/all_files"
+  OpenETRasterExportStatusRoute: "raster/export/status"
+  OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "tpid"
+{{ end }}
