@@ -1,7 +1,3 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pPublishGeoOptixSensors'))
-    drop procedure dbo.pPublishGeoOptixSensors
-go
-
 create procedure dbo.pPublishGeoOptixSensors
 as
 begin

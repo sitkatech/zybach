@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[FieldDefinition](
 	[FieldDefinitionID] [int] IDENTITY(1,1) NOT NULL,
 	[FieldDefinitionTypeID] [int] NOT NULL,

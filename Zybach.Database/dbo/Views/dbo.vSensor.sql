@@ -1,8 +1,4 @@
-if exists (select * from dbo.sysobjects where id = object_id('dbo.vSensor'))
-	drop view dbo.vSensor
-go
-
-Create View dbo.vSensor
+create View dbo.vSensor
 as
 
 select  s.SensorID, s.SensorName, s.SensorTypeID, s.WellID, s.InGeoOptix, s.CreateDate, s.LastUpdateDate, s.IsActive

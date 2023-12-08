@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[WellGroupWell](
 	[WellGroupWellID] [int] IDENTITY(1,1) NOT NULL,
 	[WellGroupID] [int] NOT NULL,

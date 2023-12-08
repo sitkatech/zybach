@@ -1,7 +1,3 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear'))
-    drop procedure dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear
-go
-
 create procedure dbo.pChemigationPermitAnnualRecordBulkCreateForRecordYear
 (
 	@recordYear int,

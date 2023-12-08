@@ -1,7 +1,3 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pUpdateAgHubIrrigationUnitDataWithOpenETWaterMeasurements'))
-    drop procedure dbo.pUpdateAgHubIrrigationUnitDataWithOpenETWaterMeasurements
-go
-
 create procedure dbo.pUpdateAgHubIrrigationUnitDataWithOpenETWaterMeasurements
 (
 	@reportedDate datetime,

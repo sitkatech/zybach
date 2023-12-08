@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[DatabaseMigration](
 	[DatabaseMigrationNumber] [int] NOT NULL,
  CONSTRAINT [PK_DatabaseMigration_DatabaseMigrationNumber] PRIMARY KEY CLUSTERED 

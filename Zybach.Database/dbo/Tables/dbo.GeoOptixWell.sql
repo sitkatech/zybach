@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[GeoOptixWell](
 	[GeoOptixWellID] [int] IDENTITY(1,1) NOT NULL,
 	[WellID] [int] NOT NULL,

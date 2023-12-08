@@ -1,8 +1,4 @@
-if exists (select * from dbo.sysobjects where id = object_id('dbo.vOpenETMostRecentSyncHistoryForYearAndMonth'))
-	drop view dbo.vOpenETMostRecentSyncHistoryForYearAndMonth
-go
-
-Create View dbo.vOpenETMostRecentSyncHistoryForYearAndMonth
+create View dbo.vOpenETMostRecentSyncHistoryForYearAndMonth
 as
 
 select openetsh.OpenETSyncHistoryID, openetsh.OpenETSyncID, openetsh.OpenETSyncResultTypeID, openetsh.CreateDate, openetsh.UpdateDate, openetsh.GoogleBucketFileRetrievalURL, openetsh.ErrorMessage

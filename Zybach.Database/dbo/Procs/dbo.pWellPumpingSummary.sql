@@ -1,7 +1,3 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pWellPumpingSummary'))
-    drop procedure dbo.pWellPumpingSummary
-go
-
 create procedure dbo.pWellPumpingSummary
 (
 	@startDate datetime,

@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[User](
 	[UserID] [int] IDENTITY(1,1) NOT NULL,
 	[UserGuid] [uniqueidentifier] NULL,
@@ -18,6 +14,7 @@ CREATE TABLE [dbo].[User](
 	[LoginName] [varchar](128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[Company] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	[DisclaimerAcknowledgedDate] [datetime] NULL,
+	[PerformsChemigationInspections] [bit] NOT NULL
  CONSTRAINT [PK_User_UserID] PRIMARY KEY CLUSTERED 
 (
 	[UserID] ASC

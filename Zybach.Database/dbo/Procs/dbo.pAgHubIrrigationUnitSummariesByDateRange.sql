@@ -1,7 +1,3 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pAgHubIrrigationUnitSummariesByDateRange'))
-    drop procedure dbo.pAgHubIrrigationUnitSummariesByDateRange
-go
-
 create procedure dbo.pAgHubIrrigationUnitSummariesByDateRange
 (
 	@startDateMonth int,
@@ -61,7 +57,6 @@ begin
 		) wps
 		group by wps.AgHubIrrigationUnitID
 	) ahiur on ahiu.AgHubIrrigationUnitID = ahiur.AgHubIrrigationUnitID
-	order by AgHubIrrigationUnitID
 
 end
 

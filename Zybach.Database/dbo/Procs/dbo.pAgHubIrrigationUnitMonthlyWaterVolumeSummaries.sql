@@ -1,7 +1,3 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pAgHubIrrigationUnitMonthlyWaterVolumeSummaries'))
-    drop procedure dbo.pAgHubIrrigationUnitMonthlyWaterVolumeSummaries
-go
-
 create procedure dbo.pAgHubIrrigationUnitMonthlyWaterVolumeSummaries
 as
 begin

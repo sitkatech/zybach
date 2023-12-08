@@ -1,7 +1,3 @@
-if exists (select * from dbo.sysobjects where id = object_id('dbo.vWellSensorMeasurementFirstAndLatestForSensor'))
-	drop view dbo.vWellSensorMeasurementFirstAndLatestForSensor
-go
-
 Create View dbo.vWellSensorMeasurementFirstAndLatestForSensor
 as
 

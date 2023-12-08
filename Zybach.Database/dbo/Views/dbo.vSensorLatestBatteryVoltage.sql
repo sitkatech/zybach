@@ -1,7 +1,3 @@
-if exists (select * from dbo.sysobjects where id = object_id('dbo.vSensorLatestBatteryVoltage'))
-	drop view dbo.vSensorLatestBatteryVoltage
-go
-
 Create View dbo.vSensorLatestBatteryVoltage
 as
 

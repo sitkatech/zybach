@@ -1,7 +1,3 @@
-IF EXISTS(SELECT 1 FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.pPublishAgHubWells'))
-    drop procedure dbo.pPublishAgHubWells
-go
-
 create procedure dbo.pPublishAgHubWells
 as
 begin

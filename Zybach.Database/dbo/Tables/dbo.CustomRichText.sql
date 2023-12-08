@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[CustomRichText](
 	[CustomRichTextID] [int] IDENTITY(1,1) NOT NULL,
 	[CustomRichTextTypeID] [int] NOT NULL,

@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[ChemigationPermit](
 	[ChemigationPermitID] [int] IDENTITY(1,1) NOT NULL,
 	[ChemigationPermitNumber] [int] NOT NULL,

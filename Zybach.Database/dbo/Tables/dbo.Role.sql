@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[Role](
 	[RoleID] [int] NOT NULL,
 	[RoleName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,

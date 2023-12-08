@@ -1,15 +1,8 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [HangFire].[Counter](
 	[Key] [nvarchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	[Value] [int] NOT NULL,
 	[ExpireAt] [datetime] NULL
 ) ON [PRIMARY]
-
-GO
-SET ANSI_PADDING ON
 
 GO
 CREATE CLUSTERED INDEX [CX_HangFire_Counter] ON [HangFire].[Counter]

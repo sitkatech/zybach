@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE TABLE [dbo].[SupportTicket](
 	[SupportTicketID] [int] IDENTITY(1,1) NOT NULL,
 	[DateCreated] [datetime] NOT NULL,

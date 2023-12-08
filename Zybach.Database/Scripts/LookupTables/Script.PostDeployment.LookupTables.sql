@@ -8,54 +8,52 @@ This file is generated on every build, DO NOT modify.
 PRINT N'Zybach.Database - Script.PostDeployment.LookupTables.sql';
 GO
 
-:r ".\dbo.ContentType.sql"
+:r ".\dbo.ChemigationInjectionUnitType.sql"
+GO
+:r ".\dbo.ChemigationInspectionStatus.sql"
+GO
+:r ".\dbo.ChemigationInspectionType.sql"
+GO
+:r ".\dbo.ChemigationInterlockType.sql"
+GO
+:r ".\dbo.ChemigationLowPressureValve.sql"
+GO
+:r ".\dbo.ChemigationPermitAnnualRecordFeeType.sql"
+GO
+:r ".\dbo.ChemigationPermitAnnualRecordStatus.sql"
+GO
+:r ".\dbo.ChemigationPermitStatus.sql"
+GO
+:r ".\dbo.ContinuityMeterStatus.sql"
+GO
+:r ".\dbo.County.sql"
 GO
 :r ".\dbo.CustomRichTextType.sql"
 GO
-:r ".\dbo.ExternalMapLayerType.sql"
+:r ".\dbo.FieldDefinitionType.sql"
 GO
-:r ".\dbo.Flag.sql"
+:r ".\dbo.FileResourceMimeType.sql"
 GO
-:r ".\dbo.FuelType.sql"
-GO
-:r ".\dbo.GeographyRole.sql"
-GO
-:r ".\dbo.GETActionOutputFileType.sql"
-GO
-:r ".\dbo.GETActionStatus.sql"
-GO
-:r ".\dbo.MenuItem.sql"
-GO
-:r ".\dbo.Model.sql"
-GO
-:r ".\dbo.MonitoringWellSourceType.sql"
+:r ".\dbo.MeasurementType.sql"
 GO
 :r ".\dbo.OpenETDataType.sql"
 GO
 :r ".\dbo.OpenETSyncResultType.sql"
 GO
-:r ".\dbo.ParcelLedgerEntrySourceType.sql"
+:r ".\dbo.ReportTemplateModel.sql"
 GO
-:r ".\dbo.ParcelStatus.sql"
-GO
-:r ".\dbo.Permission.sql"
+:r ".\dbo.ReportTemplateModelType.sql"
 GO
 :r ".\dbo.Role.sql"
 GO
-:r ".\dbo.Scenario.sql"
+:r ".\dbo.SensorType.sql"
 GO
-:r ".\dbo.State.sql"
+:r ".\dbo.SupportTicketPriority.sql"
 GO
-:r ".\dbo.TransactionType.sql"
+:r ".\dbo.SupportTicketStatus.sql"
 GO
-:r ".\dbo.UnitType.sql"
+:r ".\dbo.WaterQualityInspectionType.sql"
 GO
-:r ".\dbo.WaterAccountRole.sql"
-GO
-:r ".\dbo.WellContactType.sql"
-GO
-:r ".\dbo.WellStatus.sql"
-GO
-:r ".\dbo.WellWaterUseType.sql"
+:r ".\dbo.WellUse.sql"
 GO
 
