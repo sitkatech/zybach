@@ -1,6 +1,0 @@
-create table dbo.AgHubIrrigationUnitWaterYearMonthETDatum (
-	AgHubIrrigationUnitWaterYearMonthETDatumID int not null identity(1,1) constraint PK_AgHubIrrigationUnitWaterYearMonthETDatum_AgHubIrrigationUnitWaterYearMonthETDatumID primary key,
-	AgHubIrrigationUnitID int not null constraint FK_AgHubIrrigationUnitWaterYearMonthETDatum_AgHubIrrigationUnit_AgHubIrrigationUnitID foreign key references AgHubIrrigationUnit(AgHubIrrigationUnitID),
-	WaterYearMonthID int not null constraint FK_AgHubIrrigationUnitWaterYearMonthETDatum_WaterYearMonth_WaterYearMonthID foreign key references WaterYearMonth(WaterYearMonthID),
-	EvapotranspirationRateInches decimal (20, 4) NULL
-)
