@@ -12,14 +12,18 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "importHelpers": true,
-    "target": "es2020",
-    "types": ["node", "jasmine"],
+    "target": "ES2022",
+    "types": [
+      "node",
+      "jasmine"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "useDefineForClassFields": false
   }
 }
