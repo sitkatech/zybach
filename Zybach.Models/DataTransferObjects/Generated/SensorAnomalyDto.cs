@@ -19,7 +19,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class SensorAnomalySimpleDto
     {
         public int SensorAnomalyID { get; set; }
-        public int SensorID { get; set; }
+        public System.Int32 SensorID { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Notes { get; set; }

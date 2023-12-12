@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ChemigationInjectionUnitType
+    public abstract partial class ChemigationInjectionUnitType : IHavePrimaryKey
     {
         public static readonly ChemigationInjectionUnitTypePortable Portable = Zybach.EFModels.Entities.ChemigationInjectionUnitTypePortable.Instance;
         public static readonly ChemigationInjectionUnitTypeStationary Stationary = Zybach.EFModels.Entities.ChemigationInjectionUnitTypeStationary.Instance;

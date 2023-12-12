@@ -19,7 +19,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class OpenETSyncSimpleDto
     {
         public int OpenETSyncID { get; set; }
-        public int OpenETDataTypeID { get; set; }
+        public System.Int32 OpenETDataTypeID { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }
         public DateTime? FinalizeDate { get; set; }

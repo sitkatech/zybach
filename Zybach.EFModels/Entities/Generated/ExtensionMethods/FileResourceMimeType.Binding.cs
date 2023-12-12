@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class FileResourceMimeType
+    public abstract partial class FileResourceMimeType : IHavePrimaryKey
     {
         public static readonly FileResourceMimeTypePDF PDF = Zybach.EFModels.Entities.FileResourceMimeTypePDF.Instance;
         public static readonly FileResourceMimeTypeWordDOCX WordDOCX = Zybach.EFModels.Entities.FileResourceMimeTypeWordDOCX.Instance;

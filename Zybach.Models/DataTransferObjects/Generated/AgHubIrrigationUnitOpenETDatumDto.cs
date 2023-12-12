@@ -21,8 +21,8 @@ namespace Zybach.Models.DataTransferObjects
     public partial class AgHubIrrigationUnitOpenETDatumSimpleDto
     {
         public int AgHubIrrigationUnitOpenETDatumID { get; set; }
-        public int AgHubIrrigationUnitID { get; set; }
-        public int OpenETDataTypeID { get; set; }
+        public System.Int32 AgHubIrrigationUnitID { get; set; }
+        public System.Int32 OpenETDataTypeID { get; set; }
         public DateTime ReportedDate { get; set; }
         public DateTime TransactionDate { get; set; }
         public decimal? ReportedValueInches { get; set; }

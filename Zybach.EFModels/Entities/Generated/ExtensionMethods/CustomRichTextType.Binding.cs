@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class CustomRichTextType
+    public abstract partial class CustomRichTextType : IHavePrimaryKey
     {
         public static readonly CustomRichTextTypePlatformOverview PlatformOverview = Zybach.EFModels.Entities.CustomRichTextTypePlatformOverview.Instance;
         public static readonly CustomRichTextTypeDisclaimer Disclaimer = Zybach.EFModels.Entities.CustomRichTextTypeDisclaimer.Instance;

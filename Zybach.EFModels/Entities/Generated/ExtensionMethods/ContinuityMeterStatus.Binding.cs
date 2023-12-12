@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ContinuityMeterStatus
+    public abstract partial class ContinuityMeterStatus : IHavePrimaryKey
     {
         public static readonly ContinuityMeterStatusReportingNormally ReportingNormally = Zybach.EFModels.Entities.ContinuityMeterStatusReportingNormally.Instance;
         public static readonly ContinuityMeterStatusAlwaysOn AlwaysOn = Zybach.EFModels.Entities.ContinuityMeterStatusAlwaysOn.Instance;

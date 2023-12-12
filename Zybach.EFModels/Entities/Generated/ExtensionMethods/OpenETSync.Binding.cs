@@ -6,6 +6,12 @@ namespace Zybach.EFModels.Entities
 {
     public partial class OpenETSync
     {
+        public int PrimaryKey => OpenETSyncID;
         public OpenETDataType OpenETDataType => OpenETDataType.AllLookupDictionary[OpenETDataTypeID];
+
+        public static class FieldLengths
+        {
+
+        }
     }
 }

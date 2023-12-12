@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Zybach.EFModels.Entities
 {
-    public partial class CustomRichText
+    public class CustomRichTexts
     {
         public static CustomRichTextDto GetByCustomRichTextTypeID(ZybachDbContext dbContext, int customRichTextTypeID)
         {

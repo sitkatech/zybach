@@ -21,7 +21,7 @@ namespace Zybach.API.Services
 
             var userDto = UserContext.GetUserFromHttpContext(dbContext, httpContext);
 
-            var fileResourceMimeType = FileResourceMimeType.GetFileResourceMimeTypeByContentTypeName(dbContext,
+            var fileResourceMimeType = FileResourceMimeTypes.GetFileResourceMimeTypeByContentTypeName(dbContext,
                 file.ContentType);
 
             var clientFilename = file.FileName;

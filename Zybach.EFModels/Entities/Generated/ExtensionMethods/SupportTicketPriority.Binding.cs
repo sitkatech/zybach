@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class SupportTicketPriority
+    public abstract partial class SupportTicketPriority : IHavePrimaryKey
     {
         public static readonly SupportTicketPriorityHigh High = Zybach.EFModels.Entities.SupportTicketPriorityHigh.Instance;
         public static readonly SupportTicketPriorityMedium Medium = Zybach.EFModels.Entities.SupportTicketPriorityMedium.Instance;

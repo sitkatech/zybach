@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class OpenETDataType
+    public abstract partial class OpenETDataType : IHavePrimaryKey
     {
         public static readonly OpenETDataTypeEvapotranspiration Evapotranspiration = Zybach.EFModels.Entities.OpenETDataTypeEvapotranspiration.Instance;
         public static readonly OpenETDataTypePrecipitation Precipitation = Zybach.EFModels.Entities.OpenETDataTypePrecipitation.Instance;

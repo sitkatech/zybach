@@ -6,6 +6,12 @@ namespace Zybach.EFModels.Entities
 {
     public partial class FieldDefinition
     {
+        public int PrimaryKey => FieldDefinitionID;
         public FieldDefinitionType FieldDefinitionType => FieldDefinitionType.AllLookupDictionary[FieldDefinitionTypeID];
+
+        public static class FieldLengths
+        {
+
+        }
     }
 }

@@ -1,0 +1,14 @@
+{{ if eq .Values.global.env.name "prod" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "web.fullname" . }}-prod-configmap
+data:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  ASPNETCORE_ENVIRONMENT: "Staging"
+  CreateAccountUrl: "https://host.docker.internal:7112/Account/Register?ClientID=Zybach&RedirectUrl=",
+  CreateAccountRedirectUrl: "http://host.docker.internal:8713/create-user-callback",
+  AllowOpenETSyncs: true
+  GeoOptixWebUrl: "https://tpnrd.geooptix.com",
+  MapQuestApiUrl: "https://open.mapquestapi.com/nominatim/v1/search.php?key=gAtuAvFkArwZH61P1UVcRXseleJWEB7r",
+{{ end }}  

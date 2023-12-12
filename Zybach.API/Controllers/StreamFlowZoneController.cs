@@ -19,7 +19,7 @@ namespace Zybach.API.Controllers
         [HttpGet("/streamFlowZones")]
         public List<StreamFlowZoneDto> GetStreamFlowZones()
         {
-            var streamFlowZoneDtos = StreamFlowZone.List(_dbContext);
+            var streamFlowZoneDtos = StreamFlowZones.List(_dbContext);
             return streamFlowZoneDtos;
         }
     }

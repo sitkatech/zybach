@@ -17,8 +17,8 @@ namespace Zybach.Models.DataTransferObjects
     public partial class WellWaterQualityInspectionTypeSimpleDto
     {
         public int WellWaterQualityInspectionTypeID { get; set; }
-        public int WellID { get; set; }
-        public int WaterQualityInspectionTypeID { get; set; }
+        public System.Int32 WellID { get; set; }
+        public System.Int32 WaterQualityInspectionTypeID { get; set; }
     }
 
 }
