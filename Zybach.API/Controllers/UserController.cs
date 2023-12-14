@@ -40,7 +40,7 @@ namespace Zybach.API.Controllers
                 return BadRequest("Role ID is required.");
             }
 
-            var applicationName = $"{_zybachConfiguration.PlatformLongName}";
+            const string applicationName = "Twin Platte Groundwater Managers Platform";
             var inviteModel = new KeystoneService.KeystoneInviteModel
             {
                 FirstName = inviteDto.FirstName,
@@ -237,14 +237,14 @@ namespace Zybach.API.Controllers
         private MailMessage GenerateUserCreatedEmail(string zybachUrl, UserDto user, ZybachDbContext dbContext,
             SitkaSmtpClientService smtpClient)
         {
-            var messageBody = $@"A new user has signed up to the {_zybachConfiguration.PlatformLongName}: <br/><br/>
+            var messageBody = $@"A new user has signed up to the Twin Platte Groundwater Managers Platform: <br/><br/>
                 {user.FullName} ({user.Email}) <br/><br/>
-                As an administrator of the {_zybachConfiguration.PlatformShortName}, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
+                As an administrator of the Groundwater Managers Platform, you can assign them a role and associate them with a Billing Account by following <a href='{zybachUrl}/users/{user.UserID}'>this link</a>. <br/><br/>
                 {smtpClient.GetSupportNotificationEmailSignature()}";
 
             var mailMessage = new MailMessage
             {
-                Subject = $"New User in {_zybachConfiguration.PlatformLongName}",
+                Subject = $"New User in Twin Platte Groundwater Managers Platform",
                 Body = $"Hello,<br /><br />{messageBody}",
             };
 

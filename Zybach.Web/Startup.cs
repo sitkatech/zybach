@@ -80,9 +80,6 @@ namespace Zybach.Web
             CreateAccountRedirectUrl = configuration["CreateAccountRedirectUrl"];
             GeoserverMapServiceUrl = configuration["GeoserverMapServiceUrl"];
             KeystoneAuthConfiguration = new KeystoneAuthConfigurationDto(configuration);
-            PlatformLongName = configuration["PlatformLongName"];
-            PlatformShortName = configuration["PlatformShortName"];
-            FaviconFilename = configuration["FaviconFilename"];
             AppInsightsInstrumentationKey =  configuration["AppInsightsInstrumentationKey"];
             MapQuestApiUrl =  configuration["MapQuestApiUrl"];
             GeoOptixWebUrl = configuration["GeoOptixWebUrl"];
@@ -106,12 +103,6 @@ namespace Zybach.Web
         public string GeoserverMapServiceUrl { get; set; }
         [JsonProperty("keystoneAuthConfiguration")]
         public KeystoneAuthConfigurationDto KeystoneAuthConfiguration { get; set; }
-        [JsonProperty("platformLongName")]
-        public string PlatformLongName { get; set; }
-        [JsonProperty("platformShortName")]
-        public string PlatformShortName { get; set; }
-        [JsonProperty("faviconFilename")]
-        public string FaviconFilename {get; set;}
         [JsonProperty("appInsightsInstrumentationKey")]
         public string AppInsightsInstrumentationKey {get; set;}
         [JsonProperty("mapQuestApiUrl")]

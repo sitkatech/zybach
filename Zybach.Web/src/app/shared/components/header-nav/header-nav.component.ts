@@ -132,11 +132,6 @@ export class HeaderNavComponent implements OnInit, OnDestroy {
         });
     }
 
-
-    public platformShortName(): string{
-        return environment.platformShortName;
-    }
-
     public search(event) {
         this.isSearching = true;
         this.searchService.searchSearchTextGet(event.query.trim()).subscribe(results => {

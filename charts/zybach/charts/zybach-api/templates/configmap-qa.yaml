@@ -9,12 +9,11 @@ data:
   ASPNETCORE_ENVIRONMENT: "Staging"
   SITKA_EMAIL_REDIRECT: "notifications-qa@sitkatech.com"
   WEB_URL: "https://{{ .Values.global.domains.web }}"
-  KEYSTONE_HOST: ""
-  KEYSTONE_REDIRECT_URL: ""
-  VEGA_RENDER_URL: ""
-  AllowOpenETSync: true
-  AppAlertsEmail: "notifications-qa@sitkatech.com"  
-  SupportEmail: support@sitkatech.com
+  KEYSTONE_HOST: "https://identity-qa.sitkatech.com"
+  KEYSTONE_REDIRECT_URL: "https://{{ .Values.global.domains.web }}/create-user-callback"
+  DoNotReplyEmail: "donotreply@sitkatech.net"
+  AppAlertsEmail: "appalerts-h2o@sitkatech.com"
+  SupportEmail: "support@sitkatech.com"
   INFLUXDB_URL: "https://us-west-2-1.aws.cloud2.influxdata.com"
   GEOOPTIX_HOSTNAME: "https://tpnrd.api.geooptix.com"
   GEOOPTIX_SEARCH_HOSTNAME: "https://tpnrd.search.geooptix.com"
@@ -25,6 +24,8 @@ data:
   GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID: 160
   GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID: 73
   GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID: 19
+  VEGA_RENDER_URL: "http://{{ .Values.global.domains.vegarenderservice }}"
+  OPENET_SHAPEFILE_PATH: "users/esa-sitka/TPNRD_Irrigation_Units_2022-05-11"
   OpenETAPIBaseUrl: "https://openet-api.org"
   OpenETRasterTimeSeriesMultipolygonRoute: "raster/timeseries/multipolygon"
   OpenETRasterMetadataRoute: "raster/metadata"

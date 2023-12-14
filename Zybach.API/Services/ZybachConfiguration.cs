@@ -4,13 +4,9 @@
     {
         public string KEYSTONE_HOST { get; set; }
         public string DB_CONNECTION_STRING { get; set; }
-        public string SMTP_HOST { get; set; }
-        public int SMTP_PORT { get; set; }
         public string SITKA_EMAIL_REDIRECT { get; set; }
         public string WEB_URL { get; set; }
         public string KEYSTONE_REDIRECT_URL { get; set; }
-        public string PlatformLongName { get; set; }
-        public string PlatformShortName { get; set; }
         public string DoNotReplyEmail { get; set; }
         public string AppAlertsEmail { get; set; }
         public string SupportEmail { get; set; }
@@ -41,7 +37,6 @@
         public string OpenETAPIBaseUrl { get; set; }
         public string OpenETRasterTimeSeriesMultipolygonRoute { get; set; }
         public string OpenETRasterMetadataRoute { get; set; }
-        public string OpenETAllFilesReadyForExportRoute { get; set; }
         public string DefaultBoundingBoxLeft { get; set; }
         public string DefaultBoundingBoxRight { get; set; }
         public string DefaultBoundingBoxTop { get; set; }

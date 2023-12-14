@@ -10,6 +10,7 @@ global:
     api: "internalapi-zybach.aks-qa.sitkatech.com"
     web: "zybach.aks-qa.sitkatech.com"
     swaggerApi: "api-zybach.aks-qa.sitkatech.com"
+    vegarenderservice: "zybach-vegarenderservice" 
   secrets:
     apiKeyValue: "apiKeyValue"
     apiSqlPassword: "passwordhere"
@@ -236,6 +237,50 @@ geoserver:
       cert-manager.io/issue-temporary-certificate: "true"
       appgw.ingress.kubernetes.io/connection-draining: "true"
       appgw.ingress.kubernetes.io/connection-draining-timeout: "30"
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  nodeSelector: 
+    agentpool: appnodepool
+  tolerations: []
+  affinity: {}
+
+vegarenderservice:
+  replicaCount: 1
+  image:
+    repository: esacontainers.azurecr.io/vegarenderservice
+    pullPolicy: Always
+  nameOverride: ""
+  fullnameOverride: ""
+  namespace: h2o
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+  podAnnotations: {}
+  podSecurityContext: {}
+    # fsGroup: 2000
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+  service:
+    type: ClusterIP
+    port: 80
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
   autoscaling:
     enabled: false
     minReplicas: 1
