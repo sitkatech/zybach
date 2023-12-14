@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
@@ -7,7 +7,7 @@ import { map } from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class AcknowledgedDisclaimerGuard implements CanActivate {
+export class AcknowledgedDisclaimerGuard  {
 
   constructor(private router: Router, private authenticationService: AuthenticationService) {
   }
