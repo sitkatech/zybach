@@ -43,6 +43,10 @@ variable "aspNetEnvironment" {
 	type = string
 }
 
+variable "environment" {
+  type = string
+}
+
 variable "azureClusterResourceGroup" {
   type = string
 }
@@ -52,6 +56,28 @@ variable "sqlApiUsername" {
 }
 
 variable "sqlGeoserverUsername" {
+  type = string
+}
+
+variable "datadogApiKey" {
+  type = string
+  sensitive = true
+}
+
+variable "datadogAppKey" {
+  type = string
+  sensitive = true
+}
+
+variable "domainApi" {
+  type = string
+}
+
+variable "domainWeb" {
+  type = string
+}
+
+variable "domainGeoserver" {
   type = string
 }
 
@@ -81,6 +107,9 @@ terraform {
       source = "hashicorp/random"
       version = "~> 3.2.0"
     }
+    datadog = {
+      source = "DataDog/datadog"
+    }
   }
 }
 
@@ -91,6 +120,11 @@ provider "azurerm" {
   features {}
 }
 
+# Configure the Datadog provider
+provider "datadog" {
+  api_key = var.datadogApiKey
+  app_key = var.datadogAppKey
+}
 
 data "azurerm_client_config" "current" {}
 
@@ -99,6 +133,7 @@ locals {
   tags = {
     "managed"     = "terraformed"
     "environment" = var.aspNetEnvironment
+    "TeamName"    = "H2O"
   }
 }
 
@@ -128,7 +163,7 @@ resource "azurerm_storage_account" "web" {
 #   inputs:
 #     command: output
 output "application_storage_account_key" {
-  sensitive = false
+  sensitive = true
   value = azurerm_storage_account.web.primary_access_key
 }
 
@@ -187,7 +222,6 @@ resource "azurerm_mssql_database" "database" {
 	name           = var.databaseName
   server_id      = data.azurerm_mssql_server.spoke.id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
-  license_type   = "LicenseIncluded"
   max_size_gb    = 250
   read_scale     = false
   sku_name       = var.databaseTier
@@ -526,4 +560,76 @@ resource "azurerm_key_vault_secret" "hangfirePassword" {
   depends_on = [
     random_password.hangfirePassword
   ]
+}
+
+resource "datadog_synthetics_test" "test_api" {
+  type    = "api"
+  subtype = "http"
+  request_definition {
+    method = "GET"
+    url    = "https://${var.domainApi}"
+  }
+  request_headers = {
+    Content-Type   = "application/json"
+  }
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
+  locations = ["aws:us-west-1","aws:us-east-1"]
+  options_list {
+    tick_every = 900
+
+    retry {
+      count    = 2
+      interval = 30000
+    }
+
+    monitor_options {
+      renotify_interval = 120
+    }
+  }
+  name    = "${var.environment} - ${var.domainApi} API test"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+
+  status = "live"
+}
+
+resource "datadog_synthetics_test" "test_web" {
+  type    = "api"
+  subtype = "http"
+  request_definition {
+    method = "GET"
+    url    = "https://${var.domainWeb}"
+  }
+  request_headers = {
+    Content-Type   = "application/json"
+  }
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
+  locations = ["aws:us-west-1","aws:us-east-1"]
+  options_list {
+    tick_every = 900
+
+    retry {
+      count    = 2
+      interval = 30000
+    }
+
+    monitor_options {
+      renotify_interval = 120
+    }
+  }
+  name    = "${var.environment} - ${var.domainWeb} Web test"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+
+  status = "live"
+}
+
 }
