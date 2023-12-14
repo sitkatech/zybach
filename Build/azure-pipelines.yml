@@ -545,5 +545,8 @@ stages:
                 web.image.repository="$(containerRegistry)/zybach/web"
                 global.secrets.hangfirePassword="$(HANGFIRE_PASSWORD)"
                 global.secrets.openETApiKey="$(openETApiKey)"
-                global.secrets.zybachApiKey="$(zybachApiKey)"
+                global.secrets.apiKeyValue="$(apiKeyValue)"
+                global.secrets.agHubApiKey="$(agHubApiKey)"
+                global.secrets.geoOptixApiKey="$(geoOptixApiKey)"
+                global.secrets.influxDBToken="$(influxDBToken)"
               force: false
