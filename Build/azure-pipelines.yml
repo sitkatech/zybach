@@ -15,33 +15,12 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    # - task: DockerCompose@0
-    #   displayName: 'Start SQL'
-    #   inputs:
-    #     containerregistrytype: 'Container Registry'
-    #     dockerComposeFile: 'docker-compose/docker-compose-test.yml'
-    #     action: 'Run a Docker Compose command'
-    #     dockerComposeCommand: 'up -d'
-
     - task: DotNetCoreCLI@2
       displayName: 'dotnet restore'
       inputs:
         command: restore
         projects: 'Zybach.Tests/Zybach.Tests.csproj'
         
-    # - task: replacetokens@3
-    #   displayName: 'Create Test environment.json'
-    #   inputs:
-    #     rootDirectory: 'Zybach.Tests/'
-    #     targetFiles: 'environment.json.template => environment.json'
-    #     encoding: 'auto'
-    #     writeBOM: true
-    #     escapeType: 'json'
-    #     actionOnMissing: 'fail'
-    #     keepToken: false
-    #     tokenPrefix: '#{'
-    #     tokenSuffix: '}#'
-
     - task: DotNetCoreCLI@2
       displayName: 'dotnet test'
       inputs:
@@ -68,19 +47,6 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
-
-    - task: gitversion/setup@0
-      inputs:
-        versionSpec: '5.x'
-
-    - task: gitversion/execute@0
-      inputs:
-        additionalArguments: '/updateprojectfiles'
-
-    - powershell: |
-        $newBuildNumber = "$(Build.BuildNumber)" -replace "\+", "."
-        echo "New Build Number: $newBuildNumber"
-        echo "##vso[build.updatebuildnumber]$newBuildNumber"
 
     - task: DockerCompose@0
       displayName: Build API services
@@ -203,21 +169,11 @@ stages:
         #backendAzureRmKey: 'd'
         allowTelemetryCollection: true
 
-    # - task: TerraformCLI@0
-    #   inputs:
-    #     command: 'import'
-    #     environmentServiceName: '$(azureSubscription)'
-    #     allowTelemetryCollection: true
-    #     resourceAddress: 'azurerm_mssql_database.database'
-    #     resourceId: '/subscriptions/21fa2974-9388-4e50-a33d-bddc9d3469ca/resourceGroups/aks-spoke-prod/providers/Microsoft.Sql/servers/aks-spoke-prod-sqlserver/databases/ZybachDB'
-    #     commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "rabbitMqUser=$(rabbitMqUser)" -var "rabbitMqPass=$(rabbitMqPass)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)" -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)"'
-    #   continueOnError: true #after initial import this should not stop builds until it's removed.
-
     - task: TerraformCLI@0
       inputs:
         command: 'plan'
         environmentServiceName: '$(azureSubscription)'
-        commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "rabbitMqUser=$(rabbitMqUser)" -var "rabbitMqPass=$(rabbitMqPass)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)" -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "environment=$(environment)"'
+        commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)" -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "environment=$(environment)"'
         allowTelemetryCollection: true
         publishPlanResults: 'tfplan'
         
@@ -315,7 +271,7 @@ stages:
               command: 'apply'
               workingDirectory: '$(Pipeline.Workspace)/terraform'
               environmentServiceName: '$(azureSubscription)'
-              commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "rabbitMqUser=$(rabbitMqUser)" -var "rabbitMqPass=$(rabbitMqPass)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)"  -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "environment=$(environment)"'
+              commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)"  -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "environment=$(environment)"'
               allowTelemetryCollection: true
 
           - task: TerraformCLI@0
@@ -557,16 +513,6 @@ stages:
               command: login
 
           - task: HelmDeploy@0
-            displayName: 'helm repo add rabbitmq'
-            inputs:
-              connectionType: Azure Resource Manager
-              azureSubscription: '$(azureSubscription)'
-              azureResourceGroup: '$(azureClusterResourceGroup)'
-              kubernetesCluster: '$(kubernetesCluster)'
-              command: 'repo'
-              arguments: 'azure-marketplace https://marketplace.azurecr.io/helm/v1/repo'
-
-          - task: HelmDeploy@0
             displayName: 'helm dependency update'
             inputs:
               connectionType: Azure Resource Manager
@@ -594,7 +540,6 @@ stages:
                 global.domains.api="$(domainApi)"
                 global.domains.web="$(domainWeb)"
                 global.domains.geoserver="$(domainGeoserver)"
-                global.domains.swaggerApi="$(domainSwaggerApi)"
                 global.env.name="$(Environment)"
                 global.secrets.geoserverSqlServerPassword="$(SQL_GEOSERVER_PASSWORD)"
                 global.secrets.geoserverAdminPassword="$(GEOSERVER_ADMIN_PASSWORD)"
@@ -606,11 +551,7 @@ stages:
                 global.env.sqlGeoserverUsername=$(sqlGeoserverUsername)
                 global.secrets.apiSqlPassword=$(SQL_API_PASSWORD)
                 global.secrets.sendGridApiKey="$(SendGridApiKey)"
-                global.env.rabbitMqUser=$(rabbitMqUser)
-                global.secrets.rabbitMqPass="$(rabbitMqPass)"
                 global.env.getApiSubscriptionKey=$(getApiSubscriptionKey)
-                rabbitmq.auth.username="$(rabbitMqUser)"
-                rabbitmq.auth.password="$(rabbitMqPass)"
                 api.image.tag="$(Build.BuildNumber)-$(environment)"
                 web.image.tag="$(Build.BuildNumber)-$(environment)"
                 api.image.repository="$(containerRegistry)/zybach/api"
@@ -618,6 +559,4 @@ stages:
                 global.secrets.hangfirePassword="$(HANGFIRE_PASSWORD)"
                 global.secrets.openETApiKey="$(openETApiKey)"
                 global.secrets.zybachApiKey="$(zybachApiKey)"
-                global.secrets.yoloWRIDAPIUsername="$(yoloWRIDAPIUsername)"
-                global.secrets.yoloWRIDAPIPassword="$(yoloWRIDAPIPassword)"
               force: false

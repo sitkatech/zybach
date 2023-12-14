@@ -246,9 +246,3 @@ geoserver:
     agentpool: appnodepool
   tolerations: []
   affinity: {}
-
-rabbitmq:
-  auth:
-    username: "rabbitUser"
-    password: "rabbitPass"
-    erlangCookie: "6085e2412b6fa88647466c6a81c0cea0"
