@@ -18,14 +18,11 @@ global:
     openETShapefilePath: "openETShapefilePath"
     openETApiKey: "openETApiKey"
     sendGridApiKey: "sendgridapikeyhere"
-    zybachApiKey: "zybachApiKey"
     agHubApiKey: "agHubApiKey"
     geoOptixApiKey: "geoOptixApiKey"
     influxDBToken: "influxDBToken"
     influxDBOrg: "influxDBOrg"
     influxBucket: "influxBucket"
-    zybachClientID: "zybachClientID"
-    zybachClientSecret: "zybachClientSecret"
 
 api:
   replicaCount: 1

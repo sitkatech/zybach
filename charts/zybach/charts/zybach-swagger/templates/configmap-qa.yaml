@@ -8,4 +8,6 @@ data:
   ASPNETCORE_ENVIRONMENT: "Staging"
   APPINSIGHTS_INSTRUMENTATIONKEY: "{{ .Values.global.env.appInsightsInstrumentationKey }}"
   INFLUXDB_URL: "https://us-west-2-1.aws.cloud2.influxdata.com"
+  INFLUXDB_ORG: "GeoOptix"
+  INFLUX_BUCKET: "tpnrd"
 {{ end }}

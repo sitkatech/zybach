@@ -15,6 +15,8 @@ data:
   AppAlertsEmail: "appalerts-h2o@sitkatech.com"
   SupportEmail: "support@sitkatech.com"
   INFLUXDB_URL: "https://us-west-2-1.aws.cloud2.influxdata.com"
+  INFLUXDB_ORG: "GeoOptix"
+  INFLUX_BUCKET: "tpnrd"
   GEOOPTIX_HOSTNAME: "https://tpnrd.api.geooptix.com"
   GEOOPTIX_SEARCH_HOSTNAME: "https://tpnrd.search.geooptix.com"
   AGHUB_API_BASE_URL: "https://0l5cc71ri2.execute-api.us-east-2.amazonaws.com"
@@ -29,7 +31,6 @@ data:
   OpenETAPIBaseUrl: "https://openet-api.org"
   OpenETRasterTimeSeriesMultipolygonRoute: "raster/timeseries/multipolygon"
   OpenETRasterMetadataRoute: "raster/metadata"
-  OpenETAllFilesReadyForExportRoute: "raster/export/all_files"
   OpenETRasterExportStatusRoute: "raster/export/status"
   OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "tpid"
   AllowOpenETSync: true

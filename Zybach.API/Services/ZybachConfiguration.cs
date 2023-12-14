@@ -11,13 +11,10 @@
         public string AppAlertsEmail { get; set; }
         public string SupportEmail { get; set; }
         public string APPINSIGHTS_INSTRUMENTATIONKEY { get; set; }
-        public string API_KEY_VALUE { get; set; }
         public string INFLUXDB_URL { get; set; }
         public string INFLUXDB_TOKEN { get; set; }
         public string INFLUXDB_ORG { get; set; }
         public string INFLUX_BUCKET { get; set; }
-        public string ZYBACH_CLIENT_ID { get; set; }
-        public string ZYBACH_CLIENT_SECRET { get; set; }
         public string GEOOPTIX_API_KEY { get; set; }
         public string GEOOPTIX_HOSTNAME { get; set; }
         public string GEOOPTIX_SEARCH_HOSTNAME { get; set; }
