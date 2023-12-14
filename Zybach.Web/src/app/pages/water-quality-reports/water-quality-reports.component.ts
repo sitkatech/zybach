@@ -82,14 +82,14 @@ export class WaterQualityReportsComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.Well.WellID, LinkDisplay: params.data.Well.WellRegistrationID };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
           return params.data.Well.WellRegistrationID;
         },
         filter: true,
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         resizable: true,
         sortable: true,
       },
@@ -98,7 +98,7 @@ export class WaterQualityReportsComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return params.data.Well.WellNickname;
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         sortable: true, filter: true, resizable: true,        
       },
       {
@@ -106,12 +106,12 @@ export class WaterQualityReportsComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return params.data.Well.WellParticipationName;
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'params.data.Well.WellParticipationName'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
-        sortable: true, filter: true, resizable: true,        
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
+        sortable: true, resizable: true,        
       },
       this.utilityFunctionsService.createDateColumnDef('Last Water Quality Inspection', 'LatestWaterQualityInspectionDate', 'M/d/yyyy'),
       {  

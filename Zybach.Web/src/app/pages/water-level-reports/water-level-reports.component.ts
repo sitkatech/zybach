@@ -132,7 +132,7 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.WellGroupID, LinkDisplay: params.data.WellGroupName };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/well-groups/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: params => params.data.WellGroupName
@@ -144,7 +144,7 @@ export class WaterLevelReportsComponent implements OnInit, OnDestroy {
       { 
         headerName: "Has Water Level Inspections?", 
         valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterLevelInspections),
-        filterFramework: CustomDropdownFilterComponent, filterParams: {} 
+        filter: CustomDropdownFilterComponent, filterParams: {} 
       },
       this.utilityFunctionsService.createDateColumnDef('Last Water Level Inspection', 'LatestWaterLevelInspectionDate', 'M/d/yyyy'),
       {  

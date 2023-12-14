@@ -70,7 +70,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.WaterLevelInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy h:mm a") };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/water-level-inspections/" },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1.LinkDisplay);
@@ -92,7 +92,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       this.utilityFunctionsService.createDecimalColumnDef('Measurement', 'Measurement', 120, 2),
       { 
         headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'MeasuringEquipment'
         }, 
@@ -117,7 +117,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.WaterQualityInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy") };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/water-quality-inspections/" },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1.LinkDisplay);
@@ -138,7 +138,7 @@ export class WellPermitsInspectionsTabComponent implements OnInit {
       },
       { 
         headerName: 'Inspection Type', field: 'InspectionType', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'InspectionType'
         }, 

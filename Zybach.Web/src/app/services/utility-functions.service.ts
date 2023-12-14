@@ -4,8 +4,6 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { CsvExportParams } from 'ag-grid-community';
 import { FieldDefinitionGridHeaderComponent } from '../shared/components/field-definition-grid-header/field-definition-grid-header.component';
-import { FieldDefinitionTypeEnum } from '../shared/generated/enum/field-definition-type-enum';
-import { truncate } from 'fs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +52,7 @@ export class UtilityFunctionsService {
       decimalColDef.width = width
     }
     if (fieldDefinitionTypeID) {
-      decimalColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      decimalColDef.headerComponent = FieldDefinitionGridHeaderComponent;
       decimalColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
     }
   
@@ -100,7 +98,7 @@ export class UtilityFunctionsService {
       dateColDef.width = width;
     }
     if (fieldDefinitionTypeID) {
-      dateColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      dateColDef.headerComponent = FieldDefinitionGridHeaderComponent;
       dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
     }
 
@@ -121,7 +119,7 @@ export class UtilityFunctionsService {
         suppressQuotes: false,
         fileName: fileName,
         processCellCallback: function (p) {
-          if (p.column.getColDef().cellRendererFramework) {
+          if (p.column.getColDef().cellRenderer) {
             if (p.value.DownloadDisplay) {
               return p.value.DownloadDisplay;
             } else {

@@ -60,7 +60,7 @@ export class SupportTicketListComponent implements OnInit {
   private initializeGrid(): void {
     this.columnDefs = [
       {
-        cellRendererFramework: FontAwesomeIconLinkRendererComponent,
+        cellRenderer: FontAwesomeIconLinkRendererComponent,
         cellRendererParams: { isSpan: true, fontawesomeIconName: 'trash', cssClasses: 'text-danger'},
         width: 50, sortable: false, filter: false, cellStyle: {textAlign: 'center'}
       },
@@ -69,7 +69,7 @@ export class SupportTicketListComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.SupportTicketID, LinkDisplay: params.data.SupportTicketID };
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/support-tickets/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
@@ -84,7 +84,7 @@ export class SupportTicketListComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.SupportTicketID, LinkDisplay: params.data.SupportTicketTitle };
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/support-tickets/" },
         filterValueGetter: function (params: any) {
           return params.data.SupportTicketTitle;
@@ -109,14 +109,14 @@ export class SupportTicketListComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.Well.WellID, LinkDisplay: params.data.Well.WellRegistrationID };
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         filterValueGetter: function (params: any) {
           return params.data.Well.WellRegistrationID;
         },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filter: true,
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         resizable: true,
         sortable: true
       },      
@@ -125,7 +125,7 @@ export class SupportTicketListComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.Sensor?.SensorID, LinkDisplay: params.data.Sensor?.SensorName };
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors/" },
         filterValueGetter: function (params: any) {
           return params.data.Sensor?.SensorName;
@@ -138,7 +138,7 @@ export class SupportTicketListComponent implements OnInit {
       { 
         headerName: 'Status',
         field: 'Status.SupportTicketStatusDisplayName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Status.SupportTicketStatusDisplayName'
         },
@@ -148,7 +148,7 @@ export class SupportTicketListComponent implements OnInit {
       { 
         headerName: 'Priority',
         field: 'Priority.SupportTicketPriorityDisplayName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Priority.SupportTicketPriorityDisplayName'
         },

@@ -46,7 +46,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
         {
           headerName: 'Name', valueGetter: function (params: any) {
             return { LinkValue: params.data.ReportTemplateID, LinkDisplay: params.data.DisplayName };
-          }, cellRendererFramework: LinkRendererComponent,
+          }, cellRenderer: LinkRendererComponent,
           cellRendererParams: { inRouterLink: "/reports/" },
           filterValueGetter: function (params: any) {
             return params.data.DisplayName;
@@ -66,7 +66,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
         },
         { headerName: 'Description', field: 'Description', sortable: true, filter: true, width: 400 },
         { headerName: 'Model', field: 'ReportTemplateModel.ReportTemplateModelDisplayName', 
-          filterFramework: CustomDropdownFilterComponent,
+          filter: CustomDropdownFilterComponent,
           filterParams: {
             field: 'ReportTemplateModel.ReportTemplateModelDisplayName'
           },
@@ -74,7 +74,7 @@ export class ReportsListComponent implements OnInit, OnDestroy {
         {
           headerName: 'Template File', valueGetter: function (params: any) {
             return { LinkValue: `${mainAppApiUrl}/FileResource/${params.data.FileResource.FileResourceGUID}` , LinkDisplay: params.data.FileResource.OriginalBaseFilename };
-          }, cellRendererFramework: LinkRendererComponent,
+          }, cellRenderer: LinkRendererComponent,
           cellRendererParams: { isExternalUrl: true},
           filterValueGetter: function (params: any) {
             return params.data.FileResource.OriginalBaseFilename;

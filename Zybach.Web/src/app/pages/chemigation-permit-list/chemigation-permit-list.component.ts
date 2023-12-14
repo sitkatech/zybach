@@ -76,7 +76,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         headerName: '#', valueGetter: function (params: any) {
           return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermitNumberDisplay };
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkValue;
@@ -100,7 +100,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       { headerName: 'Permitholder', field: "LatestAnnualRecord.ApplicantName", filter: true, resizable: true, sortable: true },
       { 
         headerName: 'Status', field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationPermitStatus.ChemigationPermitStatusDisplayName'
         },
@@ -129,7 +129,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       { headerName: 'TRS', field: 'LatestAnnualRecord.TownshipRangeSection', filter: true, resizable: true, sortable: true },
       { 
         headerName: 'County', field: 'County.CountyDisplayName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'County.CountyDisplayName'
         },
@@ -164,7 +164,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           },          
           { headerName: 'Inspected By', field: "LatestInspection.Inspector.FullNameLastFirst", width: 130, filter: true, resizable: true, sortable: true },
           { headerName: 'Status', field: 'LatestInspection.ChemigationInspectionStatusName', 
-            filterFramework: CustomDropdownFilterComponent,
+            filter: CustomDropdownFilterComponent,
             filterParams: {
               field: 'LatestInspection.ChemigationInspectionStatusName'
             },
@@ -175,7 +175,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
         headerName: 'Latest Annual Record',
         children: [
           { headerName: 'Year', field: 'LatestAnnualRecord.RecordYear', 
-            filterFramework: CustomDropdownFilterComponent,
+            filter: CustomDropdownFilterComponent,
             filterParams: {
               field: 'LatestAnnualRecord.RecordYear'
             },
@@ -246,7 +246,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           },
           { 
             headerName: 'Status', field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName', 
-            filterFramework: CustomDropdownFilterComponent,
+            filter: CustomDropdownFilterComponent,
             filterParams: {
               field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordStatusName'
             },
@@ -254,7 +254,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           },
           { 
             headerName: 'Fee Type', field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName', 
-            filterFramework: CustomDropdownFilterComponent,
+            filter: CustomDropdownFilterComponent,
             filterParams: {
               field: 'LatestAnnualRecord.ChemigationPermitAnnualRecordFeeTypeName'
             },
@@ -284,7 +284,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
       {
         headerName: "Nickname",
         field: "Well.WellNickname",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         width: 125,
         sortable: true, filter: true, resizable: true,        
       },
@@ -300,7 +300,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
             return { LinkValue: null, LinkDisplay: null };
           }
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkValue;
@@ -317,7 +317,7 @@ export class ChemigationPermitListComponent implements OnInit, OnDestroy {
           return params.data.Well?.WellRegistrationID;
         },
         filter: true,
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         width: 100,
         resizable: true,
         sortable: true

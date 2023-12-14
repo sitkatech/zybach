@@ -106,7 +106,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       {
         headerName: '', valueGetter: function (params: any) {
           return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
-        }, cellRendererFramework: LinkRendererComponent,
+        }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         sortable: false, filter: false, width: 100
@@ -115,25 +115,25 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         valueGetter: params => {
           return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors" },
         sortable: false, filter: false, width: 130
       },
       { 
         field: 'WellRegistrationID', 
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber, labelOverride: 'Well Number' },
       },
       {
         field: "AgHubRegisteredUser",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser, labelOverride: 'AgHub User' },
         
       },
       {
         headerName: "Field Name",
         field: "fieldName",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
       },
       {
         headerName: 'Sensor', valueGetter: function (params: any) {
@@ -143,7 +143,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             return { LinkValue: null, LinkDisplay: null };
           }
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
@@ -151,7 +151,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         },
       },
       {
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
         valueGetter: params => {
           return { 
@@ -159,7 +159,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
             LinkDisplay: params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
           }
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/support-tickets/"},
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
@@ -168,25 +168,25 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         valueGetter: (params) => params.data.LastMessageAgeInHours ? params.data.LastMessageAgeInHours : null,
         valueFormatter: params => params.value != null ? _decimalPipe.transform(params.value, '1.0-0') : '-',
         filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
       },
       this.utilityFunctionsService.createDateColumnDef('Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', null, 120),
       this.utilityFunctionsService.createDecimalColumnDef('Last Voltage Reading (mV)', 'LastVoltageReading', null, 0, true, FieldDefinitionTypeEnum.SensorLastVoltageReading),
       this.utilityFunctionsService.createDateColumnDef('Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', null, 120, FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
       { 
         headerName: 'Sensor Type', field: 'SensorTypeName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'SensorTypeName'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       },
       {
-        headerComponentFramework: FieldDefinitionGridHeaderComponent,
+        headerComponent: FieldDefinitionGridHeaderComponent,
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
         valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
           params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
       },
       { headerName: 'Latitude', field: 'Latitude' },

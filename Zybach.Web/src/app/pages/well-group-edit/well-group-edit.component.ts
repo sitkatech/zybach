@@ -106,16 +106,16 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
       { headerName: "Sensors", valueGetter: params => params.data.Sensors.map(x => x.SensorName).join(", ") },
       {
         headerName: "Owner Name", field: "OwnerName",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName },
       },
       { headerName: "Legal", field: "TownshipRangeSection" },
       {
         headerName: "Water Quality?",
         valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterQualityInspections, false),
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: { field: 'HasWaterQualityInspections' },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: { 
           fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation, 
           labelOverride: 'Has Water Quality Inspections?' 
@@ -124,9 +124,9 @@ export class WellGroupEditComponent implements OnInit, OnDestroy {
       {
         headerName: "Water Level?",
         valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.HasWaterLevelInspections, false),
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: { field: 'HasWaterLevelInspections' },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterLevelInspectionParticipation },
       },
       { headerName: "Notes", field: "Notes", width: 300 }

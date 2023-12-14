@@ -88,7 +88,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.ChemigationPermit?.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermit?.ChemigationPermitNumberDisplay };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkDisplay;
@@ -109,7 +109,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         sortable: true
       },
       { headerName: 'Permit Status', field: 'ChemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName'
         },
@@ -117,7 +117,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
       },
       { headerName: 'TRS', field: 'TownshipRangeSection', filter: true, resizable: true, sortable: true },
       { headerName: 'County', field: 'ChemigationPermit.County.CountyDisplayName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationPermit.County.CountyDisplayName',
         }, 
@@ -132,7 +132,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
         sortable: true
       },
       { headerName: 'Renewal Status', field: 'ChemigationPermitAnnualRecordStatusName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationPermitAnnualRecordStatusName'
         },
@@ -142,7 +142,7 @@ export class ChemigationPermitReportsComponent implements OnInit {
       { headerName: 'Street Address', field: 'ApplicantMailingAddress', filter: true, resizable: true, sortable: true },
       { headerName: 'City', field: 'ApplicantCity', filter: true, resizable: true, sortable: true },
       { headerName: 'State', field: 'ApplicantState',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ApplicantState'
         },
@@ -165,8 +165,8 @@ export class ChemigationPermitReportsComponent implements OnInit {
           return params.node.rowPinned ? "Total: " + params.data.NDEEAmountTotal : 
             params.data.NDEEAmount ?? '-';
         },
-        pinnedRowCellRendererFramework: CustomPinnedRowRendererComponent,
-        pinnedRowCellRendererParams: { filter: true },
+        cellRenderer: CustomPinnedRowRendererComponent,
+        cellRendererParams: { filter: true },
         filter: 'agNumberColumnFilter',
         resizable: true,
         sortable: true

@@ -37,7 +37,6 @@ import { WellDetailComponent } from './pages/well-detail/well-detail.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { WellMapPopupComponent } from './pages/well-map-popup/well-map-popup.component';
 import { createCustomElement } from '@angular/elements';
-import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { RobustReviewScenarioComponent } from './pages/robust-review-scenario/robust-review-scenario.component';
 import { SensorStatusComponent } from './pages/sensor-status/sensor-status.component';
 import { SensorStatusMapComponent } from './pages/sensor-status-map/sensor-status-map.component';
@@ -73,7 +72,6 @@ import { WellContactEditComponent } from './pages/well-contact-edit/well-contact
 import { WellParticipationEditComponent } from './pages/well-participation-edit/well-participation-edit.component';
 import { WellRegistrationIdEditComponent } from './pages/well-registration-id-edit/well-registration-id-edit.component';
 import { ClearinghouseWqiReportComponent } from './pages/clearinghouse-wqi-report/clearinghouse-wqi-report.component';
-import { NgxMaskModule } from 'ngx-mask';
 import { SensorListComponent } from './pages/sensor-list/sensor-list.component';
 import { SensorDetailComponent } from './pages/sensor-detail/sensor-detail.component';
 import { WaterLevelInspectionDetailComponent } from './pages/water-level-inspection-detail/water-level-inspection-detail.component';
@@ -108,6 +106,7 @@ import { WellGroupWaterLevelsTabComponent } from './pages/well-group-water-level
 import { WaterLevelReportsComponent } from './pages/water-level-reports/water-level-reports.component';
 import { SensorHealthCheckComponent } from './pages/sensor-health-check/sensor-health-check.component';
 import { TimeagoModule } from 'ngx-timeago';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -184,22 +183,23 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
         SharedModule.forRoot(),
         FormsModule,
         BrowserAnimationsModule,
-        AgGridModule.withComponents([]),
+        AgGridModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot({
             positionClass: "toast-top-right"
         }),
-        AngularMyDatePickerModule,
         NgSelectModule,
         ApiModule.forRoot(() => {
             return new Configuration({
                 basePath: `${environment.mainAppApiUrl}`,
             });
         }),
-        NgxMaskModule.forRoot(),
-        TimeagoModule.forRoot()
+        TimeagoModule.forRoot(),
+        NgxMaskDirective, 
+        NgxMaskPipe,
     ],
     providers: [
+        provideNgxMask(),
         CookieService,
         AppInitService,
         { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppInitService, AppInsightsService], multi: true },

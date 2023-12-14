@@ -6,7 +6,6 @@ import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { environment } from 'src/environments/environment';
-import { finalize } from 'rxjs/operators';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { OpenETSyncDto } from 'src/app/shared/generated/model/open-et-sync-dto';
@@ -102,7 +101,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
         headerName: 'Variable',
         field: 'OpenETDataType.OpenETDataTypeDisplayName',
         width: 150,
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'OpenETDataType.OpenETDataTypeDisplayName',
         },
@@ -179,7 +178,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
         }
         return null;
       },
-      cellRendererFramework: ContextMenuRendererComponent,
+      cellRenderer: ContextMenuRendererComponent,
       cellClass: "context-menu-container",
       sortable: false, filter: false,width: 100
     }

@@ -84,7 +84,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: 'Registration #', valueGetter: function (params: any) {
           return { LinkValue: params.data.WellID, LinkDisplay: params.data.WellRegistrationID };
-        }, cellRendererFramework: LinkRendererComponent,
+        }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkDisplay;
@@ -100,25 +100,25 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         filterValueGetter: function (params: any) {
           return params.data.WellRegistrationID;
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         sortable: true, filter: true, resizable: true,        
       },
       {
         headerName: "Nickname",
         field: "WellNickname",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         sortable: true, filter: true, resizable: true,        
       },
       {
         headerName: "AgHub Registered User",
         field: "AgHubRegisteredUser",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.AgHubRegisteredUser},
         sortable: true, filter: true, resizable: true
       },
       {
         headerName: "Field Name",
         field: "FieldName",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellFieldName},
         sortable: true, filter: true, resizable: true
       },      
       {
@@ -129,7 +129,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Owner Name",
         field: "OwnerName",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName},
         sortable: true, filter: true, resizable: true
       },
       {
@@ -142,11 +142,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         valueGetter: (params) => {
           return params.data.HasWaterQualityInspections ? 'Yes' : 'No';
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
         field: 'HasWaterQualityInspections'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation, labelOverride: 'Has Water Quality Inspections?'},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation, labelOverride: 'Has Water Quality Inspections?'},
         sortable: true, resizable: true
       },
       {
@@ -154,11 +154,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
         valueGetter: (params) => {
           return params.data.HasWaterLevelInspections ? 'Yes' : 'No';
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
         field: 'HasWaterLevelInspections'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterLevelInspectionParticipation},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterLevelInspectionParticipation},
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
@@ -223,7 +223,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'params.data.WellConnectedMeter'
         },
@@ -232,7 +232,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Irrigation Unit ID",
         field: "WellTPID",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.IrrigationUnitID},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.IrrigationUnitID},
         sortable: true, filter: true, resizable: true
       },
       {
@@ -244,7 +244,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'params.data.InAgHub'
         },
@@ -259,7 +259,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
             return "No"
           }
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'params.data.InGeoOptix'
         },
@@ -305,7 +305,7 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
     };
 
     if (fieldDefinitionTypeID) {
-      dateColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      dateColDef.headerComponent = FieldDefinitionGridHeaderComponent;
       dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID }
     }
 

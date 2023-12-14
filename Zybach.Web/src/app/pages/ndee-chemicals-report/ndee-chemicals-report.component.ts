@@ -49,7 +49,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Record Year',
         field: 'RecordYear',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'RecordYear'
         },
@@ -74,7 +74,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       { 
         headerName: 'Measurement Units', 
         field: 'ChemicalUnit.ChemicalUnitPluralName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemicalUnit.ChemicalUnitPluralName'
         },
@@ -86,8 +86,8 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return params.node.rowPinned ? "Total: " + params.data.AcresTreatedTotal : params.data.AcresTreated;
         },
-        pinnedRowCellRendererFramework: CustomPinnedRowRendererComponent,
-        pinnedRowCellRendererParams: { filter: true },
+        cellRenderer: CustomPinnedRowRendererComponent,
+        cellRendererParams: { filter: true },
         filter: 'agNumberColumnFilter',
         resizable: true,
         sortable: true

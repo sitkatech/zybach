@@ -74,17 +74,17 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         valueGetter: params => {
           return { LinkValue: `${params.data.WellID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells" },
         sortable: false, filter: false, width: 140
       },
       { 
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         valueGetter: params => {
           return { LinkValue: params.data.WellID, LinkDisplay: params.data.WellRegistrationID };
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: params => params.data.WellRegistrationID
@@ -92,11 +92,11 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
       {
         headerName: "Owner",
         field: "OwnerName",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName},
       },
       {
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, 
+        headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
         valueGetter: params => {
           return { 
@@ -104,7 +104,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
             LinkDisplay: params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
           }
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/support-tickets/"},
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: params => params.data.MostRecentSupportTicketID ? `#${params.data.MostRecentSupportTicketID}: ${params.data.MostRecentSupportTicketTitle}` : ''
@@ -158,7 +158,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
       {
         headerName: 'Pump Source',
         valueGetter: params => params.data.PumpingRateSource ? params.data.PumpingRateSource :  'None',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: { field: 'PumpingRateSource' }
       }
     ];
