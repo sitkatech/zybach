@@ -15,14 +15,11 @@ global:
     apiKeyValue: "apiKeyValue"
     apiSqlPassword: "passwordhere"
     hangfirePassword: "passwordhere"
-    openETShapefilePath: "openETShapefilePath"
     openETApiKey: "openETApiKey"
     sendGridApiKey: "sendgridapikeyhere"
     agHubApiKey: "agHubApiKey"
     geoOptixApiKey: "geoOptixApiKey"
     influxDBToken: "influxDBToken"
-    influxDBOrg: "influxDBOrg"
-    influxBucket: "influxBucket"
 
 api:
   replicaCount: 1
