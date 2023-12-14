@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Zybach",
-    "version": "v1"
+    "title": "Zybach.API",
+    "version": "1.0"
   },
   "paths": {
     "/chemigationInspections/inspectionTypes": {
@@ -2574,7 +2574,6 @@
         "tags": [
           "RobustReviewScenario"
         ],
-        "summary": "Comprehensive data download to support Robust Review processes",
         "responses": {
           "200": {
             "description": "Success",
@@ -2636,7 +2635,6 @@
         "tags": [
           "RobustReviewScenario"
         ],
-        "summary": "Trigger a new Robust Review Scenario GET Run",
         "responses": {
           "200": {
             "description": "Success"
@@ -2649,7 +2647,6 @@
         "tags": [
           "RobustReviewScenario"
         ],
-        "summary": "Return a list of all Robust Review Scenario Runs triggered by GWMA",
         "responses": {
           "200": {
             "description": "Success",
@@ -6175,228 +6172,6 @@
           }
         }
       }
-    },
-    "/api/wells/pumpedVolume": {
-      "get": {
-        "tags": [
-          "ZybachAPI"
-        ],
-        "summary": "Returns a time series representing pumped volume at a well or series of wells, summed daily for a given date range.\r\nEach point in the output time series represents the total pumped volume for the given day.",
-        "description": "Sample requests:\r\n            \r\n    Returns data for ALL wells from 8/1/2021 to 8/31/2021\r\n    GET /api/wells/pumpedVolume?startDate=2021-08-01&endDate=2021-08-31\r\n            \r\n    Returns data for Well Registration IDs G-056157, G-097457, G-110920 from 8/1/2021 to 8/31/2021\r\n    GET /api/wells/pumpedVolume?startDate=2021-08-01&endDate=2021-08-31&wellRegistrationID=G-056157&wellRegistrationID=G-097457&wellRegistrationID=G-110920",
-        "parameters": [
-          {
-            "name": "wellRegistrationID",
-            "in": "query",
-            "description": "The Well Registration ID(s) for the requested Well(s). If left blank, will bring back data for every Well that has reported data within the time range.",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "name": "startDate",
-            "in": "query",
-            "description": "The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "endDate",
-            "in": "query",
-            "description": "The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StructuredResultsDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/wells/{wellRegistrationID}/pumpedVolume": {
-      "get": {
-        "tags": [
-          "ZybachAPI"
-        ],
-        "summary": "Returns a time series representing pumped volume at a well, summed daily for a given date range.\r\nEach point in the output time series represents the total pumped volume for the given day.",
-        "description": "Sample request:\r\n\r\n    GET /api/wells/G-110920/pumpedVolume?startDate=2021-08-01&endDate=2021-08-31",
-        "parameters": [
-          {
-            "name": "wellRegistrationID",
-            "in": "path",
-            "description": "The Well Registration ID for the requested Well.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "startDate",
-            "in": "query",
-            "description": "The start date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "endDate",
-            "in": "query",
-            "description": "The end date for the report in yyyy-MM-dd format (eg. 2020-06-23)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/StructuredResultsDto"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/sensors/{sensorName}/migrateWaterLevelReadings/{fromWellRegistrationID}/{toWellRegistrationID}": {
-      "put": {
-        "tags": [
-          "ZybachAPI"
-        ],
-        "summary": "Migrates Influx records associated with the specified Well Pressure sensor from the first specified well to the second.",
-        "description": "Sample requests:\r\n\r\n    GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training\r\n\r\n    GET /api/sensors/PW011111/migrateWaterLevelReadings/G-022222/G-033333?bucket=Training&startDate=2020-12-31&endDate=2023-06-01",
-        "parameters": [
-          {
-            "name": "sensorName",
-            "in": "path",
-            "description": "The device number for the sensor readings to be migrated.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "fromWellRegistrationID",
-            "in": "path",
-            "description": "The registration ID for the well which the specified sensor readings should be migrated from.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "toWellRegistrationID",
-            "in": "path",
-            "description": "The registration ID for the well which the specified sensor readings should be migrated to.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "bucket",
-            "in": "query",
-            "description": "The bucket to be used for the Influx operations.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "startDate",
-            "in": "query",
-            "description": "The start date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-06-23). If no date is provided, 2018-01-01 will be used by default.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "endDate",
-            "in": "query",
-            "description": "The end date for the readings to be migrated in yyyy-MM-dd format (eg. 2022-07-01). If no date is provided, the current date will be used by default.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "integer",
-                  "format": "int32"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/sensors/pulse": {
-      "post": {
-        "tags": [
-          "ZybachAPI"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorPulseDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorPulseDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorPulseDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SensorPulseDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
     }
   },
   "components": {
@@ -7971,27 +7746,6 @@
         },
         "additionalProperties": false
       },
-      "DailySensorVolumeDto": {
-        "type": "object",
-        "properties": {
-          "SensorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementValueGallons": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "PumpingRateGallonsPerMinute": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "IsAnomalous": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
       "DistrictStatisticsDto": {
         "type": "object",
         "properties": {
@@ -8289,35 +8043,6 @@
             "type": "array",
             "items": {
               "type": "string"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "IntervalVolumeDto": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementDate": {
-            "type": "string",
-            "nullable": true
-          },
-          "MeasurementType": {
-            "type": "string",
-            "nullable": true
-          },
-          "TotalMeasurementValueGallons": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "SensorVolumes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DailySensorVolumeDto"
             },
             "nullable": true
           }
@@ -8743,24 +8468,6 @@
         },
         "additionalProperties": false
       },
-      "SensorPulseDto": {
-        "type": "object",
-        "properties": {
-          "SensorName": {
-            "type": "string",
-            "nullable": true
-          },
-          "EventMessage": {
-            "type": "string",
-            "nullable": true
-          },
-          "ReceivedDate": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
       "SensorSimpleDto": {
         "type": "object",
         "properties": {
@@ -8925,48 +8632,6 @@
           "TotalPumpedVolume": {
             "type": "number",
             "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "StructuredResults": {
-        "type": "object",
-        "properties": {
-          "IntervalCountTotal": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "IntervalStart": {
-            "type": "string",
-            "nullable": true
-          },
-          "IntervalEnd": {
-            "type": "string",
-            "nullable": true
-          },
-          "WellCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "VolumesByWell": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VolumeByWell"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "StructuredResultsDto": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "type": "string",
-            "nullable": true
-          },
-          "Result": {
-            "$ref": "#/components/schemas/StructuredResults"
           }
         },
         "additionalProperties": false
@@ -9635,33 +9300,6 @@
           },
           "PerformsChemigationInspections": {
             "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "VolumeByWell": {
-        "type": "object",
-        "properties": {
-          "WellRegistrationID": {
-            "type": "string",
-            "nullable": true
-          },
-          "IntervalCount": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "IntervalVolumes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/IntervalVolumeDto"
-            },
-            "nullable": true
-          },
-          "TotalMeasurementValueGallonsForInterval": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -11484,19 +11122,6 @@
         },
         "additionalProperties": false
       }
-    },
-    "securitySchemes": {
-      "ApiKey": {
-        "type": "apiKey",
-        "description": "ApiKey must appear in header",
-        "name": "x-api-key",
-        "in": "header"
-      }
     }
-  },
-  "security": [
-    {
-      "ApiKey": [ ]
-    }
-  ]
+  }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Zybach.API.Models
+namespace Zybach.Swagger.Models
 {
     public class VolumeByWell
     {

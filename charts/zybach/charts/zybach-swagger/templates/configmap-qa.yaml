@@ -5,7 +5,7 @@ metadata:
   name: {{ include "swagger.fullname" . }}-qa-configmap
 data:
   SECRET_PATH: "/app/secrets/zybachSwaggerSecrets"
-  DOCKER_BUILD_SOURCE: "."
   ASPNETCORE_ENVIRONMENT: "Staging"
   APPINSIGHTS_INSTRUMENTATIONKEY: "{{ .Values.global.env.appInsightsInstrumentationKey }}"
+  INFLUXDB_URL: "https://us-west-2-1.aws.cloud2.influxdata.com"
 {{ end }}

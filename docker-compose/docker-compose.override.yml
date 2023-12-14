@@ -3,7 +3,8 @@ version: '3.7'
 services:
   zybach.api:
     build:
-      dockerfile: Zybach.API/Dockerfile
+      args:
+        source: .
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -50,10 +51,27 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
 
+  zybach.swagger:
+    build:
+      args:
+        source: .
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - Kestrel__Certificates__Default__Path=/https/host.docker.internal.pfx
+      - Kestrel__Certificates__Default__Password=password#1
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - SECRET_PATH=${SWAGGER_SECRET_PATH}
+      - INFLUXDB_URL=${INFLUXDB_URL}
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
   vegarenderservice:
     container_name: zybach_vegarenderservice
     image: esacontainers.azurecr.io/vegarenderservice:latest
     environment:
       - PORT=8090
     ports:
-      - 127.0.0.1:8090:8090
+      - "8709:8080"
+      - "8710:8081"

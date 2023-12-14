@@ -1,6 +1,6 @@
 using System;
 
-namespace Zybach.API.Models
+namespace Zybach.Swagger.Models
 {
     public class DailySensorVolumeDto
     {

@@ -217,40 +217,11 @@ namespace Zybach.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zybach", Version = "v1" });
-                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-
-                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
-                {
-                    Description = "ApiKey must appear in header",
-                    Type = SecuritySchemeType.ApiKey,
-                    Name = ApiKeyAttribute.APIKEYNAME,
-                    In = ParameterLocation.Header,
-                    Scheme = "ApiKeyScheme"
-                });
-
-                var key = new OpenApiSecurityScheme()
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "ApiKey"
-                    },
-                    In = ParameterLocation.Header
-                };
-                var requirement = new OpenApiSecurityRequirement
-                {
-                    { key, new List<string>() }
-                };
-
-                c.AddSecurityRequirement(requirement);
+                // extra options here if you wanted
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
-            services.AddHealthChecks();
+            services.AddHealthChecks().AddDbContextCheck<ZybachDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

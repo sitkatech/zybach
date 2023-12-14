@@ -31,3 +31,4 @@ Zybach.Web/.vscode
 Build/secrets.ini
 .gitmodules
 
+/Zybach.Swagger/appsecrets.json

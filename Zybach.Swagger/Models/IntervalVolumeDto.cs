@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Zybach.Models.DataTransferObjects;
 
-namespace Zybach.API.Models
+namespace Zybach.Swagger.Models
 {
     public class IntervalVolumeDto
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Zybach.API.Models
+namespace Zybach.Swagger.Models
 {
     public class StructuredResults
     {
