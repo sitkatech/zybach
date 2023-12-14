@@ -5,7 +5,6 @@ metadata:
   name: {{ include "api.fullname" . }}-prod-configmap
 data:
   SECRET_PATH: "/app/secrets/zybachApiSecrets"
-  DOCKER_BUILD_SOURCE: "."
   ASPNETCORE_ENVIRONMENT: "Production"
   SITKA_EMAIL_REDIRECT: ""
   WEB_URL: "https://{{ .Values.global.domains.web }}"
