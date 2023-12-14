@@ -631,5 +631,3 @@ resource "datadog_synthetics_test" "test_web" {
 
   status = "live"
 }
-
-}
