@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[SupportTicketStatus](
 	[SupportTicketStatusID] [int] NOT NULL,
-	[SupportTicketStatusName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[SupportTicketStatusDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[SupportTicketStatusName] [varchar](50) NOT NULL,
+	[SupportTicketStatusDisplayName] [varchar](50) NOT NULL,
 	[SortOrder] [int] NOT NULL,
  CONSTRAINT [PK_SupportTicketStatus_SupportTicketStatusID] PRIMARY KEY CLUSTERED 
 (

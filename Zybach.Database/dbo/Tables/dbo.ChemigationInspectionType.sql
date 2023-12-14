@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[ChemigationInspectionType](
 	[ChemigationInspectionTypeID] [int] NOT NULL,
-	[ChemigationInspectionTypeName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ChemigationInspectionTypeDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ChemigationInspectionTypeName] [varchar](50) NOT NULL,
+	[ChemigationInspectionTypeDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_ChemigationInspectionType_ChemigationInspectionTypeID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationInspectionTypeID] ASC

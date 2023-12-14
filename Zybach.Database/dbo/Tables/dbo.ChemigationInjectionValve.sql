@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[ChemigationInjectionValve](
 	[ChemigationInjectionValveID] [int] NOT NULL,
-	[ChemigationInjectionValveName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ChemigationInjectionValveDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ChemigationInjectionValveName] [varchar](50) NOT NULL,
+	[ChemigationInjectionValveDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_ChemigationInjectionValve_ChemigationInjectionValveID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationInjectionValveID] ASC

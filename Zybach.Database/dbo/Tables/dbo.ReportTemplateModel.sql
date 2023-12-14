@@ -1,8 +1,8 @@
 CREATE TABLE [dbo].[ReportTemplateModel](
 	[ReportTemplateModelID] [int] NOT NULL,
-	[ReportTemplateModelName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ReportTemplateModelDisplayName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ReportTemplateModelDescription] [varchar](250) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ReportTemplateModelName] [varchar](100) NOT NULL,
+	[ReportTemplateModelDisplayName] [varchar](100) NOT NULL,
+	[ReportTemplateModelDescription] [varchar](250) NOT NULL,
  CONSTRAINT [PK_ReportTemplateModel_ReportTemplateModelID] PRIMARY KEY CLUSTERED 
 (
 	[ReportTemplateModelID] ASC

@@ -1,5 +1,5 @@
 CREATE TABLE [HangFire].[AggregatedCounter](
-	[Key] [nvarchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[Key] [nvarchar](100) NOT NULL,
 	[Value] [bigint] NOT NULL,
 	[ExpireAt] [datetime] NULL,
  CONSTRAINT [PK_HangFire_CounterAggregated] PRIMARY KEY CLUSTERED 

@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[Tillage](
 	[TillageID] [int] NOT NULL,
-	[TillageName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[TillageDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[TillageName] [varchar](50) NOT NULL,
+	[TillageDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_Tillage_TillageID] PRIMARY KEY CLUSTERED 
 (
 	[TillageID] ASC

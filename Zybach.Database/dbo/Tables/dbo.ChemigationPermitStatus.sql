@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[ChemigationPermitStatus](
 	[ChemigationPermitStatusID] [int] NOT NULL,
-	[ChemigationPermitStatusName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ChemigationPermitStatusDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ChemigationPermitStatusName] [varchar](50) NOT NULL,
+	[ChemigationPermitStatusDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_ChemigationPermitStatus_ChemigationPermitStatusID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationPermitStatusID] ASC

@@ -15,7 +15,7 @@ begin
 		from (
 			select WellTPID,
 				case when count(*) = 1 
-					then max(reportedValueInches) -- single polygon
+					then max(ReportedValueInches) -- single polygon
 					else sum(ReportedValueInches * IrrigationUnitArea) / sum(IrrigationUnitArea) -- multipolygon
 					end as ReportedValueInches
 			from dbo.OpenETWaterMeasurement

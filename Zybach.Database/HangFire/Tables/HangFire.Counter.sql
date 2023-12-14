@@ -1,5 +1,5 @@
 CREATE TABLE [HangFire].[Counter](
-	[Key] [nvarchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[Key] [nvarchar](100) NOT NULL,
 	[Value] [int] NOT NULL,
 	[ExpireAt] [datetime] NULL
 ) ON [PRIMARY]

@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[ChemigationPermitAnnualRecordFeeType](
 	[ChemigationPermitAnnualRecordFeeTypeID] [int] NOT NULL,
-	[ChemigationPermitAnnualRecordFeeTypeName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ChemigationPermitAnnualRecordFeeTypeDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ChemigationPermitAnnualRecordFeeTypeName] [varchar](50) NOT NULL,
+	[ChemigationPermitAnnualRecordFeeTypeDisplayName] [varchar](50) NOT NULL,
 	[FeeAmount] [money] NOT NULL,
  CONSTRAINT [PK_ChemigationPermitAnnualRecordFeeType_ChemigationPermitAnnualRecordFeeTypeID] PRIMARY KEY CLUSTERED 
 (

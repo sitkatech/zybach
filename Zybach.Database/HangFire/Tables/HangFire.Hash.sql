@@ -1,7 +1,7 @@
 CREATE TABLE [HangFire].[Hash](
-	[Key] [nvarchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[Field] [nvarchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[Value] [nvarchar](max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Key] [nvarchar](100) NOT NULL,
+	[Field] [nvarchar](100) NOT NULL,
+	[Value] [nvarchar](max) NULL,
 	[ExpireAt] [datetime2](7) NULL,
  CONSTRAINT [PK_HangFire_Hash] PRIMARY KEY CLUSTERED 
 (

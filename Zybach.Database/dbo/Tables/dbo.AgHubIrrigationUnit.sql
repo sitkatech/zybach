@@ -1,6 +1,6 @@
 CREATE TABLE [dbo].[AgHubIrrigationUnit](
 	[AgHubIrrigationUnitID] [int] IDENTITY(1,1) NOT NULL,
-	[WellTPID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[WellTPID] [varchar](100) NOT NULL,
 	[IrrigationUnitAreaInAcres] [float] NULL,
  CONSTRAINT [PK_AgHubIrrigationUnit_AgHubIrrigationUnitID] PRIMARY KEY CLUSTERED 
 (

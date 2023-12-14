@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[ChemigationInterlockType](
 	[ChemigationInterlockTypeID] [int] NOT NULL,
-	[ChemigationInterlockTypeName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ChemigationInterlockTypeDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ChemigationInterlockTypeName] [varchar](50) NOT NULL,
+	[ChemigationInterlockTypeDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_ChemigationInterlockType_ChemigationInterlockTypeID] PRIMARY KEY CLUSTERED 
 (
 	[ChemigationInterlockTypeID] ASC

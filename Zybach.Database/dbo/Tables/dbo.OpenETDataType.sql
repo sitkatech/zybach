@@ -1,8 +1,8 @@
 CREATE TABLE [dbo].[OpenETDataType](
 	[OpenETDataTypeID] [int] NOT NULL,
-	[OpenETDataTypeName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[OpenETDataTypeDisplayName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[OpenETDataTypeVariableName] [varchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[OpenETDataTypeName] [varchar](50) NOT NULL,
+	[OpenETDataTypeDisplayName] [varchar](100) NOT NULL,
+	[OpenETDataTypeVariableName] [varchar](20) NOT NULL,
  CONSTRAINT [PK_OpenETDataType_OpenETDataTypeID] PRIMARY KEY CLUSTERED 
 (
 	[OpenETDataTypeID] ASC

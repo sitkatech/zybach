@@ -1,21 +1,9 @@
 CREATE TABLE [HangFire].[State](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
-	[JobId] [bigint] NOT NULL,
-	[Name] [nvarchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[Reason] [nvarchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[JobId] [bigint] NOT NULL CONSTRAINT [FK_HangFire_State_Job] FOREIGN KEY REFERENCES [HangFire].[Job] ([Id]) ON UPDATE CASCADE ON DELETE CASCADE,
+	[Name] [nvarchar](20) NOT NULL,
+	[Reason] [nvarchar](100) NULL,
 	[CreatedAt] [datetime] NOT NULL,
-	[Data] [nvarchar](max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
- CONSTRAINT [PK_HangFire_State] PRIMARY KEY CLUSTERED 
-(
-	[JobId] ASC,
-	[Id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-
-GO
-ALTER TABLE [HangFire].[State]  WITH CHECK ADD  CONSTRAINT [FK_HangFire_State_Job] FOREIGN KEY([JobId])
-REFERENCES [HangFire].[Job] ([Id])
-ON UPDATE CASCADE
-ON DELETE CASCADE
-GO
-ALTER TABLE [HangFire].[State] CHECK CONSTRAINT [FK_HangFire_State_Job]
+	[Data] [nvarchar](max) NULL,
+	CONSTRAINT [PK_HangFire_State] PRIMARY KEY ([JobId] ASC, [Id] ASC)
+)

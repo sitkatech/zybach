@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[ContinuityMeterStatus](
 	[ContinuityMeterStatusID] [int] NOT NULL,
-	[ContinuityMeterStatusName] [varchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[ContinuityMeterStatusDisplayName] [varchar](20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[ContinuityMeterStatusName] [varchar](20) NOT NULL,
+	[ContinuityMeterStatusDisplayName] [varchar](20) NOT NULL,
  CONSTRAINT [PK_ContinuityMeterStatus_ContinuityMeterStatusID] PRIMARY KEY CLUSTERED 
 (
 	[ContinuityMeterStatusID] ASC

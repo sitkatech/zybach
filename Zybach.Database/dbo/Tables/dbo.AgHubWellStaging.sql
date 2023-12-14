@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[AgHubWellStaging](
 	[AgHubWellStagingID] [int] IDENTITY(1,1) NOT NULL,
-	[WellRegistrationID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[WellTPID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[WellRegistrationID] [varchar](100) NOT NULL,
+	[WellTPID] [varchar](100) NULL,
 	[WellGeometry] [geometry] NOT NULL,
 	[WellTPNRDPumpRate] [int] NULL,
 	[TPNRDPumpRateUpdated] [datetime] NULL,
@@ -11,8 +11,8 @@ CREATE TABLE [dbo].[AgHubWellStaging](
 	[RegisteredPumpRate] [int] NULL,
 	[RegisteredUpdated] [datetime] NULL,
 	[HasElectricalData] [bit] NOT NULL,
-	[AgHubRegisteredUser] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	[FieldName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[AgHubRegisteredUser] [varchar](100) NULL,
+	[FieldName] [varchar](100) NULL,
 	[IrrigationUnitGeometry] [geometry] NULL,
  CONSTRAINT [PK_AgHubWellStaging_AgHubWellStagingID] PRIMARY KEY CLUSTERED 
 (

@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[CropType](
 	[CropTypeID] [int] NOT NULL,
-	[CropTypeName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[CropTypeDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[CropTypeName] [varchar](50) NOT NULL,
+	[CropTypeDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_CropType_CropTypeID] PRIMARY KEY CLUSTERED 
 (
 	[CropTypeID] ASC

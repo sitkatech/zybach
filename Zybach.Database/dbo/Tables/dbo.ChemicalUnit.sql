@@ -1,8 +1,8 @@
 CREATE TABLE [dbo].[ChemicalUnit](
 	[ChemicalUnitID] [int] NOT NULL,
-	[ChemicalUnitName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	[ChemicalUnitPluralName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	[ChemicalUnitLowercaseShortName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ChemicalUnitName] [varchar](100) NULL,
+	[ChemicalUnitPluralName] [varchar](100) NULL,
+	[ChemicalUnitLowercaseShortName] [varchar](100) NULL,
  CONSTRAINT [PK_ChemicalUnit_ChemicalUnitID] PRIMARY KEY CLUSTERED 
 (
 	[ChemicalUnitID] ASC

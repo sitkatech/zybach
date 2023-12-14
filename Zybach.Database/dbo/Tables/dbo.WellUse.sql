@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[WellUse](
 	[WellUseID] [int] NOT NULL,
-	[WellUseName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[WellUseDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[WellUseName] [varchar](50) NOT NULL,
+	[WellUseDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_WellUse_WellUseID] PRIMARY KEY CLUSTERED 
 (
 	[WellUseID] ASC

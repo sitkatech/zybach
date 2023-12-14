@@ -1,8 +1,8 @@
 CREATE TABLE [dbo].[PaigeWirelessPulse](
 	[PaigeWirelessPulseID] [int] IDENTITY(1,1) NOT NULL,
 	[ReceivedDate] [datetime] NOT NULL,
-	[SensorName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[EventMessage] [varchar](max) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[SensorName] [varchar](100) NOT NULL,
+	[EventMessage] [varchar](max) NOT NULL,
  CONSTRAINT [PK_PaigeWirelessPulse_WellID] PRIMARY KEY CLUSTERED 
 (
 	[PaigeWirelessPulseID] ASC

@@ -1,6 +1,6 @@
 CREATE TABLE [dbo].[WellGroup](
 	[WellGroupID] [int] IDENTITY(1,1) NOT NULL,
-	[WellGroupName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[WellGroupName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_WellGroup_WellID] PRIMARY KEY CLUSTERED 
 (
 	[WellGroupID] ASC

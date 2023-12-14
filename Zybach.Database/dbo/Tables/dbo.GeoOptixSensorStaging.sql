@@ -1,8 +1,8 @@
 CREATE TABLE [dbo].[GeoOptixSensorStaging](
 	[GeoOptixSensorStagingID] [int] IDENTITY(1,1) NOT NULL,
-	[WellRegistrationID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[SensorName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[SensorType] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[WellRegistrationID] [varchar](100) NOT NULL,
+	[SensorName] [varchar](100) NOT NULL,
+	[SensorType] [varchar](100) NOT NULL,
  CONSTRAINT [PK_GeoOptixSensorStaging_GeoOptixSensorStagingID] PRIMARY KEY CLUSTERED 
 (
 	[GeoOptixSensorStagingID] ASC

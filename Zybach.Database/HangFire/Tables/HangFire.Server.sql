@@ -1,6 +1,6 @@
 CREATE TABLE [HangFire].[Server](
-	[Id] [nvarchar](200) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[Data] [nvarchar](max) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[Id] [nvarchar](200) NOT NULL,
+	[Data] [nvarchar](max) NULL,
 	[LastHeartbeat] [datetime] NOT NULL,
  CONSTRAINT [PK_HangFire_Server] PRIMARY KEY CLUSTERED 
 (

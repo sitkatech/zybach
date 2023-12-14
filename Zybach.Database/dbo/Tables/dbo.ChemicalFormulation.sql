@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[ChemicalFormulation](
 	[ChemicalFormulationID] [int] IDENTITY(1,1) NOT NULL,
-	[ChemicalFormulationName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	[ChemicalFormulationDisplayName] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	[ChemicalFormulationName] [varchar](100) NULL,
+	[ChemicalFormulationDisplayName] [varchar](100) NULL,
  CONSTRAINT [PK_ChemicalFormulation_ChemicalFormulationID] PRIMARY KEY CLUSTERED 
 (
 	[ChemicalFormulationID] ASC

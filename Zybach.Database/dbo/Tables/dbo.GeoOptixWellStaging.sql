@@ -1,6 +1,6 @@
 CREATE TABLE [dbo].[GeoOptixWellStaging](
 	[GeoOptixWellStagingID] [int] IDENTITY(1,1) NOT NULL,
-	[WellRegistrationID] [varchar](100) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[WellRegistrationID] [varchar](100) NOT NULL,
 	[WellGeometry] [geometry] NOT NULL,
  CONSTRAINT [PK_GeoOptixWellStaging_GeoOptixWellStagingID] PRIMARY KEY CLUSTERED 
 (

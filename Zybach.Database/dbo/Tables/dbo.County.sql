@@ -1,7 +1,7 @@
 CREATE TABLE [dbo].[County](
 	[CountyID] [int] NOT NULL,
-	[CountyName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	[CountyDisplayName] [varchar](50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	[CountyName] [varchar](50) NOT NULL,
+	[CountyDisplayName] [varchar](50) NOT NULL,
  CONSTRAINT [PK_County_CountyID] PRIMARY KEY CLUSTERED 
 (
 	[CountyID] ASC
