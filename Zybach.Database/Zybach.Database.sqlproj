@@ -202,6 +202,7 @@
     <None Include="Scripts\PreReleaseScripts\Script.PreDeployment.ReleaseScripts.sql" />
     <None Include="Scripts\ReleaseScripts\Script.PostDeployment.ReleaseScripts.sql" />
     <None Include="Scripts\Utility\Script.PostDeployment.Utility.sql" />
+    <Build Include="dbo\Procs\dbo.pTruncateWellSensorMeasurementStaging.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />

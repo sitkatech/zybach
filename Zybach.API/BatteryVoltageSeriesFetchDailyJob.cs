@@ -30,7 +30,7 @@ public class BatteryVoltageSeriesFetchDailyJob : ScheduledBackgroundJobBase<Batt
 
     private void GetDailyWellWaterLevelData(DateTime fromDate)
     {
-        _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+        _dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateWellSensorMeasurementStaging");
 
         var wellSensorMeasurements = _influxDbService.GetBatteryVoltageSeries(fromDate).Result;
         _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurements);
