@@ -5,14 +5,14 @@ Param(
 
 Import-Module .\Get-Config.psm1
 
-$config = Get-Config -iniFile $iniFile 
+$config = Get-Config -iniFile $iniFile
+$msBuildPath = $config.MsBuildFilePath
 
 $tablesFiles = Get-ChildItem -Path $config.DatabaseTablesDir -File
-$viewsFiles = Get-ChildItem -Path $config.DatabaseViewsDir -File
-$tablesAndViewsFiles = $tablesFiles + $viewsFiles
+$tablesFiles += Get-ChildItem -Path $config.DatabaseViewsDir -File
 $lookupTablesFiles = Get-ChildItem -Path $config.DatabaseLookupTablesDir -File
 
-$tablesCompared = Compare-Object -ReferenceObject ($tablesAndViewsFiles) -DifferenceObject ($lookupTablesFiles) -Property BaseName  | Where-Object{$_.sideIndicator -eq "<="}
+$tablesCompared = Compare-Object -ReferenceObject ($tablesFiles) -DifferenceObject ($lookupTablesFiles) -Property BaseName  | Where-Object{$_.sideIndicator -eq "<="}
 
 $tablesComparedName = $tablesCompared.BaseName
 
@@ -30,24 +30,28 @@ if ($csProj)
 {
   "Build POCO Generator"
   Import-Module .\Invoke-MsBuild.psm1
-    
-  $result = Invoke-MsBuild -Path $config.EFPocoGeneratorCSProj -MsBuildParameters "/restore"
 
-  Write-Host "Build Succeeded: " $result.BuildSucceeded
+  if ([string]::IsNullOrEmpty($msBuildPath)) {
+    $result = Invoke-MsBuild -Path $config.EFPocoGeneratorCSProj -MsBuildParameters "/restore"
+  }
+  else {
+    $result = Invoke-MsBuild -MsBuildFilePath $msBuildPath -Path $config.EFPocoGeneratorCSProj -MsBuildParameters "/restore"
+  }
+  Write-Output "Build Succeeded: " $result.BuildSucceeded
 }
 
 $path = $config.EFPocoGeneratorExePath
 if ($path)
 {
   "Generate POCOs"
-  $args = "--db-server-name=" + $config.Server + " --db-name=" + $config.DatabaseName + " --generate-simple-dtos=true --csharp-dto-namespace=" + $config.ApiModelsNamespace + " --code-namespace=" + $config.ApiEFModelsNamespace + " --api-efmodels-output-dir=" + $config.ApiEFModelExtensionMethodsPath + " --api-models-output-dir=" + $config.ApiModelsPath + " --table-exclude-list=" + $config.TableExcludeList + " --enum-list=" + ($lookupTablesFiles.BaseName -join ",") + " --typescript-enums-output-dir=" + $config.TypescriptEnumsPath
+  $args1 = "--db-server-name=" + $config.Server + " --db-name=" + $config.DatabaseName + " --generate-simple-dtos=true --csharp-dto-namespace=" + $config.ApiModelsNamespace + " --code-namespace=" + $config.ApiEFModelsNamespace + " --api-efmodels-output-dir=" + $config.ApiEFModelExtensionMethodsPath + " --api-models-output-dir=" + $config.ApiModelsPath + " --table-exclude-list=" + $config.TableExcludeList + " --enum-list=" + ($lookupTablesFiles.BaseName -join ",") + " --typescript-enums-output-dir=" + $config.TypescriptEnumsPath
 
   $pinfo = New-Object System.Diagnostics.ProcessStartInfo
   $pinfo.FileName = "$PSScriptRoot\$path"
   $pinfo.RedirectStandardError = $true
   $pinfo.RedirectStandardOutput = $true
   $pinfo.UseShellExecute = $false
-  $pinfo.Arguments = $args
+  $pinfo.Arguments = $args1
   $pinfo.WorkingDirectory = "$PSScriptRoot\"
   $p = New-Object System.Diagnostics.Process
   $p.StartInfo = $pinfo
@@ -55,7 +59,7 @@ if ($path)
   $stdout = $p.StandardOutput.ReadToEnd()
   $stderr = $p.StandardError.ReadToEnd()
   $p.WaitForExit()
-  Write-Host $stdout
-  Write-Host "Errors: $stderr"
-  Write-Host "Exit Code: " $p.ExitCode
+  Write-Output $stdout
+  Write-Output "Errors: $stderr"
+  Write-Output "Exit Code: " $p.ExitCode
 }

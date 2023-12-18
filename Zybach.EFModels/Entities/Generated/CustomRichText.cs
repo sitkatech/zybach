@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Zybach.EFModels.Entities
+namespace Zybach.EFModels.Entities;
+
+[Table("CustomRichText")]
+public partial class CustomRichText
 {
-    [Table("CustomRichText")]
-    public partial class CustomRichText
-    {
-        [Key]
-        public int CustomRichTextID { get; set; }
-        public int CustomRichTextTypeID { get; set; }
-        [Unicode(false)]
-        public string CustomRichTextContent { get; set; }
-    }
+    [Key]
+    public int CustomRichTextID { get; set; }
+
+    public int CustomRichTextTypeID { get; set; }
+
+    [Unicode(false)]
+    public string CustomRichTextContent { get; set; }
 }
