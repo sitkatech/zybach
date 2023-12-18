@@ -1,0 +1,4 @@
+[submodule "Build/efcorepocogenerator"]
+	path = Build/efcorepocogenerator
+	url = https://github.com/sitkatech/efcorepocogenerator.git
+	branch = withfulldtos
