@@ -79,6 +79,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         sortable: false, filter: false, width: 140
       },
       { 
+        headerName: "Well Registration #",
         headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         valueGetter: params => {
@@ -96,6 +97,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName},
       },
       {
+        headerName: "Active Support Ticket",
         headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
         valueGetter: params => {
