@@ -8,7 +8,7 @@
 }
 
 .nav-link {
-  font-weight: $header-nav-link-font-weight;
+  fw: $header-nav-link-fw;
 }
 
 // Add Abbr color
@@ -96,7 +96,7 @@ a:hover {
 
 .card-header
 {
-  font-weight: bold;
+  fw: bold;
 }
 
 .btn-zybach

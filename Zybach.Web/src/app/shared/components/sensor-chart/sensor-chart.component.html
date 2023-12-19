@@ -32,7 +32,7 @@
   </div>
   <div class="row mb-1 mt-2">
     <div class="input-group col-6">
-      <span class="font-weight-bold mt-1 mx-2">Start Date:</span>
+      <span class="fw-bold mt-1 mx-2">Start Date:</span>
       <div class="input-group">
         <input class="form-control" name="d1" ngbDatepicker #d1="ngbDatepicker" placeholder="yyyy-mm-dd"
           (ngModelChange)="onStartDateChanged($event)" [(ngModel)]="startDate" />
@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="input-group col-6">
-      <span class="font-weight-bold mt-1 mx-2">End Date:</span>
+      <span class="fw-bold mt-1 mx-2">End Date:</span>
       <div class="input-group">
         <input class="form-control" name="d2" ngbDatepicker #d2="ngbDatepicker" placeholder="yyyy-mm-dd"
           (ngModelChange)="onEndDateChanged($event)" [(ngModel)]="endDate" />
