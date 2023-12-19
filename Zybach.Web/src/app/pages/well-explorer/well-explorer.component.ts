@@ -143,11 +143,11 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           return params.data.HasWaterQualityInspections ? 'Yes' : 'No';
         },
         filter: CustomDropdownFilterComponent,
-        filterParams: {
-        field: 'HasWaterQualityInspections'
+        filterValueGetter: function (params: any) {
+          return params.data.HasWaterQualityInspections ? 'Yes' : 'No';
         },
         headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterQualityInspectionParticipation, labelOverride: 'Has Water Quality Inspections?'},
-        sortable: true, resizable: true
+        sortable: true, resizable: true, width: 250
       },
       {
         headerName: "Water Level?", field: 'HasWaterLevelInspections',
@@ -155,11 +155,9 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
           return params.data.HasWaterLevelInspections ? 'Yes' : 'No';
         },
         filter: CustomDropdownFilterComponent,
-        filterParams: {
-        field: 'HasWaterLevelInspections'
-        },
+        filterValueGetter: (params) => { return params.data.HasWaterLevelInspections ? 'Yes' : 'No'; },
         headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellWaterLevelInspectionParticipation},
-        sortable: true, resizable: true
+        sortable: true, resizable: true, width: 250
       },
       this.createDateColumnDef(datePipe, 'Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
       this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
@@ -217,16 +215,10 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "Well Connected Meter?",
         valueGetter: function (params) {
-          if (params.data.WellConnectedMeter) {
-            return "Yes";
-          } else {
-            return "No";
-          }
+          return params.data.WellConnectedMeter ? 'Yes' : 'No';
         },
         filter: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'params.data.WellConnectedMeter'
-        },
+        filterValueGetter: (params) => { return params.data.WellConnectedMeter ? 'Yes' : 'No'; },
         sortable: true, resizable: true
       },
       {
@@ -238,31 +230,19 @@ export class WellExplorerComponent implements OnInit, OnDestroy {
       {
         headerName: "In AgHub?",
         valueGetter: function (params) {
-          if (params.data.InAgHub) {
-            return "Yes"
-          } else {
-            return "No"
-          }
+          return params.data.InAgHub ? 'Yes' : 'No';
         },
         filter: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'params.data.InAgHub'
-        },
+        filterValueGetter: (params) => { return params.data.InAgHub ? 'Yes' : 'No'; },
         sortable: true, resizable: true
       },
       {
         headerName: "In GeoOptix?",
         valueGetter: function (params) {
-          if (params.data.InGeoOptix) {
-            return "Yes"
-          } else {
-            return "No"
-          }
+          return params.data.InGeoOptix ? 'Yes' : 'No';
         },
         filter: CustomDropdownFilterComponent,
-        filterParams: {
-          field: 'params.data.InGeoOptix'
-        },
+        filterValueGetter: (params) => { return params.data.InGeoOptix ? 'Yes' : 'No'; },
         sortable: true, resizable: true
       },
       this.createDateColumnDef(datePipe, 'Last Fetched from AgHub', 'FetchDate', 'M/d/yyyy')
