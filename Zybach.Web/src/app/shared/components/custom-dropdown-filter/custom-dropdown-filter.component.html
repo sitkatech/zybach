@@ -7,7 +7,7 @@
     </div>
     <div id="filter-options" class="pt-2 pl-2">
         <div *ngFor="let element of getDropdownValues()">
-            <input type="checkbox" name="{{element}}" [(ngModel)]="state[element]" (ngModelChange)="updateFilter()" checked>
+            <input type="checkbox" name="{{element}}" [(ngModel)]="state.filterOptions[element]" (ngModelChange)="updateFilter()" checked>
             <label for="{{element}}" class="ml-2">{{element}}</label>
         </div>
     </div>

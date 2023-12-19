@@ -151,6 +151,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         },
       },
       {
+        headerName:"Active Support Ticket",
         headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
         valueGetter: params => {
@@ -182,12 +183,16 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       },
       {
+        headerName: "Always On/Off",
         headerComponent: FieldDefinitionGridHeaderComponent,
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
         valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
           params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
         filter: CustomDropdownFilterComponent,
-        filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
+        filterValueGetter: function (params: any) {
+          return params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ? 
+            params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A'
+        },
       },
       { headerName: 'Latitude', field: 'Latitude' },
       { headerName: 'Longitude', field: 'Longitude' }

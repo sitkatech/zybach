@@ -32,7 +32,7 @@ namespace Zybach.API
 
         private void GetDailyWellContinuityMeterData(DateTime fromDate)
         {
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+            _dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateWellSensorMeasurementStaging");
 
             var wellSensorMeasurementStagings = _influxDbService.GetContinuityMeterSeries(fromDate).Result;
             var pumpingRates = _dbContext.AgHubWells.Include(x => x.Well).ToList().ToDictionary(x => x.Well.WellRegistrationID, x =>

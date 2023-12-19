@@ -33,8 +33,8 @@ namespace Zybach.API
         private void GetDailyWellFlowMeterData()
         {
             // first delete all from the tables
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.GeoOptixWellStaging");
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.GeoOptixSensorStaging");
+            _dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateGeoOptixWellStaging");
+            _dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateGeoOptixSensorStaging");
 
 
             var geoOptixSites = _geoOptixService.GetGeoOptixSites().Result;
