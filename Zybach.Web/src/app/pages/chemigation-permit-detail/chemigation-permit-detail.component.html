@@ -34,7 +34,7 @@
     </div>
 
     <div class="col-12">
-        <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-right" role="button" data-toggle="dropdown" 
+        <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-right" role="button" data-bs-toggle="dropdown" 
             aria-haspopup="true" aria-expanded="false">
             Other Actions
         </a>
@@ -370,7 +370,7 @@
                                 <nav>
                                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                         <a [ngClass]="{'nav-link': true, 'active': isFirst}" *ngFor="let inspection of getInspections(); first as isFirst"
-                                            id="inspection-{{inspection.ChemigationInspectionID}}" data-toggle="tab" 
+                                            id="inspection-{{inspection.ChemigationInspectionID}}" data-bs-toggle="tab" 
                                             href="#nav-inspection-{{inspection.ChemigationInspectionID}}" role="tab">
                                             <strong>{{inspection.InspectionDate | date:'shortDate'}} - {{inspection.ChemigationInspectionStatusName}}</strong>
                                         </a>
