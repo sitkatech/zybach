@@ -74,12 +74,12 @@
             <div class="col-sm">
                 <i class="fas fa-bolt"></i> Required field
             </div>
-            <div class="col-sm text-right">
+            <div class="col-sm text-end">
                 <button type="submit" class="btn btn-zybach" [disabled]="!newReportTemplateForm.form.valid || isLoadingSubmit || !requiredFileIsUploaded || displayFileErrors">
                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                     Save
                 </button>
-                <a class="btn btn-secondary ml-1" routerLink="/reports">Cancel</a>
+                <a class="btn btn-secondary ms-1" routerLink="/reports">Cancel</a>
             </div>
         </div>
     </form>

@@ -45,10 +45,10 @@
                 <label class="required"><strong>Does Well Group participate in Water Level Program?</strong></label>
             </div>
             <div class="col-md-8">
-                <label class="ml-2">
+                <label class="ms-2">
                     <input type="radio" name="hasPrimaryWell" [(ngModel)]="hasPrimaryWell" [value]="true"> Yes
                 </label>
-                  <label class="ml-2">
+                  <label class="ms-2">
                     <input type="radio" name="hasPrimaryWell" [(ngModel)]="hasPrimaryWell" [value]="false"> No
                 </label>
             </div>
@@ -58,7 +58,7 @@
             <div class="col-auto control-label">
                 <label class="required"><strong>Select Associated Wells</strong></label>
             </div>
-            <div class="col-auto ml-auto">
+            <div class="col-auto ms-auto">
                 <fresca-clear-grid-filters-button [grid]="selectWellsGrid"></fresca-clear-grid-filters-button>
             </div>
         </div>
@@ -84,9 +84,9 @@
 
         <div class="row mt-4">
             <div class="col-auto"><i class="fas fa-bolt"></i> Required field</div>
-            <div class="col-auto ml-auto">
-                <button class="btn btn-zybach mr-1" click="launchPrimaryWellModal()">Save</button>
-                <a class="btn btn-secondary ml-1" routerLink="..">Cancel</a>
+            <div class="col-auto ms-auto">
+                <button class="btn btn-zybach me-1" click="launchPrimaryWellModal()">Save</button>
+                <a class="btn btn-secondary ms-1" routerLink="..">Cancel</a>
             </div>
         </div>
     </form>

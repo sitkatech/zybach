@@ -15,19 +15,19 @@
 <ng-template #timeSeriesTemplate>
   <div class="row mb-1 mt-2">
     <div class="col">
-      <button (click)="lastThirtyDays($event)" class="btn btn-zybach mr-2 mb-2">
+      <button (click)="lastThirtyDays($event)" class="btn btn-zybach me-2 mb-2">
         Last 30 Days
       </button>
-      <button (click)="lastSixMonths($event)" class="btn btn-zybach mr-2 mb-2">
+      <button (click)="lastSixMonths($event)" class="btn btn-zybach me-2 mb-2">
         6 Months
       </button>
-      <button (click)="lastOneYear($event)" class="btn btn-zybach mr-2 mb-2">
+      <button (click)="lastOneYear($event)" class="btn btn-zybach me-2 mb-2">
         One Year
       </button>
-      <button (click)="fullDateRange($event)" class="btn btn-zybach mr-2 mb-2">
+      <button (click)="fullDateRange($event)" class="btn btn-zybach me-2 mb-2">
         Full Range
       </button>
-      <a *ngIf="!noTimeSeriesData" class="btn btn btn-zybach float-right" (click)="exportChartData()"><span class="fas fa-download"></span> Download CSV</a>
+      <a *ngIf="!noTimeSeriesData" class="btn btn btn-zybach float-end" (click)="exportChartData()"><span class="fas fa-download"></span> Download CSV</a>
     </div>
   </div>
   <div class="row mb-1 mt-2">

@@ -24,7 +24,7 @@
 
     <div class="row mt-2">
 
-        <div class="card ml-4">
+        <div class="card ms-4">
             <div class="card-header">
                 Well Registration ID
             </div>
@@ -33,24 +33,24 @@
                 
                     <div class="row col-12 mt-4 text-center">
 
-                            <div class="col-6 control-label text-right mb-2">
+                            <div class="col-6 control-label text-end mb-2">
                                 <label><strong>
                                     <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
                                     </field-definition>
                                 </strong></label>
                             </div>
-                            <div class="col-6 text-left mb-2">
+                            <div class="col-6 text-start mb-2">
                                 <input type="text" class="form-control" name="WellRegistrationID"
                                 [(ngModel)]="newWellRegistrationIDDto.WellRegistrationID" />
                             </div>
 
         
-                            <div class="col-12 text-right mt-3 mr-3">
-                                <button type="submit" class="btn btn-zybach mr-1">
+                            <div class="col-12 text-end mt-3 me-3">
+                                <button type="submit" class="btn btn-zybach me-1">
                                     <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                                     Save
                                 </button>
-                                <a class="btn btn-secondary ml-1"
+                                <a class="btn btn-secondary ms-1"
                                     routerLink="/wells/{{wellID}}">
                                     Cancel
                                 </a>

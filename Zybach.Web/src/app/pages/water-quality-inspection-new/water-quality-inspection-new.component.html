@@ -31,16 +31,16 @@
         [(inspection)]="inspection">
         </zybach-water-quality-inspection-upsert >
 
-        <div class="col-12 text-right mt-3 mr-3">
-            <div class="col-sm text-left float-right">
+        <div class="col-12 text-end mt-3 me-3">
+            <div class="col-sm text-start float-end">
                 <i class="fas fa-bolt"></i> Required field
             </div>
-            <button type="submit" class="btn btn-zybach mr-1"
+            <button type="submit" class="btn btn-zybach me-1"
                 [disabled]="isFormValid(addWaterQualityInspectionForm)">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                 Save
             </button>
-            <a class="btn btn-secondary ml-1"
+            <a class="btn btn-secondary ms-1"
                 routerLink="..">
                 Cancel
             </a>

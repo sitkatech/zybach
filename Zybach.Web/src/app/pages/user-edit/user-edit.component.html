@@ -36,9 +36,9 @@
             <label class="required">Should Receive System Communications?</label>
           </div>
           <div class="col-sm-10">
-            <label class="ml-2"><input type="radio" name="ReceiveSupportEmails"
+            <label class="ms-2"><input type="radio" name="ReceiveSupportEmails"
               [(ngModel)]="model.ReceiveSupportEmails" [value]="true"> Yes</label>
-            <label class="ml-2"><input type="radio" name="ReceiveSupportEmails"
+            <label class="ms-2"><input type="radio" name="ReceiveSupportEmails"
               [(ngModel)]="model.ReceiveSupportEmails" [value]="false"> No</label>
           </div>
         </div>
@@ -48,9 +48,9 @@
             <label class="required">Performs Chemigation Inspections?</label>
           </div>
           <div class="col-sm-10">
-            <label class="ml-2"><input type="radio" name="PerformsChemigationInspections"
+            <label class="ms-2"><input type="radio" name="PerformsChemigationInspections"
               [(ngModel)]="model.PerformsChemigationInspections" [value]="true"> Yes</label>
-            <label class="ml-2"><input type="radio" name="PerformsChemigationInspections"
+            <label class="ms-2"><input type="radio" name="PerformsChemigationInspections"
               [(ngModel)]="model.PerformsChemigationInspections" [value]="false"> No</label>
           </div>
         </div>
@@ -60,12 +60,12 @@
         <div class="col-sm">
           <i class="fas fa-bolt"></i> Required field
         </div>
-        <div class="col-sm text-right">
+        <div class="col-sm text-end">
           <button type="submit" class="btn btn-zybach" [disabled]="!editUserForm.form.valid || isLoadingSubmit">
             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
             Submit
           </button>
-          <a class="btn btn-secondary ml-1" routerLink="/users/{{user?.UserID}}">Cancel</a>
+          <a class="btn btn-secondary ms-1" routerLink="/users/{{user?.UserID}}">Cancel</a>
         </div>
       </div>
     </form>

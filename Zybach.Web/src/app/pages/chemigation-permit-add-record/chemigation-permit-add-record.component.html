@@ -33,36 +33,36 @@
                     <div class="card-body">
                         <div class="row col-12">
                             <div class="row col-6 mt-4">
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label><strong>
                                         <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
                                         </field-definition>: 
                                     </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     <a *ngIf="chemigationPermit.Well" routerLink="/wells/{{chemigationPermit.Well.WellID}}">{{chemigationPermit.Well.WellRegistrationID}}</a>
                                 </div>
 
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label><strong>Permit Status: </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     {{chemigationPermit.ChemigationPermitStatus.ChemigationPermitStatusDisplayName}}
                                 </div>
                             </div>
 
                             <div class="row col-6 mt-4">
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label><strong>Renewal Year: </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     {{model.RecordYear}}
                                 </div>
 
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label><strong>County: </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     {{chemigationPermit.County.CountyDisplayName}}
                                 </div>
 
@@ -92,15 +92,15 @@
                 </div>
 
                 <div class="row col-12 mt-4">
-                    <div class="col-sm text-left">
+                    <div class="col-sm text-start">
                         <i class="fas fa-bolt"></i> Required field
                     </div>
-                    <div class="col-sm text-right">
+                    <div class="col-sm text-end">
                         <button type="submit" class="btn btn-zybach">
                             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                             Save
                         </button>
-                        <a class="btn btn-secondary ml-1"
+                        <a class="btn btn-secondary ms-1"
                             routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">
                             Cancel
                         </a>

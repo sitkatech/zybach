@@ -33,7 +33,7 @@
             <div class="card">
                 <div class="card-header align-items-center">
                     Ticket Details
-                    <div class="float-right">
+                    <div class="float-end">
                         <a class="btn btn-zybach btn-sm"
                             routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
                             <span class="fas fa-edit"></span> Edit
@@ -121,7 +121,7 @@
             <div class="card">
                 <div class="card-header align-items-center">
                     Comments
-                    <div class="float-right">
+                    <div class="float-end">
                         <a class="btn btn-zybach btn-sm"
                             routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
                             <span class="fas fa-plus"></span> Add Comment
@@ -171,7 +171,7 @@
         
                     <ng-container *ngFor="let notification of notifications; let last = last">
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>Date:</strong></p>
                             </div>
                             <div class="col-9">
@@ -179,7 +179,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>To/CC:</strong></p>
                             </div>
                             <div class="col-9">
@@ -187,7 +187,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>Subject:</strong></p>
                             </div>
                             <div class="col-9">
@@ -195,7 +195,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>Body:</strong></p>
                             </div>
                             <div class="col-9" [innerHtml]="notification.EmailBody">

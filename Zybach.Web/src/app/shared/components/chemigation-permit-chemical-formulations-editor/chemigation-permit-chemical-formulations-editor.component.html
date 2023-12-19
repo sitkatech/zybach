@@ -4,48 +4,48 @@
 </p>
 <form #chemicalFormulationsForm="ngForm">
     <div class="row col-10" *ngIf="model.length > 0">
-        <div class="col-4 control-label text-left mb-2">
+        <div class="col-4 control-label text-start mb-2">
             <label class="required"><strong>Formulation: </strong></label>
         </div>
 
-        <div class="col-2 control-label text-left mb-2">
+        <div class="col-2 control-label text-start mb-2">
             <label class="required"><strong>Total Applied: </strong></label>
         </div>
 
-        <div class="col-2 control-label text-left mb-2">
+        <div class="col-2 control-label text-start mb-2">
             <label class="required"><strong>Unit: </strong></label>
         </div>
 
-        <div class="col-2 control-label text-left mb-2">
+        <div class="col-2 control-label text-start mb-2">
             <label class="required"><strong>Acres Treated: </strong></label>
         </div>
     </div>
     <div class="row col-10" *ngFor="let chemicalPermitAnnualRecordChemicalFormulation of model; let index = index">
-        <div class="col-4 text-left mb-2">
+        <div class="col-4 text-start mb-2">
             <ng-select [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalFormulationID"
                 [items]="chemicalFormulations" bindLabel="ChemicalFormulationDisplayName" bindValue="ChemicalFormulationID" 
                 placeholder="Choose One" name="ChemicalFormulationID-{{index}}" required>
             </ng-select>
         </div>
 
-        <div class="col-2 text-left mb-2">
+        <div class="col-2 text-start mb-2">
             <input type="number" step=".1" class="form-control" name="TotalApplied-{{index}}" required
                 [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.TotalApplied" />
         </div>
 
-        <div class="col-2 text-left mb-2">
+        <div class="col-2 text-start mb-2">
             <ng-select [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.ChemicalUnitID"
             [items]="chemicalUnits" bindLabel="ChemicalUnitPluralName" bindValue="ChemicalUnitID" 
             placeholder="Choose One" name="ChemicalUnitID-{{index}}" required>
             </ng-select>
         </div>
 
-        <div class="col-2 text-left mb-2">
+        <div class="col-2 text-start mb-2">
             <input type="number" step=".1" class="form-control" name="AcresTreated-{{index}}" required 
                 [(ngModel)]="chemicalPermitAnnualRecordChemicalFormulation.AcresTreated" />
         </div>
 
-        <div class="col-2 text-left mb-2">
+        <div class="col-2 text-start mb-2">
             <button type="button" class="btn btn-zybach" (click)="deleteRow(chemicalPermitAnnualRecordChemicalFormulation)">
                 <span class="fa fa-trash"></span>
                 Delete Row
@@ -53,7 +53,7 @@
         </div>
     </div>
 </form>
-<div class="row ml-3 mt-2">
+<div class="row ms-3 mt-2">
     <button type="button" class="btn btn-zybach" (click)="addRow()">
         <span class="fa fa-plus"></span>
         Add New Chemical

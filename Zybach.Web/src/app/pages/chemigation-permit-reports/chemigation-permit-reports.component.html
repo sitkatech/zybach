@@ -8,9 +8,9 @@
     </div>
     <div class="row">
         <div class="container col-12">
-            <div class="col-4 float-left ml-2">
+            <div class="col-4 float-start ms-2">
                 <div class="row align-items-center">
-                    <span class="far fa-calendar mr-2"> </span>
+                    <span class="far fa-calendar me-2"> </span>
                     <zybach-water-year-select [(selectedYear)]="yearToDisplay"
                         (selectedYearChange)="updateAnnualData()" [(allYearsSelected)]="allYearsSelected"
                         (allYearsSelectedChange)="updateAnnualData()"
@@ -18,24 +18,24 @@
                     </zybach-water-year-select>
                 </div>
             </div>
-            <div class="row ml-2 mb-2">
+            <div class="row ms-2 mb-2">
                 <div class="col">
-                    <button (click)="generateReport()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-md float-right"
+                    <button (click)="generateReport()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-md float-end"
                         placement="top"
                         ngbTooltip="Generate Chemigation Permit Annual Renewal Forms">
                         <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                         Generate Renewal Forms
                     </button>
-                    <select name="ReportTemplateID" class="form-control mr-3 float-right mb-2" style="width:auto; min-width: 100px;" 
+                    <select name="ReportTemplateID" class="form-control me-3 float-end mb-2" style="width:auto; min-width: 100px;" 
                         *ngIf="modelHasMultipleTemplates()" [(ngModel)]="selectedReportTemplateID" required>
                         <option value="undefined" disabled>Select a Report Template</option>
                         <option *ngFor="let reportTemplate of reportTemplates" [value]="reportTemplate.ReportTemplateID">
                             {{reportTemplate.DisplayName}}
                         </option>
                     </select>
-                    <a class="btn btn-secondary btn-md float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    <a class="btn btn-secondary btn-md float-end me-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
                     ngbTooltip="Download Report as CSV"><i class="fas fa-download"></i></a>
-                    <fresca-clear-grid-filters-button class="float-right mr-2" [grid]="chemigationPermitReportGrid">
+                    <fresca-clear-grid-filters-button class="float-end me-2" [grid]="chemigationPermitReportGrid">
                     </fresca-clear-grid-filters-button>
                 </div>
             </div>

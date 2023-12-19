@@ -10,11 +10,11 @@
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
-                    <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/support-tickets/new"
+                    <a class="btn btn-zybach btn-md me-3 float-end" routerLink="/support-tickets/new"
                     ngbTooltip="Create New Support Ticket"><span class="fas fa-plus"></span> New Support Ticket </a>
-                    <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    <button class="btn btn-secondary btn-md float-end me-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
                     ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-                    <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="supportTicketGrid">
+                    <fresca-clear-grid-filters-button class="me-3 float-end" [grid]="supportTicketGrid">
                     </fresca-clear-grid-filters-button>
                 </div>
             </div>
