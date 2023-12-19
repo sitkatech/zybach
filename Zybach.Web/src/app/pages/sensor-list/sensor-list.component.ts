@@ -91,7 +91,7 @@ export class SensorListComponent implements OnInit {
       headerName: 'Sensor Type', field: 'SensorTypeName',
       filter: CustomDropdownFilterComponent,
       filterParams: {
-      field: 'SensorTypeName'
+        field: 'SensorTypeName'
       },
       headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       resizable: true, sortable: true, width: 120
@@ -102,8 +102,8 @@ export class SensorListComponent implements OnInit {
         return params.data.IsActive ? "Enabled" : "Disabled";
       },
       filter: CustomDropdownFilterComponent,
-      filterParams: {
-      field: 'IsActive'
+      filterValueGetter: function (params: any) {
+        return params.data.IsActive ? "Enabled" : "Disabled";
       },
       headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorStatus },
       resizable: true, sortable: true, width: 120
@@ -127,7 +127,10 @@ export class SensorListComponent implements OnInit {
          params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
       sortable: true, resizable: true,
       filter: CustomDropdownFilterComponent,
-      filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
+      filterValueGetter: function (params: any) {
+        return params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ? 
+          params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A'
+      },
     },
     this.createDateColumnDef(datePipe, 'Retirement Date', 'RetirementDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorRetirementDate),
     {
