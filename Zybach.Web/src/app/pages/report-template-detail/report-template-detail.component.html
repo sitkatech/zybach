@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb" *ngIf="reportTemplate">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item" aria-current="page">
             <a routerLink="/reports" *ngIf="currentUserIsAdmin()">Report Center</a>
             <span *ngIf="!currentUserIsAdmin()">Report Center</span>
