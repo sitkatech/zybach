@@ -29,8 +29,13 @@ abbr[data-original-title] {
   color: #474D52;
 }
 
+a:link {
+  text-decoration: none;
+}
+
 // Maintain link color on hover
 a:hover {
+  text-decoration: underline;
   color: #205c90;
 }
 
