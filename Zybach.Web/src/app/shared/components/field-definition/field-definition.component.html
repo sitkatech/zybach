@@ -45,7 +45,7 @@
                 {{labelTextWithoutLastWord}}
                 <span style="white-space:nowrap">
                     {{labelTextLastWord}}
-                    <i class="fas fa-question-circle small" (mouseenter)="notEditingMouseEnter()" (mouseleave)="notEditingMouseLeave()" style="cursor: help;" #p="ngbPopover" [ngbPopover]="popContent"
+                    <i class="fas fa-question-circle small" (mouseenter)="notEditingMouseEnter()" (mouseleave)="notEditingMouseLeave()" style="cursor: help;" [placement]="['bottom','right','left','auto']" #p="ngbPopover" [ngbPopover]="popContent"
                     [popoverTitle]="popTitle" triggers="manual" [autoClose]="false" popoverClass="popover-override"
                     container="body">
                 </i>
