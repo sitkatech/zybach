@@ -8,7 +8,6 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { ChemigationPermitAnnualRecordDto } from 'src/app/shared/generated/model/chemigation-permit-annual-record-dto';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { LinkRendererComponent } from 'src/app/shared/components/ag-grid/link-renderer/link-renderer.component';
-import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { ReportService } from 'src/app/shared/generated/api/report.service';
@@ -165,8 +164,6 @@ export class ChemigationPermitReportsComponent implements OnInit {
           return params.node.rowPinned ? "Total: " + params.data.NDEEAmountTotal : 
             params.data.NDEEAmount ?? '-';
         },
-        cellRenderer: CustomPinnedRowRendererComponent,
-        cellRendererParams: { filter: true },
         filter: 'agNumberColumnFilter',
         resizable: true,
         sortable: true
