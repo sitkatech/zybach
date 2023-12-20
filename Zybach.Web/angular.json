@@ -35,7 +35,6 @@
               "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.slim.min.js",
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/iso8601-js-period/iso8601.js"

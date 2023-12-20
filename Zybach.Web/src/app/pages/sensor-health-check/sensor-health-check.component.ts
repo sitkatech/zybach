@@ -43,7 +43,7 @@ export class SensorHealthCheckComponent implements OnInit {
     this.recentPulseCutoffDate = new Date();
     this.recentPulseCutoffDate.setHours(this.recentPulseCutoffDate.getHours() - SensorHealthCheckComponent.recentPulseCutoffHours); 
 
-    this.countdownSubject$.next();
+    this.countdownSubject$.next(null);
   }
 
   public getSensorPulse() {
@@ -52,7 +52,7 @@ export class SensorHealthCheckComponent implements OnInit {
     this.paigeWirelessPulse$ = timer(0, 30000).pipe(
       switchMap(() => this.sensorService.sensorsSensorNamePulseGet(this.sensorName)),
       tap((dto) => {
-        this.countdownSubject$.next()
+        this.countdownSubject$.next(null)
 
         try {
           this.eventMessage = JSON.parse(dto?.EventMessage);
