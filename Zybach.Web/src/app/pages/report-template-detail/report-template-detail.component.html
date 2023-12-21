@@ -26,25 +26,25 @@
                 </div>
                 <div class="card-body">
                     <dl class="row">
-                        <dt class="text-sm-right col-sm-5 col-xs-12">Name</dt>
+                        <dt class="text-sm-end col-sm-5 col-xs-12">Name</dt>
                         <dd class="col-sm-7 col-xs-12">
                             {{reportTemplate?.DisplayName}}
                             <em *ngIf="!reportTemplate?.DisplayName" class="text-muted">Not Available</em>
                         </dd>
 
-                        <dt class="text-sm-right col-sm-5 col-xs-12">Description</dt>
+                        <dt class="text-sm-end col-sm-5 col-xs-12">Description</dt>
                         <dd class="col-sm-7 col-xs-12">
                             {{reportTemplate?.Description}}
                             <em *ngIf="!reportTemplate?.Description" class="text-muted">Not Available</em>
                         </dd>
 
-                        <dt class="text-sm-right col-sm-5 col-xs-12">Model</dt>
+                        <dt class="text-sm-end col-sm-5 col-xs-12">Model</dt>
                         <dd class="col-sm-7 col-xs-12">
                             {{reportTemplate?.ReportTemplateModel.ReportTemplateModelDisplayName}}
                             <em *ngIf="!reportTemplate?.ReportTemplateModel.ReportTemplateModelDisplayName" class="text-muted">Not Available</em>
                         </dd>
 
-                        <dt class="text-sm-right col-sm-5 col-xs-12">Template File</dt>
+                        <dt class="text-sm-end col-sm-5 col-xs-12">Template File</dt>
                         <dd class="col-sm-7 col-xs-12">
                             <a href={{reportTemplateFileLinkValue}} >{{reportTemplate?.FileResource.OriginalBaseFilename}}</a>
                             <em *ngIf="!reportTemplate?.FileResource" class="text-muted">Not Available</em>
