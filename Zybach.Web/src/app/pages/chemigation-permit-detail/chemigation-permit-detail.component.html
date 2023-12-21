@@ -57,11 +57,13 @@
             <div class="card-header d-flex align-items-center">
                 <div class="col-4 float-start ps-2">
                     <div class="row align-items-center">
-                        <span class="far fa-calendar me-2"> </span>
-                        <zybach-water-year-select [(selectedYear)]="yearToDisplay"
-                            (selectedYearChange)="updateAnnualData()" [(allYearsSelected)]="allYearsSelected"
-                            (allYearsSelectedChange)="updateAnnualData()">
-                        </zybach-water-year-select>
+                        <span class="far fa-calendar me-2 col-1"> </span>
+                        <div class="col-6">
+                            <zybach-water-year-select [(selectedYear)]="yearToDisplay"
+                                (selectedYearChange)="updateAnnualData()" [(allYearsSelected)]="allYearsSelected"
+                                (allYearsSelectedChange)="updateAnnualData()">
+                            </zybach-water-year-select>
+                        </div>
                     </div>
                 </div>
                 <div class="col-4 text-center ps-2">Annual Record</div>
