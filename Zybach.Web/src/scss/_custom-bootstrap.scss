@@ -123,6 +123,13 @@ a:hover {
   border-color: $button-hover-background;
 }
 
+.btn.disabled, .btn:disabled {
+  background: #ccc;
+  border: 1px solid #bfbfbf;
+  text-shadow: inherit;
+  color: #666;
+}
+
 .btn-toggle,
 .btn-toggle.disabled:hover {
   color: #212529;
