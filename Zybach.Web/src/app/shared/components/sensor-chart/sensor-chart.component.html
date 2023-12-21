@@ -36,8 +36,8 @@
       <div class="input-group">
         <input class="form-control" name="d1" ngbDatepicker #d1="ngbDatepicker" placeholder="yyyy-mm-dd"
           (ngModelChange)="onStartDateChanged($event)" [(ngModel)]="startDate" />
-          <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()"
-            type="button"></button>
+          <button class="btn btn-zybach" (click)="d1.toggle()"
+            type="button"><span class="far fa-calendar me-2 col-1"> </span></button>
       </div>
     </div>
     <div class="col-6">
@@ -45,8 +45,8 @@
       <div class="input-group">
         <input class="form-control" name="d2" ngbDatepicker #d2="ngbDatepicker" placeholder="yyyy-mm-dd"
           (ngModelChange)="onEndDateChanged($event)" [(ngModel)]="endDate" />
-          <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d2.toggle()"
-            type="button"></button>
+          <button class="btn btn-zybach" (click)="d2.toggle()"
+            type="button"><span class="far fa-calendar me-2 col-1"> </span></button>
       </div>
     </div>
   </div>
