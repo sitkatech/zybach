@@ -72,7 +72,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         valueGetter: params => {
-          return { LinkValue: `${params.data.WellID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: `${params.data.WellID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach p-1" };
         },
         cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells" },

@@ -105,7 +105,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-md btn-zybach p-1" };
         }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
@@ -113,7 +113,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       },
       {
         valueGetter: params => {
-          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach p-1" };
         },
         cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors" },

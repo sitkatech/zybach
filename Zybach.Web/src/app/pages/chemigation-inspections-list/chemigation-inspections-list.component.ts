@@ -55,7 +55,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationInspectionID, LinkDisplay: "Edit", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.ChemigationInspectionID, LinkDisplay: "Edit", CssClasses: "btn-sm btn-zybach p-1" };
         }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-inspections/" },
         width: 120,
