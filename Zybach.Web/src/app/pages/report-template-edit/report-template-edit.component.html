@@ -13,8 +13,8 @@
         <div class="row">
             <div class="col">
                 
-                <div class="form-group mt-4">
-                    <div class="col-sm-5 control-label">
+                <div class="form-group mt-4 p-1">
+                    <div class="col-sm-5 control-label p-1">
                         <label class="required">Display Name</label>
                     </div>
                     <div class="col-sm-7">
@@ -22,16 +22,16 @@
                             placeholder="Display Name" required [(ngModel)]="model.DisplayName" />
                     </div>
                 </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-5 control-label">
+                <div class="form-group mt-4 p-1">
+                    <div class="col-sm-5 control-label p-1">
                         <label>Description</label>
                     </div>
                     <div class="col-sm-7">
                         <input type="text" class="form-control" name="Description" [(ngModel)]="model.Description" />
                     </div>
                 </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-5 control-label">
+                <div class="form-group mt-4 p-1">
+                    <div class="col-sm-5 control-label p-1">
                         <label class="required">Report Template Model</label>
                     </div>
                     <div class="col-sm-7">
@@ -43,24 +43,18 @@
                         </select>    
                     </div>
                 </div>
-                <div class="form-group mt-4">
-                    <div class="col-sm-5 control-label">
+                <div class="form-group mt-4 p-1">
+                    <div class="col-sm-5 control-label p-1">
                         <label class="required" *ngIf="reportTemplateID === undefined">File</label>
                         <label *ngIf="reportTemplateID !== undefined">File</label>
                     </div>
                     <div class="input-group col-sm-7">
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input"
-                                id="fileResource"
-                                #fileUpload (change)="fileEvent()">    
-                            <label class="custom-file-label"
-                                for="fileResource">{{getFileName()}}</label>
-                        </div>
-                        <div class="input-group-append">
+                        <input type="file" class="form-control custom-file-input"
+                            id="fileResource"
+                            #fileUpload (change)="fileEvent()">
                             <button class="btn btn-zybach" type="button"
                                 (click)="openFileUpload()"><i
                                     class="fas fa-folder-open"></i></button>
-                        </div>
                     </div>
                     <div class="col">
                         <em class="text-small mt-2">Allowed extensions: DOCX, DOC. Max file size: 25 MB.</em>
