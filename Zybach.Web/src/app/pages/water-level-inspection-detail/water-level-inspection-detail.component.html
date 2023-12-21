@@ -268,13 +268,13 @@
                 </div>
             </div>
         </div>
-        <div class="row float-end mt-3">
-            <a class="btn btn-zybach btn-md float-end me-3"
+        <div class="row float-end mt-3 col-6">
+            <a class="btn btn-zybach btn-md me-3 float-end col-4"
                 routerLink="/water-level-inspections/{{waterLevelInspection.WaterLevelInspectionID}}/edit">
                 <span class="fas fa-edit"></span> Edit Inspection
             </a>
             
-            <button type="button" class="btn btn-zybach btn-md me-3" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(waterLevelInspection.WaterLevelInspectionID)">
+            <button type="button" class="btn btn-zybach btn-md me-3 col-4" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(waterLevelInspection.WaterLevelInspectionID)">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                 <span class="fas fa-trash"></span> Delete Inspection
             </button>
