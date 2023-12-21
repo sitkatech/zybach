@@ -34,7 +34,7 @@
     </div>
 
     <div class="col-12">
-        <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-end" role="button" data-bs-toggle="dropdown" 
+    <a href="#" class="btn btn-zybach btn-md dropdown-toggle nav-link float-end p-2" role="button" data-bs-toggle="dropdown" 
             aria-haspopup="true" aria-expanded="false">
             Other Actions
         </a>
@@ -545,13 +545,13 @@
                                             
                                         </div>
                                         
-                                        <div *ngIf="isFirst" class="row col-6 mt-3 me-3">
-                                            <a class="btn btn-zybach btn-md mt-3 me-3"
+                                        <div *ngIf="isFirst" class="row mt-3 me-3 pl-3">
+                                            <a class="btn btn-zybach btn-md mt-3 me-3 col-2"
                                             routerLink="/chemigation-inspections/{{inspection.ChemigationInspectionID}}">
                                             <span class="fas fa-edit"></span> Edit Inspection
                                             </a>
                                             
-                                            <button type="button" class="btn btn-zybach btn-md mt-3 me-3" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(inspection.ChemigationInspectionID)">
+                                            <button type="button" class="btn btn-zybach btn-md mt-3 me-3 col-2" [disabled]="isPerformingAction" (click)="launchDeleteInspectionModal(inspection.ChemigationInspectionID)">
                                                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                                                 <span class="fas fa-trash"></span> Delete Inspection
                                             </button>
