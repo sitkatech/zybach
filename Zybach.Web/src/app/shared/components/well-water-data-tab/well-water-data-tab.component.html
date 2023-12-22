@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header">
                 Annual Pumped Volume
-                <div class="btn-group btn-group-toggle float-right">
+                <div class="btn-group btn-group-toggle float-end">
                     <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="unitsShown === 'gal' ? 'active' : ''">
                       <input type="radio" name="units" id="gal" (click)="toggleUnitsShown('gal')"> Volume&nbsp;(gal)
                     </label>
@@ -11,7 +11,7 @@
                       <input type="radio" name="units" id="in" (click)="toggleUnitsShown('in')" [disabled]="!displayIrrigatedAcres()"> Depth&nbsp;(in)
                     </label>
                 </div>
-                <div class="float-right mr-2" *ngIf="well.InAgHub">
+                <div class="float-end me-2" *ngIf="well.InAgHub">
                     <button class="btn btn-sm btn-zybach" (click)="syncWithAgHub()">Sync with AgHub</button>
                 </div>
             </div>

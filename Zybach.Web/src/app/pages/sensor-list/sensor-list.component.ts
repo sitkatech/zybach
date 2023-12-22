@@ -69,7 +69,7 @@ export class SensorListComponent implements OnInit {
     this.sensorColumnDefs = [
     {
       valueGetter: params => {
-        return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+        return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach p-1" };
       },
       cellRenderer: LinkRendererComponent,
       cellRendererParams: { inRouterLink: "/sensors" },

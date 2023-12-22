@@ -20,10 +20,10 @@
     <div class="container mt-2">
         <div class="row my-2">
             <div class="col">
-                <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/new-well"><span class="fas fa-plus"></span> New Well</a>
-                <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="downloadCsv()" placement="top"
-                ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-                <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="wellsGrid">
+                <a class="btn btn-zybach btn-md me-3 float-end" routerLink="/new-well"><span class="fas fa-plus"></span> New Well</a>
+                <button class="btn btn-secondary btn-md float-end me-3" style="cursor: pointer;" (click)="downloadCsv()" [placement]="['bottom', 'right', 'left', 'auto']"
+                ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
+                <fresca-clear-grid-filters-button class="me-3 float-end" [grid]="wellsGrid">
                 </fresca-clear-grid-filters-button>
             </div>
         </div>

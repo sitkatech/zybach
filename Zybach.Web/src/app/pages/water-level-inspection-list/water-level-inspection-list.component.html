@@ -10,11 +10,11 @@
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
-                    <a class="btn btn-zybach btn-md mr-3 float-right" routerLink="/water-level-inspections/new"
-                    ngbTooltip="Create New Inspection"><span class="fas fa-plus"></span> New Inspection </a>
-                    <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-                    <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="waterLevelInspectionsGrid">
+                    <a class="btn btn-zybach btn-md me-3 float-end" routerLink="/water-level-inspections/new"
+                    ngbTooltip="Create New Inspection" [placement]="['bottom', 'right', 'left', 'auto']"><span class="fas fa-plus"></span> New Inspection </a>
+                    <button class="btn btn-secondary btn-md float-end me-3" style="cursor: pointer;" (click)="exportToCsv()"
+                    ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
+                    <fresca-clear-grid-filters-button class="me-3 float-end" [grid]="waterLevelInspectionsGrid">
                     </fresca-clear-grid-filters-button>
                 </div>
             </div>

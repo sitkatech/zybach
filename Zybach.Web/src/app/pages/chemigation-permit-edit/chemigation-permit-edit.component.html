@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item">
             <a routerLink="/chemigation-permits">Chemigation Permits</a>
         </li>
@@ -32,28 +32,28 @@
                         <div class="row col-12">
                             <div class="row col-6 mt-4">
 
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label><strong>Chemigation Permit Number: </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     {{chemigationPermit?.ChemigationPermitNumberDisplay}}
                                 </div>
 
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label><strong>
                                         <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
                                         </field-definition>: 
                                     </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     <input type="text" class="form-control" name="WellRegistrationID" [(ngModel)]="model.WellRegistrationID" [ngbTypeahead]="searchApi" placeholder="Search by Reg #" />
                                     <small class="form-text text-muted font-italic" *ngIf="searchFailed">Suggestions could not be loaded.</small>
                                 </div>
 
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label class="required"><strong>Permit Status: </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     <select name="PermitStatusID" class="form-control" 
                                         [(ngModel)]="model.ChemigationPermitStatusID" required>
                                         <option *ngFor="let permitStatus of permitStatuses"
@@ -66,10 +66,10 @@
                             </div>
     
                             <div class="row col-6 mt-4">
-                                <div class="col-6 control-label text-right mb-2">
+                                <div class="col-6 control-label text-end mb-2">
                                     <label class="required"><strong>County: </strong></label>
                                 </div>
-                                <div class="col-6 text-left mb-2">
+                                <div class="col-6 text-start mb-2">
                                     <ng-select [(ngModel)]="model.CountyID"
                                         [items]="counties" bindLabel="CountyDisplayName" bindValue="CountyID" 
                                         placeholder="Choose One" name="CountyID" required>
@@ -83,12 +83,12 @@
                 </div>
 
                 <div class="row col-12 mt-4">
-                    <div class="col-sm text-right">
+                    <div class="col-sm text-end">
                         <button type="submit" class="btn btn-zybach" [disabled]="!editChemigationPermitForm.form.valid || isLoadingSubmit">
                             <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                             Save
                         </button>
-                        <a class="btn btn-secondary ml-1" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">Cancel</a>
+                        <a class="btn btn-secondary ms-1" routerLink="/chemigation-permits/{{chemigationPermit?.ChemigationPermitNumber}}">Cancel</a>
                     </div>
                 </div>
                     

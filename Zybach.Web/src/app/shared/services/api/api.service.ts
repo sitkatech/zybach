@@ -198,7 +198,7 @@ export class ApiService {
     }
 
     private errorStringFromObject(errorObject: any, includeIntro: boolean, nestedKey? : string) : string {
-        let errorString = includeIntro ? "Oops! Something went wrong and we couldn't complete the action. If present, details are below: <br/><div class='ml-2'>" : "";
+        let errorString = includeIntro ? "Oops! Something went wrong and we couldn't complete the action. If present, details are below: <br/><div class='ms-2'>" : "";
         for (const key of Object.keys(errorObject)) {
             if (typeof errorObject[key] !== 'object') {
                 errorString += `${nestedKey ? nestedKey : key} : ${errorObject[key]} <br/>`

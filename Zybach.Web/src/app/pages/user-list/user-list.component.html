@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
+  <ol class="breadcrumb p-3">
       <li class="breadcrumb-item active" aria-current="page">Users</li>
   </ol>
 </nav>
@@ -14,8 +14,8 @@
     </p>
 
     <div class="row mb-2">
-      <div class="col-auto ml-auto">
-        <fresca-clear-grid-filters-button class="float-right" [grid]="unassignedUsersGrid"></fresca-clear-grid-filters-button>
+      <div class="col-auto ms-auto">
+        <fresca-clear-grid-filters-button class="float-end" [grid]="unassignedUsersGrid"></fresca-clear-grid-filters-button>
       </div>
     </div>
     <div class="table-responsive">
@@ -31,10 +31,10 @@
   </p>
 
   <div class="row mb-2">
-    <div class="col-auto ml-auto">
-      <fresca-clear-grid-filters-button class="mr-2" [grid]="usersGrid"></fresca-clear-grid-filters-button>
-      <button class="btn btn-secondary btn-md mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-        ngbTooltip="Download as CSV"><i class="fas fa-download"></i>
+    <div class="col-auto ms-auto">
+      <fresca-clear-grid-filters-button class="me-2" [grid]="usersGrid"></fresca-clear-grid-filters-button>
+      <button class="btn btn-secondary btn-md me-2" style="cursor: pointer;" (click)="exportToCsv()"
+        ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i>
       </button>
       <a class="btn btn-zybach btn-md" routerLink="/invite-user">Invite User</a>
     </div>

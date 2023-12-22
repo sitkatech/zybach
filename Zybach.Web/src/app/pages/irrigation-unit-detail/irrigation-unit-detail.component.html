@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item">
             <a routerLink="/irrigation-units">Irrigation Units</a>
         </li>
@@ -66,9 +66,9 @@
                     <ng-template #hasOpenETData>
                         <div class="row">
                             <div class="col">
-                                <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-                                ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-                                <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="openETDataGrid">
+                                <button class="btn btn-secondary btn-md float-end m-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                                ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
+                                <fresca-clear-grid-filters-button class="m-2 float-end" [grid]="openETDataGrid">
                                 </fresca-clear-grid-filters-button>
                             </div> 
                         </div>

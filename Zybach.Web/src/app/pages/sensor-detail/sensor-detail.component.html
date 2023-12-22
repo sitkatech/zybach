@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item">
             <a routerLink="/sensors">Sensors</a>
         </li>
@@ -28,17 +28,17 @@
                                     <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
                                     </field-definition>:
                                 </strong> </div>
-                                <div class="col-12 col-sm-6 text-left"><a routerLink="/wells/{{sensor.WellID}}">{{sensor.WellRegistrationID}}</a></div>
+                                <div class="col-12 col-sm-6 text-start"><a routerLink="/wells/{{sensor.WellID}}">{{sensor.WellRegistrationID}}</a></div>
                                 <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorType'">
                                     </field-definition>:
                                 </strong> </div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.SensorTypeName}}</div>
+                                <div class="col-12 col-sm-6 mt-1 text-start">{{sensor.SensorTypeName}}</div>
                                 <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastMessageAgeHours'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">
+                                <div class="col-12 col-sm-6 mt-1 text-start">
                                     <span *ngIf="sensor.LastMessageAgeInHours != null; else notApplicable">
                                         {{ sensor.LastMessageAgeInHours }}
                                     </span>
@@ -47,28 +47,28 @@
                                     <field-definition [fieldDefinitionType]="'SensorLastVoltageReading'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
+                                <div class="col-12 col-sm-6 mt-1 text-start">{{sensor.LastVoltageReading | number: "1.0-0"}}</div>
                                 <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastVoltageReadingDate'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.LastVoltageReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 mt-1 text-start">{{sensor.LastVoltageReadingDate | date: "MM/dd/yyyy" }}</div>
                                 <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorFirstReadingDate'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 mt-1 text-start">{{sensor.FirstReadingDate | date: "MM/dd/yyyy" }}</div>
                                 <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorLastReadingDate'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">{{sensor.LastReadingDate | date: "MM/dd/yyyy" }}</div>
+                                <div class="col-12 col-sm-6 mt-1 text-start">{{sensor.LastReadingDate | date: "MM/dd/yyyy" }}</div>
                                 <div class="col-12 col-sm-6 mt-1 label"><strong>
                                     <field-definition [fieldDefinitionType]="'SensorStatus'">
                                     </field-definition>:
                                 </strong></div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">
-                                    <div class="btn-group btn-group-toggle float-left">
+                                <div class="col-12 col-sm-6 mt-1 text-start">
+                                    <div class="btn-group btn-group-toggle float-start">
                                         <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="sensor.IsActive ? 'active' : ''">
                                         <input type="radio" name="sensorIsActive" (click)="launchConfirmStatusModal()" [disabled]="sensor.IsActive"> Enabled
                                         </label>
@@ -82,7 +82,7 @@
                                         <field-definition [fieldDefinitionType]="'SensorRetirementDate'"></field-definition>:
                                     </strong>
                                 </div>
-                                <div class="col-12 col-sm-6 mt-1 text-left">
+                                <div class="col-12 col-sm-6 mt-1 text-start">
                                     <span *ngIf="sensor?.RetirementDate; else notApplicable">{{sensor?.RetirementDate | date: "MM/dd/yyyy"}}</span>
                                 </div>
 
@@ -91,7 +91,7 @@
                                     <div class="col-12 col-sm-6 mt-1 label">
                                         <strong><field-definition [fieldDefinitionType]="'ContinuityMeterStatus'" labelOverride="Always On/Off"></field-definition>:</strong>
                                     </div>
-                                    <div class="col-6 col-sm-0 text-left">
+                                    <div class="col-6 col-sm-0 text-start">
                                         <span *ngIf="isContinuityMeter(); else notApplicable">{{sensor?.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName}}</span>
                                     </div>
 
@@ -99,7 +99,7 @@
                                         <div class="col-12 col-sm-6 mt-1 label">
                                             <strong>Last {{isAlwaysOn() ? 'Off' : 'On'}} Reading Date:</strong>
                                         </div>
-                                        <div class="col-6 col-sm-0 text-left">
+                                        <div class="col-6 col-sm-0 text-start">
                                             <span *ngIf="isAlwaysOn()">{{ sensor?.LastOffReadingDate | date: 'short' }}</span>
                                             <span *ngIf="!isAlwaysOn()">{{ sensor?.LastOnReadingDate | date: 'short' }}</span>
                                         </div>
@@ -107,8 +107,8 @@
                                         <div class="col-12 col-sm-6 mt-1 label"><strong>
                                             Always On/Off Status:
                                         </strong></div>
-                                        <div class="col-12 col-sm-6 mt-1 text-left">
-                                            <div class="btn-group btn-group-toggle float-left">
+                                        <div class="col-12 col-sm-6 mt-1 text-start">
+                                            <div class="btn-group btn-group-toggle float-start">
                                                 <label class="btn btn-toggle btn-sm btn-zybach" [ngClass]="!sensor.SnoozeStartDate ? 'active' : ''">
                                                     <input type="radio" name="reporting" (click)="updateSensorSnooze(false)" [disabled]="!sensor.SnoozeStartDate"> 
                                                     Reporting
@@ -123,7 +123,7 @@
                                             <div class="col-12 col-sm-6 mt-1 label"><strong>
                                                 Snoozed On:
                                             </strong></div>
-                                            <div class="col-12 col-sm-6 mt-1 text-left">{{sensor?.SnoozeStartDate | date:'short'}}</div>
+                                            <div class="col-12 col-sm-6 mt-1 text-start">{{sensor?.SnoozeStartDate | date:'short'}}</div>
                                         </ng-container>
                                     </ng-container>
                                 </ng-container>
@@ -148,8 +148,8 @@
             <div class="card">
                 <div class="card-header">
                     Installation Details
-                    <a *ngIf="sensor?.InGeoOptix" class="btn btn-zybach btn-sm float-right" target="_blank" href="{{wellInGeoOptixUrl()}}">
-                        View Well Details in GeoOptix <i class="fas fa-external-link-alt ml-1"></i>
+                    <a *ngIf="sensor?.InGeoOptix" class="btn btn-zybach btn-sm float-end" target="_blank" href="{{wellInGeoOptixUrl()}}">
+                        View Well Details in GeoOptix <i class="fas fa-external-link-alt ms-1"></i>
                     </a>
                 </div>
                 <div class="card-body">
@@ -223,9 +223,9 @@
             <div class="card">
                 <div class="card-header">
                     Sensor Data Readings
-                    <a routerLink="/sensors/{{sensor.SensorID}}/new-support-ticket" class="btn btn-sm btn-zybach float-right">
+                    <a routerLink="/sensors/{{sensor.SensorID}}/new-support-ticket" class="btn btn-sm btn-zybach float-end">
                         <span class="fas fa-plus"></span> New Support Ticket</a>  
-                    <a *ngIf="!noTimeSeriesData" class="btn btn-sm btn-zybach float-right mr-2" (click)="displaySensorAnomalyPanel()">
+                    <a *ngIf="!noTimeSeriesData" class="btn btn-sm btn-zybach float-end me-2" (click)="displaySensorAnomalyPanel()">
                         <span class="fas fa-plus"></span> Add Sensor Anomaly</a>  
                 </div>
                 <div class="card-body">
@@ -238,27 +238,27 @@
                 <div class="card-header">Create Anomaly Report</div>
                 <div class="card-body">
                     <div>
-                        <span class="font-weight-bold required">Start Date</span>
+                        <span class="fw-bold required">Start Date</span>
                         <div class="input-group mt-1">
                             <input class="form-control" placeholder="Select a start date"
                                 [(ngModel)]="sensorAnomalyModel.StartDate" ngbDatepicker #d1="ngbDatepicker" required >
                             <div class="input-group-append">
-                            <button class="btn btn-secondary far fa-calendar" (click)="d1.toggle()" type="button"></button>
+                            <button class="btn btn-secondary" (click)="d1.toggle()" type="button"><span class="far fa-calendar me-2 col-1"> </span></button>
                             </div>
                         </div>
                     </div>
                     <div class="mt-3">
-                        <span class="font-weight-bold required">End Date</span>
+                        <span class="fw-bold required">End Date</span>
                         <div class="input-group mt-1">
                             <input class="form-control" placeholder="Select an end date"
                                 [(ngModel)]="sensorAnomalyModel.EndDate" ngbDatepicker #d2="ngbDatepicker" required >
                             <div class="input-group-append">
-                            <button class="btn btn-secondary far fa-calendar" (click)="d2.toggle()" type="button"></button>
+                            <button class="btn btn-secondary" (click)="d2.toggle()" type="button"><span class="far fa-calendar me-2 col-1"> </span></button>
                             </div>
                         </div>
                     </div>
                     <div class="mt-3">
-                        <span class="font-weight-bold">Notes</span>
+                        <span class="fw-bold">Notes</span>
                         <textarea class="form-control" style="height: 100px"
                             [(ngModel)]="sensorAnomalyModel.Notes">
                         </textarea>
@@ -267,12 +267,12 @@
                         <i class="fas fa-bolt"></i> Required field
                     </div>
                     <div class="row mt-3">
-                        <div class="col-auto ml-auto">
+                        <div class="col-auto ms-auto">
                             <button class="btn btn-zybach" [disabled]=" isLoadingSubmit" (click)="submitSensorAnomaly()">
                                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                                 Save
                             </button>
-                            <button class="btn btn-secondary ml-1" [disabled]=" isLoadingSubmit" (click)="closeSensorAnomalyPanel()">
+                            <button class="btn btn-secondary ms-1" [disabled]=" isLoadingSubmit" (click)="closeSensorAnomalyPanel()">
                                 Cancel
                             </button>
                         </div>

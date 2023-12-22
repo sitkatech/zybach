@@ -8,9 +8,9 @@
     </div>
     <div class="row mt-2">
         <div class="col">
-            <button class="btn btn-secondary btn-md float-right" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-            ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-            <fresca-clear-grid-filters-button class="float-right" [grid]="sensorAnomaliesGrid" classList="mr-2">
+            <button class="btn btn-secondary btn-md float-end" style="cursor: pointer;" (click)="exportToCsv()"
+            ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
+            <fresca-clear-grid-filters-button class="float-end" [grid]="sensorAnomaliesGrid" classList="me-2">
             </fresca-clear-grid-filters-button>
         </div>
     </div>

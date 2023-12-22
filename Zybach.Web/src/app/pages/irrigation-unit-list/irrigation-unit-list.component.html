@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-2 ml-lg-auto mt-lg-0 mt-3">
+        <div class="col-2 ms-lg-auto mt-lg-0 mt-3">
             <button class="btn btn-zybach btn-md" (click)="updateIrrigationUnits()">Update</button>
         </div>
     </div>
@@ -55,10 +55,10 @@
                         </label>
                     </div>
                 </div>
-                <div class="col ml-auto">
-                    <button class="btn btn-secondary btn-md float-right mr-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
-                    <fresca-clear-grid-filters-button class="mr-3 float-right" [grid]="irrigationUnitGrid">
+                <div class="col ms-auto">
+                    <button class="btn btn-secondary btn-md float-end me-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
+                    <fresca-clear-grid-filters-button class="me-3 float-end" [grid]="irrigationUnitGrid">
                     </fresca-clear-grid-filters-button>
                 </div>
             </div>
