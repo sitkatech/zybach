@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-auto ms-auto">
             <fresca-clear-grid-filters-button class="ms-3" [grid]="wellsGrid"></fresca-clear-grid-filters-button>
-            <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="downloadCsv()" placement="top" ngbTooltip="Download as CSV">
+            <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="downloadCsv()" ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']">
                 <i class="fas fa-download"></i>
              </button>
         </div>

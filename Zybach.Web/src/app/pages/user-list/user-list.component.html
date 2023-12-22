@@ -33,8 +33,8 @@
   <div class="row mb-2">
     <div class="col-auto ms-auto">
       <fresca-clear-grid-filters-button class="me-2" [grid]="usersGrid"></fresca-clear-grid-filters-button>
-      <button class="btn btn-secondary btn-md me-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-        ngbTooltip="Download as CSV"><i class="fas fa-download"></i>
+      <button class="btn btn-secondary btn-md me-2" style="cursor: pointer;" (click)="exportToCsv()"
+        ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i>
       </button>
       <a class="btn btn-zybach btn-md" routerLink="/invite-user">Invite User</a>
     </div>

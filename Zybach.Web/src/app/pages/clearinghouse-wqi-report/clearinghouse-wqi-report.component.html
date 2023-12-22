@@ -10,7 +10,7 @@
         <div class="container col-12">
             <div class="row my-2">
                 <div class="col">
-                    <a class="btn btn-secondary btn-md float-end me-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
+                    <a class="btn btn-secondary btn-md float-end me-2" style="cursor: pointer;" (click)="exportToCsv()" [placement]="['bottom', 'right', 'left', 'auto']"
                     ngbTooltip="Download Report as CSV"><i class="fas fa-download"></i></a>
                     <fresca-clear-grid-filters-button class="float-end me-2" [grid]="clearinghouseReportGrid">
                     </fresca-clear-grid-filters-button>

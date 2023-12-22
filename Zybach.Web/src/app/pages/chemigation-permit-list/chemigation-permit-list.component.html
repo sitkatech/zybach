@@ -11,11 +11,11 @@
             <div class="row my-2">
                 <div class="col">
                     <a class="btn btn-zybach btn-md me-3 float-end" routerLink="/chemigation-permits/new"
-                    ngbTooltip="Create New Chemigation Permit"><span class="fas fa-plus"></span> New Chemigation Permit </a>
+                    ngbTooltip="Create New Chemigation Permit" [placement]="['bottom', 'right', 'left', 'auto']"><span class="fas fa-plus"></span> New Chemigation Permit </a>
                     <button class="btn btn-zybach btn-md me-3 float-end" style="cursor: pointer;" (click)="launchModal(renewalEntity, 'renewalEntity')" placement="top"
-                    ngbTooltip="Bulk Create Annual Renewal Applications"><span class="fas fa-plus"></span> Generate Renewal Applications </button>
+                    ngbTooltip="Bulk Create Annual Renewal Applications" [placement]="['bottom', 'right', 'left', 'auto']"><span class="fas fa-plus"></span> Generate Renewal Applications </button>
                     <button class="btn btn-secondary btn-md float-end me-3" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                    ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
                     <fresca-clear-grid-filters-button class="me-3 float-end" [grid]="permitGrid">
                     </fresca-clear-grid-filters-button>
                 </div>
