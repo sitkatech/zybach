@@ -202,12 +202,18 @@
     <None Include="Scripts\PreReleaseScripts\Script.PreDeployment.ReleaseScripts.sql" />
     <None Include="Scripts\ReleaseScripts\Script.PostDeployment.ReleaseScripts.sql" />
     <None Include="Scripts\Utility\Script.PostDeployment.Utility.sql" />
+    <Build Include="dbo\Views\dbo.vGeoserverAgHubIrrigationUnitIrrigatedAcres.sql" />
+    <None Include="Scripts\LookupTables\dbo.AgHubWellIrrigatedAcreCropType.sql" />
+    <Build Include="dbo\Tables\dbo.AgHubWellIrrigatedAcreCropType.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\Script.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\ReleaseScripts\0001 - Run MakeValid__ on AgHubIrrigationUnit geometries.sql" />
   </ItemGroup>
   <UsingTask TaskName="ScriptDeploymentGenerator" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <ParameterGroup>
