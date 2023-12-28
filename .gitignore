@@ -19,6 +19,7 @@ obj
 *.env
 *.user
 *.pem
+*.bacpac
 Zybach.GeoServer/data_dir/geoserver-environment.properties
 Zybach.GeoServer/data_dir/.updatepassword.lock
 Zybach.GeoServer/data_dir/security/*
