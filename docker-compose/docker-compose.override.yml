@@ -71,6 +71,28 @@ services:
     volumes:
       - ~/.aspnet/https:/https:ro
 
+  geoserver:
+    container_name: zybach_geoserver
+    image: kartoza/geoserver:2.16.2
+    entrypoint: /bin/bash /opt/geoserver/data_dir/sitka-geoserver-config/scripts/sitka-entry-point.sh
+    environment:
+      - ENABLE_JSONP=true
+      - CATALINA_OPTS=-DALLOW_ENV_PARAMETRIZATION=true
+      - STABLE_EXTENSIONS=sqlserver-plugin
+      # default login is admin unless a different value is specified here
+      - GEOSERVER_ADMIN_USER=admin
+      # default password is geoserver unless specified differently in the secret
+      - GEOSERVER_ADMIN_PASSWORD_SECRET=/run/secrets/GeoserverAdminPassword.txt
+      - GEOSERVER_SQL_SERVER_PASSWORD_SECRET=/run/secrets/GeoserverSqlServerPassword.txt
+      - GEOSERVER_CONFIG_DIRECTORY=/opt/geoserver/data_dir
+    ports:
+      - 127.0.0.1:7615:8080
+    volumes:
+      - c:/git/sitkatech/zybach/Zybach.GeoServer/data_dir:/opt/geoserver/data_dir
+    secrets:
+      - GeoserverSqlServerPassword.txt
+      - GeoserverAdminPassword.txt
+
   vegarenderservice:
     container_name: zybach_vegarenderservice
     image: esacontainers.azurecr.io/vegarenderservice:latest
@@ -79,3 +101,10 @@ services:
     ports:
       - "8709:8080"
       - "8710:8081"
+
+secrets:
+  GeoserverSqlServerPassword.txt:
+    file: C:\Sitka\Zybach\Geoserver\GeoserverSqlServerPassword.txt
+      # using "file:"  allows you to mimic docker secrets on your dev machine by pointing to a plaintext file
+  GeoserverAdminPassword.txt:
+    file: C:\Sitka\Zybach\Geoserver\GeoserverAdminPassword.txt
