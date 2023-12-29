@@ -46,14 +46,6 @@ namespace Zybach.Web
             
             app.Use(async (context, next) =>
             {
-                if (context.Request.Path.Value == "/assets/config.json")
-                {
-                    var result = new ConfigDto(Configuration);
-                    var json = JsonConvert.SerializeObject(result);
-                    await context.Response.WriteAsync(json);
-                    return;
-                }
-
                 await next();
 
                 if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))

@@ -27,6 +27,7 @@ export const environment = {
     responseType: "code",
     disablePKCE: false,
     redirectUriRelative: "/",
+    redirectUri:"https://zybach.localhost.sitkatech.com:8713/",
     scope: "openid profile offline_access keystone",
     sessionChecksEnabled: false,
     logoutUrl: "https://host.docker.internal:7112/Account/logout",

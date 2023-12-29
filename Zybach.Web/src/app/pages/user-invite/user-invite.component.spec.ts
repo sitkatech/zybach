@@ -5,7 +5,6 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { UserInviteComponent } from './user-invite.component';
 
-import * as config from '../../../assets/config.json';
 declare var window: any;
 
 describe('UserInviteComponent', () => {
@@ -13,7 +12,6 @@ describe('UserInviteComponent', () => {
   let fixture: ComponentFixture<UserInviteComponent>;
 
   beforeEach(waitForAsync(() => {
-    window.config = config;
     TestBed.configureTestingModule({
       declarations: [ UserInviteComponent ],
       imports: [RouterTestingModule, OAuthModule.forRoot(), HttpClientModule]
