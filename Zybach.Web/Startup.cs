@@ -60,54 +60,6 @@ namespace Zybach.Web
         }
     }
 
-    public class ConfigDto
-    {
-        public ConfigDto(IConfiguration configuration)
-        {
-            Production = bool.Parse(configuration["Production"]);
-            Staging = bool.Parse(configuration["Staging"]);
-            Dev = bool.Parse(configuration["Dev"]);
-            MainAppApiUrl = configuration["MainAppApiUrl"];
-            CreateAccountUrl = configuration["CreateAccountUrl"];
-            CreateAccountRedirectUrl = configuration["CreateAccountRedirectUrl"];
-            GeoserverMapServiceUrl = configuration["GeoserverMapServiceUrl"];
-            KeystoneAuthConfiguration = new KeystoneAuthConfigurationDto(configuration);
-            AppInsightsInstrumentationKey =  configuration["AppInsightsInstrumentationKey"];
-            MapQuestApiUrl =  configuration["MapQuestApiUrl"];
-            GeoOptixWebUrl = configuration["GeoOptixWebUrl"];
-            GETEnvironmentUrl = configuration["GETEnvironmentUrl"];
-            AllowOpenETSync = bool.Parse(configuration["AllowOpenETSync"]);
-        }
-
-        [JsonProperty("production")]
-        public bool Production { get; set; }
-        [JsonProperty("staging")]
-        public bool Staging { get; set; }
-        [JsonProperty("dev")]
-        public bool Dev { get; set; }
-        [JsonProperty("mainAppApiUrl")]
-        public string MainAppApiUrl { get; set; }
-        [JsonProperty("createAccountUrl")]
-        public string CreateAccountUrl { get; set; }
-        [JsonProperty("createAccountRedirectUrl")]
-        public string CreateAccountRedirectUrl { get; set; }
-        [JsonProperty("geoserverMapServiceUrl")]
-        public string GeoserverMapServiceUrl { get; set; }
-        [JsonProperty("keystoneAuthConfiguration")]
-        public KeystoneAuthConfigurationDto KeystoneAuthConfiguration { get; set; }
-        [JsonProperty("appInsightsInstrumentationKey")]
-        public string AppInsightsInstrumentationKey {get; set;}
-        [JsonProperty("mapQuestApiUrl")]
-        public string MapQuestApiUrl { get; set; }
-        [JsonProperty("geoOptixWebUrl")]
-        public string GeoOptixWebUrl {get; set;}
-        [JsonProperty("GETEnvironmentUrl")]
-        public string GETEnvironmentUrl {get; set;}
-        
-        [JsonProperty("allowOpenETSync")]
-        public bool AllowOpenETSync { get; set; }
-    }
-
     public class KeystoneAuthConfigurationDto
     {
         public KeystoneAuthConfigurationDto(IConfiguration configuration)

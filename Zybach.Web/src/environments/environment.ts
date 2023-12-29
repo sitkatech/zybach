@@ -3,7 +3,6 @@ export const environment = {
   staging: false,
   dev: true,
   mainAppApiUrl: "https://host.docker.internal:8712",
-  createAccountUrl: "https://host.docker.internal:7112/Account/Register?ClientID=Zybach&RedirectUrl=",
   createAccountRedirectUrl: "https://zybach.localhost.sitkatech.com:8713/create-user-callback",
 
   geoserverMapServiceUrl: "http://localhost:7615/geoserver/Zybach",
@@ -24,8 +23,8 @@ export const environment = {
     issuer: "https://host.docker.internal:7112",
     responseType: "code",
     disablePKCE: false,
-    redirectUriRelative: "/",
-    redirectUri:"https://zybach.localhost.sitkatech.com:8713/",
+    redirectUriRelative: "/signin-oidc",
+    redirectUri: window.location.origin,
     scope: "openid profile offline_access keystone",
     sessionChecksEnabled: false,
     logoutUrl: "https://host.docker.internal:7112/Account/logout",
