@@ -1916,6 +1916,44 @@
         }
       }
     },
+    "/irrigationUnits/farmingPractices": {
+      "get": {
+        "tags": [
+          "IrrigationUnit"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitFarmingPracticeDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitFarmingPracticeDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitFarmingPracticeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/managerDashboard/districtStatistics": {
       "get": {
         "tags": [
@@ -6208,6 +6246,52 @@
           "IrrigationUnitAreaInAcres": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AgHubIrrigationUnitFarmingPracticeDto": {
+        "type": "object",
+        "properties": {
+          "AgHubIrrigationUnitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
+          },
+          "IrrigationYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Acres": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "CropType": {
+            "type": "string",
+            "nullable": true
+          },
+          "CropTypeLegendDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "CropTypeMapColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "Tillage": {
+            "type": "string",
+            "nullable": true
+          },
+          "Wells": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WellLinkDto"
+            },
             "nullable": true
           }
         },
@@ -10509,6 +10593,20 @@
           "Longitude": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellLinkDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

@@ -57,7 +57,6 @@ export class UserEditComponent implements OnInit, OnDestroy {
         this.user = user instanceof Array
           ? null
           : user as UserDto;
-          console.log(user)
 
         this.roles = roles.sort((a, b) => {
           return a.RoleDisplayName > b.RoleDisplayName ? 1 : a.RoleDisplayName < b.RoleDisplayName ? -1 : 0;
