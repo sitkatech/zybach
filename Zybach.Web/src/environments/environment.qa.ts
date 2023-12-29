@@ -3,7 +3,6 @@ export const environment = {
   staging: true,
   dev: false,
   mainAppApiUrl: "https://internalapi-zybach.aks-qa.sitkatech.com",
-  createAccountUrl: "https://qa.keystone.sitkatech.com/Authentication/Register?RedirectUrl=",
   createAccountRedirectUrl: "https://zybach.aks-qa.sitkatech.com/create-user-callback",
 
   geoserverMapServiceUrl: 'https://geoserver-zybach.aks-qa.sitkatech.com/geoserver/Zybach',
@@ -21,12 +20,14 @@ export const environment = {
 
   keystoneAuthConfiguration: {
     clientId: 'Zybach',
-    issuer: 'https://qa.keystone.sitkatech.com/core',
-    redirectUriRelative: "/",
-    redirectUri: window.location.origin + '/login-callback',
+    issuer: 'https://identity-qa.sitkatech.com',
+    responseType: "code",
+    disablePKCE: false,
+    redirectUriRelative: "/signin-oidc",
+    redirectUri: window.location.origin,
     scope: 'openid all_claims keystone',
     sessionChecksEnabled: true,
-    logoutUrl: 'https://qa.keystone.sitkatech.com/core/connect/endsession',
+    logoutUrl: 'https://identity-qa.sitkatech.com/account/logout',
     postLogoutRedirectUri: window.location.origin + '/',
     waitForTokenInMsec: 500
   }
