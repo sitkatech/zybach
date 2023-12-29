@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {FeatureCollection} from "geojson";
 import {Observable, Subject} from "rxjs";
 import {map, takeUntil} from "rxjs/operators";
@@ -64,5 +64,35 @@ export class WfsService {
                 })
             );
 
+    }
+
+    public getAgHubIrrigationUnitByCoordinateAndIrrigationYear(longitude: number, latitude: number, irrigationYear: number): Observable<FeatureCollection> {
+        const url: string = `${environment.geoserverMapServiceUrl}/wms`;
+        return this.http.get<FeatureCollection>(url, {
+            params: {
+                service: 'WFS',
+                version: '2.0',
+                request: 'GetFeature',
+                outputFormat: 'application/json',
+                SrsName: 'EPSG:4326',
+                typeName: 'Zybach:AgHubIrrigationUnitCropType',
+                cql_filter: `intersects(IrrigationUnitGeometry, POINT(${latitude} ${longitude})) and IrrigationYear=${irrigationYear}`
+            }
+        });
+    }
+
+    public getAgHubIrrigationUnitByIDAndIrrigationYear(irrigationUnitID: number, irrigationYear: number): Observable<FeatureCollection> {
+        const url: string = `${environment.geoserverMapServiceUrl}/wms`;
+        return this.http.get<FeatureCollection>(url, {
+            params: {
+                service: 'WFS',
+                version: '2.0',
+                request: 'GetFeature',
+                outputFormat: 'application/json',
+                SrsName: 'EPSG:4326',
+                typeName: 'Zybach:AgHubIrrigationUnitCropType',
+                cql_filter: `AgHubIrrigationUnitID=${irrigationUnitID} and IrrigationYear=${irrigationYear}`
+            }
+        });
     }
 }

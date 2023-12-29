@@ -123,5 +123,33 @@ namespace Zybach.EFModels.Entities
             return robustReviewDto;
         }
 
+        public static List<AgHubIrrigationUnitFarmingPracticeDto> ListAsAgHubIrrigationUnitWellIrrigatedAcreDtos(ZybachDbContext dbContext)
+        {
+            var wellsByIrrigationUnitID = dbContext.AgHubIrrigationUnits.AsNoTracking()
+                .Include(x => x.AgHubWells).ThenInclude(x => x.Well)
+                .ToDictionary(x => x.AgHubIrrigationUnitID, x => x.AgHubWells);
+
+            var irrigationUnitFarmingPracticeDtos =  dbContext.vGeoServerAgHubIrrigationUnitCropTypes.AsNoTracking()
+                .Select(x => new AgHubIrrigationUnitFarmingPracticeDto()
+                {
+                    AgHubIrrigationUnitID = x.AgHubIrrigationUnitID,
+                    WellTPID = x.WellTPID,
+                    IrrigationYear = x.IrrigationYear,
+                    Acres = x.Acres,
+                    CropType = x.CropType,
+                    CropTypeLegendDisplayName = x.CropTypeLegendDisplayName,
+                    CropTypeMapColor = x.CropTypeMapColor,
+                    Tillage = x.Tillage,
+                }).ToList();
+
+            irrigationUnitFarmingPracticeDtos.ForEach(x =>
+            {
+                if (wellsByIrrigationUnitID.ContainsKey(x.AgHubIrrigationUnitID))
+                    x.Wells = wellsByIrrigationUnitID[x.AgHubIrrigationUnitID]
+                        .Select(y => new WellLinkDto() { WellID = y.WellID, WellRegistrationID = y.Well.WellRegistrationID}).ToList();
+            });
+
+            return irrigationUnitFarmingPracticeDtos;
+        }
     }
 }

@@ -108,7 +108,7 @@
 </nav>
 <nav class="navbar navbar-expand-xl  navbar-zybach logoPadding">
     <a routerLink="/" routerLinkActive="active" class="navbar-brand navbar-brand-primary nav-link" *ngIf="!isAuthenticated()">
-        {{platformShortName()}}
+        Groundwater Managers Platform
     </a>
 
     <div class="navbar-collapse collapse pt-2 pt-md-0" id="navbar2">
@@ -135,6 +135,9 @@
                         </a>
                         <a class="dropdown-item" routerLink="/irrigation-units">
                             Irrigation Unit Summary
+                        </a>
+                        <a class="dropdown-item" routerLink="/farming-practices">
+                            Farming Practices Data Explorer
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" routerLink="/sensors">

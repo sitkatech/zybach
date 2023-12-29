@@ -3,10 +3,10 @@
   xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.opengis.net/sld http://schemas.opengis.net/sld/1.0.0/StyledLayerDescriptor.xsd">
   <NamedLayer>
-    <Name>parcel_yellow</Name>
+    <Name>polygon_yellow</Name>
     <UserStyle>
-      <Name>parcel_yellow</Name>
-      <Title>Parcel custom styled polygon but YELLOW</Title>
+      <Name>polygon_yellow</Name>
+      <Title>Custom styled polygon but YELLOW</Title>
       <Abstract>YELLOW fill with 90% transparency and parcel-yellow opaque outline</Abstract>
       <FeatureTypeStyle>
         <Rule>

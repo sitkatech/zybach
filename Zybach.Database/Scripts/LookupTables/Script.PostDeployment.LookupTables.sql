@@ -8,6 +8,8 @@ This file is generated on every build, DO NOT modify.
 PRINT N'Zybach.Database - Script.PostDeployment.LookupTables.sql';
 GO
 
+:r ".\dbo.AgHubWellIrrigatedAcreCropType.sql"
+GO
 :r ".\dbo.ChemigationInjectionUnitType.sql"
 GO
 :r ".\dbo.ChemigationInspectionStatus.sql"
