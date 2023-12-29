@@ -103,7 +103,9 @@ export class FarmingPracticesComponent implements OnInit {
     this.irrigationUnitGrid.api.ensureNodeVisible(rowNode);
   }
 
-  public downloadCsv() {}
+  public downloadCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.irrigationUnitGrid, `${this.selectedYear}-farming-practices-data.csv`, null);
+  }
 
   public updateGridData() {
     this.irrigationUnitFarmingPracticesForSelectedYear = this.irrigationUnitFarmingPractices.filter(x => x.IrrigationYear == this.selectedYear);
