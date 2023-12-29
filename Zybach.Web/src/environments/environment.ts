@@ -7,14 +7,12 @@ export const environment = {
   createAccountRedirectUrl: "https://zybach.localhost.sitkatech.com:8713/create-user-callback",
 
   geoserverMapServiceUrl: "http://localhost:7615/geoserver/Zybach",
-
   boundingBoxLeft: -100.22425584641142,
   boundingBoxRight: -102.05544891242484,
   boundingBoxTop: 40.878401166400693,
   boundingBoxBottom: 41.73706831826739,
   
   allowOpenETSync: true,
-
   faviconFilename: "favicon.ico",
   geoOptixWebUrl: "https://tpnrd.geooptix.com",
   mapQuestApiUrl: "https://open.mapquestapi.com/nominatim/v1/search.php?key=gAtuAvFkArwZH61P1UVcRXseleJWEB7r",
