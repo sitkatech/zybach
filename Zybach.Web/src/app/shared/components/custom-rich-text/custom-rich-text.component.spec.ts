@@ -5,7 +5,6 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { CustomRichTextComponent } from './custom-rich-text.component';
 
-import * as config from '../../../../assets/config.json';
 declare var window: any;
 
 describe('CustomRichTextComponent', () => {
@@ -21,7 +20,6 @@ describe('CustomRichTextComponent', () => {
   }));
 
   beforeEach(() => {
-    window.config = config;
     fixture = TestBed.createComponent(CustomRichTextComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,0 +1,38 @@
+.map-legend {
+    font-size: 14px;
+
+    .legend-item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .legend-color {
+            height: 18px;
+            width: 18px;
+            margin-right: 5px;
+            border-radius: 20px;
+        }
+
+        .legend-stat-bullet {
+            height: 6px;
+            width: 6px;
+            border-radius: 20px;
+            margin: 0;
+            margin-left: 5px;
+        }
+        
+        .legend-stat {
+            margin: 0;
+            margin-left: auto;
+        }
+    }
+
+    .legend-footer {
+        font-weight: bold;
+        text-align: right;
+    }
+}
+
+.hidden {
+    display: none;
+}

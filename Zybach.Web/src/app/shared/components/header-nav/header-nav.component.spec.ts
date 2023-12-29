@@ -5,7 +5,6 @@ import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { HeaderNavComponent } from './header-nav.component';
 
-import * as config from '../../../../assets/config.json';
 declare var window: any;
 
 describe('HeaderNavComponent', () => {
@@ -13,7 +12,6 @@ describe('HeaderNavComponent', () => {
   let fixture: ComponentFixture<HeaderNavComponent>;
 
   beforeEach(waitForAsync(() => {
-    window.config = config;
     TestBed.configureTestingModule({
       declarations: [ HeaderNavComponent ],
       imports: [ RouterTestingModule, OAuthModule.forRoot(), HttpClientModule ],
