@@ -34,11 +34,10 @@ export class FarmingPracticesComponent implements OnInit {
 
   public legendColorByCropType: { [cropType: string]: string };
   public irrigationUnitAcresByCropType: { [cropType: string]: number };
-  public totalAcres: number = 0;
+  public totalAcres: number;
   public cropTypes: string[];
 
   public richTextTypeID = CustomRichTextTypeEnum.FarmingPractices;
-  public loadingData: boolean = true;
 
   constructor(
     private irrigationUnitService: IrrigationUnitService,
@@ -63,6 +62,7 @@ export class FarmingPracticesComponent implements OnInit {
   private createFarmingPracticeOverview() {
     this.irrigationUnitAcresByCropType = {};
     this.legendColorByCropType = {};
+    this.totalAcres = 0;
 
     this.irrigationUnitFarmingPracticesForSelectedYear.forEach(irrigationUnit => {
       const cropType = irrigationUnit.CropTypeLegendDisplayName;
@@ -81,8 +81,6 @@ export class FarmingPracticesComponent implements OnInit {
     this.cropTypes = Object.keys(this.irrigationUnitAcresByCropType).filter(cropType => cropType != "Not Reported" && cropType != "Other").sort();
     if (this.irrigationUnitAcresByCropType["Other"]) this.cropTypes.push("Other");
     if (this.irrigationUnitAcresByCropType["Not Reported"]) this.cropTypes.push("Not Reported");
-
-    this.loadingData = false;
   }
 
   public onGridSelectionChanged(params) {
