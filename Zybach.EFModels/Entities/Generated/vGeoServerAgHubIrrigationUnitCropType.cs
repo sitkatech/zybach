@@ -13,8 +13,6 @@ public partial class vGeoServerAgHubIrrigationUnitCropType
     [Unicode(false)]
     public string WellTPID { get; set; }
 
-    public Geometry IrrigationUnitGeometry { get; set; }
-
     public int IrrigationYear { get; set; }
 
     public double Acres { get; set; }
@@ -26,6 +24,10 @@ public partial class vGeoServerAgHubIrrigationUnitCropType
     [StringLength(50)]
     [Unicode(false)]
     public string CropTypeLegendDisplayName { get; set; }
+
+    [StringLength(50)]
+    [Unicode(false)]
+    public string CropTypeMapColor { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]

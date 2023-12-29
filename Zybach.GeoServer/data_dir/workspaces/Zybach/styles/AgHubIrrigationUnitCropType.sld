@@ -21,9 +21,9 @@
           <PolygonSymbolizer>
             <Fill>
               <CssParameter name="fill">
-                <ogc:PropertyName>MapColor</ogc:PropertyName>
+                <ogc:PropertyName>CropTypeMapColor</ogc:PropertyName>
               </CssParameter>
-              <CssParameter name="fill-opacity">.85</CssParameter>
+              <CssParameter name="fill-opacity">.65</CssParameter>
             </Fill>
           </PolygonSymbolizer>
         </Rule>
