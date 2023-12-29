@@ -81,6 +81,10 @@ variable "domainGeoserver" {
   type = string
 }
 
+variable "domainSwaggerApi" {
+  type = string
+}
+
 // this variable is used for the keepers for the random resources https://registry.terraform.io/providers/hashicorp/random/latest/docs
 variable "amd_id" {
   type = string
@@ -631,3 +635,74 @@ resource "datadog_synthetics_test" "test_web" {
 
   status = "live"
 }
+
+resource "datadog_synthetics_test" "test_geoserver" {
+  type    = "api"
+  subtype = "http"
+  request_definition {
+    method = "GET"
+    url    = "https://${var.domainGeoserver}"
+  }
+  request_headers = {
+    Content-Type   = "application/json"
+  }
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
+  locations = ["aws:us-west-1","aws:us-east-1"]
+  options_list {
+    tick_every = 900
+
+    retry {
+      count    = 2
+      interval = 30000
+    }
+
+    monitor_options {
+      renotify_interval = 120
+    }
+  }
+  name    = "${var.environment} - ${var.domainGeoserver} Geoserver test"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+
+  status = "live"
+}
+
+resource "datadog_synthetics_test" "test_swagger" {
+  type    = "api"
+  subtype = "http"
+  request_definition {
+    method = "GET"
+    url    = "https://${var.domainSwaggerApi}"
+  }
+  request_headers = {
+    Content-Type   = "application/json"
+  }
+  assertion {
+    type     = "statusCode"
+    operator = "is"
+    target   = "200"
+  }
+  locations = ["aws:us-west-1","aws:us-east-1"]
+  options_list {
+    tick_every = 900
+
+    retry {
+      count    = 2
+      interval = 30000
+    }
+
+    monitor_options {
+      renotify_interval = 120
+    }
+  }
+  name    = "${var.environment} - ${var.domainSwaggerApi} API test"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+
+  status = "live"
+}
+

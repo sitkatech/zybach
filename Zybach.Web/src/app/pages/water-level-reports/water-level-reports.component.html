@@ -9,17 +9,17 @@
 
     <div class="row">
         <div class="container col-12">
-            <div class="row ml-2 mb-2">
+            <div class="row ms-2 mb-2">
                 <div class="col">
-                    <button (click)="generateReport()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-md float-right">
+                    <button (click)="generateReport()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-md float-end">
                         <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                         Generate Water Levels Report
                     </button>
 
-                    <a class="btn btn-secondary btn-md float-right mr-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-                    ngbTooltip="Download Report as CSV"><i class="fas fa-download"></i></a>
+                    <a class="btn btn-secondary btn-md float-end me-2" style="cursor: pointer;" (click)="exportToCsv()"
+                    ngbTooltip="Download Report as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></a>
 
-                    <fresca-clear-grid-filters-button class="float-right mr-2" [grid]="wellGroupsGrid"></fresca-clear-grid-filters-button>
+                    <fresca-clear-grid-filters-button class="float-end me-2" [grid]="wellGroupsGrid"></fresca-clear-grid-filters-button>
                 </div>
             </div>
 

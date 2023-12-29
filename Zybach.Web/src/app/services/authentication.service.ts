@@ -112,7 +112,7 @@ export class AuthenticationService {
     );
   }
 
-  public getCurrentUserID(): Observable<number> {
+  public getCurrentUserID(): Observable<any> {
     return race(
       new Observable(subscriber => {
         if (this.currentUser) {

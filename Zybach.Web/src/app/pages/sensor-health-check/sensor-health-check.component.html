@@ -14,7 +14,7 @@
     </div>
 
     <div class="row mt-2 align-items-center">
-        <div class="col-md-4 control-label text-md-right font-weight-bold mt-2">Enter Sensor Serial #:</div>
+        <div class="col-md-4 control-label text-md-end fw-bold mt-2">Enter Sensor Serial #:</div>
 
         <div class="col-md-4 col-sm-7 mt-2">
             <input type="text" class="form-control" [(ngModel)]="sensorNameInput">
@@ -61,7 +61,7 @@
                         </ng-template>
                     </div>
                 </div>
-                <div class="text-right" *ngIf="lastUpdated"><i>Last refreshed at {{ lastUpdated | date:"mediumTime"}}</i></div>
+                <div class="text-end" *ngIf="lastUpdated"><i>Last refreshed at {{ lastUpdated | date:"mediumTime"}}</i></div>
             </div>
         </div>
     

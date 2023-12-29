@@ -5,10 +5,10 @@ global:
     databaseName: "ZybachDB"
     sqlUsername: "SqlAdministrator"
     appInsightsInstrumentationKey: "00000000-0000-0000-0000-000000000000"
-    getApiSubscriptionKey: "some-guid"
   domains:
     api: "internalapi-zybach.aks-qa.sitkatech.com"
     web: "zybach.aks-qa.sitkatech.com"
+    geoserver: "geoserver-zybach.aks-qa.sitkatech.com"
     swaggerApi: "api-zybach.aks-qa.sitkatech.com"
     vegarenderservice: "zybach-vegarenderservice" 
   secrets:
@@ -20,7 +20,7 @@ global:
     agHubApiKey: "agHubApiKey"
     geoOptixApiKey: "geoOptixApiKey"
     influxDBToken: "influxDBToken"
-
+    getApiSubscriptionKey: "some-guid"
 api:
   replicaCount: 1
   image:

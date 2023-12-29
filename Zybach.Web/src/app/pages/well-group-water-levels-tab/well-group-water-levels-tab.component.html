@@ -31,13 +31,13 @@
 
                 <div class="row">
                     <div class="col">
-                        <a *ngIf="wellGroup.PrimaryWell" class="btn btn-zybach btn-md float-right m-2" routerLink="/wells/{{wellGroup.PrimaryWell.WellID}}/new-water-level-inspection"
-                            ngbTooltip="New Water Level Inspection"><span class="fas fa-plus"></span></a>
+                        <a *ngIf="wellGroup.PrimaryWell" class="btn btn-zybach btn-md float-end m-2" routerLink="/wells/{{wellGroup.PrimaryWell.WellID}}/new-water-level-inspection"
+                            ngbTooltip="New Water Level Inspection" [placement]="['bottom', 'right', 'left', 'auto']"><span class="fas fa-plus"></span></a>
 
-                        <button class="btn btn-secondary btn-md float-right m-2" style="cursor: pointer;" (click)="exportToCsv()" placement="top"
-                            ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+                        <button class="btn btn-secondary btn-md float-end m-2" style="cursor: pointer;" (click)="exportToCsv()"
+                            ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
 
-                        <fresca-clear-grid-filters-button class="m-2 float-right" [grid]="waterLevelInspectionsGrid"></fresca-clear-grid-filters-button>
+                        <fresca-clear-grid-filters-button class="m-2 float-end" [grid]="waterLevelInspectionsGrid"></fresca-clear-grid-filters-button>
                     </div> 
                 </div>
 

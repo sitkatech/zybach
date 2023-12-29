@@ -105,7 +105,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: params.data.WellID, LinkDisplay: "View Well", CssClasses: "btn-md btn-zybach p-1" };
         }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
@@ -113,7 +113,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
       },
       {
         valueGetter: params => {
-          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach p-1" };
         },
         cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/sensors" },
@@ -151,6 +151,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         },
       },
       {
+        headerName:"Active Support Ticket",
         headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
         valueGetter: params => {
@@ -182,12 +183,16 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       },
       {
+        headerName: "Always On/Off",
         headerComponent: FieldDefinitionGridHeaderComponent,
         headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
         valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
           params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
         filter: CustomDropdownFilterComponent,
-        filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
+        filterValueGetter: function (params: any) {
+          return params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ? 
+            params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A'
+        },
       },
       { headerName: 'Latitude', field: 'Latitude' },
       { headerName: 'Longitude', field: 'Longitude' }

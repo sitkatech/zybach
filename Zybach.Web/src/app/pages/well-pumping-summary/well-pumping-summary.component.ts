@@ -72,13 +72,14 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         valueGetter: params => {
-          return { LinkValue: `${params.data.WellID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+          return { LinkValue: `${params.data.WellID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach p-1" };
         },
         cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells" },
         sortable: false, filter: false, width: 140
       },
       { 
+        headerName: "Well Registration #",
         headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         valueGetter: params => {
@@ -96,6 +97,7 @@ export class WellPumpingSummaryComponent implements OnInit, OnDestroy {
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName},
       },
       {
+        headerName: "Active Support Ticket",
         headerComponent: FieldDefinitionGridHeaderComponent, 
         headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.ActiveSupportTicket },
         valueGetter: params => {

@@ -30,7 +30,7 @@ namespace Zybach.API
 
         private void GetDailyWellWaterLevelData(DateTime fromDate)
         {
-            _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+            _dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateWellSensorMeasurementStaging");
 
             var wellSensorMeasurements = _influxDbService.GetWaterLevelSeries(fromDate).Result;
             _dbContext.WellSensorMeasurementStagings.AddRange(wellSensorMeasurements);

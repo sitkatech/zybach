@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item active" aria-current="page">Disclaimer</li>
     </ol>
 </nav>
@@ -13,7 +13,7 @@
     </div>
     <div class="row" *ngIf="checkDisclaimerAcknowledged()">
         <div class="col">
-            <button class="btn btn-zybach btn-sm mr-3 float-right"
+            <button class="btn btn-zybach btn-sm me-3 float-end"
                 (click)="setDisclaimerAcknowledged()">Acknowledge</button>
         </div>
     </div>

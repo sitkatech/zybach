@@ -13,7 +13,7 @@ public static class AgHubWellsTask
 {
     public static async Task SyncPumpedVolumeDataForWell(ZybachDbContext dbContext, AgHubService agHubService, DateTime startDate, string wellRegistrationID)
     {
-        await dbContext.Database.ExecuteSqlRawAsync($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+        await dbContext.Database.ExecuteSqlRawAsync($"EXECUTE dbo.pTruncateWellSensorMeasurementStaging");
         PopulateWellSensorMeasurementsForWell(dbContext, agHubService, wellRegistrationID, startDate);
         await dbContext.SaveChangesAsync();
         await dbContext.Database.ExecuteSqlRawAsync("EXECUTE dbo.pPublishWellSensorMeasurementStaging");
@@ -22,9 +22,9 @@ public static class AgHubWellsTask
     public static void SyncForAllWells(ZybachDbContext dbContext, AgHubService agHubService, DateTime startDate)
     {
         // first delete all from the tables
-        dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.AgHubWellStaging");
-        dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.AgHubWellIrrigatedAcreStaging");
-        dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE dbo.WellSensorMeasurementStaging");
+        dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateAgHubWellStaging");
+        dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateAgHubWellIrrigatedAcreStaging");
+        dbContext.Database.ExecuteSqlRaw($"EXECUTE dbo.pTruncateWellSensorMeasurementStaging");
 
         var agHubWellRaws = agHubService.GetWellCollection().Result;
         if (agHubWellRaws.Any())

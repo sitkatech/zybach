@@ -13,7 +13,7 @@ $zybach-secondary: #c4c4c4,;
     border: 1px solid $border-gray;
     border-radius: 5px;
     overflow: hidden;
-    font-weight: bold;
+    fw: bold;
 }
 
 #filter-select-buttons label {
@@ -37,7 +37,7 @@ $zybach-secondary: #c4c4c4,;
 #filter-select-buttons input:checked+label {
     background-color: $background-gray; 
     color: #000;
-    font-weight: bold;
+    fw: bold;
 }
 
 #filter-options {

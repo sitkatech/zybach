@@ -8,7 +8,7 @@
 }
 
 .nav-link {
-  font-weight: $header-nav-link-font-weight;
+  fw: $header-nav-link-fw;
 }
 
 // Add Abbr color
@@ -29,8 +29,13 @@ abbr[data-original-title] {
   color: #474D52;
 }
 
+a:link {
+  text-decoration: none;
+}
+
 // Maintain link color on hover
 a:hover {
+  text-decoration: underline;
   color: #205c90;
 }
 
@@ -112,6 +117,19 @@ a:hover {
   border-color: $button-hover-background;
 }
 
+.btn-zybach:focus {
+  color: $button-hover-text-color;
+  background: $button-hover-background;
+  border-color: $button-hover-background;
+}
+
+.btn.disabled, .btn:disabled {
+  background: #ccc;
+  border: 1px solid #bfbfbf;
+  text-shadow: inherit;
+  color: #666;
+}
+
 .btn-toggle,
 .btn-toggle.disabled:hover {
   color: #212529;
@@ -148,4 +166,13 @@ a:hover {
 .modal-content
 {
   top:150px;
+}
+
+.required::after {
+  content: "\f0e7";
+  font-weight: 900;
+  margin-left: 5px;
+  font-size: 10px;
+  font-family: "Font Awesome 5 Free";
+  vertical-align: top;
 }

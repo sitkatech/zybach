@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item">
             <a routerLink="/well-groups">Well Groups</a>
         </li>
@@ -22,7 +22,7 @@
                         <div class="card" *ngIf="wellGroup">
                             <div class="card-header">
                                 Well Group
-                                <div class="float-right">
+                                <div class="float-end">
                                     <a class="btn btn-zybach btn-sm" routerLink="edit">
                                         <span class="fas fa-edit"></span> Edit
                                     </a>
@@ -31,12 +31,12 @@
 
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-6 label font-weight-bold">Well Group Name:</div>
+                                    <div class="col-sm-6 label fw-bold">Well Group Name:</div>
                                     <div class="col-sm-6">{{ wellGroup.WellGroupName }}</div>
                                 </div>
                                 
                                 <div class="row mt-2">
-                                    <div class="col-sm-6 label font-weight-bold">Wells:</div>
+                                    <div class="col-sm-6 label fw-bold">Wells:</div>
                                     <div class="col-sm-6">
                                         <div *ngFor="let wellGroupWell of wellGroup.WellGroupWells">
                                             <a routerLink="/wells/{{wellGroupWell.WellID}}">{{ wellGroupWell.WellRegistrationID }}</a>
@@ -45,7 +45,7 @@
                                 </div>
 
                                 <div class="row mt-2">
-                                    <div class="col-sm-6 label font-weight-bold">Sensors:</div>
+                                    <div class="col-sm-6 label fw-bold">Sensors:</div>
                                     <div class="col-sm-6" *ngIf="wellGroup.Sensors?.length > 0">
                                         <div *ngFor="let sensor of wellGroup.Sensors">
                                             <a routerLink="/sensors/{{sensor.SensorID}}">{{ sensor.SensorName }}</a>
@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="row mt-2" *ngIf="wellGroup.PrimaryWell">
-                                    <div class="col-sm-6 label font-weight-bold">Primary Well for Water Level Reporting:</div>
+                                    <div class="col-sm-6 label fw-bold">Primary Well for Water Level Reporting:</div>
                                     <div class="col-sm-6">
                                         <a routerLink="/wells/{{wellGroup.PrimaryWell.WellID}}">{{ wellGroup.PrimaryWell.WellRegistrationID }}</a>
                                     </div>

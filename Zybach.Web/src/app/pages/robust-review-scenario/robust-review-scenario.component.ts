@@ -66,7 +66,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     
     this.updateRobustReviewScenarioGETHistoriesSubscription?.unsubscribe();
-       this.stopUpdatePolling.next();
+       this.stopUpdatePolling.next(null);
     this.cdr.detach();
   }
 

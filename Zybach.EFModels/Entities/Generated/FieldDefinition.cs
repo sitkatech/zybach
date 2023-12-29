@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Zybach.EFModels.Entities
+namespace Zybach.EFModels.Entities;
+
+[Table("FieldDefinition")]
+public partial class FieldDefinition
 {
-    [Table("FieldDefinition")]
-    public partial class FieldDefinition
-    {
-        [Key]
-        public int FieldDefinitionID { get; set; }
-        public int FieldDefinitionTypeID { get; set; }
-        [Unicode(false)]
-        public string FieldDefinitionValue { get; set; }
-    }
+    [Key]
+    public int FieldDefinitionID { get; set; }
+
+    public int FieldDefinitionTypeID { get; set; }
+
+    [Unicode(false)]
+    public string FieldDefinitionValue { get; set; }
 }

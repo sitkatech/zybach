@@ -17,22 +17,22 @@
 
         <div class="row mb-4 align-items-end">
             <div class="input-group col-sm col-12">
-              <span class="font-weight-bold mt-1">Start Date:</span>
+              <span class="fw-bold mt-1">Start Date:</span>
               <div class="input-group">
                 <input class="form-control" name="d1" ngbDatepicker #d1="ngbDatepicker" placeholder="yyyy-mm-dd" [(ngModel)]="startDate" />
                 <div class="input-group-append">
-                  <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()"
-                    type="button"></button>
+                  <button class="btn btn-zybach" (click)="d1.toggle()"
+                    type="button"><span class="far fa-calendar me-2 col-1"> </span></button>
                 </div>
               </div>
             </div>
             <div class="input-group col-sm col-12">
-              <span class="font-weight-bold mt-1">End Date:</span>
+              <span class="fw-bold mt-1">End Date:</span>
               <div class="input-group">
                 <input class="form-control" name="d2" ngbDatepicker #d2="ngbDatepicker" placeholder="yyyy-mm-dd" [(ngModel)]="endDate" />
                 <div class="input-group-append">
-                  <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d2.toggle()"
-                    type="button"></button>
+                  <button class="btn btn-zybach" (click)="d2.toggle()"
+                    type="button"><span class="far fa-calendar me-2 col-1"> </span></button>
                 </div>
               </div>
             </div>
@@ -51,9 +51,9 @@
                     </label>
                 </div>
             </div>
-            <div class="col-auto ml-auto">
-                <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="downloadCsv()" placement="top"
-                    ngbTooltip="Download as CSV"><i class="fas fa-download"></i></button>
+            <div class="col-auto ms-auto">
+                <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="downloadCsv()"
+                    ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
                 <fresca-clear-grid-filters-button [grid]="wellPumpingSummariesGrid"></fresca-clear-grid-filters-button>
             </div>
         </div>

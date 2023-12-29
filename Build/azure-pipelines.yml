@@ -160,7 +160,7 @@ stages:
       inputs:
         command: 'plan'
         environmentServiceName: '$(azureSubscription)'
-        commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)" -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "environment=$(environment)"'
+        commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)" -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "domainSwaggerApi=$(domainSwaggerApi)" -var "environment=$(environment)"'
         allowTelemetryCollection: true
         publishPlanResults: 'tfplan'
         
@@ -258,7 +258,7 @@ stages:
               command: 'apply'
               workingDirectory: '$(Pipeline.Workspace)/terraform'
               environmentServiceName: '$(azureSubscription)'
-              commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)"  -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "environment=$(environment)"'
+              commandOptions: '-var "appInsightsName=$(appInsightsName)" -var "keyVaultName=$(keyVaultName)" -var "storageAccountName=$(storageAccountApplicationName)" -var "resourceGroupName=$(resourceGroupName)" -var "dbServerName=$(dbServerName)" -var "aspNetEnvironment=$(aspNetEnvironment)" -var "databaseName=$(databaseName)" -var "databaseEdition=$(databaseEdition)" -var "databaseTier=$(databaseTier)" -var "sqlPassword=$(sqlPassword)" -var "sqlUsername=$(sqlUsername)" -var "azureClusterResourceGroup=$(azureClusterResourceGroup)"  -var "sqlApiUsername=$(sqlApiUsername)" -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" -var "datadogApiKey=$(datadogApiKey)" -var "datadogAppKey=$(datadogAppKey)" -var "domainWeb=$(domainWeb)" -var "domainApi=$(domainApi)" -var "domainGeoserver=$(domainGeoserver)" -var "domainSwaggerApi=$(domainSwaggerApi)" -var "environment=$(environment)"'
               allowTelemetryCollection: true
 
           - task: TerraformCLI@0
@@ -524,29 +524,32 @@ stages:
               releaseName: 'zybach'
               overrideValues: |
                 global.env.appInsightsInstrumentationKey="$(INSTRUMENTATION_KEY)"
-                global.domains.api="$(domainApi)"
-                global.domains.web="$(domainWeb)"
-                global.domains.geoserver="$(domainGeoserver)"
                 global.env.name="$(Environment)"
-                global.secrets.geoserverSqlServerPassword="$(SQL_GEOSERVER_PASSWORD)"
-                global.secrets.geoserverAdminPassword="$(GEOSERVER_ADMIN_PASSWORD)"
-                global.secrets.applicationStorageAccountName="$(storageAccountApplicationName)"
-                global.secrets.applicationStorageAccountKey="$(APPLICATION_STORAGE_ACCOUNT_KEY)"
                 global.env.dbServer=$(dbServer)
                 global.env.databaseName=$(databaseName)
                 global.env.sqlUsername=$(sqlApiUsername)
                 global.env.sqlGeoserverUsername=$(sqlGeoserverUsername)
-                global.secrets.apiSqlPassword=$(SQL_API_PASSWORD)
-                global.secrets.sendGridApiKey="$(SendGridApiKey)"
-                global.env.getApiSubscriptionKey=$(getApiSubscriptionKey)
+                global.domains.api="$(domainApi)"
+                global.domains.web="$(domainWeb)"
+                global.domains.geoserver="$(domainGeoserver)"
+                global.domains.swaggerApi="$(domainSwaggerApi)"
                 api.image.tag="$(Build.BuildNumber)-$(environment)"
                 web.image.tag="$(Build.BuildNumber)-$(environment)"
+                swagger.image.tag="$(Build.BuildNumber)-$(environment)"
                 api.image.repository="$(containerRegistry)/zybach/api"
                 web.image.repository="$(containerRegistry)/zybach/web"
+                swagger.image.repository="$(containerRegistry)/zybach/swagger"
+                global.secrets.geoserverSqlServerPassword="$(SQL_GEOSERVER_PASSWORD)"
+                global.secrets.geoserverAdminPassword="$(GEOSERVER_ADMIN_PASSWORD)"
+                global.secrets.applicationStorageAccountName="$(storageAccountApplicationName)"
+                global.secrets.applicationStorageAccountKey="$(APPLICATION_STORAGE_ACCOUNT_KEY)"
+                global.secrets.apiSqlPassword=$(SQL_API_PASSWORD)
+                global.secrets.sendGridApiKey="$(SendGridApiKey)"
                 global.secrets.hangfirePassword="$(HANGFIRE_PASSWORD)"
-                global.secrets.openETApiKey="$(openETApiKey)"
                 global.secrets.apiKeyValue="$(apiKeyValue)"
                 global.secrets.agHubApiKey="$(agHubApiKey)"
                 global.secrets.geoOptixApiKey="$(geoOptixApiKey)"
+                global.secrets.getApiSubscriptionKey="$(getApiSubscriptionKey)"
                 global.secrets.influxDBToken="$(influxDBToken)"
+                global.secrets.openETApiKey="$(openETApiKey)"
               force: false

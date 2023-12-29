@@ -6,8 +6,8 @@
                     <div class="card" *ngIf="well">
                         <div class="card-header">
                             Basics
-                            <div class="float-right">
-                                <a class="btn btn-zybach btn-sm float-right" [ngClass]="{'disabled': isInAgHubOrGeoOptix() || isUserReadOnly()}"
+                            <div class="float-end">
+                                <a class="btn btn-zybach btn-sm float-end" [ngClass]="{'disabled': isInAgHubOrGeoOptix() || isUserReadOnly()}"
                                     routerLink="/wells/{{well.WellID}}/edit-registration-id">
                                     <span class="fas fa-edit"></span> Edit Reg. ID
                                 </a>
@@ -101,8 +101,8 @@
                     <div class="card" *ngIf="well">
                         <div class="card-header">
                             Contact Information
-                            <div class="float-right">
-                                <a class="btn btn-zybach btn-sm float-right" [ngClass]="{'disabled': isUserReadOnly()}"
+                            <div class="float-end">
+                                <a class="btn btn-zybach btn-sm float-end" [ngClass]="{'disabled': isUserReadOnly()}"
                                     routerLink="/wells/{{well.WellID}}/edit-contact">
                                     <span class="fas fa-edit"></span> Edit
                                 </a>
@@ -153,8 +153,8 @@
                 <div class="card" *ngIf="well">
                     <div class="card-header">
                         Program Participation
-                        <div class="float-right">
-                            <a class="btn btn-zybach btn-sm float-right" [ngClass]="{'disabled': isUserReadOnly()}"
+                        <div class="float-end">
+                            <a class="btn btn-zybach btn-sm float-end" [ngClass]="{'disabled': isUserReadOnly()}"
                                 routerLink="/wells/{{well.WellID}}/edit-participation">
                                 <span class="fas fa-edit"></span> Edit
                             </a>

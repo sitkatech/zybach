@@ -257,7 +257,7 @@ namespace Zybach.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHealthChecks("/");
+                endpoints.MapHealthChecks("/healthz");
             });
 
             app.UseHangfireDashboard("/hangfire", new DashboardOptions()
