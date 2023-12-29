@@ -30,6 +30,9 @@ namespace Zybach.EFModels.Entities
         public static readonly AgHubWellIrrigatedAcreCropTypeRangePastureGrassland RangePastureGrassland = Zybach.EFModels.Entities.AgHubWellIrrigatedAcreCropTypeRangePastureGrassland.Instance;
         public static readonly AgHubWellIrrigatedAcreCropTypeForage Forage = Zybach.EFModels.Entities.AgHubWellIrrigatedAcreCropTypeForage.Instance;
         public static readonly AgHubWellIrrigatedAcreCropTypeTurfGrass TurfGrass = Zybach.EFModels.Entities.AgHubWellIrrigatedAcreCropTypeTurfGrass.Instance;
+        public static readonly AgHubWellIrrigatedAcreCropTypePasture Pasture = Zybach.EFModels.Entities.AgHubWellIrrigatedAcreCropTypePasture.Instance;
+        public static readonly AgHubWellIrrigatedAcreCropTypeNotReported NotReported = Zybach.EFModels.Entities.AgHubWellIrrigatedAcreCropTypeNotReported.Instance;
+        public static readonly AgHubWellIrrigatedAcreCropTypeOther Other = Zybach.EFModels.Entities.AgHubWellIrrigatedAcreCropTypeOther.Instance;
 
         public static readonly List<AgHubWellIrrigatedAcreCropType> All;
         public static readonly List<AgHubWellIrrigatedAcreCropTypeDto> AllAsDto;
@@ -41,8 +44,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static AgHubWellIrrigatedAcreCropType()
         {
-            All = new List<AgHubWellIrrigatedAcreCropType> { Corn, Popcorn, Soybeans, Sorghum, DryEdibleBeans, Alfalfa, SmallGrains, WinterWheat, FallowFields, Sunflower, SugarBeets, Potatoes, RangePastureGrassland, Forage, TurfGrass };
-            AllAsDto = new List<AgHubWellIrrigatedAcreCropTypeDto> { Corn.AsDto(), Popcorn.AsDto(), Soybeans.AsDto(), Sorghum.AsDto(), DryEdibleBeans.AsDto(), Alfalfa.AsDto(), SmallGrains.AsDto(), WinterWheat.AsDto(), FallowFields.AsDto(), Sunflower.AsDto(), SugarBeets.AsDto(), Potatoes.AsDto(), RangePastureGrassland.AsDto(), Forage.AsDto(), TurfGrass.AsDto() };
+            All = new List<AgHubWellIrrigatedAcreCropType> { Corn, Popcorn, Soybeans, Sorghum, DryEdibleBeans, Alfalfa, SmallGrains, WinterWheat, FallowFields, Sunflower, SugarBeets, Potatoes, RangePastureGrassland, Forage, TurfGrass, Pasture, NotReported, Other };
+            AllAsDto = new List<AgHubWellIrrigatedAcreCropTypeDto> { Corn.AsDto(), Popcorn.AsDto(), Soybeans.AsDto(), Sorghum.AsDto(), DryEdibleBeans.AsDto(), Alfalfa.AsDto(), SmallGrains.AsDto(), WinterWheat.AsDto(), FallowFields.AsDto(), Sunflower.AsDto(), SugarBeets.AsDto(), Potatoes.AsDto(), RangePastureGrassland.AsDto(), Forage.AsDto(), TurfGrass.AsDto(), Pasture.AsDto(), NotReported.AsDto(), Other.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, AgHubWellIrrigatedAcreCropType>(All.ToDictionary(x => x.AgHubWellIrrigatedAcreCropTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, AgHubWellIrrigatedAcreCropTypeDto>(AllAsDto.ToDictionary(x => x.AgHubWellIrrigatedAcreCropTypeID));
         }
@@ -123,6 +126,12 @@ namespace Zybach.EFModels.Entities
                     return FallowFields;
                 case AgHubWellIrrigatedAcreCropTypeEnum.Forage:
                     return Forage;
+                case AgHubWellIrrigatedAcreCropTypeEnum.NotReported:
+                    return NotReported;
+                case AgHubWellIrrigatedAcreCropTypeEnum.Other:
+                    return Other;
+                case AgHubWellIrrigatedAcreCropTypeEnum.Pasture:
+                    return Pasture;
                 case AgHubWellIrrigatedAcreCropTypeEnum.Popcorn:
                     return Popcorn;
                 case AgHubWellIrrigatedAcreCropTypeEnum.Potatoes:
@@ -165,7 +174,10 @@ namespace Zybach.EFModels.Entities
         Potatoes = 12,
         RangePastureGrassland = 13,
         Forage = 14,
-        TurfGrass = 15
+        TurfGrass = 15,
+        Pasture = 16,
+        NotReported = 17,
+        Other = 18
     }
 
     public partial class AgHubWellIrrigatedAcreCropTypeCorn : AgHubWellIrrigatedAcreCropType
@@ -177,7 +189,7 @@ namespace Zybach.EFModels.Entities
     public partial class AgHubWellIrrigatedAcreCropTypePopcorn : AgHubWellIrrigatedAcreCropType
     {
         private AgHubWellIrrigatedAcreCropTypePopcorn(int agHubWellIrrigatedAcreCropTypeID, string agHubWellIrrigatedAcreCropTypeName, string mapColor) : base(agHubWellIrrigatedAcreCropTypeID, agHubWellIrrigatedAcreCropTypeName, mapColor) {}
-        public static readonly AgHubWellIrrigatedAcreCropTypePopcorn Instance = new AgHubWellIrrigatedAcreCropTypePopcorn(2, @"Popcorn", @"#00b600");
+        public static readonly AgHubWellIrrigatedAcreCropTypePopcorn Instance = new AgHubWellIrrigatedAcreCropTypePopcorn(2, @"Popcorn", @"#007b00");
     }
 
     public partial class AgHubWellIrrigatedAcreCropTypeSoybeans : AgHubWellIrrigatedAcreCropType
@@ -213,7 +225,7 @@ namespace Zybach.EFModels.Entities
     public partial class AgHubWellIrrigatedAcreCropTypeWinterWheat : AgHubWellIrrigatedAcreCropType
     {
         private AgHubWellIrrigatedAcreCropTypeWinterWheat(int agHubWellIrrigatedAcreCropTypeID, string agHubWellIrrigatedAcreCropTypeName, string mapColor) : base(agHubWellIrrigatedAcreCropTypeID, agHubWellIrrigatedAcreCropTypeName, mapColor) {}
-        public static readonly AgHubWellIrrigatedAcreCropTypeWinterWheat Instance = new AgHubWellIrrigatedAcreCropTypeWinterWheat(8, @"Winter Wheat", @"#d500d9");
+        public static readonly AgHubWellIrrigatedAcreCropTypeWinterWheat Instance = new AgHubWellIrrigatedAcreCropTypeWinterWheat(8, @"Winter Wheat", @"#b521b8");
     }
 
     public partial class AgHubWellIrrigatedAcreCropTypeFallowFields : AgHubWellIrrigatedAcreCropType
@@ -249,12 +261,30 @@ namespace Zybach.EFModels.Entities
     public partial class AgHubWellIrrigatedAcreCropTypeForage : AgHubWellIrrigatedAcreCropType
     {
         private AgHubWellIrrigatedAcreCropTypeForage(int agHubWellIrrigatedAcreCropTypeID, string agHubWellIrrigatedAcreCropTypeName, string mapColor) : base(agHubWellIrrigatedAcreCropTypeID, agHubWellIrrigatedAcreCropTypeName, mapColor) {}
-        public static readonly AgHubWellIrrigatedAcreCropTypeForage Instance = new AgHubWellIrrigatedAcreCropTypeForage(14, @"Forage", @"#a08c62");
+        public static readonly AgHubWellIrrigatedAcreCropTypeForage Instance = new AgHubWellIrrigatedAcreCropTypeForage(14, @"Forage", @"#7c6c4b");
     }
 
     public partial class AgHubWellIrrigatedAcreCropTypeTurfGrass : AgHubWellIrrigatedAcreCropType
     {
         private AgHubWellIrrigatedAcreCropTypeTurfGrass(int agHubWellIrrigatedAcreCropTypeID, string agHubWellIrrigatedAcreCropTypeName, string mapColor) : base(agHubWellIrrigatedAcreCropTypeID, agHubWellIrrigatedAcreCropTypeName, mapColor) {}
-        public static readonly AgHubWellIrrigatedAcreCropTypeTurfGrass Instance = new AgHubWellIrrigatedAcreCropTypeTurfGrass(15, @"Turf Grass", @"#a08c62");
+        public static readonly AgHubWellIrrigatedAcreCropTypeTurfGrass Instance = new AgHubWellIrrigatedAcreCropTypeTurfGrass(15, @"Turf Grass", @"#574c35");
+    }
+
+    public partial class AgHubWellIrrigatedAcreCropTypePasture : AgHubWellIrrigatedAcreCropType
+    {
+        private AgHubWellIrrigatedAcreCropTypePasture(int agHubWellIrrigatedAcreCropTypeID, string agHubWellIrrigatedAcreCropTypeName, string mapColor) : base(agHubWellIrrigatedAcreCropTypeID, agHubWellIrrigatedAcreCropTypeName, mapColor) {}
+        public static readonly AgHubWellIrrigatedAcreCropTypePasture Instance = new AgHubWellIrrigatedAcreCropTypePasture(16, @"Pasture", @"#a08c62");
+    }
+
+    public partial class AgHubWellIrrigatedAcreCropTypeNotReported : AgHubWellIrrigatedAcreCropType
+    {
+        private AgHubWellIrrigatedAcreCropTypeNotReported(int agHubWellIrrigatedAcreCropTypeID, string agHubWellIrrigatedAcreCropTypeName, string mapColor) : base(agHubWellIrrigatedAcreCropTypeID, agHubWellIrrigatedAcreCropTypeName, mapColor) {}
+        public static readonly AgHubWellIrrigatedAcreCropTypeNotReported Instance = new AgHubWellIrrigatedAcreCropTypeNotReported(17, @"Not Reported", @"#e22e1d");
+    }
+
+    public partial class AgHubWellIrrigatedAcreCropTypeOther : AgHubWellIrrigatedAcreCropType
+    {
+        private AgHubWellIrrigatedAcreCropTypeOther(int agHubWellIrrigatedAcreCropTypeID, string agHubWellIrrigatedAcreCropTypeName, string mapColor) : base(agHubWellIrrigatedAcreCropTypeID, agHubWellIrrigatedAcreCropTypeName, mapColor) {}
+        public static readonly AgHubWellIrrigatedAcreCropTypeOther Instance = new AgHubWellIrrigatedAcreCropTypeOther(18, @"Other", @"#00b6b6");
     }
 }

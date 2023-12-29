@@ -17,5 +17,8 @@ export enum AgHubWellIrrigatedAcreCropTypeEnum {
   Potatoes = 12,
   RangePastureGrassland = 13,
   Forage = 14,
-  TurfGrass = 15
+  TurfGrass = 15,
+  Pasture = 16,
+  NotReported = 17,
+  Other = 18
 }

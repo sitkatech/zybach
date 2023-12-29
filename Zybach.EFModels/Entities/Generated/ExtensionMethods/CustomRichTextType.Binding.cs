@@ -47,7 +47,6 @@ namespace Zybach.EFModels.Entities
         public static readonly CustomRichTextTypeSensorStatusMap SensorStatusMap = Zybach.EFModels.Entities.CustomRichTextTypeSensorStatusMap.Instance;
         public static readonly CustomRichTextTypeFarmingPractices FarmingPractices = Zybach.EFModels.Entities.CustomRichTextTypeFarmingPractices.Instance;
 
-
         public static readonly List<CustomRichTextType> All;
         public static readonly List<CustomRichTextTypeDto> AllAsDto;
         public static readonly ReadOnlyDictionary<int, CustomRichTextType> AllLookupDictionary;
@@ -142,6 +141,8 @@ namespace Zybach.EFModels.Entities
                     return ClearinghouseReport;
                 case CustomRichTextTypeEnum.Disclaimer:
                     return Disclaimer;
+                case CustomRichTextTypeEnum.FarmingPractices:
+                    return FarmingPractices;
                 case CustomRichTextTypeEnum.Help:
                     return Help;
                 case CustomRichTextTypeEnum.Homepage:
@@ -190,8 +191,6 @@ namespace Zybach.EFModels.Entities
                     return WellPumpingSummary;
                 case CustomRichTextTypeEnum.WellRegistrationIDChangeHelpText:
                     return WellRegistrationIDChangeHelpText;
-                case CustomRichTextTypeEnum.FarmingPractices:
-                    return FarmingPractices;
                 default:
                     throw new ArgumentException("Unable to map Enum: {enumValue}");
             }
@@ -415,7 +414,7 @@ namespace Zybach.EFModels.Entities
 
     public partial class CustomRichTextTypeFarmingPractices : CustomRichTextType
     {
-        private CustomRichTextTypeFarmingPractices(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) { }
+        private CustomRichTextTypeFarmingPractices(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
         public static readonly CustomRichTextTypeFarmingPractices Instance = new CustomRichTextTypeFarmingPractices(31, @"FarmingPractices", @"Farming Practices");
     }
 }
