@@ -93,13 +93,6 @@ namespace Zybach.API
                 c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
             });
 
-            services.AddHttpClient<GeoOptixSearchService>(c =>
-            {
-                c.BaseAddress = new Uri(zybachConfiguration.GEOOPTIX_SEARCH_HOSTNAME);
-                c.Timeout = TimeSpan.FromMinutes(30);
-                c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
-            });
-
             services.AddHttpClient<AgHubService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.AGHUB_API_BASE_URL);

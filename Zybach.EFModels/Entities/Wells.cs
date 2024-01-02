@@ -150,9 +150,15 @@ namespace Zybach.EFModels.Entities
             return wellWithSensorSimpleDto;
         }
 
-        public static List<WellSimpleDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
+        public static List<SearchSummaryDto> SearchByWellRegistrationID(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText)).Select(x => x.AsSimpleDto()).ToList();
+            return dbContext.Wells.AsNoTracking().Where(x => x.WellRegistrationID.Contains(searchText))
+                .Select(x => new SearchSummaryDto()
+                {
+                    ObjectType = "Well",
+                    WellName = x.WellRegistrationID,
+                    WellID = x.WellID
+                }).ToList();
         }
 
         public static List<string> SearchByWellRegistrationIDHasInspectionType(ZybachDbContext dbContext, string searchText)
@@ -174,14 +180,56 @@ namespace Zybach.EFModels.Entities
                 .Distinct().ToList();
         }
 
-        public static List<WellSimpleDto> SearchByAghubRegisteredUser(ZybachDbContext dbContext, string searchText)
+        public static List<SearchSummaryDto> SearchByAghubRegisteredUser(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.AgHubRegisteredUser.Contains(searchText)).Select(x => x.Well.AsSimpleDto()).ToList();
+            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking()
+                .Where(x => x.AgHubRegisteredUser.Contains(searchText))
+                .Select(x => new SearchSummaryDto()
+                {
+                    ObjectName = x.AgHubRegisteredUser,
+                    ObjectType = "Registered User",
+                    WellName = x.Well.WellRegistrationID,
+                    WellID = x.WellID
+                }).ToList();
         }
 
-        public static List<WellSimpleDto> SearchByField(ZybachDbContext dbContext, string searchText)
+        public static List<SearchSummaryDto> SearchByField(ZybachDbContext dbContext, string searchText)
         {
-            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking().Where(x => x.FieldName.Contains(searchText)).Select(x => x.Well.AsSimpleDto()).ToList();
+            return dbContext.AgHubWells.Include(x => x.Well).AsNoTracking()
+                .Where(x => x.FieldName.Contains(searchText))
+                .Select(x => new SearchSummaryDto()
+                {
+                    ObjectName = x.FieldName,
+                    ObjectType = "Field",
+                    WellName = x.Well.WellRegistrationID,
+                    WellID = x.WellID
+                }).ToList();
+        }
+
+        public static List<SearchSummaryDto> SearchByChemigationPermit(ZybachDbContext dbContext, string searchText)
+        {
+            return dbContext.ChemigationPermits.Include(x => x.Well).AsNoTracking().ToList()
+                .Where(x => x.Well != null && x.ChemigationPermitNumberDisplay.Contains(searchText))
+                .Select(x => new SearchSummaryDto()
+                {
+                    ObjectName = x.ChemigationPermitNumberDisplay,
+                    ObjectType = "Chemigation Permit",
+                    WellName = x.Well.WellRegistrationID,
+                    WellID = x.WellID.Value
+                }).ToList();
+        }
+
+        public static List<SearchSummaryDto> SearchBySensorName(ZybachDbContext dbContext, string searchText)
+        {
+            return dbContext.Sensors.Include(x => x.Well).AsNoTracking()
+                .Where(x => x.Well != null && x.SensorName.Contains(searchText))
+                .Select(x => new SearchSummaryDto()
+                {
+                    ObjectName = x.SensorName,
+                    ObjectType = "Sensor",
+                    WellName = x.Well.WellRegistrationID,
+                    WellID = x.WellID.Value
+                }).ToList();
         }
 
         public static WellDto CreateNew(ZybachDbContext dbContext, WellNewDto wellNewDto)

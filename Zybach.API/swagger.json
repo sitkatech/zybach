@@ -8440,6 +8440,10 @@
             "type": "string",
             "nullable": true
           },
+          "WellName": {
+            "type": "string",
+            "nullable": true
+          },
           "WellID": {
             "type": "integer",
             "format": "int32"
