@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { FieldDefinitionService } from 'src/app/shared/services/field-definition-service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -7,6 +7,8 @@ import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { FieldDefinitionDto } from 'src/app/shared/generated/model/field-definition-dto';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
+import TinyMCEHelpers from 'src/app/shared/helpers/tiny-mce-helpers';
+import { EditorComponent } from '@tinymce/tinymce-angular';
 
 @Component({
   selector: 'zybach-field-definition-edit',
@@ -14,7 +16,8 @@ import { UserDto } from 'src/app/shared/generated/model/user-dto';
   styleUrls: ['./field-definition-edit.component.scss']
 })
 export class FieldDefinitionEditComponent implements OnInit {
-  
+  @ViewChild('tinyMceEditor') tinyMceEditor : EditorComponent;
+  public tinyMceConfig: object;
   private currentUser: UserDto;
 
   public fieldDefinition: FieldDefinitionDto;
@@ -41,6 +44,12 @@ export class FieldDefinitionEditComponent implements OnInit {
             })
         }
     });
+  }
+
+  ngAfterViewInit(): void {
+    // We need to use ngAfterViewInit because the image upload needs a reference to the component
+    // to setup the blobCache for image base64 encoding
+    this.tinyMceConfig = TinyMCEHelpers.DefaultInitConfig(this.tinyMceEditor)
   }
 
   ngOnDestroy() {
