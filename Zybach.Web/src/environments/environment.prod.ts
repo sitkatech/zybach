@@ -1,33 +1,34 @@
-export const environment = {
-  production: true,
-  staging: false,
-  dev: false,
-  mainAppApiUrl: "https://internalapi-zybach.aks-prod.sitkatech.com",
-  createAccountUrl: "https://keystone.sitkatech.com/Authentication/Register?RedirectUrl=",
-  createAccountRedirectUrl: "https://zybach.aks-prod.sitkatech.com/create-user-callback",
+// export const environment = {
+//   production: true,
+//   staging: false,
+//   dev: false,
+//   apiHostName: 'api-rrbwatertrading.sitkatech.com',
+//   createAccountUrl: "https://keystone.sitkatech.com/Authentication/Register?RedirectUrl=",
+//   createAccountRedirectUrl: "https://waterbudget.rrbwsd.com/create-user-callback",
+//   allowTrading: true,
 
-  geoserverMapServiceUrl: 'https://geoserver-zybach.aks-prod.sitkatech.com/geoserver/Zybach',
-  boundingBoxLeft: -100.22425584641142,
-  boundingBoxRight: -102.05544891242484,
-  boundingBoxTop: 40.878401166400693,
-  boundingBoxBottom: 41.73706831826739,
+//   keystoneSupportBaseUrl: "https://keystone.sitkatech.com/Authentication",
 
-  allowOpenETSync: true,
-  faviconFilename: "favicon.ico",
-  geoOptixWebUrl: "https://tpnrd.geooptix.com",
-  mapQuestApiUrl: "https://open.mapquestapi.com/nominatim/v1/search.php?key=gAtuAvFkArwZH61P1UVcRXseleJWEB7r",
-  appInsightsInstrumentationKey: "b91b594a-1c51-461f-a892-07e4bd43aa35",
-  GETEnvironmentUrl: "https://get-api.azure-api.net/GETAzureFunctionApi/",
+//   keystoneAuthConfiguration: {
+//     clientId: 'Zybach',
+//     issuer: 'https://keystone.sitkatech.com/core',
+//     redirectUri: window.location.origin + '/login-callback',
+//     scope: 'openid all_claims keystone',
+//     sessionChecksEnabled: true,
+//     logoutUrl: 'https://keystone.sitkatech.com/core/connect/endsession',
+//     postLogoutRedirectUri: window.location.origin + '/',
+//     waitForTokenInMsec: 500
+//   },
+//   geoserverMapServiceUrl: 'https://zybach-geoserver.yachats.sitkatech.com/geoserver/Zybach'
+// };
 
-  keystoneAuthConfiguration: {
-    clientId: 'Zybach',
-    issuer: 'https://keystone.sitkatech.com/core',
-    redirectUriRelative: "/",
-    redirectUri: window.location.origin + '/login-callback',
-    scope: 'openid all_claims keystone',
-    sessionChecksEnabled: true,
-    logoutUrl: 'https://keystone.sitkatech.com/core/connect/endsession',
-    postLogoutRedirectUri: window.location.origin + '/',
-    waitForTokenInMsec: 500
+
+import { DynamicEnvironment } from './dynamic-environment';
+class Environment extends DynamicEnvironment {
+
+  constructor() {
+    super(true);
   }
-};
+}
+
+export const environment = new Environment();

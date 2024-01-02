@@ -43,23 +43,28 @@ namespace Zybach.Web
                 var options = new RewriteOptions().AddRedirectToHttps(301, 9001);
                 app.UseRewriter(options);
             }
-            
+
             app.Use(async (context, next) =>
             {
+                if (context.Request.Path.Value == "/assets/config.json")
+                {
+                    var result = new ConfigDto(Configuration);
+                    var json = JsonConvert.SerializeObject(result);
+                    await context.Response.WriteAsync(json);
+                    return;
+                }
                 await next();
-
                 if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
                 {
                     context.Request.Path = "/index.html";
                     await next();
                 }
             });
-
             app.UseDefaultFiles();
             app.UseStaticFiles();
         }
     }
-
+    
     public class ConfigDto
     {
         public ConfigDto(IConfiguration configuration)
@@ -78,7 +83,6 @@ namespace Zybach.Web
             GETEnvironmentUrl = configuration["GETEnvironmentUrl"];
             AllowOpenETSync = bool.Parse(configuration["AllowOpenETSync"]);
         }
-
         [JsonProperty("production")]
         public bool Production { get; set; }
         [JsonProperty("staging")]
