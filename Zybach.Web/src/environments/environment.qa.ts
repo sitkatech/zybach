@@ -1,34 +1,34 @@
-export const environment = {
-  production: false,
-  staging: true,
-  dev: false,
-  mainAppApiUrl: "https://internalapi-zybach.aks-qa.sitkatech.com",
-  createAccountRedirectUrl: "https://zybach.aks-qa.sitkatech.com/create-user-callback",
+// export const environment = {
+//   production: false,
+//   staging: true,
+//   dev: false,
+//   apiHostName: 'zybach-api.qa.sycan.sitkatech.com',
+//   createAccountUrl: "https://qa.keystone.sitkatech.com/Authentication/Register?RedirectUrl=",
+//   createAccountRedirectUrl: "https://zybach.qa.sycan.sitkatech.com/create-user-callback",
+//   allowTrading: false,
 
-  geoserverMapServiceUrl: 'https://geoserver-zybach.aks-qa.sitkatech.com/geoserver/Zybach',
-  boundingBoxLeft: -100.22425584641142,
-  boundingBoxRight: -102.05544891242484,
-  boundingBoxTop: 40.878401166400693,
-  boundingBoxBottom: 41.73706831826739,
+//   keystoneSupportBaseUrl: "https://qa.keystone.sitkatech.com/Authentication",
 
-  allowOpenETSync: true,
-  faviconFilename: "favicon.ico",
-  geoOptixWebUrl: "https://tpnrd.geooptix.com",
-  mapQuestApiUrl: "https://open.mapquestapi.com/nominatim/v1/search.php?key=gAtuAvFkArwZH61P1UVcRXseleJWEB7r",
-  appInsightsInstrumentationKey: "b91b594a-1c51-461f-a892-07e4bd43aa35",
-  GETEnvironmentUrl: "https://get-api-qa.azure-api.net/GETAzureFunctionApiQA/",
+//   keystoneAuthConfiguration: {
+//     clientId: 'Zybach',
+//     issuer: 'https://qa.keystone.sitkatech.com/core',
+//     redirectUri: window.location.origin + '/login-callback',
+//     scope: 'openid all_claims keystone',
+//     sessionChecksEnabled: true,
+//     logoutUrl: 'https://qa.keystone.sitkatech.com/core/connect/endsession',
+//     postLogoutRedirectUri: window.location.origin + '/',
+//     waitForTokenInMsec: 500
+//   },
+//   geoserverMapServiceUrl: 'https://zybach-geoserver.qa.sycan.sitkatech.com/geoserver/Zybach'
+// };
 
-  keystoneAuthConfiguration: {
-    clientId: 'Zybach',
-    issuer: 'https://identity-qa.sitkatech.com',
-    responseType: "code",
-    disablePKCE: false,
-    redirectUriRelative: "/signin-oidc",
-    redirectUri: window.location.origin,
-    scope: 'openid all_claims keystone',
-    sessionChecksEnabled: true,
-    logoutUrl: 'https://identity-qa.sitkatech.com/account/logout',
-    postLogoutRedirectUri: window.location.origin + '/',
-    waitForTokenInMsec: 500
+
+import { DynamicEnvironment } from './dynamic-environment';
+class Environment extends DynamicEnvironment {
+
+  constructor() {
+    super(false);
   }
-};
+}
+
+export const environment = new Environment();
