@@ -204,11 +204,11 @@
                         <ng-template let-result pTemplate="item">
                             <div style="border-bottom:1px solid #D5D5D5">
                                 <div class="objectType">
-                                    {{ result.ObjectType }}
+                                    {{ result.ObjectType }}<span *ngIf="result.ObjectName">: {{ result.ObjectName }}</span>
                                 </div>
 
                                 <a routerLink="/wells/{{result.WellID}}">
-                                    {{ result.ObjectName }}
+                                    {{ result.WellName }}
                                 </a>
                             </div>
                         </ng-template>

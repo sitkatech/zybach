@@ -13,10 +13,10 @@ export class LeafletHelperService {
   public readonly tileLayers = LeafletHelperService.GetDefaultTileLayers();
 
   public static readonly defaultBoundingBox = new BoundingBoxDto({
-    Left: -120.841518219986,
-    Bottom: 37.0983621505508,
-    Right: -120.216218621317,
-    Top: 37.4718525078379
+    Left: -100.22425584641142,
+    Bottom: 41.73706831826739,
+    Right: -102.05544891242484,
+    Top: 40.878401166400693
   });
 
   public readonly blueIcon = L.icon({
