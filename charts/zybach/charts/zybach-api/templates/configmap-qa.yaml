@@ -17,7 +17,6 @@ data:
   INFLUXDB_ORG: "GeoOptix"
   INFLUX_BUCKET: "tpnrd"
   GEOOPTIX_HOSTNAME: "https://tpnrd.api.geooptix.com"
-  GEOOPTIX_SEARCH_HOSTNAME: "https://tpnrd.search.geooptix.com"
   AGHUB_API_BASE_URL: "https://64x7c7fw24.execute-api.us-east-2.amazonaws.com"
   AGHUB_API_BUCKET: "stage"
   GET_API_BASE_URL: "https://get-api-qa.azure-api.net/GETAzureFunctionApiQA/"
