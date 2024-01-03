@@ -3,11 +3,14 @@
   <id>LayerInfoImpl-758abb9:18c8336e21b:-7ffe</id>
   <type>VECTOR</type>
   <defaultStyle>
-    <id>StyleInfoImpl-53e9eefb:16b9054e5ev:-77b7</id>
+    <id>StyleInfoImpl--3c422e7a:18ccd5dac34:-7fff</id>
   </defaultStyle>
   <styles class="linked-hash-set">
     <style>
       <id>StyleInfoImpl-53e9eefb:16b9054e5ev:-77b7</id>
+    </style>
+    <style>
+      <id>StyleInfoImpl--3c422e7a:18ccd5dac34:-7fff</id>
     </style>
   </styles>
   <resource class="featureType">
