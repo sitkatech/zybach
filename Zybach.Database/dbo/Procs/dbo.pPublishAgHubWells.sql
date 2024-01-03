@@ -1,4 +1,5 @@
 create procedure dbo.pPublishAgHubWells
+with execute as owner
 as
 begin
 	declare @fetchDate datetime
