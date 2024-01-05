@@ -74,6 +74,7 @@ namespace Zybach.Swagger
             var logger = GetSerilogLogger();
             services.AddSingleton(logger);
 
+            services.AddScoped<InfluxDBService>();
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
             services.AddControllers();
 
