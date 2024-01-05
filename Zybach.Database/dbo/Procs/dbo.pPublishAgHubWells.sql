@@ -200,6 +200,10 @@ begin
     join dbo.Well w on s.SensorName = concat('E-', upper(w.WellRegistrationID))
     where s.SensorTypeID = 4
 
+	-- run MakeValid() on any invalid IrrigationUnit geometries
+	update dbo.AgHubIrrigationUnitGeometry
+	set IrrigationUnitGeometry = IrrigationUnitGeometry.MakeValid()
+	where IrrigationUnitGeometry.STIsValid() = 0
 
     -- finally create sensors with SensorY
     exec dbo.pPublishWellSensorMeasurementStaging
