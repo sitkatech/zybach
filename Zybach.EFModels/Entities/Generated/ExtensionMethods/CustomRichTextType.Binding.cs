@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class CustomRichTextType
+    public abstract partial class CustomRichTextType : IHavePrimaryKey
     {
         public static readonly CustomRichTextTypePlatformOverview PlatformOverview = Zybach.EFModels.Entities.CustomRichTextTypePlatformOverview.Instance;
         public static readonly CustomRichTextTypeDisclaimer Disclaimer = Zybach.EFModels.Entities.CustomRichTextTypeDisclaimer.Instance;
@@ -45,6 +45,7 @@ namespace Zybach.EFModels.Entities
         public static readonly CustomRichTextTypeWaterLevelsReport WaterLevelsReport = Zybach.EFModels.Entities.CustomRichTextTypeWaterLevelsReport.Instance;
         public static readonly CustomRichTextTypeSensorHealthCheck SensorHealthCheck = Zybach.EFModels.Entities.CustomRichTextTypeSensorHealthCheck.Instance;
         public static readonly CustomRichTextTypeSensorStatusMap SensorStatusMap = Zybach.EFModels.Entities.CustomRichTextTypeSensorStatusMap.Instance;
+        public static readonly CustomRichTextTypeFarmingPractices FarmingPractices = Zybach.EFModels.Entities.CustomRichTextTypeFarmingPractices.Instance;
 
         public static readonly List<CustomRichTextType> All;
         public static readonly List<CustomRichTextTypeDto> AllAsDto;
@@ -56,8 +57,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static CustomRichTextType()
         {
-            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, Training, RobustReviewScenario, ReportsList, Chemigation, NDEEChemicalsReport, ChemigationPermitReport, ChemigationInspections, WaterQualityInspections, WaterLevelInspections, WellRegistrationIDChangeHelpText, ClearinghouseReport, SensorList, WaterQualityReport, AnomalyReportList, WaterLevelExplorerMap, WaterLevelExplorerMapDisclaimer, IrrigationUnitIndex, OpenETIntegration, SupportTicketIndex, WellPumpingSummary, WellGroupList, WellGroupEdit, WaterLevelsReport, SensorHealthCheck, SensorStatusMap };
-            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), Training.AsDto(), RobustReviewScenario.AsDto(), ReportsList.AsDto(), Chemigation.AsDto(), NDEEChemicalsReport.AsDto(), ChemigationPermitReport.AsDto(), ChemigationInspections.AsDto(), WaterQualityInspections.AsDto(), WaterLevelInspections.AsDto(), WellRegistrationIDChangeHelpText.AsDto(), ClearinghouseReport.AsDto(), SensorList.AsDto(), WaterQualityReport.AsDto(), AnomalyReportList.AsDto(), WaterLevelExplorerMap.AsDto(), WaterLevelExplorerMapDisclaimer.AsDto(), IrrigationUnitIndex.AsDto(), OpenETIntegration.AsDto(), SupportTicketIndex.AsDto(), WellPumpingSummary.AsDto(), WellGroupList.AsDto(), WellGroupEdit.AsDto(), WaterLevelsReport.AsDto(), SensorHealthCheck.AsDto(), SensorStatusMap.AsDto() };
+            All = new List<CustomRichTextType> { PlatformOverview, Disclaimer, Homepage, Help, LabelsAndDefinitionsList, Training, RobustReviewScenario, ReportsList, Chemigation, NDEEChemicalsReport, ChemigationPermitReport, ChemigationInspections, WaterQualityInspections, WaterLevelInspections, WellRegistrationIDChangeHelpText, ClearinghouseReport, SensorList, WaterQualityReport, AnomalyReportList, WaterLevelExplorerMap, WaterLevelExplorerMapDisclaimer, IrrigationUnitIndex, OpenETIntegration, SupportTicketIndex, WellPumpingSummary, WellGroupList, WellGroupEdit, WaterLevelsReport, SensorHealthCheck, SensorStatusMap, FarmingPractices };
+            AllAsDto = new List<CustomRichTextTypeDto> { PlatformOverview.AsDto(), Disclaimer.AsDto(), Homepage.AsDto(), Help.AsDto(), LabelsAndDefinitionsList.AsDto(), Training.AsDto(), RobustReviewScenario.AsDto(), ReportsList.AsDto(), Chemigation.AsDto(), NDEEChemicalsReport.AsDto(), ChemigationPermitReport.AsDto(), ChemigationInspections.AsDto(), WaterQualityInspections.AsDto(), WaterLevelInspections.AsDto(), WellRegistrationIDChangeHelpText.AsDto(), ClearinghouseReport.AsDto(), SensorList.AsDto(), WaterQualityReport.AsDto(), AnomalyReportList.AsDto(), WaterLevelExplorerMap.AsDto(), WaterLevelExplorerMapDisclaimer.AsDto(), IrrigationUnitIndex.AsDto(), OpenETIntegration.AsDto(), SupportTicketIndex.AsDto(), WellPumpingSummary.AsDto(), WellGroupList.AsDto(), WellGroupEdit.AsDto(), WaterLevelsReport.AsDto(), SensorHealthCheck.AsDto(), SensorStatusMap.AsDto(), FarmingPractices.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextType>(All.ToDictionary(x => x.CustomRichTextTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, CustomRichTextTypeDto>(AllAsDto.ToDictionary(x => x.CustomRichTextTypeID));
         }
@@ -140,6 +141,8 @@ namespace Zybach.EFModels.Entities
                     return ClearinghouseReport;
                 case CustomRichTextTypeEnum.Disclaimer:
                     return Disclaimer;
+                case CustomRichTextTypeEnum.FarmingPractices:
+                    return FarmingPractices;
                 case CustomRichTextTypeEnum.Help:
                     return Help;
                 case CustomRichTextTypeEnum.Homepage:
@@ -225,7 +228,8 @@ namespace Zybach.EFModels.Entities
         WellGroupEdit = 27,
         WaterLevelsReport = 28,
         SensorHealthCheck = 29,
-        SensorStatusMap = 30
+        SensorStatusMap = 30,
+        FarmingPractices = 31
     }
 
     public partial class CustomRichTextTypePlatformOverview : CustomRichTextType
@@ -406,5 +410,11 @@ namespace Zybach.EFModels.Entities
     {
         private CustomRichTextTypeSensorStatusMap(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
         public static readonly CustomRichTextTypeSensorStatusMap Instance = new CustomRichTextTypeSensorStatusMap(30, @"SensorStatusMap", @"Sensor Status Map");
+    }
+
+    public partial class CustomRichTextTypeFarmingPractices : CustomRichTextType
+    {
+        private CustomRichTextTypeFarmingPractices(int customRichTextTypeID, string customRichTextTypeName, string customRichTextTypeDisplayName) : base(customRichTextTypeID, customRichTextTypeName, customRichTextTypeDisplayName) {}
+        public static readonly CustomRichTextTypeFarmingPractices Instance = new CustomRichTextTypeFarmingPractices(31, @"FarmingPractices", @"Farming Practices");
     }
 }

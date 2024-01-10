@@ -66,7 +66,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     
     this.updateRobustReviewScenarioGETHistoriesSubscription?.unsubscribe();
-       this.stopUpdatePolling.next();
+       this.stopUpdatePolling.next(null);
     this.cdr.detach();
   }
 
@@ -84,7 +84,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
       {
         headerName: 'Created By User', valueGetter: function (params: any) {
           return { LinkValue: params.data.CreateByUser.UserID, LinkDisplay: params.data.CreateByUser.FullName };
-        }, cellRendererFramework: LinkRendererComponent,
+        }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/users/" },
         filterValueGetter: function (params: any) {
           return params.data.FullName;
@@ -104,7 +104,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
       },
       {
         headerName: 'Status', field: 'StatusMessage',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'StatusMessage'
         },
@@ -117,7 +117,7 @@ export class RobustReviewScenarioComponent implements OnInit, OnDestroy {
             return { LinkDisplay: null};
           }
           return { LinkValue: `${environment.GETEnvironmentUrl}/Action/ActionDetails?actionID=${params.data.GETRunID}`, LinkDisplay: `${environment.GETEnvironmentUrl}/Action/ActionDetails?actionID=${params.data.GETRunID}` };
-        }, cellRendererFramework: LinkRendererComponent,
+        }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { isExternalUrl: true },
         filterValueGetter: function (params: any) {
           return params.data.GETRunID;

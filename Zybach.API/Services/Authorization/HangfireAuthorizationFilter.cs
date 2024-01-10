@@ -11,10 +11,10 @@ namespace Zybach.API.Services.Authorization
         private readonly string _hangfireUserName;
         private readonly string _hangfirePassword;
 
-        public HangfireAuthorizationFilter(IConfiguration splashConfiguration)
+        public HangfireAuthorizationFilter(IConfiguration zybachConfiguration)
         {
-            _hangfireUserName = splashConfiguration["HangfireUserName"];
-            _hangfirePassword = splashConfiguration["HangfirePassword"];
+            _hangfireUserName = zybachConfiguration["HangfireUserName"];
+            _hangfirePassword = zybachConfiguration["HangfirePassword"];
         }
 
         public bool Authorize([NotNull] DashboardContext context)

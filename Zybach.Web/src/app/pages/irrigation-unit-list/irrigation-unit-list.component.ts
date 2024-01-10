@@ -80,13 +80,13 @@ export class IrrigationUnitListComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.AgHubIrrigationUnitID, LinkDisplay: params.data.WellTPID };
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/irrigation-units/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
           return params.data.WellTPID;
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.IrrigationUnitID},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.IrrigationUnitID},
         filter: true,
         resizable: true,
         sortable: true
@@ -116,7 +116,7 @@ export class IrrigationUnitListComponent implements OnInit {
         comparator: this.utilityFunctionsService.multiLinkRendererComparator, 
         resizable: true, sortable: true, filter: true,
         cellRendererParams: { inRouterLink: "/wells/" },
-        cellRendererFramework: MultiLinkRendererComponent
+        cellRenderer: MultiLinkRendererComponent
       },
       {
         headerValueGetter: () => `Evapotranspiration (${this.unitsShown})`,

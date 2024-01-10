@@ -41,10 +41,10 @@ namespace Zybach.Models.DataTransferObjects
     public partial class WaterQualityInspectionSimpleDto
     {
         public int WaterQualityInspectionID { get; set; }
-        public int WellID { get; set; }
-        public int WaterQualityInspectionTypeID { get; set; }
+        public System.Int32 WellID { get; set; }
+        public System.Int32 WaterQualityInspectionTypeID { get; set; }
         public DateTime InspectionDate { get; set; }
-        public int InspectorUserID { get; set; }
+        public System.Int32 InspectorUserID { get; set; }
         public decimal? Temperature { get; set; }
         public decimal? PH { get; set; }
         public decimal? Conductivity { get; set; }
@@ -62,7 +62,7 @@ namespace Zybach.Models.DataTransferObjects
         public decimal? Sulfate { get; set; }
         public decimal? Chloride { get; set; }
         public decimal? SiliconDioxide { get; set; }
-        public int? CropTypeID { get; set; }
+        public System.Int32? CropTypeID { get; set; }
         public decimal? PreWaterLevel { get; set; }
         public decimal? PostWaterLevel { get; set; }
         public string InspectionNotes { get; set; }

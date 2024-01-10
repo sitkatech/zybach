@@ -37,11 +37,11 @@ namespace Zybach.Models.DataTransferObjects
     public partial class ChemigationPermitAnnualRecordSimpleDto
     {
         public int ChemigationPermitAnnualRecordID { get; set; }
-        public int ChemigationPermitID { get; set; }
+        public System.Int32 ChemigationPermitID { get; set; }
         public int RecordYear { get; set; }
-        public int ChemigationPermitAnnualRecordStatusID { get; set; }
+        public System.Int32 ChemigationPermitAnnualRecordStatusID { get; set; }
         public string PivotName { get; set; }
-        public int ChemigationInjectionUnitTypeID { get; set; }
+        public System.Int32 ChemigationInjectionUnitTypeID { get; set; }
         public string ApplicantFirstName { get; set; }
         public string ApplicantLastName { get; set; }
         public string ApplicantMailingAddress { get; set; }
@@ -58,7 +58,7 @@ namespace Zybach.Models.DataTransferObjects
         public string ApplicantCompany { get; set; }
         public string AnnualNotes { get; set; }
         public DateTime? DateApproved { get; set; }
-        public int? ChemigationPermitAnnualRecordFeeTypeID { get; set; }
+        public System.Int32? ChemigationPermitAnnualRecordFeeTypeID { get; set; }
     }
 
 }

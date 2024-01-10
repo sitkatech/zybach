@@ -52,7 +52,7 @@ export class UserListComponent implements OnInit, OnDestroy {
           valueGetter: params => {
             return { LinkValue: params.data.UserID, LinkDisplay: params.data.FullName };
           }, 
-          cellRendererFramework: LinkRendererComponent,
+          cellRenderer: LinkRendererComponent,
           cellRendererParams: { inRouterLink: "/users/" },
           filterValueGetter: params => params.data.FullName,
           comparator: this.utilityFunctionsService.linkRendererComparator,
@@ -60,19 +60,19 @@ export class UserListComponent implements OnInit, OnDestroy {
         { headerName: 'Email', field: 'Email' },
         { 
           headerName: 'Role', field: 'Role.RoleDisplayName',
-          filterFramework: CustomDropdownFilterComponent,
+          filter: CustomDropdownFilterComponent,
           filterParams: { field: 'Role.RoleDisplayName' }
         },
         { 
           headerName: 'Receives System Communications?', field: 'ReceiveSupportEmails',
           valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.ReceiveSupportEmails),
-          filterFramework: CustomDropdownFilterComponent,
+          filter: CustomDropdownFilterComponent,
           filterParams: { field: 'ReceiveSupportEmails' }
         },
         { 
           headerName: 'Performs Chemigation Inspections?', field: 'PerformsChemigationInspections',
           valueGetter: params => this.utilityFunctionsService.booleanValueGetter(params.data.PerformsChemigationInspections),
-          filterFramework: CustomDropdownFilterComponent,
+          filter: CustomDropdownFilterComponent,
           filterParams: { field: 'PerformsChemigationInspections' }
         }
       ];

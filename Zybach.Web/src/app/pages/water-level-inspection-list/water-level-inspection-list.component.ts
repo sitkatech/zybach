@@ -64,7 +64,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: "Year", field: "InspectionYear",
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'InspectionYear'
         },
@@ -77,7 +77,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.WaterLevelInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy, h:mm a") };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/water-level-inspections/" },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1);
@@ -107,7 +107,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
             return { LinkValue: null, LinkDisplay: null };
           }
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkValue;
@@ -123,7 +123,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
         filterValueGetter: function (params: any) {
           return params.data.Well?.WellRegistrationID;
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
         filter: true,
         width: 100,
         resizable: true,
@@ -132,7 +132,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       {
         headerName: "Well Nickname",
         field: "Well.WellNickname",
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         width: 140,
         sortable: true, filter: true, resizable: true,        
       },
@@ -197,7 +197,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Measuring Equipment', field: 'MeasuringEquipment', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'MeasuringEquipment'
         }, 
@@ -207,7 +207,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Accuracy', field: 'Accuracy', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Accuracy'
         }, 
@@ -217,7 +217,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Method', field: 'Method', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Method'
         }, 
@@ -227,17 +227,17 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },      
       { 
         headerName: 'Participation', field: 'Well.WellParticipationName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Well.WellParticipationName'
         }, 
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
         width: 120,
         resizable: true, sortable: true 
       },
       { 
         headerName: 'Party', field: 'Party', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Party'
         }, 
@@ -247,7 +247,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Source Agency', field: 'SourceAgency', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'SourceAgency'
         }, 
@@ -257,7 +257,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Source Code', field: 'SourceCode', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'SourceCode'
         }, 
@@ -267,7 +267,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Time Datum Code', field: 'TimeDatumCode', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'TimeDatumCode'
         }, 
@@ -277,14 +277,14 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Time Datum Reliability', field: 'TimeDatumReliability', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'TimeDatumReliability'
         }, resizable: true, sortable: true 
       },
       { 
         headerName: 'Level Type Code', field: 'LevelTypeCode', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'LevelTypeCode'
         }, 
@@ -294,7 +294,7 @@ export class WaterLevelInspectionListComponent  implements OnInit, OnDestroy {
       },
       { 
         headerName: 'Agency Code', field: 'AgencyCode', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'AgencyCode'
         }, 

@@ -5,54 +5,54 @@
         <div class="row col-12">
             <div class="row col-6">
 
-                <div class="col-6 control-label text-right mb-2">
+                <div class="col-6 control-label text-end mb-2">
                     <label class="required"><strong>Date Inspected: </strong></label>
                 </div>
-                <div class="col-6 text-left mb-2 form-group">
+                <div class="col-6 text-start mb-2 form-group">
                     <div class="input-group">
                         <input class="form-control" name="dp1"
                         placeholder="yyyy-mm-dd" required
                         [(ngModel)]="inspection.InspectionDate" ngbDatepicker #d1="ngbDatepicker" />
                         <div class="input-group-append">
-                            <button class="btn btn-zybach far fa-calendar input-group-append" (click)="d1.toggle()" type="button"></button>
+                            <button class="btn btn-zybach input-group-append" (click)="d1.toggle()" type="button"><span class="far fa-calendar me-2 col-1"> </span></button>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-6 control-label text-right mb-2">
+                <div class="col-6 control-label text-end mb-2">
                     <label class="required"><strong>
                         <field-definition [fieldDefinitionType]="'WellRegistrationNumber'">
                         </field-definition>:
                     </strong></label>
                 </div>
-                <div class="col-6 text-left mb-2">
+                <div class="col-6 text-start mb-2">
                     <input type="text" class="form-control" name="WellRegistrationID" required [(ngModel)]="inspection.WellRegistrationID" [ngbTypeahead]="searchApi" placeholder="Search by Reg #" />
                     <small class="form-text text-muted font-italic" *ngIf="searchFailed">Suggestions could not be loaded.</small>
                 </div>
 
-                <div class="col-6 control-label text-right mb-2">
+                <div class="col-6 control-label text-end mb-2">
                     <label class="required"><strong>Inspector: </strong></label>
                 </div>
-                <div class="col-6 text-left mb-2">
+                <div class="col-6 text-start mb-2">
                     <ng-select [(ngModel)]="inspection.InspectorUserID" required
                         [items]="users" bindLabel="FullNameLastFirst" bindValue="UserID" 
                         placeholder="Choose One" name="InspectorUserID">
                     </ng-select>
                 </div>
 
-                <div class="col-6 control-label text-right mb-2">
+                <div class="col-6 control-label text-end mb-2">
                     <label><strong>Measuring Equipment: </strong></label>
                 </div>
-                <div class="col-6 text-left mb-2">
+                <div class="col-6 text-start mb-2">
                     <ng-select [(ngModel)]="inspection.MeasuringEquipment" name="MeasuringEquipment"
                         [items]="waterLevelMeasuringEquipment" bindLabel="WaterLevelMeasuringEquipmentDisplayName" bindValue="WaterLevelMeasuringEquipmentDisplayName" >
                     </ng-select>
                 </div>
 
-                <div class="col-6 control-label text-right mb-2">
+                <div class="col-6 control-label text-end mb-2">
                     <label><strong>Nickname: </strong></label>
                 </div>
-                <div class="col-6 text-left mb-2">
+                <div class="col-6 text-start mb-2">
                     <input type="text" class="form-control" name="Nickname" [(ngModel)]="inspection.InspectionNickname" />
                 </div>
 
@@ -62,47 +62,47 @@
 
                 <div class="row col-12">
 
-                    <div class="col-6 control-label text-right mb-2">
+                    <div class="col-6 control-label text-end mb-2">
                         <label><strong>Measurement: </strong></label>
                     </div>
-                    <div class="col-6 text-left mb-2">
+                    <div class="col-6 text-start mb-2">
                         <input type="text" class="form-control" name="Measurement" [(ngModel)]="inspection.Measurement" 
                         [dropSpecialCharacters]="false" mask="0*.0000" />
                     </div>
                 
 
-                    <div class="col-6 control-label text-right mb-2">
+                    <div class="col-6 control-label text-end mb-2">
                         <label><strong>Has Oil? </strong></label>
                     </div>
-                    <div class="col-6 text-left mb-2 form-group">
+                    <div class="col-6 text-start mb-2 form-group">
                         <div class="input-group">
-                            <input type="radio" id="hasOil" class="mr-2" name="HasOil"
+                            <input type="radio" id="hasOil" class="me-2" name="HasOil"
                                 [value]="true" [(ngModel)]="inspection.HasOil">
-                            <label for="hasOil" class="mr-4">Yes</label>
-                            <input type="radio" id="notHasOil" class="mr-2" name="HasOil"
+                            <label for="hasOil" class="me-4">Yes</label>
+                            <input type="radio" id="notHasOil" class="me-2" name="HasOil"
                                 [value]="false" [(ngModel)]="inspection.HasOil">
                             <label for="notHasOil">No</label>
                         </div>
                     </div>
 
-                    <div class="col-6 control-label text-right mb-2">
+                    <div class="col-6 control-label text-end mb-2">
                         <label><strong>Has Broken Tape? </strong></label>
                     </div>
-                    <div class="col-6 text-left mb-2 form-group">
+                    <div class="col-6 text-start mb-2 form-group">
                         <div class="input-group">
-                            <input type="radio" id="hasBrokenTape" class="mr-2" name="HasBrokenTape"
+                            <input type="radio" id="hasBrokenTape" class="me-2" name="HasBrokenTape"
                                 [value]="true" [(ngModel)]="inspection.HasBrokenTape">
-                            <label for="hasBrokenTape" class="mr-4">Yes</label>
-                            <input type="radio" id="notHasBrokenTape" class="mr-2" name="HasBrokenTape"
+                            <label for="hasBrokenTape" class="me-4">Yes</label>
+                            <input type="radio" id="notHasBrokenTape" class="me-2" name="HasBrokenTape"
                                 [value]="false" [(ngModel)]="inspection.HasBrokenTape">
                             <label for="notHasBrokenTape">No</label>
                         </div>
                     </div>
 
-                    <div class="col-6 control-label text-right mb-2">
+                    <div class="col-6 control-label text-end mb-2">
                         <label><strong>Inspection Notes: </strong></label>
                     </div>
-                    <div class="col-6 text-left mb-2">
+                    <div class="col-6 text-start mb-2">
                         <textarea class="form-control" name="InspectionNotes"
                             placeholder="Notes" [(ngModel)]="inspection.InspectionNotes">
                         </textarea>

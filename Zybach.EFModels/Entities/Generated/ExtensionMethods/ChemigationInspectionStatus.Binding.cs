@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ChemigationInspectionStatus
+    public abstract partial class ChemigationInspectionStatus : IHavePrimaryKey
     {
         public static readonly ChemigationInspectionStatusPending Pending = Zybach.EFModels.Entities.ChemigationInspectionStatusPending.Instance;
         public static readonly ChemigationInspectionStatusPass Pass = Zybach.EFModels.Entities.ChemigationInspectionStatusPass.Instance;

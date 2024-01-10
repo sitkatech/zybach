@@ -6,3 +6,9 @@ services:
     build:
       context: ..
       dockerfile: Zybach.API/Dockerfile
+
+  zybach.swagger:
+    image: zybach/swagger
+    build:
+      context: ..
+      dockerfile: Zybach.Swagger/Dockerfile

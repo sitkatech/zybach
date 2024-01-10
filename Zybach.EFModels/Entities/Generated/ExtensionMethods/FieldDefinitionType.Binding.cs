@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class FieldDefinitionType
+    public abstract partial class FieldDefinitionType : IHavePrimaryKey
     {
         public static readonly FieldDefinitionTypeName Name = Zybach.EFModels.Entities.FieldDefinitionTypeName.Instance;
         public static readonly FieldDefinitionTypeHasWaterLevelInspections HasWaterLevelInspections = Zybach.EFModels.Entities.FieldDefinitionTypeHasWaterLevelInspections.Instance;

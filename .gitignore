@@ -9,6 +9,7 @@ Zybach.Web/wwwroot/
 Zybach.Web/.vscode/
 Zybach.Web/package-lock.json
 Zybach.Web/openapitools.json
+Zybach.Tests/environment.json
 
 .vs
 bin
@@ -18,5 +19,18 @@ obj
 *.env
 *.user
 *.pem
-/Build/build.ini
+*.bacpac
+Zybach.GeoServer/data_dir/geoserver-environment.properties
+Zybach.GeoServer/data_dir/.updatepassword.lock
+Zybach.GeoServer/data_dir/security/*
+Zybach.GeoServer/data_dir/s3.properties
+Zybach.GeoServer/data_dir/controlflow.properties
+Zybach.GeoServer/data_dir/logs/geoserver.log.1
+Zybach.GeoServer/data_dir/gwc-layers
+Zybach.GeoServer/data_dir/logs
+Zybach.Web/.vscode
+Build/secrets.ini
 .gitmodules
+
+/Zybach.Swagger/appsecrets.json
+/Build/temp

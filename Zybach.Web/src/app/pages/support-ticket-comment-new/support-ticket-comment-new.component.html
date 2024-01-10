@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item">
             <a routerLink="/support-tickets">Support Tickets</a>
         </li>
@@ -24,33 +24,33 @@
     <form (ngSubmit)="onSubmit(newSupportTicketCommentForm)" #newSupportTicketCommentForm="ngForm" class="container">
 
         <div class="row col-8 mt-4">
-            <div class="col-6 control-label text-right mb-2">
+            <div class="col-6 control-label text-end mb-2">
                 <label><strong>Comments: </strong></label>
             </div>
-            <div class="col-6 text-left mb-2">
+            <div class="col-6 text-start mb-2">
                 <textarea class="form-control" name="CommentNotes"
                     [(ngModel)]="model.CommentNotes">
                 </textarea>
             </div>    
     
-            <div class="col-6 control-label text-right mb-2">
+            <div class="col-6 control-label text-end mb-2">
                 <label><strong>Created By: </strong></label>
             </div>
-            <div class="col-6 text-left mb-2">
+            <div class="col-6 text-start mb-2">
                 {{currentUser?.FullName}}
             </div>
 
         </div>
 
-        <div class="col-12 text-right mt-3 mr-3">
-            <div class="col-sm text-left float-right">
+        <div class="col-12 text-end mt-3 me-3">
+            <div class="col-sm text-start float-end">
                 <i class="fas fa-bolt"></i> Required field
             </div>
-            <button type="submit" class="btn btn-zybach mr-1">
+            <button type="submit" class="btn btn-zybach me-1">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                 Save
             </button>
-            <a class="btn btn-secondary ml-1"
+            <a class="btn btn-secondary ms-1"
                 routerLink="..">
                 Cancel
             </a>

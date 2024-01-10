@@ -27,12 +27,12 @@ namespace Zybach.Models.DataTransferObjects
         public int SupportTicketID { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
-        public int CreatorUserID { get; set; }
-        public int? AssigneeUserID { get; set; }
-        public int WellID { get; set; }
-        public int? SensorID { get; set; }
-        public int SupportTicketStatusID { get; set; }
-        public int SupportTicketPriorityID { get; set; }
+        public System.Int32 CreatorUserID { get; set; }
+        public System.Int32? AssigneeUserID { get; set; }
+        public System.Int32 WellID { get; set; }
+        public System.Int32? SensorID { get; set; }
+        public System.Int32 SupportTicketStatusID { get; set; }
+        public System.Int32 SupportTicketPriorityID { get; set; }
         public string SupportTicketTitle { get; set; }
         public string SupportTicketDescription { get; set; }
     }

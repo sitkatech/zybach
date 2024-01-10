@@ -69,16 +69,16 @@ export class SensorListComponent implements OnInit {
     this.sensorColumnDefs = [
     {
       valueGetter: params => {
-        return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach" };
+        return { LinkValue: `${params.data.SensorID}/new-support-ticket`, LinkDisplay: "Create Ticket", CssClasses: "btn-sm btn-zybach p-1" };
       },
-      cellRendererFramework: LinkRendererComponent,
+      cellRenderer: LinkRendererComponent,
       cellRendererParams: { inRouterLink: "/sensors" },
       sortable: false, filter: false, width: 140
     },
     {
       headerName: 'Sensor Name', valueGetter: function (params: any) {
         return { LinkValue: params.data.SensorID, LinkDisplay: params.data.SensorName };
-      }, cellRendererFramework: LinkRendererComponent,
+      }, cellRenderer: LinkRendererComponent,
       cellRendererParams: { inRouterLink: "/sensors/" },
       comparator: this.utilityFunctionsService.linkRendererComparator,
       filterValueGetter: function (params: any) {
@@ -89,11 +89,11 @@ export class SensorListComponent implements OnInit {
     },
     { 
       headerName: 'Sensor Type', field: 'SensorTypeName',
-      filterFramework: CustomDropdownFilterComponent,
+      filter: CustomDropdownFilterComponent,
       filterParams: {
-      field: 'SensorTypeName'
+        field: 'SensorTypeName'
       },
-      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
+      headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
       resizable: true, sortable: true, width: 120
     },
     { 
@@ -101,11 +101,11 @@ export class SensorListComponent implements OnInit {
       valueGetter: (params) => {
         return params.data.IsActive ? "Enabled" : "Disabled";
       },
-      filterFramework: CustomDropdownFilterComponent,
-      filterParams: {
-      field: 'IsActive'
+      filter: CustomDropdownFilterComponent,
+      filterValueGetter: function (params: any) {
+        return params.data.IsActive ? "Enabled" : "Disabled";
       },
-      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorStatus },
+      headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorStatus },
       resizable: true, sortable: true, width: 120
     },
     { 
@@ -113,7 +113,7 @@ export class SensorListComponent implements OnInit {
       valueGetter: (params) => params.data.LastMessageAgeInHours ? params.data.LastMessageAgeInHours : null,
       valueFormatter: params => params.value != null ? _decimalPipe.transform(params.value, '1.0-0') : '-',
       filter: 'agNumberColumnFilter', cellStyle: { textAlign: 'right' },
-      headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
+      headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorLastMessageAgeHours },
       sortable: true, resizable: true
     },
     this.createDateColumnDef(datePipe, 'Last Measurement Date', 'LastReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastReadingDate),
@@ -121,13 +121,16 @@ export class SensorListComponent implements OnInit {
     this.createDateColumnDef(datePipe, 'Last Voltage Reading Date', 'LastVoltageReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorLastVoltageReadingDate),
     this.createDateColumnDef(datePipe, 'First Reading Date', 'FirstReadingDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorFirstReadingDate),
     {
-      headerComponentFramework: FieldDefinitionGridHeaderComponent,
+      headerComponent: FieldDefinitionGridHeaderComponent,
       headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.ContinuityMeterStatus, labelOverride: 'Always On/Off' },
       valueGetter: params => params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ?
          params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A',
-      sortable: true, filter: true, resizable: true,
-      filterFramework: CustomDropdownFilterComponent,
-      filterParams: { field: 'ContinuityMeterStatus?.ContinuityMeter' }
+      sortable: true, resizable: true,
+      filter: CustomDropdownFilterComponent,
+      filterValueGetter: function (params: any) {
+        return params.data.SensorTypeID == SensorTypeEnum.ContinuityMeter ? 
+          params.data.SnoozeStartDate ? 'Snoozed' : params.data.ContinuityMeterStatus?.ContinuityMeterStatusDisplayName : 'N/A'
+      },
     },
     this.createDateColumnDef(datePipe, 'Retirement Date', 'RetirementDate', 'M/d/yyyy', FieldDefinitionTypeEnum.SensorRetirementDate),
     {
@@ -144,13 +147,13 @@ export class SensorListComponent implements OnInit {
             return { LinkValue: null, LinkDisplay: null };
           }
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: function (params: any) {
           return params.data.WellRegistrationID;
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
         filter: true,
         width: 120,
         resizable: true,
@@ -159,7 +162,7 @@ export class SensorListComponent implements OnInit {
       {
         headerName: 'Well Owner Name', 
         field: 'WellOwnerName', 
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName },
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellOwnerName },
         sortable: true, filter: true, resizable: true
       },
       {
@@ -213,7 +216,7 @@ export class SensorListComponent implements OnInit {
     }
 
     if (fieldDefinitionTypeID) {
-      dateColDef.headerComponentFramework = FieldDefinitionGridHeaderComponent;
+      dateColDef.headerComponent = FieldDefinitionGridHeaderComponent;
       dateColDef.headerComponentParams = { fieldDefinitionTypeID: fieldDefinitionTypeID, labelOverride: headerName }
     }
     return dateColDef;

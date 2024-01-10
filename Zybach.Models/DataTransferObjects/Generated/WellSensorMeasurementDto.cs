@@ -25,7 +25,7 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int WellSensorMeasurementID { get; set; }
         public string WellRegistrationID { get; set; }
-        public int MeasurementTypeID { get; set; }
+        public System.Int32 MeasurementTypeID { get; set; }
         public int ReadingYear { get; set; }
         public int ReadingMonth { get; set; }
         public int ReadingDay { get; set; }

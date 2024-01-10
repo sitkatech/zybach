@@ -22,8 +22,8 @@ namespace Zybach.Models.DataTransferObjects
         public int SupportTicketCommentID { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
-        public int CreatorUserID { get; set; }
-        public int SupportTicketID { get; set; }
+        public System.Int32 CreatorUserID { get; set; }
+        public System.Int32 SupportTicketID { get; set; }
         public string CommentNotes { get; set; }
     }
 

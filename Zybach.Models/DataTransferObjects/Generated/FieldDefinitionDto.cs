@@ -17,7 +17,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class FieldDefinitionSimpleDto
     {
         public int FieldDefinitionID { get; set; }
-        public int FieldDefinitionTypeID { get; set; }
+        public System.Int32 FieldDefinitionTypeID { get; set; }
         public string FieldDefinitionValue { get; set; }
     }
 

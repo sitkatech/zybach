@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class Role
+    public abstract partial class Role : IHavePrimaryKey
     {
         public static readonly RoleAdmin Admin = Zybach.EFModels.Entities.RoleAdmin.Instance;
         public static readonly RoleNormal Normal = Zybach.EFModels.Entities.RoleNormal.Instance;

@@ -5,12 +5,12 @@
 <div *ngIf="!isLoading" class="d-inline">
     <ng-template #popTitle>
         <div class="row">
-            <div class="col-auto mr-auto">
+            <div class="col-auto me-auto">
                 <div class="mt-1">{{fieldDefinition.FieldDefinitionType.FieldDefinitionTypeDisplayName}}</div>
             </div>
             <div class="col-auto" *ngIf="!isEditing">
                 <div class="row">
-                    <div class="col-sm-2 pl-0 pr-0">
+                    <div class="col-sm-2 ps-0 pe-0">
                         <button type="button" class="btn btn-link" (click)="enterEdit()">
                             <i class="fa fa-pencil-square-o" attr.aria-label="Edit the definition for {{fieldDefinition.FieldDefinitionType.FieldDefinitionTypeDisplayName}}">
                             </i>
@@ -29,12 +29,12 @@
             <div *ngIf="!showEditButton()" [innerHtml]="fieldDefinition.FieldDefinitionValue"></div>
         </ng-container>
         <div *ngIf="isEditing">
-            <editor #tinyMceEditor [init]="{ toolbar: false, menubar: false, height:200,width:250, plugins: 'quickbars' }"
+            <editor #tinyMceEditor [init]="tinyMceConfig"
                 [(ngModel)]="editedContent">
             </editor>
             
             <div style="float:right;">
-                <button type="button" class="btn btn-sm btn-zybach mt-1 mr-1 mb-1" (click)="saveEdit()">Save</button>
+                <button type="button" class="btn btn-sm btn-zybach mt-1 me-1 mb-1" (click)="saveEdit()">Save</button>
                 <button type="button" class="btn btn-sm btn-secondary mt-1 mb-1" (click)="cancelEdit(p)">Cancel</button>
             </div>
         </div>
@@ -45,7 +45,7 @@
                 {{labelTextWithoutLastWord}}
                 <span style="white-space:nowrap">
                     {{labelTextLastWord}}
-                    <i class="fas fa-question-circle small" (mouseenter)="notEditingMouseEnter()" (mouseleave)="notEditingMouseLeave()" style="cursor: help;" #p="ngbPopover" [ngbPopover]="popContent"
+                    <i class="fas fa-question-circle small" (mouseenter)="notEditingMouseEnter()" (mouseleave)="notEditingMouseLeave()" style="cursor: help;" [placement]="['bottom','right','left','auto']" #p="ngbPopover" [ngbPopover]="popContent"
                     [popoverTitle]="popTitle" triggers="manual" [autoClose]="false" popoverClass="popover-override"
                     container="body">
                 </i>

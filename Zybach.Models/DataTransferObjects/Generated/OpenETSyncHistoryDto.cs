@@ -22,13 +22,13 @@ namespace Zybach.Models.DataTransferObjects
     public partial class OpenETSyncHistorySimpleDto
     {
         public int OpenETSyncHistoryID { get; set; }
-        public int OpenETSyncResultTypeID { get; set; }
+        public System.Int32 OpenETSyncResultTypeID { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public string GoogleBucketFileRetrievalURL { get; set; }
         public string ErrorMessage { get; set; }
-        public int? OpenETDataTypeID { get; set; }
-        public int? OpenETSyncID { get; set; }
+        public System.Int32? OpenETDataTypeID { get; set; }
+        public System.Int32? OpenETSyncID { get; set; }
     }
 
 }

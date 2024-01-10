@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item" aria-current="page">
             <a routerLink="/labels-and-definitions" *ngIf="currentUserIsAdmin()">Labels and Definitions</a>
             <span *ngIf="!currentUserIsAdmin()">Labels and Definitions</span>
@@ -16,11 +16,11 @@
     <div class="row mt-4">
         <div class="col-12">
             <editor #tinyMceEditor
-                [init]="{ toolbar: false, menubar: false, plugins: 'quickbars', promotion: false }"
+                [init]="tinyMceConfig"
                 [(ngModel)]="fieldDefinition.FieldDefinitionValue">
             </editor>
             <div style="float:right;">
-                <button type="button" class="btn btn-zybach mt-1 mr-1 mb-1" (click)="saveDefinition()" [disabled]="isLoadingSubmit">Save</button>
+                <button type="button" class="btn btn-zybach mt-1 me-1 mb-1" (click)="saveDefinition()" [disabled]="isLoadingSubmit">Save</button>
                 <a routerLink="/labels-and-definitions" class="btn btn-secondary mt-1 mb-1">Cancel</a>
             </div>
         </div>

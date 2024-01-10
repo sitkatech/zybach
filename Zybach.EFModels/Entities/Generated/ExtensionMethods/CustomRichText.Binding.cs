@@ -6,6 +6,12 @@ namespace Zybach.EFModels.Entities
 {
     public partial class CustomRichText
     {
+        public int PrimaryKey => CustomRichTextID;
         public CustomRichTextType CustomRichTextType => CustomRichTextType.AllLookupDictionary[CustomRichTextTypeID];
+
+        public static class FieldLengths
+        {
+
+        }
     }
 }

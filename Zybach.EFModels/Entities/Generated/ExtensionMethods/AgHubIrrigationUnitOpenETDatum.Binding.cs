@@ -6,6 +6,12 @@ namespace Zybach.EFModels.Entities
 {
     public partial class AgHubIrrigationUnitOpenETDatum
     {
+        public int PrimaryKey => AgHubIrrigationUnitOpenETDatumID;
         public OpenETDataType OpenETDataType => OpenETDataType.AllLookupDictionary[OpenETDataTypeID];
+
+        public static class FieldLengths
+        {
+
+        }
     }
 }

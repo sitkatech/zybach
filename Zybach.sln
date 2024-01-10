@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.0.32112.339
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zybach.EFModels", "Zybach.EFModels\Zybach.EFModels.csproj", "{BCA833B8-BDA4-410B-811D-381C420EAA57}"
 EndProject
@@ -12,6 +12,12 @@ EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose\docker-compose.dcproj", "{4ADC0EA7-5D32-4AEC-B818-FCC266A4E6F6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VegaRenderService", "VegaRenderService\VegaRenderService.csproj", "{4FB81374-D5A9-4E74-AD11-9E5B8FE2D4AB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zybach.Tests", "Zybach.Tests\Zybach.Tests.csproj", "{2B1EDFAA-6944-4904-BFDA-E1E3761801B5}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Zybach.Database", "Zybach.Database\Zybach.Database.sqlproj", "{8851EB6A-BCEA-42B4-83DD-125A1BCFAA52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zybach.Swagger", "Zybach.Swagger\Zybach.Swagger.csproj", "{828558FE-9626-46AF-850F-F6DCF2FCBCDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,20 @@ Global
 		{4FB81374-D5A9-4E74-AD11-9E5B8FE2D4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FB81374-D5A9-4E74-AD11-9E5B8FE2D4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FB81374-D5A9-4E74-AD11-9E5B8FE2D4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B1EDFAA-6944-4904-BFDA-E1E3761801B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B1EDFAA-6944-4904-BFDA-E1E3761801B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B1EDFAA-6944-4904-BFDA-E1E3761801B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B1EDFAA-6944-4904-BFDA-E1E3761801B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8851EB6A-BCEA-42B4-83DD-125A1BCFAA52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8851EB6A-BCEA-42B4-83DD-125A1BCFAA52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8851EB6A-BCEA-42B4-83DD-125A1BCFAA52}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{8851EB6A-BCEA-42B4-83DD-125A1BCFAA52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8851EB6A-BCEA-42B4-83DD-125A1BCFAA52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8851EB6A-BCEA-42B4-83DD-125A1BCFAA52}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{828558FE-9626-46AF-850F-F6DCF2FCBCDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{828558FE-9626-46AF-850F-F6DCF2FCBCDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{828558FE-9626-46AF-850F-F6DCF2FCBCDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{828558FE-9626-46AF-850F-F6DCF2FCBCDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

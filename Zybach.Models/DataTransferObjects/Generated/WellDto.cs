@@ -46,14 +46,14 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int WellID { get; set; }
         public string WellRegistrationID { get; set; }
-        public int? StreamflowZoneID { get; set; }
+        public System.Int32? StreamflowZoneID { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime? LastUpdateDate { get; set; }
         public string WellNickname { get; set; }
         public string TownshipRangeSection { get; set; }
-        public int? CountyID { get; set; }
-        public int? WellParticipationID { get; set; }
-        public int? WellUseID { get; set; }
+        public System.Int32? CountyID { get; set; }
+        public System.Int32? WellParticipationID { get; set; }
+        public System.Int32? WellUseID { get; set; }
         public bool RequiresChemigation { get; set; }
         public bool RequiresWaterLevelInspection { get; set; }
         public decimal? WellDepth { get; set; }

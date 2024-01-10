@@ -20,7 +20,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class SupportTicketNotificationSimpleDto
     {
         public int SupportTicketNotificationID { get; set; }
-        public int SupportTicketID { get; set; }
+        public System.Int32 SupportTicketID { get; set; }
         public string EmailAddresses { get; set; }
         public string EmailSubject { get; set; }
         public string EmailBody { get; set; }

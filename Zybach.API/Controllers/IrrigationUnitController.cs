@@ -47,5 +47,15 @@ namespace Zybach.API.Controllers
 
             return NotFound();
         }
+
+        [HttpGet("irrigationUnits/farmingPractices")]
+        [ZybachViewFeature]
+        public ActionResult<List<AgHubIrrigationUnitFarmingPracticeDto>> ListIrrigationUnitIrrigatedAcres()
+        {
+            var agHubIrrigationUnitWellIrrigatedAcreDtos =
+                AgHubIrrigationUnits.ListAsAgHubIrrigationUnitWellIrrigatedAcreDtos(_dbContext);
+
+            return Ok(agHubIrrigationUnitWellIrrigatedAcreDtos);
+        }
     }
 }

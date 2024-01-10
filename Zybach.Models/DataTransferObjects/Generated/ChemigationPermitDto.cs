@@ -21,10 +21,10 @@ namespace Zybach.Models.DataTransferObjects
     {
         public int ChemigationPermitID { get; set; }
         public int ChemigationPermitNumber { get; set; }
-        public int ChemigationPermitStatusID { get; set; }
+        public System.Int32 ChemigationPermitStatusID { get; set; }
         public DateTime DateCreated { get; set; }
-        public int CountyID { get; set; }
-        public int? WellID { get; set; }
+        public System.Int32 CountyID { get; set; }
+        public System.Int32? WellID { get; set; }
     }
 
 }

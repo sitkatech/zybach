@@ -25,7 +25,7 @@ namespace Zybach.API.Services
             }
 
             var userGuid = Guid.Parse(claimsPrincipal.Claims.Single(c => c.Type == "sub").Value);
-            var keystoneUser = Zybach.EFModels.Entities.User.GetByUserGuid(dbContext, userGuid);
+            var keystoneUser = Users.GetByUserGuid(dbContext, userGuid);
             return keystoneUser;
         }
     }

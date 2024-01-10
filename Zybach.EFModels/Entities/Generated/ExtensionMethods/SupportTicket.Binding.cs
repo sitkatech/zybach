@@ -6,7 +6,14 @@ namespace Zybach.EFModels.Entities
 {
     public partial class SupportTicket
     {
+        public int PrimaryKey => SupportTicketID;
         public SupportTicketStatus SupportTicketStatus => SupportTicketStatus.AllLookupDictionary[SupportTicketStatusID];
         public SupportTicketPriority SupportTicketPriority => SupportTicketPriority.AllLookupDictionary[SupportTicketPriorityID];
+
+        public static class FieldLengths
+        {
+            public const int SupportTicketTitle = 100;
+            public const int SupportTicketDescription = 500;
+        }
     }
 }

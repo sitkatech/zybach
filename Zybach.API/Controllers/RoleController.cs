@@ -18,7 +18,7 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public IActionResult Get()
         {
-            var roleDtos = Role.List(_dbContext);
+            var roleDtos = Roles.List(_dbContext);
             return Ok(roleDtos);
         }
     }

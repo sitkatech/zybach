@@ -66,7 +66,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
     this.columnDefs = [
       {
         headerName: "Year", field: "InspectionYear",
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'InspectionYear'
         },
@@ -79,7 +79,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.WaterQualityInspectionID, LinkDisplay: datePipe.transform(params.data.InspectionDate, "M/dd/yyyy") };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/water-quality-inspections/" },
         comparator: function (id1: any, id2: any) {
           const date1 = Date.parse(id1.LinkDisplay);
@@ -109,7 +109,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
             return { LinkValue: null, LinkDisplay: null };
           }
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkValue;
@@ -125,7 +125,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         filterValueGetter: function (params: any) {
           return params.data.Well?.WellRegistrationID;
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
         filter: true,
         width: 100,
         resizable: true,
@@ -135,7 +135,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         headerName: 'Well Nickname', 
         field: 'Well.WellNickname',
         filter: true,
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         width: 140,
         resizable: true,
         sortable: true
@@ -215,7 +215,7 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'IsReplacement'
         },
@@ -223,16 +223,16 @@ export class WaterQualityInspectionListComponent implements OnInit, OnDestroy {
         sortable: true, resizable: true
       },
       { headerName: 'Participation', field: 'Well.WellParticipationName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Well.WellParticipationName'
         }, 
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
         width: 120,
         resizable: true, sortable: true 
       },
       { headerName: 'Type', field: 'WaterQualityInspectionTypeName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'WaterQualityInspectionTypeName'
         }, 

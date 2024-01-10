@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ChemigationLowPressureValve
+    public abstract partial class ChemigationLowPressureValve : IHavePrimaryKey
     {
         public static readonly ChemigationLowPressureValveRubberDam RubberDam = Zybach.EFModels.Entities.ChemigationLowPressureValveRubberDam.Instance;
         public static readonly ChemigationLowPressureValveSpringLoaded SpringLoaded = Zybach.EFModels.Entities.ChemigationLowPressureValveSpringLoaded.Instance;

@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ReportTemplateModelType
+    public abstract partial class ReportTemplateModelType : IHavePrimaryKey
     {
         public static readonly ReportTemplateModelTypeSingleModel SingleModel = Zybach.EFModels.Entities.ReportTemplateModelTypeSingleModel.Instance;
         public static readonly ReportTemplateModelTypeMultipleModels MultipleModels = Zybach.EFModels.Entities.ReportTemplateModelTypeMultipleModels.Instance;

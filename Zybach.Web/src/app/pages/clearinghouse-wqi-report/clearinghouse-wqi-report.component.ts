@@ -59,7 +59,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
             return "-";
           }
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Year'
         },
@@ -69,7 +69,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Well Name',
         field: 'WellNickname',
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellNickname},
         filter: true,
         resizable: true,
         sortable: true
@@ -84,7 +84,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Contaminant',
         field: 'Contaminant',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Contaminant'
         },
@@ -128,7 +128,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Laboratory',
         field: 'Laboratory',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'Laboratory'
         },
@@ -139,7 +139,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
         headerName: 'Well Registration #',
         field: 'WellRegistrationID',
         filter: true,
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber},
         resizable: true,
         sortable: true
       },
@@ -152,7 +152,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'IsReplacement'
         },
@@ -176,11 +176,11 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       { 
         headerName: 'Participation', 
         field: 'WellParticipation',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'WellParticipation'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellProgramParticipation},
         resizable: true, 
         sortable: true
       },
@@ -193,18 +193,18 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
             return "No";
           }
         },
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'RequiresChemigationInspection'
         },
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellChemigationInspectionParticipation},
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: {fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellChemigationInspectionParticipation},
         sortable: true, 
         resizable: true
       },
       {
         headerName: 'Inspection Type', 
         field: 'WaterQualityInspectionType',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'WaterQualityInspectionType'
         },
@@ -214,7 +214,7 @@ export class ClearinghouseWqiReportComponent implements OnInit, OnDestroy {
       { 
         headerName: 'Well Use',
         field: 'WellUse',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'WellUse'
         },

@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ChemigationInspectionType
+    public abstract partial class ChemigationInspectionType : IHavePrimaryKey
     {
         public static readonly ChemigationInspectionTypeEquipmentRepairOrReplace EquipmentRepairOrReplace = Zybach.EFModels.Entities.ChemigationInspectionTypeEquipmentRepairOrReplace.Instance;
         public static readonly ChemigationInspectionTypeNewInitialOrReactivation NewInitialOrReactivation = Zybach.EFModels.Entities.ChemigationInspectionTypeNewInitialOrReactivation.Instance;

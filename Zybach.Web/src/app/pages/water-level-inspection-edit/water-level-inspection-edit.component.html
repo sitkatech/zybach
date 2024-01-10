@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb" *ngIf="waterLevelInspection">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item">
             <a routerLink="/water-level-inspections">Water Level Inspections</a>
         </li>
@@ -16,11 +16,11 @@
 </nav>
 <app-alert-display></app-alert-display>
 <div class="row container" *ngIf="waterLevelInspection">
-    <div class="row col-12 mt-2 ml-2">
+    <div class="row col-12 mt-2 ms-2">
         <h2 class="d-inline-block">Edit Inspection</h2>
     </div>
 
-    <div class="row col-12 mt-2 ml-2">
+    <div class="row col-12 mt-2 ms-2">
         <p>Edit water level inspection record using the form below
         </p>
     </div>
@@ -31,15 +31,15 @@
         [(inspection)]="waterLevelInspection">
         </zybach-water-level-inspection-upsert >
 
-        <div class="col-12 text-right mt-3 mr-3">
-            <div class="col-sm text-left float-right">
+        <div class="col-12 text-end mt-3 me-3">
+            <div class="col-sm text-start p-2">
                 <i class="fas fa-bolt"></i> Required field
             </div>
-            <button type="submit" class="btn btn-zybach mr-1">
+            <button type="submit" class="btn btn-zybach me-1">
                 <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
                 Save
             </button>
-            <a class="btn btn-secondary ml-1"
+            <a class="btn btn-secondary ms-1"
                 routerLink="..">
                 Cancel
             </a>

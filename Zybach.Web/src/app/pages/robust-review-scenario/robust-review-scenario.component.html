@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item active" aria-current="page">Robust Review Scenario</li>
     </ol>
 </nav>
@@ -10,13 +10,13 @@
     
     <div class="row">
         <div class="col-12 mb-1">
-            <button class="btn btn-zybach float-right" (click)="getRobustReviewScenarioJson()" [disabled]="fileDownloading">Download Robust
+            <button class="btn btn-zybach float-end" (click)="getRobustReviewScenarioJson()" [disabled]="fileDownloading">Download Robust
                 Review Scenario .json <span *ngIf="fileDownloading" class="fas fa-spinner loading-spinner"></span> </button>
         </div>
         <div class="col-12 mb-1">
-            <fresca-clear-grid-filters-button class="mr-3" [grid]="robustReviewScenarioGETRunHistoryGrid">
+            <fresca-clear-grid-filters-button class="me-3" [grid]="robustReviewScenarioGETRunHistoryGrid">
             </fresca-clear-grid-filters-button>
-            <button class="btn btn-zybach float-right" (click)="triggerNewRobustReviewScenarioRun()" [disabled]="!canCreateNewRun() || fileDownloading"> <span *ngIf="newRunTriggered" class="fas fa-spinner loading-spinner"></span><span class="fas fa-plus"></span> New Robust Review Scenario
+            <button class="btn btn-zybach float-end" (click)="triggerNewRobustReviewScenarioRun()" [disabled]="!canCreateNewRun() || fileDownloading"> <span *ngIf="newRunTriggered" class="fas fa-spinner loading-spinner"></span><span class="fas fa-plus"></span> New Robust Review Scenario
                 Action</button>
         </div>
         <div class="col-12 table table-responsive">

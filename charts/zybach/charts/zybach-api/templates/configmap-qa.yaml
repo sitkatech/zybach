@@ -1,0 +1,35 @@
+{{ if eq .Values.global.env.name "qa" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "api.fullname" . }}-qa-configmap
+data:
+  SECRET_PATH: "/app/secrets/zybachApiSecrets"
+  ASPNETCORE_ENVIRONMENT: "Staging"
+  SITKA_EMAIL_REDIRECT: "notifications-qa@sitkatech.com"
+  WEB_URL: "https://{{ .Values.global.domains.web }}"
+  KEYSTONE_HOST: "https://identity-qa.sitkatech.com"
+  KEYSTONE_REDIRECT_URL: "https://{{ .Values.global.domains.web }}/create-user-callback"
+  DoNotReplyEmail: "donotreply@sitkatech.net"
+  AppAlertsEmail: "appalerts-h2o@sitkatech.com"
+  SupportEmail: "support@sitkatech.com"
+  INFLUXDB_URL: "https://us-west-2-1.aws.cloud2.influxdata.com"
+  INFLUXDB_ORG: "GeoOptix"
+  INFLUX_BUCKET: "tpnrd"
+  GEOOPTIX_HOSTNAME: "https://tpnrd.api.geooptix.com"
+  AGHUB_API_BASE_URL: "https://64x7c7fw24.execute-api.us-east-2.amazonaws.com"
+  AGHUB_API_BUCKET: "stage"
+  GET_API_BASE_URL: "https://get-api-qa.azure-api.net/GETAzureFunctionApiQA/"
+  GET_ROBUST_REVIEW_SCENARIO_RUN_CUSTOMER_ID: "4"
+  GET_ROBUST_REVIEW_SCENARIO_RUN_USER_ID: "160"
+  GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID: "73"
+  GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID: "19"
+  VEGA_RENDER_URL: "http://{{ .Values.global.domains.vegarenderservice }}"
+  OPENET_SHAPEFILE_PATH: "users/esa-sitka/TPNRD_Irrigation_Units_2022-05-11"
+  OpenETAPIBaseUrl: "https://openet-api.org"
+  OpenETRasterTimeSeriesMultipolygonRoute: "raster/timeseries/multipolygon"
+  OpenETRasterMetadataRoute: "raster/metadata"
+  OpenETRasterExportStatusRoute: "raster/export/status"
+  OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "tpid"
+  AllowOpenETSync: "true"
+{{ end }}

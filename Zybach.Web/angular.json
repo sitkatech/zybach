@@ -1,8 +1,5 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": "cc6f6acf-83d6-447c-9b9b-802ffeacb032"
-  },
   "version": 1,
   "newProjectRoot": "projects",
   
@@ -11,7 +8,7 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "zybach",
+      "prefix": "",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -38,8 +35,7 @@
               "node_modules/primeng/resources/primeng.min.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.slim.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js",
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/iso8601-js-period/iso8601.js"
             ],
@@ -96,7 +92,9 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Zybach.Web:build"
+            "browserTarget": "Zybach.Web:build",
+            "host" : "zybach.localhost.sitkatech.com",
+            "port" : 8713
           },
           "configurations": {
             "production": {
@@ -155,5 +153,7 @@
       }
     }
   },
-  "defaultProject": "Zybach.Web"
+  "cli": {
+    "analytics": false
+  }
 }

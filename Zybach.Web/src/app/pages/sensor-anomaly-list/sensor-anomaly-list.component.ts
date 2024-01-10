@@ -70,12 +70,12 @@ export class SensorAnomalyListComponent implements OnInit {
     this.columnDefs = [
       { 
         valueGetter: params => params.data.SensorAnomalyID, 
-        cellRendererFramework: FontAwesomeIconLinkRendererComponent,
+        cellRenderer: FontAwesomeIconLinkRendererComponent,
         cellRendererParams: { inRouterLink: '/sensor-anomalies/edit/', fontawesomeIconName: 'edit', cssClasses: 'text-primary'},
         width: 40, sortable: false, filter: false, cellStyle: {textAlign: 'center'}
       },
       {
-        cellRendererFramework: FontAwesomeIconLinkRendererComponent,
+        cellRenderer: FontAwesomeIconLinkRendererComponent,
         cellRendererParams: { isSpan: true, fontawesomeIconName: 'trash', cssClasses: 'text-danger'},
         width: 40, sortable: false, filter: false, cellStyle: {textAlign: 'center'}
       },
@@ -83,7 +83,7 @@ export class SensorAnomalyListComponent implements OnInit {
         headerName: 'Sensor Name', valueGetter: function (params: any) {
           return { LinkValue: params.data.Sensor.SensorID, LinkDisplay: params.data.Sensor.SensorName };
         }, 
-        cellRendererFramework: LinkRendererComponent, cellRendererParams: { inRouterLink: "/sensors/" },
+        cellRenderer: LinkRendererComponent, cellRendererParams: { inRouterLink: "/sensors/" },
         filterValueGetter: params => params.data.Sensor.SensorName,
         comparator: this.utilityFunctionsService.linkRendererComparator,
         width: 180
@@ -93,16 +93,16 @@ export class SensorAnomalyListComponent implements OnInit {
          return params.data.Sensor.WellID ?  { LinkValue: params.data.Sensor.WellID, LinkDisplay: params.data.Sensor.WellRegistrationID }
             : { LinkValue: null, LinkDisplay: null };
         }, 
-        cellRendererFramework: LinkRendererComponent, cellRendererParams: { inRouterLink: "/wells/" },
+        cellRenderer: LinkRendererComponent, cellRendererParams: { inRouterLink: "/wells/" },
         filterValueGetter: params => params.data.Sensor.WellRegistrationID,
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.WellRegistrationNumber },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         width: 180
       },
       {
         headerName: 'Sensor Type', field: 'Sensor.SensorTypeName', width: 180,
-        filterFramework: CustomDropdownFilterComponent,
-        headerComponentFramework: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
+        filter: CustomDropdownFilterComponent,
+        headerComponent: FieldDefinitionGridHeaderComponent, headerComponentParams: { fieldDefinitionTypeID: FieldDefinitionTypeEnum.SensorType },
         filterParams: {
           field: 'Sensor.SensorTypeName',
         }, 

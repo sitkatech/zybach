@@ -93,13 +93,6 @@ namespace Zybach.API
                 c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
             });
 
-            services.AddHttpClient<GeoOptixSearchService>(c =>
-            {
-                c.BaseAddress = new Uri(zybachConfiguration.GEOOPTIX_SEARCH_HOSTNAME);
-                c.Timeout = TimeSpan.FromMinutes(30);
-                c.DefaultRequestHeaders.Add("x-geooptix-token", zybachConfiguration.GEOOPTIX_API_KEY);
-            });
-
             services.AddHttpClient<AgHubService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.AGHUB_API_BASE_URL);
@@ -217,38 +210,11 @@ namespace Zybach.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Zybach", Version = "v1" });
-                // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-
-                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
-                {
-                    Description = "ApiKey must appear in header",
-                    Type = SecuritySchemeType.ApiKey,
-                    Name = ApiKeyAttribute.APIKEYNAME,
-                    In = ParameterLocation.Header,
-                    Scheme = "ApiKeyScheme"
-                });
-
-                var key = new OpenApiSecurityScheme()
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "ApiKey"
-                    },
-                    In = ParameterLocation.Header
-                };
-                var requirement = new OpenApiSecurityRequirement
-                {
-                    { key, new List<string>() }
-                };
-
-                c.AddSecurityRequirement(requirement);
+                // extra options here if you wanted
             });
+
             services.AddSwaggerGenNewtonsoftSupport();
+            services.AddHealthChecks().AddDbContextCheck<ZybachDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -284,6 +250,7 @@ namespace Zybach.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/healthz");
             });
 
             app.UseHangfireDashboard("/hangfire", new DashboardOptions()

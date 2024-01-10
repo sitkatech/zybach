@@ -1,5 +1,5 @@
 <nav aria-label="breadcrumb" *ngIf="supportTicket">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb p-3">
         <li class="breadcrumb-item">
             <a routerLink="/support-tickets">Support Tickets</a>
         </li>
@@ -33,7 +33,7 @@
             <div class="card">
                 <div class="card-header align-items-center">
                     Ticket Details
-                    <div class="float-right">
+                    <div class="float-end">
                         <a class="btn btn-zybach btn-sm"
                             routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/edit">
                             <span class="fas fa-edit"></span> Edit
@@ -45,7 +45,7 @@
                         <div class="col-xl-6">
 
                             <div class="row mt-2">
-                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                <div class="col-xl-6 col-sm-4 text-sm-end">
                                     <strong>Created By: </strong>
                                 </div>
                                 <div class="col-xl-6 col-sm-8">
@@ -54,7 +54,7 @@
                             </div>
     
                             <div class="row mt-2">
-                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                <div class="col-xl-6 col-sm-4 text-sm-end">
                                     <strong>Date Created: </strong>
                                 </div>
                                 <div class="col-xl-6 col-sm-8">
@@ -63,7 +63,7 @@
                             </div>
     
                             <div class="row mt-2">
-                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                <div class="col-xl-6 col-sm-4 text-sm-end">
                                     <strong>Last Updated: </strong>
                                 </div>
                                 <div class="col-xl-6 col-sm-8">
@@ -76,7 +76,7 @@
                         <div class="col-xl-6">
     
                             <div class="row mt-2">
-                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                <div class="col-xl-6 col-sm-4 text-sm-end">
                                     <strong>
                                         <field-definition [fieldDefinitionType]="'WellRegistrationNumber'" labelOverride="Well Reg #">
                                         </field-definition>: 
@@ -90,7 +90,7 @@
                             </div>
     
                             <div class="row mt-2">
-                                <div class="col-xl-6 col-sm-4 text-sm-right">
+                                <div class="col-xl-6 col-sm-4 text-sm-end">
                                     <strong>Sensor: </strong>
                                 </div>
                                 <div class="col-xl-6 col-sm-8">
@@ -105,7 +105,7 @@
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <div class="col-xl-3 col-sm-4 text-sm-right">
+                        <div class="col-xl-3 col-sm-4 text-sm-end">
                             <strong>Description: </strong>
                         </div>
                         <div class="col-xl-9 col-sm-8">
@@ -121,7 +121,7 @@
             <div class="card">
                 <div class="card-header align-items-center">
                     Comments
-                    <div class="float-right">
+                    <div class="float-end">
                         <a class="btn btn-zybach btn-sm"
                             routerLink="/support-tickets/{{supportTicket?.SupportTicketID}}/add-comment">
                             <span class="fas fa-plus"></span> Add Comment
@@ -171,7 +171,7 @@
         
                     <ng-container *ngFor="let notification of notifications; let last = last">
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>Date:</strong></p>
                             </div>
                             <div class="col-9">
@@ -179,7 +179,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>To/CC:</strong></p>
                             </div>
                             <div class="col-9">
@@ -187,7 +187,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>Subject:</strong></p>
                             </div>
                             <div class="col-9">
@@ -195,7 +195,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-3 text-right">
+                            <div class="col-3 text-end">
                                 <p><strong>Body:</strong></p>
                             </div>
                             <div class="col-9" [innerHtml]="notification.EmailBody">

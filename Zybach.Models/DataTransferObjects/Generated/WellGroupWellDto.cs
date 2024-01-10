@@ -18,8 +18,8 @@ namespace Zybach.Models.DataTransferObjects
     public partial class WellGroupWellSimpleDto
     {
         public int WellGroupWellID { get; set; }
-        public int WellGroupID { get; set; }
-        public int WellID { get; set; }
+        public System.Int32 WellGroupID { get; set; }
+        public System.Int32 WellID { get; set; }
         public bool IsPrimary { get; set; }
     }
 

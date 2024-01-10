@@ -67,8 +67,8 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<string>> SearchByWellRegistrationID([FromRoute] string wellRegistrationID)
         {
-            var wellSimpleDtos = Wells.SearchByWellRegistrationID(_dbContext, wellRegistrationID);
-            return Ok(wellSimpleDtos.Select(x => x.WellRegistrationID).OrderBy(x => x));
+            var searchSummaryDtos = Wells.SearchByWellRegistrationID(_dbContext, wellRegistrationID);
+            return Ok(searchSummaryDtos.Select(x => x.WellName).OrderBy(x => x));
         }
 
         [HttpGet("/wells/search/{wellRegistrationID}/hasInspectionType")]

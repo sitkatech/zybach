@@ -6,9 +6,15 @@ namespace Zybach.EFModels.Entities
 {
     public partial class ChemigationInspection
     {
+        public int PrimaryKey => ChemigationInspectionID;
         public ChemigationInspectionStatus ChemigationInspectionStatus => ChemigationInspectionStatus.AllLookupDictionary[ChemigationInspectionStatusID];
         public ChemigationInspectionType ChemigationInspectionType => ChemigationInspectionTypeID.HasValue ? ChemigationInspectionType.AllLookupDictionary[ChemigationInspectionTypeID.Value] : null;
         public ChemigationLowPressureValve ChemigationLowPressureValve => ChemigationLowPressureValveID.HasValue ? ChemigationLowPressureValve.AllLookupDictionary[ChemigationLowPressureValveID.Value] : null;
         public ChemigationInterlockType ChemigationInterlockType => ChemigationInterlockTypeID.HasValue ? ChemigationInterlockType.AllLookupDictionary[ChemigationInterlockTypeID.Value] : null;
+
+        public static class FieldLengths
+        {
+            public const int InspectionNotes = 500;
+        }
     }
 }

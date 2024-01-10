@@ -200,11 +200,11 @@ namespace Zybach.API.Services
         public string GetDefaultEmailSignature()
         {
             string defaultEmailSignature = $@"<br /><br />
-Respectfully, the {_zybachConfiguration.PlatformLongName} team
+Respectfully, the Twin Platte Groundwater Managers Platform team
 <br /><br />
 ***
 <br /><br />
-You have received this email because you are a registered user of the {_zybachConfiguration.PlatformLongName}. 
+You have received this email because you are a registered user of the Twin Platte Groundwater Managers Platform.
 <br /><br />
 <a href=""mailto:{_zybachConfiguration.SupportEmail}"">{_zybachConfiguration.SupportEmail}</a>";
             return defaultEmailSignature;
@@ -213,11 +213,11 @@ You have received this email because you are a registered user of the {_zybachCo
         public string GetSupportNotificationEmailSignature()
         {
             string supportNotificationEmailSignature = $@"<br /><br />
-Respectfully, the {_zybachConfiguration.PlatformLongName} team
+Respectfully, the Twin Platte Groundwater Managers Platform team
 <br /><br />
 ***
 <br /><br />
-You have received this email because you are assigned to receive support notifications within the {_zybachConfiguration.PlatformLongName}. 
+You have received this email because you are assigned to receive support notifications within the Twin Platte Groundwater Managers Platform.
 <br /><br />
 <a href=""mailto:{_zybachConfiguration.SupportEmail}"">{_zybachConfiguration.SupportEmail}</a>";
             return supportNotificationEmailSignature;
@@ -225,7 +225,7 @@ You have received this email because you are assigned to receive support notific
 
         public MailAddress GetDefaultEmailFrom()
         {
-            return new MailAddress(_zybachConfiguration.DoNotReplyEmail, $"{_zybachConfiguration.PlatformLongName}");
+            return new MailAddress(_zybachConfiguration.DoNotReplyEmail, "Twin Platte Groundwater Managers Platform");
         }
 
         public static void AddBccRecipientsToEmail(MailMessage mailMessage, IEnumerable<string> recipients)

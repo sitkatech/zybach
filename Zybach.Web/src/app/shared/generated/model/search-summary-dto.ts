@@ -13,6 +13,7 @@
 export class SearchSummaryDto { 
     ObjectName?: string;
     ObjectType?: string;
+    WellName?: number;
     WellID?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);

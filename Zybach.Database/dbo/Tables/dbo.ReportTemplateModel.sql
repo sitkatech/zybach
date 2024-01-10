@@ -1,0 +1,18 @@
+CREATE TABLE [dbo].[ReportTemplateModel](
+	[ReportTemplateModelID] [int] NOT NULL,
+	[ReportTemplateModelName] [varchar](100) NOT NULL,
+	[ReportTemplateModelDisplayName] [varchar](100) NOT NULL,
+	[ReportTemplateModelDescription] [varchar](250) NOT NULL,
+ CONSTRAINT [PK_ReportTemplateModel_ReportTemplateModelID] PRIMARY KEY CLUSTERED 
+(
+	[ReportTemplateModelID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [AK_ReportTemplateModel_ReportTemplateModelDisplayName] UNIQUE NONCLUSTERED 
+(
+	[ReportTemplateModelDisplayName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [AK_ReportTemplateModel_ReportTemplateModelName] UNIQUE NONCLUSTERED 
+(
+	[ReportTemplateModelName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]

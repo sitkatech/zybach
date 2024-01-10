@@ -16,7 +16,7 @@ namespace Zybach.Models.DataTransferObjects
     public partial class AgHubIrrigationUnitGeometrySimpleDto
     {
         public int AgHubIrrigationUnitGeometryID { get; set; }
-        public int AgHubIrrigationUnitID { get; set; }
+        public System.Int32 AgHubIrrigationUnitID { get; set; }
     }
 
 }

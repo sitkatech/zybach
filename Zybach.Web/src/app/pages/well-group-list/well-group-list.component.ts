@@ -70,7 +70,7 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
   private createColumnDefs() {
     this.columnDefs = [
       {
-        cellRendererFramework: FontAwesomeIconLinkRendererComponent,
+        cellRenderer: FontAwesomeIconLinkRendererComponent,
         cellRendererParams: { isSpan: true, fontawesomeIconName: 'trash' },
         width: 30, sortable: false, filter: false, cellStyle: { textAlign: 'center' }
       },
@@ -79,7 +79,7 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
         valueGetter: params => {
           return { LinkValue: params.data.WellGroupID, LinkDisplay: params.data.WellGroupName}
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/well-groups/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: params => params.data.WellGroupName
@@ -97,14 +97,14 @@ export class WellGroupListComponent implements OnInit, OnDestroy {
         filterValueGetter: params => params.data.WellGroupWells.map(x => x.WellRegistrationID).join(", "),
         comparator: this.utilityFunctionsService.multiLinkRendererComparator, 
         cellRendererParams: { inRouterLink: "/wells/" },
-        cellRendererFramework: MultiLinkRendererComponent
+        cellRenderer: MultiLinkRendererComponent
       },
       { 
         headerName: "Water Level Reporting Primary Well", 
         valueGetter: params => {
           return { LinkValue: params.data.PrimaryWell?.WellID, LinkDisplay: params.data.PrimaryWell?.WellRegistrationID }
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/wells/" },
         comparator: this.utilityFunctionsService.linkRendererComparator,
         filterValueGetter: params => params.data.PrimaryWell?.WellRegistrationID

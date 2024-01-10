@@ -6,7 +6,6 @@ import { ChemicalFormulationYearlyTotalDto } from 'src/app/shared/generated/mode
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
-import { CustomPinnedRowRendererComponent } from 'src/app/shared/components/ag-grid/custom-pinned-row-renderer/custom-pinned-row-renderer.component';
 import { UtilityFunctionsService } from 'src/app/services/utility-functions.service';
 import { ChemigationPermitAnnualRecordChemicalFormulationService } from 'src/app/shared/generated/api/chemigation-permit-annual-record-chemical-formulation.service';
 
@@ -49,7 +48,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       {
         headerName: 'Record Year',
         field: 'RecordYear',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'RecordYear'
         },
@@ -74,7 +73,7 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
       { 
         headerName: 'Measurement Units', 
         field: 'ChemicalUnit.ChemicalUnitPluralName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemicalUnit.ChemicalUnitPluralName'
         },
@@ -86,8 +85,6 @@ export class NdeeChemicalsReportComponent implements OnInit, OnDestroy {
         valueGetter: function (params: any) {
           return params.node.rowPinned ? "Total: " + params.data.AcresTreatedTotal : params.data.AcresTreated;
         },
-        pinnedRowCellRendererFramework: CustomPinnedRowRendererComponent,
-        pinnedRowCellRendererParams: { filter: true },
         filter: 'agNumberColumnFilter',
         resizable: true,
         sortable: true

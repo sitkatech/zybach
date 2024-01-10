@@ -55,8 +55,8 @@ export class ChemigationInspectionsListComponent implements OnInit {
     this.columnDefs = [
       {
         headerName: '', valueGetter: function (params: any) {
-          return { LinkValue: params.data.ChemigationInspectionID, LinkDisplay: "Edit", CssClasses: "btn-sm btn-zybach" };
-        }, cellRendererFramework: LinkRendererComponent,
+          return { LinkValue: params.data.ChemigationInspectionID, LinkDisplay: "Edit", CssClasses: "btn-sm btn-zybach p-1" };
+        }, cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-inspections/" },
         width: 120,
         resizable: true
@@ -66,7 +66,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
         valueGetter: function (params: any) {
           return { LinkValue: params.data.ChemigationPermitNumber, LinkDisplay: params.data.ChemigationPermitNumberDisplay };
         },
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/chemigation-permits/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkDisplay;
@@ -87,7 +87,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
         sortable: true
       },
       { headerName: 'County', field: 'County',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'County',
         }, 
@@ -120,7 +120,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
         sortable: true
       },
       { headerName: 'Status', field: 'ChemigationInspectionStatusName', 
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationInspectionStatusName'
         },
@@ -137,7 +137,7 @@ export class ChemigationInspectionsListComponent implements OnInit {
             return { LinkValue: null, LinkDisplay: null };
           }
         }, 
-        cellRendererFramework: LinkRendererComponent,
+        cellRenderer: LinkRendererComponent,
         cellRendererParams: { inRouterLink: "/users/" },
         comparator: function (id1: any, id2: any) {
           let link1 = id1.LinkValue;
@@ -159,43 +159,43 @@ export class ChemigationInspectionsListComponent implements OnInit {
         sortable: true
       },
       { headerName: 'Inspection Type', field: 'ChemigationInspectionTypeName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationInspectionTypeName'
         }, 
        resizable: true, sortable: true },
       { headerName: 'Mainline Check Valve', field: 'ChemigationMainlineCheckValveName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationMainlineCheckValveName'
         }, 
        resizable: true, sortable: true },
       { headerName: 'Low Pressure Valve', field: 'ChemigationLowPressureValveName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationLowPressureValveName'
         }, 
         resizable: true, sortable: true },
       { headerName: 'Injection Valve', field: 'ChemigationInjectionValveName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationInjectionValveName'
         }, 
         resizable: true, sortable: true },
       { headerName: 'Interlock Type', field: 'ChemigationInterlockTypeName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'ChemigationInterlockTypeName'
         }, 
         resizable: true, sortable: true },
       { headerName: 'Tillage', field: 'TillageName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'TillageName'
         }, 
         resizable: true, sortable: true },
       { headerName: 'Crop Type', field: 'CropTypeName',
-        filterFramework: CustomDropdownFilterComponent,
+        filter: CustomDropdownFilterComponent,
         filterParams: {
           field: 'CropTypeName'
         }, 

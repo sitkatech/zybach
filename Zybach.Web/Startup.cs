@@ -43,7 +43,7 @@ namespace Zybach.Web
                 var options = new RewriteOptions().AddRedirectToHttps(301, 9001);
                 app.UseRewriter(options);
             }
-            
+
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path.Value == "/assets/config.json")
@@ -53,21 +53,18 @@ namespace Zybach.Web
                     await context.Response.WriteAsync(json);
                     return;
                 }
-
                 await next();
-
                 if (context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
                 {
                     context.Request.Path = "/index.html";
                     await next();
                 }
             });
-
             app.UseDefaultFiles();
             app.UseStaticFiles();
         }
     }
-
+    
     public class ConfigDto
     {
         public ConfigDto(IConfiguration configuration)
@@ -80,16 +77,12 @@ namespace Zybach.Web
             CreateAccountRedirectUrl = configuration["CreateAccountRedirectUrl"];
             GeoserverMapServiceUrl = configuration["GeoserverMapServiceUrl"];
             KeystoneAuthConfiguration = new KeystoneAuthConfigurationDto(configuration);
-            PlatformLongName = configuration["PlatformLongName"];
-            PlatformShortName = configuration["PlatformShortName"];
-            FaviconFilename = configuration["FaviconFilename"];
             AppInsightsInstrumentationKey =  configuration["AppInsightsInstrumentationKey"];
             MapQuestApiUrl =  configuration["MapQuestApiUrl"];
             GeoOptixWebUrl = configuration["GeoOptixWebUrl"];
             GETEnvironmentUrl = configuration["GETEnvironmentUrl"];
             AllowOpenETSync = bool.Parse(configuration["AllowOpenETSync"]);
         }
-
         [JsonProperty("production")]
         public bool Production { get; set; }
         [JsonProperty("staging")]
@@ -106,12 +99,6 @@ namespace Zybach.Web
         public string GeoserverMapServiceUrl { get; set; }
         [JsonProperty("keystoneAuthConfiguration")]
         public KeystoneAuthConfigurationDto KeystoneAuthConfiguration { get; set; }
-        [JsonProperty("platformLongName")]
-        public string PlatformLongName { get; set; }
-        [JsonProperty("platformShortName")]
-        public string PlatformShortName { get; set; }
-        [JsonProperty("faviconFilename")]
-        public string FaviconFilename {get; set;}
         [JsonProperty("appInsightsInstrumentationKey")]
         public string AppInsightsInstrumentationKey {get; set;}
         [JsonProperty("mapQuestApiUrl")]

@@ -3,9 +3,14 @@ version: '3.7'
 services:
   zybach.api:
     build:
-      dockerfile: Zybach.API/Dockerfile
+      args:
+        source: .
     environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - Kestrel__Certificates__Default__Path=/https/host.docker.internal.pfx
+      - Kestrel__Certificates__Default__Password=password#1
       - KEYSTONE_HOST=${KEYSTONE_HOST}
       - SMTP_HOST=${SMTP_HOST}
       - SMTP_PORT=${SMTP_PORT}
@@ -19,8 +24,9 @@ services:
       - AppAlertsEmail=${AppAlertsEmail}
       - SupportEmail=${SupportEmail}
       - INFLUXDB_URL=${INFLUXDB_URL}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUX_BUCKET=${INFLUX_BUCKET}
       - GEOOPTIX_HOSTNAME=${GEOOPTIX_HOSTNAME}
-      - GEOOPTIX_SEARCH_HOSTNAME=${GEOOPTIX_SEARCH_HOSTNAME}
       - AGHUB_API_BASE_URL=${AGHUB_API_BASE_URL}
       - AGHUB_API_BUCKET=${AGHUB_API_BUCKET}
       - GET_API_BASE_URL=${GET_API_BASE_URL}
@@ -39,4 +45,65 @@ services:
       - DefaultBoundingBoxTop=${DefaultBoundingBoxTop}
       - DefaultBoundingBoxBottom=${DefaultBoundingBoxBottom}
       - OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier=${OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}
-      - AllowOpenETSync=${AllowOpenETSync}
+      - AllowOpenETSync=${AllowOpenETSync}    
+    ports:
+      - "8711:8080"
+      - "8712:8081"
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  zybach.swagger:
+    build:
+      args:
+        source: .
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - Kestrel__Certificates__Default__Path=/https/host.docker.internal.pfx
+      - Kestrel__Certificates__Default__Password=password#1
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - SECRET_PATH=${SWAGGER_SECRET_PATH}
+      - INFLUXDB_URL=${INFLUXDB_URL}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUX_BUCKET=${INFLUX_BUCKET}
+    volumes:
+      - ~/.aspnet/https:/https:ro
+
+  geoserver:
+    container_name: zybach_geoserver
+    image: kartoza/geoserver:2.16.2
+    entrypoint: /bin/bash /opt/geoserver/data_dir/sitka-geoserver-config/scripts/sitka-entry-point.sh
+    environment:
+      - ENABLE_JSONP=true
+      - CATALINA_OPTS=-DALLOW_ENV_PARAMETRIZATION=true
+      - STABLE_EXTENSIONS=sqlserver-plugin
+      # default login is admin unless a different value is specified here
+      - GEOSERVER_ADMIN_USER=admin
+      # default password is geoserver unless specified differently in the secret
+      - GEOSERVER_ADMIN_PASSWORD_SECRET=/run/secrets/GeoserverAdminPassword.txt
+      - GEOSERVER_SQL_SERVER_PASSWORD_SECRET=/run/secrets/GeoserverSqlServerPassword.txt
+      - GEOSERVER_CONFIG_DIRECTORY=/opt/geoserver/data_dir
+    ports:
+      - 127.0.0.1:7615:8080
+    volumes:
+      - c:/git/sitkatech/zybach/Zybach.GeoServer/data_dir:/opt/geoserver/data_dir
+    secrets:
+      - GeoserverSqlServerPassword.txt
+      - GeoserverAdminPassword.txt
+
+  vegarenderservice:
+    container_name: zybach_vegarenderservice
+    image: esacontainers.azurecr.io/vegarenderservice:latest
+    environment:
+      - PORT=8090
+    ports:
+      - "8709:8080"
+      - "8710:8081"
+
+secrets:
+  GeoserverSqlServerPassword.txt:
+    file: C:\Sitka\Zybach\Geoserver\GeoserverSqlServerPassword.txt
+      # using "file:"  allows you to mimic docker secrets on your dev machine by pointing to a plaintext file
+  GeoserverAdminPassword.txt:
+    file: C:\Sitka\Zybach\Geoserver\GeoserverAdminPassword.txt

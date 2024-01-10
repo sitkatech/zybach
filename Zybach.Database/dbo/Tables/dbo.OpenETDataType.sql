@@ -1,0 +1,10 @@
+CREATE TABLE [dbo].[OpenETDataType](
+	[OpenETDataTypeID] [int] NOT NULL,
+	[OpenETDataTypeName] [varchar](50) NOT NULL,
+	[OpenETDataTypeDisplayName] [varchar](100) NOT NULL,
+	[OpenETDataTypeVariableName] [varchar](20) NOT NULL,
+ CONSTRAINT [PK_OpenETDataType_OpenETDataTypeID] PRIMARY KEY CLUSTERED 
+(
+	[OpenETDataTypeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]

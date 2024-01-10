@@ -13,7 +13,7 @@ using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {
-    public abstract partial class ChemigationInterlockType
+    public abstract partial class ChemigationInterlockType : IHavePrimaryKey
     {
         public static readonly ChemigationInterlockTypeMechanical Mechanical = Zybach.EFModels.Entities.ChemigationInterlockTypeMechanical.Instance;
         public static readonly ChemigationInterlockTypeElectrical Electrical = Zybach.EFModels.Entities.ChemigationInterlockTypeElectrical.Instance;

@@ -6,6 +6,12 @@ namespace Zybach.EFModels.Entities
 {
     public partial class OpenETWaterMeasurement
     {
+        public int PrimaryKey => OpenETWaterMeasurementID;
         public OpenETDataType OpenETDataType => OpenETDataType.AllLookupDictionary[OpenETDataTypeID];
+
+        public static class FieldLengths
+        {
+            public const int WellTPID = 100;
+        }
     }
 }
