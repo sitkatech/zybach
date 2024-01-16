@@ -56,6 +56,9 @@ services:
     build:
       args:
         source: .
+    ports:
+      - "8609:8080"
+      - "8610:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
