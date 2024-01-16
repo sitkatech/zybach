@@ -36,7 +36,7 @@ namespace Zybach.API.Controllers
         }
 
         [HttpGet("/openet-sync/years")]
-        [AdminFeature]
+        [ZybachViewFeature]
         public ActionResult<List<int>> ListYears()
         {
             var waterYears = OpenETSyncs.ListYears(_dbContext);
