@@ -109,6 +109,8 @@ public partial class ZybachDbContext : DbContext
 
     public virtual DbSet<vGeoServerAgHubIrrigationUnitCropType> vGeoServerAgHubIrrigationUnitCropTypes { get; set; }
 
+    public virtual DbSet<vGeoServerAgHubIrrigationUnitTillageType> vGeoServerAgHubIrrigationUnitTillageTypes { get; set; }
+
     public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
 
     public virtual DbSet<vSensor> vSensors { get; set; }
@@ -450,6 +452,11 @@ public partial class ZybachDbContext : DbContext
         modelBuilder.Entity<vGeoServerAgHubIrrigationUnitCropType>(entity =>
         {
             entity.ToView("vGeoServerAgHubIrrigationUnitCropType");
+        });
+
+        modelBuilder.Entity<vGeoServerAgHubIrrigationUnitTillageType>(entity =>
+        {
+            entity.ToView("vGeoServerAgHubIrrigationUnitTillageType");
         });
 
         modelBuilder.Entity<vOpenETMostRecentSyncHistoryForYearAndMonth>(entity =>

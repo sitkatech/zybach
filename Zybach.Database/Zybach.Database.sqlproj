@@ -199,14 +199,17 @@
     <None Include="Scripts\PreReleaseScripts\Script.PreDeployment.ReleaseScripts.sql" />
     <None Include="Scripts\ReleaseScripts\Script.PostDeployment.ReleaseScripts.sql" />
     <None Include="Scripts\Utility\Script.PostDeployment.Utility.sql" />
-    <Build Include="dbo\Views\dbo.vGeoserverAgHubIrrigationUnitIrrigatedAcres.sql" />
-    <None Include="Scripts\LookupTables\dbo.AgHubWellIrrigatedAcreCropType.sql" />
-    <Build Include="dbo\Tables\dbo.AgHubWellIrrigatedAcreCropType.sql" />
+    <Build Include="dbo\Views\dbo.vGeoServerAgHubIrrigationUnitCropType.sql" />
+    <None Include="Scripts\LookupTables\dbo.AgHubIrrigatedAcreCropType.sql" />
+    <Build Include="dbo\Tables\dbo.AgHubIrrigatedAcreCropType.sql" />
     <Build Include="dbo\Procs\dbo.pTruncateWellSensorMeasurementStaging.sql" />
     <Build Include="dbo\Procs\dbo.pTruncateGeoOptixWellStaging.sql" />
     <Build Include="dbo\Procs\dbo.pTruncateGeoOptixSensorStaging.sql" />
     <Build Include="dbo\Procs\dbo.pTruncateAgHubWellStaging.sql" />
     <Build Include="dbo\Procs\dbo.pTruncateAgHubWellIrrigatedAcreStaging.sql" />
+    <Build Include="dbo\Tables\dbo.AgHubIrrigatedAcreTillageType.sql" />
+    <None Include="Scripts\LookupTables\dbo.AgHubIrrigatedAcreTillageType.sql" />
+    <Build Include="dbo\Views\dbo.vGeoServerAgHubIrrigationUnitTillageType.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
