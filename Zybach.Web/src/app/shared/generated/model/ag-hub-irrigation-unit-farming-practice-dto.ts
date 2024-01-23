@@ -20,6 +20,8 @@ export class AgHubIrrigationUnitFarmingPracticeDto {
     CropTypeLegendDisplayName?: string;
     CropTypeMapColor?: string;
     Tillage?: string;
+    TillageTypeLegendDisplayName?: string;
+    TillageTypeMapColor?: string;
     Wells?: Array<WellLinkDto>;
     constructor(obj?: any) {
         Object.assign(this, obj);

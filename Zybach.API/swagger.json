@@ -6316,6 +6316,14 @@
             "type": "string",
             "nullable": true
           },
+          "TillageTypeLegendDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TillageTypeMapColor": {
+            "type": "string",
+            "nullable": true
+          },
           "Wells": {
             "type": "array",
             "items": {

@@ -19,6 +19,8 @@ namespace Zybach.EFModels.Entities
         public static readonly AgHubIrrigatedAcreTillageTypeMTill MTill = Zybach.EFModels.Entities.AgHubIrrigatedAcreTillageTypeMTill.Instance;
         public static readonly AgHubIrrigatedAcreTillageTypeCTill CTill = Zybach.EFModels.Entities.AgHubIrrigatedAcreTillageTypeCTill.Instance;
         public static readonly AgHubIrrigatedAcreTillageTypeSTill STill = Zybach.EFModels.Entities.AgHubIrrigatedAcreTillageTypeSTill.Instance;
+        public static readonly AgHubIrrigatedAcreTillageTypeOther Other = Zybach.EFModels.Entities.AgHubIrrigatedAcreTillageTypeOther.Instance;
+        public static readonly AgHubIrrigatedAcreTillageTypeNotReported NotReported = Zybach.EFModels.Entities.AgHubIrrigatedAcreTillageTypeNotReported.Instance;
 
         public static readonly List<AgHubIrrigatedAcreTillageType> All;
         public static readonly List<AgHubIrrigatedAcreTillageTypeDto> AllAsDto;
@@ -30,8 +32,8 @@ namespace Zybach.EFModels.Entities
         /// </summary>
         static AgHubIrrigatedAcreTillageType()
         {
-            All = new List<AgHubIrrigatedAcreTillageType> { NTill, MTill, CTill, STill };
-            AllAsDto = new List<AgHubIrrigatedAcreTillageTypeDto> { NTill.AsDto(), MTill.AsDto(), CTill.AsDto(), STill.AsDto() };
+            All = new List<AgHubIrrigatedAcreTillageType> { NTill, MTill, CTill, STill, Other, NotReported };
+            AllAsDto = new List<AgHubIrrigatedAcreTillageTypeDto> { NTill.AsDto(), MTill.AsDto(), CTill.AsDto(), STill.AsDto(), Other.AsDto(), NotReported.AsDto() };
             AllLookupDictionary = new ReadOnlyDictionary<int, AgHubIrrigatedAcreTillageType>(All.ToDictionary(x => x.AgHubIrrigatedAcreTillageTypeID));
             AllAsDtoLookupDictionary = new ReadOnlyDictionary<int, AgHubIrrigatedAcreTillageTypeDto>(AllAsDto.ToDictionary(x => x.AgHubIrrigatedAcreTillageTypeID));
         }
@@ -108,8 +110,12 @@ namespace Zybach.EFModels.Entities
                     return CTill;
                 case AgHubIrrigatedAcreTillageTypeEnum.MTill:
                     return MTill;
+                case AgHubIrrigatedAcreTillageTypeEnum.NotReported:
+                    return NotReported;
                 case AgHubIrrigatedAcreTillageTypeEnum.NTill:
                     return NTill;
+                case AgHubIrrigatedAcreTillageTypeEnum.Other:
+                    return Other;
                 case AgHubIrrigatedAcreTillageTypeEnum.STill:
                     return STill;
                 default:
@@ -123,30 +129,44 @@ namespace Zybach.EFModels.Entities
         NTill = 1,
         MTill = 2,
         CTill = 3,
-        STill = 4
+        STill = 4,
+        Other = 99,
+        NotReported = 100
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeNTill : AgHubIrrigatedAcreTillageType
     {
         private AgHubIrrigatedAcreTillageTypeNTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeNTill Instance = new AgHubIrrigatedAcreTillageTypeNTill(1, @"N Till", @"No Till", @"#430154");
+        public static readonly AgHubIrrigatedAcreTillageTypeNTill Instance = new AgHubIrrigatedAcreTillageTypeNTill(1, @"NTill", @"No Till", @"#430154");
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeMTill : AgHubIrrigatedAcreTillageType
     {
         private AgHubIrrigatedAcreTillageTypeMTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeMTill Instance = new AgHubIrrigatedAcreTillageTypeMTill(2, @"M Till", @"Minimum Till", @"#453781");
+        public static readonly AgHubIrrigatedAcreTillageTypeMTill Instance = new AgHubIrrigatedAcreTillageTypeMTill(2, @"MTill", @"Minimum Till", @"#453781");
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeCTill : AgHubIrrigatedAcreTillageType
     {
         private AgHubIrrigatedAcreTillageTypeCTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeCTill Instance = new AgHubIrrigatedAcreTillageTypeCTill(3, @"C Till", @"Conventional Till", @"#33638d");
+        public static readonly AgHubIrrigatedAcreTillageTypeCTill Instance = new AgHubIrrigatedAcreTillageTypeCTill(3, @"CTill", @"Conventional Till", @"#33638d");
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeSTill : AgHubIrrigatedAcreTillageType
     {
         private AgHubIrrigatedAcreTillageTypeSTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeSTill Instance = new AgHubIrrigatedAcreTillageTypeSTill(4, @"S Till", @"Strip Till", @"#238a8d");
+        public static readonly AgHubIrrigatedAcreTillageTypeSTill Instance = new AgHubIrrigatedAcreTillageTypeSTill(4, @"STill", @"Strip Till", @"#238a8d");
+    }
+
+    public partial class AgHubIrrigatedAcreTillageTypeOther : AgHubIrrigatedAcreTillageType
+    {
+        private AgHubIrrigatedAcreTillageTypeOther(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeOther Instance = new AgHubIrrigatedAcreTillageTypeOther(99, @"Other", @"Other", @"#00b6b6");
+    }
+
+    public partial class AgHubIrrigatedAcreTillageTypeNotReported : AgHubIrrigatedAcreTillageType
+    {
+        private AgHubIrrigatedAcreTillageTypeNotReported(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeNotReported Instance = new AgHubIrrigatedAcreTillageTypeNotReported(100, @"NotReported", @"Not Reported", @"#e22e1d");
     }
 }

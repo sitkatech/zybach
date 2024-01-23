@@ -129,7 +129,7 @@ namespace Zybach.EFModels.Entities
                 .Include(x => x.AgHubWells).ThenInclude(x => x.Well)
                 .ToDictionary(x => x.AgHubIrrigationUnitID, x => x.AgHubWells);
 
-            var irrigationUnitFarmingPracticeDtos =  dbContext.vGeoServerAgHubIrrigationUnitCropTypes.AsNoTracking()
+            var irrigationUnitFarmingPracticeDtos =  dbContext.vGeoServerAgHubIrrigationUnits.AsNoTracking()
                 .Select(x => new AgHubIrrigationUnitFarmingPracticeDto()
                 {
                     AgHubIrrigationUnitID = x.AgHubIrrigationUnitID,
@@ -140,6 +140,8 @@ namespace Zybach.EFModels.Entities
                     CropTypeLegendDisplayName = x.CropTypeLegendDisplayName,
                     CropTypeMapColor = x.CropTypeMapColor,
                     Tillage = x.Tillage,
+                    TillageTypeLegendDisplayName = x.TillageTypeLegendDisplayName,
+                    TillageTypeMapColor = x.TillageTypeMapColor
                 }).ToList();
 
             irrigationUnitFarmingPracticeDtos.ForEach(x =>

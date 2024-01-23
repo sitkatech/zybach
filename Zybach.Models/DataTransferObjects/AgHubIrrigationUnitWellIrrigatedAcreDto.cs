@@ -12,5 +12,7 @@ public class AgHubIrrigationUnitFarmingPracticeDto
     public string CropTypeLegendDisplayName { get; set; }
     public string CropTypeMapColor { get; set; }
     public string Tillage { get; set; }
+    public string TillageTypeLegendDisplayName { get; set; }
+    public string TillageTypeMapColor { get; set; }
     public List<WellLinkDto> Wells { get; set; }
 }
