@@ -9,6 +9,7 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { FieldDefinitionGridHeaderComponent } from 'src/app/shared/components/field-definition-grid-header/field-definition-grid-header.component';
 import { FieldDefinitionTypeEnum } from 'src/app/shared/generated/enum/field-definition-type-enum';
 import { MultiLinkRendererComponent } from 'src/app/shared/components/ag-grid/multi-link-renderer/multi-link-renderer.component';
+import { CustomDropdownFilterComponent } from 'src/app/shared/components/custom-dropdown-filter/custom-dropdown-filter.component';
 
 @Component({
   selector: 'farming-practices',
@@ -21,9 +22,19 @@ export class FarmingPracticesComponent implements OnInit {
   public selectedYear: number;
   public years = [];
 
+  public summaryStatsField: "CropType" | "TillageType" = "CropType";
+
   public selectedIrrigationUnitID: number;
   public irrigationUnitFarmingPractices: AgHubIrrigationUnitFarmingPracticeDto[];
   public irrigationUnitFarmingPracticesForSelectedYear: AgHubIrrigationUnitFarmingPracticeDto[];
+
+  public totalAcres: number;
+  public cropTypes: string[];
+  public legendColorByCropType: { [cropType: string]: string };
+  public irrigationUnitAcresByCropType: { [cropType: string]: number };
+  public tillageTypes: string[];
+  public legendColorByTillageType: { [cropType: string]: string };
+  public irrigationUnitAcresByTillageType: { [cropType: string]: number };
 
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
@@ -31,12 +42,6 @@ export class FarmingPracticesComponent implements OnInit {
     getRowId: params => params.data.AgHubIrrigationUnitID.toString(),
     onGridReady: params => params.api.sizeColumnsToFit()
   };
-
-  public legendColorByCropType: { [cropType: string]: string };
-  public irrigationUnitAcresByCropType: { [cropType: string]: number };
-  public totalAcres: number;
-  public cropTypes: string[];
-
   public richTextTypeID = CustomRichTextTypeEnum.FarmingPractices;
 
   constructor(
@@ -59,28 +64,12 @@ export class FarmingPracticesComponent implements OnInit {
     });
   }
 
-  private createFarmingPracticeOverview() {
-    this.irrigationUnitAcresByCropType = {};
-    this.legendColorByCropType = {};
-    this.totalAcres = 0;
+  public toggleSummaryStatsField(displayField: "CropType" | "TillageType") {
+    this.summaryStatsField = displayField;
+  }
 
-    this.irrigationUnitFarmingPracticesForSelectedYear.forEach(irrigationUnit => {
-      const cropType = irrigationUnit.CropTypeLegendDisplayName;
-
-      if (!this.irrigationUnitAcresByCropType[cropType]) {
-        this.irrigationUnitAcresByCropType[cropType] = 0;
-      }
-      this.irrigationUnitAcresByCropType[cropType] += irrigationUnit.Acres;
-      this.totalAcres += irrigationUnit.Acres;
-
-      if (!this.legendColorByCropType[cropType]) {
-        this.legendColorByCropType[cropType] = irrigationUnit.CropTypeMapColor
-      }
-    });
-
-    this.cropTypes = Object.keys(this.irrigationUnitAcresByCropType).filter(cropType => cropType != "Not Reported" && cropType != "Other").sort();
-    if (this.irrigationUnitAcresByCropType["Other"]) this.cropTypes.push("Other");
-    if (this.irrigationUnitAcresByCropType["Not Reported"]) this.cropTypes.push("Not Reported");
+  public displayingByCropType() {
+    return this.summaryStatsField == "CropType";
   }
 
   public onGridSelectionChanged(params) {
@@ -111,8 +100,48 @@ export class FarmingPracticesComponent implements OnInit {
     this.irrigationUnitFarmingPracticesForSelectedYear = this.irrigationUnitFarmingPractices.filter(x => x.IrrigationYear == this.selectedYear);
     this.irrigationUnitGrid.api.setRowData(this.irrigationUnitFarmingPracticesForSelectedYear);
 
-    this.createFarmingPracticeOverview();
+    this.createFarmingPracticesOverview();
   };
+
+  private createFarmingPracticesOverview() {
+    this.irrigationUnitAcresByCropType = {};
+    this.irrigationUnitAcresByTillageType = {};
+
+    this.legendColorByCropType = {};
+    this.legendColorByTillageType = {};
+
+    this.totalAcres = 0;
+
+    this.irrigationUnitFarmingPracticesForSelectedYear.forEach(irrigationUnit => {
+      const cropType = irrigationUnit.CropTypeLegendDisplayName;
+      const tillageType = irrigationUnit.TillageTypeLegendDisplayName;
+
+      if (!this.irrigationUnitAcresByCropType[cropType]) {
+        this.irrigationUnitAcresByCropType[cropType] = 0;
+      }
+      if (!this.irrigationUnitAcresByTillageType[tillageType]) {
+        this.irrigationUnitAcresByTillageType[tillageType] = 0;
+      }
+      this.irrigationUnitAcresByCropType[cropType] += irrigationUnit.Acres;
+      this.irrigationUnitAcresByTillageType[tillageType] += irrigationUnit.Acres;
+      this.totalAcres += irrigationUnit.Acres;
+
+      if (!this.legendColorByCropType[cropType]) {
+        this.legendColorByCropType[cropType] = irrigationUnit.CropTypeMapColor
+      }
+      if (!this.legendColorByTillageType[tillageType]) {
+        this.legendColorByTillageType[tillageType] = irrigationUnit.TillageTypeMapColor
+      }
+    });
+
+    this.cropTypes = Object.keys(this.irrigationUnitAcresByCropType).filter(cropType => cropType != "Not Reported" && cropType != "Other").sort();
+    if (this.irrigationUnitAcresByCropType["Other"]) this.cropTypes.push("Other");
+    if (this.irrigationUnitAcresByCropType["Not Reported"]) this.cropTypes.push("Not Reported");
+
+    this.tillageTypes = Object.keys(this.irrigationUnitAcresByTillageType).filter(tillageType => tillageType != "Not Reported" && tillageType != "Other").sort();
+    if (this.irrigationUnitAcresByTillageType["Other"]) this.tillageTypes.push("Other");
+    if (this.irrigationUnitAcresByTillageType["Not Reported"]) this.tillageTypes.push("Not Reported");
+  }
 
   public initializeGrid() {
     this.columnDefs = [
@@ -156,7 +185,9 @@ export class FarmingPracticesComponent implements OnInit {
       },
       { 
         headerName: "Tillage Type", field: "Tillage",
-        valueGetter: params => params.data.Tillage ?? "Not Reported"
+        valueGetter: params => params.data.Tillage ?? "Not Reported",
+        filter: CustomDropdownFilterComponent,
+        filterParams: { field: "Tillage" }
       }
     ];
 
