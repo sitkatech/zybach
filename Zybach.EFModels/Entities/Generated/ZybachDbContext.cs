@@ -107,7 +107,7 @@ public partial class ZybachDbContext : DbContext
 
     public virtual DbSet<WellWaterQualityInspectionType> WellWaterQualityInspectionTypes { get; set; }
 
-    public virtual DbSet<vGeoServerAgHubIrrigationUnitCropType> vGeoServerAgHubIrrigationUnitCropTypes { get; set; }
+    public virtual DbSet<vGeoServerAgHubIrrigationUnit> vGeoServerAgHubIrrigationUnits { get; set; }
 
     public virtual DbSet<vOpenETMostRecentSyncHistoryForYearAndMonth> vOpenETMostRecentSyncHistoryForYearAndMonths { get; set; }
 
@@ -447,9 +447,9 @@ public partial class ZybachDbContext : DbContext
             entity.HasOne(d => d.Well).WithMany(p => p.WellWaterQualityInspectionTypes).OnDelete(DeleteBehavior.ClientSetNull);
         });
 
-        modelBuilder.Entity<vGeoServerAgHubIrrigationUnitCropType>(entity =>
+        modelBuilder.Entity<vGeoServerAgHubIrrigationUnit>(entity =>
         {
-            entity.ToView("vGeoServerAgHubIrrigationUnitCropType");
+            entity.ToView("vGeoServerAgHubIrrigationUnit");
         });
 
         modelBuilder.Entity<vOpenETMostRecentSyncHistoryForYearAndMonth>(entity =>

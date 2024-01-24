@@ -1,8 +1,8 @@
 //  IMPORTANT:
 //  This file is generated. Your changes will be lost.
-//  Source Table: [dbo].[AgHubWellIrrigatedAcreCropType]
+//  Source Table: [dbo].[AgHubIrrigatedAcreCropType]
 
-export enum AgHubWellIrrigatedAcreCropTypeEnum {
+export enum AgHubIrrigatedAcreCropTypeEnum {
   Corn = 1,
   Popcorn = 2,
   Soybeans = 3,
@@ -19,6 +19,6 @@ export enum AgHubWellIrrigatedAcreCropTypeEnum {
   Forage = 14,
   TurfGrass = 15,
   Pasture = 16,
-  NotReported = 17,
-  Other = 18
+  Other = 99,
+  NotReported = 100
 }

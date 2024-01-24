@@ -24,7 +24,13 @@ export class FarmingPracticesMapComponent implements AfterViewInit {
       this.updateSelectedIrrigationUnit();
     }
   }
-public _selectedIrrigationUnitID;
+  public _selectedIrrigationUnitID;
+
+  @Input() set summaryStatsField (value: "CropType" | "TillageType") {
+    this._summaryStatsField = value;
+    this.updateAgHubIrrigationUnitCropTypeMapLayer();
+  }
+  public _summaryStatsField;
 
   @Output() mapSelectionChanged = new EventEmitter<number>();
   
@@ -35,7 +41,7 @@ public _selectedIrrigationUnitID;
   private layerControl: L.Control.Layers;
   private irrigationUnitCropTypeLayer: L.Layer;
   private defaultIrrigationUnitWMSOptions: L.WMSOptions = {
-    layers: "Zybach:AgHubIrrigationUnitCropType",
+    layers: "Zybach:AgHubIrrigationUnit",
     transparent: true,
     format: "image/png",
     tiled: true,
@@ -87,11 +93,15 @@ public _selectedIrrigationUnitID;
       cql_filter += `and AgHubIrrigationUnitID not in (${this._selectedIrrigationUnitID})`;
     }
 
-    var wmsParams = Object.assign({ cql_filter: cql_filter, legend: true }, this.defaultIrrigationUnitWMSOptions, null);
+    var wmsParams = Object.assign({ cql_filter: cql_filter, styles: this.getWMSLayerStyle() }, this.defaultIrrigationUnitWMSOptions, null);
     this.irrigationUnitCropTypeLayer = L.tileLayer.wms(environment.geoserverMapServiceUrl + "/wms?", wmsParams);
 
     this.irrigationUnitCropTypeLayer.addTo(this.map);
     this.layerControl.addOverlay(this.irrigationUnitCropTypeLayer, "AgHub Irrigation Units");
+  }
+
+  private getWMSLayerStyle(): string {
+    return this._summaryStatsField == "CropType" ? "AgHubIrrigationUnitCropType" : "AgHubIrrigationUnitTillageType";
   }
 
   private registerMapClickEvents() {

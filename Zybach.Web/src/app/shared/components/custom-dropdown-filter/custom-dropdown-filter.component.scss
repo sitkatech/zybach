@@ -8,12 +8,12 @@ $zybach-secondary: #c4c4c4,;
 }
 
 #filter-select-buttons {
+    display: flex;
     background-color: $zybach-primary;
     color: #fff;
     border: 1px solid $border-gray;
     border-radius: 5px;
     overflow: hidden;
-    fw: bold;
 }
 
 #filter-select-buttons label {
