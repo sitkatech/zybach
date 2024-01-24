@@ -28,13 +28,11 @@ export class FarmingPracticesComponent implements OnInit {
   public irrigationUnitFarmingPractices: AgHubIrrigationUnitFarmingPracticeDto[];
   public irrigationUnitFarmingPracticesForSelectedYear: AgHubIrrigationUnitFarmingPracticeDto[];
 
-  public totalAcres: number;
   public cropTypes: string[];
-  public legendColorByCropType: { [cropType: string]: string };
-  public irrigationUnitAcresByCropType: { [cropType: string]: number };
+  public summaryStatisticsByCropType: { [cropType: string]: SummaryStatisticDto };
   public tillageTypes: string[];
-  public legendColorByTillageType: { [cropType: string]: string };
-  public irrigationUnitAcresByTillageType: { [cropType: string]: number };
+  public summaryStatisticsByTillageType: { [tillageType: string]: SummaryStatisticDto };
+  public totalAcres: number;
 
   public columnDefs: ColDef[];
   public defaultColDef: ColDef;
@@ -64,12 +62,16 @@ export class FarmingPracticesComponent implements OnInit {
     });
   }
 
-  public toggleSummaryStatsField(displayField: "CropType" | "TillageType") {
-    this.summaryStatsField = displayField;
-  }
-
   public displayingByCropType() {
     return this.summaryStatsField == "CropType";
+  }
+
+  public toggleSummaryStatsField(summaryStatsField: "CropType" | "TillageType") {
+    this.summaryStatsField = summaryStatsField;
+  }
+
+  public getSummaryStatisticFields(): string[] {
+    return this.displayingByCropType() ? this.cropTypes : this.tillageTypes;
   }
 
   public onGridSelectionChanged(params) {
@@ -104,11 +106,8 @@ export class FarmingPracticesComponent implements OnInit {
   };
 
   private createFarmingPracticesOverview() {
-    this.irrigationUnitAcresByCropType = {};
-    this.irrigationUnitAcresByTillageType = {};
-
-    this.legendColorByCropType = {};
-    this.legendColorByTillageType = {};
+    this.summaryStatisticsByCropType = {};
+    this.summaryStatisticsByTillageType = {};
 
     this.totalAcres = 0;
 
@@ -116,31 +115,31 @@ export class FarmingPracticesComponent implements OnInit {
       const cropType = irrigationUnit.CropTypeLegendDisplayName;
       const tillageType = irrigationUnit.TillageTypeLegendDisplayName;
 
-      if (!this.irrigationUnitAcresByCropType[cropType]) {
-        this.irrigationUnitAcresByCropType[cropType] = 0;
+      if (!this.summaryStatisticsByCropType[cropType]) {
+        this.summaryStatisticsByCropType[cropType] = new SummaryStatisticDto({
+          IrrigatedAcres: 0,
+          LegendColor: irrigationUnit.CropTypeMapColor,
+          SortOrder: irrigationUnit.CropTypeSortOrder
+        });
       }
-      if (!this.irrigationUnitAcresByTillageType[tillageType]) {
-        this.irrigationUnitAcresByTillageType[tillageType] = 0;
+      if (!this.summaryStatisticsByTillageType[tillageType]) {
+        this.summaryStatisticsByTillageType[tillageType] = new SummaryStatisticDto({
+          IrrigatedAcres: 0,
+          LegendColor: irrigationUnit.TillageTypeMapColor,
+          SortOrder: irrigationUnit.TillageTypeSortOrder
+        });
       }
-      this.irrigationUnitAcresByCropType[cropType] += irrigationUnit.Acres;
-      this.irrigationUnitAcresByTillageType[tillageType] += irrigationUnit.Acres;
-      this.totalAcres += irrigationUnit.Acres;
 
-      if (!this.legendColorByCropType[cropType]) {
-        this.legendColorByCropType[cropType] = irrigationUnit.CropTypeMapColor
-      }
-      if (!this.legendColorByTillageType[tillageType]) {
-        this.legendColorByTillageType[tillageType] = irrigationUnit.TillageTypeMapColor
-      }
+      this.summaryStatisticsByCropType[cropType].IrrigatedAcres += irrigationUnit.Acres;
+      this.summaryStatisticsByTillageType[tillageType].IrrigatedAcres += irrigationUnit.Acres;
+      this.totalAcres += irrigationUnit.Acres;
     });
 
-    this.cropTypes = Object.keys(this.irrigationUnitAcresByCropType).filter(cropType => cropType != "Not Reported" && cropType != "Other").sort();
-    if (this.irrigationUnitAcresByCropType["Other"]) this.cropTypes.push("Other");
-    if (this.irrigationUnitAcresByCropType["Not Reported"]) this.cropTypes.push("Not Reported");
+    this.cropTypes = Object.keys(this.summaryStatisticsByCropType).sort((a, b) => 
+      this.summaryStatisticsByCropType[a].SortOrder - this.summaryStatisticsByCropType[b].SortOrder);
 
-    this.tillageTypes = Object.keys(this.irrigationUnitAcresByTillageType).filter(tillageType => tillageType != "Not Reported" && tillageType != "Other").sort();
-    if (this.irrigationUnitAcresByTillageType["Other"]) this.tillageTypes.push("Other");
-    if (this.irrigationUnitAcresByTillageType["Not Reported"]) this.tillageTypes.push("Not Reported");
+    this.tillageTypes = Object.keys(this.summaryStatisticsByTillageType).sort((a, b) => 
+      this.summaryStatisticsByTillageType[a].SortOrder - this.summaryStatisticsByTillageType[b].SortOrder);
   }
 
   public initializeGrid() {
@@ -192,5 +191,15 @@ export class FarmingPracticesComponent implements OnInit {
     ];
 
     this.defaultColDef = { sortable: true, filter: true, resizable: true };
+  }
+}
+
+class SummaryStatisticDto {
+  IrrigatedAcres: number;
+  LegendColor: string;
+  SortOrder: number;
+
+  constructor(obj?: any) {
+    Object.assign(this, obj);
   }
 }

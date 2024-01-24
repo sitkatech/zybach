@@ -37,15 +37,19 @@ public partial class vGeoServerAgHubIrrigationUnit
     [Unicode(false)]
     public string CropTypeMapColor { get; set; }
 
+    public int? CropTypeSortOrder { get; set; }
+
     [StringLength(50)]
     [Unicode(false)]
     public string Tillage { get; set; }
 
-    [StringLength(50)]
+    [StringLength(100)]
     [Unicode(false)]
     public string TillageTypeLegendDisplayName { get; set; }
 
     [StringLength(50)]
     [Unicode(false)]
     public string TillageTypeMapColor { get; set; }
+
+    public int? TIllageTypeSortOrder { get; set; }
 }

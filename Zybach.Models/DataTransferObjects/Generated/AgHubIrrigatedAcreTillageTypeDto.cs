@@ -13,6 +13,7 @@ namespace Zybach.Models.DataTransferObjects
         public string AgHubIrrigatedAcreTillageTypeName { get; set; }
         public string AgHubIrrigatedAcreTillageTypeDisplayName { get; set; }
         public string MapColor { get; set; }
+        public int SortOrder { get; set; }
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeSimpleDto
@@ -21,6 +22,7 @@ namespace Zybach.Models.DataTransferObjects
         public string AgHubIrrigatedAcreTillageTypeName { get; set; }
         public string AgHubIrrigatedAcreTillageTypeDisplayName { get; set; }
         public string MapColor { get; set; }
+        public int SortOrder { get; set; }
     }
 
 }

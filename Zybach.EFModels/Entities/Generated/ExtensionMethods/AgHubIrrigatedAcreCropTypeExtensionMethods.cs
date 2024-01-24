@@ -15,7 +15,8 @@ namespace Zybach.EFModels.Entities
             {
                 AgHubIrrigatedAcreCropTypeID = agHubIrrigatedAcreCropType.AgHubIrrigatedAcreCropTypeID,
                 AgHubIrrigatedAcreCropTypeName = agHubIrrigatedAcreCropType.AgHubIrrigatedAcreCropTypeName,
-                MapColor = agHubIrrigatedAcreCropType.MapColor
+                MapColor = agHubIrrigatedAcreCropType.MapColor,
+                SortOrder = agHubIrrigatedAcreCropType.SortOrder
             };
             DoCustomMappings(agHubIrrigatedAcreCropType, agHubIrrigatedAcreCropTypeDto);
             return agHubIrrigatedAcreCropTypeDto;
@@ -29,7 +30,8 @@ namespace Zybach.EFModels.Entities
             {
                 AgHubIrrigatedAcreCropTypeID = agHubIrrigatedAcreCropType.AgHubIrrigatedAcreCropTypeID,
                 AgHubIrrigatedAcreCropTypeName = agHubIrrigatedAcreCropType.AgHubIrrigatedAcreCropTypeName,
-                MapColor = agHubIrrigatedAcreCropType.MapColor
+                MapColor = agHubIrrigatedAcreCropType.MapColor,
+                SortOrder = agHubIrrigatedAcreCropType.SortOrder
             };
             DoCustomSimpleDtoMappings(agHubIrrigatedAcreCropType, agHubIrrigatedAcreCropTypeSimpleDto);
             return agHubIrrigatedAcreCropTypeSimpleDto;

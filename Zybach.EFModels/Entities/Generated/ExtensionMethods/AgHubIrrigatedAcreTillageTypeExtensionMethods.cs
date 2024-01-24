@@ -16,7 +16,8 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigatedAcreTillageTypeID = agHubIrrigatedAcreTillageType.AgHubIrrigatedAcreTillageTypeID,
                 AgHubIrrigatedAcreTillageTypeName = agHubIrrigatedAcreTillageType.AgHubIrrigatedAcreTillageTypeName,
                 AgHubIrrigatedAcreTillageTypeDisplayName = agHubIrrigatedAcreTillageType.AgHubIrrigatedAcreTillageTypeDisplayName,
-                MapColor = agHubIrrigatedAcreTillageType.MapColor
+                MapColor = agHubIrrigatedAcreTillageType.MapColor,
+                SortOrder = agHubIrrigatedAcreTillageType.SortOrder
             };
             DoCustomMappings(agHubIrrigatedAcreTillageType, agHubIrrigatedAcreTillageTypeDto);
             return agHubIrrigatedAcreTillageTypeDto;
@@ -31,7 +32,8 @@ namespace Zybach.EFModels.Entities
                 AgHubIrrigatedAcreTillageTypeID = agHubIrrigatedAcreTillageType.AgHubIrrigatedAcreTillageTypeID,
                 AgHubIrrigatedAcreTillageTypeName = agHubIrrigatedAcreTillageType.AgHubIrrigatedAcreTillageTypeName,
                 AgHubIrrigatedAcreTillageTypeDisplayName = agHubIrrigatedAcreTillageType.AgHubIrrigatedAcreTillageTypeDisplayName,
-                MapColor = agHubIrrigatedAcreTillageType.MapColor
+                MapColor = agHubIrrigatedAcreTillageType.MapColor,
+                SortOrder = agHubIrrigatedAcreTillageType.SortOrder
             };
             DoCustomSimpleDtoMappings(agHubIrrigatedAcreTillageType, agHubIrrigatedAcreTillageTypeSimpleDto);
             return agHubIrrigatedAcreTillageTypeSimpleDto;

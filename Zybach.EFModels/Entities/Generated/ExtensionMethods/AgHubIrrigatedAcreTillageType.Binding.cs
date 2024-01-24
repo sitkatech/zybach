@@ -41,12 +41,13 @@ namespace Zybach.EFModels.Entities
         /// <summary>
         /// Protected constructor only for use in instantiating the set of static lookup values that match database
         /// </summary>
-        protected AgHubIrrigatedAcreTillageType(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor)
+        protected AgHubIrrigatedAcreTillageType(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor, int sortOrder)
         {
             AgHubIrrigatedAcreTillageTypeID = agHubIrrigatedAcreTillageTypeID;
             AgHubIrrigatedAcreTillageTypeName = agHubIrrigatedAcreTillageTypeName;
             AgHubIrrigatedAcreTillageTypeDisplayName = agHubIrrigatedAcreTillageTypeDisplayName;
             MapColor = mapColor;
+            SortOrder = sortOrder;
         }
 
         [Key]
@@ -54,6 +55,7 @@ namespace Zybach.EFModels.Entities
         public string AgHubIrrigatedAcreTillageTypeName { get; private set; }
         public string AgHubIrrigatedAcreTillageTypeDisplayName { get; private set; }
         public string MapColor { get; private set; }
+        public int SortOrder { get; private set; }
         [NotMapped]
         public int PrimaryKey { get { return AgHubIrrigatedAcreTillageTypeID; } }
 
@@ -136,37 +138,37 @@ namespace Zybach.EFModels.Entities
 
     public partial class AgHubIrrigatedAcreTillageTypeNTill : AgHubIrrigatedAcreTillageType
     {
-        private AgHubIrrigatedAcreTillageTypeNTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeNTill Instance = new AgHubIrrigatedAcreTillageTypeNTill(1, @"NTill", @"No Till", @"#430154");
+        private AgHubIrrigatedAcreTillageTypeNTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor, int sortOrder) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor, sortOrder) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeNTill Instance = new AgHubIrrigatedAcreTillageTypeNTill(1, @"NTill", @"N Till (No Till)", @"#430154", 10);
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeMTill : AgHubIrrigatedAcreTillageType
     {
-        private AgHubIrrigatedAcreTillageTypeMTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeMTill Instance = new AgHubIrrigatedAcreTillageTypeMTill(2, @"MTill", @"Minimum Till", @"#453781");
+        private AgHubIrrigatedAcreTillageTypeMTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor, int sortOrder) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor, sortOrder) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeMTill Instance = new AgHubIrrigatedAcreTillageTypeMTill(2, @"MTill", @"M Till (Minimum Till)", @"#453781", 20);
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeCTill : AgHubIrrigatedAcreTillageType
     {
-        private AgHubIrrigatedAcreTillageTypeCTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeCTill Instance = new AgHubIrrigatedAcreTillageTypeCTill(3, @"CTill", @"Conventional Till", @"#33638d");
+        private AgHubIrrigatedAcreTillageTypeCTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor, int sortOrder) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor, sortOrder) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeCTill Instance = new AgHubIrrigatedAcreTillageTypeCTill(3, @"CTill", @"C Till (Conventional Till)", @"#33638d", 30);
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeSTill : AgHubIrrigatedAcreTillageType
     {
-        private AgHubIrrigatedAcreTillageTypeSTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeSTill Instance = new AgHubIrrigatedAcreTillageTypeSTill(4, @"STill", @"Strip Till", @"#238a8d");
+        private AgHubIrrigatedAcreTillageTypeSTill(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor, int sortOrder) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor, sortOrder) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeSTill Instance = new AgHubIrrigatedAcreTillageTypeSTill(4, @"STill", @"S Till (Strip Till)", @"#238a8d", 40);
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeOther : AgHubIrrigatedAcreTillageType
     {
-        private AgHubIrrigatedAcreTillageTypeOther(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeOther Instance = new AgHubIrrigatedAcreTillageTypeOther(99, @"Other", @"Other", @"#00b6b6");
+        private AgHubIrrigatedAcreTillageTypeOther(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor, int sortOrder) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor, sortOrder) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeOther Instance = new AgHubIrrigatedAcreTillageTypeOther(99, @"Other", @"Other", @"#00b6b6", 999);
     }
 
     public partial class AgHubIrrigatedAcreTillageTypeNotReported : AgHubIrrigatedAcreTillageType
     {
-        private AgHubIrrigatedAcreTillageTypeNotReported(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor) {}
-        public static readonly AgHubIrrigatedAcreTillageTypeNotReported Instance = new AgHubIrrigatedAcreTillageTypeNotReported(100, @"NotReported", @"Not Reported", @"#e22e1d");
+        private AgHubIrrigatedAcreTillageTypeNotReported(int agHubIrrigatedAcreTillageTypeID, string agHubIrrigatedAcreTillageTypeName, string agHubIrrigatedAcreTillageTypeDisplayName, string mapColor, int sortOrder) : base(agHubIrrigatedAcreTillageTypeID, agHubIrrigatedAcreTillageTypeName, agHubIrrigatedAcreTillageTypeDisplayName, mapColor, sortOrder) {}
+        public static readonly AgHubIrrigatedAcreTillageTypeNotReported Instance = new AgHubIrrigatedAcreTillageTypeNotReported(100, @"NotReported", @"Not Reported", @"#e22e1d", 1000);
     }
 }
