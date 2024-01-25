@@ -75,7 +75,7 @@ export class WfsService {
                 request: 'GetFeature',
                 outputFormat: 'application/json',
                 SrsName: 'EPSG:4326',
-                typeName: 'Zybach:AgHubIrrigationUnitCropType',
+                typeName: 'Zybach:AgHubIrrigationUnits',
                 cql_filter: `intersects(IrrigationUnitGeometry, POINT(${latitude} ${longitude})) and IrrigationYear=${irrigationYear}`
             }
         });
@@ -90,7 +90,7 @@ export class WfsService {
                 request: 'GetFeature',
                 outputFormat: 'application/json',
                 SrsName: 'EPSG:4326',
-                typeName: 'Zybach:AgHubIrrigationUnitCropType',
+                typeName: 'Zybach:AgHubIrrigationUnits',
                 cql_filter: `AgHubIrrigationUnitID=${irrigationUnitID} and IrrigationYear=${irrigationYear}`
             }
         });

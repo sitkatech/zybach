@@ -76,7 +76,7 @@
                                     (>0.1%)
                                 </span>
                                 <ng-template #calculatedPercentage>
-                                    ({{ (summaryStatisticsByTillageType[tillageType].LegendColor / totalAcres) * 100 | number:'0.1-1' }}%)
+                                    ({{ (summaryStatisticsByTillageType[tillageType].IrrigatedAcres / totalAcres) * 100 | number:'0.1-1' }}%)
                                 </ng-template>
                             </p>
                             <span class="legend-stat-bullet" [style.background-color]="summaryStatisticsByTillageType[tillageType].LegendColor"></span>

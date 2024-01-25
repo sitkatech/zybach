@@ -41,7 +41,7 @@ export class FarmingPracticesMapComponent implements AfterViewInit {
   private layerControl: L.Control.Layers;
   private irrigationUnitCropTypeLayer: L.Layer;
   private defaultIrrigationUnitWMSOptions: L.WMSOptions = {
-    layers: "Zybach:AgHubIrrigationUnit",
+    layers: "Zybach:AgHubIrrigationUnits",
     transparent: true,
     format: "image/png",
     tiled: true,
