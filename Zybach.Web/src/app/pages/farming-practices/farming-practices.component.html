@@ -11,14 +11,25 @@
         </div>
     </div>
 
-    <div class="row my-4 align-items-end">
+    <div class="row my-4 align-items-center">
         <div class="control-label col-sm-auto">
-            <label>Select a Year</label>
+            <label>Year</label>
         </div>
-        <div class="col-sm-3">
-            <select name="PermitStatusID" class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="updateGridData()">
+        <div class="col-sm-2">
+            <select name="selectedYear" class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="updateGridData()">
                 <option *ngFor="let year of years" [value]="year">{{ year }}</option>
             </select>
+        </div>
+
+        <div class="col-auto">
+            <div class="btn-group btn-group-toggle">
+                <label class="btn btn-toggle btn-sm btn-zybach" [class.active]="summaryStatsField == 'CropType'">
+                  <input type="radio" name="summaryStatsField" id="crop" (click)="toggleSummaryStatsField('CropType')"> Crop Type
+                </label>
+                <label class="btn btn-toggle btn-sm btn-zybach" [class.active]="summaryStatsField == 'TillageType'">
+                  <input type="radio" name="summaryStatsField" id="tillage" (click)="toggleSummaryStatsField('TillageType')"> Tillage Type
+                </label>
+            </div>
         </div>
     </div>
 
@@ -27,29 +38,56 @@
             <div class="card">
                 <div class="card-header text-center">{{ selectedYear }} Summary Statistics</div>
 
-                <div class="card-body map-legend" *ngIf="cropTypes; else loadingData">
-                    <div *ngFor="let cropType of cropTypes" class="legend-item mb-2">
-                        <div class="legend-color" [style.background-color]="legendColorByCropType[cropType]"></div>
-            
-                        <p class="m-0">{{ cropType }}</p>
+                <ng-container *ngIf="displayingByCropType(); else tillageTypeSummaryStatistics">
+                    <div class="card-body map-legend" *ngIf="cropTypes; else loadingData">
+                        <div *ngFor="let cropType of cropTypes" class="legend-item mb-2">
+                            <div class="legend-color" [style.background-color]="summaryStatisticsByCropType[cropType].LegendColor"></div>
+                
+                            <p class="m-0">{{ cropType }}</p>
 
-                        <p class="legend-stat">
-                            <b>{{ irrigationUnitAcresByCropType[cropType] | number:'0.2-2' }} ac</b> 
-                            <span *ngIf="irrigationUnitAcresByCropType[cropType] / totalAcres < 0.001; else calculatedPercentage">
-                                (>0.1%)
-                            </span>
-                            <ng-template #calculatedPercentage>
-                                ({{ (irrigationUnitAcresByCropType[cropType] / totalAcres) * 100 | number:'0.1-1' }}%)
-                            </ng-template>
-                        </p>
-                        <span class="legend-stat-bullet" [style.background-color]="legendColorByCropType[cropType]"></span>
+                            <p class="legend-stat">
+                                <b>{{ summaryStatisticsByCropType[cropType].IrrigatedAcres | number:'0.2-2' }} ac</b> 
+                                <span *ngIf="summaryStatisticsByCropType[cropType].IrrigatedAcres / totalAcres < 0.001; else calculatedPercentage">
+                                    (>0.1%)
+                                </span>
+                                <ng-template #calculatedPercentage>
+                                    ({{ (summaryStatisticsByCropType[cropType].IrrigatedAcres / totalAcres) * 100 | number:'0.1-1' }}%)
+                                </ng-template>
+                            </p>
+                            <span class="legend-stat-bullet" [style.background-color]="summaryStatisticsByCropType[cropType].LegendColor"></span>
+                        </div>
+                        <hr/>
+                        <div class="legend-footer">
+                            Total Irrigated Acres:  {{ totalAcres | number:'0.2-2'}} ac
+                        </div>
                     </div>
+                </ng-container>
 
-                    <hr/>
-                    <div class="legend-footer">
-                        Total Irrigated Acres:  {{ totalAcres | number:'0.2-2'}} ac
+                <ng-template #tillageTypeSummaryStatistics>
+                    <div class="card-body map-legend" *ngIf="tillageTypes; else loadingData">
+                        <div *ngFor="let tillageType of tillageTypes" class="legend-item mb-2">
+                            <div class="legend-color" [style.background-color]="summaryStatisticsByTillageType[tillageType].LegendColor"></div>
+                
+                            <p class="m-0">{{ tillageType }}</p>
+    
+                            <p class="legend-stat">
+                                <b>{{ summaryStatisticsByTillageType[tillageType].IrrigatedAcres | number:'0.2-2' }} ac</b> 
+                                <span *ngIf="summaryStatisticsByTillageType[tillageType].LegendColor / totalAcres < 0.001; else calculatedPercentage">
+                                    (>0.1%)
+                                </span>
+                                <ng-template #calculatedPercentage>
+                                    ({{ (summaryStatisticsByTillageType[tillageType].IrrigatedAcres / totalAcres) * 100 | number:'0.1-1' }}%)
+                                </ng-template>
+                            </p>
+                            <span class="legend-stat-bullet" [style.background-color]="summaryStatisticsByTillageType[tillageType].LegendColor"></span>
+                        </div>
+                        <hr/>
+                        <div class="legend-footer">
+                            Total Irrigated Acres:  {{ totalAcres | number:'0.2-2'}} ac
+                        </div>
                     </div>
-                </div>
+                </ng-template>
+                    
                 <ng-template #loadingData>
                     <div class="card-body text-center p-4">
                         <span *ngIf="loadingData" class="fa fa-spinner loading-spinner"></span>
@@ -60,17 +98,17 @@
 
         <div class="col-lg-8">
             <farming-practices-map [selectedYear]="selectedYear" [selectedIrrigationUnitID]="selectedIrrigationUnitID" 
-                (mapSelectionChanged)="onMapSelectionChanged($event)">
+                [summaryStatsField]="summaryStatsField" (mapSelectionChanged)="onMapSelectionChanged($event)">
             </farming-practices-map>
         </div>
     </div>
     
 
     <div class="d-flex justify-content-end mt-3">
-        <fresca-clear-grid-filters-button class="mr-2" [grid]="irrigationUnitsGrid"></fresca-clear-grid-filters-button>
+        <fresca-clear-grid-filters-button [grid]="irrigationUnitsGrid" class="me-2"></fresca-clear-grid-filters-button>
         <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="downloadCsv()" placement="top" ngbTooltip="Download as CSV">
             <i class="fas fa-download"></i>
-            </button>
+        </button>
     </div>
     <ag-grid-angular #irrigationUnitsGrid style="width: 100%; height: 400px;" class="ag-theme-balham mt-2" headerHeight="70"
         [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [gridOptions]="gridOptions"

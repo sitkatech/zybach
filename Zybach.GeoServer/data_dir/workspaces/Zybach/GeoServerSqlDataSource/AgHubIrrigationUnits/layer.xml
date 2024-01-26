@@ -1,0 +1,23 @@
+<layer>
+  <name>AgHubIrrigationUnits</name>
+  <id>LayerInfoImpl--646b0aa1:18d37ac8236:-7ffe</id>
+  <type>VECTOR</type>
+  <defaultStyle>
+    <id>StyleInfoImpl-4fb26c98:1717ed5e066:-8000</id>
+  </defaultStyle>
+  <styles class="linked-hash-set">
+    <style>
+      <id>StyleInfoImpl--3c422e7a:18ccd5dac34:-7fff</id>
+    </style>
+    <style>
+      <id>StyleInfoImpl--646b0aa1:18d37ac8236:-7ffd</id>
+    </style>
+  </styles>
+  <resource class="featureType">
+    <id>FeatureTypeInfoImpl--646b0aa1:18d37ac8236:-7fff</id>
+  </resource>
+  <attribution>
+    <logoWidth>0</logoWidth>
+    <logoHeight>0</logoHeight>
+  </attribution>
+</layer>

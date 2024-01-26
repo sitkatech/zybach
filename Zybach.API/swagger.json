@@ -6312,9 +6312,25 @@
             "type": "string",
             "nullable": true
           },
+          "CropTypeSortOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
           "Tillage": {
             "type": "string",
             "nullable": true
+          },
+          "TillageTypeLegendDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "TillageTypeMapColor": {
+            "type": "string",
+            "nullable": true
+          },
+          "TillageTypeSortOrder": {
+            "type": "integer",
+            "format": "int32"
           },
           "Wells": {
             "type": "array",

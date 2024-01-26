@@ -8,7 +8,7 @@ using NetTopologySuite.Geometries;
 namespace Zybach.EFModels.Entities;
 
 [Keyless]
-public partial class vGeoServerAgHubIrrigationUnitCropType
+public partial class vGeoServerAgHubIrrigationUnitTillageType
 {
     public int AgHubIrrigationUnitID { get; set; }
 
@@ -31,13 +31,13 @@ public partial class vGeoServerAgHubIrrigationUnitCropType
 
     [StringLength(50)]
     [Unicode(false)]
-    public string CropTypeLegendDisplayName { get; set; }
-
-    [StringLength(50)]
-    [Unicode(false)]
-    public string CropTypeMapColor { get; set; }
-
-    [StringLength(50)]
-    [Unicode(false)]
     public string Tillage { get; set; }
+
+    [StringLength(50)]
+    [Unicode(false)]
+    public string TillageTypeLegendDisplayName { get; set; }
+
+    [StringLength(50)]
+    [Unicode(false)]
+    public string TillageTypeMapColor { get; set; }
 }
