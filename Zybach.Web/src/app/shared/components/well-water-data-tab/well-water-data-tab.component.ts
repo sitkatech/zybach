@@ -19,13 +19,14 @@ import { Router } from '@angular/router';
 export class WellWaterDataTabComponent implements OnInit {
   @Input() well: WellDetailDto;
 
-  sensorsWithStatus: SensorSimpleDto[];
+  public sensorsWithStatus: SensorSimpleDto[];
   public years: number[];
   public unitsShown: string = "gal";
   public sensorChartData: SensorChartDataDto;
 
   public isLoadingSubmit: boolean = false;
   public math = Math;
+  private acreInchesToGallonsConversionRate = 27154.2857
 
   constructor(
     private wellService: WellService,
@@ -46,11 +47,9 @@ export class WellWaterDataTabComponent implements OnInit {
     }
 
     this.getSensorsWithAgeMessages();
-    this.wellService.wellsWellIDFlowMeterSensorsGet(this.well.WellID).subscribe(sensorChartData =>
-      {
-        this.sensorChartData = sensorChartData;
-      }
-    );
+    this.wellService.wellsWellIDFlowMeterSensorsGet(this.well.WellID).subscribe(sensorChartData => {
+      this.sensorChartData = sensorChartData;
+    });
   }
   
   getSensorsWithAgeMessages(){
@@ -59,7 +58,7 @@ export class WellWaterDataTabComponent implements OnInit {
     });
   }
 
-  getAnnualPumpedVolume(year, dataSource){
+  getAnnualPumpedVolume(year, dataSource) {
     const annualPumpedVolume = this.well.AnnualPumpedVolume.find(x=> 
       x.Year === year && x.DataSource === dataSource
     )
@@ -67,7 +66,6 @@ export class WellWaterDataTabComponent implements OnInit {
     if (!annualPumpedVolume || ! annualPumpedVolume.Gallons){
       return "-"
     }
-    
 
     if (this.unitsShown == "gal") {
       const value = this.decimalPipe.transform(annualPumpedVolume.Gallons , "1.0-0")
@@ -75,12 +73,11 @@ export class WellWaterDataTabComponent implements OnInit {
     }
 
     const irrigatedAcresPerYear = this.well.IrrigatedAcresPerYear.find(x => x.Year === year);
-
     if (!irrigatedAcresPerYear || (irrigatedAcresPerYear.Acres == null || irrigatedAcresPerYear.Acres == undefined)) {
       return "-";
     }
 
-    const value = this.decimalPipe.transform((annualPumpedVolume.Gallons / 27154) / irrigatedAcresPerYear.Acres , "1.1-1")
+    const value = this.decimalPipe.transform((annualPumpedVolume.Gallons / this.acreInchesToGallonsConversionRate) / irrigatedAcresPerYear.Acres , "1.1-1")
     return `${value} ${this.unitsShown}`;
   }
 
@@ -97,8 +94,7 @@ export class WellWaterDataTabComponent implements OnInit {
     this.unitsShown = units;
   }
 
-  syncWithAgHub()
-  {
+  syncWithAgHub() {
     this.confirmService.confirm({ modalSize: "md", buttonClassYes: "btn-zybach", buttonTextYes: "Yes", buttonTextNo: "No", title: "Sync Pumped Volume from AgHub", message: "Are you sure you want to sync all pumped volume data for this well?" }).then(confirmed => {
       if (confirmed) {
         this.isLoadingSubmit = true;
