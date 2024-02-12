@@ -6396,22 +6396,22 @@
             "format": "double",
             "nullable": true
           },
-          "FlowMeterPumpedDepthInches": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
           "ContinuityMeterPumpedVolumeGallons": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "ContinuityMeterPumpedDepthInches": {
+          "ElectricalUsagePumpedVolumeGallons": {
             "type": "number",
             "format": "double",
             "nullable": true
           },
-          "ElectricalUsagePumpedVolumeGallons": {
+          "FlowMeterPumpedDepthInches": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "ContinuityMeterPumpedDepthInches": {
             "type": "number",
             "format": "double",
             "nullable": true
