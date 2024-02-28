@@ -11,7 +11,9 @@ import {
   icon,
   latLng,
   Layer,
-  LeafletEvent} from 'leaflet';
+  LeafletEvent,
+  layerGroup
+} from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
@@ -92,10 +94,19 @@ export class WellMapComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     this.boundingBox = DefaultBoundingBox;
 
+    const esriAerialTileLayer = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: 'Source: Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'
+    });
+    const esriStreets = tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: 'Source: Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'
+    });
+
     this.tileLayers = Object.assign({}, {
-      "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Aerial',
-      }),
+      "Aerial": layerGroup([esriAerialTileLayer, esriStreets]),
       "Street": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
       }),
@@ -212,7 +223,7 @@ export class WellMapComponent implements OnInit, AfterViewInit {
 
 
   public setControl(): void {
-    this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: false })
+    this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: true })
       .addTo(this.map);
   }
 

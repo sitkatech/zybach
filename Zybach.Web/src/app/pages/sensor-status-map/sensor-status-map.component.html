@@ -35,6 +35,34 @@
     </div>
 </div>
 
-<div id="{{mapID}}" [style.height]="mapHeight">
-    
+<div id="{{mapID}}" [style.height]="mapHeight"></div>
+
+<div class="d-flex justify-content-end">
+    <div class="legend">
+        <ng-container *ngIf="filterMapByLastMessageAge else lastVoltageReadingLegend">
+            <div>
+                <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/0b2c7a.png'/> 0-24 Hours<br/>
+                <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/c2523c.png'/> >24 Hours<br/>
+            </div>
+            <div>
+                <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>
+                <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/continuityMeterMarker.png'/> Has Active Support Ticket<br/>
+            </div>
+        </ng-container>
+    </div>
 </div>
+
+<ng-template #lastVoltageReadingLegend>
+    <div>
+        <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/0b2c7a.png'/> 2700-4000 mV <br/>
+        <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/flowMeterMarker.png'/> &#62;4000 mV <br/>
+        <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/fcf003.png'/> 2500-2700 mV <br/>
+    </div>
+    <div>
+        <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/c2523c.png'/> &#60;2500 mV <br/>
+        <img style='height: 20px; width: 12px;  margin-right: 10px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>
+    </div>
+</ng-template>
+
+
+

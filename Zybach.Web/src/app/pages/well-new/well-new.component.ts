@@ -5,7 +5,8 @@ import {
   MapOptions,
   tileLayer,
   icon,
-  geoJSON
+  geoJSON,
+  layerGroup
 } from 'leaflet';
 import 'leaflet.icon.glyph';
 import 'leaflet.fullscreen';
@@ -134,10 +135,19 @@ export class WellNewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private initMapConstants() {
+    const esriAerialTileLayer = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: 'Source: Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'
+    });
+    const esriStreets = tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: 'Source: Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'
+    });
+
     this.tileLayers = Object.assign({}, {
-      "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Aerial',
-      }),
+      "Aerial": layerGroup([esriAerialTileLayer, esriStreets]),
       "Street": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
       }),

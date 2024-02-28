@@ -73,7 +73,7 @@ export class FarmingPracticesMapComponent implements AfterViewInit {
 
     this.map = L.map(this.mapID, mapOptions);
     L.Map.addInitHook("addHandler", "gestureHandling", GestureHandling);
-    this.layerControl = new L.Control.Layers(this.tileLayers, null, { collapsed: false}).addTo(this.map);
+    this.layerControl = new L.Control.Layers(this.tileLayers, null, { collapsed: true}).addTo(this.map);
     this.leafletHelperService.fitMapToDefaultBoundingBox(this.map);
 
     this.updateAgHubIrrigationUnitCropTypeMapLayer();
