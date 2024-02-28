@@ -1,0 +1,12 @@
+@import '../../../scss/variables';
+
+.legend {
+    border: 1px solid $secondary;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
