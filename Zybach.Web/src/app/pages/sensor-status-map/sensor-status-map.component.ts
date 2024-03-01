@@ -1,6 +1,8 @@
 import { AfterViewInit, ApplicationRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import {
-  Control, FitBoundsOptions,
+  Control,
+  control,
+  FitBoundsOptions,
   GeoJSON,
   marker,
   map,
@@ -12,7 +14,7 @@ import {
   latLng,
   Layer,
   LeafletEvent,
-  DomUtil
+  layerGroup
 } from 'leaflet';
 import 'leaflet.snogylop';
 import 'leaflet.icon.glyph';
@@ -126,10 +128,19 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     this.boundingBox = DefaultBoundingBox;
 
+    const esriAerialTileLayer = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: 'Source: Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'
+    });
+    const esriStreets = tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 18,
+      minZoom: 3,
+      attribution: 'Source: Esri, Maxar, GeoEye, Earthstar Geographics, CNES/Airbus DS, USDA, USGS, AeroGRID, IGN, and the GIS User Community'
+    });
+
     this.tileLayers = Object.assign({}, {
-      "Aerial": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Aerial',
-      }),
+      "Aerial": layerGroup([esriAerialTileLayer, esriStreets]),
       "Street": tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Aerial',
       }),
@@ -149,7 +160,7 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
     const mapOptions: MapOptions = {
       maxZoom: this.maxZoom,
       layers: [
-        this.tileLayers["Aerial"],
+        this.tileLayers['Aerial'],
       ],
       fullscreenControl: true,
       gestureHandling: true
@@ -261,43 +272,11 @@ export class SensorStatusMapComponent implements OnInit, AfterViewInit {
 
   public setControl(): void {
     if (!this.layerControl) {
-      this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: false }).addTo(this.map);
+      this.layerControl = new Control.Layers(this.tileLayers, this.overlayLayers, { collapsed: true }).addTo(this.map);
     }
     if (this.sensorStatusLegend) {
       this.sensorStatusLegend.remove();
     }
-
-    const legend = (displayLastMessageAgeLegend: boolean) => {
-      const SensorStatusLegend = Control.extend({
-        onAdd: function(map) {
-          var legendElement = DomUtil.create("div", "legend-control");
-          legendElement.style.borderRadius = "5px";
-          legendElement.style.backgroundColor = "white";
-          legendElement.style.cursor = "default";
-          legendElement.style.padding = "6px";
-  
-          if (displayLastMessageAgeLegend) {
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 0-24 Hours<br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> >24 Hours<br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/continuityMeterMarker.png'/> Has Active Support Ticket<br/>"
-          } else {
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/flowMeterMarker.png'/> >4000 mV <br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/0b2c7a.png'/> 2700-4000 mV <br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/fcf003.png'/> 2500-2700 mV <br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/c2523c.png'/> <2500 mV <br/>"
-            legendElement.innerHTML += "<img style='height: 20px; width: 12px;  margin-right: 30px; display: inline-block' src='/assets/main/noDataSourceMarker.png'/>No Data<br/>"
-          }
-  
-          return legendElement;
-        }
-      });  
-
-      return new SensorStatusLegend();
-    };
-
-    this.sensorStatusLegend = legend(this.filterMapByLastMessageAge);
-    this.sensorStatusLegend.addTo(this.map);
   }
 
   private setLastMessageAgeFilterOptionsDropdownList() {

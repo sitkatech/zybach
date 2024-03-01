@@ -8,15 +8,17 @@
 </div>
 
 <div class="container navCaretMargin" *ngIf="wellsGeoJson">
-    <div class="col-12 col-md-6 mb-3">
-        <h2 class="d-inline-block">Sensor Status</h2>
+    <div class="col mb-3">
+        <h2>Sensor Status</h2>
     </div>
     <zybach-sensor-status-map #wellMap [wellsGeoJson]="wellsGeoJson" (onWellSelected)="onMapSelection($event)"></zybach-sensor-status-map>
 </div>
 <div class="container navCaretMargin">
-    <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
-
-    <div class="row">
+    
+    <div class="row align-items-end">
+        <div class="col">
+            <custom-rich-text [customRichTextTypeID]="richTextTypeID"></custom-rich-text>
+        </div>
         <div class="col-auto ms-auto">
             <fresca-clear-grid-filters-button class="ms-3" [grid]="wellsGrid"></fresca-clear-grid-filters-button>
             <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="downloadCsv()" ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']">
