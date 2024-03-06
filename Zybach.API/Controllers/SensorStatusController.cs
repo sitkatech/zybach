@@ -27,10 +27,15 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<WellWithSensorSimpleDto>> GetSensorMessageAges()
         {
-            var wellSummariesWithSensors = Wells.List(_dbContext)
-                .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)).ToList();
+            var wellSummariesWithSensors = _dbContext.Wells
+                .Include(x => x.AgHubWell)
+                .Include(x => x.Sensors)
+                .AsNoTracking()
+                .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID))
+                .OrderBy(x => x.WellRegistrationID)
+                .ToList();
 
-            var vSensors = _dbContext.vSensors.AsNoTracking().ToDictionary(x => x.SensorName);
+            var vSensors = _dbContext.vSensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).AsNoTracking().ToDictionary(x => x.SensorID);
             
             var wellWithSensorSimpleDtos = wellSummariesWithSensors.Select(well => new WellWithSensorSimpleDto
             {
@@ -41,32 +46,26 @@ namespace Zybach.API.Controllers
                 Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
                 Latitude = well.Latitude,
                 Longitude = well.Longitude,
-                Sensors = well.Sensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).Select(sensor =>
+                Sensors = well.Sensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)
+                    .Select(sensor =>
                 {
-                    try
+                    var vSensor = vSensors.ContainsKey(sensor.SensorID) ? vSensors[sensor.SensorID] : null;
+                    return new SensorSimpleDto
                     {
-                        var vSensor = vSensors.ContainsKey(sensor.SensorName) ? vSensors[sensor.SensorName] : null;
-                        return new SensorSimpleDto
-                        {
-                            SensorName = sensor.SensorName,
-                            SensorID = sensor.SensorID,
-                            LastMessageAgeInHours = vSensor?.LastMessageAgeInHours,
-                            LastReadingDate = vSensor?.LastReadingDate,
-                            LastVoltageReading = vSensor?.LastVoltageReading,
-                            LastVoltageReadingDate = vSensor?.LastVoltageReadingDate,
-                            SensorTypeID = sensor.SensorTypeID,
-                            SensorTypeName = sensor.SensorType.SensorTypeName,
-                            IsActive = sensor.IsActive,
-                            MostRecentSupportTicketID = vSensor?.MostRecentSupportTicketID,
-                            MostRecentSupportTicketTitle = vSensor?.MostRecentSupportTicketTitle,
-                            ContinuityMeterStatus = sensor.ContinuityMeterStatus?.AsDto(),
-                            SnoozeStartDate = sensor.SnoozeStartDate
-                        };
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+                        SensorName = sensor.SensorName,
+                        SensorID = sensor.SensorID,
+                        LastMessageAgeInHours = vSensor?.LastMessageAgeInHours,
+                        LastReadingDate = vSensor?.LastReadingDate,
+                        LastVoltageReading = vSensor?.LastVoltageReading,
+                        LastVoltageReadingDate = vSensor?.LastVoltageReadingDate,
+                        SensorTypeID = sensor.SensorTypeID,
+                        SensorTypeName = sensor.SensorType.SensorTypeName,
+                        IsActive = sensor.IsActive,
+                        MostRecentSupportTicketID = vSensor?.MostRecentSupportTicketID,
+                        MostRecentSupportTicketTitle = vSensor?.MostRecentSupportTicketTitle,
+                        ContinuityMeterStatus = sensor.ContinuityMeterStatus?.AsDto(),
+                        SnoozeStartDate = sensor.SnoozeStartDate
+                    };
                 }).ToList()
             }).ToList();
 
