@@ -77,4 +77,6 @@ public partial class vSensor
     [StringLength(100)]
     [Unicode(false)]
     public string MostRecentSupportTicketTitle { get; set; }
+
+    public string SensorTypeName { get; set; }
 }

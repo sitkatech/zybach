@@ -25,12 +25,12 @@ import { SensorAnomalyService } from './api/sensor-anomaly.service';
 import { SensorStatusService } from './api/sensor-status.service';
 import { StreamFlowZoneService } from './api/stream-flow-zone.service';
 import { SupportTicketService } from './api/support-ticket.service';
+import { SystemInfoService } from './api/system-info.service';
 import { UserService } from './api/user.service';
 import { WaterLevelInspectionService } from './api/water-level-inspection.service';
 import { WaterQualityInspectionService } from './api/water-quality-inspection.service';
 import { WellService } from './api/well.service';
 import { WellGroupService } from './api/well-group.service';
-import { ZybachAPIService } from './api/zybach-api.service';
 
 @NgModule({
   imports:      [],
@@ -59,12 +59,12 @@ import { ZybachAPIService } from './api/zybach-api.service';
     SensorStatusService,
     StreamFlowZoneService,
     SupportTicketService,
+    SystemInfoService,
     UserService,
     WaterLevelInspectionService,
     WaterQualityInspectionService,
     WellService,
     WellGroupService,
-    ZybachAPIService,
      ]
 })
 export class ApiModule {

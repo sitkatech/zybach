@@ -25,19 +25,18 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/sensorStatus")]
         [ZybachViewFeature]
-        public ActionResult<List<WellWithSensorSimpleDto>> GetSensorMessageAges()
+        public ActionResult<List<WellWithSensorStatusDto>> GetSensorMessageAges()
         {
-            var wellSummariesWithSensors = _dbContext.Wells
-                .Include(x => x.AgHubWell)
-                .Include(x => x.Sensors)
-                .AsNoTracking()
-                .Where(x => x.Sensors.Any(y => y.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID))
-                .OrderBy(x => x.WellRegistrationID)
-                .ToList();
+            var vSensors = _dbContext.vSensors.Where(x => x.WellID != null && x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).AsNoTracking().ToLookup(x => x.WellID);
 
-            var vSensors = _dbContext.vSensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID).AsNoTracking().ToDictionary(x => x.SensorID);
-            
-            var wellWithSensorSimpleDtos = wellSummariesWithSensors.Select(well => new WellWithSensorSimpleDto
+            var wellIDs = vSensors.Select(y => y.Key);
+
+            var wells = _dbContext.Wells
+                .Include(x => x.AgHubWell)
+                .AsNoTracking()
+                .Where(x => wellIDs.Contains(x.WellID)).ToList();
+
+            var wellWithSensorStatusDtos = wells.AsParallel().Select(well => new WellWithSensorStatusDto
             {
                 AgHubRegisteredUser = well.AgHubWell?.AgHubRegisteredUser,
                 FieldName = well.AgHubWell?.FieldName,
@@ -46,30 +45,26 @@ namespace Zybach.API.Controllers
                 Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
                 Latitude = well.Latitude,
                 Longitude = well.Longitude,
-                Sensors = well.Sensors.Where(x => x.SensorTypeID != SensorType.ElectricalUsage.SensorTypeID)
-                    .Select(sensor =>
-                {
-                    var vSensor = vSensors.ContainsKey(sensor.SensorID) ? vSensors[sensor.SensorID] : null;
-                    return new SensorSimpleDto
+                Sensors = vSensors[well.WellID]
+                    .Select(sensor => new SensorSimpleDto
                     {
                         SensorName = sensor.SensorName,
                         SensorID = sensor.SensorID,
-                        LastMessageAgeInHours = vSensor?.LastMessageAgeInHours,
-                        LastReadingDate = vSensor?.LastReadingDate,
-                        LastVoltageReading = vSensor?.LastVoltageReading,
-                        LastVoltageReadingDate = vSensor?.LastVoltageReadingDate,
+                        LastMessageAgeInHours = sensor?.LastMessageAgeInHours,
+                        LastReadingDate = sensor?.LastReadingDate,
+                        LastVoltageReading = sensor?.LastVoltageReading,
+                        LastVoltageReadingDate = sensor?.LastVoltageReadingDate,
                         SensorTypeID = sensor.SensorTypeID,
-                        SensorTypeName = sensor.SensorType.SensorTypeName,
+                        SensorTypeName = sensor.SensorTypeName,
                         IsActive = sensor.IsActive,
-                        MostRecentSupportTicketID = vSensor?.MostRecentSupportTicketID,
-                        MostRecentSupportTicketTitle = vSensor?.MostRecentSupportTicketTitle,
-                        ContinuityMeterStatus = sensor.ContinuityMeterStatus?.AsDto(),
+                        MostRecentSupportTicketID = sensor?.MostRecentSupportTicketID,
+                        MostRecentSupportTicketTitle = sensor?.MostRecentSupportTicketTitle,
+                        ContinuityMeterStatusID = sensor.ContinuityMeterStatusID,
                         SnoozeStartDate = sensor.SnoozeStartDate
-                    };
-                }).ToList()
+                    }).ToList()
             }).ToList();
 
-            return Ok(wellWithSensorSimpleDtos);
+            return Ok(wellWithSensorStatusDtos);
         }
 
         [HttpGet("/sensorStatus/{wellID}")]

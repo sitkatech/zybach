@@ -87,7 +87,7 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
         .filter(sensor => sensor.IsActive && (sensor.MostRecentSupportTicketID != null ||
           sensor.LastMessageAgeInHours > SensorStatusComponent.messageAgeMax || 
           (sensor.LastVoltageReading != null && sensor.LastVoltageReading < SensorStatusComponent.voltageReadingMin) || 
-          (sensor.ContinuityMeterStatus && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatus.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)
+          (sensor.ContinuityMeterStatusID != null && !sensor.SnoozeStartDate && sensor.ContinuityMeterStatusID != ContinuityMeterStatusEnum.ReportingNormally)
         ))
         .sort((a, b) => a.LastReadingDate == b.LastReadingDate ? 0 : a.LastReadingDate > b.LastReadingDate ? 1 : -1);
       });

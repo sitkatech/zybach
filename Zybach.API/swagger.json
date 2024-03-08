@@ -3283,7 +3283,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                    "$ref": "#/components/schemas/WellWithSensorStatusDto"
                   }
                 }
               },
@@ -3291,7 +3291,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                    "$ref": "#/components/schemas/WellWithSensorStatusDto"
                   }
                 }
               },
@@ -3299,7 +3299,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                    "$ref": "#/components/schemas/WellWithSensorStatusDto"
                   }
                 }
               }
@@ -11300,6 +11300,50 @@
           "Notes": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWithSensorStatusDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "Location": {
+            "nullable": true
+          },
+          "AgHubRegisteredUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "FieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorSimpleDto"
+            },
+            "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
