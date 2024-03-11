@@ -104,6 +104,7 @@ model/sensor-chart-data-dto.ts
 model/sensor-measurement-dto.ts
 model/sensor-minimal-dto.ts
 model/sensor-simple-dto.ts
+model/sensor-status-dto.ts
 model/stream-flow-zone-dto.ts
 model/stream-flow-zone-pumping-depth-dto.ts
 model/support-ticket-comment-simple-dto.ts

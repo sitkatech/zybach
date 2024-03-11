@@ -1,7 +1,6 @@
 import { AfterViewInit, ApplicationRef, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import {
   Control,
-  control,
   FitBoundsOptions,
   GeoJSON,
   marker,

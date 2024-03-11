@@ -8726,6 +8726,70 @@
         },
         "additionalProperties": false
       },
+      "SensorStatusDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "ContinuityMeterStatusID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SnoozeStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "SensorTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastMessageAgeInHours": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "LastVoltageReading": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "LastVoltageReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "MostRecentSupportTicketID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "MostRecentSupportTicketTitle": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "StreamFlowZoneDto": {
         "type": "object",
         "properties": {
@@ -11315,9 +11379,6 @@
             "type": "string",
             "nullable": true
           },
-          "Location": {
-            "nullable": true
-          },
           "AgHubRegisteredUser": {
             "type": "string",
             "nullable": true
@@ -11326,14 +11387,10 @@
             "type": "string",
             "nullable": true
           },
-          "Notes": {
-            "type": "string",
-            "nullable": true
-          },
           "Sensors": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SensorSimpleDto"
+              "$ref": "#/components/schemas/SensorStatusDto"
             },
             "nullable": true
           },

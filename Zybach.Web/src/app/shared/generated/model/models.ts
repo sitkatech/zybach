@@ -71,6 +71,7 @@ export * from '././sensor-chart-data-dto';
 export * from '././sensor-measurement-dto';
 export * from '././sensor-minimal-dto';
 export * from '././sensor-simple-dto';
+export * from '././sensor-status-dto';
 export * from '././stream-flow-zone-dto';
 export * from '././stream-flow-zone-pumping-depth-dto';
 export * from '././support-ticket-comment-simple-dto';

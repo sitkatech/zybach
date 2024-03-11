@@ -9,16 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { SensorSimpleDto } from '././sensor-simple-dto';
+import { SensorStatusDto } from '././sensor-status-dto';
 
 export class WellWithSensorStatusDto { 
     WellID?: number;
     WellRegistrationID?: string;
-    Location?: any;
     AgHubRegisteredUser?: string;
     FieldName?: string;
-    Notes?: string;
-    Sensors?: Array<SensorSimpleDto>;
+    Sensors?: Array<SensorStatusDto>;
     Latitude?: number;
     Longitude?: number;
     constructor(obj?: any) {

@@ -60,17 +60,23 @@ export class SensorStatusComponent implements OnInit, OnDestroy {
           type: "FeatureCollection",
           features:
             wellsWithActiveSensors.map(x => {
-              const geoJsonPoint = x.Location;
-              geoJsonPoint.properties = {
-                wellID: x.WellID,
-                wellRegistrationID: x.WellRegistrationID,
-                sensors: x.Sensors.filter(y => y.IsActive) || [],
-                AgHubRegisteredUser: x.AgHubRegisteredUser,
-                fieldName: x.FieldName
+              const geoJsonPoint = { 
+                type: "Feature", 
+                geometry: { 
+                  type: "Point", 
+                  coordinates: [x.Longitude, x.Latitude]
+                },
+                properties: {
+                  wellID: x.WellID,
+                  wellRegistrationID: x.WellRegistrationID,
+                  sensors: x.Sensors.filter(y => y.IsActive) || [],
+                  AgHubRegisteredUser: x.AgHubRegisteredUser,
+                  fieldName: x.FieldName
+                }
               };
               return geoJsonPoint;
             })
-        }
+        };
 
         this.redSensors = wells
         .reduce((sensors: SensorSimpleDto[], well: WellWithSensorSimpleDto) => 

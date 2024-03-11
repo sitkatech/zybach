@@ -42,11 +42,10 @@ namespace Zybach.API.Controllers
                 FieldName = well.AgHubWell?.FieldName,
                 WellID = well.WellID,
                 WellRegistrationID = well.WellRegistrationID,
-                Location = new Feature(new Point(new Position(well.WellGeometry.Coordinate.Y, well.WellGeometry.Coordinate.X))),
                 Latitude = well.Latitude,
                 Longitude = well.Longitude,
                 Sensors = vSensors[well.WellID]
-                    .Select(sensor => new SensorSimpleDto
+                    .Select(sensor => new SensorStatusDto
                     {
                         SensorName = sensor.SensorName,
                         SensorID = sensor.SensorID,
@@ -57,8 +56,8 @@ namespace Zybach.API.Controllers
                         SensorTypeID = sensor.SensorTypeID,
                         SensorTypeName = sensor.SensorTypeName,
                         IsActive = sensor.IsActive,
-                        MostRecentSupportTicketID = sensor?.MostRecentSupportTicketID,
-                        MostRecentSupportTicketTitle = sensor?.MostRecentSupportTicketTitle,
+                        MostRecentSupportTicketID = sensor.MostRecentSupportTicketID,
+                        MostRecentSupportTicketTitle = sensor.MostRecentSupportTicketTitle,
                         ContinuityMeterStatusID = sensor.ContinuityMeterStatusID,
                         SnoozeStartDate = sensor.SnoozeStartDate
                     }).ToList()
