@@ -29,7 +29,9 @@ import { catchError } from 'rxjs/operators';
 import { ApiService } from '../../services';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class IrrigationUnitService {
 
     protected basePath = 'http://localhost';

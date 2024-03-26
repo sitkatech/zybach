@@ -45,7 +45,6 @@ services:
       - DefaultBoundingBoxTop=${DefaultBoundingBoxTop}
       - DefaultBoundingBoxBottom=${DefaultBoundingBoxBottom}
       - OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier=${OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}
-      - AllowOpenETSync=${AllowOpenETSync}    
     ports:
       - "8711:8080"
       - "8712:8081"
@@ -57,8 +56,8 @@ services:
       args:
         source: .
     ports:
-      - "8609:8080"
-      - "8610:8081"
+      - "8715:8080"
+      - "8716:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -88,7 +87,7 @@ services:
       - GEOSERVER_SQL_SERVER_PASSWORD_SECRET=/run/secrets/GeoserverSqlServerPassword.txt
       - GEOSERVER_CONFIG_DIRECTORY=/opt/geoserver/data_dir
     ports:
-      - 127.0.0.1:7615:8080
+      - 127.0.0.1:8717:8080
     volumes:
       - c:/git/sitkatech/zybach/Zybach.GeoServer/data_dir:/opt/geoserver/data_dir
     secrets:

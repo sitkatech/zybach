@@ -3283,7 +3283,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                    "$ref": "#/components/schemas/WellWithSensorStatusDto"
                   }
                 }
               },
@@ -3291,7 +3291,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                    "$ref": "#/components/schemas/WellWithSensorStatusDto"
                   }
                 }
               },
@@ -3299,7 +3299,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/WellWithSensorSimpleDto"
+                    "$ref": "#/components/schemas/WellWithSensorStatusDto"
                   }
                 }
               }
@@ -8726,6 +8726,70 @@
         },
         "additionalProperties": false
       },
+      "SensorStatusDto": {
+        "type": "object",
+        "properties": {
+          "SensorID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "SensorName": {
+            "type": "string",
+            "nullable": true
+          },
+          "SensorTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "ContinuityMeterStatusID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "SnoozeStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "SensorTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastMessageAgeInHours": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "LastVoltageReading": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "LastVoltageReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastReadingDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "MostRecentSupportTicketID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "MostRecentSupportTicketTitle": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "StreamFlowZoneDto": {
         "type": "object",
         "properties": {
@@ -11300,6 +11364,43 @@
           "Notes": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellWithSensorStatusDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "AgHubRegisteredUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "FieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Sensors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SensorStatusDto"
+            },
+            "nullable": true
+          },
+          "Latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "Longitude": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

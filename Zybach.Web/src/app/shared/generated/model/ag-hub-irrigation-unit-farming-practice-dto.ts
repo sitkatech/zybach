@@ -9,11 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { WellLinkDto } from './well-link-dto';
+import { WellLinkDto } from '././well-link-dto';
 
 export class AgHubIrrigationUnitFarmingPracticeDto { 
     AgHubIrrigationUnitID?: number;
-    WellTPID?: number;
+    WellTPID?: string;
     IrrigationYear?: number;
     Acres?: number;
     CropType?: string;

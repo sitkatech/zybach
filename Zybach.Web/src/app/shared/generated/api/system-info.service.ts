@@ -18,7 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { CountyDto } from '../model/county-dto';
+import { SystemInfoDto } from '../model/system-info-dto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -29,7 +29,7 @@ import { ApiService } from '../../services';
 @Injectable({
   providedIn: 'root'
 })
-export class CountyService {
+export class SystemInfoService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -67,10 +67,10 @@ export class CountyService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public countiesGet(observe?: 'body', reportProgress?: boolean): Observable<Array<CountyDto>>;
-    public countiesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CountyDto>>>;
-    public countiesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CountyDto>>>;
-    public countiesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public rootGet(observe?: 'body', reportProgress?: boolean): Observable<SystemInfoDto>;
+    public rootGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SystemInfoDto>>;
+    public rootGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SystemInfoDto>>;
+    public rootGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -89,7 +89,7 @@ export class CountyService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<CountyDto>>(`${this.basePath}/counties`,
+        return this.httpClient.get<SystemInfoDto>(`${this.basePath}/`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
