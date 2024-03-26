@@ -33,7 +33,10 @@ public class OpenETService
     private readonly ZybachDbContext _zybachDbContext;
     private readonly HttpClient _httpClient;
 
-    private readonly string[] _rebuildingModelResultsErrorMessages = { "Expecting value: line 1 column 1 (char 0)" };
+    private const double BoundingBoxLeft = -102.05591553769607;
+    private const double BoundingBoxRight = -100.2234130905508;
+    private const double BoundingBoxTop = 41.743487069127966;
+    private const double BoundingBoxBottom = 40.74358623146166;
 
     public const string OpenETEvapoWaterMeasurementTypeName = "OpenET Evapotranspiration";
     public const string OpenETPrecipWaterMeasurementTypeName = "OpenET Precipitation";
@@ -50,11 +53,7 @@ public class OpenETService
 
     private async Task<bool> RasterUpdatedSinceMinimumLastUpdatedDate(int month, int year, int openETDataTypeID, OpenETSyncHistory openETSyncHistory)
     {
-        var top = _zybachConfiguration.DefaultBoundingBoxTop;
-        var bottom = _zybachConfiguration.DefaultBoundingBoxBottom;
-        var left = _zybachConfiguration.DefaultBoundingBoxLeft;
-        var right = _zybachConfiguration.DefaultBoundingBoxRight;
-        var polygon = new WKTReader().Read(@$"POLYGON (({left} {top}, {right} {top}, {right} {bottom}, {left} {bottom}, {left} {top}))");
+        var polygon = new WKTReader().Read(@$"POLYGON (({BoundingBoxLeft} {BoundingBoxTop}, {BoundingBoxRight} {BoundingBoxTop}, {BoundingBoxRight} {BoundingBoxBottom}, {BoundingBoxLeft} {BoundingBoxBottom}, {BoundingBoxLeft} {BoundingBoxTop}))");
 
         var centerBufferedBy5000SurveyFeet = polygon.Centroid.ProjectTo26860().Buffer(16000, EndCapStyle.Square).ProjectTo4326();
         var envelope = centerBufferedBy5000SurveyFeet.EnvelopeInternal;
