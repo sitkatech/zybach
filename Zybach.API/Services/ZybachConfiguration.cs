@@ -33,10 +33,6 @@
         public string OpenETAPIBaseUrl { get; set; }
         public string OpenETRasterTimeSeriesMultipolygonRoute { get; set; }
         public string OpenETRasterMetadataRoute { get; set; }
-        public string DefaultBoundingBoxLeft { get; set; }
-        public string DefaultBoundingBoxRight { get; set; }
-        public string DefaultBoundingBoxTop { get; set; }
-        public string DefaultBoundingBoxBottom { get; set; }
         public string OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier { get; set; }
     }
 }

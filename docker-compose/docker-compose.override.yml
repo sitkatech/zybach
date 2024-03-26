@@ -40,10 +40,6 @@ services:
       - OpenETRasterMetadataRoute=${OpenETRasterMetadataRoute}
       - OpenETAllFilesReadyForExportRoute=${OpenETAllFilesReadyForExportRoute}
       - OpenETGoogleBucketBaseURL=${OpenETGoogleBucketBaseURL}
-      - DefaultBoundingBoxLeft=${DefaultBoundingBoxLeft}
-      - DefaultBoundingBoxRight=${DefaultBoundingBoxRight}
-      - DefaultBoundingBoxTop=${DefaultBoundingBoxTop}
-      - DefaultBoundingBoxBottom=${DefaultBoundingBoxBottom}
       - OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier=${OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier}
     ports:
       - "8711:8080"
