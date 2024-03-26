@@ -22,7 +22,6 @@ data:
   keystone_waitForTokenInMsec: "500"
   keystone_responseType: "code"
   keystone_disablePKCE: "false"
-  AllowOpenETSync: "true"
   GeooptixWebUrl: "https://tpnrd.geooptix.com"
   MapQuestApiUrl: "https://open.mapquestapi.com/nominatim/v1/search.php?key=gAtuAvFkArwZH61P1UVcRXseleJWEB7r"
   GETEnvironmentUrl: "https://get.azurewebsites.net"

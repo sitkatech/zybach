@@ -79,11 +79,9 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
   initializeGrid() {
     this.columnDefs = [];
 
-    if (this.openETSyncEnabled()) {
-      this.columnDefs.push(
-        this.createActionColumn()
-      )
-    }
+    this.columnDefs.push(
+      this.createActionColumn()
+    )
 
     this.columnDefs.push(
       {
@@ -192,9 +190,5 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
 
   public isCurrentUserAdministrator(): boolean {
     return this.authenticationService.isCurrentUserAnAdministrator();
-  }
-
-  public openETSyncEnabled() {
-    return environment.allowOpenETSync;
   }
 }

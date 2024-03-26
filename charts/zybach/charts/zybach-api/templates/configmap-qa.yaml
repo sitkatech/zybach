@@ -31,5 +31,4 @@ data:
   OpenETRasterMetadataRoute: "raster/metadata"
   OpenETRasterExportStatusRoute: "raster/export/status"
   OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "tpid"
-  AllowOpenETSync: "true"
 {{ end }}
