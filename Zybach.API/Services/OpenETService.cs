@@ -147,7 +147,7 @@ public class OpenETService
         var monthNameToDisplay = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
         var openETDataType = OpenETDataType.AllLookupDictionary[openETDataTypeID];
 
-        if (_zybachDbContext.OpenETSyncHistories.Include(x => x.OpenETSync)
+        if (_zybachDbContext.OpenETSyncHistories.Include(x => x.OpenETSync).AsNoTracking()
             .Any(x => x.OpenETSync.Year == year && x.OpenETSync.Month == month &&
                       (x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.Created || x.OpenETSyncResultTypeID == (int)OpenETSyncResultTypeEnum.InProgress)
                       && x.OpenETSync.OpenETDataTypeID == openETDataTypeID))
