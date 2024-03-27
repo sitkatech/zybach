@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,12 +18,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetTopologySuite.IO;
 using NetTopologySuite.Operation.Buffer;
-using Newtonsoft.Json;
 using Zybach.API.Controllers;
-using Zybach.API.Services.Telemetry;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Zybach.API.Services;
 
@@ -317,9 +315,8 @@ public class OpenETService
 
     private async Task SaveToOpenETWaterMeasurement(List<OpenETCSVFormat> distinctRecords, DateTime reportedDate, DateTime transactionDate, int openETDataTypeID)
     {
-        _zybachDbContext.OpenETWaterMeasurements.RemoveRange(_zybachDbContext.OpenETWaterMeasurements.Where(x =>
-            x.ReportedDate == reportedDate && x.OpenETDataTypeID == openETDataTypeID));
-        await _zybachDbContext.SaveChangesAsync();
+        await _zybachDbContext.OpenETWaterMeasurements.Where(x =>
+            x.ReportedDate == reportedDate && x.OpenETDataTypeID == openETDataTypeID).ExecuteDeleteAsync();
 
         var waterMeasurements = distinctRecords.Select(x => new OpenETWaterMeasurement() {
             WellTPID = x.WellTPID,
@@ -331,36 +328,36 @@ public class OpenETService
             IrrigationUnitArea = x.IrrigationUnitArea
         }).ToList();
 
-        await _zybachDbContext.OpenETWaterMeasurements.AddRangeAsync(waterMeasurements);
+        _zybachDbContext.OpenETWaterMeasurements.AddRange(waterMeasurements);
         await _zybachDbContext.SaveChangesAsync();
     }
 
-    public bool IsOpenETAPIKeyValid()
+    public async Task<bool> IsOpenETAPIKeyValid()
     {
-        var openETRequestURL = "account/status";
+        const string openETRequestURL = "account/status";
         try
         {
-            var response = _httpClient.GetAsync(openETRequestURL).Result;
-
-            var body = response.Content.ReadAsStringAsync().Result;
+            var response = await _httpClient.GetAsync(openETRequestURL);
+            var body = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new OpenETException($"Call to {openETRequestURL} was unsuccessful. Status Code: {response.StatusCode} Message: {body}.");
+                throw new OpenETException(
+                    $"Call to {openETRequestURL} was unsuccessful. Status Code: {response.StatusCode} Message: {body}.");
             }
 
-            var responseObject = JsonConvert.DeserializeObject<OpenETController.OpenETTokenExpirationDate>(body);
+            var responseObject = JsonSerializer.Deserialize<OpenETController.OpenETTokenExpirationDate>(body);
 
-            if (responseObject == null)
+            if (responseObject == null || responseObject.ExpirationDate < DateTime.UtcNow)
             {
-                throw new OpenETException("Deserializing OpenET API Key validation response failed, or the key is expired.");
+                throw new OpenETException($"Deserializing OpenET API Key validation response failed, or the key is expired. Expiration Date: {(responseObject?.ExpirationDate != null ? responseObject.ExpirationDate.ToString(CultureInfo.InvariantCulture) : "Not provided")}");
             }
 
             return true;
         }
         catch (Exception ex)
         {
-            TelemetryHelper.LogCaughtException(_logger, LogLevel.Critical, ex, "Error validating OpenET API Key.");
+            _logger.Log(LogLevel.Error, ex, "Error validating OpenET API Key.");
             return false;
         }
     }
