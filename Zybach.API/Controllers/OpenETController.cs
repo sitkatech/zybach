@@ -24,9 +24,9 @@ namespace Zybach.API.Controllers
 
         [HttpGet("/openet/is-api-key-valid")]
         [AdminFeature]
-        public ActionResult<bool> IsAPIKeyValid()
+        public async Task<ActionResult<bool>> IsAPIKeyValid()
         {
-            return Ok(_openETService.IsOpenETAPIKeyValid());
+            return Ok(await _openETService.IsOpenETAPIKeyValid());
         }
 
         public class OpenETTokenExpirationDate
