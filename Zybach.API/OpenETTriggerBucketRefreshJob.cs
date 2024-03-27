@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Zybach.API.Services;
 using System.Threading;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace Zybach.API
 {
@@ -62,26 +63,20 @@ namespace Zybach.API
 
             if (newOpenETSyncs.Any())
             {
-                await _dbContext.OpenETSyncs.AddRangeAsync(newOpenETSyncs);
+                _dbContext.OpenETSyncs.AddRange(newOpenETSyncs);
                 await _dbContext.SaveChangesAsync();
             }
 
-            var nonFinalizedOpenETSyncs = _dbContext.OpenETSyncs.Where(x => !x.FinalizeDate.HasValue);
-            if (!nonFinalizedOpenETSyncs.Any())
+            var openETSyncs = _dbContext.OpenETSyncs.AsNoTracking().Where(x => !x.FinalizeDate.HasValue);
+            if (!openETSyncs.Any())
             {
                 return;
             }
 
-            var openETDataTypes = OpenETDataType.All;
-
-            foreach (var nonFinalizedOpenETSync in nonFinalizedOpenETSyncs)
+            foreach (var openETSync in openETSyncs)
             {
-                foreach (var openETDataType in openETDataTypes)
-                {
-                    await _openETService.TriggerOpenETGoogleBucketRefresh(nonFinalizedOpenETSync.Year, nonFinalizedOpenETSync.Month, openETDataType.OpenETDataTypeID);
-                    Thread.Sleep(1000); // intentional sleep here to make sure we don't hit the maximum rate limit
-
-                }
+                await _openETService.TriggerOpenETGoogleBucketRefresh(openETSync.Year, openETSync.Month, openETSync.OpenETDataTypeID);
+                Thread.Sleep(1000); // intentional sleep here to make sure we don't hit the maximum rate limit
             }
         }
     }
