@@ -20,7 +20,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "web.selectorLabels" . | nindent 8 }}
+        {{- include "web.selectorLabels" . | nindent 8 }} 
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -33,7 +33,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.global.env.name }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -52,16 +52,14 @@ spec:
           livenessProbe:
             httpGet:
               path: /
-              scheme: HTTP
-              port: 80
+              port: http
             periodSeconds: 4
             timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /
-              scheme: HTTP
-              port: 80
+              port: http
           lifecycle:
             preStop:
               exec:
