@@ -81,7 +81,7 @@ variable "domainGeoserver" {
   type = string
 }
 
-variable "domainSwagger" {
+variable "domainSwaggerApi" {
   type = string
 }
 
@@ -819,7 +819,7 @@ resource "datadog_synthetics_test" "swagger_test" {
   subtype = "http"
   request_definition {
     method = "GET"
-    url    = "https://${var.domainSwagger}/swagger"
+    url    = "https://${var.domainSwaggerApi}/swagger"
   }
   request_headers = {
     Content-Type   = "application/json"
@@ -842,7 +842,7 @@ resource "datadog_synthetics_test" "swagger_test" {
       renotify_interval = 120
     }
   }
-  #email subject, attach url in place of var.domainSwagger
+  #email subject, attach url in place of var.domainSwaggerApi
   name    = "${var.aspNetEnvironment} - https://${var.domainWeb} Swagger test"
   #email body
   message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
