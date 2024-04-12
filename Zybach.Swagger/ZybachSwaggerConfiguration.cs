@@ -8,4 +8,5 @@ public class ZybachSwaggerConfiguration
     public string INFLUX_BUCKET { get; set; }
     public string DB_CONNECTION_STRING { get; set; }
     public string ZybachApiKey { get; set; }
+    public string HostName { get; set; }
 }

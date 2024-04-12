@@ -34,5 +34,6 @@
         public string OpenETRasterTimeSeriesMultipolygonRoute { get; set; }
         public string OpenETRasterMetadataRoute { get; set; }
         public string OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier { get; set; }
+        public string HostName { get; set; }
     }
 }
