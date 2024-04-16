@@ -95,6 +95,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
+      fetchDepth: 0
 
     - task: AzureKeyVault@2
       inputs:
@@ -122,6 +123,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self 
+      fetchDepth: 0
 
     - task: AzureKeyVault@2
       inputs:
