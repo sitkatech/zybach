@@ -592,8 +592,8 @@ resource "datadog_synthetics_test" "test_api" {
     }
   }
   name    = "${var.environment} - ${var.domainApi} API test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
@@ -627,8 +627,8 @@ resource "datadog_synthetics_test" "test_web" {
     }
   }
   name    = "${var.environment} - ${var.domainWeb} Web test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
@@ -662,8 +662,8 @@ resource "datadog_synthetics_test" "test_geoserver" {
     }
   }
   name    = "${var.environment} - ${var.domainGeoserver} Geoserver test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
@@ -697,156 +697,8 @@ resource "datadog_synthetics_test" "test_swagger" {
     }
   }
   name    = "${var.environment} - ${var.domainSwaggerApi} API test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
-
-  status = "live"
-}
-
-resource "datadog_synthetics_test" "api_test" {
-  type    = "api"
-  subtype = "http"
-  request_definition {
-    method = "GET"
-    url    = "https://${var.domainApi}/healthz"
-  }
-  request_headers = {
-    Content-Type   = "application/json"
-  }
-  assertion {
-    type     = "statusCode"
-    operator = "is"
-    target   = "200"
-  }
-  locations = ["aws:us-west-1","aws:us-east-1"]
-  options_list {
-    tick_every = 900
-
-    retry {
-      count    = 2
-      interval = 30000
-    }
-
-    monitor_options {
-      renotify_interval = 120
-    }
-  }
-  #email subject, attach url in place of var.domainApi
-  name    = "${var.aspNetEnvironment} - https://${var.domainApi}/healthz API test"
-  #email body
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.aspNetEnvironment}", "managed:terraformed", "team:${var.team}"]
-
-  status = "live"
-}
-
-resource "datadog_synthetics_test" "web_test" {
-  type    = "api"
-  subtype = "http"
-  request_definition {
-    method = "GET"
-    url    = "https://${var.domainWeb}"
-  }
-  request_headers = {
-    Content-Type   = "application/json"
-  }
-  assertion {
-    type     = "statusCode"
-    operator = "is"
-    target   = "200"
-  }
-  locations = ["aws:us-west-1","aws:us-east-1"]
-  options_list {
-    tick_every = 900
-
-    retry {
-      count    = 2
-      interval = 30000
-    }
-
-    monitor_options {
-      renotify_interval = 120
-    }
-  }
-  #email subject, attach url in place of var.domainWeb
-  name    = "${var.aspNetEnvironment} - https://${var.domainWeb} Web test"
-  #email body
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.aspNetEnvironment}", "managed:terraformed", "team:${var.team}"]
-
-  status = "live"
-}
-
-resource "datadog_synthetics_test" "geoserver_test" {
-  type    = "api"
-  subtype = "http"
-  request_definition {
-    method = "GET"
-    url    = "https://${var.domainGeoserver}/geoserver"
-  }
-  request_headers = {
-    Content-Type   = "application/json"
-  }
-  assertion {
-    type     = "statusCode"
-    operator = "is"
-    target   = "200"
-  }
-  locations = ["aws:us-west-1","aws:us-east-1"]
-  options_list {
-    tick_every = 900
-
-    retry {
-      count    = 2
-      interval = 30000
-    }
-
-    monitor_options {
-      renotify_interval = 120
-    }
-  }
-  #email subject, attach url in place of var.domainGeoserver
-  name    = "${var.aspNetEnvironment} - https://${var.domainWeb} Geoserver test"
-  #email body
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.aspNetEnvironment}", "managed:terraformed", "team:${var.team}"]
-
-  status = "live"
-}
-
-resource "datadog_synthetics_test" "swagger_test" {
-  type    = "api"
-  subtype = "http"
-  request_definition {
-    method = "GET"
-    url    = "https://${var.domainSwaggerApi}/swagger"
-  }
-  request_headers = {
-    Content-Type   = "application/json"
-  }
-  assertion {
-    type     = "statusCode"
-    operator = "is"
-    target   = "200"
-  }
-  locations = ["aws:us-west-1","aws:us-east-1"]
-  options_list {
-    tick_every = 900
-
-    retry {
-      count    = 2
-      interval = 30000
-    }
-
-    monitor_options {
-      renotify_interval = 120
-    }
-  }
-  #email subject, attach url in place of var.domainSwaggerApi
-  name    = "${var.aspNetEnvironment} - https://${var.domainWeb} Swagger test"
-  #email body
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.aspNetEnvironment}", "managed:terraformed", "team:${var.team}"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
