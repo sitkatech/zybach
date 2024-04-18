@@ -101,30 +101,9 @@ variable "projectNumber" {
   type = string
 }
 
-variable "datadogApiKey" {
-  type = string
-  sensitive = true
-}
-
 variable "datadogAppKey" {
   type = string
   sensitive = true
-}
-
-variable "domainApi" {
-  type = string
-}
-
-variable "domainWeb" {
-  type = string
-}
-
-variable "domainGeoserver" {
-  type = string
-}
-
-variable "domainSwaggerApi" {
-  type = string
 }
 
 // this variable is used for the keepers for the random resources https://registry.terraform.io/providers/hashicorp/random/latest/docs
