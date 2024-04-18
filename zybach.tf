@@ -638,7 +638,7 @@ resource "datadog_synthetics_test" "test_geoserver" {
   subtype = "http"
   request_definition {
     method = "GET"
-    url    = "https://${var.domainGeoserver}"
+    url    = "https://${var.domainGeoserver}/geoserver/web/"
   }
   request_headers = {
     Content-Type   = "application/json"
