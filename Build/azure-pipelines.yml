@@ -193,7 +193,7 @@ stages:
           -var "sqlGeoserverUsername=$(sqlGeoserverUsername)" 
           -var "team=$(team)" 
           -var "projectNumber=$(projectNumber)" 
-          -var "elasticPoolName=$(elasticPoolName)" 
+          -var "elasticPoolName=$(kv-elasticPoolName)" 
           -var "environment=$(environment)"
           
     - task: CopyFiles@2
@@ -320,7 +320,7 @@ stages:
               serverName: '$(kv-dbServerName).database.windows.net'
               databaseName: '$(databaseName)'
               databaseEdition: '$(databaseEdition)'
-              elasticPoolName: '$(elasticPoolName)'
+              elasticPoolName: '$(kv-elasticPoolName)'
               sqlAdministratorUsername: '$(kv-sqlAdministratorUsername)'
               sqlAdministratorPassword: '$(kv-sqlAdministratorPassword)'
               sqlApiUsername: '$(sqlApiUsername)'
