@@ -20,7 +20,7 @@ variables:
   sqlApiUsername: 'ZybachWeb'
   sqlGeoserverUsername: 'ZybachGeo'
 
-  domainApi: 'api-zybach.esa-$(Environment).sitkatech.com'
+  domainApi: 'internalapi-zybach.esa-$(Environment).sitkatech.com'
   domainWeb: 'zybach.esa-$(Environment).sitkatech.com'
   domainGeoserver: 'geoserver-zybach.esa-$(Environment).sitkatech.com'
   domainSwaggerApi: 'api-zybach.esa-$(Environment).sitkatech.com'
