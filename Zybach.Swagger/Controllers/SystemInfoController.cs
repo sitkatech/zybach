@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
@@ -14,10 +15,10 @@ namespace Zybach.Swagger.Controllers
         private readonly ZybachSwaggerConfiguration _zybachSwaggerConfiguration;
 
         public SystemInfoController(ZybachDbContext dbContext, ILogger<SystemInfoController> logger,
-            ZybachSwaggerConfiguration zybachSwaggerConfiguration)
+            IOptions<ZybachSwaggerConfiguration> configuration)
             : base(dbContext, logger)
         {
-            _zybachSwaggerConfiguration = zybachSwaggerConfiguration;
+            _zybachSwaggerConfiguration = configuration.Value;
         }
 
         [HttpGet("/", Name = "GetSystemInfo")]

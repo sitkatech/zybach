@@ -19,6 +19,7 @@ using Microsoft.OpenApi.Models;
 using Zybach.EFModels.Entities;
 using Serilog;
 using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
+using Zybach.Swagger.Logging;
 using ILogger = Serilog.ILogger;
 
 namespace Zybach.Swagger
@@ -70,9 +71,6 @@ namespace Zybach.Swagger
             services.AddSingleton(Configuration);
             services.AddSingleton<ITelemetryInitializer, CloudRoleNameTelemetryInitializer>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
-            var logger = GetSerilogLogger();
-            services.AddSingleton(logger);
 
             services.AddScoped<InfluxDBService>();
             services.AddScoped(s => s.GetService<IHttpContextAccessor>().HttpContext);
@@ -161,7 +159,7 @@ namespace Zybach.Swagger
             app.UseAuthentication();
             app.UseAuthorization();
 
-
+            app.UseMiddleware<LogHelper>();
             #region Swagger
             // Register swagger middleware and enable the swagger UI which will be 
             // accessible at https://<apihostname>/swagger
@@ -200,18 +198,6 @@ namespace Zybach.Swagger
             _telemetryClient.Flush();
             Thread.Sleep(1000);
         }
-
-        private ILogger GetSerilogLogger()
-        {
-            var serilogLogger = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration);
-
-            if (!_environment.IsDevelopment())
-            {
-                serilogLogger.WriteTo.ApplicationInsights(_telemetryClient, new TraceTelemetryConverter());
-            }
-
-            return serilogLogger.CreateLogger();
-        }
+        
     }
 }
