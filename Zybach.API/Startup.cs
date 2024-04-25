@@ -159,8 +159,6 @@ namespace Zybach.API
             services.AddSingleton<ITelemetryInitializer, CloudRoleNameTelemetryInitializer>();
             services.AddSingleton<ITelemetryInitializer, UserInfoTelemetryInitializer>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            var logger = GetSerilogLogger();
-            services.AddSingleton(logger);
 
             services.AddSendGrid(options => { options.ApiKey = zybachConfiguration.SendGridApiKey; });
 
@@ -206,7 +204,7 @@ namespace Zybach.API
 
             services.AddControllers();
 
-            services.AddVegaRenderService(zybachConfiguration.VEGA_RENDER_URL, logger);
+            services.AddTransient<VegaRenderService.VegaRenderService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -218,9 +216,8 @@ namespace Zybach.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime, ILoggerFactory loggerFactory, ILogger logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime applicationLifetime)
         {
-            loggerFactory.AddSerilog(logger);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
