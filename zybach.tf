@@ -571,7 +571,7 @@ resource "datadog_synthetics_test" "test_api" {
     }
   }
   name    = "${var.environment} - ${var.domainApi} API test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
   tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
@@ -606,7 +606,7 @@ resource "datadog_synthetics_test" "test_web" {
     }
   }
   name    = "${var.environment} - ${var.domainWeb} Web test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
   tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
@@ -641,7 +641,7 @@ resource "datadog_synthetics_test" "test_geoserver" {
     }
   }
   name    = "${var.environment} - ${var.domainGeoserver} Geoserver test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
   tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
@@ -676,7 +676,7 @@ resource "datadog_synthetics_test" "test_swagger" {
     }
   }
   name    = "${var.environment} - ${var.domainSwaggerApi} API test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}"
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
   tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
