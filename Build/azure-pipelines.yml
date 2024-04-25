@@ -338,7 +338,7 @@ stages:
               sqlAdministratorPassword: '$(kv-sqlAdministratorPassword)'
               desiredSqlUsername: '$(sqlApiUsername)'
               desiredSqlPassword: '$(SQL_API_PASSWORD)'
-              roles: 'db_datawriter,db_datareader'
+              roles: 'db_owner'
 
           - template: azure-pipelines/templates/database/db-user.yml@BuildTemplates 
             parameters:
