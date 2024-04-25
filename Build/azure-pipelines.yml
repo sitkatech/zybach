@@ -23,7 +23,7 @@ variables:
   domainApi: 'api-zybach.esa-$(Environment).sitkatech.com'
   domainWeb: 'zybach.esa-$(Environment).sitkatech.com'
   domainGeoserver: 'geoserver-zybach.esa-$(Environment).sitkatech.com'
-  domanSwagger: 'api-zybach.esa-$(Environment).sitkatech.com'
+  domainSwaggerApi: 'api-zybach.esa-$(Environment).sitkatech.com'
 
 
 resources:
