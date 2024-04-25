@@ -533,6 +533,7 @@ stages:
                 api.image.repository="$(kv-containerRegistry)/zybach/api"
                 web.image.repository="$(kv-containerRegistry)/zybach/web"
                 swagger.image.repository="$(kv-containerRegistry)/zybach/swagger"
+                vegarenderservice.image.repository="$(kv-containerRegistry)/vegarenderservice"
                 global.secrets.geoserverSqlServerPassword="$(SQL_GEOSERVER_PASSWORD)"
                 global.secrets.geoserverAdminPassword="$(GEOSERVER_ADMIN_PASSWORD)"
                 global.secrets.applicationStorageAccountName="$(storageAccountName)"
