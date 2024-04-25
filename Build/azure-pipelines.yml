@@ -103,10 +103,10 @@ stages:
 
     - template: azure-pipelines/templates/docker/docker-template.yml@BuildTemplates 
       parameters:
-        displayName: 'Web'
+        displayName: 'API'
         subscription: '$(azureSubscription)'
         containerRegistry: '$(kv-containerRegistry)'
-        dockerComposeFile: 'Zybach.Web/docker-compose/docker-compose.yml'
+        dockerComposeFile: 'docker-compose/docker-compose.yml'
         dockerComposeFileArgs: 'env=$(environment)'
         additionalImageTags: |
           $(Build.BuildNumber)-$(environment)
@@ -128,17 +128,17 @@ stages:
         KeyVaultName: '$(spokeKeyVaultName)'
         SecretsFilter: '*'
         RunAsPreJob: true
-
     - template: azure-pipelines/templates/docker/docker-template.yml@BuildTemplates 
       parameters:
-        displayName: 'API'
+        displayName: 'Web'
         subscription: '$(azureSubscription)'
         containerRegistry: '$(kv-containerRegistry)'
-        dockerComposeFile: 'docker-compose/docker-compose.yml'
+        dockerComposeFile: 'Zybach.Web/docker-compose/docker-compose.yml'
         dockerComposeFileArgs: 'env=$(environment)'
         additionalImageTags: |
           $(Build.BuildNumber)-$(environment)
         includeLatestTag: true
+    
 
 - stage: BuildTerraform
   displayName: Terraform Plan
