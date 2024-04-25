@@ -1,9 +1,9 @@
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "swagger.fullname" . }}-pdb
+  name: {{ include "web.fullname" . }}-pdb
 spec:
   maxUnavailable: 0
   selector:
     matchLabels:
-      app: {{ include "swagger.fullname" . }}
+      app: {{ include "web.fullname" . }}
