@@ -325,7 +325,7 @@ stages:
               sqlAdministratorPassword: '$(kv-sqlAdministratorPassword)'
               sqlApiUsername: '$(sqlApiUsername)'
               bacpacFile: '$(Pipeline.Workspace)/bacpac/$(databaseName).bacpac'
-              dacpacFile: '$(Pipeline.Workspace)/Database/Nebula.Database.dacpac'
+              dacpacFile: '$(Pipeline.Workspace)/Database/Zybach.Database.dacpac'
               projectResourceGroupName: '$(resourceGroupName)'
               databaseID: '$(DATABASE_ID)'
 
