@@ -5,7 +5,6 @@ metadata:
   labels:
     tags.datadoghq.com/env: {{ .Values.global.env.name | quote }}
     tags.datadoghq.com/service: {{ include "vegarenderservice.fullname" . }}
-    tags.datadoghq.com/teamName: {{ .Values.namespace | quote }}
     {{- include "vegarenderservice.labels" . | nindent 4 }}
 spec:
   revisionHistoryLimit: 1 # Default to 10 if not specified
@@ -18,6 +17,7 @@ spec:
   template:
     metadata:
       annotations:
+        ad.datadoghq.com/tags: '{"teamName": "{{ .Values.namespace }}"}'
         rollme: {{ randAlphaNum 5 | quote }} # roll deployments on every upgrade: https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
