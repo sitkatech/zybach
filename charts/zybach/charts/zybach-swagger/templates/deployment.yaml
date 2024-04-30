@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: {{ include "swagger.fullname" . }}
   labels:
+    tags.datadoghq.com/env: {{ .Values.global.env.name | quote }}
+    tags.datadoghq.com/service: {{ include "swagger.fullname" . }}
+    tags.datadoghq.com/team: {{ .Values.namespace | quote }}
     {{- include "swagger.labels" . | nindent 4 }}
 spec:
   revisionHistoryLimit: 1 # Default to 10 if not specified

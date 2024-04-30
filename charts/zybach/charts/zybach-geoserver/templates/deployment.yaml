@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: {{ include "geoserver.fullname" . }}
   labels:
+    tags.datadoghq.com/env: {{ .Values.global.env.name | quote }}
+    tags.datadoghq.com/service: {{ include "geoserver.fullname" . }}
+    tags.datadoghq.com/team: {{ .Values.namespace | quote }}
     {{- include "geoserver.labels" . | nindent 4 }}
 spec:
   revisionHistoryLimit: 1 # Default to 10 if not specified
