@@ -146,7 +146,7 @@ data "azurerm_client_config" "current" {}
 locals {
   tags = {
     "managed"       = "terraformed"
-    "environment"   = var.aspNetEnvironment
+    "environment"   = var.environment
     "team"          = var.team
     "projectNumber" = var.projectNumber
   }
