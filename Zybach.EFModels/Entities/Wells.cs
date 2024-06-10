@@ -332,5 +332,94 @@ namespace Zybach.EFModels.Entities
                 .Select(x => x.AsWaterLevelMapSummaryDto())
                 .ToList();
         }
+
+        public static List<WellForFlowTestReportPageDto> ListForFlowTestReportPageDtos(ZybachDbContext dbContext)
+        {
+            var results = new List<WellForFlowTestReportPageDto>();
+            
+            #region Requires Flow Rate Test
+
+            // MK 6/7/2024 -- Wells requiring pump rate auditing. From the card -- "Audited Pump Rate is 3 years old or greater (and due for a new flow test)".
+            var threeYearsInThePast = DateTime.UtcNow.AddYears(-3); 
+            var agHubWellsRequiringPumpRateAudit = dbContext.AgHubWells
+                .AsNoTracking()
+                .Where(x => x.AuditPumpRateUpdated.HasValue && x.AuditPumpRateUpdated.Value > threeYearsInThePast)
+                .Select(x => new WellForFlowTestReportPageDto()
+                {
+                    WellID = x.WellID,
+                    WellRegistrationNumber = x.Well.WellRegistrationID,
+                    FieldName = x.FieldName,
+                    LastFlowTest = x.AuditPumpRateUpdated,
+                    AgHubRegisteredUserName = x.AgHubRegisteredUser,
+                });
+
+            results.AddRange(agHubWellsRequiringPumpRateAudit);
+
+            #endregion
+
+            #region Requires Chemigation Inspection
+
+            // MK 6/7/2024 -- Wells that have inspections that are due for renewal. From the card -- "a chemigation inspection is due (pending for current year) which is determined based on every 3 years logic".
+            var currentYear = DateTime.UtcNow.Year;
+            var inspectionsRequiringRenewal = dbContext.ChemigationInspections
+                .Include(x => x.ChemigationPermitAnnualRecord).ThenInclude(x => x.ChemigationPermit).ThenInclude(x => x.Well)
+                .Include(x => x.ChemigationPermitAnnualRecord).ThenInclude(x => x.ChemigationPermitAnnualRecordApplicators)
+                .AsNoTracking()
+                .Where(x => x.ChemigationPermitAnnualRecord.RecordYear == currentYear && x.ChemigationInspectionStatusID == ChemigationInspectionStatus.Pending.ChemigationInspectionStatusID);
+
+            foreach (var chemigationInspection in inspectionsRequiringRenewal)
+            {
+                var existingResult = results.SingleOrDefault(x => x.WellID == chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.WellID);
+                if (existingResult != null)
+                {
+                    //MK 6/7/2024 -- This code block handles the case where a well is due for both a flow test and a chemigation inspection, not sure how often that happens, but it seems possible so lets handle it!
+                    existingResult.PermitNumber = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber;
+                    existingResult.LastInspected = chemigationInspection.InspectionDate;
+                    existingResult.ChemigationPermitApplicantFirstName = chemigationInspection.ChemigationPermitAnnualRecord.ApplicantFirstName;
+                    existingResult.ChemigationPermitApplicantLastName = chemigationInspection.ChemigationPermitAnnualRecord.ApplicantLastName;
+                    existingResult.ChemigationPermitApplicatorNames = string.Join(", ", chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators.Select(x => x.ApplicatorName));
+                }
+                else if (chemigationInspection?.ChemigationPermitAnnualRecord?.ChemigationPermit?.WellID != null)
+                {
+                    //MK 6/7/2024 -- This code block handles the case where a well is due for a chemigation inspection, but wasn't due for a flow test.
+                    //We still want to include some AgHubWell data (namely FieldName and AgHubRegisteredUserName) to help the users track down the place and person to contact for the inspection.
+                    var agHubWell = dbContext.AgHubWells
+                        .AsNoTracking()
+                        .FirstOrDefault(x => x.WellID == chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.WellID);
+
+                    results.Add(new WellForFlowTestReportPageDto()
+                    {
+                        WellID = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.WellID.Value,
+                        WellRegistrationNumber = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.Well.WellRegistrationID,
+                        FieldName = agHubWell?.FieldName,
+                        LastFlowTest = agHubWell?.AuditPumpRateUpdated,
+                        AgHubRegisteredUserName = agHubWell?.AgHubRegisteredUser,
+                        PermitNumber = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber,
+                        LastInspected = chemigationInspection.InspectionDate,
+                        ChemigationPermitApplicantFirstName = chemigationInspection.ChemigationPermitAnnualRecord.ApplicantFirstName,
+                        ChemigationPermitApplicantLastName = chemigationInspection.ChemigationPermitAnnualRecord.ApplicantLastName,
+                        ChemigationPermitApplicatorNames = string.Join(", ", chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermitAnnualRecordApplicators.Select(x => x.ApplicatorName))
+                    });
+                }
+            }
+
+            #endregion
+
+            return results;
+        }
+    }
+    
+    public class WellForFlowTestReportPageDto
+    {
+        public int WellID { get; set; }
+        public string WellRegistrationNumber { get; set; }
+        public int PermitNumber { get; set; }
+        public string FieldName { get; set; }
+        public DateTime? LastInspected { get; set; }
+        public DateTime? LastFlowTest { get; set; }
+        public string AgHubRegisteredUserName { get; set; }
+        public string ChemigationPermitApplicantFirstName { get; set; }
+        public string ChemigationPermitApplicantLastName { get; set; }
+        public string ChemigationPermitApplicatorNames { get; set; }
     }
 }
