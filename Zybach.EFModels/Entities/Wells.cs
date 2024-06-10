@@ -343,7 +343,7 @@ namespace Zybach.EFModels.Entities
             var threeYearsInThePast = DateTime.UtcNow.AddYears(-3); 
             var agHubWellsRequiringPumpRateAudit = dbContext.AgHubWells
                 .AsNoTracking()
-                .Where(x => x.AuditPumpRateUpdated.HasValue && x.AuditPumpRateUpdated.Value > threeYearsInThePast)
+                .Where(x => x.AuditPumpRateUpdated.HasValue && x.AuditPumpRateUpdated.Value <= threeYearsInThePast)
                 .Select(x => new WellForFlowTestReportPageDto()
                 {
                     WellID = x.WellID,
@@ -407,19 +407,5 @@ namespace Zybach.EFModels.Entities
 
             return results;
         }
-    }
-    
-    public class WellForFlowTestReportPageDto
-    {
-        public int WellID { get; set; }
-        public string WellRegistrationNumber { get; set; }
-        public int PermitNumber { get; set; }
-        public string FieldName { get; set; }
-        public DateTime? LastInspected { get; set; }
-        public DateTime? LastFlowTest { get; set; }
-        public string AgHubRegisteredUserName { get; set; }
-        public string ChemigationPermitApplicantFirstName { get; set; }
-        public string ChemigationPermitApplicantLastName { get; set; }
-        public string ChemigationPermitApplicatorNames { get; set; }
     }
 }
