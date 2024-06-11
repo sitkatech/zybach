@@ -27,7 +27,8 @@ namespace Zybach.API
 
         protected override void RunJobImplementation()
         {
-            GetDailyWellContinuityMeterData(DefaultStartDate);
+            var fromDate = new DateTime(DateTime.Today.Year, 1, 1);
+            GetDailyWellContinuityMeterData(fromDate);
         }
 
         private void GetDailyWellContinuityMeterData(DateTime fromDate)
