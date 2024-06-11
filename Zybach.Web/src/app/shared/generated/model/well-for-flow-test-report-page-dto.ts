@@ -12,12 +12,13 @@
 
 export class WellForFlowTestReportPageDto { 
     WellID?: number;
-    WellRegistrationNumber?: string;
-    PermitNumber?: number;
+    WellRegistrationID?: string;
+    ChemigationPermitNumber?: number;
+    ChemigationPermitNumberDisplay?: string;
     FieldName?: string;
     LastInspected?: string;
     LastFlowTest?: string;
-    AgHubRegisteredUserName?: string;
+    AgHubRegisteredUser?: string;
     ChemigationPermitApplicantFirstName?: string;
     ChemigationPermitApplicantLastName?: string;
     ChemigationPermitApplicatorNames?: string;

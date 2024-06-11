@@ -10655,13 +10655,17 @@
             "type": "integer",
             "format": "int32"
           },
-          "WellRegistrationNumber": {
+          "WellRegistrationID": {
             "type": "string",
             "nullable": true
           },
-          "PermitNumber": {
+          "ChemigationPermitNumber": {
             "type": "integer",
             "format": "int32"
+          },
+          "ChemigationPermitNumberDisplay": {
+            "type": "string",
+            "nullable": true
           },
           "FieldName": {
             "type": "string",
@@ -10677,7 +10681,7 @@
             "format": "date-time",
             "nullable": true
           },
-          "AgHubRegisteredUserName": {
+          "AgHubRegisteredUser": {
             "type": "string",
             "nullable": true
           },

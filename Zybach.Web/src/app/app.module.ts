@@ -109,6 +109,7 @@ import { TimeagoModule } from 'ngx-timeago';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FarmingPracticesComponent } from './pages/farming-practices/farming-practices.component';
 import { FarmingPracticesMapComponent } from './pages/farming-practices-map/farming-practices-map.component';
+import { FlowTestReportListComponent } from './pages/flow-test-report-list/flow-test-report-list.component';
 
 export function init_app(appLoadService: AppInitService, appInsightsService:  AppInsightsService) {
   return () => appLoadService.init().then(() => {
@@ -173,7 +174,7 @@ export function init_app(appLoadService: AppInitService, appInsightsService:  Ap
         WellPermitsInspectionsTabComponent,
         WaterLevelInspectionListComponent, WellContactEditComponent, WellParticipationEditComponent, WellRegistrationIdEditComponent, ClearinghouseWqiReportComponent, SensorListComponent, SensorDetailComponent, WaterLevelInspectionDetailComponent, WaterLevelInspectionNewComponent, WaterLevelInspectionEditComponent, WaterQualityReportsComponent, SensorAnomalyListComponent, SensorAnomalyEditComponent, WaterLevelExplorerComponent, WellWaterLevelMapComponent, IrrigationUnitListComponent, IrrigationUnitDetailComponent, IrrigationUnitMapComponent, OpenetSyncWaterYearMonthStatusListComponent, SupportTicketListComponent, SupportTicketDetailComponent, SupportTicketEditComponent, SupportTicketNewComponent, SupportTicketUpsertComponent, SupportTicketCommentNewComponent, WellPumpingSummaryComponent,
         WellGroupListComponent,
-        WellGroupEditComponent, WellGroupDetailComponent, WellGroupWaterLevelsTabComponent, WaterLevelReportsComponent, SensorHealthCheckComponent, FarmingPracticesComponent, FarmingPracticesMapComponent
+        WellGroupEditComponent, WellGroupDetailComponent, WellGroupWaterLevelsTabComponent, WaterLevelReportsComponent, SensorHealthCheckComponent, FarmingPracticesComponent, FarmingPracticesMapComponent, FlowTestReportListComponent
     ],
     imports: [
         AppRoutingModule,

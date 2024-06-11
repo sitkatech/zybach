@@ -33,5 +33,6 @@ export enum CustomRichTextTypeEnum {
   WaterLevelsReport = 28,
   SensorHealthCheck = 29,
   SensorStatusMap = 30,
-  FarmingPractices = 31
+  FarmingPractices = 31,
+  FlowTestReport = 32
 }
