@@ -18,6 +18,11 @@ public partial class vSensor
 
     public int SensorTypeID { get; set; }
 
+    [Required]
+    [StringLength(100)]
+    [Unicode(false)]
+    public string SensorTypeName { get; set; }
+
     public int? WellID { get; set; }
 
     public bool InGeoOptix { get; set; }
@@ -77,6 +82,4 @@ public partial class vSensor
     [StringLength(100)]
     [Unicode(false)]
     public string MostRecentSupportTicketTitle { get; set; }
-
-    public string SensorTypeName { get; set; }
 }
