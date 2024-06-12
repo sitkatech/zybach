@@ -11,6 +11,7 @@ import { CountyService } from './api/county.service';
 import { CustomRichTextService } from './api/custom-rich-text.service';
 import { FieldDefinitionService } from './api/field-definition.service';
 import { FileResourceService } from './api/file-resource.service';
+import { FlowTestReportService } from './api/flow-test-report.service';
 import { IrrigationUnitService } from './api/irrigation-unit.service';
 import { ManagerDashboardService } from './api/manager-dashboard.service';
 import { MapDataService } from './api/map-data.service';
@@ -45,6 +46,7 @@ import { WellGroupService } from './api/well-group.service';
     CustomRichTextService,
     FieldDefinitionService,
     FileResourceService,
+    FlowTestReportService,
     IrrigationUnitService,
     ManagerDashboardService,
     MapDataService,

@@ -104,6 +104,7 @@ export * from '././water-quality-inspection-upsert-dto';
 export * from '././well-contact-info-dto';
 export * from '././well-detail-dto';
 export * from '././well-dto';
+export * from '././well-for-flow-test-report-page-dto';
 export * from '././well-group-dto';
 export * from '././well-group-simple-dto';
 export * from '././well-group-summary-dto';

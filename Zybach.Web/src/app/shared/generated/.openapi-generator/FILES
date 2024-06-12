@@ -8,6 +8,7 @@ api/county.service.ts
 api/custom-rich-text.service.ts
 api/field-definition.service.ts
 api/file-resource.service.ts
+api/flow-test-report.service.ts
 api/irrigation-unit.service.ts
 api/manager-dashboard.service.ts
 api/map-data.service.ts
@@ -137,6 +138,7 @@ model/water-quality-inspection-upsert-dto.ts
 model/well-contact-info-dto.ts
 model/well-detail-dto.ts
 model/well-dto.ts
+model/well-for-flow-test-report-page-dto.ts
 model/well-group-dto.ts
 model/well-group-simple-dto.ts
 model/well-group-summary-dto.ts
