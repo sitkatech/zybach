@@ -1762,6 +1762,44 @@
         }
       }
     },
+    "/wellsRequiringAction": {
+      "get": {
+        "tags": [
+          "FlowTestReport"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellForFlowTestReportPageDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellForFlowTestReportPageDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WellForFlowTestReportPageDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/irrigationUnits/summary/{startDateMonth}/{startDateYear}/{endDateMonth}/{endDateYear}": {
       "get": {
         "tags": [
@@ -10606,6 +10644,58 @@
           "Latitude": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WellForFlowTestReportPageDto": {
+        "type": "object",
+        "properties": {
+          "WellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WellRegistrationID": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ChemigationPermitNumberDisplay": {
+            "type": "string",
+            "nullable": true
+          },
+          "FieldName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastInspected": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastFlowTest": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "AgHubRegisteredUser": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitApplicantFirstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitApplicantLastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "ChemigationPermitApplicatorNames": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

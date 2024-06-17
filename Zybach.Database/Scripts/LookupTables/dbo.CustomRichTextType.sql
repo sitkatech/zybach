@@ -30,7 +30,8 @@ USING (VALUES
 (28, 'WaterLevelsReport', 'Water Levels Report'),
 (29, 'SensorHealthCheck', 'Sensor Health Check'),
 (30, 'SensorStatusMap', 'Sensor Status Map'),
-(31, 'FarmingPractices', 'Farming Practices')
+(31, 'FarmingPractices', 'Farming Practices'),
+(32, 'FlowTestReport', 'Flow Test Report')
 )
 AS Source (CustomRichTextTypeID, CustomRichTextTypeName, CustomRichTextTypeDisplayName)
 ON Target.CustomRichTextTypeID = Source.CustomRichTextTypeID
