@@ -76,7 +76,6 @@ begin
 		select ahw.AgHubIrrigationUnitID, ahwia.IrrigationYear, sum(ahwia.Acres) as Acres 
 		from dbo.AgHubWell ahw
 		join dbo.AgHubWellIrrigatedAcre ahwia on ahw.AgHubWellID = ahwia.AgHubWellID
-		where AgHubIrrigationUnitID = 1916
 		group by ahw.AgHubIrrigationUnitID, ahwia.IrrigationYear
 	) ahwiya on ahiu.AgHubIrrigationUnitID = ahwiya.AgHubIrrigationUnitID and ahiur.ReadingYear = ahwiya.IrrigationYear
 	group by ahiu.AgHubIrrigationUnitID
