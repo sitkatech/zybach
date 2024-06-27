@@ -12,33 +12,37 @@ namespace Zybach.Tests.IntegrationTests.PrismAPI;
 [TestClass]
 public class PrismDownloadTest
 {
-    private PrismAPIHelper _prismAPIHelper;
+    private static PrismAPIHelper _prismAPIHelper;
 
     [ClassInitialize]
-    public void ClassInitialize()
+    public static void ClassInitialize(TestContext context)
     {
         _prismAPIHelper = new PrismAPIHelper();
     }
 
     [DataTestMethod]
-    [DataRow("ppt", "2021-01-01")]
+    [DataRow("ppt", "20210101")]
     public async Task TestDownload(string elementAsQueryValue, string date)
     {
         var element = PrismDataElement.FromString(elementAsQueryValue);
         var cached = await _prismAPIHelper.GetDataAsZipFolder(element, date);
 
-        var zipFileName = _prismAPIHelper.GetZipFileName(element, date);
-        Assert.IsTrue(File.Exists(zipFileName));
+        var zipFileFullPath = _prismAPIHelper.GetZipFileFullPath(element, date);
+        Assert.IsTrue(File.Exists(zipFileFullPath));
 
         var unzipSuccessful = _prismAPIHelper.UnzipFolder(element, date);
         Assert.IsTrue(unzipSuccessful);
-        var directoryName = _prismAPIHelper.GetContainingDirectoryName(element, date);
-        Assert.IsTrue(Directory.Exists(directoryName));
+
+        var containingDirectoryFullPath = _prismAPIHelper.GetContainingDirectoryFullPath(element, date);
+        Assert.IsTrue(Directory.Exists(containingDirectoryFullPath));
     }
 }
 
 public class PrismAPIHelper
 {
+    private static string _baseZIPDirectory = "C:/Sitka/Zybach/PRISM_API/ZIP_ARCHIVE";
+    private static string _baseDataDirectory = "C:/Sitka/Zybach/PRISM_API/DATA";
+
     private static string _baseURL  = "https://services.nacse.org/prism/data/public/4km";
 
     /// <summary>
@@ -50,16 +54,34 @@ public class PrismAPIHelper
     public async Task<bool> GetDataAsZipFolder(PrismDataElement element, string date)
     {
         //MK 6/26/2024 -- Check if we have the file already, if we do skip the download so we don't get IP banned. 
-        var containingFolderName = GetContainingDirectoryName(element, date);
-        if (Directory.Exists(containingFolderName))
+        var containingDirectoryFullPath = GetContainingDirectoryFullPath(element, date);
+        if (Directory.Exists(containingDirectoryFullPath))
         {
             return true;
         }
 
         var requestURL = $"{_baseURL}/{element}/{date}";
         var httpClient = new HttpClient();
-        var response = await httpClient.GetByteArrayAsync(requestURL);
-        await File.WriteAllBytesAsync($"{element}-{date}", response);
+        var response = await httpClient.GetAsync(requestURL);
+        
+        var zipDirectory = Directory.Exists(_baseZIPDirectory);
+        if (!zipDirectory)
+        {
+            Directory.CreateDirectory(_baseZIPDirectory);
+        }
+
+
+        await using var streamToReadFrom = await response.Content.ReadAsStreamAsync();
+
+        // Save the ZIP file to disk
+        var zipFileFullPath = GetZipFileFullPath(element, date);
+        await using (var fileStream = new FileStream(zipFileFullPath, FileMode.Create, FileAccess.Write, FileShare.None))
+        {
+            await streamToReadFrom.CopyToAsync(fileStream);
+        }
+        
+        await streamToReadFrom.DisposeAsync();
+
         return true;
     }
 
@@ -71,27 +93,45 @@ public class PrismAPIHelper
     /// <returns>A boolean indicating whether the zip file was successfully unzipped or if the data already exists in the target directory.</returns>
     public bool UnzipFolder(PrismDataElement element, string date)
     {
-        var containingFolderName = GetContainingDirectoryName(element, date);
-        if (Directory.Exists(containingFolderName))
+        var containingDirectoryFullPath = GetContainingDirectoryFullPath(element, date);
+        if (Directory.Exists(containingDirectoryFullPath))
         {
             return true;
         }
 
-        var zipFileName = GetZipFileName(element, date);
-        if (!File.Exists(zipFileName))
+        var zipFileFullPath = GetZipFileFullPath(element, date);
+        if (!File.Exists(zipFileFullPath))
         {
             return false;
         }
 
-        Directory.CreateDirectory(containingFolderName);
-        ZipFile.ExtractToDirectory(zipFileName, containingFolderName);
+        if (!Directory.Exists(_baseDataDirectory))
+        {
+            Directory.CreateDirectory(_baseDataDirectory);
+        }
 
+
+        Directory.CreateDirectory(containingDirectoryFullPath!);
+
+        // Extract the ZIP file to the target directory
+        using var zip = new ZipArchive(new FileStream(zipFileFullPath, FileMode.Open, FileAccess.Read));
+        zip.ExtractToDirectory(containingDirectoryFullPath);
         return true;
+    }
+
+    public string GetContainingDirectoryFullPath(PrismDataElement element, string date)
+    {
+        return $"{_baseDataDirectory}/{GetContainingDirectoryName(element, date)}";
     }
 
     public string GetContainingDirectoryName(PrismDataElement element, string date)
     {
         return $"PRISM_{element}_stable_4km_{date}_bil";
+    }
+
+    public string GetZipFileFullPath(PrismDataElement element, string date)
+    {
+        return $"{_baseZIPDirectory}/{GetZipFileName(element, date)}";
     }
 
     public string GetZipFileName(PrismDataElement element, string date)
