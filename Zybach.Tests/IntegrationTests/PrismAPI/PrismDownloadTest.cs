@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OSGeo.GDAL;
 
 namespace Zybach.Tests.IntegrationTests.PrismAPI;
 
@@ -22,7 +28,7 @@ public class PrismDownloadTest
 
     [DataTestMethod]
     [DataRow("ppt", "20210101")]
-    public async Task TestDownload(string elementAsQueryValue, string date)
+    public async Task CanDownloadDataForDate(string elementAsQueryValue, string date)
     {
         var element = PrismDataElement.FromString(elementAsQueryValue);
         var cached = await _prismAPIHelper.GetDataAsZipFolder(element, date);
@@ -36,14 +42,99 @@ public class PrismDownloadTest
         var containingDirectoryFullPath = _prismAPIHelper.GetContainingDirectoryFullPath(element, date);
         Assert.IsTrue(Directory.Exists(containingDirectoryFullPath));
     }
+
+    [DataTestMethod]
+    [DataRow("ppt", "20210101", "20210131")]
+    [DataRow("tmin", "20210101", "20210131")]
+    [DataRow("tmax", "20210101", "20210131")]
+    public async Task CanDownloadDataForDateRange(string elementAsQueryValue, string startDate, string endDate)
+    {
+        var element = PrismDataElement.FromString(elementAsQueryValue);
+        var start = DateTime.ParseExact(startDate, "yyyyMMdd", null);
+        var end = DateTime.ParseExact(endDate, "yyyyMMdd", null);
+
+        var success = await _prismAPIHelper.GetDataForDateRange(start, end, element);
+        Assert.IsTrue(success);
+    }
+
+    [DataTestMethod]
+    [DataRow("ppt", "20210101")]
+    public async Task CanReadBILData(string elementAsQueryValue, string date)
+    {
+        await CanDownloadDataForDate(elementAsQueryValue, date);
+
+        var element = PrismDataElement.FromString(elementAsQueryValue);
+        var containingDirectoryFullPath = _prismAPIHelper.GetContainingDirectoryFullPath(element, date);
+        
+        GdalConfiguration.ConfigureGdal();
+            
+        var bilFile = $"{containingDirectoryFullPath}/{_prismAPIHelper.GetFileName(element, date, "bil")}";
+        var dataset = Gdal.Open(bilFile, Access.GA_ReadOnly);
+        Assert.IsNotNull(dataset, "Error opening file.");
+
+        var band = dataset.GetRasterBand(1);
+        Assert.IsNotNull(band, "Error getting band.");
+
+        // Get raster dimensions
+        var width = band.XSize;
+        var height = band.YSize;
+
+        // Create buffer to hold raster data
+        var buffer = new float[width * height];
+
+        // Read raster data into buffer
+        band.ReadRaster(0, 0, width, height, buffer, width, height, 0, 0);
+
+        // Print a portion of the data
+        for (var row = 0; row < Math.Min(height, 50); row++)
+        {
+            for (var col = 0; col < Math.Min(width, 50); col++)
+            {
+                Console.Write(buffer[row * width + col] + " ");
+            }
+
+            Console.WriteLine();
+        }
+
+        // Cleanup
+        dataset.Dispose();
+    }
 }
 
 public class PrismAPIHelper
 {
-    private static string _baseZIPDirectory = "C:/Sitka/Zybach/PRISM_API/ZIP_ARCHIVE";
-    private static string _baseDataDirectory = "C:/Sitka/Zybach/PRISM_API/DATA";
+    private const string _baseZIPDirectory = "C:/Sitka/Zybach/PRISM_API/ZIP_ARCHIVE";
+    private const string _baseDataDirectory = "C:/Sitka/Zybach/PRISM_API/DATA";
 
-    private static string _baseURL  = "https://services.nacse.org/prism/data/public/4km";
+    private const string _baseURL = "https://services.nacse.org/prism/data/public/4km";
+
+    /// <summary>
+    /// Retrieves and processes data for a specified date range for a given Prism data element.
+    /// </summary>
+    /// <param name="start">The start date of the date range.</param>
+    /// <param name="end">The end date of the date range.</param>
+    /// <param name="element">The data element to retrieve and process.</param>
+    /// <returns>Returns true if the data retrieval and processing is successful.</returns>
+    /// <exception cref="ArgumentException">Thrown when the start date is after the end date.</exception>
+    public async Task<bool> GetDataForDateRange(DateTime start, DateTime end, PrismDataElement element)
+    {
+        if (start > end)
+        {
+            throw new ArgumentException("Start date must be before end date.");
+        }
+
+        var currentDate = start;
+        while (currentDate <= end)
+        {
+            var date = currentDate.ToString("yyyyMMdd");
+            await GetDataAsZipFolder(element, date);
+            UnzipFolder(element, date);
+            currentDate = currentDate.AddDays(1); 
+            Thread.Sleep(2000); //MK 6/26/2024 -- Their example code has a 2 second delay between requests, with a note that says to be kind to their server.
+        }
+
+        return true;
+    }
 
     /// <summary>
     /// Downloads climate data from the PRISM API and saves it as a zip file if not already present locally. Please see https://prism.oregonstate.edu/documents/PRISM_downloads_web_service.pdf for more information.
@@ -63,13 +154,16 @@ public class PrismAPIHelper
         var requestURL = $"{_baseURL}/{element}/{date}";
         var httpClient = new HttpClient();
         var response = await httpClient.GetAsync(requestURL);
-        
-        var zipDirectory = Directory.Exists(_baseZIPDirectory);
-        if (!zipDirectory)
+
+        if (!Directory.Exists(_baseZIPDirectory))
         {
             Directory.CreateDirectory(_baseZIPDirectory);
         }
 
+        if (!Directory.Exists($"{_baseZIPDirectory}/{element}"))
+        {
+            Directory.CreateDirectory($"{_baseZIPDirectory}/{element}");
+        }
 
         await using var streamToReadFrom = await response.Content.ReadAsStreamAsync();
 
@@ -110,6 +204,10 @@ public class PrismAPIHelper
             Directory.CreateDirectory(_baseDataDirectory);
         }
 
+        if (!Directory.Exists($"{_baseDataDirectory}/{element}"))
+        {
+            Directory.CreateDirectory($"{_baseDataDirectory}/{element}");
+        }
 
         Directory.CreateDirectory(containingDirectoryFullPath!);
 
@@ -121,22 +219,27 @@ public class PrismAPIHelper
 
     public string GetContainingDirectoryFullPath(PrismDataElement element, string date)
     {
-        return $"{_baseDataDirectory}/{GetContainingDirectoryName(element, date)}";
+        return $"{_baseDataDirectory}/{element}/{GetFolderName(element, date)}";
     }
 
-    public string GetContainingDirectoryName(PrismDataElement element, string date)
+    public string GetFolderName(PrismDataElement element, string date)
     {
         return $"PRISM_{element}_stable_4km_{date}_bil";
     }
 
+    public string GetFileName(PrismDataElement element, string date, string extension)
+    {
+        return $"PRISM_{element}_stable_4kmD2_{date}_bil.{extension}";
+    }
+
     public string GetZipFileFullPath(PrismDataElement element, string date)
     {
-        return $"{_baseZIPDirectory}/{GetZipFileName(element, date)}";
+        return $"{_baseZIPDirectory}/{element}/{GetZipFileName(element, date)}";
     }
 
     public string GetZipFileName(PrismDataElement element, string date)
     {
-        var containingFolderName = GetContainingDirectoryName(element, date);
+        var containingFolderName = GetFolderName(element, date);
         return $"{containingFolderName}.zip";
     }
 }
