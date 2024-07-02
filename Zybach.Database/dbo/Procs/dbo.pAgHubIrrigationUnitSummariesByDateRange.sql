@@ -13,7 +13,7 @@ begin
 	set @startDate = datefromparts(@startDateYear, @startDateMonth, 1)
 	set @endDate = EOMONTH(datefromparts(@endDateYear, @endDateMonth, 1), 0)
 
-	declare @acreInchesToGallonsConversionRate int = 27154.2857
+	declare @acreInchesToGallonsConversionRate float = 27154.2857
 
 	select ahiu.AgHubIrrigationUnitID,
 
@@ -73,7 +73,7 @@ begin
 	) ahiur on ahiu.AgHubIrrigationUnitID = ahiur.AgHubIrrigationUnitID and ahiuoet.ReportedYear = ahiur.ReadingYear
 
 	left join (
-		select ahw.AgHubIrrigationUnitID, ahwia.IrrigationYear, sum(ahwia.Acres) as Acres 
+		select ahw.AgHubIrrigationUnitID, ahwia.IrrigationYear, max(ahwia.Acres) as Acres 
 		from dbo.AgHubWell ahw
 		join dbo.AgHubWellIrrigatedAcre ahwia on ahw.AgHubWellID = ahwia.AgHubWellID
 		group by ahw.AgHubIrrigationUnitID, ahwia.IrrigationYear
