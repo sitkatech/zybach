@@ -40,6 +40,9 @@
     <ProjectReference Include="..\Zybach.EFModels\Zybach.EFModels.csproj" />
     <ProjectReference Include="..\Zybach.Models\Zybach.Models.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
+  </ItemGroup>
   <!-- 
     This PostBuild target is used to generate the static swagger.json file that is meant to be 
     used by the web project to generate typescript models using `npm run gen-model`

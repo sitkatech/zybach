@@ -2,21 +2,24 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OSGeo.GDAL;
-using Zybach.Models.Abstracts;
+using Zybach.API.Services;
+using Zybach.EFModels.Entities;
+using Zybach.Models.Prism;
 
 namespace Zybach.Tests.IntegrationTests.PrismAPI;
 
 [TestClass]
 public class PrismDownloadTest
 {
-    private static PrismAPIHelper _prismAPIHelper;
+    private static PrismAPIService _prismAPIHelper;
 
     [ClassInitialize]
     public static void ClassInitialize(TestContext context)
     {
-        _prismAPIHelper = new PrismAPIHelper();
+        _prismAPIHelper = new PrismAPIService();
     }
 
     [DataTestMethod]
@@ -46,7 +49,7 @@ public class PrismDownloadTest
         var start = DateTime.ParseExact(startDate, "yyyyMMdd", null);
         var end = DateTime.ParseExact(endDate, "yyyyMMdd", null);
 
-        var success = await _prismAPIHelper.GetDataForDateRange(start, end, element);
+        var success = await _prismAPIHelper.GetDataForDateRange(element, start, end);
         Assert.IsTrue(success);
     }
 
@@ -54,6 +57,11 @@ public class PrismDownloadTest
     [DataRow("ppt", "20210101")]
     public async Task CanReadBILData(string elementAsQueryValue, string date)
     {
+        var dbCS = "Data Source=host.docker.internal;Initial Catalog=ZybachDB;Persist Security Info=True;User ID=DockerWebUser;Password=password#1;Encrypt=False;";
+        var dbOptions = new DbContextOptionsBuilder<ZybachDbContext>();
+        dbOptions.UseSqlServer(dbCS, x => x.UseNetTopologySuite());
+        var dbContext = new ZybachDbContext(dbOptions.Options);
+
         await CanDownloadDataForDate(elementAsQueryValue, date);
 
         var element = PrismDataElement.FromString(elementAsQueryValue);
@@ -84,40 +92,24 @@ public class PrismDownloadTest
             for (var col = 0; col < Math.Min(width, 50); col++)
             {
                 Console.Write(buffer[row * width + col] + " ");
+
+
+                dbContext.PrismRecords.Add(new PrismRecord()
+                {
+                    ElementType = element.ToString(),
+                    Date = DateTime.ParseExact(date, "yyyyMMdd", null),
+                    X = col,
+                    Y = row,
+                    Value = buffer[row * width + col]
+                });
             }
 
             Console.WriteLine();
         }
 
+        await dbContext.SaveChangesAsync();
+
         // Cleanup
         dataset.Dispose();
-    }
-}
-
-public class PrismDataElement : ClassEnum<PrismDataElement>
-{
-    public string QueryValue { get; set; }
-
-    public PrismDataElement(string val)
-    {
-        QueryValue = val;
-    }
-
-    public static PrismDataElement PPT = new ("ppt");
-    public static PrismDataElement TMin = new ("tmin");
-    public static PrismDataElement TMax = new("tmax");
-    public static PrismDataElement TMean = new ("tmean");
-    public static PrismDataElement TDMean = new ("tdmean");
-    public static PrismDataElement VPDMin = new ("vpdmin");
-    public static PrismDataElement VPDMaxn = new ("vpdmax");
-
-    public override string ToString()
-    {
-        return QueryValue;
-    }
-
-    public static PrismDataElement FromString(string val)
-    {
-        return All.First(x => x.QueryValue == val);
     }
 }

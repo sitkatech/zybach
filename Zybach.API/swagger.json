@@ -2341,19 +2341,99 @@
               "text/plain": {
                 "schema": {
                   "type": "array",
-                  "items": { }
+                  "items": {
+                    "$ref": "#/components/schemas/PrismRecordDto"
+                  }
                 }
               },
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { }
+                  "items": {
+                    "$ref": "#/components/schemas/PrismRecordDto"
+                  }
                 }
               },
               "text/json": {
                 "schema": {
                   "type": "array",
-                  "items": { }
+                  "items": {
+                    "$ref": "#/components/schemas/PrismRecordDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/prism-api/element-type/{element-types}/dates/{startDate}/{endDate}": {
+      "get": {
+        "tags": [
+          "PrismAPI"
+        ],
+        "parameters": [
+          {
+            "name": "elementType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "element-types",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrismRecordDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrismRecordDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrismRecordDto"
+                  }
                 }
               }
             }
@@ -8397,6 +8477,40 @@
           },
           "EventMessage": {
             "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrismRecordDto": {
+        "type": "object",
+        "properties": {
+          "PrismRecordID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ElementType": {
+            "type": "string",
+            "nullable": true
+          },
+          "Date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "X": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Y": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "Value": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         },

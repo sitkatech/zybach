@@ -4,10 +4,20 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Zybach.Models.Prism;
 
-namespace Zybach.Tests.IntegrationTests.PrismAPI;
+namespace Zybach.API.Services;
 
-public class PrismAPIHelper
+
+//TODO: MK/7/2/2024 -- This service needs to be refactored to:
+//                              TODO: Use blob storage instead of local storage.
+//                              TODO: Clean up the unzipped files after use.
+//                              TODO: Check if the SQL data exists instead of the files for skipping.
+//                              TODO: Insert the data into SQL? Might be best to do it as close to where we get it as possible so we don't have to bring it into memory multiple times.
+//                              TODO: Possibly need to save the header file as well might need a new entity and a FK.
+//                              TODO: Provide override to force a redownload and reprocessing if user requests it. 
+//                              TODO: Inject this service in startup instead of just newing it up. Not the highest priority IMO but good for consistency/correctness. 
+public class PrismAPIService
 {
     private const string _baseZIPDirectory = "C:/Sitka/Zybach/PRISM_API/ZIP_ARCHIVE";
     private const string _baseDataDirectory = "C:/Sitka/Zybach/PRISM_API/DATA";
@@ -17,12 +27,12 @@ public class PrismAPIHelper
     /// <summary>
     /// Retrieves and processes data for a specified date range for a given Prism data element.
     /// </summary>
+    /// <param name="element">The data element to retrieve and process.</param>
     /// <param name="start">The start date of the date range.</param>
     /// <param name="end">The end date of the date range.</param>
-    /// <param name="element">The data element to retrieve and process.</param>
     /// <returns>Returns true if the data retrieval and processing is successful.</returns>
     /// <exception cref="ArgumentException">Thrown when the start date is after the end date.</exception>
-    public async Task<bool> GetDataForDateRange(DateTime start, DateTime end, PrismDataElement element)
+    public async Task<bool> GetDataForDateRange(PrismDataElement element, DateTime start, DateTime end)
     {
         if (start > end)
         {
@@ -42,6 +52,14 @@ public class PrismAPIHelper
         return true;
     }
 
+    public bool GetDataForDate(PrismDataElement element, DateTime date)
+    {
+        var dateAsString = date.ToString("yyyyMMdd");
+        var hadOrGotZip = GetDataAsZipFolder(element, dateAsString);
+        var haveUnzipped = UnzipFolder(element, dateAsString);
+        return hadOrGotZip.Result && haveUnzipped;
+    }
+    
     /// <summary>
     /// Downloads climate data from the PRISM API and saves it as a zip file if not already present locally. Please see https://prism.oregonstate.edu/documents/PRISM_downloads_web_service.pdf for more information.
     /// </summary>
@@ -122,7 +140,6 @@ public class PrismAPIHelper
         zip.ExtractToDirectory(containingDirectoryFullPath);
         return true;
     }
-
     public string GetContainingDirectoryFullPath(PrismDataElement element, string date)
     {
         return $"{_baseDataDirectory}/{element}/{GetFolderName(element, date)}";
