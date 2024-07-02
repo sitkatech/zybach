@@ -17,7 +17,7 @@
 8. Run npm run gen-model to make sure there isn't an issue there. Mikey ran into an issue where the project broke if generated with the latest generator. To fix that issue:
 	- npm install @openapitools/openapi-generator-cli -g
 	- openapi-generator-cli version-manager set 5.3.0
-9. Point to QA keystone until there is a good reason to get it working locally. Replace local keystone URLS in C:\git\sitkatech\qanat\Qanat.Web\src\assets\config with https://identity-qa.sitkatech.com
+9. Point to QA keystone until there is a good reason to get it working locally. Replace local keystone URLS in C:\git\sitkatech\zybach\Zybach.Web\src\assets\config with https://identity-qa.sitkatech.com
 10. Should be able to log into the app after pressing the go buttons.
 
 ## Optional/Recommended
