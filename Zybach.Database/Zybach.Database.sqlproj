@@ -209,6 +209,7 @@
     <Build Include="dbo\Procs\dbo.pTruncateAgHubWellIrrigatedAcreStaging.sql" />
     <Build Include="dbo\Tables\dbo.AgHubIrrigatedAcreTillageType.sql" />
     <None Include="Scripts\LookupTables\dbo.AgHubIrrigatedAcreTillageType.sql" />
+    <Build Include="dbo\Tables\dbo.PrismData.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
