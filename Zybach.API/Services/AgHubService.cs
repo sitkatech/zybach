@@ -124,6 +124,7 @@ namespace Zybach.API.Services
             public DateTime? DistrictPumpRateUpdated { get; set; }
             public int WellDistrictPumpRate { get; set; }
             public DateTime? AuditPumpRateUpdated { get; set; }
+            public DateTime? AuditPumpRateTested { get; set; }
             public int? WellAuditPumpRate { get; set; }
             public bool? WellConnectedMeter { get; set; }
             public string WellIrrigUnitID { get; set; }

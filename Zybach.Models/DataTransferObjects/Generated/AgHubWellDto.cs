@@ -16,6 +16,7 @@ namespace Zybach.Models.DataTransferObjects
         public bool WellConnectedMeter { get; set; }
         public int? WellAuditPumpRate { get; set; }
         public DateTime? AuditPumpRateUpdated { get; set; }
+        public DateTime? AuditPumpRateTested { get; set; }
         public bool HasElectricalData { get; set; }
         public int? RegisteredPumpRate { get; set; }
         public DateTime? RegisteredUpdated { get; set; }
@@ -33,6 +34,7 @@ namespace Zybach.Models.DataTransferObjects
         public bool WellConnectedMeter { get; set; }
         public int? WellAuditPumpRate { get; set; }
         public DateTime? AuditPumpRateUpdated { get; set; }
+        public DateTime? AuditPumpRateTested { get; set; }
         public bool HasElectricalData { get; set; }
         public int? RegisteredPumpRate { get; set; }
         public DateTime? RegisteredUpdated { get; set; }

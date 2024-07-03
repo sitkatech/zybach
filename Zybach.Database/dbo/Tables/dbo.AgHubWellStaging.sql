@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[AgHubWellStaging](
 	[WellConnectedMeter] [bit] NOT NULL,
 	[WellAuditPumpRate] [int] NULL,
 	[AuditPumpRateUpdated] [datetime] NULL,
+	[AuditPumpRateTested] [datetime] NULL,
 	[RegisteredPumpRate] [int] NULL,
 	[RegisteredUpdated] [datetime] NULL,
 	[HasElectricalData] [bit] NOT NULL,
