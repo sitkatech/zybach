@@ -14,12 +14,14 @@ namespace Zybach.API.Services;
 //  TODO: Check if the SQL data exists instead of the files for skipping.
 //  TODO: Insert the data into SQL? Might be best to do it as close to where we get it as possible so we don't have to bring it into memory multiple times. Will require passing in DBContext which couples this service to the EF layer.
 //  TODO: Possibly need to save the header file in SQL as well might need a new entity and a FK.
-//  TODO: SQL might still not be correct for this data as GDAL/OGR2OGR might just work better using the files natively, but I wanted to prove it out.
+//  TODO: SQL might still not be correct for this data as GDAL might just work better using the files natively, but I wanted to prove it out and also the card has an acceptance criteria to show the bil data from the website and serving via our api/sql would be my default way to do that.
 //  TODO: It takes about 4 seconds to query a days worth of data (~870,000 rows). Not sure if there is more  I could do to speed that up and given the previous TODO it might not be worth it.
 //  TODO: If we do stick with SQL it could be good to have some functions to rebuild the BIL and header file from SQL which should be very doable. 
 //  TODO: Provide override to force a redownload and reprocessing if user requests it. 
 //  TODO: Inject this service in startup instead of just newing it up. Not the highest priority IMO but good for consistency/correctness. Alternatively it could probably be made static with a little thought.
 //  TODO: Possibly should add support for the monthly and yearly data, requested with yyyyMM and yyyy respectively. Going with daily by default by now as that is the most granular, and should be a good example of how to get the other types if we need.
+//  TODO: Really not sure with how to deal with the fact that we a) don't know when new data will show up and b) the data changes up to 8 times over 6 months before its considered stable.
+
 
 public class PrismAPIService
 {
