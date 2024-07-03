@@ -344,13 +344,13 @@ namespace Zybach.EFModels.Entities
             var agHubWellsRequiringPumpRateAudit = dbContext.AgHubWells
                 .Include(x => x.Well)
                 .AsNoTracking()
-                .Where(x => x.Well.RequiresWaterLevelInspection && (!x.AuditPumpRateUpdated.HasValue || x.AuditPumpRateUpdated.Value <= threeYearsInThePast))
+                .Where(x => x.Well.RequiresWaterLevelInspection && (!x.AuditPumpRateTested.HasValue || x.AuditPumpRateTested.Value <= threeYearsInThePast))
                 .Select(x => new WellForFlowTestReportPageDto()
                 {
                     WellID = x.WellID,
                     WellRegistrationID = x.Well.WellRegistrationID,
                     FieldName = x.FieldName,
-                    LastFlowTest = x.AuditPumpRateUpdated,
+                    LastFlowTest = x.AuditPumpRateTested,
                     AgHubRegisteredUser = x.AgHubRegisteredUser,
                 });
 
@@ -391,7 +391,7 @@ namespace Zybach.EFModels.Entities
                         WellID = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.WellID.Value,
                         WellRegistrationID = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.Well.WellRegistrationID,
                         FieldName = agHubWell?.FieldName,
-                        LastFlowTest = agHubWell?.AuditPumpRateUpdated,
+                        LastFlowTest = agHubWell?.AuditPumpRateTested,
                         AgHubRegisteredUser = agHubWell?.AgHubRegisteredUser,
                         ChemigationPermitNumber = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumber,
                         ChemigationPermitNumberDisplay = chemigationInspection.ChemigationPermitAnnualRecord.ChemigationPermit.ChemigationPermitNumberDisplay,
