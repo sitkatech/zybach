@@ -20,6 +20,8 @@ public partial class PrismRecord
     [Column(TypeName = "datetime")]
     public DateTime? Date { get; set; }
 
+    public int? BandIndex { get; set; }
+
     public int? X { get; set; }
 
     public int? Y { get; set; }

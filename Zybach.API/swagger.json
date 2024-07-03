@@ -8498,6 +8498,11 @@
             "format": "date-time",
             "nullable": true
           },
+          "BandIndex": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "X": {
             "type": "integer",
             "format": "int32",

@@ -12,6 +12,7 @@ namespace Zybach.Models.DataTransferObjects
         public int PrismRecordID { get; set; }
         public string ElementType { get; set; }
         public DateTime? Date { get; set; }
+        public int? BandIndex { get; set; }
         public int? X { get; set; }
         public int? Y { get; set; }
         public double? Value { get; set; }
@@ -22,6 +23,7 @@ namespace Zybach.Models.DataTransferObjects
         public int PrismRecordID { get; set; }
         public string ElementType { get; set; }
         public DateTime? Date { get; set; }
+        public int? BandIndex { get; set; }
         public int? X { get; set; }
         public int? Y { get; set; }
         public double? Value { get; set; }

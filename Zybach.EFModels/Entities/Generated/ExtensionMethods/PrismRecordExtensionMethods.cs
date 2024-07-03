@@ -16,6 +16,7 @@ namespace Zybach.EFModels.Entities
                 PrismRecordID = prismRecord.PrismRecordID,
                 ElementType = prismRecord.ElementType,
                 Date = prismRecord.Date,
+                BandIndex = prismRecord.BandIndex,
                 X = prismRecord.X,
                 Y = prismRecord.Y,
                 Value = prismRecord.Value
@@ -33,6 +34,7 @@ namespace Zybach.EFModels.Entities
                 PrismRecordID = prismRecord.PrismRecordID,
                 ElementType = prismRecord.ElementType,
                 Date = prismRecord.Date,
+                BandIndex = prismRecord.BandIndex,
                 X = prismRecord.X,
                 Y = prismRecord.Y,
                 Value = prismRecord.Value

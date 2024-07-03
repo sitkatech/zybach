@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -54,26 +53,40 @@ public class PrismDownloadTest
     }
 
     [DataTestMethod]
-    [DataRow("ppt", "20210101")]
-    public async Task CanReadBILData(string elementAsQueryValue, string date)
+    [DataRow("ppt", "20210102")]
+    public async Task CanReadAndSaveBILDataToSQL(string elementAsQueryValue, string dateAsString)
     {
+        //TODO: Move the db work into the service.
         var dbCS = "Data Source=host.docker.internal;Initial Catalog=ZybachDB;Persist Security Info=True;User ID=DockerWebUser;Password=password#1;Encrypt=False;";
         var dbOptions = new DbContextOptionsBuilder<ZybachDbContext>();
         dbOptions.UseSqlServer(dbCS, x => x.UseNetTopologySuite());
         var dbContext = new ZybachDbContext(dbOptions.Options);
 
-        await CanDownloadDataForDate(elementAsQueryValue, date);
+        await CanDownloadDataForDate(elementAsQueryValue, dateAsString);
 
         var element = PrismDataElement.FromString(elementAsQueryValue);
-        var containingDirectoryFullPath = _prismAPIHelper.GetContainingDirectoryFullPath(element, date);
+        var containingDirectoryFullPath = _prismAPIHelper.GetContainingDirectoryFullPath(element, dateAsString);
         
         GdalConfiguration.ConfigureGdal();
             
-        var bilFile = $"{containingDirectoryFullPath}/{_prismAPIHelper.GetFileName(element, date, "bil")}";
+        var bilFile = $"{containingDirectoryFullPath}/{_prismAPIHelper.GetFileName(element, dateAsString, "bil")}";
         var dataset = Gdal.Open(bilFile, Access.GA_ReadOnly);
         Assert.IsNotNull(dataset, "Error opening file.");
 
-        var band = dataset.GetRasterBand(1);
+        //MK 7/3/2024 -- Loop through each band in the raster dataset, index starts at 1 blech...
+        for (var i = 1; i <= dataset.RasterCount; i++)
+        {
+            await ProcessBand(dbContext, dataset, i, element.ToString(), dateAsString);
+        }
+
+        // Cleanup
+        dataset.Dispose();
+    }
+
+    //TODO: Move this into the service
+    private async Task ProcessBand(ZybachDbContext dbContext, Dataset dataset, int bandIndex, string element, string dateAsString)
+    {
+        var band = dataset.GetRasterBand(bandIndex);
         Assert.IsNotNull(band, "Error getting band.");
 
         // Get raster dimensions
@@ -86,30 +99,34 @@ public class PrismDownloadTest
         // Read raster data into buffer
         band.ReadRaster(0, 0, width, height, buffer, width, height, 0, 0);
 
-        // Print a portion of the data
-        for (var row = 0; row < Math.Min(height, 50); row++)
+        var maxDataCountToConsoleWrite = 50;
+        for (var row = 0; row < height; row++)
         {
-            for (var col = 0; col < Math.Min(width, 50); col++)
+            for (var col = 0; col < width; col++)
             {
-                Console.Write(buffer[row * width + col] + " ");
-
-
                 dbContext.PrismRecords.Add(new PrismRecord()
                 {
-                    ElementType = element.ToString(),
-                    Date = DateTime.ParseExact(date, "yyyyMMdd", null),
+                    ElementType = element,
+                    Date = DateTime.ParseExact(dateAsString, "yyyyMMdd", null),
+                    BandIndex = bandIndex,
                     X = col,
                     Y = row,
                     Value = buffer[row * width + col]
                 });
+                
+                // Print a portion of the data
+                if (row < maxDataCountToConsoleWrite && col < maxDataCountToConsoleWrite)
+                {
+                    Console.Write($"{buffer[row * width + col]:F2} ");
+                }
             }
 
-            Console.WriteLine();
+            if (row < maxDataCountToConsoleWrite)
+            {
+                Console.WriteLine();
+            }
         }
 
         await dbContext.SaveChangesAsync();
-
-        // Cleanup
-        dataset.Dispose();
     }
 }
