@@ -72,6 +72,7 @@ import { WellGroupDetailComponent } from './pages/well-group-detail/well-group-d
 import { WaterLevelReportsComponent } from './pages/water-level-reports/water-level-reports.component';
 import { SensorHealthCheckComponent } from './pages/sensor-health-check/sensor-health-check.component';
 import { FarmingPracticesComponent } from './pages/farming-practices/farming-practices.component';
+import { FlowTestReportListComponent } from './pages/flow-test-report-list/flow-test-report-list.component';
 
 const routes: Routes = [
   { path: "well-map", component: WellExplorerComponent, canActivate: [UnauthenticatedAccessGuard, ReadOnlyGuard, AcknowledgedDisclaimerGuard] },
@@ -140,6 +141,7 @@ const routes: Routes = [
   { path: "well-groups/:id/edit", component: WellGroupEditComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "well-groups/:id", component: WellGroupDetailComponent, canActivate: [UnauthenticatedAccessGuard, ManagerOnlyGuard, AcknowledgedDisclaimerGuard] },
   { path: "farming-practices", component: FarmingPracticesComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
+  { path: "flow-test-report", component: FlowTestReportListComponent, canActivate: [UnauthenticatedAccessGuard, AcknowledgedDisclaimerGuard] },
   { path: "", component: HomeIndexComponent},
   { path: "disclaimer", component: DisclaimerComponent },
   { path: "disclaimer/:forced", component: DisclaimerComponent },

@@ -27,7 +27,7 @@ begin
 	where aw.WellID is null
 
 
-	insert into dbo.AgHubWell(WellID, AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName)
+	insert into dbo.AgHubWell(WellID, AgHubWellGeometry, WellTPNRDPumpRate, TPNRDPumpRateUpdated, WellConnectedMeter, WellAuditPumpRate, AuditPumpRateUpdated, AuditPumpRateTested, HasElectricalData, RegisteredPumpRate, RegisteredUpdated, AgHubRegisteredUser, FieldName)
 	select	w.WellID,
 			aws.WellGeometry as AgHubWellGeometry,
 			aws.WellTPNRDPumpRate,
@@ -35,6 +35,7 @@ begin
 			aws.WellConnectedMeter,
 			aws.WellAuditPumpRate,
 			aws.AuditPumpRateUpdated,
+			aws.AuditPumpRateTested,
 			aws.HasElectricalData,
 			aws.RegisteredPumpRate,
 			aws.RegisteredUpdated,
@@ -52,6 +53,7 @@ begin
 		aw.WellConnectedMeter = aws.WellConnectedMeter,
 		aw.WellAuditPumpRate = aws.WellAuditPumpRate,
 		aw.AuditPumpRateUpdated = aws.AuditPumpRateUpdated,
+		aw.AuditPumpRateTested = aws.AuditPumpRateTested,
 		aw.HasElectricalData = aws.HasElectricalData,
 		aw.RegisteredPumpRate = aws.RegisteredPumpRate,
 		aw.RegisteredUpdated =aws.RegisteredUpdated,

@@ -32,6 +32,9 @@ public partial class AgHubWell
     [Column(TypeName = "datetime")]
     public DateTime? AuditPumpRateUpdated { get; set; }
 
+    [Column(TypeName = "datetime")]
+    public DateTime? AuditPumpRateTested { get; set; }
+
     public bool HasElectricalData { get; set; }
 
     public int? RegisteredPumpRate { get; set; }
