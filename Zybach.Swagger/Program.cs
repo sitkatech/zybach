@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Zybach.Swagger
 {
@@ -26,6 +27,12 @@ namespace Zybach.Swagger
                     }
                 })
                 .ConfigureLogging(logging => { logging.ClearProviders(); })
+                .UseSerilog((context, services, configuration) =>
+                {
+                    configuration
+                        .Enrich.FromLogContext()
+                        .ReadFrom.Configuration(context.Configuration);
+                })
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
             return hostBuilder;
         }

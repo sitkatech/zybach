@@ -7,7 +7,6 @@ Zybach.API/appsecrets.json
 Zybach.Web/src/assets/config.json
 Zybach.Web/wwwroot/
 Zybach.Web/.vscode/
-Zybach.Web/package-lock.json
 Zybach.Web/openapitools.json
 Zybach.Tests/environment.json
 

@@ -3878,6 +3878,7 @@
         "tags": [
           "SystemInfo"
         ],
+        "operationId": "GetSystemInfo",
         "responses": {
           "200": {
             "description": "Success",

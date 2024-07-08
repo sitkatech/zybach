@@ -51,11 +51,11 @@ variable "azureClusterResourceGroup" {
   type = string
 }
 
-variable "sqlApiUsername" {
+variable "databaseResourceGroup" {
   type = string
 }
 
-variable "sqlGeoserverUsername" {
+variable "sqlApiUsername" {
   type = string
 }
 
@@ -85,6 +85,22 @@ variable "domainSwaggerApi" {
   type = string
 }
 
+variable "elasticPoolName" {
+  type = string
+}
+
+variable "sqlGeoserverUsername" {
+  type = string
+}
+
+variable "team" {
+  type = string
+}
+
+variable "projectNumber" {
+  type = string
+}
+
 // this variable is used for the keepers for the random resources https://registry.terraform.io/providers/hashicorp/random/latest/docs
 variable "amd_id" {
   type = string
@@ -101,11 +117,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=2.46.0"
-    }
-    mssql = {
-      source = "betr-io/mssql"
-      version = "0.1.0"
+      version = "=3.91.0"
     }
     random = {
       source = "hashicorp/random"
@@ -119,8 +131,6 @@ terraform {
 
 # Configure the Azure Provider
 provider "azurerm" {
-	# whilst the `version` attribute is optional, we recommend pinning to a given version of the Provider
-  version = "=2.46.0"
   features {}
 }
 
@@ -135,9 +145,10 @@ data "azurerm_client_config" "current" {}
 
 locals {
   tags = {
-    "managed"     = "terraformed"
-    "environment" = var.aspNetEnvironment
-    "TeamName"    = "H2O"
+    "managed"       = "terraformed"
+    "environment"   = var.environment
+    "team"          = var.team
+    "projectNumber" = var.projectNumber
   }
 }
 
@@ -159,16 +170,14 @@ resource "azurerm_storage_account" "web" {
 	tags                         = local.tags
 }
 
-# outputs like this will be set as pipeline variables
-# in this case the pipeline will have access to "$(TF_OUT_APPLICATiON_STORAGE_ACCOUNT_KEY)"
-# to make this happen, you can do this with your pipeline:
-# - task: TerraformCLI@0
-#   displayName: 'terraform output'
-#   inputs:
-#     command: output
 output "application_storage_account_key" {
   sensitive = true
   value = azurerm_storage_account.web.primary_access_key
+}
+
+output "application_storage_account_connection_string" {
+  sensitive = true
+  value = azurerm_storage_account.web.primary_connection_string
 }
 
 # the SAS token which is needed for the geoserver file transfer
@@ -201,12 +210,14 @@ data "azurerm_storage_account_sas" "web" {
     create  = true
     update  = true
     process = true
+    tag     = false
+    filter  = false
   }
 }
 
 # can be used in pipeline like $(TF_OUT_STORAGE_ACCOUNT_SAS_KEY)
 output "storage_account_sas_key" {
-  sensitive = false
+  sensitive = true
   value = data.azurerm_storage_account_sas.web.sas
 }
 
@@ -219,30 +230,53 @@ resource "azurerm_storage_share" "web" {
 #sql
 data "azurerm_mssql_server" "spoke" {
   name                = var.dbServerName
-  resource_group_name = var.azureClusterResourceGroup
+  resource_group_name = var.databaseResourceGroup
+}
+
+data "azurerm_mssql_elasticpool" "spoke" {
+  name                = var.elasticPoolName
+  resource_group_name = var.databaseResourceGroup
+  server_name         = var.dbServerName
 }
 
 resource "azurerm_mssql_database" "database" {
-	name           = var.databaseName
-  server_id      = data.azurerm_mssql_server.spoke.id
-  collation      = "SQL_Latin1_General_CP1_CI_AS"
-  max_size_gb    = 250
-  read_scale     = false
-  sku_name       = var.databaseTier
-  zone_redundant = false
+	name            = var.databaseName
+  server_id       = data.azurerm_mssql_server.spoke.id
+  collation       = "SQL_Latin1_General_CP1_CI_AS"
+  license_type    = "LicenseIncluded"
+  max_size_gb     = 2
+  read_scale      = false
+  sku_name        = var.databaseTier
+  zone_redundant  = false
+  elastic_pool_id = data.azurerm_mssql_elasticpool.spoke.id
 
-	tags                               = local.tags
+  long_term_retention_policy {
+    weekly_retention  = "P3M"
+    monthly_retention = "P1Y"
+    yearly_retention  = "P3Y"
+    week_of_year      = 7
+  }
+
+  short_term_retention_policy {
+    retention_days = 30
+  }
+
+  tags            = local.tags
+}
+
+output "database_id" {
+  value = azurerm_mssql_database.database.id
 }
 
 ### BEGIN API Sql user/login ###
 resource "random_password" "sqlApiPassword" {
   length           = 16
   special          = true
-  override_special = "!*-_"
-  min_special      = 1
-  min_lower        = 1
-  min_upper        = 1
-  min_numeric      = 1
+  override_special = "!+-"
+  min_lower        = 3
+  min_upper        = 3
+  min_special      = 3
+  min_numeric      = 3
   keepers = {
     amd_id = var.amd_id
   }
@@ -256,62 +290,17 @@ output "sql_api_password" {
   ]
 }
 
-resource "mssql_login" "api" {
-  server {
-    host = data.azurerm_mssql_server.spoke.fully_qualified_domain_name
-    login {
-      username = data.azurerm_mssql_server.spoke.administrator_login
-      password = var.sqlPassword
-    }
-  }
-  login_name = var.sqlApiUsername
-  password   = random_password.sqlApiPassword.result
-  depends_on = [azurerm_mssql_database.database, data.azurerm_mssql_server.spoke, random_password.sqlApiPassword]
-}
-
-// user for the master database to connect
-resource "mssql_user" "master_api" {
-  server {
-    host = data.azurerm_mssql_server.spoke.fully_qualified_domain_name
-    login {
-      username = data.azurerm_mssql_server.spoke.administrator_login
-      password = var.sqlPassword
-    }
-  }
-  default_schema = "dbo"
-  username       = var.sqlApiUsername
-  login_name     = var.sqlApiUsername
-  depends_on = [data.azurerm_mssql_server.spoke, azurerm_mssql_database.database, mssql_login.api]
-}
-  
-// user for the application's database (api)
-resource "mssql_user" "api" {
-  server {
-    host = data.azurerm_mssql_server.spoke.fully_qualified_domain_name
-    login {
-      username = data.azurerm_mssql_server.spoke.administrator_login
-      password = var.sqlPassword
-    }
-  }
-  default_schema = "dbo"
-  database       = var.databaseName
-  username       = var.sqlApiUsername
-  login_name     = var.sqlApiUsername
-  depends_on = [data.azurerm_mssql_server.spoke, azurerm_mssql_database.database, mssql_login.api]
-  roles    = [ "db_datareader", "db_datawriter" ]
-}
 ### END API Sql user/login ###
-
 
 ### BEGIN Geoserver Sql user/login ###
 resource "random_password" "geoserverAdminPassword" {
   length           = 16
   special          = true
-  override_special = "!*-_"
-  min_special      = 1
-  min_lower        = 1
-  min_upper        = 1
-  min_numeric      = 1
+  override_special = "!+-"
+  min_lower        = 3
+  min_upper        = 3
+  min_special      = 3
+  min_numeric      = 3
   keepers = {
     amd_id = var.amd_id
   }
@@ -329,11 +318,11 @@ output "geoserver_admin_password" {
 resource "random_password" "sqlGeoserverPassword" {
   length           = 16
   special          = true
-  override_special = "!*-_"
-  min_special      = 1
-  min_lower        = 1
-  min_upper        = 1
-  min_numeric      = 1
+  override_special = "!+-"
+  min_lower        = 3
+  min_upper        = 3
+  min_special      = 3
+  min_numeric      = 3
   keepers = {
     amd_id = var.amd_id
   }
@@ -347,50 +336,6 @@ output "sql_geoserver_password" {
   ]
 }
 
-resource "mssql_login" "geoserver" {
-  server {
-    host = data.azurerm_mssql_server.spoke.fully_qualified_domain_name
-    login {
-      username = data.azurerm_mssql_server.spoke.administrator_login
-      password = var.sqlPassword
-    }
-  }
-  login_name = var.sqlGeoserverUsername
-  password   = random_password.sqlGeoserverPassword.result
-  depends_on = [azurerm_mssql_database.database, data.azurerm_mssql_server.spoke]
-}
-
-// user for the master database to connect
-resource "mssql_user" "master_geoserver" {
-  server {
-    host = data.azurerm_mssql_server.spoke.fully_qualified_domain_name
-    login {
-      username = data.azurerm_mssql_server.spoke.administrator_login
-      password = var.sqlPassword
-    }
-  }
-  default_schema = "dbo"
-  username       = var.sqlGeoserverUsername
-  login_name     = var.sqlGeoserverUsername
-  depends_on = [data.azurerm_mssql_server.spoke, azurerm_mssql_database.database, mssql_login.geoserver]
-}
-
-// user for the application's database (api)
-resource "mssql_user" "geoserver" {
-  server {
-    host = data.azurerm_mssql_server.spoke.fully_qualified_domain_name
-    login {
-      username = data.azurerm_mssql_server.spoke.administrator_login
-      password = var.sqlPassword
-    }
-  }
-  default_schema = "dbo"
-  database       = var.databaseName
-  username       = var.sqlGeoserverUsername
-  login_name     = var.sqlGeoserverUsername
-  depends_on = [data.azurerm_mssql_server.spoke, azurerm_mssql_database.database, mssql_login.geoserver]
-  roles    = [ "db_datareader" ]
-}
 ### END Geoserver Sql user/login ###
 
 ### BEGIN Hangfire password ###
@@ -416,17 +361,27 @@ output "hangfire_password" {
 }
 ### END Hangfire password ###
 
+resource "azurerm_log_analytics_workspace" "web" {
+  name                = "${var.appInsightsName}-workspace"
+  location            = azurerm_resource_group.web.location
+  resource_group_name = azurerm_resource_group.web.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+  tags                = local.tags
+}
 
 resource "azurerm_application_insights" "web" {
 	name                         = var.appInsightsName
 	resource_group_name          = azurerm_resource_group.web.name
 	location                     = azurerm_resource_group.web.location
+  workspace_id                 = azurerm_log_analytics_workspace.web.id
 	application_type             = "web"
 	tags                         = local.tags
 }
 
 output "instrumentation_key" {
-	value = azurerm_application_insights.web.instrumentation_key
+	sensitive = true
+  value = azurerm_application_insights.web.instrumentation_key
 }
 
 #key vault was created prior to terraform run
@@ -441,23 +396,24 @@ resource "azurerm_key_vault" "web" {
   tags                         = local.tags
 
   sku_name = "standard"
+}
 
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
+resource "azurerm_key_vault_access_policy" "thisPipeline" {
+  key_vault_id = azurerm_key_vault.web.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
 
-    key_permissions = [
-      "backup", "create", "decrypt", "delete", "encrypt", "get", "import", "list", "purge", "recover", "restore", "sign", "unwrapkey", "update", "verify", "wrapkey"
-    ]
+  key_permissions = [
+    "Backup", "Create", "Decrypt", "Delete", "Encrypt", "Get", "Import", "List", "Purge", "Recover", "Restore", "Sign", "UnwrapKey", "Update", "Verify", "WrapKey"
+  ]
 
-    secret_permissions = [
-      "backup", "delete", "get", "list", "purge", "recover", "restore", "set"
-    ]
+  secret_permissions = [
+    "Backup", "Delete", "Get", "List", "Purge", "Recover", "Restore", "Set"
+  ]
 
-    storage_permissions = [
-      "backup", "delete", "deletesas", "get", "getsas", "list", "listsas", "recover", "regeneratekey", "restore", "set", "setsas", "update"
-    ]
-  }
+  storage_permissions = [
+    "Backup", "Delete", "DeleteSAS", "Get", "GetSAS", "List", "ListSAS", "Recover", "RegenerateKey", "Restore", "Set", "SetSAS", "Update"
+  ]
 }
 
 resource "azurerm_key_vault_secret" "sqlAdminPass" {
@@ -466,6 +422,9 @@ resource "azurerm_key_vault_secret" "sqlAdminPass" {
   key_vault_id                 = azurerm_key_vault.web.id
 
   tags                         = local.tags
+  depends_on = [
+    azurerm_key_vault_access_policy.thisPipeline
+  ]
 }
  
 resource "azurerm_key_vault_secret" "sqlAdminUser" {
@@ -474,6 +433,9 @@ resource "azurerm_key_vault_secret" "sqlAdminUser" {
   key_vault_id                 = azurerm_key_vault.web.id
 
   tags                         = local.tags
+  depends_on = [
+    azurerm_key_vault_access_policy.thisPipeline
+  ]
 }
   
 resource "azurerm_key_vault_secret" "appInsightsInstrumentationKey" {
@@ -482,6 +444,9 @@ resource "azurerm_key_vault_secret" "appInsightsInstrumentationKey" {
   key_vault_id                 = azurerm_key_vault.web.id
 
   tags                         = local.tags
+  depends_on = [
+    azurerm_key_vault_access_policy.thisPipeline
+  ]
 }
 
  resource "azurerm_key_vault_secret" "sqlApiUsername" {
@@ -490,6 +455,9 @@ resource "azurerm_key_vault_secret" "appInsightsInstrumentationKey" {
    key_vault_id                 = azurerm_key_vault.web.id
  
    tags                         = local.tags
+   depends_on = [
+    azurerm_key_vault_access_policy.thisPipeline
+  ]
  }
 
 resource "azurerm_key_vault_secret" "sqlApiPassword" {
@@ -499,7 +467,7 @@ resource "azurerm_key_vault_secret" "sqlApiPassword" {
 
   tags                         = local.tags
   depends_on = [
-    random_password.sqlApiPassword
+    azurerm_key_vault_access_policy.thisPipeline
   ]
 }
 
@@ -510,7 +478,7 @@ resource "azurerm_key_vault_secret" "sqlApiConnectionString" {
 
   tags                         = local.tags
   depends_on = [
-    random_password.sqlApiPassword
+    azurerm_key_vault_access_policy.thisPipeline
   ]
 }
 
@@ -520,6 +488,9 @@ resource "azurerm_key_vault_secret" "sqlGeoserverUsername" {
   key_vault_id                 = azurerm_key_vault.web.id
 
   tags                         = local.tags
+  depends_on = [
+    azurerm_key_vault_access_policy.thisPipeline
+  ]
 }
 
 resource "azurerm_key_vault_secret" "sqlGeoserverPassword" {
@@ -529,7 +500,7 @@ resource "azurerm_key_vault_secret" "sqlGeoserverPassword" {
 
   tags                         = local.tags
   depends_on = [
-    random_password.sqlGeoserverPassword
+    azurerm_key_vault_access_policy.thisPipeline
   ]
 }
 
@@ -540,7 +511,7 @@ resource "azurerm_key_vault_secret" "sqlGeoserverConnectionString" {
 
   tags                         = local.tags
   depends_on = [
-    random_password.sqlGeoserverPassword
+    azurerm_key_vault_access_policy.thisPipeline
   ]
 }
 
@@ -551,7 +522,7 @@ resource "azurerm_key_vault_secret" "geoserverAdminPassword" {
 
   tags                         = local.tags
   depends_on = [
-    random_password.geoserverAdminPassword
+    azurerm_key_vault_access_policy.thisPipeline
   ]
 }
 
@@ -562,7 +533,7 @@ resource "azurerm_key_vault_secret" "hangfirePassword" {
 
   tags                         = local.tags
   depends_on = [
-    random_password.hangfirePassword
+    azurerm_key_vault_access_policy.thisPipeline
   ]
 }
 
@@ -595,8 +566,8 @@ resource "datadog_synthetics_test" "test_api" {
     }
   }
   name    = "${var.environment} - ${var.domainApi} API test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
@@ -630,8 +601,8 @@ resource "datadog_synthetics_test" "test_web" {
     }
   }
   name    = "${var.environment} - ${var.domainWeb} Web test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
@@ -641,7 +612,7 @@ resource "datadog_synthetics_test" "test_geoserver" {
   subtype = "http"
   request_definition {
     method = "GET"
-    url    = "https://${var.domainGeoserver}"
+    url    = "https://${var.domainGeoserver}/geoserver/web/"
   }
   request_headers = {
     Content-Type   = "application/json"
@@ -665,8 +636,8 @@ resource "datadog_synthetics_test" "test_geoserver" {
     }
   }
   name    = "${var.environment} - ${var.domainGeoserver} Geoserver test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
@@ -700,9 +671,8 @@ resource "datadog_synthetics_test" "test_swagger" {
     }
   }
   name    = "${var.environment} - ${var.domainSwaggerApi} API test"
-  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com"
-  tags    = ["env:${var.environment}", "managed:terraformed", "team:h2o"]
+  message = "Notify @rlee@esassoc.com @sgordon@esassoc.com @team-${var.team}${var.environment == "qa" ? "-qa" : ""}"
+  tags    = ["env:${var.environment}", "managed:terraformed", "team:${var.team}"]
 
   status = "live"
 }
-

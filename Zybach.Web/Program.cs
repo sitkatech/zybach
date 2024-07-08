@@ -3,6 +3,10 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Zybach.Web
 {
@@ -10,27 +14,42 @@ namespace Zybach.Web
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        public static IHostBuilder BuildWebHost(string[] args)
         {
-            var host = WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .UseKestrel(options =>
-                {
-                    var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"); // Same as env.IsDevelopment()
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webHostBuilder
+                    => webHostBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+                            _ = config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
+                                .AddJsonFile("appsettings.json", false, true))
+                        .UseKestrel(options =>
+                        {
+                            var env = Environment.GetEnvironmentVariable(
+                                "ASPNETCORE_ENVIRONMENT"); // Same as env.IsDevelopment()
 
-                    options.Listen(IPAddress.Any, 80);
-                    // 1/23 CG & MK - This is done so that Azure wont load the cert, it will only be used locally.
-                    if (env == Microsoft.Extensions.Hosting.Environments.Development)
-                    {
-                        options.Listen(IPAddress.Any, 443, configure => { configure.UseHttps(new X509Certificate2("dev_cert.pfx", "password#1")); });
-                    }
-                })
-                .Build();
+                            options.Listen(IPAddress.Any, 80);
+                            // 1/23 CG & MK - This is done so that Azure wont load the cert, it will only be used locally.
+                            if (env == Microsoft.Extensions.Hosting.Environments.Development)
+                            {
+                                options.Listen(IPAddress.Any, 443,
+                                    configure =>
+                                    {
+                                        configure.UseHttps(new X509Certificate2("dev_cert.pfx", "password#1"));
+                                    });
+                            }
+                        })
+                        .UseStartup<Startup>())
+                .ConfigureLogging(logging => { logging.ClearProviders(); })
+                .UseSerilog((context, services, configuration) =>
+                {
+                    configuration
+                        .Enrich.FromLogContext()
+                        .ReadFrom.Configuration(context.Configuration);
+                });
+                
             return host;
         }
     }
 }
- 
