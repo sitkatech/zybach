@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using Zybach.Models.DataTransferObjects;
 using System.Linq;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using VegaRenderService;
+using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.EFModels.Entities
 {

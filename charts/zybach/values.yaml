@@ -21,6 +21,10 @@ global:
     geoOptixApiKey: "geoOptixApiKey"
     influxDBToken: "influxDBToken"
     getApiSubscriptionKey: "some-guid"
+    geoserverAdminPassword: "passwordhere"
+    geoserverSqlServerPassword: "passwordhere"
+    applicationStorageAccountName: "storageaccountname"
+    applicationStorageAccountKey: "storageaccountkey"
 api:
   replicaCount: 1
   image:

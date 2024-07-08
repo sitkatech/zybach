@@ -19,7 +19,7 @@
     "e2e": "ng e2e",
     "clean-model": "node src/scripts/clean-model.js",
     "gen-model": "npm run clean-model %npm_package_config_output_dir% && npx @openapitools/openapi-generator-cli generate --additional-properties=modelPropertyNaming=original,fileNaming=kebab-case,useHttpClient=true,supportsES6=true,useRxJS6=true,genericModuleWithProviders=true,ngVersion=12.2.213 -i %npm_package_config_swagger_json_path% -g typescript-angular -o %npm_package_config_output_dir% -t %npm_package_config_template_dir%",
-    "prestart": "@powershell if((Test-Path server.crt) -eq $false -or (Test-Path server.key) -eq $false) { npm run create-dev-cert } && npm run trust-dev-cert",
+    "prestart": "@powershell nvm install $(Get-Content .nvmrc) && @powershell nvm use $(Get-Content .nvmrc) && @powershell if((Test-Path server.crt) -eq $false -or (Test-Path server.key) -eq $false) { npm run create-dev-cert } && npm run trust-dev-cert",
     "create-dev-cert": "openssl req -newkey rsa:2048 -x509 -nodes -keyout server.key -new -out server.crt -config ./dev-cert.cnf -sha256 -days 3650",
     "trust-dev-cert": "@powershell -Command Import-Certificate -FilePath server.crt -CertStoreLocation cert:\\LocalMachine\\Root",
     "docs:json": "compodoc -p ./tsconfig.json -e json -d ."
@@ -87,7 +87,7 @@
     "zone.js": "~0.13.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.2.10",
+    "@angular-devkit/build-angular": "^16.2.14",
     "@angular-eslint/eslint-plugin": "^12.6.1",
     "@angular/cli": "^16.2.10",
     "@angular/compiler-cli": "^16.2.12",

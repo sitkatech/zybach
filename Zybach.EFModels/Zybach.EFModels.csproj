@@ -11,7 +11,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VegaRenderService\VegaRenderService.csproj" />
     <ProjectReference Include="..\Zybach.Models\Zybach.Models.csproj" />
   </ItemGroup>
   <ItemGroup>
