@@ -20,10 +20,11 @@ variables:
   sqlApiUsername: 'ZybachWeb'
   sqlGeoserverUsername: 'ZybachGeo'
 
-  domainApi: 'internalapi-zybach.esa-$(Environment).sitkatech.com'
-  domainWeb: 'zybach.esa-$(Environment).sitkatech.com'
-  domainGeoserver: 'geoserver-zybach.esa-$(Environment).sitkatech.com'
-  domainSwaggerApi: 'api-zybach.esa-$(Environment).sitkatech.com'
+  # following are set on the pipeline itself
+  # domainApi: 'internalapi-zybach.esa-$(Environment).sitkatech.com'
+  # domainWeb: 'zybach.esa-$(Environment).sitkatech.com'
+  # domainGeoserver: 'geoserver-zybach.esa-$(Environment).sitkatech.com'
+  # domainSwaggerApi: 'api-zybach.esa-$(Environment).sitkatech.com'
 
 
 resources:
