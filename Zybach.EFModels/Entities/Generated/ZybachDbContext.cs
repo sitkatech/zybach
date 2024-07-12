@@ -67,8 +67,6 @@ public partial class ZybachDbContext : DbContext
 
     public virtual DbSet<PaigeWirelessPulse> PaigeWirelessPulses { get; set; }
 
-    public virtual DbSet<PrismRecord> PrismRecords { get; set; }
-
     public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
 
     public virtual DbSet<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
@@ -297,11 +295,6 @@ public partial class ZybachDbContext : DbContext
         modelBuilder.Entity<PaigeWirelessPulse>(entity =>
         {
             entity.HasKey(e => e.PaigeWirelessPulseID).HasName("PK_PaigeWirelessPulse_WellID");
-        });
-
-        modelBuilder.Entity<PrismRecord>(entity =>
-        {
-            entity.HasKey(e => e.PrismRecordID).HasName("PK_PrismRecord_RecordID");
         });
 
         modelBuilder.Entity<ReportTemplate>(entity =>

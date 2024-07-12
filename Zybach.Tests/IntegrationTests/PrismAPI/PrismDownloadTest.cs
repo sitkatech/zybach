@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -76,7 +75,7 @@ public class PrismDownloadTest
         var dataset = Gdal.Open(bilFile, Access.GA_ReadOnly);
         Assert.IsNotNull(dataset, "Error opening file.");
 
-        //MK 7/3/2024 -- Loop through each band in the raster dataset, index starts at 1 blech...
+        //MK 7/3/2024 -- Loop through each band in the raster dataset, index starts at 1 blech... Prism data looks like it might only have a single band though.
         for (var i = 1; i <= dataset.RasterCount; i++)
         {
             await ProcessBand(_dbContext, dataset, i, element.ToString(), dateAsString);
@@ -120,8 +119,6 @@ public class PrismDownloadTest
     //TODO: Move this into the service
     private async Task ProcessBand(ZybachDbContext dbContext, Dataset dataset, int bandIndex, string element, string dateAsString)
     {
-        var records = dbContext.PrismRecords.Where(x => x.ElementType == element && x.Date == DateTime.ParseExact(dateAsString, "yyyyMMdd", null));
-        dbContext.PrismRecords.RemoveRange(records);
         await dbContext.SaveChangesAsync();
 
         var band = dataset.GetRasterBand(bandIndex);
@@ -142,16 +139,6 @@ public class PrismDownloadTest
         {
             for (var col = 0; col < width; col++)
             {
-                dbContext.PrismRecords.Add(new PrismRecord()
-                {
-                    ElementType = element,
-                    Date = DateTime.ParseExact(dateAsString, "yyyyMMdd", null),
-                    BandIndex = bandIndex,
-                    X = col,
-                    Y = row,
-                    Value = buffer[row * width + col]
-                });
-                
                 // Print a portion of the data
                 if (row < maxDataCountToConsoleWrite && col < maxDataCountToConsoleWrite)
                 {
