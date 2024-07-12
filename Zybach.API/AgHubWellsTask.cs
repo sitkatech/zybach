@@ -83,6 +83,7 @@ public static class AgHubWellsTask
             wellStaging.AgHubRegisteredUser = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredUser;
             wellStaging.FieldName = agHubWellRawWithAcreYears.RegisteredUserDetails.RegisteredFieldName;
             wellStaging.IrrigationUnitGeometry = WKTToGeometry(agHubWellRawWithAcreYears.IrrigationUnitGeometry);
+            wellStaging.AuditPumpRateTested = agHubWellRawWithAcreYears.AuditPumpRateTested;
 
             var wellIrrigatedAcreStagings = agHubWellRawWithAcreYears.IrrigUnitDetails
                 .Where(x => x.TotalAcres.HasValue).Select(x =>

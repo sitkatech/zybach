@@ -81,7 +81,7 @@ namespace Zybach.API
                         IsBodyHtml = true
                     };
 
-                    mailMessage.To.Add(new MailAddress(_zybachConfiguration.AppAlertsEmail));
+                    mailMessage.To.Add(new MailAddress(_zybachConfiguration.SupportEmail));
                     _sitkaSmtpClient.Send(mailMessage);
                     throw new ScheduledBackgroundJobException(_jobName, ex);
                 }
