@@ -19,7 +19,7 @@ jobs:
     - template: azure-pipelines/templates/blob-storage-restore/blob-storage-restore.yml@BuildTemplates 
       parameters:
         subscription: '$(azureSubscription)'
-        containers: '$(containers)'
+        containers: '*'
         fromStorageAccountName: '$(storageAccountProdApplicationName)'
         fromStorageAccountKey: '$(storageAccountProdAccountKey)'
         toStorageAccountName: '$(storageAccountDevApplicationName)'
