@@ -15,7 +15,7 @@ BEGIN
 
     -- Declare a cursor to iterate over all data types
     DECLARE PrismDataTypeCursor CURSOR FOR
-    SELECT PrismDataTypeID FROM [ZybachDB].[dbo].[PrismDataType];
+    SELECT PrismDataTypeID FROM [dbo].[PrismDataType];
 
     OPEN PrismDataTypeCursor;
     FETCH NEXT FROM PrismDataTypeCursor INTO @PrismDataTypeID;
@@ -32,7 +32,7 @@ BEGIN
                 IF @CurrentYear = @EndYear AND @CurrentMonth > @EndMonth
                     BREAK;
 
-                INSERT INTO [ZybachDB].[dbo].[PrismMonthlySync] ([PrismDataTypeID], [Year], [Month])
+                INSERT INTO [dbo].[PrismMonthlySync] ([PrismDataTypeID], [Year], [Month])
                 VALUES (@PrismDataTypeID, @CurrentYear, @CurrentMonth);
 
                 SET @CurrentMonth = @CurrentMonth + 1;
