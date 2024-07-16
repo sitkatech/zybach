@@ -62,6 +62,9 @@ public partial class User
 
     public bool PerformsChemigationInspections { get; set; }
 
+    [InverseProperty("CreateUser")]
+    public virtual ICollection<BlobResource> BlobResources { get; set; } = new List<BlobResource>();
+
     [InverseProperty("InspectorUser")]
     public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; } = new List<ChemigationInspection>();
 

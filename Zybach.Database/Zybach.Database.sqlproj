@@ -209,6 +209,12 @@
     <Build Include="dbo\Procs\dbo.pTruncateAgHubWellIrrigatedAcreStaging.sql" />
     <Build Include="dbo\Tables\dbo.AgHubIrrigatedAcreTillageType.sql" />
     <None Include="Scripts\LookupTables\dbo.AgHubIrrigatedAcreTillageType.sql" />
+    <Build Include="dbo\Tables\dbo.BlobResource.sql" />
+    <Build Include="dbo\Tables\dbo.PrismMonthlySync.sql" />
+    <Build Include="dbo\Tables\dbo.PrismSyncStatus.sql" />
+    <Build Include="dbo\Tables\dbo.PrismDataType.sql" />
+    <None Include="Scripts\LookupTables\dbo.PrismSyncStatus.sql" />
+    <None Include="Scripts\LookupTables\dbo.PrismDataType.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />

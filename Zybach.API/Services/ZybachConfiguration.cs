@@ -35,5 +35,6 @@
         public string OpenETRasterMetadataRoute { get; set; }
         public string OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier { get; set; }
         public string HostName { get; set; }
+        public string AzureBlobStorageConnectionString { get; set; }
     }
 }

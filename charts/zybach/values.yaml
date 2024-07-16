@@ -23,7 +23,7 @@ global:
     getApiSubscriptionKey: "some-guid"
     geoserverAdminPassword: "passwordhere"
     geoserverSqlServerPassword: "passwordhere"
-    applicationStorageAccountName: "storageaccountname"
+    applicationStorageAccountName: "zybachapplicationgrsqa"
     applicationStorageAccountKey: "storageaccountkey"
 api:
   replicaCount: 1

@@ -8,6 +8,7 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
     <PackageReference Include="CsvHelper" Version="27.2.1" />
     <PackageReference Include="GeoJSON.Net" Version="1.2.19" />
     <PackageReference Include="Hangfire" Version="1.7.29" />
