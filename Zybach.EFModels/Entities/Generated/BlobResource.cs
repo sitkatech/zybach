@@ -39,4 +39,7 @@ public partial class BlobResource
     [ForeignKey("CreateUserID")]
     [InverseProperty("BlobResources")]
     public virtual User CreateUser { get; set; }
+
+    [InverseProperty("BlobResource")]
+    public virtual ICollection<PrismDailyRecord> PrismDailyRecords { get; set; } = new List<PrismDailyRecord>();
 }

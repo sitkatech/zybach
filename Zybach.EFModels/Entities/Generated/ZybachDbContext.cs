@@ -69,6 +69,10 @@ public partial class ZybachDbContext : DbContext
 
     public virtual DbSet<PaigeWirelessPulse> PaigeWirelessPulses { get; set; }
 
+    public virtual DbSet<PrismDailyRecord> PrismDailyRecords { get; set; }
+
+    public virtual DbSet<PrismMonthlySync> PrismMonthlySyncs { get; set; }
+
     public virtual DbSet<ReportTemplate> ReportTemplates { get; set; }
 
     public virtual DbSet<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; }
@@ -306,6 +310,28 @@ public partial class ZybachDbContext : DbContext
         modelBuilder.Entity<PaigeWirelessPulse>(entity =>
         {
             entity.HasKey(e => e.PaigeWirelessPulseID).HasName("PK_PaigeWirelessPulse_WellID");
+        });
+
+        modelBuilder.Entity<PrismDailyRecord>(entity =>
+        {
+            entity.HasKey(e => e.PrismDailyRecordID).HasName("PK_PrismDailyRecord_PrismDailyRecordID");
+
+            entity.Property(e => e.PrismSyncStatusID).HasDefaultValue(1);
+
+            entity.HasOne(d => d.BlobResource).WithMany(p => p.PrismDailyRecords).HasConstraintName("FK_PrismDailyRecord_BlobResourceID");
+
+            entity.HasOne(d => d.PrismMonthlySync).WithMany(p => p.PrismDailyRecords)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PrismDailyRecord_PrismMonthlySyncID");
+        });
+
+        modelBuilder.Entity<PrismMonthlySync>(entity =>
+        {
+            entity.HasKey(e => e.PrismMonthlySyncID).HasName("PK_PrismMonthlySync_PrismSyncID");
+
+            entity.Property(e => e.PrismSyncStatusID).HasDefaultValue(1);
+
+            entity.HasOne(d => d.FinalizeByUser).WithMany(p => p.PrismMonthlySyncs).HasConstraintName("FK_PrismMonthlySync_FinalizeByUserID");
         });
 
         modelBuilder.Entity<ReportTemplate>(entity =>

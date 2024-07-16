@@ -2302,6 +2302,201 @@
         }
       }
     },
+    "/prism-monthly-sync/years/{year}/data-types/{prismDataTypeName}": {
+      "get": {
+        "tags": [
+          "PrismSync"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "prismDataTypeName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/prism-monthly-sync/years/{year}/months/{month}/data-types/{prismDataTypeName}/sync": {
+      "put": {
+        "tags": [
+          "PrismSync"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "prismDataTypeName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/prism-monthly-sync/years/{year}/months/{month}/data-types/{prismDataTypeName}/finalize": {
+      "put": {
+        "tags": [
+          "PrismSync"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "prismDataTypeName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/reportTemplates": {
       "get": {
         "tags": [
@@ -8338,6 +8533,84 @@
             "nullable": true
           },
           "EventMessage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrismDataTypeDto": {
+        "type": "object",
+        "properties": {
+          "PrismDataTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PrismDataTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrismDataTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrismMonthlySyncDto": {
+        "type": "object",
+        "properties": {
+          "PrismMonthlySyncID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PrismSyncStatus": {
+            "$ref": "#/components/schemas/PrismSyncStatusDto"
+          },
+          "PrismDataType": {
+            "$ref": "#/components/schemas/PrismDataTypeDto"
+          },
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "FinalizeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FinalizeByUser": {
+            "$ref": "#/components/schemas/UserDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrismMonthlySyncUpsertDto": {
+        "type": "object",
+        "properties": {
+          "FinalizedDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PrismSyncStatusDto": {
+        "type": "object",
+        "properties": {
+          "PrismSyncStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PrismSyncStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrismSyncStatusDisplayName": {
             "type": "string",
             "nullable": true
           }

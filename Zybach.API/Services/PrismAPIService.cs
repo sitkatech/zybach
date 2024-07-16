@@ -4,6 +4,8 @@ using System.IO.Compression;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Zybach.EFModels.Entities;
 using Zybach.Models.Prism;
 
 namespace Zybach.API.Services;
@@ -15,14 +17,25 @@ namespace Zybach.API.Services;
 //  TODO: Inject this service in startup instead of just newing it up. Not the highest priority IMO but good for consistency/correctness. Alternatively it could probably be made static with a little thought.
 //  TODO: Possibly should add support for the monthly and yearly data, requested with yyyyMM and yyyy respectively. Going with daily by default by now as that is the most granular, and should be a good example of how to get the other types if we need.
 //  TODO: Really not sure with how to deal with the fact that we a) don't know when new data will show up and b) the data changes up to 8 times over 6 months before its considered stable.
-
+//  TODO: Inject dbContext (or values required to new up a dbcontext when we go to hangfire) and add both the blobresource and prismdailyrecord and link FKs up as required
 
 public class PrismAPIService
 {
     private const string _baseZIPDirectory = "C:/Sitka/Zybach/PRISM_API/ZIP_ARCHIVE";
     private const string _baseDataDirectory = "C:/Sitka/Zybach/PRISM_API/DATA";
+    
+    private readonly ILogger<PrismAPIService> _logger;
+    private readonly ZybachConfiguration _zybachConfiguration;
+    private readonly ZybachDbContext _zybachDbContext;
+    private readonly HttpClient _httpClient;
 
-    private const string _baseURL = "https://services.nacse.org/prism/data/public/4km";
+    public PrismAPIService(ILogger<PrismAPIService> logger, ZybachConfiguration configuration, ZybachDbContext dbContext, HttpClient httpClient)
+    {
+        _logger = logger;
+        _zybachConfiguration = configuration;
+        _zybachDbContext = dbContext;
+        _httpClient = httpClient;
+    }
 
     /// <summary>
     /// Retrieves and processes data for a specified date range for a given Prism data element.
@@ -75,9 +88,8 @@ public class PrismAPIService
             return true;
         }
 
-        var requestURL = $"{_baseURL}/{element}/{date}";
-        var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync(requestURL);
+        var requestURL = $"{element}/{date}";
+        var response = await _httpClient.GetAsync(requestURL);
 
         if (!response.IsSuccessStatusCode)
         {

@@ -71,6 +71,9 @@ public partial class User
     [InverseProperty("CreateUser")]
     public virtual ICollection<FileResource> FileResources { get; set; } = new List<FileResource>();
 
+    [InverseProperty("FinalizeByUser")]
+    public virtual ICollection<PrismMonthlySync> PrismMonthlySyncs { get; set; } = new List<PrismMonthlySync>();
+
     [InverseProperty("CreateByUser")]
     public virtual ICollection<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; } = new List<RobustReviewScenarioGETRunHistory>();
 

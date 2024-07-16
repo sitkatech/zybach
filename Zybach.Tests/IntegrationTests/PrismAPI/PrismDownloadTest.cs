@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
+using System.IO; 
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore; 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OSGeo.GDAL;
 using Zybach.API.Services;
@@ -20,7 +19,7 @@ public class PrismDownloadTest
     [ClassInitialize]
     public static void ClassInitialize(TestContext context)
     {
-        _prismAPIHelper = new PrismAPIService();
+        _prismAPIHelper = new PrismAPIService(null, null, null, null);
 
         //TODO: Move the db work into the service.
         var dbCS = "Data Source=host.docker.internal;Initial Catalog=ZybachDB;Persist Security Info=True;User ID=DockerWebUser;Password=password#1;Encrypt=False;";
