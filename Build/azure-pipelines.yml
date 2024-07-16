@@ -195,7 +195,8 @@ stages:
           -var "team=$(team)" 
           -var "projectNumber=$(projectNumber)" 
           -var "elasticPoolName=$(kv-elasticPoolName)" 
-          -var "environment=$(environment)"
+          -var "environment=$(environment)" 
+          -var "storageAccountDevApplicationName=$(storageAccountDevApplicationName)" 
           
     - task: CopyFiles@2
       inputs:
