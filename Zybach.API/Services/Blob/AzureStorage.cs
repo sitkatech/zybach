@@ -26,6 +26,12 @@ public class AzureStorage : IAzureStorage
         _logger = logger;
     }
 
+    public AzureStorage(string blobConnectionString, ILogger<AzureStorage> logger)
+    {
+        _storageConnectionString = blobConnectionString;
+        _logger = logger;
+    }
+
     #endregion
 
     public async Task<BlobResponseDto> DeleteAsync(string containerName, string blobFilename)
@@ -123,7 +129,8 @@ public class AzureStorage : IAzureStorage
 
         // Get a reference to a container named in appsettings.json and then create it
         var container = new BlobContainerClient(_storageConnectionString, containerName);
-        //await container.CreateAsync();
+        await container.CreateIfNotExistsAsync();
+
         try
         {
             // Get a reference to the blob just uploaded from the API in a container from configuration settings

@@ -9,7 +9,6 @@ using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
-using Zybach.Models.Prism;
 
 namespace Zybach.API.Controllers;
 
@@ -61,7 +60,7 @@ public class PrismSyncController : SitkaController<PrismSyncController>
             return NotFound("Month must be between 1 and 12.");
         }
 
-        var prismDataType = PrismDataType.AllAsDto.FirstOrDefault(x => x.PrismDataTypeName == prismDataTypeName);
+        var prismDataType = PrismDataType.All.FirstOrDefault(x => x.PrismDataTypeName == prismDataTypeName);
         if (prismDataType == null)
         {
             return NotFound("Invalid Prism Data Type Name.");
@@ -81,8 +80,7 @@ public class PrismSyncController : SitkaController<PrismSyncController>
         var daysInMonth = DateTime.DaysInMonth(year, month);
         var monthEndDate = new DateTime(year, month, daysInMonth);
 
-        var dataElement = PrismDataElement.FromString(prismDataTypeName);
-        var success = await _prismAPIService.GetDataForDateRange(dataElement, monthStartDate, monthEndDate);
+        var success = await _prismAPIService.GetDataForDateRange(prismDataType, monthStartDate, monthEndDate, _callingUser);
 
         if (!success)
         {
@@ -115,7 +113,7 @@ public class PrismSyncController : SitkaController<PrismSyncController>
             return NotFound("Month must be between 1 and 12.");
         }
 
-        var prismDataType = PrismDataType.AllAsDto.FirstOrDefault(x => x.PrismDataTypeName == prismDataTypeName);
+        var prismDataType = PrismDataType.All.FirstOrDefault(x => x.PrismDataTypeName == prismDataTypeName);
         if (prismDataType == null)
         {
             return NotFound("Invalid Prism Data Type Name.");

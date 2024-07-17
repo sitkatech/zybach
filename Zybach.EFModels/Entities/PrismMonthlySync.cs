@@ -27,7 +27,7 @@ public partial class PrismMonthlySync
         return syncRecords;
     }
 
-    public static async Task<PrismMonthlySyncSimpleDto> Get(ZybachDbContext dbContext, int year, int month, PrismDataTypeDto prismDataType)
+    public static async Task<PrismMonthlySyncSimpleDto> Get(ZybachDbContext dbContext, int year, int month, PrismDataType prismDataType)
     {
         var syncRecord = await dbContext.PrismMonthlySyncs
             .AsNoTracking()
@@ -46,7 +46,7 @@ public partial class PrismMonthlySync
         return syncRecord;
     }
 
-    public static async Task<PrismMonthlySyncDto> Finalize(ZybachDbContext dbContext, UserDto callingUser, int year, int month, PrismDataTypeDto prismDataType, PrismMonthlySyncUpsertDto upsertDto)
+    public static async Task<PrismMonthlySyncDto> Finalize(ZybachDbContext dbContext, UserDto callingUser, int year, int month, PrismDataType prismDataType, PrismMonthlySyncUpsertDto upsertDto)
     {
         var syncRecord = await dbContext.PrismMonthlySyncs
             .AsNoTracking()
@@ -62,7 +62,7 @@ public partial class PrismMonthlySync
         return syncRecord.AsDto();
     }
 
-    public static async Task<PrismMonthlySyncDto> UpdateStatus(ZybachDbContext dbContext, UserDto callingUser, int year, int month, PrismDataTypeDto prismDataType, PrismSyncStatus prismStatus)
+    public static async Task<PrismMonthlySyncDto> UpdateStatus(ZybachDbContext dbContext, UserDto callingUser, int year, int month, PrismDataType prismDataType, PrismSyncStatus prismStatus)
     {
         var syncRecord = await dbContext.PrismMonthlySyncs
             .AsNoTracking()

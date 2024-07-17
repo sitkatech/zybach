@@ -10,6 +10,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstracts\" />
-    <Folder Include="Prism\" />
   </ItemGroup>
 </Project>
