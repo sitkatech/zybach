@@ -40,7 +40,7 @@ public class PrismSyncController : SitkaController<PrismSyncController>
             return NotFound("Invalid Prism Data Type Name.");
         }
 
-        var syncRecords = await PrismMonthlySync.Get(_dbContext, year, prismDataType);
+        var syncRecords = await PrismMonthlySyncs.ListSimpleByYearAndDataType(_dbContext, year, prismDataType);
         return Ok(syncRecords);
     }
 
@@ -66,13 +66,13 @@ public class PrismSyncController : SitkaController<PrismSyncController>
             return NotFound("Invalid Prism Data Type Name.");
         }
 
-        var prismMonthlySync = await PrismMonthlySync.Get(_dbContext, year, month, prismDataType);
+        var prismMonthlySync = await PrismMonthlySyncs.GetSimpleByYearMonthAndDataType(_dbContext, year, month, prismDataType);
         if (prismMonthlySync == null)
         {
-            return NotFound("Record not found.");
+            return NotFound($"Monthly sync record not found for {year} {month} {prismDataType.PrismDataTypeName}.");
         }
 
-        await PrismMonthlySync.UpdateStatus(_dbContext, _callingUser, year, month, prismDataType, PrismSyncStatus.InProgress);
+        await PrismMonthlySyncs.UpdateStatus(_dbContext, _callingUser, year, month, prismDataType, PrismSyncStatus.InProgress);
 
         #region Hangfire this?
 
@@ -81,19 +81,18 @@ public class PrismSyncController : SitkaController<PrismSyncController>
         var monthEndDate = new DateTime(year, month, daysInMonth);
 
         var success = await _prismAPIService.GetDataForDateRange(prismDataType, monthStartDate, monthEndDate, _callingUser);
-
         if (!success)
         {
-            await PrismMonthlySync.UpdateStatus(_dbContext, _callingUser, year, month, prismDataType, PrismSyncStatus.Failed);
+            await PrismMonthlySyncs.UpdateStatus(_dbContext, _callingUser, year, month, prismDataType, PrismSyncStatus.Failed);
         }
         else
         {
-            await PrismMonthlySync.UpdateStatus(_dbContext, _callingUser, year, month, prismDataType, PrismSyncStatus.Succeeded);
+            await PrismMonthlySyncs.UpdateStatus(_dbContext, _callingUser, year, month, prismDataType, PrismSyncStatus.Succeeded);
         }
 
         #endregion
 
-        var record = await PrismMonthlySync.Get(_dbContext, year, month, prismDataType);
+        var record = await PrismMonthlySyncs.GetSimpleByYearMonthAndDataType(_dbContext, year, month, prismDataType);
         return Ok(record);
     }
 
@@ -119,13 +118,13 @@ public class PrismSyncController : SitkaController<PrismSyncController>
             return NotFound("Invalid Prism Data Type Name.");
         }
 
-        var prismMonthlySync = await PrismMonthlySync.Get(_dbContext, year, month, prismDataType);
+        var prismMonthlySync = await PrismMonthlySyncs.GetSimpleByYearMonthAndDataType(_dbContext, year, month, prismDataType);
         if (prismMonthlySync == null)
         {
             return NotFound("Record not found.");
         }
 
-        var updatedRecord = await PrismMonthlySync.Finalize(_dbContext, _callingUser, year, month, prismDataType, prismMonthlySyncUpsertDto);
+        var updatedRecord = await PrismMonthlySyncs.Finalize(_dbContext, _callingUser, year, month, prismDataType, prismMonthlySyncUpsertDto);
         return Ok(updatedRecord);
     }
 

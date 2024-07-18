@@ -6,45 +6,21 @@ BEGIN
 
 	PRINT @MigrationName;
 
-    DECLARE @StartYear INT = 2020;
-    DECLARE @EndYear INT = YEAR(GETDATE());
-    DECLARE @EndMonth INT = MONTH(GETDATE());
-    DECLARE @CurrentYear INT;
-    DECLARE @CurrentMonth INT;
-    DECLARE @PrismDataTypeID INT;
-
-    -- Declare a cursor to iterate over all data types
-    DECLARE PrismDataTypeCursor CURSOR FOR
-    SELECT PrismDataTypeID FROM [dbo].[PrismDataType];
-
-    OPEN PrismDataTypeCursor;
-    FETCH NEXT FROM PrismDataTypeCursor INTO @PrismDataTypeID;
-
-    WHILE @@FETCH_STATUS = 0
-    BEGIN
-        SET @CurrentYear = @StartYear;
-        WHILE @CurrentYear <= @EndYear
-        BEGIN
-            SET @CurrentMonth = 1;
-            WHILE @CurrentMonth <= 12
-            BEGIN
-                -- Break the loop if we reached the current month of the current year
-                IF @CurrentYear = @EndYear AND @CurrentMonth > @EndMonth
-                    BREAK;
-
-                INSERT INTO [dbo].[PrismMonthlySync] ([PrismDataTypeID], [Year], [Month])
-                VALUES (@PrismDataTypeID, @CurrentYear, @CurrentMonth);
-
-                SET @CurrentMonth = @CurrentMonth + 1;
-            END
-            SET @CurrentYear = @CurrentYear + 1;
-        END
-
-        FETCH NEXT FROM PrismDataTypeCursor INTO @PrismDataTypeID;
-    END
-
-    CLOSE PrismDataTypeCursor;
-    DEALLOCATE PrismDataTypeCursor;
+    with months
+    as
+    (
+        select 1 as [month] union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9 union select 10 union select 11 union select 12
+    ),
+    years
+    as (
+        select 2020 as [year] union select 2021 union select 2022 union select 2023 union select 2024
+    )
+    INSERT INTO [dbo].[PrismMonthlySync] ([PrismDataTypeID], [Year], [Month])
+    SELECT PrismDataTypeID, [Year], [Month]
+    FROM months
+    cross join years
+    cross join dbo.PrismDataType
+    ORDER BY [Year], [Month], [PrismDataTypeID]
 
     INSERT INTO dbo.DatabaseMigration(MigrationAuthorName, ReleaseScriptFileName)
     SELECT 'Mikey Knowles', @MigrationName
