@@ -327,7 +327,7 @@ public partial class ZybachDbContext : DbContext
 
         modelBuilder.Entity<PrismMonthlySync>(entity =>
         {
-            entity.HasKey(e => e.PrismMonthlySyncID).HasName("PK_PrismMonthlySync_PrismSyncID");
+            entity.HasKey(e => e.PrismMonthlySyncID).HasName("PK_PrismMonthlySync_PrismMonthlySyncID");
 
             entity.Property(e => e.PrismSyncStatusID).HasDefaultValue(1);
 
