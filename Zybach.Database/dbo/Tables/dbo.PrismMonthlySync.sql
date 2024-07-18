@@ -2,6 +2,7 @@
 (    
     [PrismMonthlySyncID]        INT NOT NULL IDENTITY(1, 1),
     [PrismSyncStatusID]			INT NOT NULL DEFAULT(1),
+
 	[PrismDataTypeID]			INT NOT NULL,
 	[Year]						INT NOT NULL,
 	[Month]						INT NOT NULL,
@@ -9,7 +10,7 @@
 	[FinalizeDate]				DATETIME NULL,
 	[FinalizeByUserID]			INT,
 
-    CONSTRAINT [PK_PrismMonthlySync_PrismSyncID]				PRIMARY KEY CLUSTERED ([PrismMonthlySyncID]),
+    CONSTRAINT [PK_PrismMonthlySync_PrismMonthlySyncID]			PRIMARY KEY CLUSTERED ([PrismMonthlySyncID]),
 
 	CONSTRAINT [FK_PrismMonthlySync_PrismSyncStatusID]			FOREIGN KEY ([PrismSyncStatusID])	REFERENCES [dbo].[PrismSyncStatus] ([PrismSyncStatusID]),
 	CONSTRAINT [FK_PrismMonthlySync_PrismDataTypeID]			FOREIGN KEY ([PrismDataTypeID])		REFERENCES [dbo].[PrismDataType] ([PrismDataTypeID]),
