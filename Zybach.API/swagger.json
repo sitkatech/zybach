@@ -2334,7 +2334,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                    "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
                   }
                 }
               },
@@ -2342,7 +2342,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                    "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
                   }
                 }
               },
@@ -2350,7 +2350,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                    "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
                   }
                 }
               }
@@ -2398,17 +2398,77 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                  "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                  "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PrismMonthlySyncDto"
+                  "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/prism-monthly-sync/years/{year}/months/{month}/data-types/{prismDataTypeName}/download": {
+      "get": {
+        "tags": [
+          "PrismSync"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "prismDataTypeName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }
@@ -2449,30 +2509,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json-patch+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
-              }
-            },
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/PrismMonthlySyncUpsertDto"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
@@ -8578,6 +8614,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "LastSynchronizedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastSynchronizedByUser": {
+            "$ref": "#/components/schemas/UserDto"
+          },
           "FinalizeDate": {
             "type": "string",
             "format": "date-time",
@@ -8589,12 +8633,72 @@
         },
         "additionalProperties": false
       },
-      "PrismMonthlySyncUpsertDto": {
+      "PrismMonthlySyncSimpleDto": {
         "type": "object",
         "properties": {
-          "FinalizedDate": {
+          "PrismMonthlySyncID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PrismSyncStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "PrismDataTypeID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "LastSynchronizedDate": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastSynchronizedByUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "FinalizeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "FinalizeByUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "PrismSyncStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrismSyncStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrismDataTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrismDataTypeDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastSynchronizedByUserFullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "FinalizedByUserFullName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

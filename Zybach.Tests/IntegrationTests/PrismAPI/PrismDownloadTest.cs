@@ -41,23 +41,6 @@ public class PrismDownloadTest
         GdalConfiguration.ConfigureGdal();
     }
 
-    //[DataTestMethod]
-    //[DataRow("ppt", "20210101")]
-    //public async Task CanDownloadDataForDate(string elementAsQueryValue, string date)
-    //{
-    //    var element = PrismDataElement.FromString(elementAsQueryValue);
-    //    var cached = await _prismAPIHelper.GetDataAsZipFolder(element, date, null);
-
-    //    var zipFileFullPath = _prismAPIHelper.GetZipFileFullPath(element, date);
-    //    Assert.IsTrue(File.Exists(zipFileFullPath));
-
-    //    var unzipSuccessful = _prismAPIHelper.UnzipFolder(element, date);
-    //    Assert.IsTrue(unzipSuccessful);
-
-    //    var containingDirectoryFullPath = _prismAPIHelper.GetContainingDirectoryFullPath(element, date);
-    //    Assert.IsTrue(Directory.Exists(containingDirectoryFullPath));
-    //}
-
     [DataTestMethod]
     [DataRow("ppt", "20210101", "20210131", 46)] //46 == Mikey
     [DataRow("tmin", "20210101", "20210131", 46)] //46 == Mikey

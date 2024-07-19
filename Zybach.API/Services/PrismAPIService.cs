@@ -1,33 +1,26 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
 
 namespace Zybach.API.Services;
 
-//TODO: MK 7/3/2024 -- This service needs to be refactored to:
-//  TODO: Use blob storage instead of local storage, however I am not sure that there is blob storage atm in Zybach so punting for now.
-//  TODO: Clean up the unzipped files after use.
-//  TODO: Provide override to force a redownload and reprocessing if user requests it. 
-//  TODO: Inject this service in startup instead of just newing it up. Not the highest priority IMO but good for consistency/correctness. Alternatively it could probably be made static with a little thought.
-//  TODO: Possibly should add support for the monthly and yearly data, requested with yyyyMM and yyyy respectively. Going with daily by default by now as that is the most granular, and should be a good example of how to get the other types if we need.
-//  TODO: Really not sure with how to deal with the fact that we a) don't know when new data will show up and b) the data changes up to 8 times over 6 months before its considered stable.
-//  TODO: Inject dbContext (or values required to new up a dbcontext when we go to hangfire) and add both the blobresource and prismdailyrecord and link FKs up as required
-
 public class PrismAPIService
 {
     private readonly ILogger<PrismAPIService> _logger;
-    private readonly ZybachConfiguration _zybachConfiguration;
+    private readonly IOptions<ZybachConfiguration> _zybachConfiguration;
     private readonly ZybachDbContext _dbContext;
     private readonly HttpClient _httpClient;
     private readonly BlobService _blobService;
 
-
-    public PrismAPIService(ILogger<PrismAPIService> logger, ZybachConfiguration configuration, ZybachDbContext dbContext, HttpClient httpClient, BlobService blobService)
+    public PrismAPIService(ILogger<PrismAPIService> logger, IOptions<ZybachConfiguration> configuration, ZybachDbContext dbContext, HttpClient httpClient, BlobService blobService)
     {
         _logger = logger;
         _zybachConfiguration = configuration;
@@ -36,13 +29,31 @@ public class PrismAPIService
         _blobService = blobService;
     }
 
+    [AutomaticRetry(Attempts = 0)]
+    public async Task SyncPrismData(int year, int month, string prismDataTypeName, UserDto callingUser)
+    {
+        var monthStartDate = new DateTime(year, month, 1);
+        var daysInMonth = DateTime.DaysInMonth(year, month);
+        var monthEndDate = new DateTime(year, month, daysInMonth);
+        var prismDataType = PrismDataType.All.First(x => x.PrismDataTypeName == prismDataTypeName);
+        var success = await GetDataForDateRange(prismDataType, monthStartDate, monthEndDate, callingUser);
+        if (!success)
+        {
+            await PrismMonthlySyncs.UpdateStatus(_dbContext, callingUser, year, month, prismDataType, PrismSyncStatus.Failed);
+        }
+        else
+        {
+            await PrismMonthlySyncs.UpdateStatus(_dbContext, callingUser, year, month, prismDataType, PrismSyncStatus.Succeeded);
+        }
+    }
+
     /// <summary>
     /// Retrieves and processes data for a specified date range for a given Prism data element.
     /// </summary>
     /// <param name="dataType">The data element to retrieve and process.</param>
     /// <param name="start">The start date of the date range.</param>
     /// <param name="end">The end date of the date range.</param>
-    /// <param name="callingUser">User making the request.</param>
+    /// <param name="callingUser">The user making the request.</param>
     /// <returns>Returns true if the data retrieval and processing is successful.</returns>
     /// <exception cref="ArgumentException">Thrown when the start date is after the end date.</exception>
     public async Task<bool> GetDataForDateRange(PrismDataType dataType, DateTime start, DateTime end, UserDto callingUser)
@@ -52,11 +63,13 @@ public class PrismAPIService
             throw new ArgumentException("Start date must be before end date.");
         }
 
+        var maxDateAllowed = DateTime.UtcNow - TimeSpan.FromDays(1); //Prism Data seems to be delayed by a day, might want to allow this to be configured?
+        var endDate = end < maxDateAllowed ? end : maxDateAllowed;
+
         var currentDate = start;
-        while (currentDate <= end)
+        while (currentDate <= endDate)
         {
             await GetDataAsZipFolder(dataType, currentDate, callingUser);
-            //UnzipFolder(element, date);
             currentDate = currentDate.AddDays(1); 
             Thread.Sleep(2000); //MK 6/26/2024 -- Their example code has a 2 second delay between requests, with a note that says to be kind to their server.
         }
@@ -64,18 +77,14 @@ public class PrismAPIService
         return true;
     }
 
-    public bool GetDataForDate(PrismDataType dataType, DateTime date, UserDto callingUser)
-    {
-        var hadOrGotZip = GetDataAsZipFolder(dataType, date, callingUser);
-        return hadOrGotZip.Result;
-    }
-
     /// <summary>
     /// Downloads climate data from the PRISM API and saves it as a zip file if not already present locally. Please see https://prism.oregonstate.edu/documents/PRISM_downloads_web_service.pdf for more information.
     /// </summary>
     /// <param name="dataType">The type of climate data to retrieve (e.g., ppt, tmin, tmax).</param>
     /// <param name="date">The date for which to retrieve the data. Format can be YYYYMMDD for daily, YYYYMM for monthly, or YYYY for annual/historical.</param>
-    /// <returns>A boolean indicating whether the data was successfully downloaded or already exists locally.</returns>
+    /// <param name="callingUser">The user making the request.</param>
+    /// <param name="forceRedownload">A boolean indicating whether to force a redownload of the data even if it already exists.</param>
+    /// <returns>A boolean indicating whether the data was successfully downloaded or already exists.</returns>
     public async Task<bool> GetDataAsZipFolder(PrismDataType dataType, DateTime date, UserDto callingUser, bool forceRedownload = false)
     {
         //MK 6/26/2024 -- Check if we have the sync records in place.
@@ -130,7 +139,6 @@ public class PrismAPIService
         try
         {
             var response = await _httpClient.GetAsync(requestURL);
-
             if (!response.IsSuccessStatusCode)
             {
                 prismDailySyncRecord.PrismSyncStatusID = PrismSyncStatus.Failed.PrismSyncStatusID;
@@ -199,11 +207,6 @@ public class PrismAPIService
     //    return true;
     //}
 
-    //public string GetContainingDirectoryFullPath(PrismDataElement element, string date)
-    //{
-    //    return $"{_baseDataDirectory}/{element}/{GetFolderName(element, date)}";
-    //}
-
     public string GetFolderName(PrismDataType dataType, DateTime date)
     {
         var dateAsString = date.ToString("yyyyMMdd");
@@ -215,15 +218,4 @@ public class PrismAPIService
         var dateAsString = date.ToString("yyyyMMdd");
         return $"PRISM_{dataType.PrismDataTypeName}_stable_4kmD2_{dateAsString}_bil.{extension}";
     }
-
-    //public string GetZipFileFullPath(PrismDataElement element, string date)
-    //{
-    //    return $"{_baseZIPDirectory}/{element}/{GetZipFileName(element, date)}";
-    //}
-
-    //public string GetZipFileName(PrismDataElement element, string date)
-    //{
-    //    var containingFolderName = GetFolderName(element, date);
-    //    return $"{containingFolderName}.zip";
-    //}
 }
