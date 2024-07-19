@@ -62,11 +62,17 @@ public partial class User
 
     public bool PerformsChemigationInspections { get; set; }
 
+    [InverseProperty("CreateUser")]
+    public virtual ICollection<BlobResource> BlobResources { get; set; } = new List<BlobResource>();
+
     [InverseProperty("InspectorUser")]
     public virtual ICollection<ChemigationInspection> ChemigationInspections { get; set; } = new List<ChemigationInspection>();
 
     [InverseProperty("CreateUser")]
     public virtual ICollection<FileResource> FileResources { get; set; } = new List<FileResource>();
+
+    [InverseProperty("FinalizeByUser")]
+    public virtual ICollection<PrismMonthlySync> PrismMonthlySyncs { get; set; } = new List<PrismMonthlySync>();
 
     [InverseProperty("CreateByUser")]
     public virtual ICollection<RobustReviewScenarioGETRunHistory> RobustReviewScenarioGETRunHistories { get; set; } = new List<RobustReviewScenarioGETRunHistory>();

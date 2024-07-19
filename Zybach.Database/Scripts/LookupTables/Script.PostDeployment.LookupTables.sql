@@ -44,6 +44,10 @@ GO
 GO
 :r ".\dbo.OpenETSyncResultType.sql"
 GO
+:r ".\dbo.PrismDataType.sql"
+GO
+:r ".\dbo.PrismSyncStatus.sql"
+GO
 :r ".\dbo.ReportTemplateModel.sql"
 GO
 :r ".\dbo.ReportTemplateModelType.sql"

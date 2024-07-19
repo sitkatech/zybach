@@ -10,4 +10,6 @@ GO
 
 :r ".\0001 - Run MakeValid__ on AgHubIrrigationUnit geometries.sql"
 GO
+:r ".\0002 - Prepopulate prism monthly sync records.sql"
+GO
 

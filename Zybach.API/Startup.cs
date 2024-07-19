@@ -109,11 +109,18 @@ namespace Zybach.API
                 //Allows us to follow a URL and get more information on why a request failed
                 c.DefaultRequestHeaders.Add("Ocp-Apim-Trace", "true");
             });
+
             services.AddHttpClient<OpenETService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.OpenETAPIBaseUrl);
                 c.Timeout = TimeSpan.FromMinutes(30);
                 c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(zybachConfiguration.OPENET_API_KEY);
+            });
+
+            services.AddHttpClient<PrismAPIService>(c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.PRISM_API_BASE_URL);
+                c.Timeout = TimeSpan.FromMinutes(30);
             });
 
             services.AddScoped<InfluxDBService>();
