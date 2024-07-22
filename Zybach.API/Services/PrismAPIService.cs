@@ -35,7 +35,7 @@ public class PrismAPIService
         var monthStartDate = new DateTime(year, month, 1);
         var daysInMonth = DateTime.DaysInMonth(year, month);
         var monthEndDate = new DateTime(year, month, daysInMonth);
-        var prismDataType = PrismDataType.All.First(x => x.PrismDataTypeName == prismDataTypeName);
+        var prismDataType = PrismDataType.All.FirstOrDefault(x => x.PrismDataTypeName == prismDataTypeName);
         var success = await GetDataForDateRange(prismDataType, monthStartDate, monthEndDate, callingUser);
         if (!success)
         {
@@ -69,9 +69,13 @@ public class PrismAPIService
         var currentDate = start;
         while (currentDate <= endDate)
         {
-            await GetDataAsZipFolder(dataType, currentDate, callingUser);
-            currentDate = currentDate.AddDays(1); 
-            Thread.Sleep(2000); //MK 6/26/2024 -- Their example code has a 2 second delay between requests, with a note that says to be kind to their server.
+            var result = await GetDataAsZipFolder(dataType, currentDate, callingUser);
+            currentDate = currentDate.AddDays(1);
+
+            if (result.MadePrismRequest)
+            {
+                Thread.Sleep(2000); //MK 6/26/2024 -- Their example code has a 2 second delay between requests, with a note that says to be kind to their server.
+            }
         }
 
         return true;
@@ -85,7 +89,7 @@ public class PrismAPIService
     /// <param name="callingUser">The user making the request.</param>
     /// <param name="forceRedownload">A boolean indicating whether to force a redownload of the data even if it already exists.</param>
     /// <returns>A boolean indicating whether the data was successfully downloaded or already exists.</returns>
-    public async Task<bool> GetDataAsZipFolder(PrismDataType dataType, DateTime date, UserDto callingUser, bool forceRedownload = false)
+    public async Task<PrismResult> GetDataAsZipFolder(PrismDataType dataType, DateTime date, UserDto callingUser, bool forceRedownload = false)
     {
         //MK 6/26/2024 -- Check if we have the sync records in place.
         var prismDailySyncRecord = await _dbContext.PrismDailyRecords.FirstOrDefaultAsync(x => x.Year == date.Year && x.Month == date.Month && x.Day == date.Day && x.PrismDataTypeID == dataType.PrismDataTypeID);
@@ -129,7 +133,12 @@ public class PrismAPIService
             
             if (blobResource != null && blobResourceStream != null)
             {
-                return true;
+                return new PrismResult()
+                {
+                    Success = true,
+                    MadePrismRequest = false,
+                    ErrorMessage = null
+                };
             }
         }
 
@@ -145,7 +154,12 @@ public class PrismAPIService
                 prismDailySyncRecord.ErrorMessage = $"{response.StatusCode}: {response.ReasonPhrase}";
                 _dbContext.Update(prismDailySyncRecord);
                 await _dbContext.SaveChangesAsync();
-                return false;
+                return new PrismResult()
+                {
+                    Success = false,
+                    MadePrismRequest = true,
+                    ErrorMessage = $"{response.StatusCode}: {response.ReasonPhrase}"
+                };
             }
 
             await using var streamToReadFrom = await response.Content.ReadAsStreamAsync();
@@ -156,7 +170,12 @@ public class PrismAPIService
             _dbContext.Update(prismDailySyncRecord);
             await _dbContext.SaveChangesAsync();
 
-            return true;
+            return new PrismResult()
+            {
+                Success = true,
+                MadePrismRequest = true,
+                ErrorMessage = null
+            };
 
         }
         catch(Exception e)
@@ -165,8 +184,20 @@ public class PrismAPIService
             prismDailySyncRecord.ErrorMessage = e.Message;
             _dbContext.Update(prismDailySyncRecord);
             await _dbContext.SaveChangesAsync();
-            return false;
+            return new PrismResult()
+            {
+                Success = false,
+                MadePrismRequest = true,
+                ErrorMessage = $"{e}"
+            };
         }
+    }
+
+    public class PrismResult
+    {
+        public bool Success { get; set; }
+        public bool MadePrismRequest { get; set; }
+        public string ErrorMessage { get; set; }
     }
 
     /// <summary>

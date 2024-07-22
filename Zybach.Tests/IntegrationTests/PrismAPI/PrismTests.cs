@@ -12,7 +12,7 @@ using Zybach.EFModels.Entities;
 namespace Zybach.Tests.IntegrationTests.PrismAPI;
 
 [TestClass]
-public class PrismDownloadTest
+public class PrismTests
 {
     private static PrismAPIService _prismAPIHelper;
     private static ZybachDbContext _dbContext;
@@ -54,28 +54,6 @@ public class PrismDownloadTest
         var success = await _prismAPIHelper.GetDataForDateRange(dataType, start, end, callingUser);
         Assert.IsTrue(success);
     }
-
-    //[DataTestMethod]
-    //[DataRow("ppt", "20210102")]
-    //public async Task<Dataset> CanReadAndSaveBILDataToSQL(string elementAsQueryValue, string dateAsString)
-    //{
-    //    await CanDownloadDataForDate(elementAsQueryValue, dateAsString);
-
-    //    var element = PrismDataElement.FromString(elementAsQueryValue);
-    //    var containingDirectoryFullPath = _prismAPIHelper.GetContainingDirectoryFullPath(element, dateAsString);
-        
-    //    var bilFile = $"{containingDirectoryFullPath}/{_prismAPIHelper.GetFileName(element, dateAsString, "bil")}";
-    //    var dataset = Gdal.Open(bilFile, Access.GA_ReadOnly);
-    //    Assert.IsNotNull(dataset, "Error opening file.");
-
-    //    //MK 7/3/2024 -- Loop through each band in the raster dataset, index starts at 1 blech... Prism data looks like it might only have a single band though.
-    //    for (var i = 1; i <= dataset.RasterCount; i++)
-    //    {
-    //        await ProcessBand(_dbContext, dataset, i, element.ToString(), dateAsString);
-    //    }
-
-    //    return dataset;
-    //}
 
     //[DataTestMethod]
     //[DataRow("ppt", "20210102")]
