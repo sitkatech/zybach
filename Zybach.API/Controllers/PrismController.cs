@@ -118,7 +118,7 @@ public class PrismSyncController : SitkaController<PrismSyncController>
             return NotFound("Record not found.");
         }
 
-        var dailyRecords = await PrismDailyRecords.ListByYearMonthAndDataType(_dbContext, year, month, prismDataType);
+        var dailyRecords = await PrismDailyRecords.ListSimpleByYearMonthAndDataType(_dbContext, year, month, prismDataType);
 
         var fileStreams = new Dictionary<string, Stream>();
 
