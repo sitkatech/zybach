@@ -5,18 +5,21 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OSGeo.GDAL;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
+using Zybach.Models.DataTransferObjects;
+using Zybach.Models.Helpers;
 
 namespace Zybach.Tests.IntegrationTests.PrismAPI;
 
 [TestClass]
 public class PrismTests
 {
-    private static PrismAPIService _prismAPIHelper;
+    private static PrismAPIService _prismAPIService;
     private static ZybachDbContext _dbContext;
     private static BlobService _blobService;
+    private static int _userID = 46; // Mikey
+    private static UserDto _callingUser;
 
     [ClassInitialize]
     public static void ClassInitialize(TestContext context)
@@ -36,93 +39,66 @@ public class PrismTests
         _blobService = new BlobService(nullBlobServiceLogger, azureStorage);
 
         var nullPrismAPIServiceLogger = new NullLogger<PrismAPIService>();
-        _prismAPIHelper = new PrismAPIService(nullPrismAPIServiceLogger, null, _dbContext, httpClient, _blobService);
+        _prismAPIService = new PrismAPIService(nullPrismAPIServiceLogger, null, _dbContext, httpClient, _blobService);
 
         GdalConfiguration.ConfigureGdal();
+
+        _callingUser = Users.GetByUserID(_dbContext, _userID);
     }
 
     [DataTestMethod]
-    [DataRow("ppt", "20210101", "20210131", 46)] //46 == Mikey
-    [DataRow("tmin", "20210101", "20210131", 46)] //46 == Mikey
-    [DataRow("tmax", "20210101", "20210131", 46)] //46 == Mikey
-    public async Task CanDownloadDataForDateRange(string dataTypeAsString, string startDate, string endDate, int userID)
+    [DataRow("ppt", "20210101", "20210131")]
+    [DataRow("tmin", "20210101", "20210131")]
+    [DataRow("tmax", "20210101", "20210131")]
+    public async Task CanDownloadDataForDateRange(string dataTypeAsString, string startDate, string endDate)
     {
         var dataType = PrismDataType.All.First(x => x.PrismDataTypeName == dataTypeAsString);
         var start = DateTime.ParseExact(startDate, "yyyyMMdd", null);
         var end = DateTime.ParseExact(endDate, "yyyyMMdd", null);
-        var callingUser = Users.GetByUserID(_dbContext, userID);
-        var success = await _prismAPIHelper.GetDataForDateRange(dataType, start, end, callingUser);
+        var success = await _prismAPIService.GetZipfilesForDateRange(dataType, start, end, _callingUser);
         Assert.IsTrue(success);
     }
 
-    //[DataTestMethod]
-    //[DataRow("ppt", "20210102")]
-    //public async Task CanUseGdalToRasterizeIrrigationUnitGeometries(string elementAsQueryValue, string dateAsString)
-    //{
-    //    var dataset = await CanReadAndSaveBILDataToSQL(elementAsQueryValue, dateAsString);
-
-    //    var element = PrismDataElement.FromString(elementAsQueryValue);
-    //    var irrigationUnitGeometries = await _dbContext.AgHubIrrigationUnitGeometries.AsNoTracking().ToListAsync();
-        
-    //    var geoTransform = new double[6];
-    //    dataset.GetGeoTransform(geoTransform);
-
-    //    var band = dataset.GetRasterBand(1);
-
-    //    foreach (var irrigationUnitGeometry in irrigationUnitGeometries)
-    //    {
-    //        var geometry = irrigationUnitGeometry.IrrigationUnitGeometry;
-    //        var centroid = geometry.Centroid;
-
-    //        var x = (int)((centroid.X - geoTransform[0]) / geoTransform[1]);
-    //        var y = (int)((centroid.Y - geoTransform[3]) / geoTransform[5]);
-    //        var rasterValues = new float[1];
-    //        band.ReadRaster(x, y, 1, 1, rasterValues, 1, 1, 0, 0);
-    //        var rasterValue = rasterValues[0];
-
-    //        var curveNumber = "look-up-curve-number-provided-in-db";
-    //        var calculatedRunOff = "https://en.wikipedia.org/wiki/Runoff_curve_number";
-
-    //        //TODO calculate that runoff and save to DB?
-    //    }
-    //}
-    
-    //TODO: Move this into the service
-    private async Task ProcessBand(ZybachDbContext dbContext, Dataset dataset, int bandIndex, string element, string dateAsString)
+    [DataTestMethod]
+    [DataRow("ppt", "20240102")]
+    [DataRow("ppt", "20210131")]
+    [DataRow("ppt", "20240718")]
+    public async Task CanUseGdalToRasterizeIrrigationUnitGeometries(string dataTypeAsString, string dateAsString)
     {
-        await dbContext.SaveChangesAsync();
+        var dataType = PrismDataType.All.First(x => x.PrismDataTypeName == dataTypeAsString);
+        var date = DateTime.ParseExact(dateAsString, "yyyyMMdd", null);
+        var prismResult = await _prismAPIService.SaveZipFileToBlobStorage(dataType, date, _callingUser);
+        Assert.IsNotNull(prismResult.BlobID);
 
-        var band = dataset.GetRasterBand(bandIndex);
-        Assert.IsNotNull(band, "Error getting band.");
+        var dataset = await _prismAPIService.GetBilFileAsDataset(prismResult.BlobID.Value);
 
-        // Get raster dimensions
-        var width = band.XSize;
-        var height = band.YSize;
+        var geoTransform = new double[6];
+        dataset.GetGeoTransform(geoTransform);
 
-        // Create buffer to hold raster data
-        var buffer = new float[width * height];
+        var band = dataset.GetRasterBand(1);
 
-        // Read raster data into buffer
-        band.ReadRaster(0, 0, width, height, buffer, width, height, 0, 0);
-
-        var maxDataCountToConsoleWrite = 50;
-        for (var row = 0; row < height; row++)
+        var irrigationUnitGeometries = await _dbContext.AgHubIrrigationUnitGeometries.AsNoTracking().ToListAsync();
+        foreach (var irrigationUnitGeometry in irrigationUnitGeometries)
         {
-            for (var col = 0; col < width; col++)
-            {
-                // Print a portion of the data
-                if (row < maxDataCountToConsoleWrite && col < maxDataCountToConsoleWrite)
-                {
-                    Console.Write($"{buffer[row * width + col]:F2} ");
-                }
-            }
+            var geometry = irrigationUnitGeometry.IrrigationUnitGeometry;
+            var centroid = geometry.Centroid;
 
-            if (row < maxDataCountToConsoleWrite)
-            {
-                Console.WriteLine();
-            }
+            var x = (int)((centroid.X - geoTransform[0]) / geoTransform[1]);
+            var y = (int)((centroid.Y - geoTransform[3]) / geoTransform[5]);
+            var rasterValues = new float[1];
+            band.ReadRaster(x, y, 1, 1, rasterValues, 1, 1, 0, 0);
+            var rasterValueInMM = rasterValues[0];
+            var rasterValueInIN = rasterValueInMM / 25.4;
+
+            var curveNumber = 70; //TODO: Look up curve number based on tillage type for that irrigation unit.
+
+            //TODO save to DB for day/irrigation unit combo
+            var runOff = RunoffCalculatorHelper.Runoff(curveNumber, rasterValueInIN);
+
+            Console.WriteLine($"({rasterValueInIN}, {runOff})");
         }
 
-        await dbContext.SaveChangesAsync();
+        dataset.Dispose();
+        _prismAPIService.CleanupTempFiles(prismResult.BlobID.Value);
     }
 }

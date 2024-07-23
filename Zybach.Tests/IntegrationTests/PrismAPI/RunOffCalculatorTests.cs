@@ -16,9 +16,9 @@ public class RunOffCalculatorTests
     [ClassInitialize]
     public static void ClassInitialize(TestContext context)
     {
-        _calculateSoilMoistureRetentionMethod = typeof(RunOffCalculatorHelper).GetMethod("CalculateSoilMoistureRetention", BindingFlags.NonPublic | BindingFlags.Static);
-        _calculateInitialAbstractionMethod = typeof(RunOffCalculatorHelper).GetMethod("CalculateInitialAbstraction", BindingFlags.NonPublic | BindingFlags.Static);
-        _calculateRunoffMethod = typeof(RunOffCalculatorHelper).GetMethod("CalculateRunoff", BindingFlags.NonPublic | BindingFlags.Static);
+        _calculateSoilMoistureRetentionMethod = typeof(RunoffCalculatorHelper).GetMethod("CalculateSoilMoistureRetention", BindingFlags.NonPublic | BindingFlags.Static);
+        _calculateInitialAbstractionMethod = typeof(RunoffCalculatorHelper).GetMethod("CalculateInitialAbstraction", BindingFlags.NonPublic | BindingFlags.Static);
+        _calculateRunoffMethod = typeof(RunoffCalculatorHelper).GetMethod("CalculateRunoff", BindingFlags.NonPublic | BindingFlags.Static);
     }
 
 
@@ -57,7 +57,7 @@ public class RunOffCalculatorTests
     [DataRow(61, 5, 1.37)]
     public void Runoff_ReturnsCorrectRunoff(double cn, double precipitation, double expected)
     {
-        var runOff = RunOffCalculatorHelper.Runoff(cn, precipitation);
+        var runOff = RunoffCalculatorHelper.Runoff(cn, precipitation);
         var result = Math.Round(runOff, 2);
         Assert.AreEqual(expected, result);
     }

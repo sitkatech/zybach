@@ -2,8 +2,7 @@
 
 namespace Zybach.Models.Helpers;
 
-
-public static class RunOffCalculatorHelper
+public static class RunoffCalculatorHelper
 {
     /// <summary>
     /// Calculates the runoff based on the curve number and precipitation. Please see the following link for more information: https://en.wikipedia.org/wiki/Runoff_curve_number.
@@ -54,7 +53,6 @@ public static class RunOffCalculatorHelper
     /// <param name="initialAbstraction">The initial abstraction (Ia) in inches.</param>
     /// <param name="soilMoistureRetention">The potential maximum soil moisture retention (S) in inches.</param>
     /// <returns>The calculated runoff (Q) in inches.</returns>
-
     private static double CalculateRunoff(double precipitation, double initialAbstraction, double soilMoistureRetention)
     {
         // If precipitation is less than or equal to initial abstraction, there is no runoff.
