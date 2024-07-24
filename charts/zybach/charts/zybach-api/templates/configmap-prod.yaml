@@ -31,4 +31,5 @@ data:
   OpenETRasterMetadataRoute: "raster/metadata"
   OpenETRasterExportStatusRoute: "raster/export/status"
   OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "tpid"
+  PRISM_API_BASE_URL: "https://services.nacse.org/prism/data/public/4km"
 {{ end }}  
