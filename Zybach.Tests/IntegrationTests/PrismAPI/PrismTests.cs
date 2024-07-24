@@ -88,11 +88,10 @@ public class PrismTests
             var rasterValues = new float[1];
             band.ReadRaster(x, y, 1, 1, rasterValues, 1, 1, 0, 0);
             var rasterValueInMM = rasterValues[0];
-            var rasterValueInIN = rasterValueInMM / 25.4;
+            var rasterValueInIN = rasterValueInMM / 25.4; // 1 inch = 25.4 mm
 
             var curveNumber = 70; //TODO: Look up curve number based on tillage type for that irrigation unit.
 
-            //TODO save to DB for day/irrigation unit combo
             var runOff = RunoffCalculatorHelper.Runoff(curveNumber, rasterValueInIN);
 
             Console.WriteLine($"({rasterValueInIN}, {runOff})");
@@ -100,5 +99,23 @@ public class PrismTests
 
         dataset.Dispose();
         _prismAPIService.CleanupTempFiles(prismResult.BlobID.Value);
+    }
+
+    [DataTestMethod]
+    [DataRow(1)]
+    public async Task CanListRunoffDataForIrrigationUnit(int irrigationUnitID)
+    {
+        var irrigationUnit = await _dbContext.AgHubIrrigationUnits
+            .AsNoTracking()
+            .Include(x => x.AgHubIrrigationUnitGeometry)
+            .FirstOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnitID);
+
+        var data = _prismAPIService.ListAllIrrigationUnitRunoffData(irrigationUnit);
+        Assert.IsNotNull(data);
+
+        foreach (var runoffDataDto in data.Result)
+        {
+            Console.WriteLine($"{runoffDataDto.Year}-{runoffDataDto.Month}-{runoffDataDto.Day}: (P={runoffDataDto.Precipitation}, CN={runoffDataDto.CurveNumber}, Q={runoffDataDto.RunoffDepth})");
+        }
     }
 }

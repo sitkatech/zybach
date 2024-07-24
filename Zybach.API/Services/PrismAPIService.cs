@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using DocumentFormat.OpenXml.InkML;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NetTopologySuite.Geometries;
 using OSGeo.GDAL;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
+using Zybach.Models.Helpers;
 
 namespace Zybach.API.Services;
 
@@ -92,7 +96,7 @@ public class PrismAPIService
     /// <param name="callingUser">The user making the request.</param>
     /// <param name="forceRedownload">A boolean indicating whether to force a redownload of the data even if it already exists.</param>
     /// <returns>A boolean indicating whether the data was successfully downloaded or already exists.</returns>
-    public async Task<PrismResult> SaveZipFileToBlobStorage(PrismDataType dataType, DateTime date, UserDto callingUser, bool forceRedownload = false)
+    public async Task<PrismResultDto> SaveZipFileToBlobStorage(PrismDataType dataType, DateTime date, UserDto callingUser, bool forceRedownload = false)
     {
         //MK 6/26/2024 -- Check if we have the sync records in place.
         var prismDailySyncRecord = await _dbContext.PrismDailyRecords.FirstOrDefaultAsync(x => x.Year == date.Year && x.Month == date.Month && x.Day == date.Day && x.PrismDataTypeID == dataType.PrismDataTypeID);
@@ -136,7 +140,7 @@ public class PrismAPIService
             
             if (blobResource != null && blobResourceStream != null)
             {
-                return new PrismResult()
+                return new PrismResultDto()
                 {
                     Success = true,
                     MadePrismRequest = false,
@@ -158,7 +162,7 @@ public class PrismAPIService
                 prismDailySyncRecord.ErrorMessage = $"{response.StatusCode}: {response.ReasonPhrase}";
                 _dbContext.Update(prismDailySyncRecord);
                 await _dbContext.SaveChangesAsync();
-                return new PrismResult()
+                return new PrismResultDto()
                 {
                     Success = false,
                     MadePrismRequest = true,
@@ -174,7 +178,7 @@ public class PrismAPIService
             _dbContext.Update(prismDailySyncRecord);
             await _dbContext.SaveChangesAsync();
 
-            return new PrismResult()
+            return new PrismResultDto()
             {
                 Success = true,
                 MadePrismRequest = true,
@@ -189,7 +193,7 @@ public class PrismAPIService
             prismDailySyncRecord.ErrorMessage = e.Message;
             _dbContext.Update(prismDailySyncRecord);
             await _dbContext.SaveChangesAsync();
-            return new PrismResult()
+            return new PrismResultDto()
             {
                 Success = false,
                 MadePrismRequest = true,
@@ -259,6 +263,60 @@ public class PrismAPIService
         }
     }
 
+    public async Task<List<IrrigationUnitRunoffDataDto>> ListAllIrrigationUnitRunoffData(AgHubIrrigationUnit agHubIrrigation)
+    {
+        var curveNumber = 70; //TODO: Get this from the database.
+        var dailyRecords = await _dbContext.PrismDailyRecords.Where(x => x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue).ToListAsync();
+        var results = new List<IrrigationUnitRunoffDataDto>();
+
+        foreach (var prismDailyRecord in dailyRecords)
+        {
+            var dataset = await GetBilFileAsDataset(prismDailyRecord.BlobResourceID!.Value);
+            if (dataset == null)
+            {
+                continue;
+            }
+
+            var precipitation = dataset.GetRasterValueForGeometry(agHubIrrigation.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
+            var runoff = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
+
+            results.Add(new IrrigationUnitRunoffDataDto
+            {
+                Year = prismDailyRecord.Year,
+                Month = prismDailyRecord.Month,
+                Day = prismDailyRecord.Day,
+
+                Precipitation = precipitation,
+                CurveNumber = curveNumber, 
+                RunoffDepth = runoff,
+                RunoffVolume = runoff * agHubIrrigation.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry.Area //TODO: The card mentions that this is more complicated than it would seem. Revisit this.
+            });
+        }
+
+        return results;
+    }
+
+    public async Task CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(int year, int month)
+    { 
+        var irrigationUnits = await _dbContext.AgHubIrrigationUnits.Include(x => x.AgHubIrrigationUnitGeometry).ToListAsync();
+        var dailyRecords = await _dbContext.PrismDailyRecords.Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue).ToListAsync();
+
+        foreach (var irrigationUnit in irrigationUnits)
+        {
+            var dataset = await GetBilFileAsDataset(dailyRecords.First().BlobResourceID!.Value);
+            if (dataset == null)
+            {
+                continue;
+            }
+
+            var precipitation = dataset.GetRasterValueForGeometry(irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
+            var curveNumber = 70; //TODO: Get this from the database.   
+            var runoff = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
+
+
+        }
+    }
+
     public void CleanupTempFiles(int blobID)
     {
         var blob = _dbContext.BlobResources.FirstOrDefault(x => x.BlobResourceID == blobID);
@@ -281,7 +339,29 @@ public class PrismAPIService
     }
 }
 
-public class PrismResult
+public static class DatasetExtensions
+{
+    public static double GetRasterValueForGeometry(this Dataset dataset, Geometry geometry)
+    {
+        var geoTransform = new double[6];
+        dataset.GetGeoTransform(geoTransform);
+
+        var band = dataset.GetRasterBand(1);
+
+        var centroid = geometry.Centroid;
+
+        var x = (int)((centroid.X - geoTransform[0]) / geoTransform[1]);
+        var y = (int)((centroid.Y - geoTransform[3]) / geoTransform[5]);
+        var rasterValues = new float[1];
+        band.ReadRaster(x, y, 1, 1, rasterValues, 1, 1, 0, 0);
+        var rasterValueInMM = rasterValues[0];
+        var rasterValueInIN = rasterValueInMM / 25.4; // Convert from mm to inches
+
+        return rasterValueInIN;
+    }
+}
+
+public class PrismResultDto
 {
     public bool Success { get; set; }
     public bool MadePrismRequest { get; set; }
