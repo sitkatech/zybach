@@ -117,6 +117,9 @@ namespace Zybach.API
                 c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(zybachConfiguration.OPENET_API_KEY);
             });
 
+            services.AddScoped<IAzureStorage, AzureStorage>();
+            services.AddScoped<BlobService>();
+
             services.AddHttpClient<PrismAPIService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.PRISM_API_BASE_URL);

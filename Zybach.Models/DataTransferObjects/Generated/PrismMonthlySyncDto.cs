@@ -14,6 +14,8 @@ namespace Zybach.Models.DataTransferObjects
         public PrismDataTypeDto PrismDataType { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }
+        public DateTime? LastSynchronizedDate { get; set; }
+        public UserDto LastSynchronizedByUser { get; set; }
         public DateTime? FinalizeDate { get; set; }
         public UserDto FinalizeByUser { get; set; }
     }
@@ -25,6 +27,8 @@ namespace Zybach.Models.DataTransferObjects
         public System.Int32 PrismDataTypeID { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }
+        public DateTime? LastSynchronizedDate { get; set; }
+        public System.Int32? LastSynchronizedByUserID { get; set; }
         public DateTime? FinalizeDate { get; set; }
         public System.Int32? FinalizeByUserID { get; set; }
     }

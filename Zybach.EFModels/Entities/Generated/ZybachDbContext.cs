@@ -331,7 +331,9 @@ public partial class ZybachDbContext : DbContext
 
             entity.Property(e => e.PrismSyncStatusID).HasDefaultValue(1);
 
-            entity.HasOne(d => d.FinalizeByUser).WithMany(p => p.PrismMonthlySyncs).HasConstraintName("FK_PrismMonthlySync_FinalizeByUserID");
+            entity.HasOne(d => d.FinalizeByUser).WithMany(p => p.PrismMonthlySyncFinalizeByUsers).HasConstraintName("FK_PrismMonthlySync_FinalizeByUserID");
+
+            entity.HasOne(d => d.LastSynchronizedByUser).WithMany(p => p.PrismMonthlySyncLastSynchronizedByUsers).HasConstraintName("FK_PrismMonthlySync_LastSynchronizedByUserID");
         });
 
         modelBuilder.Entity<ReportTemplate>(entity =>

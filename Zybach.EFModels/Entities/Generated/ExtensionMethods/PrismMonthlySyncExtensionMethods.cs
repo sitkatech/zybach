@@ -18,6 +18,8 @@ namespace Zybach.EFModels.Entities
                 PrismDataType = prismMonthlySync.PrismDataType.AsDto(),
                 Year = prismMonthlySync.Year,
                 Month = prismMonthlySync.Month,
+                LastSynchronizedDate = prismMonthlySync.LastSynchronizedDate,
+                LastSynchronizedByUser = prismMonthlySync.LastSynchronizedByUser?.AsDto(),
                 FinalizeDate = prismMonthlySync.FinalizeDate,
                 FinalizeByUser = prismMonthlySync.FinalizeByUser?.AsDto()
             };
@@ -36,6 +38,8 @@ namespace Zybach.EFModels.Entities
                 PrismDataTypeID = prismMonthlySync.PrismDataTypeID,
                 Year = prismMonthlySync.Year,
                 Month = prismMonthlySync.Month,
+                LastSynchronizedDate = prismMonthlySync.LastSynchronizedDate,
+                LastSynchronizedByUserID = prismMonthlySync.LastSynchronizedByUserID,
                 FinalizeDate = prismMonthlySync.FinalizeDate,
                 FinalizeByUserID = prismMonthlySync.FinalizeByUserID
             };
