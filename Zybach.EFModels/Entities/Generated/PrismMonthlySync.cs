@@ -22,13 +22,22 @@ public partial class PrismMonthlySync
     public int Month { get; set; }
 
     [Column(TypeName = "datetime")]
+    public DateTime? LastSynchronizedDate { get; set; }
+
+    public int? LastSynchronizedByUserID { get; set; }
+
+    [Column(TypeName = "datetime")]
     public DateTime? FinalizeDate { get; set; }
 
     public int? FinalizeByUserID { get; set; }
 
     [ForeignKey("FinalizeByUserID")]
-    [InverseProperty("PrismMonthlySyncs")]
+    [InverseProperty("PrismMonthlySyncFinalizeByUsers")]
     public virtual User FinalizeByUser { get; set; }
+
+    [ForeignKey("LastSynchronizedByUserID")]
+    [InverseProperty("PrismMonthlySyncLastSynchronizedByUsers")]
+    public virtual User LastSynchronizedByUser { get; set; }
 
     [InverseProperty("PrismMonthlySync")]
     public virtual ICollection<PrismDailyRecord> PrismDailyRecords { get; set; } = new List<PrismDailyRecord>();
