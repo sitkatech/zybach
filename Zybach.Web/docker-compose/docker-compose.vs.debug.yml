@@ -1,9 +1,0 @@
-services:
-  zybach.web:
-    build:
-      args:
-        source: ${DOCKER_BUILD_SOURCE}
-    image: zybach/web
-    ports:
-      - "8713:80"
-      - "8714:443"

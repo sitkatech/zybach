@@ -1,4 +1,0 @@
-services:
-  zybach.web:  
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
