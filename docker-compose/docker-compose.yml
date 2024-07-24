@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   zybach.api:
     image: zybach/api
