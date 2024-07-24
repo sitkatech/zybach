@@ -1992,55 +1992,6 @@
         }
       }
     },
-    "/irrigationUnits/{irrigationUnitID}/runoff-data": {
-      "get": {
-        "tags": [
-          "IrrigationUnit"
-        ],
-        "parameters": [
-          {
-            "name": "irrigationUnitID",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IrrigationUnitRunoffDataDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IrrigationUnitRunoffDataDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/IrrigationUnitRunoffDataDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/managerDashboard/districtStatistics": {
       "get": {
         "tags": [
@@ -8515,40 +8466,6 @@
           "Tillage": {
             "type": "string",
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "IrrigationUnitRunoffDataDto": {
-        "type": "object",
-        "properties": {
-          "Year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Month": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Day": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "Precipitation": {
-            "type": "number",
-            "format": "double"
-          },
-          "CurveNumber": {
-            "type": "number",
-            "format": "double"
-          },
-          "RunoffDepth": {
-            "type": "number",
-            "format": "double"
-          },
-          "RunoffVolume": {
-            "type": "number",
-            "format": "double"
           }
         },
         "additionalProperties": false

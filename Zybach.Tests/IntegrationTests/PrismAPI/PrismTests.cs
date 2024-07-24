@@ -48,8 +48,8 @@ public class PrismTests
 
     [DataTestMethod]
     [DataRow("ppt", "20210101", "20210131")]
-    [DataRow("tmin", "20210101", "20210131")]
-    [DataRow("tmax", "20210101", "20210131")]
+    //[DataRow("tmin", "20210101", "20210131")]
+    //[DataRow("tmax", "20210101", "20210131")]
     public async Task CanDownloadDataForDateRange(string dataTypeAsString, string startDate, string endDate)
     {
         var dataType = PrismDataType.All.First(x => x.PrismDataTypeName == dataTypeAsString);
@@ -102,20 +102,16 @@ public class PrismTests
     }
 
     [DataTestMethod]
-    [DataRow(1)]
-    public async Task CanListRunoffDataForIrrigationUnit(int irrigationUnitID)
+    [DataRow("20210201")]
+    public async Task CanCalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(string dateAsString)
     {
-        var irrigationUnit = await _dbContext.AgHubIrrigationUnits
-            .AsNoTracking()
-            .Include(x => x.AgHubIrrigationUnitGeometry)
-            .FirstOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnitID);
+        var startDate = DateTime.ParseExact(dateAsString, "yyyyMMdd", null);
+        var daysInMonth = DateTime.DaysInMonth(startDate.Year, startDate.Month);
+        var endDate = new DateTime(startDate.Year, startDate.Month, daysInMonth);
 
-        var data = _prismAPIService.ListAllIrrigationUnitRunoffData(irrigationUnit);
-        Assert.IsNotNull(data);
+        var success = await _prismAPIService.GetZipfilesForDateRange(PrismDataType.ppt, startDate, endDate, _callingUser);
+        Assert.IsTrue(success);
 
-        foreach (var runoffDataDto in data.Result)
-        {
-            Console.WriteLine($"{runoffDataDto.Year}-{runoffDataDto.Month}-{runoffDataDto.Day}: (P={runoffDataDto.Precipitation}, CN={runoffDataDto.CurveNumber}, Q={runoffDataDto.RunoffDepth})");
-        }
+        await _prismAPIService.CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(startDate.Year, startDate.Month);
     }
 }

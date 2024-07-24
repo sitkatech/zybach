@@ -217,6 +217,7 @@
     <None Include="Scripts\LookupTables\dbo.PrismDataType.sql" />
     <None Include="Scripts\ReleaseScripts\0002 - Prepopulate prism monthly sync records.sql" />
     <Build Include="dbo\Tables\dbo.PrismDailyRecord.sql" />
+    <Build Include="dbo\Tables\dbo.AgHubIrrigationUnitRunoff.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />

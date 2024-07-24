@@ -85,7 +85,10 @@ public class PrismSyncController : SitkaController<PrismSyncController>
 
         var syncJobID = _backgroundJobClient.Enqueue(() => _prismAPIService.SyncPrismData(year, month, prismDataTypeName, _callingUser));
 
-        //var calculateIrrigationUnitRunoffsJobID = _backgroundJobClient.ContinueJobWith(syncJobID, () => _prismAPIService.CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(year, month));
+        if (prismDataType == PrismDataType.ppt)
+        {
+            var calculateIrrigationUnitRunoffsJobID = _backgroundJobClient.ContinueJobWith(syncJobID, () => _prismAPIService.CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(year, month));
+        }
 
         var record = await PrismMonthlySyncs.GetSimpleByYearMonthAndDataType(_dbContext, year, month, prismDataType);
         return Ok(record);

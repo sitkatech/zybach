@@ -62,18 +62,18 @@ namespace Zybach.API.Controllers
         }
 
 
-        [HttpGet("/irrigationUnits/{irrigationUnitID}/runoff-data")]
-        [ZybachViewFeature]
-        public async Task<ActionResult<List<IrrigationUnitRunoffDataDto>>> GetIrrigationUnitRunoffData([FromRoute] int irrigationUnitID)
-        {
-            var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);
-            if (irrigationUnit == null)
-            {
-                return NotFound();
-            } 
+        //[HttpGet("/irrigationUnits/{irrigationUnitID}/runoff-data")]
+        //[ZybachViewFeature]
+        //public async Task<ActionResult<List<AgHubIrrigationUnitRunoffSimpleDto>>> GetIrrigationUnitRunoffData([FromRoute] int irrigationUnitID)
+        //{
+        //    var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);
+        //    if (irrigationUnit == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var result = await _prismAPIService.ListAllIrrigationUnitRunoffData(irrigationUnit);
-            return Ok(result);
-        }
+        //    var result = await AgHubIrrigationUnitRunoffs.ListSimpleForIrrigationUnitID(_dbContext, irrigationUnitID);
+        //    return Ok(result);
+        //}
     }
 }

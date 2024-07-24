@@ -263,57 +263,59 @@ public class PrismAPIService
         }
     }
 
-    public async Task<List<IrrigationUnitRunoffDataDto>> ListAllIrrigationUnitRunoffData(AgHubIrrigationUnit agHubIrrigation)
-    {
-        var curveNumber = 70; //TODO: Get this from the database.
-        var dailyRecords = await _dbContext.PrismDailyRecords.Where(x => x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue).ToListAsync();
-        var results = new List<IrrigationUnitRunoffDataDto>();
-
-        foreach (var prismDailyRecord in dailyRecords)
-        {
-            var dataset = await GetBilFileAsDataset(prismDailyRecord.BlobResourceID!.Value);
-            if (dataset == null)
-            {
-                continue;
-            }
-
-            var precipitation = dataset.GetRasterValueForGeometry(agHubIrrigation.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
-            var runoff = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
-
-            results.Add(new IrrigationUnitRunoffDataDto
-            {
-                Year = prismDailyRecord.Year,
-                Month = prismDailyRecord.Month,
-                Day = prismDailyRecord.Day,
-
-                Precipitation = precipitation,
-                CurveNumber = curveNumber, 
-                RunoffDepth = runoff,
-                RunoffVolume = runoff * agHubIrrigation.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry.Area //TODO: The card mentions that this is more complicated than it would seem. Revisit this.
-            });
-        }
-
-        return results;
-    }
-
     public async Task CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(int year, int month)
     { 
         var irrigationUnits = await _dbContext.AgHubIrrigationUnits.Include(x => x.AgHubIrrigationUnitGeometry).ToListAsync();
         var dailyRecords = await _dbContext.PrismDailyRecords.Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue).ToListAsync();
 
-        foreach (var irrigationUnit in irrigationUnits)
+        foreach (var dailyRecord in dailyRecords)
         {
-            var dataset = await GetBilFileAsDataset(dailyRecords.First().BlobResourceID!.Value);
+            var dataset = await GetBilFileAsDataset(dailyRecord.BlobResourceID!.Value);
             if (dataset == null)
             {
                 continue;
             }
 
-            var precipitation = dataset.GetRasterValueForGeometry(irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
-            var curveNumber = 70; //TODO: Get this from the database.   
-            var runoff = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
+            foreach (var irrigationUnit in irrigationUnits)
+            {
+                var precipitation = dataset.GetRasterValueForGeometry(irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
+                var curveNumber = 70; //TODO: Get this from the database.   
+                var runoff = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
 
+                var runoffRecord = await _dbContext.AgHubIrrigationUnitRunoffs
+                    .SingleOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID && x.Year == year && x.Month == month && x.Day == dailyRecord.Day);
 
+                if (runoffRecord == null)
+                {
+                    runoffRecord = new AgHubIrrigationUnitRunoff()
+                    {
+                        AgHubIrrigationUnitID = irrigationUnit.AgHubIrrigationUnitID,
+                        Year = year,
+                        Month = month,
+                        Day = dailyRecord.Day,
+                        CurveNumber = curveNumber,
+                        Precipitation = precipitation,
+                        RunoffDepth = runoff,
+                        RunoffVolume = runoff * irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry.Area //TODO: The card mentions that this is more complicated than it would seem. Revisit this.
+                    };
+
+                    await _dbContext.AgHubIrrigationUnitRunoffs.AddAsync(runoffRecord);
+                    await _dbContext.SaveChangesAsync();
+                    await _dbContext.Entry(runoffRecord).ReloadAsync();
+                }
+                else
+                {
+                    runoffRecord.CurveNumber = curveNumber;
+                    runoffRecord.Precipitation = precipitation;
+                    runoffRecord.RunoffDepth = runoff;
+                    runoffRecord.RunoffVolume = runoff * irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry.Area; //TODO: The card mentions that this is more complicated than it would seem. Revisit this.
+
+                    _dbContext.AgHubIrrigationUnitRunoffs.Update(runoffRecord);
+                    await _dbContext.SaveChangesAsync();
+                } 
+
+                CleanupTempFiles(dailyRecord.BlobResourceID!.Value);
+            }
         }
     }
 

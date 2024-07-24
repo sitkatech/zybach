@@ -27,5 +27,8 @@ public partial class AgHubIrrigationUnit
     public virtual ICollection<AgHubIrrigationUnitOpenETDatum> AgHubIrrigationUnitOpenETData { get; set; } = new List<AgHubIrrigationUnitOpenETDatum>();
 
     [InverseProperty("AgHubIrrigationUnit")]
+    public virtual ICollection<AgHubIrrigationUnitRunoff> AgHubIrrigationUnitRunoffs { get; set; } = new List<AgHubIrrigationUnitRunoff>();
+
+    [InverseProperty("AgHubIrrigationUnit")]
     public virtual ICollection<AgHubWell> AgHubWells { get; set; } = new List<AgHubWell>();
 }
