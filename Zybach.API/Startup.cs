@@ -120,6 +120,7 @@ namespace Zybach.API
             services.AddScoped<IAzureStorage, AzureStorage>();
             services.AddScoped<BlobService>();
 
+
             services.AddHttpClient<PrismAPIService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.PRISM_API_BASE_URL);

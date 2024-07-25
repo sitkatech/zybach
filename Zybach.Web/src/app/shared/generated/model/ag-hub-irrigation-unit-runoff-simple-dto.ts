@@ -9,20 +9,17 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { PrismDataTypeDto } from '././prism-data-type-dto';
-import { UserDto } from '././user-dto';
-import { PrismSyncStatusDto } from '././prism-sync-status-dto';
 
-export class PrismMonthlySyncDto { 
-    PrismMonthlySyncID?: number;
-    PrismSyncStatus?: PrismSyncStatusDto;
-    PrismDataType?: PrismDataTypeDto;
+export class AgHubIrrigationUnitRunoffSimpleDto { 
+    AgHubIrrigationUnitRunoffID?: number;
+    AgHubIrrigationUnitID?: number;
     Year?: number;
     Month?: number;
-    LastSynchronizedDate?: string;
-    LastSynchronizedByUser?: UserDto;
-    FinalizeDate?: string;
-    FinalizeByUser?: UserDto;
+    Day?: number;
+    CurveNumber?: number;
+    Precipitation?: number;
+    RunoffDepth?: number;
+    RunoffVolume?: number;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

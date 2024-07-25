@@ -16,12 +16,16 @@ export class PrismMonthlySyncSimpleDto {
     PrismDataTypeID?: number;
     Year?: number;
     Month?: number;
+    LastSynchronizedDate?: string;
+    LastSynchronizedByUserID?: number;
     FinalizeDate?: string;
     FinalizeByUserID?: number;
     PrismSyncStatusName?: string;
     PrismSyncStatusDisplayName?: string;
     PrismDataTypeName?: string;
     PrismDataTypeDisplayName?: string;
+    LastSynchronizedByUserFullName?: string;
+    FinalizedByUserFullName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }

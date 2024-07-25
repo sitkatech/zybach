@@ -1,5 +1,6 @@
 export * from '././ag-hub-irrigation-unit-detail-dto';
 export * from '././ag-hub-irrigation-unit-farming-practice-dto';
+export * from '././ag-hub-irrigation-unit-runoff-simple-dto';
 export * from '././ag-hub-irrigation-unit-simple-dto';
 export * from '././ag-hub-irrigation-unit-summary-dto';
 export * from '././ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto';

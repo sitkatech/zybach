@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MaxRev.Gdal.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Zybach.API;
 using Zybach.API.Services;
 using Zybach.EFModels.Entities;
 using Zybach.Models.DataTransferObjects;
@@ -41,7 +43,7 @@ public class PrismTests
         var nullPrismAPIServiceLogger = new NullLogger<PrismAPIService>();
         _prismAPIService = new PrismAPIService(nullPrismAPIServiceLogger, null, _dbContext, httpClient, _blobService);
 
-        GdalConfiguration.ConfigureGdal();
+        GdalBase.ConfigureAll();
 
         _callingUser = Users.GetByUserID(_dbContext, _userID);
     }
@@ -102,7 +104,7 @@ public class PrismTests
     }
 
     [DataTestMethod]
-    [DataRow("20210201")]
+    [DataRow("20240401")]
     public async Task CanCalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(string dateAsString)
     {
         var startDate = DateTime.ParseExact(dateAsString, "yyyyMMdd", null);

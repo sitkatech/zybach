@@ -180,7 +180,7 @@ public class PrismSyncController : SitkaController<PrismSyncController>
 
         if (prismMonthlySync.PrismSyncStatusID != PrismSyncStatus.Succeeded.PrismSyncStatusID)
         {
-            return BadRequest("Cannot finalize a record that is has not been successfully synchronized.");
+            return BadRequest("Cannot finalize a record that has not been successfully synchronized.");
         }
 
         var updatedRecord = await PrismMonthlySyncs.Finalize(_dbContext, _callingUser, year, month, prismDataType);

@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
     <PackageReference Include="CsvHelper" Version="27.2.1" />
-    <PackageReference Include="GDAL" Version="3.8.5" />
     <PackageReference Include="GeoJSON.Net" Version="1.2.19" />
     <PackageReference Include="Hangfire" Version="1.7.29" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.29" />
@@ -18,6 +17,8 @@
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.29" />
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="InfluxDB.Client" Version="4.2.0" />
+    <PackageReference Include="MaxRev.Gdal.Core" Version="3.9.0.218" />
+    <PackageReference Include="MaxRev.Gdal.LinuxRuntime.Minimal" Version="3.9.0.218" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.20.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.0" />

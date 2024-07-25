@@ -55,25 +55,23 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<AgHubIrrigationUnitFarmingPracticeDto>> ListIrrigationUnitIrrigatedAcres()
         {
-            var agHubIrrigationUnitWellIrrigatedAcreDtos =
-                AgHubIrrigationUnits.ListAsAgHubIrrigationUnitWellIrrigatedAcreDtos(_dbContext);
-
+            var agHubIrrigationUnitWellIrrigatedAcreDtos = AgHubIrrigationUnits.ListAsAgHubIrrigationUnitWellIrrigatedAcreDtos(_dbContext);
             return Ok(agHubIrrigationUnitWellIrrigatedAcreDtos);
         }
 
 
-        //[HttpGet("/irrigationUnits/{irrigationUnitID}/runoff-data")]
-        //[ZybachViewFeature]
-        //public async Task<ActionResult<List<AgHubIrrigationUnitRunoffSimpleDto>>> GetIrrigationUnitRunoffData([FromRoute] int irrigationUnitID)
-        //{
-        //    var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);
-        //    if (irrigationUnit == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpGet("/irrigationUnits/{irrigationUnitID}/runoff-data")]
+        [ZybachViewFeature]
+        public async Task<ActionResult<List<AgHubIrrigationUnitRunoffSimpleDto>>> GetIrrigationUnitRunoffData([FromRoute] int irrigationUnitID)
+        {
+            var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);
+            if (irrigationUnit == null)
+            {
+                return NotFound();
+            }
 
-        //    var result = await AgHubIrrigationUnitRunoffs.ListSimpleForIrrigationUnitID(_dbContext, irrigationUnitID);
-        //    return Ok(result);
-        //}
+            var result = await AgHubIrrigationUnitRunoffs.ListSimpleForIrrigationUnitID(_dbContext, irrigationUnitID);
+            return Ok(result);
+        }
     }
 }

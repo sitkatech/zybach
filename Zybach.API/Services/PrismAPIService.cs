@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DocumentFormat.OpenXml.InkML;
 using Hangfire;
+using MaxRev.Gdal.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -34,6 +35,9 @@ public class PrismAPIService
         _dbContext = dbContext;
         _httpClient = httpClient;
         _blobService = blobService;
+
+        //Gdal.AllRegister();
+        GdalBase.ConfigureAll();
     }
 
     [AutomaticRetry(Attempts = 0)]
@@ -264,7 +268,7 @@ public class PrismAPIService
     }
 
     public async Task CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(int year, int month)
-    { 
+    {
         var irrigationUnits = await _dbContext.AgHubIrrigationUnits.Include(x => x.AgHubIrrigationUnitGeometry).ToListAsync();
         var dailyRecords = await _dbContext.PrismDailyRecords.Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue).ToListAsync();
 
@@ -300,8 +304,6 @@ public class PrismAPIService
                     };
 
                     await _dbContext.AgHubIrrigationUnitRunoffs.AddAsync(runoffRecord);
-                    await _dbContext.SaveChangesAsync();
-                    await _dbContext.Entry(runoffRecord).ReloadAsync();
                 }
                 else
                 {
@@ -311,12 +313,14 @@ public class PrismAPIService
                     runoffRecord.RunoffVolume = runoff * irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry.Area; //TODO: The card mentions that this is more complicated than it would seem. Revisit this.
 
                     _dbContext.AgHubIrrigationUnitRunoffs.Update(runoffRecord);
-                    await _dbContext.SaveChangesAsync();
                 } 
-
-                CleanupTempFiles(dailyRecord.BlobResourceID!.Value);
             }
+
+            dataset.Dispose();
+            CleanupTempFiles(dailyRecord.BlobResourceID!.Value);
         }
+
+        await _dbContext.SaveChangesAsync();
     }
 
     public void CleanupTempFiles(int blobID)
