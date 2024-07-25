@@ -58,7 +58,6 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - Kestrel__Certificates__Default__Path=/https/host.docker.internal.pfx
       - Kestrel__Certificates__Default__Password=password#1
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - SECRET_PATH=${SWAGGER_SECRET_PATH}
       - INFLUXDB_URL=${INFLUXDB_URL}
       - INFLUXDB_ORG=${INFLUXDB_ORG}
