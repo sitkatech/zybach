@@ -195,7 +195,8 @@ stages:
           -var "team=$(team)" 
           -var "projectNumber=$(projectNumber)" 
           -var "elasticPoolName=$(kv-elasticPoolName)" 
-          -var "environment=$(environment)"
+          -var "environment=$(environment)" 
+          -var "storageAccountDevApplicationName=$(storageAccountDevApplicationName)" 
           
     - task: CopyFiles@2
       inputs:
@@ -352,6 +353,33 @@ stages:
               desiredSqlPassword: '$(SQL_GEOSERVER_PASSWORD)'
               roles: 'db_datareader'
 
+
+- stage: RestoreFiles
+  displayName: Restore Files
+  dependsOn: DeployTerraform
+  condition: |
+    and
+    (
+      in(dependencies.DeployTerraform.result, 'Succeeded', 'SucceededWithIssues'),
+      eq(variables['restoreFiles'], 'true')
+    )
+  jobs:  
+    - job: RestoreQABlobStorage
+      displayName: Restore QA Blob Storage
+      pool:
+        vmImage: 'windows-latest'
+      variables: 
+        APPLICATION_STORAGE_ACCOUNT_KEY: $[ stageDependencies.DeployTerraform.Terraform.outputs['Terraform.Bash.APPLICATION_STORAGE_ACCOUNT_KEY'] ]
+      steps:
+      - template: azure-pipelines/templates/blob-storage-restore/blob-storage-restore.yml@BuildTemplates 
+        parameters:
+          subscription: '$(azureSubscription)'
+          containers: '*'
+          fromStorageAccountName: '$(storageAccountProdApplicationName)'
+          fromStorageAccountKey: '$(storageAccountProdAccountKey)'
+          toStorageAccountName: '$(storageAccountName)'
+          toStorageAccountKey: '$(APPLICATION_STORAGE_ACCOUNT_KEY)'
+            
 
 - stage: DeployGeoServer
   displayName: Deploy GeoServer

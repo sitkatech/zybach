@@ -13,6 +13,7 @@ api/irrigation-unit.service.ts
 api/manager-dashboard.service.ts
 api/map-data.service.ts
 api/open-et.service.ts
+api/prism-sync.service.ts
 api/report-template-model.service.ts
 api/report.service.ts
 api/robust-review-scenario.service.ts
@@ -93,6 +94,10 @@ model/open-et-data-type-dto.ts
 model/open-et-run-dto.ts
 model/open-et-sync-dto.ts
 model/paige-wireless-pulse-dto.ts
+model/prism-data-type-dto.ts
+model/prism-monthly-sync-dto.ts
+model/prism-monthly-sync-simple-dto.ts
+model/prism-sync-status-dto.ts
 model/report-template-dto.ts
 model/report-template-model-dto.ts
 model/report-template-model-type-dto.ts

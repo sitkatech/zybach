@@ -1,12 +1,4 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Threading;
-using Hangfire;
+﻿using Hangfire;
 using Hangfire.SqlServer;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Builder;
@@ -18,48 +10,29 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Serilog;
-using Zybach.API.Services;
-using Zybach.API.Services.Telemetry;
-using Zybach.EFModels.Entities;
 using SendGrid.Extensions.DependencyInjection;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DependencyCollector;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
+using Serilog;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using Zybach.API.Logging;
+using Zybach.API.Services;
 using Zybach.API.Services.Authorization;
 using Zybach.API.Services.Notifications;
-using ILogger = Serilog.ILogger;
-using System.Collections.Generic;
-using Zybach.API.Logging;
+using Zybach.API.Services.Telemetry;
+using Zybach.EFModels.Entities;
 
 namespace Zybach.API
 {
     public class Startup
     {
-        private readonly TelemetryClient _telemetryClient;
         private readonly IWebHostEnvironment _environment;
-        private string _instrumentationKey;
         public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Configuration = configuration;
             _environment = environment;
-
-            _instrumentationKey = Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
-
-            if (!string.IsNullOrWhiteSpace(_instrumentationKey))
-            {
-                _telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault())
-                {
-                    InstrumentationKey = _instrumentationKey
-                };
-            }
-            else
-            {
-                _telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault());
-            }
         }
 
         public IConfiguration Configuration { get; }
@@ -67,7 +40,6 @@ namespace Zybach.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(_instrumentationKey);
             services.AddControllers().AddNewtonsoftJson(opt =>
                 {
                     if (!_environment.IsProduction())
@@ -109,11 +81,21 @@ namespace Zybach.API
                 //Allows us to follow a URL and get more information on why a request failed
                 c.DefaultRequestHeaders.Add("Ocp-Apim-Trace", "true");
             });
+
             services.AddHttpClient<OpenETService>(c =>
             {
                 c.BaseAddress = new Uri(zybachConfiguration.OpenETAPIBaseUrl);
                 c.Timeout = TimeSpan.FromMinutes(30);
                 c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(zybachConfiguration.OPENET_API_KEY);
+            });
+
+            services.AddScoped<IAzureStorage, AzureStorage>();
+            services.AddScoped<BlobService>();
+
+            services.AddHttpClient<PrismAPIService>(c =>
+            {
+                c.BaseAddress = new Uri(zybachConfiguration.PRISM_API_BASE_URL);
+                c.Timeout = TimeSpan.FromMinutes(30);
             });
 
             services.AddScoped<InfluxDBService>();
@@ -157,8 +139,6 @@ namespace Zybach.API
             });
 
             services.AddSingleton(Configuration);
-            services.AddSingleton<ITelemetryInitializer, CloudRoleNameTelemetryInitializer>();
-            services.AddSingleton<ITelemetryInitializer, UserInfoTelemetryInitializer>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSendGrid(options => { options.ApiKey = zybachConfiguration.SendGridApiKey; });
@@ -268,23 +248,12 @@ namespace Zybach.API
 
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
 
-            var modules = app.ApplicationServices.GetServices<ITelemetryModule>();
-            var dependencyModule = modules.OfType<DependencyTrackingTelemetryModule>().FirstOrDefault();
-
-            if (dependencyModule != null)
-            {
-                var domains = dependencyModule.ExcludeComponentCorrelationHttpHeadersOnDomains;
-                domains.Add("core.windows.net");
-                domains.Add("10.0.75.1");
-            }
-
             app.UseSwagger();
 
             app.UseSwaggerUI(opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
         }
         private void OnShutdown()
         {
-            _telemetryClient.Flush();
             Thread.Sleep(1000);
         }
         

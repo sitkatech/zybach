@@ -67,10 +67,10 @@ export class SystemInfoService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public rootGet(observe?: 'body', reportProgress?: boolean): Observable<SystemInfoDto>;
-    public rootGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SystemInfoDto>>;
-    public rootGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SystemInfoDto>>;
-    public rootGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSystemInfo(observe?: 'body', reportProgress?: boolean): Observable<SystemInfoDto>;
+    public getSystemInfo(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SystemInfoDto>>;
+    public getSystemInfo(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SystemInfoDto>>;
+    public getSystemInfo(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 

@@ -3,6 +3,7 @@
 1. Clone repo, make sure it lives under C:/git/sitkatech
 2. Grab all the config files from another dev's machine.
 	- .env (docker-compose directory)
+        - Update SITKA_EMAIL_REDIRECT to your ESA email to avoid spamming your coworker.
 	- appsecrets (API directory)
 	- config (Zybach.Web\src\assets\config)
 	- secrets (Build directory)
@@ -20,4 +21,4 @@
 10. Should be able to log into the app after pressing the go buttons.
 
 ## Optional/Recommended
-1. Start gitflow process in SourceTree after pulling main/develop to local.
+1. Start gitflow process in SourceTree after checking out main/develop locally.

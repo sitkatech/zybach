@@ -9,7 +9,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Zybach.Tests
 {
     [TestClass]
-    [Ignore]
     public static class AssemblySteps
     {
         public static IConfigurationRoot Configuration => new ConfigurationBuilder().AddJsonFile(@"environment.json").Build();
@@ -18,8 +17,13 @@ namespace Zybach.Tests
         public static bool Idempotent = true;
         private static bool _runPerformanceLaps = false;
 
-        //[AssemblyInitialize]
+        [AssemblyInitialize]
         public static async Task AssemblyInitialize(TestContext testContext)
+        {
+        }
+
+        //[AssemblyInitialize]
+        public static async Task AssemblyInitialize_NotWorkingRightNow(TestContext testContext)
         {
             _runPerformanceLaps = Configuration["runPerformanceLaps"] == "True";
 

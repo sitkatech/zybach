@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <UserSecretsId>773a4981-bf5a-47a9-98ba-b98cd45619d7</UserSecretsId>
+    <UserSecretsId>773a4981-bf5a-47a9-98ba-d98cd45619d7</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	<NoWarn>$(NoWarn);1591</NoWarn>
@@ -11,8 +11,6 @@
   
   <ItemGroup>
     <PackageReference Include="InfluxDB.Client" Version="4.2.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.20.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.20.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">

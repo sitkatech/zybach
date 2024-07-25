@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DependencyCollector;
-using Microsoft.ApplicationInsights.Extensibility;
+﻿using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,9 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Zybach.EFModels.Entities;
 using Serilog;
-using Serilog.Sinks.ApplicationInsights.Sinks.ApplicationInsights.TelemetryConverters;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Threading;
+using Zybach.EFModels.Entities;
 using Zybach.Swagger.Logging;
 using ILogger = Serilog.ILogger;
 
@@ -26,27 +22,11 @@ namespace Zybach.Swagger
 {
     public class Startup
     {
-        private readonly TelemetryClient _telemetryClient;
         private readonly IWebHostEnvironment _environment;
-        private string _instrumentationKey;
         public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Configuration = configuration;
             _environment = environment;
-
-            _instrumentationKey = Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"];
-
-            if (!string.IsNullOrWhiteSpace(_instrumentationKey))
-            {
-                _telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault())
-                {
-                    InstrumentationKey = _instrumentationKey
-                };
-            }
-            else
-            {
-                _telemetryClient = new TelemetryClient(TelemetryConfiguration.CreateDefault());
-            }
         }
 
         public IConfiguration Configuration { get; }
@@ -54,8 +34,6 @@ namespace Zybach.Swagger
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry(_instrumentationKey);
-
             services.Configure<ZybachSwaggerConfiguration>(Configuration);
             var zybachConfiguration = Configuration.Get<ZybachSwaggerConfiguration>();
 
@@ -180,22 +158,11 @@ namespace Zybach.Swagger
 
             applicationLifetime.ApplicationStopping.Register(OnShutdown);
 
-            var modules = app.ApplicationServices.GetServices<ITelemetryModule>();
-            var dependencyModule = modules.OfType<DependencyTrackingTelemetryModule>().FirstOrDefault();
-
-            if (dependencyModule != null)
-            {
-                var domains = dependencyModule.ExcludeComponentCorrelationHttpHeadersOnDomains;
-                domains.Add("core.windows.net");
-                domains.Add("10.0.75.1");
-            }
-
             app.UseSwagger();
             app.UseSwaggerUI(opt => opt.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
         }
         private void OnShutdown()
         {
-            _telemetryClient.Flush();
             Thread.Sleep(1000);
         }
         

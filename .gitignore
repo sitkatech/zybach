@@ -33,3 +33,4 @@ Build/secrets.ini
 
 /Zybach.Swagger/appsecrets.json
 /Build/temp
+/Zybach.GeoServer/data_dir/gwc/diskquota_page_store_hsql

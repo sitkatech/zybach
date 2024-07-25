@@ -16,6 +16,7 @@ import { IrrigationUnitService } from './api/irrigation-unit.service';
 import { ManagerDashboardService } from './api/manager-dashboard.service';
 import { MapDataService } from './api/map-data.service';
 import { OpenETService } from './api/open-et.service';
+import { PrismSyncService } from './api/prism-sync.service';
 import { ReportService } from './api/report.service';
 import { ReportTemplateModelService } from './api/report-template-model.service';
 import { RobustReviewScenarioService } from './api/robust-review-scenario.service';
@@ -51,6 +52,7 @@ import { WellGroupService } from './api/well-group.service';
     ManagerDashboardService,
     MapDataService,
     OpenETService,
+    PrismSyncService,
     ReportService,
     ReportTemplateModelService,
     RobustReviewScenarioService,
