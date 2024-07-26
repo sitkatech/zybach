@@ -270,6 +270,7 @@ resource "azurerm_mssql_database" "database" {
   sku_name        = var.databaseTier
   zone_redundant  = false
   elastic_pool_id = data.azurerm_mssql_elasticpool.spoke.id
+  enclave_type = "VBS"
 
   long_term_retention_policy {
     weekly_retention  = "P3M"
@@ -633,7 +634,7 @@ resource "datadog_synthetics_test" "test_geoserver" {
   subtype = "http"
   request_definition {
     method = "GET"
-    url    = "https://${var.domainGeoserver}/geoserver/web/"
+    url    = "https://${var.domainGeoserver}/geoserver/web/wicket/resource/org.geoserver.web.GeoServerBasePage/img/logo.png"
   }
   request_headers = {
     Content-Type   = "application/json"
