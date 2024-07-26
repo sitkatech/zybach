@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[AgHubIrrigationUnitRunoff](
 
 	[CurveNumber]					FLOAT	NOT NULL,
 	[Precipitation]					FLOAT	NOT NULL,
+	[Area]							FLOAT	NOT NULL,		
 	[RunoffDepth]					FLOAT	NOT NULL,
 	[RunoffVolume]					FLOAT	NOT NULL,
 

@@ -104,6 +104,7 @@ model/report-template-model-dto.ts
 model/report-template-model-type-dto.ts
 model/robust-review-scenario-get-run-history-dto.ts
 model/role-dto.ts
+model/runoff-calculation-status-dto.ts
 model/search-summary-dto.ts
 model/sensor-anomaly-simple-dto.ts
 model/sensor-anomaly-upsert-dto.ts

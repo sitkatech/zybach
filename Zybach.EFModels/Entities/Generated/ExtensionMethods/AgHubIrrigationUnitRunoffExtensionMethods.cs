@@ -20,6 +20,7 @@ namespace Zybach.EFModels.Entities
                 Day = agHubIrrigationUnitRunoff.Day,
                 CurveNumber = agHubIrrigationUnitRunoff.CurveNumber,
                 Precipitation = agHubIrrigationUnitRunoff.Precipitation,
+                Area = agHubIrrigationUnitRunoff.Area,
                 RunoffDepth = agHubIrrigationUnitRunoff.RunoffDepth,
                 RunoffVolume = agHubIrrigationUnitRunoff.RunoffVolume
             };
@@ -40,6 +41,7 @@ namespace Zybach.EFModels.Entities
                 Day = agHubIrrigationUnitRunoff.Day,
                 CurveNumber = agHubIrrigationUnitRunoff.CurveNumber,
                 Precipitation = agHubIrrigationUnitRunoff.Precipitation,
+                Area = agHubIrrigationUnitRunoff.Area,
                 RunoffDepth = agHubIrrigationUnitRunoff.RunoffDepth,
                 RunoffVolume = agHubIrrigationUnitRunoff.RunoffVolume
             };

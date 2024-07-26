@@ -114,6 +114,6 @@ public class PrismTests
         var success = await _prismAPIService.GetZipfilesForDateRange(PrismDataType.ppt, startDate, endDate, _callingUser);
         Assert.IsTrue(success);
 
-        await _prismAPIService.CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(startDate.Year, startDate.Month);
+        await _prismAPIService.CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(_callingUser, startDate.Year, startDate.Month);
     }
 }

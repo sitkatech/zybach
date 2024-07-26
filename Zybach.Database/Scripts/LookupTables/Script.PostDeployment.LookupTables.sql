@@ -54,6 +54,8 @@ GO
 GO
 :r ".\dbo.Role.sql"
 GO
+:r ".\dbo.RunoffCalculationStatus.sql"
+GO
 :r ".\dbo.SensorType.sql"
 GO
 :r ".\dbo.SupportTicketPriority.sql"

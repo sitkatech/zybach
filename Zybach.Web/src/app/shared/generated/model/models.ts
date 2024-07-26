@@ -69,6 +69,7 @@ export * from '././report-template-model-dto';
 export * from '././report-template-model-type-dto';
 export * from '././robust-review-scenario-get-run-history-dto';
 export * from '././role-dto';
+export * from '././runoff-calculation-status-dto';
 export * from '././search-summary-dto';
 export * from '././sensor-anomaly-simple-dto';
 export * from '././sensor-anomaly-upsert-dto';

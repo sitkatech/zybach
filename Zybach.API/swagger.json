@@ -2582,6 +2582,104 @@
         }
       }
     },
+    "/prism-monthly-sync/years/{year}/months/{month}/calculate-runoff": {
+      "put": {
+        "tags": [
+          "PrismSync"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismMonthlySyncSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/runoff-data/years/{year}": {
+      "get": {
+        "tags": [
+          "PrismSync"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitRunoffSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitRunoffSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitRunoffSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/reportTemplates": {
       "get": {
         "tags": [
@@ -6692,6 +6790,10 @@
             "type": "number",
             "format": "double"
           },
+          "Area": {
+            "type": "number",
+            "format": "double"
+          },
           "RunoffDepth": {
             "type": "number",
             "format": "double"
@@ -6699,6 +6801,10 @@
           "RunoffVolume": {
             "type": "number",
             "format": "double"
+          },
+          "WellTPID": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8694,6 +8800,9 @@
           "PrismSyncStatus": {
             "$ref": "#/components/schemas/PrismSyncStatusDto"
           },
+          "RunoffCalculationStatus": {
+            "$ref": "#/components/schemas/RunoffCalculationStatusDto"
+          },
           "PrismDataType": {
             "$ref": "#/components/schemas/PrismDataTypeDto"
           },
@@ -8711,6 +8820,14 @@
             "nullable": true
           },
           "LastSynchronizedByUser": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "LastRunoffCalculationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastRunoffCalculatedByUser": {
             "$ref": "#/components/schemas/UserDto"
           },
           "FinalizeDate": {
@@ -8732,6 +8849,10 @@
             "format": "int32"
           },
           "PrismSyncStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "RunoffCalculationStatusID": {
             "type": "integer",
             "format": "int32"
           },
@@ -8757,6 +8878,16 @@
             "format": "int32",
             "nullable": true
           },
+          "LastRunoffCalculationDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "LastRunoffCalculatedByUserID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
           "FinalizeDate": {
             "type": "string",
             "format": "date-time",
@@ -8767,14 +8898,6 @@
             "format": "int32",
             "nullable": true
           },
-          "PrismSyncStatusName": {
-            "type": "string",
-            "nullable": true
-          },
-          "PrismSyncStatusDisplayName": {
-            "type": "string",
-            "nullable": true
-          },
           "PrismDataTypeName": {
             "type": "string",
             "nullable": true
@@ -8783,7 +8906,27 @@
             "type": "string",
             "nullable": true
           },
+          "PrismSyncStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "PrismSyncStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RunoffCalculationStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RunoffCalculationStatusDisplayName": {
+            "type": "string",
+            "nullable": true
+          },
           "LastSynchronizedByUserFullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastRunoffCalculatedByUserFullName": {
             "type": "string",
             "nullable": true
           },
@@ -8948,6 +9091,24 @@
           "SortOrder": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RunoffCalculationStatusDto": {
+        "type": "object",
+        "properties": {
+          "RunoffCalculationStatusID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "RunoffCalculationStatusName": {
+            "type": "string",
+            "nullable": true
+          },
+          "RunoffCalculationStatusDisplayName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

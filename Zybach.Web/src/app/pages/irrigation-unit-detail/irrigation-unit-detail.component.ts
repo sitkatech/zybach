@@ -42,8 +42,9 @@ export class IrrigationUnitDetailComponent implements OnInit {
     { headerName: 'Day', field: 'Day', sortable: true, filter: true, resizable: true },
     { headerName: 'Precipitation (in)', field: 'Precipitation', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
     { headerName: 'Curve Number', field: 'CurveNumber', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Acres', field: 'Acres', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
     { headerName: 'Runoff Depth (in)', field: 'RunoffDepth', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
-    { headerName: 'Runoff Volume', field: 'RunoffVolume', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Runoff Volume (ac-in)', field: 'RunoffVolume', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
   ];
 
   public runoffDefaultColDef: ColDef;
@@ -68,10 +69,7 @@ export class IrrigationUnitDetailComponent implements OnInit {
       this.getIrrigationUnitDetails();
     });
 
-    //this.runoffGrid.api.showLoadingOverlay();
-    this.runoffData$ = this.irrigationUnitService.irrigationUnitsIrrigationUnitIDRunoffDataGet(this.irrigationUnitID).pipe(
-        //tap(() => this.runoffGrid.api.hideOverlay())
-    );
+    this.runoffData$ = this.irrigationUnitService.irrigationUnitsIrrigationUnitIDRunoffDataGet(this.irrigationUnitID);
   }
 
   getIrrigationUnitDetails(){

@@ -8,6 +8,7 @@ namespace Zybach.EFModels.Entities
     {
         public int PrimaryKey => PrismMonthlySyncID;
         public PrismSyncStatus PrismSyncStatus => PrismSyncStatus.AllLookupDictionary[PrismSyncStatusID];
+        public RunoffCalculationStatus RunoffCalculationStatus => RunoffCalculationStatus.AllLookupDictionary[RunoffCalculationStatusID];
         public PrismDataType PrismDataType => PrismDataType.AllLookupDictionary[PrismDataTypeID];
 
         public static class FieldLengths

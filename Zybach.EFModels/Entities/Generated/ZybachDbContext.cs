@@ -341,8 +341,11 @@ public partial class ZybachDbContext : DbContext
             entity.HasKey(e => e.PrismMonthlySyncID).HasName("PK_PrismMonthlySync_PrismMonthlySyncID");
 
             entity.Property(e => e.PrismSyncStatusID).HasDefaultValue(1);
+            entity.Property(e => e.RunoffCalculationStatusID).HasDefaultValue(1);
 
             entity.HasOne(d => d.FinalizeByUser).WithMany(p => p.PrismMonthlySyncFinalizeByUsers).HasConstraintName("FK_PrismMonthlySync_FinalizeByUserID");
+
+            entity.HasOne(d => d.LastRunoffCalculatedByUser).WithMany(p => p.PrismMonthlySyncLastRunoffCalculatedByUsers).HasConstraintName("FK_PrismMonthlySync_LastRunoffCalculatedByUserID");
 
             entity.HasOne(d => d.LastSynchronizedByUser).WithMany(p => p.PrismMonthlySyncLastSynchronizedByUsers).HasConstraintName("FK_PrismMonthlySync_LastSynchronizedByUserID");
         });

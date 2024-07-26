@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using DocumentFormat.OpenXml.InkML;
 using Hangfire;
 using MaxRev.Gdal.Core;
 using Microsoft.EntityFrameworkCore;
@@ -267,60 +265,74 @@ public class PrismAPIService
         }
     }
 
-    public async Task CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(int year, int month)
+    [AutomaticRetry(Attempts = 0)]
+    public async Task CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(UserDto callingUser, int year, int month)
     {
         var irrigationUnits = await _dbContext.AgHubIrrigationUnits.Include(x => x.AgHubIrrigationUnitGeometry).ToListAsync();
         var dailyRecords = await _dbContext.PrismDailyRecords.Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue).ToListAsync();
-
-        foreach (var dailyRecord in dailyRecords)
+        try
         {
-            var dataset = await GetBilFileAsDataset(dailyRecord.BlobResourceID!.Value);
-            if (dataset == null)
+            foreach (var dailyRecord in dailyRecords)
             {
-                continue;
-            }
-
-            foreach (var irrigationUnit in irrigationUnits)
-            {
-                var precipitation = dataset.GetRasterValueForGeometry(irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
-                var curveNumber = 70; //TODO: Get this from the database.   
-                var runoff = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
-
-                var runoffRecord = await _dbContext.AgHubIrrigationUnitRunoffs
-                    .SingleOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID && x.Year == year && x.Month == month && x.Day == dailyRecord.Day);
-
-                if (runoffRecord == null)
+                var dataset = await GetBilFileAsDataset(dailyRecord.BlobResourceID!.Value);
+                if (dataset == null)
                 {
-                    runoffRecord = new AgHubIrrigationUnitRunoff()
-                    {
-                        AgHubIrrigationUnitID = irrigationUnit.AgHubIrrigationUnitID,
-                        Year = year,
-                        Month = month,
-                        Day = dailyRecord.Day,
-                        CurveNumber = curveNumber,
-                        Precipitation = precipitation,
-                        RunoffDepth = runoff,
-                        RunoffVolume = runoff * irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry.Area //TODO: The card mentions that this is more complicated than it would seem. Revisit this.
-                    };
-
-                    await _dbContext.AgHubIrrigationUnitRunoffs.AddAsync(runoffRecord);
+                    continue;
                 }
-                else
-                {
-                    runoffRecord.CurveNumber = curveNumber;
-                    runoffRecord.Precipitation = precipitation;
-                    runoffRecord.RunoffDepth = runoff;
-                    runoffRecord.RunoffVolume = runoff * irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry.Area; //TODO: The card mentions that this is more complicated than it would seem. Revisit this.
 
-                    _dbContext.AgHubIrrigationUnitRunoffs.Update(runoffRecord);
-                } 
+                foreach (var irrigationUnit in irrigationUnits)
+                {
+                    var precipitation = dataset.GetRasterValueForGeometry(irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
+                    var curveNumber = 70; //TODO: Get this from the database.   
+                    var runoffDepth = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
+                    var area = irrigationUnit.IrrigationUnitAreaInAcres.GetValueOrDefault(0);
+
+                    var runoffRecord = await _dbContext.AgHubIrrigationUnitRunoffs
+                        .SingleOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID && x.Year == year && x.Month == month && x.Day == dailyRecord.Day);
+
+                    if (runoffRecord == null)
+                    {
+                        runoffRecord = new AgHubIrrigationUnitRunoff()
+                        {
+                            AgHubIrrigationUnitID = irrigationUnit.AgHubIrrigationUnitID,
+                            Year = year,
+                            Month = month,
+                            Day = dailyRecord.Day,
+                            CurveNumber = curveNumber,
+                            Precipitation = precipitation,
+                            Area = area,
+                            RunoffDepth = runoffDepth,
+                            RunoffVolume = runoffDepth * area
+                        };
+
+                        await _dbContext.AgHubIrrigationUnitRunoffs.AddAsync(runoffRecord);
+                    }
+                    else
+                    {
+                        runoffRecord.CurveNumber = curveNumber;
+                        runoffRecord.Precipitation = precipitation;
+                        runoffRecord.Area = area;
+                        runoffRecord.RunoffDepth = runoffDepth;
+                        runoffRecord.RunoffVolume = runoffDepth * area;
+
+                        _dbContext.AgHubIrrigationUnitRunoffs.Update(runoffRecord);
+                    }
+                }
+
+                dataset.Dispose();
+                CleanupTempFiles(dailyRecord.BlobResourceID!.Value);
             }
 
-            dataset.Dispose();
-            CleanupTempFiles(dailyRecord.BlobResourceID!.Value);
-        }
+            await _dbContext.SaveChangesAsync();
 
-        await _dbContext.SaveChangesAsync();
+            await PrismMonthlySyncs.UpdateRunoffCalculationStatus(_dbContext, callingUser, year, month, RunoffCalculationStatus.Succeeded);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error calculating runoff for irrigation units.");
+            await PrismMonthlySyncs.UpdateRunoffCalculationStatus(_dbContext, callingUser, year, month, RunoffCalculationStatus.Failed);
+        }
+        
     }
 
     public void CleanupTempFiles(int blobID)

@@ -25,6 +25,8 @@ public partial class AgHubIrrigationUnitRunoff
 
     public double Precipitation { get; set; }
 
+    public double Area { get; set; }
+
     public double RunoffDepth { get; set; }
 
     public double RunoffVolume { get; set; }

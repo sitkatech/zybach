@@ -16,6 +16,7 @@ namespace Zybach.Models.DataTransferObjects
         public int Day { get; set; }
         public double CurveNumber { get; set; }
         public double Precipitation { get; set; }
+        public double Area { get; set; }
         public double RunoffDepth { get; set; }
         public double RunoffVolume { get; set; }
     }
@@ -29,6 +30,7 @@ namespace Zybach.Models.DataTransferObjects
         public int Day { get; set; }
         public double CurveNumber { get; set; }
         public double Precipitation { get; set; }
+        public double Area { get; set; }
         public double RunoffDepth { get; set; }
         public double RunoffVolume { get; set; }
     }

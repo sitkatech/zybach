@@ -10,18 +10,10 @@
  * Do not edit the class manually.
  */
 
-export class AgHubIrrigationUnitRunoffSimpleDto { 
-    AgHubIrrigationUnitRunoffID?: number;
-    AgHubIrrigationUnitID?: number;
-    Year?: number;
-    Month?: number;
-    Day?: number;
-    CurveNumber?: number;
-    Precipitation?: number;
-    Area?: number;
-    RunoffDepth?: number;
-    RunoffVolume?: number;
-    WellTPID?: string;
+export class RunoffCalculationStatusDto { 
+    RunoffCalculationStatusID?: number;
+    RunoffCalculationStatusName?: string;
+    RunoffCalculationStatusDisplayName?: string;
     constructor(obj?: any) {
         Object.assign(this, obj);
     }
