@@ -74,6 +74,9 @@ public partial class User
     [InverseProperty("FinalizeByUser")]
     public virtual ICollection<PrismMonthlySync> PrismMonthlySyncFinalizeByUsers { get; set; } = new List<PrismMonthlySync>();
 
+    [InverseProperty("LastRunoffCalculatedByUser")]
+    public virtual ICollection<PrismMonthlySync> PrismMonthlySyncLastRunoffCalculatedByUsers { get; set; } = new List<PrismMonthlySync>();
+
     [InverseProperty("LastSynchronizedByUser")]
     public virtual ICollection<PrismMonthlySync> PrismMonthlySyncLastSynchronizedByUsers { get; set; } = new List<PrismMonthlySync>();
 

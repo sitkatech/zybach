@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { AgHubIrrigationUnitRunoffSimpleDto } from '../model/ag-hub-irrigation-unit-runoff-simple-dto';
 import { PrismMonthlySyncDto } from '../model/prism-monthly-sync-dto';
 import { PrismMonthlySyncSimpleDto } from '../model/prism-monthly-sync-simple-dto';
 
@@ -101,6 +102,55 @@ export class PrismSyncService {
         ];
 
         return this.httpClient.get<Array<PrismMonthlySyncSimpleDto>>(`${this.basePath}/prism-monthly-sync/years/${encodeURIComponent(String(year))}/data-types/${encodeURIComponent(String(prismDataTypeName))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param year 
+     * @param month 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut(year: number, month: number, observe?: 'body', reportProgress?: boolean): Observable<PrismMonthlySyncSimpleDto>;
+    public prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut(year: number, month: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PrismMonthlySyncSimpleDto>>;
+    public prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut(year: number, month: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PrismMonthlySyncSimpleDto>>;
+    public prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut(year: number, month: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (year === null || year === undefined) {
+            throw new Error('Required parameter year was null or undefined when calling prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut.');
+        }
+
+        if (month === null || month === undefined) {
+            throw new Error('Required parameter month was null or undefined when calling prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.put<PrismMonthlySyncSimpleDto>(`${this.basePath}/prism-monthly-sync/years/${encodeURIComponent(String(year))}/months/${encodeURIComponent(String(month))}/calculate-runoff`,
+            null,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -263,6 +313,49 @@ export class PrismSyncService {
 
         return this.httpClient.put<PrismMonthlySyncSimpleDto>(`${this.basePath}/prism-monthly-sync/years/${encodeURIComponent(String(year))}/months/${encodeURIComponent(String(month))}/data-types/${encodeURIComponent(String(prismDataTypeName))}/sync`,
             null,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param year 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public runoffDataYearsYearGet(year: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AgHubIrrigationUnitRunoffSimpleDto>>;
+    public runoffDataYearsYearGet(year: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AgHubIrrigationUnitRunoffSimpleDto>>>;
+    public runoffDataYearsYearGet(year: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AgHubIrrigationUnitRunoffSimpleDto>>>;
+    public runoffDataYearsYearGet(year: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (year === null || year === undefined) {
+            throw new Error('Required parameter year was null or undefined when calling runoffDataYearsYearGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<AgHubIrrigationUnitRunoffSimpleDto>>(`${this.basePath}/runoff-data/years/${encodeURIComponent(String(year))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

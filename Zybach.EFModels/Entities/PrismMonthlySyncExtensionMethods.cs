@@ -11,6 +11,7 @@ public static partial class PrismMonthlySyncExtensionMethods
         prismMonthlySyncSimpleDto.PrismDataTypeName = prismMonthlySync.PrismDataType.PrismDataTypeName;
         prismMonthlySyncSimpleDto.PrismDataTypeDisplayName = prismMonthlySync.PrismDataType.PrismDataTypeDisplayName;
         prismMonthlySyncSimpleDto.LastSynchronizedByUserFullName = prismMonthlySync.LastSynchronizedByUser?.FullName;
+        prismMonthlySyncSimpleDto.LastRunoffCalculatedByUserFullName = prismMonthlySync.LastSynchronizedByUser?.FullName;
         prismMonthlySyncSimpleDto.FinalizedByUserFullName = prismMonthlySync.FinalizeByUser?.FullName;
     }
 }

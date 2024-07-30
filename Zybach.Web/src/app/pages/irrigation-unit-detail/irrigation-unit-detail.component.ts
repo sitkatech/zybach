@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
@@ -10,6 +10,8 @@ import { AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto } from 'src/app/sh
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { IrrigationUnitMapComponent } from '../irrigation-unit-map/irrigation-unit-map.component';
 import { DatePipe } from '@angular/common';
+import { AgHubIrrigationUnitRunoffSimpleDto } from 'src/app/shared/generated/model/models';
+import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'zybach-irrigation-unit-detail',
@@ -20,6 +22,7 @@ export class IrrigationUnitDetailComponent implements OnInit {
   public watchUserChangeSubscription: any;
   @ViewChild("irrigationUnitMap") irrigationUnitMap: IrrigationUnitMapComponent;
   @ViewChild('openETDataGrid') openETDataGrid: AgGridAngular;
+  @ViewChild('runoffGrid') runoffGrid: AgGridAngular;
  
   public currentUser: UserDto;
   public irrigationUnit: AgHubIrrigationUnitDetailDto;
@@ -28,6 +31,24 @@ export class IrrigationUnitDetailComponent implements OnInit {
   public columnDefs: any[];
   public defaultColDef: ColDef;
   public openETData: Array<AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto>;
+
+  public runoffColumnDefs: any[] = [
+    { headerName: 'Month', valueGetter: params => {
+        const date = new Date();
+        date.setMonth(params.data.Month - 1);
+        return date.toLocaleString('default', { month: 'long' });
+    }, sortable: true, filter: true, resizable: true },
+    { headerName: 'Year', field: 'Year', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Day', field: 'Day', sortable: true, filter: true, resizable: true },
+    { headerName: 'Precipitation (in)', field: 'Precipitation', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Curve Number', field: 'CurveNumber', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Acres', field: 'Acres', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Runoff Depth (in)', field: 'RunoffDepth', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Runoff Volume (ac-in)', field: 'RunoffVolume', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+  ];
+
+  public runoffDefaultColDef: ColDef;
+  public runoffData$: Observable<AgHubIrrigationUnitRunoffSimpleDto[]>;
 
   public gridApi: any;
 
@@ -39,7 +60,6 @@ export class IrrigationUnitDetailComponent implements OnInit {
     private utilityFunctionsService: UtilityFunctionsService,
     private datePipe: DatePipe
   ) { }
-
   ngOnInit(): void {
     this.irrigationUnitID = parseInt(this.route.snapshot.paramMap.get("id"));
     this.authenticationService.getCurrentUser().subscribe(currentUser => {
@@ -47,8 +67,9 @@ export class IrrigationUnitDetailComponent implements OnInit {
       this.initializeGrid();
       this.openETDataGrid?.api.showLoadingOverlay();
       this.getIrrigationUnitDetails();
-      
-    })
+    });
+
+    this.runoffData$ = this.irrigationUnitService.irrigationUnitsIrrigationUnitIDRunoffDataGet(this.irrigationUnitID);
   }
 
   getIrrigationUnitDetails(){
@@ -88,6 +109,10 @@ export class IrrigationUnitDetailComponent implements OnInit {
 
   public exportToCsv() {
     this.utilityFunctionsService.exportGridToCsv(this.openETDataGrid, `${this.irrigationUnit.WellTPID}-openET-data.csv`, null);
+  }
+  
+  public exportRunoffToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.runoffGrid, `${this.irrigationUnit.WellTPID}-runoff-data.csv`, null);
   }
 
 }

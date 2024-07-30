@@ -20,6 +20,7 @@ import { Observable }                                        from 'rxjs';
 
 import { AgHubIrrigationUnitDetailDto } from '../model/ag-hub-irrigation-unit-detail-dto';
 import { AgHubIrrigationUnitFarmingPracticeDto } from '../model/ag-hub-irrigation-unit-farming-practice-dto';
+import { AgHubIrrigationUnitRunoffSimpleDto } from '../model/ag-hub-irrigation-unit-runoff-simple-dto';
 import { AgHubIrrigationUnitSimpleDto } from '../model/ag-hub-irrigation-unit-simple-dto';
 import { AgHubIrrigationUnitSummaryDto } from '../model/ag-hub-irrigation-unit-summary-dto';
 
@@ -174,6 +175,49 @@ export class IrrigationUnitService {
         ];
 
         return this.httpClient.get<AgHubIrrigationUnitDetailDto>(`${this.basePath}/irrigationUnits/${encodeURIComponent(String(irrigationUnitID))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        ).pipe(catchError((error: any) => { return this.apiService.handleError(error)}));
+    }
+
+    /**
+     * 
+     * 
+     * @param irrigationUnitID 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public irrigationUnitsIrrigationUnitIDRunoffDataGet(irrigationUnitID: number, observe?: 'body', reportProgress?: boolean): Observable<Array<AgHubIrrigationUnitRunoffSimpleDto>>;
+    public irrigationUnitsIrrigationUnitIDRunoffDataGet(irrigationUnitID: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<AgHubIrrigationUnitRunoffSimpleDto>>>;
+    public irrigationUnitsIrrigationUnitIDRunoffDataGet(irrigationUnitID: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<AgHubIrrigationUnitRunoffSimpleDto>>>;
+    public irrigationUnitsIrrigationUnitIDRunoffDataGet(irrigationUnitID: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (irrigationUnitID === null || irrigationUnitID === undefined) {
+            throw new Error('Required parameter irrigationUnitID was null or undefined when calling irrigationUnitsIrrigationUnitIDRunoffDataGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<AgHubIrrigationUnitRunoffSimpleDto>>(`${this.basePath}/irrigationUnits/${encodeURIComponent(String(irrigationUnitID))}/runoff-data`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

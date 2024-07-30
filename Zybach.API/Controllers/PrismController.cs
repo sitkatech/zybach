@@ -81,13 +81,19 @@ public class PrismSyncController : SitkaController<PrismSyncController>
             return NotFound($"Monthly sync record not found for {year} {month} {prismDataType.PrismDataTypeName}.");
         }
 
+        //Do not allow syncing multiple times in a day.
+        if (prismMonthlySync.LastSynchronizedDate.HasValue && prismMonthlySync.LastSynchronizedDate.Value.Date == DateTime.UtcNow.Date)
+        {
+            return BadRequest("Cannot sync more than once per day to be respectful to PRISM resources and prevent being IP banned.");
+        }
+
         await PrismMonthlySyncs.UpdateStatus(_dbContext, _callingUser, year, month, prismDataType, PrismSyncStatus.InProgress);
 
-        _backgroundJobClient.Enqueue(() => _prismAPIService.SyncPrismData(year, month, prismDataTypeName, _callingUser));
+        var syncJobID = _backgroundJobClient.Enqueue(() => _prismAPIService.SyncPrismData(year, month, prismDataTypeName, _callingUser));
 
         var record = await PrismMonthlySyncs.GetSimpleByYearMonthAndDataType(_dbContext, year, month, prismDataType);
         return Ok(record);
-    } 
+    }
 
     [HttpGet("/prism-monthly-sync/years/{year}/months/{month}/data-types/{prismDataTypeName}/download")]
     [AdminFeature]
@@ -175,11 +181,65 @@ public class PrismSyncController : SitkaController<PrismSyncController>
 
         if (prismMonthlySync.PrismSyncStatusID != PrismSyncStatus.Succeeded.PrismSyncStatusID)
         {
-            return BadRequest("Cannot finalize a record that is has not been successfully synchronized.");
+            return BadRequest("Cannot finalize a record that has not been successfully synchronized.");
+        }
+
+        if (prismMonthlySync.RunoffCalculationStatusID != RunoffCalculationStatus.Succeeded.RunoffCalculationStatusID)
+        {
+            return BadRequest("Cannot finalize a record that has not had the runoff calculated successfully.");
         }
 
         var updatedRecord = await PrismMonthlySyncs.Finalize(_dbContext, _callingUser, year, month, prismDataType);
         return Ok(updatedRecord);
+    }
+
+    [HttpPut("/prism-monthly-sync/years/{year}/months/{month}/calculate-runoff")]
+    [AdminFeature]
+    public async Task<ActionResult<PrismMonthlySyncSimpleDto>> CalculateRunoff([FromRoute] int year, [FromRoute] int month)
+    {
+        var allowedYears = GetAllowedYears();
+        if (!allowedYears.Contains(year))
+        {
+            return NotFound($"Year must be 2020 or later, and before the current year.");
+        }
+
+        var allowedMonths = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+        if (!allowedMonths.Contains(month))
+        {
+            return NotFound("Month must be between 1 and 12.");
+        }
+
+        var prismMonthlySync = await PrismMonthlySyncs.GetSimpleByYearMonthAndDataType(_dbContext, year, month, PrismDataType.ppt);
+        if (prismMonthlySync == null)
+        {
+            return NotFound($"Monthly sync record not found for {year} {month} {PrismDataType.ppt.PrismDataTypeDisplayName}.");
+        }
+
+        if (prismMonthlySync.PrismSyncStatusID != PrismSyncStatus.Succeeded.PrismSyncStatusID)
+        {
+            return BadRequest("Cannot calculate runoff for a record that has not been successfully synchronized.");
+        }
+
+        await PrismMonthlySyncs.UpdateRunoffCalculationStatus(_dbContext, _callingUser, year, month, RunoffCalculationStatus.InProgress);
+
+        var runoffCalculationJobID = _backgroundJobClient.Enqueue(() => _prismAPIService.CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(_callingUser, year, month));
+
+        var record = await PrismMonthlySyncs.GetSimpleByYearMonthAndDataType(_dbContext, year, month, PrismDataType.ppt);
+        return Ok(record);
+    }
+
+    [HttpGet("/runoff-data/years/{year}")]
+    [ZybachViewFeature]
+    public async Task<ActionResult<List<AgHubIrrigationUnitRunoffSimpleDto>>> GetRunoffDataForYear([FromRoute] int year)
+    {
+        var allowedYears = GetAllowedYears();
+        if (!allowedYears.Contains(year))
+        {
+            return NotFound($"Year must be 2020 or later, and before the current year.");
+        }
+
+        var result = await AgHubIrrigationUnitRunoffs.ListSimpleForYear(_dbContext, year);
+        return Ok(result);
     }
 
     private List<int> GetAllowedYears()

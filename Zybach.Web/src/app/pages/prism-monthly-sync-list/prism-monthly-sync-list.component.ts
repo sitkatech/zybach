@@ -8,14 +8,14 @@ import { UtilityFunctionsService } from 'src/app/services/utility-functions.serv
 import { ContextMenuRendererComponent } from 'src/app/shared/components/ag-grid/context-menu/context-menu-renderer.component';
 import { PrismSyncService } from 'src/app/shared/generated/api/prism-sync.service';
 import { CustomRichTextTypeEnum } from 'src/app/shared/generated/enum/custom-rich-text-type-enum';
-import { UserDto } from 'src/app/shared/generated/model/models';
-import { PrismMonthlySyncDto } from 'src/app/shared/generated/model/prism-monthly-sync-dto';
+import { PrismMonthlySyncSimpleDto, UserDto } from 'src/app/shared/generated/model/models';
 import { Alert } from 'src/app/shared/models/alert';
 import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { saveAs } from 'file-saver';
 import { PrismSyncStatusEnum } from 'src/app/shared/generated/enum/prism-sync-status-enum';
 import { DatePipe } from '@angular/common';
+import { RunoffCalculationStatusEnum } from 'src/app/shared/generated/enum/runoff-calculation-status-enum';
 
 @Component({
     selector: 'prism-monthly-sync-list',
@@ -30,7 +30,7 @@ export class PrismMonthlySyncListComponent {
     public richTextTypeID: number = CustomRichTextTypeEnum.OpenETIntegration;
     public modalReference: NgbModalRef;
   
-    public prismMonthlySyncs: Array<PrismMonthlySyncDto>;
+    public prismMonthlySyncs: Array<PrismMonthlySyncSimpleDto>;
 
     public loadingPage: boolean = true;
     public isPerformingAction: boolean = false;
@@ -47,6 +47,8 @@ export class PrismMonthlySyncListComponent {
     public selectedYear: number = this.currentYear;
 
     public currentMonth: number = new Date().getMonth() + 1;
+
+    public showDownloadButtons: boolean = false;
   
     constructor(
       private authenticationService: AuthenticationService,
@@ -78,7 +80,11 @@ export class PrismMonthlySyncListComponent {
                 }   
                 return true;
             });
+
             this.loadingPage = false;   
+            this.showDownloadButtons = this.selectedDataType == "ppt" && this.prismMonthlySyncs.filter(x =>{
+                return x.RunoffCalculationStatusID == RunoffCalculationStatusEnum.Succeeded;
+            }).length > 0;
             this.cdr.markForCheck();
         });
     }
@@ -103,7 +109,7 @@ export class PrismMonthlySyncListComponent {
                 width: 100
             },
             {
-                headerName: 'Status',
+                headerName: 'PRISM Sync Status',
                 field: 'PrismSyncStatusDisplayName',
                 width: 300
             },
@@ -135,6 +141,41 @@ export class PrismMonthlySyncListComponent {
             {
                 headerName: 'Last Synchronized By',
                 field: 'LastSynchronizedByUserFullName',
+                width: 300
+            },
+            {
+                headerName: 'Runoff Calculation Status',
+                field: 'RunoffCalculationStatusDisplayName',
+                width: 300
+            },
+            {
+                headerName: "Last Calculated On", 
+                valueGetter: function (params: any) {
+                    return datePipe.transform(params.data.LastRunoffCalculationDate, "M/d/yyyy");
+                },
+                comparator: function (id1: any, id2: any) {
+                    const date1 = Date.parse(id1);
+                    const date2 = Date.parse(id2);
+                    if (date1 < date2) {
+                        return -1;
+                    }
+                    return (date1 > date2)  ?  1 : 0;
+                },
+                filterValueGetter: function (params: any) {
+                    return datePipe.transform(params.data.LastRunoffCalculationDate, "M/d/yyyy");
+                },
+                filter: 'agDateColumnFilter',
+                filterParams: {
+                    filterOptions: ['inRange'],
+                    comparator: this.dateFilterComparator
+                }, 
+                width: 175,
+                resizable: true,
+                sortable: true
+            },
+            {
+                headerName: 'Runoff Calculated By',
+                field: 'LastRunoffCalculatedByUserFullName',
                 width: 300
             },
             {
@@ -171,15 +212,59 @@ export class PrismMonthlySyncListComponent {
   
         this.defaultColDef = { filter: true, sortable: true, resizable: true };
     }
-  
+
+    public getRunoffData(outputFormat: string) {
+        
+        this.alertService.pushAlert(new Alert(`Downloading data.`, AlertContext.Info));
+        this.prismSyncService.runoffDataYearsYearGet(this.selectedYear).subscribe(result => {
+            // If the output format is csv, we need to convert the result to a csv file and download it.
+            if (outputFormat === 'csv') {
+                const csvData = this.convertToCSV(result);
+                this.downloadCSV(csvData, `runoff_data_${this.selectedYear}.csv`);
+                this.alertService.clearAlerts();
+                return;
+            }
+
+            this.downloadJSON(result, `runoff_data_${this.selectedYear}.json`);
+            this.alertService.clearAlerts();
+        });
+    }
+
+    private convertToCSV(data: any[]): string {
+        const array = [Object.keys(data[0])].concat(data);
+
+        return array.map(it => {
+            return Object.values(it).toString();
+        }).join('\n');
+    }
+
+    private downloadCSV(csvData: string, filename: string) {
+        const blob = new Blob([csvData], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', filename);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+    
+    private downloadJSON(jsonData: any, filename: string) {
+        const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', filename);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+    
     public createActionColumn(): ColDef {
         var actionColDef: ColDef = {
             headerName: "Actions",
             valueGetter: (params: any) => {
                 let actions = [];
                 if(params.data.FinalizeDate == null) {
-                    actions.push(
-                        { 
+                    actions.push({ 
                             ActionName: "Sync",  
                             ActionHandler: () => {
                                 this.confirmService.confirm({
@@ -199,12 +284,48 @@ export class PrismMonthlySyncListComponent {
                                     }
                                 });
                             }
-                        }
-                    );
-                        
-                    if(params.data.PrismSyncStatusID == PrismSyncStatusEnum.Succeeded && (this.currentYear !== params.data.Year || this.currentMonth !== params.data.Month)) {
-                        actions.push(
-                            { 
+                        });
+
+                    if(params.data.PrismSyncStatusID == PrismSyncStatusEnum.Succeeded){
+                        actions.push({ 
+                                ActionName: "Download Zip", 
+                                ActionHandler: () => {
+                                    this.alertService.pushAlert(new Alert(`Downloading data.`, AlertContext.Info));
+                                    this.prismSyncService.prismMonthlySyncYearsYearMonthsMonthDataTypesPrismDataTypeNameDownloadGet(params.data.Year, params.data.Month, this.selectedDataType).subscribe((blob: Blob) => {
+                                        this.alertService.clearAlerts();
+                                        saveAs(blob, `${params.data.Year}-${params.data.Month}-${params.data.PrismDataTypeName}-prism-data.zip`);
+                                    }, error => {
+                                        this.alertService.pushAlert(new Alert(`An error occurred while downloading the zip file.`, AlertContext.Danger));
+                                    });
+                                }
+                            });
+                            
+                        actions.push({ 
+                                ActionName: "Calculate Runoff",  
+                                ActionHandler: () => {
+                                    this.confirmService.confirm({
+                                        title: 'Calculate Runoff',
+                                        message: `Are you sure you calculate runoff for${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }? Note: This may take some time to return data, please check in again in a few minutes.`,
+                                        buttonTextYes: 'Sync',
+                                        buttonClassYes: 'btn-primary',
+                                        buttonTextNo: 'Cancel',
+                                        modalSize: 'small'
+                                    }).then(confirmed => {
+                                        if (confirmed) {
+                                            this.isPerformingAction = true;
+                                            this.prismSyncService.prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut(params.data.Year, params.data.Month).subscribe(() => {  
+                                                this.refreshData();
+                                                this.alertService.pushAlert(new Alert(`${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s runoff data is being calculated, please check in again in a few minutes.`, AlertContext.Success));
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                    }
+                
+                    
+                    if(params.data.PrismSyncStatusID == PrismSyncStatusEnum.Succeeded && params.data.RunoffCalculationStatusID == RunoffCalculationStatusEnum.Succeeded) {
+                        actions.push({ 
                                 ActionName: "Finalize", 
                                 ActionHandler: () => {
                                     this.confirmService.confirm({
@@ -224,24 +345,8 @@ export class PrismMonthlySyncListComponent {
                                         }
                                     });
                                 }
-                            }
-                        );
+                            });
                     }
-                }
-
-                if(params.data.PrismSyncStatusID == PrismSyncStatusEnum.Succeeded) {   
-                    actions.push(
-                        { 
-                            ActionName: "Download Zip", 
-                            ActionHandler: () => {
-                                this.prismSyncService.prismMonthlySyncYearsYearMonthsMonthDataTypesPrismDataTypeNameDownloadGet(params.data.Year, params.data.Month, this.selectedDataType).subscribe((blob: Blob) => {
-                                    saveAs(blob, `${params.data.Year}-${params.data.Month}-${params.data.PrismDataTypeName}-prism-data.zip`);
-                                }, error => {
-                                    this.alertService.pushAlert(new Alert(`An error occurred while downloading the zip file.`, AlertContext.Danger));
-                                });
-                            }
-                        }
-                    );
                 }
 
                 return actions; 

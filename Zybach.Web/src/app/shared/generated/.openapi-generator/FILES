@@ -34,6 +34,7 @@ configuration.ts
 encoder.ts
 model/ag-hub-irrigation-unit-detail-dto.ts
 model/ag-hub-irrigation-unit-farming-practice-dto.ts
+model/ag-hub-irrigation-unit-runoff-simple-dto.ts
 model/ag-hub-irrigation-unit-simple-dto.ts
 model/ag-hub-irrigation-unit-summary-dto.ts
 model/ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto.ts
@@ -103,6 +104,7 @@ model/report-template-model-dto.ts
 model/report-template-model-type-dto.ts
 model/robust-review-scenario-get-run-history-dto.ts
 model/role-dto.ts
+model/runoff-calculation-status-dto.ts
 model/search-summary-dto.ts
 model/sensor-anomaly-simple-dto.ts
 model/sensor-anomaly-upsert-dto.ts
