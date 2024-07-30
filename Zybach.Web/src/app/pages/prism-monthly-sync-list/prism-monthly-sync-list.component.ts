@@ -105,7 +105,7 @@ export class PrismMonthlySyncListComponent {
             },
             {
                 headerName: 'Month',
-                valueGetter: (params) => this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month),
+                valueGetter: (params) => this.utilityFunctionsService.getMonthName(params.data.Month),
                 width: 100
             },
             {
@@ -269,7 +269,7 @@ export class PrismMonthlySyncListComponent {
                             ActionHandler: () => {
                                 this.confirmService.confirm({
                                     title: 'Sync Now',
-                                    message: `Are you sure you want sync ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data from PRISM? Note: This may take some time to return data, please check in again in a few minutes.`,
+                                    message: `Are you sure you want sync ${this.utilityFunctionsService.getMonthName(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data from PRISM? Note: This may take some time to return data, please check in again in a few minutes.`,
                                     buttonTextYes: 'Sync',
                                     buttonClassYes: 'btn-primary',
                                     buttonTextNo: 'Cancel',
@@ -279,7 +279,7 @@ export class PrismMonthlySyncListComponent {
                                         this.isPerformingAction = true;
                                         this.prismSyncService.prismMonthlySyncYearsYearMonthsMonthDataTypesPrismDataTypeNameSyncPut(params.data.Year, params.data.Month, this.selectedDataType).subscribe(() => {  
                                             this.refreshData();
-                                            this.alertService.pushAlert(new Alert(`${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data is being synchronized, please check in again in a few minutes.`, AlertContext.Success));
+                                            this.alertService.pushAlert(new Alert(`${this.utilityFunctionsService.getMonthName(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data is being synchronized, please check in again in a few minutes.`, AlertContext.Success));
                                         });
                                     }
                                 });
@@ -305,7 +305,7 @@ export class PrismMonthlySyncListComponent {
                                 ActionHandler: () => {
                                     this.confirmService.confirm({
                                         title: 'Calculate Runoff',
-                                        message: `Are you sure you calculate runoff for${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }? Note: This may take some time to return data, please check in again in a few minutes.`,
+                                        message: `Are you sure you calculate runoff for${this.utilityFunctionsService.getMonthName(params.data.Month)} ${ params.data.Year }? Note: This may take some time to return data, please check in again in a few minutes.`,
                                         buttonTextYes: 'Sync',
                                         buttonClassYes: 'btn-primary',
                                         buttonTextNo: 'Cancel',
@@ -315,7 +315,7 @@ export class PrismMonthlySyncListComponent {
                                             this.isPerformingAction = true;
                                             this.prismSyncService.prismMonthlySyncYearsYearMonthsMonthCalculateRunoffPut(params.data.Year, params.data.Month).subscribe(() => {  
                                                 this.refreshData();
-                                                this.alertService.pushAlert(new Alert(`${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s runoff data is being calculated, please check in again in a few minutes.`, AlertContext.Success));
+                                                this.alertService.pushAlert(new Alert(`${this.utilityFunctionsService.getMonthName(params.data.Month)} ${ params.data.Year }'s runoff data is being calculated, please check in again in a few minutes.`, AlertContext.Success));
                                             });
                                         }
                                     });
@@ -330,7 +330,7 @@ export class PrismMonthlySyncListComponent {
                                 ActionHandler: () => {
                                     this.confirmService.confirm({
                                         title: 'Finalize',
-                                        message: `Are you sure you would like to finalize ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${params.data.Year}? You will not be able to resync after this action. Please reach out to support if you run into issues.`,
+                                        message: `Are you sure you would like to finalize ${this.utilityFunctionsService.getMonthName(params.data.Month)} ${params.data.Year}? You will not be able to resync after this action. Please reach out to support if you run into issues.`,
                                         buttonTextYes: 'Finalize',
                                         buttonClassYes: 'btn-primary',
                                         buttonTextNo: 'Cancel',
@@ -340,7 +340,7 @@ export class PrismMonthlySyncListComponent {
                                             this.isPerformingAction = true;
                                             this.prismSyncService.prismMonthlySyncYearsYearMonthsMonthDataTypesPrismDataTypeNameFinalizePut(params.data.Year, params.data.Month, this.selectedDataType).subscribe((result) => {
                                                 this.refreshData();
-                                                this.alertService.pushAlert(new Alert(`${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data was succesfully finalized.`, AlertContext.Success));
+                                                this.alertService.pushAlert(new Alert(`${this.utilityFunctionsService.getMonthName(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data was succesfully finalized.`, AlertContext.Success));
                                             });
                                         }
                                     });
