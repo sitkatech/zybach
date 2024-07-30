@@ -33,6 +33,9 @@ public partial class PrismMonthlySync
 
     public int? LastRunoffCalculatedByUserID { get; set; }
 
+    [Unicode(false)]
+    public string LastRunoffCalculationError { get; set; }
+
     [Column(TypeName = "datetime")]
     public DateTime? FinalizeDate { get; set; }
 

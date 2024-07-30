@@ -1,21 +1,22 @@
 ﻿CREATE TABLE [dbo].[PrismMonthlySync]
 (    
-    [PrismMonthlySyncID]			INT			NOT NULL IDENTITY(1, 1),
-    [PrismSyncStatusID]				INT			NOT NULL DEFAULT(1),
-    [RunoffCalculationStatusID]		INT			NOT NULL DEFAULT(1),
+    [PrismMonthlySyncID]			INT				NOT NULL IDENTITY(1, 1),
+    [PrismSyncStatusID]				INT				NOT NULL DEFAULT(1),
+    [RunoffCalculationStatusID]		INT				NOT NULL DEFAULT(1),
 
-	[PrismDataTypeID]				INT			NOT NULL,
-	[Year]							INT			NOT NULL,
-	[Month]							INT			NOT NULL,
+	[PrismDataTypeID]				INT				NOT NULL,
+	[Year]							INT				NOT NULL,
+	[Month]							INT				NOT NULL,
 	
-	[LastSynchronizedDate]			DATETIME	NULL,
-	[LastSynchronizedByUserID]		INT			NULL,
+	[LastSynchronizedDate]			DATETIME		NULL,
+	[LastSynchronizedByUserID]		INT				NULL,
 
-	[LastRunoffCalculationDate]		DATETIME	NULL,
-	[LastRunoffCalculatedByUserID]	INT			NULL,
+	[LastRunoffCalculationDate]		DATETIME		NULL,
+	[LastRunoffCalculatedByUserID]	INT				NULL,
+	[LastRunoffCalculationError]	VARCHAR(MAX)	NULL,
 
-	[FinalizeDate]					DATETIME	NULL,
-	[FinalizeByUserID]				INT			NULL,
+	[FinalizeDate]					DATETIME		NULL,
+	[FinalizeByUserID]				INT				NULL,
 
     CONSTRAINT [PK_PrismMonthlySync_PrismMonthlySyncID]				PRIMARY KEY CLUSTERED ([PrismMonthlySyncID]),
 

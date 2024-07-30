@@ -21,6 +21,9 @@ public partial class AgHubIrrigationUnit
     public double? IrrigationUnitAreaInAcres { get; set; }
 
     [InverseProperty("AgHubIrrigationUnit")]
+    public virtual ICollection<AgHubIrrigationUnitCurveNumber> AgHubIrrigationUnitCurveNumbers { get; set; } = new List<AgHubIrrigationUnitCurveNumber>();
+
+    [InverseProperty("AgHubIrrigationUnit")]
     public virtual AgHubIrrigationUnitGeometry AgHubIrrigationUnitGeometry { get; set; }
 
     [InverseProperty("AgHubIrrigationUnit")]

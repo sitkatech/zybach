@@ -41,6 +41,8 @@ export class IrrigationUnitDetailComponent implements OnInit {
     { headerName: 'Year', field: 'Year', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
     { headerName: 'Day', field: 'Day', sortable: true, filter: true, resizable: true },
     { headerName: 'Precipitation (in)', field: 'Precipitation', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Crop Type', field: 'CropType', sortable: true, filter: true, resizable: true },
+    { headerName: 'Tillage', field: 'Tillage', sortable: true, filter: true, resizable: true },
     { headerName: 'Curve Number', field: 'CurveNumber', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
     { headerName: 'Acres', field: 'Acres', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
     { headerName: 'Runoff Depth (in)', field: 'RunoffDepth', sortable: true, filter: 'agNumberColumnFilter', resizable: true },

@@ -6782,6 +6782,14 @@
             "type": "integer",
             "format": "int32"
           },
+          "CropType": {
+            "type": "string",
+            "nullable": true
+          },
+          "Tillage": {
+            "type": "string",
+            "nullable": true
+          },
           "CurveNumber": {
             "type": "number",
             "format": "double"
@@ -8830,6 +8838,10 @@
           "LastRunoffCalculatedByUser": {
             "$ref": "#/components/schemas/UserDto"
           },
+          "LastRunoffCalculationError": {
+            "type": "string",
+            "nullable": true
+          },
           "FinalizeDate": {
             "type": "string",
             "format": "date-time",
@@ -8886,6 +8898,10 @@
           "LastRunoffCalculatedByUserID": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "LastRunoffCalculationError": {
+            "type": "string",
             "nullable": true
           },
           "FinalizeDate": {

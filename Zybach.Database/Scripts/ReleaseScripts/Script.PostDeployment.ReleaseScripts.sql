@@ -12,4 +12,6 @@ GO
 GO
 :r ".\0002 - Prepopulate prism monthly sync records.sql"
 GO
+:r ".\0003 - Import curve numbers.sql"
+GO
 

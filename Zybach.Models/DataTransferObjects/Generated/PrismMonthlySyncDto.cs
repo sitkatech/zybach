@@ -19,6 +19,7 @@ namespace Zybach.Models.DataTransferObjects
         public UserDto LastSynchronizedByUser { get; set; }
         public DateTime? LastRunoffCalculationDate { get; set; }
         public UserDto LastRunoffCalculatedByUser { get; set; }
+        public string LastRunoffCalculationError { get; set; }
         public DateTime? FinalizeDate { get; set; }
         public UserDto FinalizeByUser { get; set; }
     }
@@ -35,6 +36,7 @@ namespace Zybach.Models.DataTransferObjects
         public System.Int32? LastSynchronizedByUserID { get; set; }
         public DateTime? LastRunoffCalculationDate { get; set; }
         public System.Int32? LastRunoffCalculatedByUserID { get; set; }
+        public string LastRunoffCalculationError { get; set; }
         public DateTime? FinalizeDate { get; set; }
         public System.Int32? FinalizeByUserID { get; set; }
     }

@@ -95,7 +95,7 @@ export class PrismMonthlySyncListComponent {
         this.columnDefs.push(this.createActionColumn());
 
         let datePipe = this.datePipe;
-        
+        let utilityFunctionsService = this.utilityFunctionsService;
         this.columnDefs.push(
             {
                 headerName: 'Year', 
@@ -105,7 +105,10 @@ export class PrismMonthlySyncListComponent {
             },
             {
                 headerName: 'Month',
-                valueGetter: (params) => this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month),
+                field: 'Month',
+                valueGetter: function (params: any) {
+                    return utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month);
+                },
                 width: 100
             },
             {
@@ -269,7 +272,7 @@ export class PrismMonthlySyncListComponent {
                             ActionHandler: () => {
                                 this.confirmService.confirm({
                                     title: 'Sync Now',
-                                    message: `Are you sure you want sync ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data from PRISM? Note: This may take some time to return data, please check in again in a few minutes.`,
+                                    message: `Are you sure you would like to sync ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data from PRISM? Note: This may take some time to return data, please check in again in a few minutes.`,
                                     buttonTextYes: 'Sync',
                                     buttonClassYes: 'btn-primary',
                                     buttonTextNo: 'Cancel',
@@ -305,7 +308,7 @@ export class PrismMonthlySyncListComponent {
                                 ActionHandler: () => {
                                     this.confirmService.confirm({
                                         title: 'Calculate Runoff',
-                                        message: `Are you sure you calculate runoff for${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }? Note: This may take some time to return data, please check in again in a few minutes.`,
+                                        message: `Are you sure you calculate runoff for ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }? Note: This may take some time to return data, please check in again in a few minutes.`,
                                         buttonTextYes: 'Sync',
                                         buttonClassYes: 'btn-primary',
                                         buttonTextNo: 'Cancel',

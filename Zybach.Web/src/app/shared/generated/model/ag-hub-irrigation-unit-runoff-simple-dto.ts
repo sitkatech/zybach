@@ -16,6 +16,8 @@ export class AgHubIrrigationUnitRunoffSimpleDto {
     Year?: number;
     Month?: number;
     Day?: number;
+    CropType?: string;
+    Tillage?: string;
     CurveNumber?: number;
     Precipitation?: number;
     Area?: number;
