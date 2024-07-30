@@ -78,7 +78,7 @@ public class OpenETService
                 throw new OpenETException($"Call to {openETRasterMetadataRoute} was unsuccessful. Status Code: {response.StatusCode} Message: {body}");
             }
 
-            var responseObject = JsonSerializer.Deserialize<RasterMetadataDateIngested>(body);
+            var responseObject = JsonSerializer.Deserialize<RasterMetadataBuildDate>(body);
 
             if (string.IsNullOrEmpty(responseObject.DateIngested) ||
                 !DateTime.TryParse(responseObject.DateIngested, out var responseDate))
@@ -122,9 +122,9 @@ public class OpenETService
         }
     }
 
-    public class RasterMetadataDateIngested : OpenETGeneralJsonResponse
+    public class RasterMetadataBuildDate : OpenETGeneralJsonResponse
     {
-        [JsonPropertyName("date_ingested")]
+        [JsonPropertyName("build_date")]
         public string DateIngested { get; set; }
     }
 

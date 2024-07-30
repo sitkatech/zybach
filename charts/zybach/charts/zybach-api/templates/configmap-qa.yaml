@@ -25,11 +25,11 @@ data:
   GET_ROBUST_REVIEW_SCENARIO_RUN_MODEL_ID: "73"
   GET_ROBUST_REVIEW_SCENARIO_RUN_SCENARIO_ID: "19"
   VEGA_RENDER_URL: "http://{{ .Values.global.domains.vegarenderservice }}"
-  OPENET_SHAPEFILE_PATH: "users/esa-sitka/TPNRD_Irrigation_Units_2022-05-11"
+  OPENET_SHAPEFILE_PATH: "projects/tpnrd-openet/assets/TPNRD_2023_Irrigation_Units_2024-07-29"
   OpenETAPIBaseUrl: "https://openet-api.org"
   OpenETRasterTimeSeriesMultipolygonRoute: "raster/timeseries/multipolygon"
   OpenETRasterMetadataRoute: "raster/metadata"
   OpenETRasterExportStatusRoute: "raster/export/status"
-  OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "tpid"
+  OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "TPID"
   PRISM_API_BASE_URL: "https://services.nacse.org/prism/data/public/4km"
 {{ end }}
