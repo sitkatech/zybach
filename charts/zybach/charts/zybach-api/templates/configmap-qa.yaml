@@ -30,6 +30,6 @@ data:
   OpenETRasterTimeSeriesMultipolygonRoute: "raster/timeseries/multipolygon"
   OpenETRasterMetadataRoute: "raster/metadata"
   OpenETRasterExportStatusRoute: "raster/export/status"
-  OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "tpid"
+  OpenETRasterTimeseriesMultipolygonColumnToUseAsIdentifier: "TPID"
   PRISM_API_BASE_URL: "https://services.nacse.org/prism/data/public/4km"
 {{ end }}
