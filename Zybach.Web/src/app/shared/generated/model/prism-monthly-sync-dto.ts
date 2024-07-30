@@ -19,6 +19,8 @@ export class PrismMonthlySyncDto {
     PrismDataType?: PrismDataTypeDto;
     Year?: number;
     Month?: number;
+    LastSynchronizedDate?: string;
+    LastSynchronizedByUser?: UserDto;
     FinalizeDate?: string;
     FinalizeByUser?: UserDto;
     constructor(obj?: any) {
