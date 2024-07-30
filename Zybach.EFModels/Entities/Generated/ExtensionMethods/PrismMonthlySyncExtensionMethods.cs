@@ -15,11 +15,14 @@ namespace Zybach.EFModels.Entities
             {
                 PrismMonthlySyncID = prismMonthlySync.PrismMonthlySyncID,
                 PrismSyncStatus = prismMonthlySync.PrismSyncStatus.AsDto(),
+                RunoffCalculationStatus = prismMonthlySync.RunoffCalculationStatus.AsDto(),
                 PrismDataType = prismMonthlySync.PrismDataType.AsDto(),
                 Year = prismMonthlySync.Year,
                 Month = prismMonthlySync.Month,
                 LastSynchronizedDate = prismMonthlySync.LastSynchronizedDate,
                 LastSynchronizedByUser = prismMonthlySync.LastSynchronizedByUser?.AsDto(),
+                LastRunoffCalculationDate = prismMonthlySync.LastRunoffCalculationDate,
+                LastRunoffCalculatedByUser = prismMonthlySync.LastRunoffCalculatedByUser?.AsDto(),
                 FinalizeDate = prismMonthlySync.FinalizeDate,
                 FinalizeByUser = prismMonthlySync.FinalizeByUser?.AsDto()
             };
@@ -35,11 +38,14 @@ namespace Zybach.EFModels.Entities
             {
                 PrismMonthlySyncID = prismMonthlySync.PrismMonthlySyncID,
                 PrismSyncStatusID = prismMonthlySync.PrismSyncStatusID,
+                RunoffCalculationStatusID = prismMonthlySync.RunoffCalculationStatusID,
                 PrismDataTypeID = prismMonthlySync.PrismDataTypeID,
                 Year = prismMonthlySync.Year,
                 Month = prismMonthlySync.Month,
                 LastSynchronizedDate = prismMonthlySync.LastSynchronizedDate,
                 LastSynchronizedByUserID = prismMonthlySync.LastSynchronizedByUserID,
+                LastRunoffCalculationDate = prismMonthlySync.LastRunoffCalculationDate,
+                LastRunoffCalculatedByUserID = prismMonthlySync.LastRunoffCalculatedByUserID,
                 FinalizeDate = prismMonthlySync.FinalizeDate,
                 FinalizeByUserID = prismMonthlySync.FinalizeByUserID
             };

@@ -54,9 +54,9 @@
             </div>
         </div>
     </div>
+
     <div class="row mt-2">
         <div class="col-12">
-
             <div class="card">
                 <div class="card-header">
                     OpenET Data
@@ -87,7 +87,41 @@
                     </ng-template>
                 </div>
             </div>
-
+        </div>
+    </div>
+    
+    <div class="row mt-2">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    Runoff Data
+                </div>
+                <div class="card-body mb-3" *ngIf="runoffData$ | async as runoffData">
+                    <div *ngIf="runoffData?.length > 0; then hasRunoffData else noRunoffData"></div>
+                    <ng-template #hasRunoffData>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-secondary btn-md float-end m-2" style="cursor: pointer;" (click)="exportRunoffToCsv()" placement="top"
+                                ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
+                                <fresca-clear-grid-filters-button class="m-2 float-end" [grid]="runoffGrid">
+                                </fresca-clear-grid-filters-button>
+                            </div> 
+                        </div>
+                        <div class="table-responsive">
+                            <ag-grid-angular #runoffGrid style="width: 100%; height: 300px;" 
+                                class="ag-theme-balham" [rowData]="runoffData"
+                                [columnDefs]="runoffColumnDefs"
+                                [pagination]="false" [suppressMenuHide]="true">
+                            </ag-grid-angular>
+                        </div>
+                    </ng-template>
+                    <ng-template #noRunoffData>
+                        <p>
+                            <em>This Irrigation Unit has no available runoff data at this time</em>
+                        </p>
+                    </ng-template>
+                </div>
+            </div>
         </div>
     </div>
 

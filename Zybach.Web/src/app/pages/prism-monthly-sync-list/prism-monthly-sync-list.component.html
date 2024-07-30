@@ -53,12 +53,22 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-auto ms-auto">
+                            <div class="col-4" >
+                                <div class="download-button-wrapper" *ngIf="showDownloadButtons">
+                                    <button class="btn btn-primary btn-md" style="cursor: pointer;" (click)="getRunoffData('json')" ngbTooltip="Download Runoff Data as JSON" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i>
+                                        Download {{selectedYear}} Runoff Data as JSON
+                                    </button>
+                                    <button class="btn btn-primary btn-md" style="cursor: pointer; margin-left: 1rem;" (click)="getRunoffData('csv')" ngbTooltip="Download Runoff Data as JSON" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i>
+                                        Download {{selectedYear}} Runoff Data as CSV
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- <div class="col-auto ms-auto">
                                 <fresca-clear-grid-filters-button [grid]="prismMonthlySyncGrid" classList="me-2"></fresca-clear-grid-filters-button>
                                 <button class="btn btn-secondary btn-md" style="cursor: pointer;" (click)="exportToCsv()"
                                     ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i>
                                 </button>
-                            </div>
+                            </div> -->
                         </div>
 
                         <ag-grid-angular #prismMonthlySyncGrid style="width: 100%; height: 800px" class="ag-theme-balham" [rowData]="prismMonthlySyncs" 

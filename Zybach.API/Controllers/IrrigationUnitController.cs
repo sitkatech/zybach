@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,8 +14,10 @@ namespace Zybach.API.Controllers
     [ApiController]
     public class IrrigationUnitController : SitkaController<IrrigationUnitController>
     {
-        public IrrigationUnitController(ZybachDbContext dbContext, ILogger<IrrigationUnitController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration) : base(dbContext, logger, keystoneService, zybachConfiguration)
+        private PrismAPIService _prismAPIService;
+        public IrrigationUnitController(ZybachDbContext dbContext, ILogger<IrrigationUnitController> logger, KeystoneService keystoneService, IOptions<ZybachConfiguration> zybachConfiguration, PrismAPIService prismAPIService) : base(dbContext, logger, keystoneService, zybachConfiguration)
         {
+            _prismAPIService = prismAPIService;
         }
 
         [HttpGet("irrigationUnits/summary/{startDateMonth}/{startDateYear}/{endDateMonth}/{endDateYear}")]
@@ -52,10 +55,23 @@ namespace Zybach.API.Controllers
         [ZybachViewFeature]
         public ActionResult<List<AgHubIrrigationUnitFarmingPracticeDto>> ListIrrigationUnitIrrigatedAcres()
         {
-            var agHubIrrigationUnitWellIrrigatedAcreDtos =
-                AgHubIrrigationUnits.ListAsAgHubIrrigationUnitWellIrrigatedAcreDtos(_dbContext);
-
+            var agHubIrrigationUnitWellIrrigatedAcreDtos = AgHubIrrigationUnits.ListAsAgHubIrrigationUnitWellIrrigatedAcreDtos(_dbContext);
             return Ok(agHubIrrigationUnitWellIrrigatedAcreDtos);
+        }
+
+
+        [HttpGet("/irrigationUnits/{irrigationUnitID}/runoff-data")]
+        [ZybachViewFeature]
+        public async Task<ActionResult<List<AgHubIrrigationUnitRunoffSimpleDto>>> GetIrrigationUnitRunoffData([FromRoute] int irrigationUnitID)
+        {
+            var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);
+            if (irrigationUnit == null)
+            {
+                return NotFound();
+            }
+
+            var result = await AgHubIrrigationUnitRunoffs.ListSimpleForIrrigationUnitID(_dbContext, irrigationUnitID);
+            return Ok(result);
         }
     }
 }

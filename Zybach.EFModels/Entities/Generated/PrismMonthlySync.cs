@@ -15,6 +15,8 @@ public partial class PrismMonthlySync
 
     public int PrismSyncStatusID { get; set; }
 
+    public int RunoffCalculationStatusID { get; set; }
+
     public int PrismDataTypeID { get; set; }
 
     public int Year { get; set; }
@@ -27,6 +29,11 @@ public partial class PrismMonthlySync
     public int? LastSynchronizedByUserID { get; set; }
 
     [Column(TypeName = "datetime")]
+    public DateTime? LastRunoffCalculationDate { get; set; }
+
+    public int? LastRunoffCalculatedByUserID { get; set; }
+
+    [Column(TypeName = "datetime")]
     public DateTime? FinalizeDate { get; set; }
 
     public int? FinalizeByUserID { get; set; }
@@ -34,6 +41,10 @@ public partial class PrismMonthlySync
     [ForeignKey("FinalizeByUserID")]
     [InverseProperty("PrismMonthlySyncFinalizeByUsers")]
     public virtual User FinalizeByUser { get; set; }
+
+    [ForeignKey("LastRunoffCalculatedByUserID")]
+    [InverseProperty("PrismMonthlySyncLastRunoffCalculatedByUsers")]
+    public virtual User LastRunoffCalculatedByUser { get; set; }
 
     [ForeignKey("LastSynchronizedByUserID")]
     [InverseProperty("PrismMonthlySyncLastSynchronizedByUsers")]

@@ -12,15 +12,19 @@
 import { PrismDataTypeDto } from '././prism-data-type-dto';
 import { UserDto } from '././user-dto';
 import { PrismSyncStatusDto } from '././prism-sync-status-dto';
+import { RunoffCalculationStatusDto } from '././runoff-calculation-status-dto';
 
 export class PrismMonthlySyncDto { 
     PrismMonthlySyncID?: number;
     PrismSyncStatus?: PrismSyncStatusDto;
+    RunoffCalculationStatus?: RunoffCalculationStatusDto;
     PrismDataType?: PrismDataTypeDto;
     Year?: number;
     Month?: number;
     LastSynchronizedDate?: string;
     LastSynchronizedByUser?: UserDto;
+    LastRunoffCalculationDate?: string;
+    LastRunoffCalculatedByUser?: UserDto;
     FinalizeDate?: string;
     FinalizeByUser?: UserDto;
     constructor(obj?: any) {

@@ -1,5 +1,6 @@
 export * from '././ag-hub-irrigation-unit-detail-dto';
 export * from '././ag-hub-irrigation-unit-farming-practice-dto';
+export * from '././ag-hub-irrigation-unit-runoff-simple-dto';
 export * from '././ag-hub-irrigation-unit-simple-dto';
 export * from '././ag-hub-irrigation-unit-summary-dto';
 export * from '././ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto';
@@ -68,6 +69,7 @@ export * from '././report-template-model-dto';
 export * from '././report-template-model-type-dto';
 export * from '././robust-review-scenario-get-run-history-dto';
 export * from '././role-dto';
+export * from '././runoff-calculation-status-dto';
 export * from '././search-summary-dto';
 export * from '././sensor-anomaly-simple-dto';
 export * from '././sensor-anomaly-upsert-dto';

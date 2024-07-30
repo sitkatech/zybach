@@ -18,18 +18,30 @@ public static class PrismMonthlySyncs
             .Select(x => new PrismMonthlySyncSimpleDto
             {
                 PrismMonthlySyncID = x.PrismMonthlySyncID,
-                PrismSyncStatusID = x.PrismSyncStatusID,
-                PrismSyncStatusName = x.PrismSyncStatus.PrismSyncStatusName,
-                PrismSyncStatusDisplayName = x.PrismSyncStatus.PrismSyncStatusDisplayName,
+
                 PrismDataTypeID = x.PrismDataTypeID,
                 PrismDataTypeName = x.PrismDataType.PrismDataTypeName,
                 PrismDataTypeDisplayName = x.PrismDataType.PrismDataTypeDisplayName,
+
+                PrismSyncStatusID = x.PrismSyncStatusID,
+                PrismSyncStatusName = x.PrismSyncStatus.PrismSyncStatusName,
+                PrismSyncStatusDisplayName = x.PrismSyncStatus.PrismSyncStatusDisplayName,
+
+                RunoffCalculationStatusID = x.RunoffCalculationStatusID,
+                RunoffCalculationStatusName = x.RunoffCalculationStatus.RunoffCalculationStatusName,
+                RunoffCalculationStatusDisplayName = x.RunoffCalculationStatus.RunoffCalculationStatusDisplayName,
+
                 Year = x.Year,
                 Month = x.Month,
 
                 LastSynchronizedDate = x.LastSynchronizedDate,
                 LastSynchronizedByUserFullName = x.LastSynchronizedByUser != null
                     ? x.LastSynchronizedByUser.FullName
+                    : null,
+
+                LastRunoffCalculationDate = x.LastRunoffCalculationDate,
+                LastRunoffCalculatedByUserFullName = x.LastRunoffCalculatedByUser != null
+                    ? x.LastRunoffCalculatedByUser.FullName
                     : null,
 
                 FinalizeDate = x.FinalizeDate,
@@ -50,18 +62,30 @@ public static class PrismMonthlySyncs
             .Select(x => new PrismMonthlySyncSimpleDto
             {
                 PrismMonthlySyncID = x.PrismMonthlySyncID,
-                PrismSyncStatusID = x.PrismSyncStatusID,
-                PrismSyncStatusName = x.PrismSyncStatus.PrismSyncStatusName,
-                PrismSyncStatusDisplayName = x.PrismSyncStatus.PrismSyncStatusDisplayName,
+
                 PrismDataTypeID = x.PrismDataTypeID,
                 PrismDataTypeName = x.PrismDataType.PrismDataTypeName,
                 PrismDataTypeDisplayName = x.PrismDataType.PrismDataTypeDisplayName,
+
+                PrismSyncStatusID = x.PrismSyncStatusID,
+                PrismSyncStatusName = x.PrismSyncStatus.PrismSyncStatusName,
+                PrismSyncStatusDisplayName = x.PrismSyncStatus.PrismSyncStatusDisplayName,
+
+                RunoffCalculationStatusID = x.RunoffCalculationStatusID,
+                RunoffCalculationStatusName = x.RunoffCalculationStatus.RunoffCalculationStatusName,
+                RunoffCalculationStatusDisplayName = x.RunoffCalculationStatus.RunoffCalculationStatusDisplayName,
+
                 Year = x.Year,
                 Month = x.Month,
 
                 LastSynchronizedDate = x.LastSynchronizedDate,
                 LastSynchronizedByUserFullName = x.LastSynchronizedByUser != null
                     ? x.LastSynchronizedByUser.FullName
+                    : null,
+
+                LastRunoffCalculationDate = x.LastRunoffCalculationDate,
+                LastRunoffCalculatedByUserFullName = x.LastRunoffCalculatedByUser != null
+                    ? x.LastRunoffCalculatedByUser.FullName
                     : null,
 
                 FinalizeDate = x.FinalizeDate,
@@ -101,6 +125,26 @@ public static class PrismMonthlySyncs
         {
             syncRecord.LastSynchronizedByUserID = callingUser.UserID;
             syncRecord.LastSynchronizedDate = DateTime.UtcNow;
+        }
+
+        dbContext.Update(syncRecord);
+        await dbContext.SaveChangesAsync();
+
+        return syncRecord.AsDto();
+    }
+
+    public static async Task<PrismMonthlySyncDto> UpdateRunoffCalculationStatus(ZybachDbContext dbContext, UserDto callingUser, int year, int month, RunoffCalculationStatus runoffCalculationStatus)
+    {
+        var syncRecord = await dbContext.PrismMonthlySyncs
+            .Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID)
+            .FirstOrDefaultAsync();
+
+        syncRecord.RunoffCalculationStatusID = runoffCalculationStatus.RunoffCalculationStatusID;
+
+        if (runoffCalculationStatus == RunoffCalculationStatus.InProgress)
+        {
+            syncRecord.LastRunoffCalculatedByUserID = callingUser.UserID;
+            syncRecord.LastRunoffCalculationDate = DateTime.UtcNow;
         }
 
         dbContext.Update(syncRecord);
