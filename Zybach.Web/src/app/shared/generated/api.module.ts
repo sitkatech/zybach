@@ -8,6 +8,7 @@ import { ChemigationPermitService } from './api/chemigation-permit.service';
 import { ChemigationPermitAnnualRecordService } from './api/chemigation-permit-annual-record.service';
 import { ChemigationPermitAnnualRecordChemicalFormulationService } from './api/chemigation-permit-annual-record-chemical-formulation.service';
 import { CountyService } from './api/county.service';
+import { CurveNumberService } from './api/curve-number.service';
 import { CustomRichTextService } from './api/custom-rich-text.service';
 import { FieldDefinitionService } from './api/field-definition.service';
 import { FileResourceService } from './api/file-resource.service';
@@ -44,6 +45,7 @@ import { WellGroupService } from './api/well-group.service';
     ChemigationPermitAnnualRecordService,
     ChemigationPermitAnnualRecordChemicalFormulationService,
     CountyService,
+    CurveNumberService,
     CustomRichTextService,
     FieldDefinitionService,
     FileResourceService,

@@ -272,7 +272,7 @@ export class PrismMonthlySyncListComponent {
                             ActionHandler: () => {
                                 this.confirmService.confirm({
                                     title: 'Sync Now',
-                                    message: `Are you sure you would like to sync ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data from PRISM? Note: This may take some time to return data, please check in again in a few minutes.`,
+                                    message: `Are you sure you would like to  sync ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${ params.data.Year }'s ${ params.data.PrismDataTypeDisplayName } data from PRISM? Note: This may take some time to return data, please check in again in a few minutes.`,
                                     buttonTextYes: 'Sync',
                                     buttonClassYes: 'btn-primary',
                                     buttonTextNo: 'Cancel',

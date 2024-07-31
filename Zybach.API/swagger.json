@@ -1498,6 +1498,146 @@
         }
       }
     },
+    "/irrigation-unit-curve-numbers": {
+      "get": {
+        "tags": [
+          "CurveNumber"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/irrigation-units/{irrigationUnitID}/curve-numbers": {
+      "get": {
+        "tags": [
+          "CurveNumber"
+        ],
+        "parameters": [
+          {
+            "name": "irrigationUnitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "CurveNumber"
+        ],
+        "parameters": [
+          {
+            "name": "irrigationUnitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberUpsertDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberUpsertDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberUpsertDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberUpsertDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgHubIrrigationUnitCurveNumberSimpleDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/customRichText/{customRichTextTypeID}": {
       "get": {
         "tags": [
@@ -1984,6 +2124,55 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/AgHubIrrigationUnitFarmingPracticeDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/irrigationUnits/{irrigationUnitID}/irrigated-acres": {
+      "get": {
+        "tags": [
+          "IrrigationUnit"
+        ],
+        "parameters": [
+          {
+            "name": "irrigationUnitID",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubWellIrrigatedAcreSimpleDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubWellIrrigatedAcreSimpleDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AgHubWellIrrigatedAcreSimpleDto"
                   }
                 }
               }
@@ -6660,6 +6849,82 @@
   },
   "components": {
     "schemas": {
+      "AgHubIrrigationUnitCurveNumberSimpleDto": {
+        "type": "object",
+        "properties": {
+          "AgHubIrrigationUnitCurveNumberID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AgHubIrrigationUnitID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "HydrologicSoilGroup": {
+            "type": "string",
+            "nullable": true
+          },
+          "MTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "STillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "NTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "CTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "UndefinedTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AgHubIrrigationUnitCurveNumberUpsertDto": {
+        "required": [
+          "CTillCurveNumber",
+          "MTillCurveNumber",
+          "NTillCurveNumber",
+          "STillCurveNumber",
+          "UndefinedTillCurveNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "HydrologicSoilGroup": {
+            "maxLength": 3,
+            "type": "string",
+            "nullable": true
+          },
+          "MTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "STillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "NTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "CTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          },
+          "UndefinedTillCurveNumber": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
       "AgHubIrrigationUnitDetailDto": {
         "type": "object",
         "properties": {
@@ -6944,6 +7209,36 @@
           "EvapotranspirationInches": {
             "type": "number",
             "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AgHubWellIrrigatedAcreSimpleDto": {
+        "type": "object",
+        "properties": {
+          "AgHubWellIrrigatedAcreID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AgHubWellID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "IrrigationYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Acres": {
+            "type": "number",
+            "format": "double"
+          },
+          "CropType": {
+            "type": "string",
+            "nullable": true
+          },
+          "Tillage": {
+            "type": "string",
             "nullable": true
           }
         },

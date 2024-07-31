@@ -5,6 +5,7 @@ api/chemigation-permit-annual-record-chemical-formulation.service.ts
 api/chemigation-permit-annual-record.service.ts
 api/chemigation-permit.service.ts
 api/county.service.ts
+api/curve-number.service.ts
 api/custom-rich-text.service.ts
 api/field-definition.service.ts
 api/file-resource.service.ts
@@ -32,12 +33,15 @@ api/well-group.service.ts
 api/well.service.ts
 configuration.ts
 encoder.ts
+model/ag-hub-irrigation-unit-curve-number-simple-dto.ts
+model/ag-hub-irrigation-unit-curve-number-upsert-dto.ts
 model/ag-hub-irrigation-unit-detail-dto.ts
 model/ag-hub-irrigation-unit-farming-practice-dto.ts
 model/ag-hub-irrigation-unit-runoff-simple-dto.ts
 model/ag-hub-irrigation-unit-simple-dto.ts
 model/ag-hub-irrigation-unit-summary-dto.ts
 model/ag-hub-irrigation-unit-water-year-month-et-and-precip-datum-dto.ts
+model/ag-hub-well-irrigated-acre-simple-dto.ts
 model/annual-pumped-volume.ts
 model/annual-stream-flow-zone-pumping-depth-dto.ts
 model/bounding-box-dto.ts

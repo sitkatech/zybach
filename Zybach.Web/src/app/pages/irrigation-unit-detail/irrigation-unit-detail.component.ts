@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef } from 'ag-grid-community';
 import { AuthenticationService } from 'src/app/services/authentication.service';
@@ -10,8 +10,12 @@ import { AgHubIrrigationUnitWaterYearMonthETAndPrecipDatumDto } from 'src/app/sh
 import { UserDto } from 'src/app/shared/generated/model/user-dto';
 import { IrrigationUnitMapComponent } from '../irrigation-unit-map/irrigation-unit-map.component';
 import { DatePipe } from '@angular/common';
-import { AgHubIrrigationUnitRunoffSimpleDto } from 'src/app/shared/generated/model/models';
+import { AgHubIrrigationUnitCurveNumberSimpleDto, AgHubIrrigationUnitCurveNumberUpsertDto, AgHubIrrigationUnitRunoffSimpleDto, AgHubWellIrrigatedAcreSimpleDto } from 'src/app/shared/generated/model/models';
 import { Observable, tap } from 'rxjs';
+import { CurveNumberService } from 'src/app/shared/generated/api/curve-number.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { AlertContext } from 'src/app/shared/models/enums/alert-context.enum';
+import { Alert } from 'src/app/shared/models/alert';
 
 @Component({
   selector: 'zybach-irrigation-unit-detail',
@@ -23,6 +27,7 @@ export class IrrigationUnitDetailComponent implements OnInit {
   @ViewChild("irrigationUnitMap") irrigationUnitMap: IrrigationUnitMapComponent;
   @ViewChild('openETDataGrid') openETDataGrid: AgGridAngular;
   @ViewChild('runoffGrid') runoffGrid: AgGridAngular;
+  @ViewChild('irrigatedAcreGrid') irrigatedAcreGrid: AgGridAngular;
  
   public currentUser: UserDto;
   public irrigationUnit: AgHubIrrigationUnitDetailDto;
@@ -44,15 +49,29 @@ export class IrrigationUnitDetailComponent implements OnInit {
     { headerName: 'Crop Type', field: 'CropType', sortable: true, filter: true, resizable: true },
     { headerName: 'Tillage', field: 'Tillage', sortable: true, filter: true, resizable: true },
     { headerName: 'Curve Number', field: 'CurveNumber', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
-    { headerName: 'Acres', field: 'Acres', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Acres', field: 'Area', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
     { headerName: 'Runoff Depth (in)', field: 'RunoffDepth', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
     { headerName: 'Runoff Volume (ac-in)', field: 'RunoffVolume', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
   ];
 
-  public runoffDefaultColDef: ColDef;
   public runoffData$: Observable<AgHubIrrigationUnitRunoffSimpleDto[]>;
 
   public gridApi: any;
+
+  public irrigatedAcres$: Observable<AgHubIrrigationUnitRunoffSimpleDto[]>;
+  
+  public irrigatedAcresColDefs: any[] = [
+    { headerName: 'Year', field: 'IrrigationYear', sortable: true, filter: 'agNumberColumnFilter', resizable: true },
+    { headerName: 'Crop Type', field: 'CropType', sortable: true, filter: true, resizable: true },
+    { headerName: 'Tillage', field: 'Tillage', sortable: true, filter: true, resizable: true },
+  ];
+
+  public irrigatedAcresColDef: ColDef; 
+
+  public curveNumber: AgHubIrrigationUnitCurveNumberSimpleDto;
+  public editingCurveNumber: boolean = false;
+  public isLoadingSubmit: boolean = false;
+  public curveNumberUpsertDto: AgHubIrrigationUnitCurveNumberUpsertDto;
 
   constructor(
     private irrigationUnitService: IrrigationUnitService,
@@ -60,6 +79,8 @@ export class IrrigationUnitDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
     private utilityFunctionsService: UtilityFunctionsService,
+    private curveNumberService: CurveNumberService,
+    private alertService: AlertService,
     private datePipe: DatePipe
   ) { }
   ngOnInit(): void {
@@ -72,6 +93,12 @@ export class IrrigationUnitDetailComponent implements OnInit {
     });
 
     this.runoffData$ = this.irrigationUnitService.irrigationUnitsIrrigationUnitIDRunoffDataGet(this.irrigationUnitID);
+    this.curveNumberService.irrigationUnitsIrrigationUnitIDCurveNumbersGet(this.irrigationUnitID).subscribe(result => {
+        this.curveNumber = result;
+        this.curveNumberUpsertDto = new AgHubIrrigationUnitCurveNumberUpsertDto(result);
+    });
+
+    this.irrigatedAcres$ = this.irrigationUnitService.irrigationUnitsIrrigationUnitIDIrrigatedAcresGet(this.irrigationUnitID);
   }
 
   getIrrigationUnitDetails(){
@@ -117,4 +144,26 @@ export class IrrigationUnitDetailComponent implements OnInit {
     this.utilityFunctionsService.exportGridToCsv(this.runoffGrid, `${this.irrigationUnit.WellTPID}-runoff-data.csv`, null);
   }
 
+  public toggleEditCurveNumber() {  
+    this.editingCurveNumber = !this.editingCurveNumber;
+  }
+  
+  public exportIrrigatedAcresToCsv() {
+    this.utilityFunctionsService.exportGridToCsv(this.irrigatedAcreGrid, `${this.irrigationUnit.WellTPID}-irrigated-acres.csv`, null);
+  }
+
+  public saveCurveNumber() {
+    this.isLoadingSubmit = true;
+    this.curveNumberService.irrigationUnitsIrrigationUnitIDCurveNumbersPut(this.irrigationUnitID, this.curveNumberUpsertDto).subscribe  (
+        result => {
+            this.curveNumber = result;
+            this.editingCurveNumber = false;
+            this.isLoadingSubmit = false;
+            this.alertService.clearAlerts();
+            this.alertService.pushAlert(new Alert(`Succesfully updated curve numbers.`, AlertContext.Success));
+        }, 
+        error => {
+            this.isLoadingSubmit = false;
+        });
+  }
 }
