@@ -95,7 +95,7 @@ export class PrismMonthlySyncListComponent {
         this.columnDefs.push(this.createActionColumn());
 
         let datePipe = this.datePipe;
-        
+        let utilityFunctionsService = this.utilityFunctionsService;
         this.columnDefs.push(
             {
                 headerName: 'Year', 

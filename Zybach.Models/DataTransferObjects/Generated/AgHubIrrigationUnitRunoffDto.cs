@@ -14,6 +14,8 @@ namespace Zybach.Models.DataTransferObjects
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
+        public string CropType { get; set; }
+        public string Tillage { get; set; }
         public double CurveNumber { get; set; }
         public double Precipitation { get; set; }
         public double Area { get; set; }
@@ -28,6 +30,8 @@ namespace Zybach.Models.DataTransferObjects
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
+        public string CropType { get; set; }
+        public string Tillage { get; set; }
         public double CurveNumber { get; set; }
         public double Precipitation { get; set; }
         public double Area { get; set; }

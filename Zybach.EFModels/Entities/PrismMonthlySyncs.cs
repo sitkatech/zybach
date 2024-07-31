@@ -133,7 +133,7 @@ public static class PrismMonthlySyncs
         return syncRecord.AsDto();
     }
 
-    public static async Task<PrismMonthlySyncDto> UpdateRunoffCalculationStatus(ZybachDbContext dbContext, UserDto callingUser, int year, int month, RunoffCalculationStatus runoffCalculationStatus)
+    public static async Task<PrismMonthlySyncDto> UpdateRunoffCalculationStatus(ZybachDbContext dbContext, UserDto callingUser, int year, int month, RunoffCalculationStatus runoffCalculationStatus, string error = null)
     {
         var syncRecord = await dbContext.PrismMonthlySyncs
             .Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID)
@@ -145,6 +145,11 @@ public static class PrismMonthlySyncs
         {
             syncRecord.LastRunoffCalculatedByUserID = callingUser.UserID;
             syncRecord.LastRunoffCalculationDate = DateTime.UtcNow;
+        }
+
+        if (runoffCalculationStatus == RunoffCalculationStatus.Failed)
+        {
+            syncRecord.LastRunoffCalculationError = error;
         }
 
         dbContext.Update(syncRecord);

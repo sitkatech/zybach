@@ -135,11 +135,11 @@ public class PrismAPIService
             await _dbContext.Entry(prismDailySyncRecord).ReloadAsync();
         }
 
-        if (prismDailySyncRecord.PrismSyncStatusID == PrismSyncStatus.Succeeded.PrismSyncStatusID && !forceRedownload) 
+        if (prismDailySyncRecord.PrismSyncStatusID == PrismSyncStatus.Succeeded.PrismSyncStatusID && !forceRedownload)
         {
             var blobResource = await _dbContext.BlobResources.FirstOrDefaultAsync(x => x.BlobResourceID == prismDailySyncRecord.BlobResourceID);
             var blobResourceStream = await _blobService.GetFileStreamFromBlobStorage(blobResource.BlobResourceCanonicalName);
-            
+
             if (blobResource != null && blobResourceStream != null)
             {
                 return new PrismResultDto()
@@ -189,7 +189,7 @@ public class PrismAPIService
             };
 
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             prismDailySyncRecord.PrismSyncStatusID = PrismSyncStatus.Failed.PrismSyncStatusID;
             prismDailySyncRecord.ErrorMessage = e.Message;
@@ -257,7 +257,7 @@ public class PrismAPIService
 
             return dataset;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             // Clean up the temporary directory
             Directory.Delete(tempDirectory, true);
@@ -268,8 +268,16 @@ public class PrismAPIService
     [AutomaticRetry(Attempts = 0)]
     public async Task CalculateAndSaveRunoffForAllIrrigationUnitsForYearMonth(UserDto callingUser, int year, int month)
     {
-        var irrigationUnits = await _dbContext.AgHubIrrigationUnits.Include(x => x.AgHubIrrigationUnitGeometry).ToListAsync();
-        var dailyRecords = await _dbContext.PrismDailyRecords.Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue).ToListAsync();
+        var irrigationUnits = await _dbContext.AgHubIrrigationUnits
+            .Include(x => x.AgHubIrrigationUnitGeometry)
+            .AsNoTracking()
+            .ToListAsync();
+
+        var dailyRecords = await _dbContext.PrismDailyRecords
+            .AsNoTracking()
+            .Where(x => x.Year == year && x.Month == month && x.PrismDataTypeID == PrismDataType.ppt.PrismDataTypeID && x.BlobResourceID.HasValue)
+            .ToListAsync();
+
         try
         {
             foreach (var dailyRecord in dailyRecords)
@@ -282,10 +290,40 @@ public class PrismAPIService
 
                 foreach (var irrigationUnit in irrigationUnits)
                 {
+                    var agHubWell = await _dbContext.AgHubWells.FirstOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID);
+                    var irrigationAcre = await _dbContext.AgHubWellIrrigatedAcres.SingleOrDefaultAsync(x => x.IrrigationYear == year && x.AgHubWellID == agHubWell.AgHubWellID);
+                    var allCurveNumbersForIrrigationUnit = await _dbContext.AgHubIrrigationUnitCurveNumbers.SingleOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID);
+
+
+                    if (irrigationAcre == null || allCurveNumbersForIrrigationUnit == null)
+                    {
+                        continue;
+                    }
+
+                    double curveNumber;
+                    switch (irrigationAcre.Tillage)
+                    {
+                        case "MTill":
+                            curveNumber = allCurveNumbersForIrrigationUnit.MTillCurveNumber;
+                            break;
+                        case "STill":
+                            curveNumber = allCurveNumbersForIrrigationUnit.STillCurveNumber;
+                            break;
+                        case "NTill":
+                            curveNumber = allCurveNumbersForIrrigationUnit.NTillCurveNumber;
+                            break;
+                        case "CTill":
+                            curveNumber = allCurveNumbersForIrrigationUnit.CTillCurveNumber;
+                            break;
+                        default:
+                            curveNumber = allCurveNumbersForIrrigationUnit.UndefinedTillCurveNumber;
+                            break;
+                    }
+
                     var precipitation = dataset.GetRasterValueForGeometry(irrigationUnit.AgHubIrrigationUnitGeometry.IrrigationUnitGeometry);
-                    var curveNumber = 70; //TODO: Get this from the database.   
                     var runoffDepth = RunoffCalculatorHelper.Runoff(curveNumber, precipitation);
-                    var area = irrigationUnit.IrrigationUnitAreaInAcres.GetValueOrDefault(0);
+                    var area = irrigationAcre.Acres;
+                    var runoffVolume = runoffDepth * area;
 
                     var runoffRecord = await _dbContext.AgHubIrrigationUnitRunoffs
                         .SingleOrDefaultAsync(x => x.AgHubIrrigationUnitID == irrigationUnit.AgHubIrrigationUnitID && x.Year == year && x.Month == month && x.Day == dailyRecord.Day);
@@ -298,22 +336,26 @@ public class PrismAPIService
                             Year = year,
                             Month = month,
                             Day = dailyRecord.Day,
+                            CropType = irrigationAcre.CropType,
+                            Tillage = irrigationAcre.Tillage,
                             CurveNumber = curveNumber,
                             Precipitation = precipitation,
                             Area = area,
                             RunoffDepth = runoffDepth,
-                            RunoffVolume = runoffDepth * area
+                            RunoffVolume = runoffVolume,
                         };
 
                         await _dbContext.AgHubIrrigationUnitRunoffs.AddAsync(runoffRecord);
                     }
                     else
                     {
+                        runoffRecord.CropType = irrigationAcre.CropType;
+                        runoffRecord.Tillage = irrigationAcre.Tillage;
                         runoffRecord.CurveNumber = curveNumber;
                         runoffRecord.Precipitation = precipitation;
                         runoffRecord.Area = area;
                         runoffRecord.RunoffDepth = runoffDepth;
-                        runoffRecord.RunoffVolume = runoffDepth * area;
+                        runoffRecord.RunoffVolume = runoffVolume;
 
                         _dbContext.AgHubIrrigationUnitRunoffs.Update(runoffRecord);
                     }
@@ -330,9 +372,14 @@ public class PrismAPIService
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error calculating runoff for irrigation units.");
-            await PrismMonthlySyncs.UpdateRunoffCalculationStatus(_dbContext, callingUser, year, month, RunoffCalculationStatus.Failed);
+
+            var errorMessage = ex.InnerException != null
+                ? $"Exception: {ex.Message}\n\tInner Exception:{ex.InnerException.Message}"
+                : $"Exception: {ex.Message}";
+
+            await PrismMonthlySyncs.UpdateRunoffCalculationStatus(_dbContext, callingUser, year, month, RunoffCalculationStatus.Failed, errorMessage);
         }
-        
+
     }
 
     public void CleanupTempFiles(int blobID)
@@ -348,7 +395,7 @@ public class PrismAPIService
         {
             Directory.Delete(tempDirectory, true);
         }
-    } 
+    }
 
     public string GetFileName(PrismDataType dataType, DateTime date, string extension)
     {

@@ -21,6 +21,14 @@ public partial class AgHubIrrigationUnitRunoff
 
     public int Day { get; set; }
 
+    [StringLength(50)]
+    [Unicode(false)]
+    public string CropType { get; set; }
+
+    [StringLength(50)]
+    [Unicode(false)]
+    public string Tillage { get; set; }
+
     public double CurveNumber { get; set; }
 
     public double Precipitation { get; set; }

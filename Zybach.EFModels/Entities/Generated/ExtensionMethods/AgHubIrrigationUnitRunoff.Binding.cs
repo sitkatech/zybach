@@ -11,7 +11,8 @@ namespace Zybach.EFModels.Entities
 
         public static class FieldLengths
         {
-
+            public const int CropType = 50;
+            public const int Tillage = 50;
         }
     }
 }

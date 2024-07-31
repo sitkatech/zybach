@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Zybach.API.Services;
@@ -59,6 +60,20 @@ namespace Zybach.API.Controllers
             return Ok(agHubIrrigationUnitWellIrrigatedAcreDtos);
         }
 
+
+        [HttpGet("/irrigationUnits/{irrigationUnitID}/irrigated-acres")]
+        [ZybachViewFeature]
+        public async Task<ActionResult<List<AgHubWellIrrigatedAcreSimpleDto>>> GetIrrigationAcresPerYear([FromRoute] int irrigationUnitID)
+        {
+            var irrigationUnit = AgHubIrrigationUnits.GetAgHubIrrigationUnitImpl(_dbContext).SingleOrDefault(x => x.AgHubIrrigationUnitID == irrigationUnitID);
+            if (irrigationUnit == null)
+            {
+                return NotFound();
+            }
+
+            var result = await AgHubIrrigatedAcres.ListSimpleForIrrigationUnitID(_dbContext, irrigationUnitID);
+            return Ok(result);
+        }
 
         [HttpGet("/irrigationUnits/{irrigationUnitID}/runoff-data")]
         [ZybachViewFeature]

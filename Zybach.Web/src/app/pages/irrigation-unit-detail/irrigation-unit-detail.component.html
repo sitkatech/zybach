@@ -8,6 +8,7 @@
 </nav>
 <div class="container">
     <div class="row mt-2">
+        <app-alert-display></app-alert-display>
         <div class="col-12 col-md-6">
             <div class="row mt-2">
                 <div class="col">
@@ -32,6 +33,139 @@
                                     <p *ngFor="let well of irrigationUnit.AssociatedWells" class="m-0">
                                         <a routerLink="/wells/{{well.WellID}}">{{well.WellRegistrationID}}</a>
                                     </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2" *ngIf="irrigatedAcres$ | async as irrigatedAcres">
+                <div class="col">
+                    <div class="card" >
+                        <div class="card-header">
+                            Tillage and Crop Per Yer
+                        </div>
+                        <div class="card-body mb-3">
+                            <div *ngIf="irrigatedAcres?.length > 0; then hasIrrigatedAcresData else noirrigatedAcres"></div>
+                            <ng-template #hasIrrigatedAcresData>
+                                <div class="row">
+                                    <div class="col">
+                                        <button class="btn btn-secondary btn-md float-end m-2" style="cursor: pointer;" (click)="exportIrrigatedAcresToCsv()" placement="top"
+                                        ngbTooltip="Download as CSV" [placement]="['bottom', 'right', 'left', 'auto']"><i class="fas fa-download"></i></button>
+                                        <fresca-clear-grid-filters-button class="m-2 float-end" [grid]="irrigatedAcresGrid">
+                                        </fresca-clear-grid-filters-button>
+                                    </div> 
+                                </div>
+                                <div class="table-responsive">
+                                    <ag-grid-angular #irrigatedAcresGrid style="width: 100%; height: 300px;" 
+                                        class="ag-theme-balham" [rowData]="irrigatedAcres"
+                                        [columnDefs]="irrigatedAcresColDefs"
+                                        [pagination]="false" [suppressMenuHide]="true">
+                                    </ag-grid-angular>
+                                </div>
+                            </ng-template>
+                            <ng-template #noirrigatedAcresData>
+                                <p>
+                                    <em>This Irrigation Unit has no available irrigated acres data at this time</em>
+                                </p>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card" *ngIf="curveNumber">
+                        <div class="card-header">
+                            Curve Numbers
+                            <div class="float-end">
+                                <button (click)="toggleEditCurveNumber()" class="btn btn-zybach btn-sm float-end" *ngIf="!editingCurveNumber"><span class="fas fa-edit"></span>Edit Curve Numbers</button>
+                            </div>
+                        </div>
+                        <div class="card-body" *ngIf="!editingCurveNumber">
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>Hydrologic Soil Group</strong></div>
+                                <div class="col-12 col-sm-6">{{curveNumber.HydrologicSoilGroup}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>M Till</strong></div>
+                                <div class="col-12 col-sm-6">{{curveNumber.MTillCurveNumber}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>S Till</strong></div>
+                                <div class="col-12 col-sm-6">{{curveNumber.STillCurveNumber}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>N Till</strong></div>
+                                <div class="col-12 col-sm-6">{{curveNumber.NTillCurveNumber}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>C Till</strong></div>
+                                <div class="col-12 col-sm-6">{{curveNumber.CTillCurveNumber}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-sm-6 label"><strong>Undefined Till</strong></div>
+                                <div class="col-12 col-sm-6">{{curveNumber.UndefinedTillCurveNumber}}</div>
+                            </div>
+                        </div>
+
+                        <div class="card-body curve-number-form" *ngIf="editingCurveNumber">
+                            <div class="row"> 
+                                <div class="col-sm-2 control-label">
+                                    <label class="required">Hydrologic Soil Group</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="HydrologicSoilGroup" placeholder="Hydrologic Soil Group" maxlength="3" required [(ngModel)]="curveNumberUpsertDto.HydrologicSoilGroup" />
+                                </div>
+                            </div>
+                            <div class="row"> 
+                                <div class="col-sm-2 control-label">
+                                    <label class="required">M Till</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="MTillCurveNumber" placeholder="M Till Curve Number" required [(ngModel)]="curveNumberUpsertDto.MTillCurveNumber" />
+                                </div>
+                            </div>
+                            <div class="row"> 
+                                <div class="col-sm-2 control-label">
+                                    <label class="required">S Till</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="STillCurveNumber" placeholder="S Till Curve Number" required [(ngModel)]="curveNumberUpsertDto.STillCurveNumber" />
+                                </div>
+                            </div>
+                            <div class="row"> 
+                                <div class="col-sm-2 control-label">
+                                    <label class="required">N Till</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="NTillCurveNumber" placeholder="N Till Curve Number" required [(ngModel)]="curveNumberUpsertDto.NTillCurveNumber" />
+                                </div>
+                            </div>
+                            <div class="row"> 
+                                <div class="col-sm-2 control-label">
+                                    <label class="required">C Till</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="CTillCurveNumber" placeholder="C Till Curve Number" required [(ngModel)]="curveNumberUpsertDto.CTillCurveNumber" />
+                                </div>
+                            </div>
+                            <div class="row"> 
+                                <div class="col-sm-2 control-label">
+                                    <label class="required">Undefined Till</label>
+                                </div>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="UndefinedTillCurveNumber" placeholder="Undefined Till Curve Number" required [(ngModel)]="curveNumberUpsertDto.UndefinedTillCurveNumber" />
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="flex">
+                                    <button (click)="saveCurveNumber()" [disabled]="isLoadingSubmit" class="btn btn-zybach btn-sm float-end">
+                                        <span *ngIf="isLoadingSubmit" class="fa fa-spinner loading-spinner"></span>
+                                        Save
+                                    </button>
+                                    <button (click)="toggleEditCurveNumber()"class="btn btn-secondary btn-sm float-end">Cancel</button>
                                 </div>
                             </div>
                         </div>

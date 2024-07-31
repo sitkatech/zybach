@@ -25,6 +25,7 @@ export class PrismMonthlySyncDto {
     LastSynchronizedByUser?: UserDto;
     LastRunoffCalculationDate?: string;
     LastRunoffCalculatedByUser?: UserDto;
+    LastRunoffCalculationError?: string;
     FinalizeDate?: string;
     FinalizeByUser?: UserDto;
     constructor(obj?: any) {

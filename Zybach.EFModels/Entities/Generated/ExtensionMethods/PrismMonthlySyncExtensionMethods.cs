@@ -23,6 +23,7 @@ namespace Zybach.EFModels.Entities
                 LastSynchronizedByUser = prismMonthlySync.LastSynchronizedByUser?.AsDto(),
                 LastRunoffCalculationDate = prismMonthlySync.LastRunoffCalculationDate,
                 LastRunoffCalculatedByUser = prismMonthlySync.LastRunoffCalculatedByUser?.AsDto(),
+                LastRunoffCalculationError = prismMonthlySync.LastRunoffCalculationError,
                 FinalizeDate = prismMonthlySync.FinalizeDate,
                 FinalizeByUser = prismMonthlySync.FinalizeByUser?.AsDto()
             };
@@ -46,6 +47,7 @@ namespace Zybach.EFModels.Entities
                 LastSynchronizedByUserID = prismMonthlySync.LastSynchronizedByUserID,
                 LastRunoffCalculationDate = prismMonthlySync.LastRunoffCalculationDate,
                 LastRunoffCalculatedByUserID = prismMonthlySync.LastRunoffCalculatedByUserID,
+                LastRunoffCalculationError = prismMonthlySync.LastRunoffCalculationError,
                 FinalizeDate = prismMonthlySync.FinalizeDate,
                 FinalizeByUserID = prismMonthlySync.FinalizeByUserID
             };

@@ -21,6 +21,7 @@ export class PrismMonthlySyncSimpleDto {
     LastSynchronizedByUserID?: number;
     LastRunoffCalculationDate?: string;
     LastRunoffCalculatedByUserID?: number;
+    LastRunoffCalculationError?: string;
     FinalizeDate?: string;
     FinalizeByUserID?: number;
     PrismDataTypeName?: string;

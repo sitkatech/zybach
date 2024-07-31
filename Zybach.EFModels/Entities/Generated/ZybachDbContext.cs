@@ -13,6 +13,8 @@ public partial class ZybachDbContext : DbContext
 
     public virtual DbSet<AgHubIrrigationUnit> AgHubIrrigationUnits { get; set; }
 
+    public virtual DbSet<AgHubIrrigationUnitCurveNumber> AgHubIrrigationUnitCurveNumbers { get; set; }
+
     public virtual DbSet<AgHubIrrigationUnitGeometry> AgHubIrrigationUnitGeometries { get; set; }
 
     public virtual DbSet<AgHubIrrigationUnitOpenETDatum> AgHubIrrigationUnitOpenETData { get; set; }
@@ -130,6 +132,15 @@ public partial class ZybachDbContext : DbContext
         modelBuilder.Entity<AgHubIrrigationUnit>(entity =>
         {
             entity.HasKey(e => e.AgHubIrrigationUnitID).HasName("PK_AgHubIrrigationUnit_AgHubIrrigationUnitID");
+        });
+
+        modelBuilder.Entity<AgHubIrrigationUnitCurveNumber>(entity =>
+        {
+            entity.HasKey(e => e.AgHubIrrigationUnitCurveNumberID).HasName("PK_AgHubIrrigationUnitCurveNumber_AgHubIrrigationUnitRunoffID");
+
+            entity.HasOne(d => d.AgHubIrrigationUnit).WithMany(p => p.AgHubIrrigationUnitCurveNumbers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AgHubIrrigationUnitCurveNumber_AgHubIrrigationUnitID");
         });
 
         modelBuilder.Entity<AgHubIrrigationUnitGeometry>(entity =>
