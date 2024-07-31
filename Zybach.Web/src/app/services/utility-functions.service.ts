@@ -9,11 +9,16 @@ import { FieldDefinitionGridHeaderComponent } from '../shared/components/field-d
   providedIn: 'root'
 })
 export class UtilityFunctionsService {
+  private months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   constructor(
     private datePipe: DatePipe,
     private decimalPipe: DecimalPipe
   ) { }
+
+  public getMonthName(monthNumber) {
+    return this.months[monthNumber - 1];
+  }
 
   public booleanValueGetter(value: boolean, allowNullValues = true): string {
     return value == true ? 'Yes' : (value == false || !allowNullValues) ? 'No' : null;
@@ -152,13 +157,5 @@ export class UtilityFunctionsService {
       return 0;
     }
     return value1 > value2 ? 1 : -1;
-  }
-
-  public getMonthNameByMonthNumber(monthNumber: number) {
-    const date = new Date()
-    date.setDate(1);
-    date.setMonth(monthNumber - 1);
-  
-    return date.toLocaleString('en-US', { month: 'long' });
   }
 }

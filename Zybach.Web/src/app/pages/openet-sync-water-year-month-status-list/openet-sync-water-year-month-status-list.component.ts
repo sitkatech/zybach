@@ -92,7 +92,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
       },
       {
         headerName: 'Month',
-        valueGetter: (params) => this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month),
+        valueGetter: (params) => this.utilityFunctionsService.getMonthName(params.data.Month),
         width: 100
       },
       {
@@ -126,7 +126,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
             { ActionName: "Sync",  ActionHandler: () => {
               this.confirmService.confirm({
                 title: 'Sync Now',
-                message: `Are you sure you want to query OpenET for data updates for ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${params.data.Year}? Note: This may take some time to return data.`,
+                message: `Are you sure you want to query OpenET for data updates for ${this.utilityFunctionsService.getMonthName(params.data.Month)} ${params.data.Year}? Note: This may take some time to return data.`,
                 buttonTextYes: 'Sync',
                 buttonClassYes: 'btn-primary',
                 buttonTextNo: 'Cancel',
@@ -142,7 +142,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
               
                   this.openETService.openetSyncHistoryTriggerOpenetGoogleBucketRefreshPost(openETRunDto).subscribe(() => {
                     this.isPerformingAction = false;
-                    this.alertService.pushAlert(new Alert(`Sync successful for ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${params.data.Year} ${params.data.OpenETDataType.OpenETDataTypeDisplayName}`, AlertContext.Success, true));
+                    this.alertService.pushAlert(new Alert(`Sync successful for ${this.utilityFunctionsService.getMonthName(params.data.Month)} ${params.data.Year} ${params.data.OpenETDataType.OpenETDataTypeDisplayName}`, AlertContext.Success, true));
                     this.refreshOpenETSyncsAndOpenETSyncData();
                   }, error => {
                     this.isPerformingAction = false;
@@ -153,7 +153,7 @@ export class OpenetSyncWaterYearMonthStatusListComponent implements OnInit {
             { ActionName: "Finalize", ActionHandler: () => {
               this.confirmService.confirm({
                 title: 'Finalize',
-                message: `Are you sure you would like to finalize ${this.utilityFunctionsService.getMonthNameByMonthNumber(params.data.Month)} ${params.data.Year}?  The system will no longer query OpenET for updates once marked as final.`,
+                message: `Are you sure you would like to finalize ${this.utilityFunctionsService.getMonthName(params.data.Month)} ${params.data.Year}?  The system will no longer query OpenET for updates once marked as final.`,
                 buttonTextYes: 'Finalize',
                 buttonClassYes: 'btn-primary',
                 buttonTextNo: 'Cancel',
